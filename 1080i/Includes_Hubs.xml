@@ -81,7 +81,7 @@
             <control type="group" id="5990">
                 <height>widget_tbump_h</height>
             </control>
-            <include content="_DialogInfo_WidgetRow">
+            <!-- <include content="_DialogInfo_WidgetRow">
                 <param name="id">5991</param>
                 <param name="groupid">5992</param>
                 <param name="label">[CAPITALIZE]$INFO[Window.Property(SpecialFolderLabel)][/CAPITALIZE]</param>
@@ -91,8 +91,8 @@
                 <param name="include">List_Landscape_Row</param>
                 <param name="transition_include">true</param>
                 <param name="transition_hidden">Control.HasFocus(5991)</param>
-                <param name="visible">!String.IsEmpty(Window.Property(SpecialFolderPath)) + !String.IsEmpty(container(300).listitem.property(useWidgetList))</param>
-                <param name="altvisible">[!ControlGroup(5000).HasFocus() + !System.IdleTime(1)] + !String.IsEmpty(Window.Property(SpecialFolderPath)) + !String.IsEmpty(container(300).listitem.property(useWidgetList))</param>
+                <param name="visible">!String.IsEmpty(Window.Property(SpecialFolderPath)) + String.IsEmpty(container(300).listitem.property(useWidgetList))</param>
+                <param name="altvisible">[!ControlGroup(5000).HasFocus() + !System.IdleTime(1)] + !String.IsEmpty(Window.Property(SpecialFolderPath)) + String.IsEmpty(container(300).listitem.property(useWidgetList))</param>
                 <content target="$VAR[Hub_Widget_Node_Target]">$INFO[Window.Property(SpecialFolderPath)]</content>
                 <onfocus>SetProperty(TMDbHelper.WidgetContainer,5991)</onfocus>
                 <onback condition="!Integer.IsEqual(Container(5991).ListItem.CurrentItem,1)">5000</onback>
@@ -101,7 +101,7 @@
 
                 <onfocus>SetProperty(Transition.WidgetStyle,List_Landscape_Row,Home)</onfocus>
                 <onunfocus>ClearProperty(Transition.WidgetStyle,Home)</onunfocus>
-            </include>
+            </include> -->
             <nested />
             <control type="group" id="5999">
                 <visible>!$EXP[Exp_InfoDialogs]</visible>
@@ -126,6 +126,12 @@
 
 
     <include name="Hub_Main_Group">
+        <param name="fullscreen_content">$VAR[Path_Hub_Content]</param>
+        <param name="fullscreen_target">$VAR[Path_Hub_Target]</param>
+        <param name="fullscreen_label">$VAR[Label_Hub_Background]</param>
+        <param name="fullscreen_sort">$VAR[Label_Hub_Sort]</param>
+        <param name="fullscreen_descending">False</param>
+        <param name="fullscreen_sortby">random</param>
         <definition>
             <include>Defs_TMDbHelper_Loader</include>
             <include>Background_Main</include>
@@ -163,6 +169,8 @@
                         <param name="secondary_label">$PARAM[fullscreen_sort]</param>
                         <param name="sort_condition">True</param>
                         <param name="sort_descending">$PARAM[fullscreen_descending]</param>
+                        <param name="item_condition">true</param>
+                        <param name="item_count">$INFO[Container(301).NumItems]</param>
                         <left>0</left>
                         <top>320</top>
                         <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)</visible>
