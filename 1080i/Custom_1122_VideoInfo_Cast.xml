@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window type="dialog" id="1122">
+
+    <onload>SetFocus(5005,0,absolute)</onload>
+    <onload>SetFocus(5004,0,absolute)</onload>
+    <onload>SetFocus(5003,0,absolute)</onload>
+    <onload>SetFocus(5002,0,absolute)</onload>
+    <onload>SetFocus(5001,0,absolute)</onload>
+    <onload>SetFocus(7000,0,absolute)</onload>
+    <onload>ClearProperty(TMDbHelper.WidgetContainer)</onload>
+    <onload>ClearProperty(TMDbHelper.Image.Override,Home)</onload>
+    <controls>
+
+        <include>Defs_TMDbHelper_Loader</include>
+
+        <include content="DialogInfo_Main_Group">
+            <control type="group">
+                <animation effect="fade" start="100" end="0" condition="!ControlGroup(5000).HasFocus()">Conditional</animation>
+                <control type="image">
+                    <texture colordiffuse="$VAR[ColorBackground]">common/white.png</texture>
+                </control>
+                <include>Background_Main</include>
+            </control>
+
+            <control type="grouplist" id="5000">
+                <visible>!Container(7000).IsUpdating</visible>
+                <visible>!Integer.IsEqual(Container(7000).NumItems,0)</visible>
+
+                <animation type="WindowOpen" reversible="false">
+                    <effect type="fade" start="0" end="100" time="300" delay="0" tween="sine" easing="out"/>
+                    <effect type="slide" start="320" end="0" time="400" delay="0" tween="cubic" easing="out" />
+                </animation>
+
+                <top>500</top>
+
+                <animation effect="slide" start="420" end="0" tween="quadratic" easing="out" time="400" reversible="false" condition="ControlGroup(5000).HasFocus()">Conditional</animation>
+                <animation effect="slide" start="0" end="420" tween="quadratic" easing="out" time="400" reversible="false" condition="!ControlGroup(5000).HasFocus()">Conditional</animation>
+                <orientation>vertical</orientation>
+
+                <control type="group">
+                    <height>widget_tbump_h</height>
+                </control>
+                <include content="DialogInfo_WidgetRow">
+                    <param name="id">01</param>
+                    <param name="label">$LOCALIZE[19032]</param>
+                    <param name="secondary_label">$INFO[Container(7000).ListItem.Label]</param>
+                    <param name="include">List_Timeline_Wall</param>
+                    <param name="altvisible">[Container(7000).OnNext | Container(7000).OnPrevious]</param>
+                    <param name="visible">!Container(7000).IsUpdating + !Integer.IsEqual(Container(7000).NumItems,0)</param>
+                    <param name="widgetheight">394</param>
+                    <include>Action_Recommendations_OnClick</include>
+                    <content sortby="year" sortorder="descending">plugin://plugin.video.themoviedb.helper/?info=credits_in_both&amp;tmdb_type=person$INFO[Container(7000).ListItem.Property(TMDb_ID),&amp;tmdb_id=,]$VAR[Path_Param_Widget]</content>
+                    <onleft>SetFocus(5004,0,absolute)</onleft>
+                    <onleft>SetFocus(5003,0,absolute)</onleft>
+                    <onleft>SetFocus(5002,0,absolute)</onleft>
+                    <onleft>SetFocus(5001,0,absolute)</onleft>
+                </include>
+                <control type="group" id="5301">
+                    <height>180</height>
+                </control>
+
+                <include content="DialogInfo_WidgetRow">
+                    <param name="id">02</param>
+                    <param name="label">$LOCALIZE[31384]</param>
+                    <param name="secondary_label">$INFO[Container(7000).ListItem.Label]</param>
+                    <param name="include">List_Poster_Row</param>
+                    <param name="detailed">true</param>
+                    <param name="altvisible">[Container(7000).OnNext | Container(7000).OnPrevious]</param>
+                    <param name="visible">!Container(7000).IsUpdating + !Integer.IsEqual(Container(7000).NumItems,0)</param>
+                    <content>plugin://plugin.video.themoviedb.helper/?info=stars_in_both&amp;tmdb_type=person$INFO[Container(7000).ListItem.Property(TMDb_ID),&amp;tmdb_id=,]$VAR[Path_Param_Widget]</content>
+                    <include>Action_Recommendations_OnClick</include>
+                    <onleft>SetFocus(5004,0,absolute)</onleft>
+                    <onleft>SetFocus(5003,0,absolute)</onleft>
+                    <onleft>SetFocus(5002,0,absolute)</onleft>
+                    <onleft>SetFocus(5001,0,absolute)</onleft>
+                </include>
+
+                <!-- <include content="DialogInfo_WidgetRow">
+                    <param name="id">03</param>
+                    <param name="label">$LOCALIZE[31383]</param>
+                    <param name="secondary_label">$INFO[Container(7000).ListItem.Label]</param>
+                    <param name="include">List_Poster_Row</param>
+                    <param name="detailed">true</param>
+                    <param name="altvisible">[Container(7000).OnNext | Container(7000).OnPrevious]</param>
+                    <param name="visible">!Container(7000).IsUpdating + !Integer.IsEqual(Container(7000).NumItems,0)</param>
+                    <content>plugin://plugin.video.themoviedb.helper/?info=crew_in_both&amp;tmdb_type=person$INFO[Container(7000).ListItem.Property(TMDb_ID),&amp;tmdb_id=,]$VAR[Path_Param_Widget]</content>
+                    <include>Action_Recommendations_OnClick</include>
+                    <onleft>SetFocus(5001,0,absolute)</onleft>
+                </include> -->
+
+                <include content="DialogInfo_WidgetRow">
+                    <param name="id">04</param>
+                    <param name="label">$LOCALIZE[31029]</param>
+                    <param name="secondary_label">$INFO[Container(7000).ListItem.Label]</param>
+                    <param name="include">List_Poster_Row</param>
+                    <param name="altvisible">[Container(7000).OnNext | Container(7000).OnPrevious]</param>
+                    <param name="visible">!Container(7000).IsUpdating + !Integer.IsEqual(Container(7000).NumItems,0)</param>
+                    <param name="set_widgetcontainer">false</param>
+                    <content>plugin://plugin.video.themoviedb.helper/?info=images&amp;tmdb_type=person$INFO[Container(7000).ListItem.Property(TMDb_ID),&amp;tmdb_id=,]$VAR[Path_Param_Widget]</content>
+
+                    <onfocus>SetProperty(SlideShowPath,plugin://plugin.video.themoviedb.helper/?info=images&amp;tmdb_type=person$INFO[Container(7000).ListItem.Property(TMDb_ID),&amp;tmdb_id=,]$VAR[Path_Param_Widget])</onfocus>
+                    <onclick>SlideShow($INFO[Window.Property(SlideShowPath)],beginslide=$INFO[Container(5003).ListItem.PicturePath],pause)</onclick>
+                    <onfocus>SetProperty(TMDbHelper.WidgetContainer,7000)</onfocus>
+
+                    <onleft>SetFocus(5004,0,absolute)</onleft>
+                    <onleft>SetFocus(5003,0,absolute)</onleft>
+                    <onleft>SetFocus(5002,0,absolute)</onleft>
+                    <onleft>SetFocus(5001,0,absolute)</onleft>
+                </include>
+            </control>
+
+            <control type="group">
+                <include>Dimension_Info</include>
+                <include content="Info_Panel">
+                    <param name="titlelabel">$VAR[Label_Title_Container]</param>
+                    <param name="container">Container.</param>
+                    <param name="plotlabel">$VAR[Label_Plot_Container]</param>
+                    <width>info_panel_w</width>
+                    <visible>ControlGroup(5000).HasFocus()</visible>
+                    <visible>!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),7000)</visible>
+                </include>
+                <include content="Info_Panel">
+                    <param name="titlelabel">$VAR[Label_Title_C7000]</param>
+                    <param name="container">Container(7000).</param>
+                    <param name="plotlabel">$VAR[Label_Plot_C7000]</param>
+                    <width>info_panel_w</width>
+                    <visible>ControlGroup(5000).HasFocus()</visible>
+                    <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),7000)</visible>
+                </include>
+                <control type="group">
+                    <top>390</top>
+                    <include content="List_Button_Row">
+                        <param name="id">7000</param>
+                        <param name="orientation">vertical</param>
+                        <param name="offset_x">60</param>
+                        <param name="offset_y">25</param>
+                        <param name="item_h">80</param>
+                        <param name="itemlayout_h">80</param>
+                        <param name="item_w">400</param>
+                        <param name="itemlayout_w">x60</param>
+                        <param name="itemlayout_include">Layout_InfoDialog_Details</param>
+
+                        <onleft>Close</onleft>
+                        <onright>SetFocus(5000)</onright>
+
+                        <left>-x08</left>
+                        <top>-x04</top>
+                        <width>x60</width>
+                        <height>345</height>
+
+                        <preloaditems>0</preloaditems>
+                        <focusposition>1</focusposition>
+                        <movement>1</movement>
+
+                        <onclick>runscript(script.wikipedia,wikipedia=$INFO[Container(7000).ListItem.Label],tmdb_type=person)</onclick>
+
+                        <include content="Animation_Reposition">
+                            <param name="id">7000</param>
+                            <param name="slide_y">-x08</param>
+                        </include>
+
+                        <onfocus>ClearProperty(TMDbHelper.Image.Override,Home)</onfocus>
+                        <onfocus>ClearProperty(TMDbHelper.WidgetContainer)</onfocus>
+
+                        <visible allowhiddenfocus="true">Control.HasFocus(7000) + !Container.IsUpdating(7000)</visible>
+
+                        <content>plugin://plugin.video.themoviedb.helper/?info=cast&amp;aggregate=true$INFO[Window.Property(Item_Query)]$INFO[Window.Property(Item_Type),&amp;,]$VAR[Path_Param_Widget]</content>
+                    </include>
+                    <include content="Widget_Busy">
+                        <param name="label">$LOCALIZE[206]</param>
+                        <param name="visible">Control.HasFocus(7000) + Container.IsUpdating(7000)</param>
+                        <top>-90</top>
+                    </include>
+                </control>
+
+            </control>
+
+
+
+            <control type="group">
+                <visible>ControlGroup(5000).HasFocus()</visible>
+                <include content="DialogInfo_ButtonGroup">
+                    <param name="include">Items_DialogVideoInfo_MenuBar</param>
+                </include>
+                <include content="Furniture_Top">
+                    <param name="label">Information</param>
+                </include>
+                <!-- <include content="Info_Providers">
+                    <centerbottom>100</centerbottom>
+                    <left>view_top</left>
+                </include>
+                <include content="Info_Studio">
+                    <centerbottom>100</centerbottom>
+                    <right>view_pad</right>
+                </include> -->
+            </control>
+        </include>
+
+    </controls>
+</window>

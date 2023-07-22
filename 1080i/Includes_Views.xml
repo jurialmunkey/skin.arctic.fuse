@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<includes>
+    <include name="View_MediaWindows_ID">
+        <views>50,51,52,512,55,500</views>
+    </include>
+
+    <include name="View_Row_Header">
+        <definition>
+            <control type="group">
+                <visible>!$EXP[Exp_InfoDialogs]</visible>
+                <visible>!Window.IsVisible(DialogAddonSettings.xml)</visible>
+                <visible>!Window.IsVisible(DialogGameControllers.xml)</visible>
+                <visible>!Window.IsVisible(DialogPVRChannelManager.xml)</visible>
+                <visible>!Window.IsVisible(DialogPVRGroupManager.xml)</visible>
+                <visible>!Window.IsVisible(script-skinshortcuts.xml)</visible>
+                <include content="Furniture_Top">
+                    <param name="label">$PARAM[label]</param>
+                </include>
+
+            </control>
+        </definition>
+    </include>
+
+    <include name="View_Dialog_Plot">
+        <include content="Dialog_Overlay_Side">
+            <visible>Window.IsActive(1113)</visible>
+            <include>Animation_Right_Delay</include>
+            <include>Dimension_DialogWideMenu</include>
+            <include content="Dialog_Head">
+                <param name="label">$VAR[Label_Title]</param>
+            </include>
+            <include content="Dialog_Body">
+                <include content="Dialog_Body_Group">
+                    <control type="textbox">
+                        <font>font_main_plot</font>
+                        <textcolor>main_fg_70</textcolor>
+                        <label>$VAR[Label_Overlay_PlotBox]</label>
+                        <include content="Dimension_Padding">
+                            <param name="pad">x02</param>
+                        </include>
+                    </control>
+                </include>
+            </include>
+        </include>
+    </include>
+
+    <include name="View_Scrollbar_V">
+        <param name="onright">menu</param>
+        <param name="onleft">50</param>
+        <param name="id">63</param>
+        <definition>
+            <control type="group">
+                <nested />
+                <width>view_pad</width>
+                <right>0</right>
+                <bottom>view_top</bottom>
+                <control type="group">
+                    <width>scrollbar_w</width>
+                    <centerright>50%</centerright>
+                    <visible allowhiddenfocus="true">Control.HasFocus($PARAM[id])</visible>
+                    <control type="image">
+                        <texture colordiffuse="main_fg_12">common/white.png</texture>
+                        <width>1</width>
+                        <centerright>50%</centerright>
+                    </control>
+                    <control type="scrollbar" id="$PARAM[id]">
+                        <onleft>$PARAM[onleft]</onleft>
+                        <onright>$PARAM[onright]</onright>
+                        <onup>$PARAM[onup]</onup>
+                        <ondown>$PARAM[ondown]</ondown>
+                        <onback>$PARAM[onback]</onback>
+                        <orientation>vertical</orientation>
+                        <texturesliderbackground />
+                        <texturesliderbar colordiffuse="00ffffff" border="4">scrollbar/scrollv_line.png</texturesliderbar>
+                        <include>Texture_Scrollbar_V</include>
+                    </control>
+                </control>
+            </control>
+        </definition>
+    </include>
+
+    <include name="View_Scrollbars">
+        <include content="View_Scrollbar_V">
+            <top>view_top</top>
+        </include>
+        <include content="View_Scrollbar_V">
+            <param name="id">64</param>
+            <height>x44</height>
+        </include>
+        <include content="Furniture_Bottombar_Group">
+            <include content="Object_Hidden_Button">
+                <param name="id">62</param>
+                <onfocus>SetFocus(50)</onfocus>
+            </include>
+            <control type="group">
+                <visible allowhiddenfocus="true">Control.HasFocus(60) | Control.HasFocus(65)</visible>
+                <height>scrollbar_w</height>
+                <centertop>-x04</centertop>
+                <control type="image">
+                    <texture colordiffuse="main_fg_12">common/white.png</texture>
+                    <height>1</height>
+                    <centertop>50%</centertop>
+                </control>
+                <control type="scrollbar" id="60">
+                    <onup condition="!$EXP[Exp_View_512]">50</onup>
+                    <onup condition="$EXP[Exp_View_512]">513</onup>
+                    <onback condition="!$EXP[Exp_View_512]">50</onback>
+                    <onback condition="$EXP[Exp_View_512]">513</onback>
+                    <orientation>horizontal</orientation>
+                    <texturesliderbackground />
+                    <texturesliderbar border="4">special://profile/addon_data/script.texturemaker/ArcticFuse/scrollh_h.png</texturesliderbar>
+                    <include>Texture_Scrollbar_H</include>
+                    <showonepage>true</showonepage>
+                    <ondown>SetProperty(MediaFilterBase,$INFO[Container.FolderPath])</ondown>
+                    <ondown>SetFocus(9001)</ondown>
+                </control>
+            </control>
+            <control type="grouplist">
+                <visible>Control.HasFocus(60)</visible>
+                <hitrect x="0" y="0" w="0" h="0" />
+                <orientation>horizontal</orientation>
+                <itemgap>30</itemgap>
+                <height>x08</height>
+                <centertop>50%</centertop>
+                <usecontrolcoords>true</usecontrolcoords>
+                <include content="Info_Codec_Label">
+                    <param name="icon">special://skin/extras/icons/grip.png</param>
+                    <param name="label">$VAR[Label_Scrollbar_NumItems]</param>
+                </include>
+                <include content="Info_Codec_Label">
+                    <param name="icon">special://skin/extras/icons/square-poll-horizontal.png</param>
+                    <param name="label">$VAR[Label_Scrollbar_NumPages]</param>
+                </include>
+            </control>
+            <include content="Object_Hidden_Button">
+                <param name="id" value="65" />
+                <onright>SetFocus(50)</onright>
+                <onright>Action(nextletter)</onright>
+                <onright condition="!Container.HasNext | String.IsEqual(ListItem.SortLetter,Z)">Action(jumpsms2)</onright>
+                <onright condition="!Container.HasNext | String.IsEqual(ListItem.SortLetter,Z)">Action(prevletter)</onright>
+                <onright condition="!Container.HasNext | String.IsEqual(ListItem.SortLetter,Z)">Action(prevletter)</onright>
+                <onright condition="!Container.HasNext | String.IsEqual(ListItem.SortLetter,Z)">Action(prevletter)</onright>
+                <onright>SetFocus(65)</onright>
+                <onleft>SetFocus(50)</onleft>
+                <onleft>Action(prevletter)</onleft>
+                <onleft condition="!Container.HasPrevious">Action(PageUp)</onleft>
+                <onleft condition="!Container.HasPrevious">Action(Left)</onleft>
+                <onleft>SetFocus(65)</onleft>
+                <onup>50</onup>
+                <onback>50</onback>
+                <ondown>SetProperty(MediaFilterBase,$INFO[Container.FolderPath])</ondown>
+                <ondown>SetFocus(9001)</ondown>
+            </include>
+            <include content="Object_Control" condition="!Skin.HasSetting(DisableAlphabetScrollbar)">
+                <param name="control" value="grouplist" />
+                <visible>$EXP[Exp_AlphabetVisible]</visible>
+                <orientation>horizontal</orientation>
+                <centertop>50%</centertop>
+                <height>40</height>
+                <itemgap>21.5</itemgap>
+                <include>Object_AlphabetNumber</include>
+                <include content="Object_AlphabetLetter"><param name="letter" value="A" /></include>
+                <include content="Object_AlphabetLetter"><param name="letter" value="B" /></include>
+                <include content="Object_AlphabetLetter"><param name="letter" value="C" /></include>
+                <include content="Object_AlphabetLetter"><param name="letter" value="D" /></include>
+                <include content="Object_AlphabetLetter"><param name="letter" value="E" /></include>
+                <include content="Object_AlphabetLetter"><param name="letter" value="F" /></include>
+                <include content="Object_AlphabetLetter"><param name="letter" value="G" /></include>
+                <include content="Object_AlphabetLetter"><param name="letter" value="H" /></include>
+                <include content="Object_AlphabetLetter"><param name="letter" value="I" /></include>
+                <include content="Object_AlphabetLetter"><param name="letter" value="J" /></include>
+                <include content="Object_AlphabetLetter"><param name="letter" value="K" /></include>
+                <include content="Object_AlphabetLetter"><param name="letter" value="L" /></include>
+                <include content="Object_AlphabetLetter"><param name="letter" value="M" /></include>
+                <include content="Object_AlphabetLetter"><param name="letter" value="N" /></include>
+                <include content="Object_AlphabetLetter"><param name="letter" value="O" /></include>
+                <include content="Object_AlphabetLetter"><param name="letter" value="P" /></include>
+                <include content="Object_AlphabetLetter"><param name="letter" value="Q" /></include>
+                <include content="Object_AlphabetLetter"><param name="letter" value="R" /></include>
+                <include content="Object_AlphabetLetter"><param name="letter" value="S" /></include>
+                <include content="Object_AlphabetLetter"><param name="letter" value="T" /></include>
+                <include content="Object_AlphabetLetter"><param name="letter" value="U" /></include>
+                <include content="Object_AlphabetLetter"><param name="letter" value="V" /></include>
+                <include content="Object_AlphabetLetter"><param name="letter" value="W" /></include>
+                <include content="Object_AlphabetLetter"><param name="letter" value="X" /></include>
+                <include content="Object_AlphabetLetter"><param name="letter" value="Y" /></include>
+                <include content="Object_AlphabetLetter"><param name="letter" value="Z" /></include>
+            </include>
+        </include>
+    </include>
+
+    <include name="View_Divider">
+        <param name="visible">ControlGroup(9000).HasFocus() | Control.IsVisible(572) | Control.IsVisible(522) | Control.IsVisible(512) | Control.IsVisible(502)</param>
+        <definition>
+            <control type="image">
+                <texture colordiffuse="main_fg_12">common/white.png</texture>
+                <height>1</height>
+                <centerbottom>160</centerbottom>
+                <left>view_top</left>
+                <right>view_pad</right>
+                <visible>$PARAM[visible]</visible>
+            </control>
+        </definition>
+    </include>
+
+    <include name="View_Row_Info">
+        <control type="group">
+            <visible>!$EXP[Exp_InfoDialogs]</visible>
+            <include>Animation_Transition_InfoPanel_Hide</include>
+            <include>MediaFilter_Info_Transition</include>
+            <include content="Info_Panel">
+                <top>view_top</top>
+                <width>info_panel_w</width>
+                <left>view_top</left>
+                <visible>String.IsEmpty(Window.Property(TMDBHelper.WidgetContainer))</visible>
+                <visible>$EXP[Exp_DBType_HasInfo]</visible>
+            </include>
+            <include content="Weather_InfoPanel">
+                <top>view_top</top>
+                <width>info_panel_w</width>
+                <left>view_top</left>
+                <visible>String.IsEmpty(Window.Property(TMDBHelper.WidgetContainer))</visible>
+                <visible>!$EXP[Exp_DBType_HasInfo]</visible>
+            </include>
+            <include content="View_Combined_Info"><param name="id">51</param></include>
+            <include content="View_Combined_Info"><param name="id">55</param></include>
+
+            <include content="Info_Viewline">
+                <param name="sort_condition">true</param>
+                <param name="library_condition">true</param>
+            </include>
+        </control>
+    </include>
+
+    <include name="View_Row_Items">
+        <control type="group">
+            <include>Animation_Half_WindowChange</include>
+            <include>MediaFilter_View_Transition</include>
+            <include>View_050_Square_Row</include>
+            <include>View_051_Landscape_Row</include>
+            <include>View_052_Poster_Row</include>
+            <include>View_512_Landscape_Combined_Row</include>
+            <include>View_500_Square_List</include>
+        </control>
+    </include>
+
+    <include name="View_Row_Gutter">
+        <control type="group">
+            <include>Animation_Half_WindowChange</include>
+            <visible>!$EXP[Exp_InfoDialogs]</visible>
+            <control type="group">
+                <include>View_Scrollbars</include>
+            </control>
+            <control type="group">
+                <visible>!$EXP[Exp_AlphabetVisible]</visible>
+                <visible>!Control.HasFocus(60)</visible>
+                <include>Furniture_Bottom_Left</include>
+            </control>
+            <control type="group">
+                <visible>!$EXP[Exp_AlphabetVisible]</visible>
+                <include>Furniture_Bottom_Right</include>
+            </control>
+        </control>
+    </include>
+
+    <include name="View_Furniture_Edges">
+        <include>Home_Fade</include>
+        <control type="group">
+            <include>MediaFilter_Info_Transition</include>
+            <include>View_Row_Header</include>
+            <include>View_Row_Gutter</include>
+        </control>
+        <include content="Home_Menu">
+            <param name="onlist">50</param>
+        </include>
+    </include>
+
+    <include name="View_MediaFilter_Wall">
+        <include condition="Window.IsVisible(MyVideoNav.xml)">MediaFilter_Discover_Wall</include>
+        <include condition="Window.IsVisible(MyVideoNav.xml) + !Skin.HasSetting(DisableDefaultExploreMenu) + !Skin.HasSetting(DisableMediaFilterWall) + [!Skin.HasSetting(Viewtype.Movies.UseLandscape) | !Skin.HasSetting(Viewtype.TVShows.UseLandscape)]">MediaFilter_Wall</include>
+    </include>
+
+    <include name="View_MediaFilter_Node">
+        <include>MediaFilter_Node</include>
+        <include>MediaFilter_Discover_Node</include>
+    </include>
+
+    <include name="View_Main">
+        <definition>
+            <include>Background_Main</include>
+            <include>Background_Transition</include>
+
+            <control type="group">
+                <animation effect="fade" start="100" end="0" condition="!String.IsEmpty(Window(Home).Property(TMDbHelper.Instance))">Conditional</animation>
+
+                <include>View_MediaFilter_Wall</include>
+
+                <control type="group">
+                    <include>Animation_View_WindowChange</include>
+                    <include>View_Row_Items</include>
+                    <include>View_Row_Info</include>
+                </control>
+
+                <include>View_Furniture_Edges</include>
+                <include>View_MediaFilter_Node</include>
+            </control>
+
+            <include>View_Dialog_Plot</include>
+
+        </definition>
+    </include>
+</includes>

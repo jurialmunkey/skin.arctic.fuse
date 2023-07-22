@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<includes>
+
+    <!-- Common Parts -->
+    <include name="View_PVR_GroupSwitcher_Button">
+        <control type="button">
+            <width>auto</width>
+            <height>x08</height>
+            <font>font_mini_bold</font>
+            <textcolor>main_fg_30</textcolor>
+            <focusedcolor>main_fg_30</focusedcolor>
+            <textoffsetx>4</textoffsetx>
+            <label>$INFO[Container(11).ListItemAbsolute($PARAM[pos]).Label]</label>
+            <texturefocus />
+            <texturenofocus />
+            <visible>!String.IsEmpty(Container(11).ListItemAbsolute($PARAM[pos]).Label)</visible>
+            <visible>!String.IsEqual(Container(11).ListItemAbsolute($PARAM[pos]).Label,Container(11).ListItem.Label)</visible>
+        </control>
+        <control type="button">
+            <width>auto</width>
+            <height>x08</height>
+            <font>font_mini_bold</font>
+            <textcolor>main_fg_90</textcolor>
+            <focusedcolor>main_fg_90</focusedcolor>
+            <textoffsetx>4</textoffsetx>
+            <label>$INFO[Container(11).ListItemAbsolute($PARAM[pos]).Label]</label>
+            <texturefocus />
+            <texturenofocus />
+            <visible>!String.IsEmpty(Container(11).ListItemAbsolute($PARAM[pos]).Label)</visible>
+            <visible>!Control.HasFocus(11) + String.IsEqual(Container(11).ListItemAbsolute($PARAM[pos]).Label,Container(11).ListItem.Label)</visible>
+        </control>
+        <control type="button">
+            <width>auto</width>
+            <height>x08</height>
+            <font>font_mini_bold</font>
+            <textcolor>main_fg_100</textcolor>
+            <focusedcolor>main_fg_100</focusedcolor>
+            <textoffsetx>4</textoffsetx>
+            <label>$INFO[Container(11).ListItemAbsolute($PARAM[pos]).Label]</label>
+            <texturefocus border="5">special://profile/addon_data/script.texturemaker/ArcticFuse/underline_h.png</texturefocus>
+            <texturenofocus border="5">special://profile/addon_data/script.texturemaker/ArcticFuse/underline_h.png</texturenofocus>
+            <visible>!String.IsEmpty(Container(11).ListItemAbsolute($PARAM[pos]).Label)</visible>
+            <visible>Control.HasFocus(11) + String.IsEqual(Container(11).ListItemAbsolute($PARAM[pos]).Label,Container(11).ListItem.Label)</visible>
+        </control>
+    </include>
+    <include name="View_PVR_GroupSwitcher">
+        <control type="grouplist">
+            <orientation>horizontal</orientation>
+            <align>left</align>
+            <itemgap>30</itemgap>
+            <height>x08</height>
+            <centertop>50%</centertop>
+            <usecontrolcoords>true</usecontrolcoords>
+            <include content="Info_Codec_LabelIcon">
+                <param name="icon">special://skin/extras/icons/pager.png</param>
+            </include>
+            <include content="View_PVR_GroupSwitcher_Button">
+                <param name="pos">0</param>
+            </include>
+            <include content="View_PVR_GroupSwitcher_Button">
+                <param name="pos">1</param>
+            </include>
+            <include content="View_PVR_GroupSwitcher_Button">
+                <param name="pos">2</param>
+            </include>
+            <include content="View_PVR_GroupSwitcher_Button">
+                <param name="pos">3</param>
+            </include>
+            <include content="View_PVR_GroupSwitcher_Button">
+                <param name="pos">4</param>
+            </include>
+            <include content="View_PVR_GroupSwitcher_Button">
+                <param name="pos">5</param>
+            </include>
+            <include content="View_PVR_GroupSwitcher_Button">
+                <param name="pos">6</param>
+            </include>
+            <include content="View_PVR_GroupSwitcher_Button">
+                <param name="pos">7</param>
+            </include>
+            <include content="View_PVR_GroupSwitcher_Button">
+                <param name="pos">8</param>
+            </include>
+            <include content="View_PVR_GroupSwitcher_Button">
+                <param name="pos">9</param>
+            </include>
+        </control>
+        <control type="list" id="11">
+            <width>1</width>
+            <height>1</height>
+            <left>-1920</left>
+            <orientation>horizontal</orientation>
+            <ondown condition="!Window.IsVisible(MyPVRGuide.xml)">SetFocus(50,0,absolute)</ondown>
+            <onup condition="!Window.IsVisible(MyPVRGuide.xml)">SetFocus(50,99999,absolute)</onup>
+            <ondown condition="Window.IsVisible(MyPVRGuide.xml)">50</ondown>
+            <onup condition="Window.IsVisible(MyPVRGuide.xml)">50</onup>
+            <itemlayout width="1" height="1" />
+            <focusedlayout width="1" height="1" />
+        </control>
+    </include>
+
+    <!-- EPG -->
+    <include name="View_PVRGuide_Standard">
+        <param name="channelwidth" default="520" />
+        <param name="epg_bottom" default="0" />
+        <param name="epg_top" default="0" />
+        <param name="viewtype_label" default="19069" />
+        <definition>
+            <include content="List_EPGGrid">
+                <param name="id" value="$PARAM[id]" />
+                <param name="channelheight" value="$PARAM[channelheight]" />
+                <param name="channelwidth" value="$PARAM[channelwidth]" />
+                <param name="detailed" value="$PARAM[detailed]" />
+                <param name="include_channels" value="$PARAM[include_channels]" />
+                <param name="include_programs" value="$PARAM[include_programs]" />
+                <onup>11</onup>
+                <ondown>11</ondown>
+                <viewtype label="$PARAM[viewtype_label]">list</viewtype>
+                <progresstexture border="0,160,40,0" colordiffuse="main_fg_30">$PARAM[progresstexture]</progresstexture>
+                <pagecontrol>8060</pagecontrol>
+                <top>-20</top>
+                <bottom>100</bottom>
+                <left>-40</left>
+                <!-- <right>40</right> -->
+            </include>
+        </definition>
+    </include>
+
+
+    <include name="View_PVRGuide">
+        <control type="group">
+            <visible>Control.IsVisible(50)</visible>
+            <include content="View_PVRGuide_Standard">
+                <param name="id" value="50" />
+                <param name="progresstexture" value="pvr/progressline-full.png" />
+                <param name="epg_bottom" value="0" />
+                <param name="viewtype_label" value="$LOCALIZE[571]" />
+            </include>
+        </control>
+    </include>
+
+    <include name="View_PVR_Main">
+        <include>Home_Fade</include>
+        <control type="group">
+            <include>Animation_Half_WindowChange</include>
+            <visible>!$EXP[Exp_InfoDialogs]</visible>
+            <include content="Animation_Zoom_Out">
+                <param name="type">Hidden</param>
+            </include>
+            <include>Animation_View_WindowChange</include>
+            <animation type="Visible" reversible="false">
+                <effect type="fade" start="0" end="100" time="300" delay="0" tween="sine" easing="out"/>
+                <effect type="slide" start="320" end="0" time="400" delay="0" tween="cubic" easing="out" />
+            </animation>
+            <control type="group">
+                <height>480</height>
+                <bottom>86</bottom>
+                <right>view_pad</right>
+                <left>view_top</left>
+                <control type="image">
+                    <texture border="20" colordiffuse="main_fg_12">common/dialog.png</texture>
+                    <bottom>80</bottom>
+                    <top>40</top>
+                    <left>480</left>
+                </control>
+                <include>$PARAM[include]</include>
+            </control>
+            <nested />
+        </control>
+        <control type="group">
+            <visible>!$EXP[Exp_InfoDialogs]</visible>
+            <include>Animation_Transition_InfoPanel_Hide</include>
+            <include>Animation_View_WindowChange</include>
+            <include content="Info_Panel">
+                <top>view_top</top>
+                <width>info_panel_w</width>
+                <left>view_top</left>
+            </include>
+            <include content="Info_Viewline">
+                <param name="secondary_label">$INFO[System.Time]</param>
+                <param name="label">$INFO[System.Date(ddd),,$COMMA ]$INFO[System.Date(d MMM)]</param>
+            </include>
+        </control>
+        <include>View_Row_Header</include>
+        <control type="group">
+            <include>Animation_Half_WindowChange</include>
+            <visible>!$EXP[Exp_InfoDialogs]</visible>
+            <include>Furniture_Bottom</include>
+        </control>
+        <include>Home_Menu</include>
+    </include>
+
+    <!-- CHANNELS -->
+    <include name="View_PVRChannels_Standard">
+        <param name="channelheight" default="80" />
+        <param name="channelwidth" default="520" />
+        <param name="epg_bottom" default="0" />
+        <param name="epg_top" default="0" />
+        <definition>
+            <control type="group">
+                <height>40</height>
+                <control type="group">
+                    <left>$PARAM[channelwidth]</left>
+
+                    <control type="group">
+                        <left>x02</left>
+                        <right>-x02</right>
+                        <control type="label">
+                            <height>40</height>
+                            <width>$PARAM[channelwidth]</width>
+                            <align>left</align>
+                            <aligny>center</aligny>
+                            <font>font_tiny</font>
+                            <label>$LOCALIZE[19030]</label>
+                            <textcolor>main_fg_30</textcolor>
+                            <shadowcolor>main_bg_30</shadowcolor>
+                        </control>
+
+                        <control type="label">
+                            <left>50%</left>
+                            <height>40</height>
+                            <width>$PARAM[channelwidth]</width>
+                            <align>left</align>
+                            <aligny>center</aligny>
+                            <font>font_tiny</font>
+                            <label>$LOCALIZE[19031]</label>
+                            <textcolor>main_fg_30</textcolor>
+                            <shadowcolor>main_bg_30</shadowcolor>
+                        </control>
+                    </control>
+                </control>
+            </control>
+
+            <control type="fixedlist" id="$PARAM[id]">
+                <onup>11</onup>
+                <ondown>11</ondown>
+                <onright>11</onright>
+                <onleft>303</onleft>
+                <top>60</top>
+                <bottom>99</bottom>
+                <left>-40</left>
+                <orientation>vertical</orientation>
+                <focusposition>$PARAM[focusposition]</focusposition>
+                <movement>$PARAM[movement]</movement>
+                <viewtype label="$PARAM[viewtype_label]">list</viewtype>
+                <itemlayout height="$PARAM[channelheight]">
+                    <include content="Layout_PVRChannel">
+                        <param name="channelwidth" value="$PARAM[channelwidth]" />
+                        <param name="detailed" value="$PARAM[detailed]" />
+                    </include>
+                </itemlayout>
+                <focusedlayout height="$PARAM[channelheight]">
+                    <control type="group">
+                        <visible>[Control.HasFocus(11) | ControlGroup(9000).HasFocus()]</visible>
+                        <include content="Layout_PVRChannel">
+                            <param name="channelwidth" value="$PARAM[channelwidth]" />
+                            <param name="detailed" value="$PARAM[detailed]" />
+                            <param name="selected" value="false" />
+                        </include>
+                    </control>
+                    <control type="group">
+                        <visible>![Control.HasFocus(11) | ControlGroup(9000).HasFocus()]</visible>
+                        <include content="Layout_PVRChannel">
+                            <param name="channelwidth" value="$PARAM[channelwidth]" />
+                            <param name="detailed" value="$PARAM[detailed]" />
+                            <param name="selected" value="true" />
+                        </include>
+                    </control>
+                </focusedlayout>
+            </control>
+        </definition>
+    </include>
+
+    <include name="View_054_PVRChannels_Full_SmallRow">
+        <control type="group">
+            <visible>Control.IsVisible(54)</visible>
+            <include content="View_PVRChannels_Standard">
+                <param name="id" value="54" />
+                <param name="viewtype_label" value="$LOCALIZE[35232]" />
+                <param name="focusposition" value="4" />
+                <param name="movement" value="4" />
+                <top>40</top>
+            </include>
+        </control>
+    </include>
+
+    <include name="View_PVRChannels">
+        <control type="group">
+            <visible>Control.IsVisible(50)</visible>
+            <include content="View_PVRChannels_Standard">
+                <param name="id" value="50" />
+                <param name="epg_bottom" value="0" />
+                <param name="viewtype_label" value="$LOCALIZE[571]" />
+                <param name="focusposition" value="1" />
+                <param name="movement" value="2" />
+            </include>
+        </control>
+    </include>
+
+
+    <!-- Recordings / Timers / Search -->
+    <include name="View_PVR_RecordingInfo">
+        <param name="id" default="50" />
+        <param name="scrollbar_id" default="60" />
+        <param name="path_label" default="$INFO[Container.NumItems,, [CAPITALIZE]$LOCALIZE[31022][/CAPITALIZE]]" />
+        <param name="has_scrollbar" default="true" />
+        <param name="has_file_view" default="true" />
+        <param name="onright" default="menu" />
+        <param name="onleft" default="60" />
+        <definition>
+            <control type="group">
+                <nested />
+                <control type="label">
+                    <top>-40</top>
+                    <height>30</height>
+                    <height>30</height>
+                    <width>auto</width>
+                    <font>font_tiny</font>
+                    <textcolor>main_fg_70</textcolor>
+                    <label fallback="19076">$PARAM[path_label]</label>
+                </control>
+                <include content="List_PVRRecordings" condition="$PARAM[has_file_view]">
+                    <param name="id" value="$PARAM[id]" />
+                    <top>20</top>
+                    <bottom>20</bottom>
+                    <onleft>$PARAM[onleft]</onleft>
+                    <onright>$PARAM[onright]</onright>
+                    <pagecontrol>$PARAM[scrollbar_id]</pagecontrol>
+                    <include>$PARAM[include_content]</include>
+                </include>
+                <include content="Dialog_Scrollbar" condition="$PARAM[has_scrollbar]">
+                    <param name="id" value="$PARAM[scrollbar_id]" />
+                    <left>0</left>
+                    <onright>$PARAM[id]</onright>
+                </include>
+            </control>
+        </definition>
+    </include>
+
+    <include name="View_PVR_RecordingSubList">
+        <visible>Container(50).ListItem.IsFolder</visible>
+        <content>$INFO[Container(50).ListItem.FolderPath]</content>
+    </include>
+
+
+    <include name="View_PVR_RecordingDetails">
+        <control type="group">
+            <visible>!Container(50).ListItem.IsFolder + [!String.IsEmpty(ListItem.ChannelName) | !String.IsEmpty(ListItem.Title)]</visible>
+            <top>20</top>
+            <bottom>40</bottom>
+            <left>40</left>
+            <right>40</right>
+            <control type="image">
+                <top>20</top>
+                <height>180</height>
+                <width>600</width>
+                <right>0</right>
+                <aspectratio align="right">keep</aspectratio>
+                <texture>$INFO[ListItem.Icon]</texture>
+            </control>
+            <control type="grouplist">
+                <orientation>vertical</orientation>
+                <control type="label">
+                    <height>80</height>
+                    <label>$INFO[ListItem.ChannelName]</label>
+                    <font>font_main_bold</font>
+                    <textcolor>main_fg_100</textcolor>
+                </control>
+                <control type="label">
+                    <height>40</height>
+                    <label>$INFO[ListItem.StartDate]</label>
+                    <textcolor>main_fg_70</textcolor>
+                </control>
+                <control type="label">
+                    <height>40</height>
+                    <label>$INFO[ListItem.StartTime]$INFO[ListItem.EndTime, - ,]</label>
+                    <textcolor>main_fg_70</textcolor>
+                </control>
+                <control type="label">
+                    <height>40</height>
+                    <label>$INFO[ListItem.Duration(h),, hours ]$INFO[ListItem.Duration(m),, minutes]</label>
+                    <textcolor>main_fg_70</textcolor>
+                </control>
+                <control type="group">
+                    <height>80</height>
+                    <include content="Object_Separator_V">
+                        <param name="colordiffuse" value="main_fg_12" />
+                        <centertop>50%</centertop>
+                    </include>
+                </control>
+                <control type="label">
+                    <top>-20</top>
+                    <height>80</height>
+                    <label>$INFO[ListItem.Title]</label>
+                    <font>font_main_bold</font>
+                    <textcolor>main_fg_100</textcolor>
+                </control>
+                <control type="label">
+                    <height>40</height>
+                    <label>$INFO[ListItem.Season,S]$INFO[ListItem.Episode,E, ]$INFO[ListItem.EpisodeName]</label>
+                    <visible>!String.IsEmpty(ListItem.EpisodeName)</visible>
+                    <textcolor>main_fg_70</textcolor>
+                </control>
+                <control type="label">
+                    <height>40</height>
+                    <label>$INFO[ListItem.EPGEventTitle]</label>
+                    <visible>!String.IsEmpty(ListItem.EPGEventTitle)</visible>
+                    <textcolor>main_fg_70</textcolor>
+                </control>
+                <control type="label">
+                    <height>40</height>
+                    <label>$INFO[ListItem.Genre]</label>
+                    <visible>!String.IsEmpty(ListItem.Genre)</visible>
+                    <textcolor>main_fg_70</textcolor>
+                </control>
+                <control type="label">
+                    <height>40</height>
+                    <label>$INFO[ListItem.Size]</label>
+                    <visible>!String.IsEmpty(ListItem.Size) + !String.IsEqual(ListITem.Size,0 B)</visible>
+                    <textcolor>main_fg_70</textcolor>
+                </control>
+                <control type="label">
+                    <height>40</height>
+                    <label>$INFO[ListItem.ExpirationDate] $INFO[ListItem.ExpirationTime]</label>
+                    <visible>!String.IsEmpty(ListItem.ExpirationDate)</visible>
+                    <textcolor>main_fg_70</textcolor>
+                </control>
+                <control type="textbox">
+                    <top>40</top>
+                    <height>auto</height>
+                    <label>$VAR[Label_Plot]</label>
+                    <font>font_main_plot</font>
+                    <textcolor>main_fg_70</textcolor>
+                </control>
+            </control>
+        </control>
+    </include>
+
+    <include name="View_PVR_RecordingList">
+        <definition>
+            <control type="group">
+                <include>Dimension_Info</include>
+                <include content="View_PVR_RecordingInfo">
+                        <param name="id" value="5050" />
+                        <param name="path_label" value="$LOCALIZE[19033]" />
+                        <param name="has_scrollbar" value="false" />
+                        <param name="has_file_view" value="$PARAM[has_file_view]" />
+                        <param name="include_content" value="View_PVR_RecordingSubList" />
+                        <left>600</left>
+                        <right>0</right>
+                        <include>View_PVR_RecordingDetails</include>
+                    </include>
+            </control>
+        </definition>
+    </include>
+</includes>

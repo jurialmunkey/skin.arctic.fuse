@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<includes>
+
+    <expression name="Exp_NotVideoPlaying">[!Player.HasVideo | Player.Paused]</expression>
+
+    <expression name="Exp_HomeMenu_home">[Window.IsVisible(Home)]</expression>
+    <expression name="Exp_HomeMenu_movies">[Container.Content(movies) | Container.Content(sets) | String.StartsWith(Container.FolderPath,videodb://movies/) | Window.IsVisible(1101)]</expression>
+    <expression name="Exp_HomeMenu_tvshows">[Container.Content(tvshows) | Container.Content(seasons) | Container.Content(episodes) | String.StartsWith(Container.FolderPath,videodb://tvshows/) | Window.IsVisible(1102) | Window.IsVisible(1130) | Window.IsVisible(1131)]</expression>
+    <expression name="Exp_HomeMenu_music">[Window.IsVisible(MyMusicNav.xml) | Window.IsVisible(1103) | Container.Content(musicvideos)]</expression>
+    <expression name="Exp_HomeMenu_livetv">[$EXP[Exp_PVRWindows] | Window.IsVisible(1104)]</expression>
+    <expression name="Exp_HomeMenu_addons">[Container.Content(addons) | Window.IsVisible(1132) | [Container.Content() + !String.IsEmpty(Container.PluginName)]]</expression>
+    <expression name="Exp_HomeMenu_pictures">[Container.Content(images) | Window.IsVisible(MyPics.xml)]</expression>
+    <expression name="Exp_HomeMenu_weather">[Window.IsVisible(MyWeather.xml)]</expression>
+    <expression name="Exp_HomeMenu_videos">[Container.Content(videos) | [[Container.Content(playlists) | Container.Content(files) | [Container.Content() + String.IsEmpty(Container.PluginName)]] + Window.IsVisible(MyVideoNav.xml)]]</expression>
+    <expression name="Exp_HomeMenu_search">[Window.IsVisible(1105)]</expression>
+    <expression name="Exp_HomeMenu_settings">[$EXP[Exp_SettingsDialogs]]</expression>
+    <expression name="Exp_HomeMenu_custom01">[false]</expression>
+    <expression name="Exp_HomeMenu_custom02">[false]</expression>
+    <expression name="Exp_HomeMenu_custom03">[false]</expression>
+    <expression name="Exp_HomeMenu_custom04">[false]</expression>
+
+    <expression name="Exp_HomeMenu_IsSelected">[[[String.IsEqual(ListItem.Property(expression),home) + $EXP[Exp_HomeMenu_home]] | [String.IsEqual(ListItem.Property(expression),movies) + $EXP[Exp_HomeMenu_movies]] | [String.IsEqual(ListItem.Property(expression),tvshows) + $EXP[Exp_HomeMenu_tvshows]] | [String.IsEqual(ListItem.Property(expression),music) + $EXP[Exp_HomeMenu_music]] | [String.IsEqual(ListItem.Property(expression),livetv) + $EXP[Exp_HomeMenu_livetv]] | [String.IsEqual(ListItem.Property(expression),addons) + $EXP[Exp_HomeMenu_addons]] | [String.IsEqual(ListItem.Property(expression),pictures) + $EXP[Exp_HomeMenu_pictures]] | [String.IsEqual(ListItem.Property(expression),weather) + $EXP[Exp_HomeMenu_weather]] | [String.IsEqual(ListItem.Property(expression),videos) + $EXP[Exp_HomeMenu_videos]]]]</expression>
+
+    <expression name="Exp_HomeMenu_HasFocus">[Control.HasFocus(303) | Control.HasFocus(308) | Control.HasFocus(309)]</expression>
+
+    <expression name="Exp_Furniture_PVR">[[Window.IsVisible(MyPVRGuide.xml) | Window.IsVisible(MyPVRChannels.xml)] + !Window.IsVisible(DialogPVRInfo.xml)]</expression>
+
+
+    <expression name="Exp_DiscoverFilter_Wall">[Control.IsVisible(55) + !Integer.IsEqual(Container(553).NumItems,0) + [[!Skin.HasSetting(Viewtype.Movies.UseLandscape) + String.IsEqual(Container(55).ListItemAbsolute(0).Property(Param.TMDb_Type),movie)] | [!Skin.HasSetting(Viewtype.TVShows.UseLandscape) + String.IsEqual(Container(55).ListItemAbsolute(0).Property(Param.TMDb_Type),tv)]] + !Skin.HasSetting(DisableDefaultExploreMenu) + !Skin.HasSetting(DisableMediaFilterWall)]</expression>
+
+    <expression name="Exp_MediaFilter_Wall">[[Window.IsActive(mediafilter) | !String.IsEmpty(Window.Property(MediaFilterBase))] + [[!Skin.HasSetting(Viewtype.Movies.UseLandscape) + Container.Content(movies)] | [!Skin.HasSetting(Viewtype.TVShows.UseLandscape) + Container.Content(tvshows)]] + !Skin.HasSetting(DisableDefaultExploreMenu) + !Skin.HasSetting(DisableMediaFilterWall)]</expression>
+
+    <!-- Standard Views -->
+    <expression name="Exp_View_052_Content">[Container.Content(movies) | Container.Content(tvshows) | Container.Content(actors)]</expression>
+    <expression name="Exp_View_052_Override">[String.IsEqual(Container.PluginName,plugin.video.abc_iview) | String.IsEqual(Container.PluginName,plugin.video.stan.au) | [Skin.HasSetting(Viewtype.Movies.UseLandscape) + Container.Content(movies)] | [Skin.HasSetting(Viewtype.TVShows.UseLandscape) + Container.Content(tvshows)]]</expression>
+    <expression name="Exp_View_050">[Container.Content(albums) | Container.Content(addons) | Container.Content(artists) | [Container.Content() + !$EXP[Exp_PVRWindows]]]</expression>
+    <expression name="Exp_View_051">[Container.Content(images) | Container.Content(episodes) | Container.Content(videos) | Container.Content(files) | Container.Content(recordings) | [Container.Content() + $EXP[Exp_PVRWindows]] | [$EXP[Exp_View_052_Content] + $EXP[Exp_View_052_Override]]]</expression>
+    <expression name="Exp_View_052">[$EXP[Exp_View_052_Content] + !$EXP[Exp_View_052_Override]]</expression>
+
+    <!-- Combined Views -->
+    <expression name="Exp_View_502">[False]</expression>
+    <expression name="Exp_View_512">[Container.Content(seasons) | Container.Content(sets) | Container.Content(genres) | Container.Content(years) | Container.Content(studios) | Container.Content(directors) | Container.Content(tags) | Container.Content(countries) | Container.Content(playlists)]</expression>
+    <expression name="Exp_View_522">[False]</expression>
+
+    <!-- List Views -->
+    <expression name="Exp_View_500">[Container.Content(songs)]</expression>
+
+    <!-- Discover -->
+    <!-- <expression name="Exp_View_055">[False]</expression> -->
+    <expression name="Exp_View_055">[Container.Content(files) + [String.IsEqual(Container.ListItem.Property(param.info),user_discover) | String.IsEqual(Container.Property(param.info),user_discover)]]</expression>
+
+    <!-- OLD EXPRESSIONS -->
+
+    <expression name="Exp_EndWidget_IsFullSize">[String.IsEqual(Container(99994).ListItem(-1).Property(widgetAspect),Lovefilm) | String.IsEqual(Container(99994).ListItem(-1).Property(widgetAspect),Feature Banner)]</expression>
+    <expression name="Exp_EndWidget_IsOverSize">[String.IsEqual(Container(99994).ListItem(-1).Property(widgetAspect),Feature Poster) | String.IsEqual(Container(99994).ListItem(-1).Property(widgetAspect),Feature Landscape)]</expression>
+    <expression name="Exp_EndWidget_IsMiniSize">[String.IsEqual(Container(99994).ListItem(-1).Property(widgetAspect),Text) | String.IsEqual(Container(99994).ListItem(-1).Property(widgetAspect),Apps) | String.IsEqual(Container(99994).ListItem(-1).Property(widgetAspect),Button)]</expression>
+
+    <expression name="Exp_InfoDialog_IsFolder">[String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,set) | String.IsEqual(ListITem.DBType,artist)]</expression>
+
+    <expression name="Exp_OSD_ExpandInfo">[Window.IsVisible(videobookmarks) | Window.IsVisible(pvrchannelguide) | Window.IsVisible(1140) | Window.IsVisible(1141) | Window.IsVisible(1142) | Window.IsVisible(fullscreeninfo) | Window.IsVisible(DialogPVRChannelsOSD.xml)]</expression>
+
+    <expression name="Exp_OSD_HasPlaylist">[VideoPlayer.Content(episodes) | VideoPlayer.Content(livetv) | [VideoPlayer.Content(movies) + !Integer.IsEqual(VideoPlayer.PlaylistLength,1) + !Integer.IsEqual(VideoPlayer.PlaylistLength,0)]]</expression>
+
+    <expression name="Exp_OSD_PVRChannelSwitch">[[VideoPlayer.Content(livetv) + !Window.Isvisible(videoosd)] + [!String.IsEmpty(PVR.ChannelNumberInput) | Player.ShowInfo]]</expression>
+
+    <expression name="Exp_HomeBarVisible">[Control.HasFocus(300) | Control.HasFocus(399) | ControlGroup(303).HasFocus() | Control.HasFocus(302) | ControlGroup(9000).HasFocus() | [Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + [String.IsEqual(Container(300).ListItem.Property(widgetStyle),Fullscreen) | String.IsEmpty(Container(300).ListItem.Property(widgetStyle))]]]</expression>
+
+    <expression name="Exp_HasTempoShift">[!String.IsEmpty(Player.PlaySpeed) + !String.IsEqual(Player.PlaySpeed,1.00) + !String.IsEqual(Player.PlaySpeed,0.00)]</expression>
+
+    <expression name="Exp_HasPlayerStatus">Player.Caching | Player.Paused | Player.Rewinding | Player.Forwarding | Player.Seeking | [Player.DisplayAfterSeek + !String.IsEmpty(Player.SeekOffset)] | !String.IsEmpty(Player.SeekNumeric) | !String.IsEmpty(PVR.ChannelNumberInput) | $EXP[Exp_HasTempoShift]</expression>
+
+    <expression name="Exp_HasAutoCompletion">[System.HasAddon(plugin.program.autocompletion) + System.AddonIsEnabled(plugin.program.autocompletion) + !Skin.HasSetting(Keyboard.DisableAutoCompletion)]</expression>
+
+    <expression name="Exp_IsGenre">[String.IsEqual(ListItem.DBType,genre) | String.IsEqual(ListItem.Property(dbtype),genre) | Container.Content(genres)]</expression>
+    <expression name="Exp_IsStudio">[String.IsEqual(ListItem.DBType,studio) | String.IsEqual(ListItem.Property(dbtype),studio) | Container.Content(studios)]</expression>
+    <expression name="Exp_IsCountry">[String.IsEqual(ListItem.DBType,country) | String.IsEqual(ListItem.Property(dbtype),country) | Container.Content(countries)]</expression>
+
+    <expression name="Exp_TMDbHelper_IsUpdating">[!String.IsEmpty(Window(Home).Property(TMDBHelper.IsUpdating)) | !String.IsEmpty(Window(Home).Property(TMDBHelper.IsUpdatingRating))]</expression>
+
+    <expression name="Exp_HasPagesItems">[[Control.HasFocus(60) | Control.HasFocus(63) | Control.HasFocus(64) | Control.HasFocus(65)]]</expression>
+
+    <expression name="Exp_HasBackgroundFanart">[InhibitIdleShutdown(true/false)]</expression>
+
+    <expression name="Exp_HasBackgroundFanart_InfoDialogs">[True]</expression>
+
+    <expression name="Exp_HasArtLandscape">[!String.IsEmpty(ListItem.Art(landscape)) | !String.IsEmpty(ListItem.Art(tvshow.landscape)) | !String.IsEmpty(ListItem.Art(season.landscape))]</expression>
+
+    <expression name="Exp_HasArtFanart">[!String.IsEmpty(ListItem.Art(fanart)) | !String.IsEmpty(ListItem.Art(tvshow.fanart)) | !String.IsEmpty(ListItem.Art(season.fanart))]</expression>
+
+    <expression name="Exp_HasLandscapeFormatArt">[$EXP[Exp_HasArtFanart] | $EXP[Exp_HasArtLandscape] | !String.IsEmpty(ListItem.EPGEventIcon) | [!$EXP[Exp_IsPVRItem] + !String.IsEmpty(ListItem.Art(thumb))]]</expression>
+
+    <expression name="Exp_HasWatchedProgress">[!Skin.HasSetting(Indicator.DisableProgress) + [[ListItem.IsResumable + !Integer.IsEqual(ListItem.PercentPlayed,0)] | [!String.IsEmpty(ListItem.Property(WatchedProgress)) + !Integer.IsEqual(ListItem.Property(WatchedProgress),0)] | [!Integer.IsEqual(ListItem.Progress,0)]]]</expression>
+
+    <expression name="Exp_AlphabetTypes_Only">[String.IsEqual(Container.SortMethod,$LOCALIZE[551]) | String.IsEqual(Container.SortMethod,$LOCALIZE[556]) | String.IsEqual(Container.SortMethod,$LOCALIZE[561]) | [String.IsEqual(Container.SortMethod,$LOCALIZE[557]) + Container.Content(artists)] | [String.IsEqual(Container.SortMethod,$LOCALIZE[558]) + Container.Content(albums)]]</expression>
+
+    <expression name="Exp_AlphabetVisible">[Control.HasFocus(65) + $EXP[Exp_AlphabetTypes_Only] + !Skin.HasSetting(DisableAlphabetScrollbar)]</expression>
+
+    <expression name="Exp_ContextMenu_HasPoster">[!String.IsEmpty(Container(99950).ListItem.Art(poster)) | !String.IsEmpty(Container(99950).ListItem.Property(base_poster))]</expression>
+
+    <expression name="Exp_ContextMenu_HasIcon">[!$EXP[Exp_ContextMenu_HasPoster] + !String.IsEmpty(Container(99950).ListItem.Property(base_icon))]</expression>
+
+    <expression name="Exp_ContextMenu_HasQuickNav">[[$EXP[Exp_ContextMenu_HasPoster] | $EXP[Exp_ContextMenu_HasIcon]] + [!String.IsEmpty(Container(99950).ListITem.Property(base_dbtype)) | !String.IsEmpty(Container(99950).ListITem.DBType)]] + !Window.IsVisible(fullscreenvideo) + !Window.IsVisible(musicvisualisation) + !Window.IsVisible(favourites)</expression>
+
+    <expression name="Exp_FullscreenWidgetStandard">[!String.IsEmpty(Container(300).ListItem.Property(widgetPath)) + [String.IsEqual(Container(300).ListItem.Property(widgetStyle),Fullscreen) | String.IsEmpty(Container(300).ListItem.Property(widgetStyle))]]</expression>
+
+    <expression name="Exp_PVRWindows">[Window.IsVisible(MyPVRGuide.xml) | Window.IsVisible(MyPVRChannels.xml) | Window.IsVisible(MyPVRTimers.xml) | Window.IsVisible(MyPVRRecordings.xml) | Window.IsVisible(MyPVRSearch.xml)]</expression>
+
+    <expression name="Exp_InfoDialogs">[Window.IsVisible(DialogVideoInfo.xml) | Window.IsVisible(DialogMusicInfo.xml) |  Window.IsVisible(DialogPVRInfo.xml)]</expression>
+
+    <expression name="Exp_SettingsDialogs">[Window.IsVisible(filemanager) | Window.IsVisible(addonbrowser) | Window.IsVisible(SettingsCategory.xml) | Window.IsVisible(SkinSettings.xml) | Window.IsVisible(SettingsProfile.xml) | Window.IsVisible(SettingsSystemInfo.xml) | Window.IsVisible(EventLog.xml)]</expression>
+    <expression name="Exp_SettingsDialogs_Next">[Window.Next(filemanager) | Window.Next(addonbrowser) | Window.Next(SettingsCategory.xml) | Window.Next(SkinSettings.xml) | Window.Next(SettingsProfile.xml) | Window.Next(SettingsSystemInfo.xml) | Window.Next(EventLog.xml) | Window.Next(1197)]</expression>
+    <expression name="Exp_SettingsDialogs_Prev">[Window.Previous(filemanager) | Window.Previous(addonbrowser) | Window.Previous(SettingsCategory.xml) | Window.Previous(SkinSettings.xml) | Window.Previous(SettingsProfile.xml) | Window.Previous(SettingsSystemInfo.xml) | Window.Previous(EventLog.xml) | Window.Previous(1197)]</expression>
+
+    <expression name="Exp_RowViews">[Control.IsVisible(50) | Control.IsVisible(51) | Control.IsVisible(52) | Control.IsVisible(56) | Control.IsVisible(57)]</expression>
+
+    <expression name="Exp_CombinedViews">[Control.IsVisible(502) | Control.IsVisible(512) | Control.IsVisible(522) | Control.IsVisible(572)]</expression>
+
+    <expression name="Exp_WallViews">[Control.IsVisible(500) | Control.IsVisible(510) | Control.IsVisible(520) | Control.IsVisible(540) | Control.IsVisible(570) | Control.IsVisible(580) | Control.IsVisible(550) | Control.IsVisible(560) | Control.IsVisible(54)]</expression>
+
+    <expression name="Exp_ListViews">[Control.IsVisible(501) | Control.IsVisible(511) | Control.IsVisible(521) | Control.IsVisible(507) | Control.IsVisible(517) | Control.IsVisible(527) | Control.IsVisible(551)]</expression>
+
+    <expression name="Exp_BigListViews">[Control.IsVisible(508) | Control.IsVisible(557) | Control.IsVisible(558) | Control.IsVisible(581)]</expression>
+
+</includes>

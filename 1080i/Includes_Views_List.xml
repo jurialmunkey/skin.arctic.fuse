@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<includes>
+
+    <!-- Square List -->
+    <include name="View_500_Square_List">
+        <include content="View_List_Include">
+            <param name="id">500</param>
+            <param name="viewtype_label">$LOCALIZE[31121]</param>
+            <param name="visible">$EXP[Exp_View_500]</param>
+        </include>
+    </include>
+
+    <include name="View_List_Include">
+        <definition>
+
+            <control type="group">
+                <visible>Control.IsVisible($PARAM[id])</visible>
+                <include>Dimension_Info</include>
+
+                <control type="group">
+                    <height>320</height>
+                    <width>320</width>
+                    <right>0</right>
+                    <bottom>-15</bottom>
+                    <visible>!$EXP[Exp_InfoDialogs]</visible>
+                    <include content="Animation_Slide_In">
+                        <param name="type">Visible</param>
+                        <param name="posx">320</param>
+                        <param name="delay">350</param>
+                    </include>
+                    <include content="Animation_Fade_Out">
+                        <param name="type">Hidden</param>
+                        <param name="delay">600</param>
+                    </include>
+
+                    <include content="Object_ItemBack">
+                        <param name="selected">false</param>
+                    </include>
+                    <control type="image">
+                        <texture diffuse="diffuse/square_w320_h320.png">$VAR[Image_Layout_CombinedThumb]</texture>
+                    </control>
+                </control>
+
+                <control type="group">
+                    <visible>!$EXP[Exp_InfoDialogs]</visible>
+                    <include content="Animation_Slide_In">
+                        <param name="type">Visible</param>
+                        <param name="posx">160</param>
+                        <param name="delay">200</param>
+                    </include>
+                    <include content="Animation_Fade_Out">
+                        <param name="type">Hidden</param>
+                        <param name="delay">600</param>
+                    </include>
+                    <include content="List_Button_Row">
+                        <param name="id">$PARAM[id]</param>
+                        <param name="orientation">horizontal</param>
+                        <param name="offset_x">60</param>
+                        <param name="offset_y">25</param>
+                        <param name="item_h">80</param>
+                        <param name="itemlayout_h">80</param>
+                        <param name="item_w">420</param>
+                        <param name="itemlayout_w">440</param>
+                        <param name="itemlayout_include">Layout_InfoDialog_Songs</param>
+                        <param name="control">panel</param>
+                        <height>370</height>
+                        <bottom>-40</bottom>
+                        <right>360</right>
+                        <left>-80</left>
+                        <include content="Action_View_Movement_OnUp"><param name="id">$PARAM[id]</param></include>
+                        <include content="Action_View_Movement_OnLeft"><param name="id">$PARAM[id]</param></include>
+                        <include content="Action_View_Movement_OnRight"><param name="id">$PARAM[id]</param></include>
+                        <include content="Action_View_Movement_OnBack"><param name="id">$PARAM[id]</param></include>
+                        <include content="Action_Row_OnDown"><param name="id">$PARAM[id]</param></include>
+                        <pagecontrol>60</pagecontrol>
+                        <visible>$PARAM[visible]</visible>
+                        <viewtype label="$PARAM[viewtype_label]">list</viewtype>
+                        <onfocus>ClearProperty(TMDbHelper.WidgetContainer)</onfocus>
+                        <onfocus>ClearProperty(MediaFilterBase)</onfocus>
+                    </include>
+                </control>
+            </control>
+        </definition>
+    </include>
+</includes>

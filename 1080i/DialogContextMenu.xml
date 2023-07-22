@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window type="dialog">
+    <defaultcontrol always="true">8001</defaultcontrol>
+    <coordinates>
+        <origin x="0" y="0" />
+    </coordinates>
+    <controls>
+        <include>Defs_TMDbHelper_Loader</include>
+        <include content="Dialog_Overlay_Side">
+            <include>Animation_Right_Delay</include>
+            <include>Dimension_DialogSideMenu</include>
+            <include content="Dialog_Head">
+                <param name="label">$VAR[Label_ContextMenu_Title]</param>
+            </include>
+            <include content="Dialog_Body">
+                <include content="Dialog_Body_Grouplist">
+                    <param name="id">996</param>
+                    <onright>9001</onright>
+                    <onleft>Close</onleft>
+                </include>
+                <include content="Dialog_Side_Grouplist">
+                    <param name="id">9000</param>
+                    <onleft>996</onleft>
+                    <onright>noop</onright>
+                    <include content="Dialog_Side_Button">
+                        <param name="id">01</param>
+                        <param name="label">$LOCALIZE[15067]</param>
+                        <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
+                        <onclick>Close</onclick>
+                    </include>
+                    <include content="Dialog_Side_Button">
+                        <param name="id">02</param>
+                        <param name="label">$LOCALIZE[207]</param>
+                        <param name="icon">special://skin/extras/icons/quote.png</param>
+                        <onclick>Close</onclick>
+                        <onclick>ActivateWindow(1113)</onclick>
+                    </include>
+                    <include content="Dialog_Side_Button">
+                        <param name="id">03</param>
+                        <param name="label">$LOCALIZE[137]</param>
+                        <param name="icon">special://skin/extras/icons/search.png</param>
+                        <onclick>SetProperty(CustomSearchTerm,$ESCINFO[Container(99950).ListItem.Property(base_title)],Home)</onclick>
+                        <onclick>SetProperty(ReplaceWindow,1105,Home)</onclick>
+                        <onclick condition="!Window.IsActive(1105)">ActivateWindow(1105)</onclick>
+                        <onclick condition="Window.IsActive(1105)">ReplaceWindow(1197)</onclick>
+                    </include>
+                    <include content="Dialog_Side_Button">
+                        <param name="id">04</param>
+                        <param name="label">Wiki</param>
+                        <param name="icon">special://skin/extras/icons/globe.png</param>
+                        <onclick>runscript(script.wikipedia,wikipedia=$INFO[Container(99950).ListItem.Property(base_title)])</onclick>
+                    </include>
+                    <include content="Dialog_Side_Button">
+                        <param name="id">05</param>
+                        <param name="label">$LOCALIZE[31041]</param>
+                        <param name="icon">special://skin/extras/icons/fire2.png</param>
+                        <onclick>SetFocus(50)</onclick>
+                        <onclick>AlarmClock(DelayCommand,RunScript(plugin.video.themoviedb.helper,related_lists,query=$VAR[Path_ContextParams_Query],tmdb_type=$VAR[Path_ContextParams_TMDbType]),00:01,silent)</onclick>
+                    </include>
+                </include>
+            </include>
+        </include>
+
+        <include content="Settings_Button">
+            <param name="id">1000</param>
+            <param name="control">button</param>
+            <width>dialog_main_button_w</width>
+        </include>
+
+    </controls>
+</window>

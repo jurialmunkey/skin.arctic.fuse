@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<includes>
+
+    <!-- Images -->
+    <variable name="Image_Poster" containers="52,5000,553" start="-15" end="31">
+        <value condition="!String.IsEmpty({listitem}.Art(poster))">$INFO[{listitem}.Art(poster)]</value>
+        <value condition="!String.IsEmpty({listitem}.Art(tvshow.poster))">$INFO[{listitem}.Art(tvshow.poster)]</value>
+        <value condition="!String.IsEmpty({listitem}.Icon)">$INFO[{listitem}.Icon]</value>
+    </variable>
+
+    <variable name="Image_VideoQuality" containers="301,503,513,523,553" null_id="True">
+        <value condition="{listitem}.IsCollection">flags/quality/sets.png</value>
+        <value condition="Integer.IsGreater({listitem}.VideoResolution,1080) | String.IsEqual({listitem}.VideoResolution,4K)">flags/quality/4k.png</value>
+        <value condition="Integer.IsGreater({listitem}.VideoResolution,720)">flags/quality/fhd.png</value>
+        <value condition="Integer.IsGreater({listitem}.VideoResolution,719)">flags/quality/hd.png</value>
+        <value condition="!String.IsEmpty({listitem}.VideoResolution)">flags/quality/sd.png</value>
+        <value condition="[String.IsEqual({listitem}.DBType,movie) | String.IsEqual({listitem}.DBType,episode) | String.IsEqual({listitem}.DBType,video)] + !String.IsEqual({listitem}.Property(item.type),person)">flags/quality/web.png</value>
+        <value>flags/quality/info.png</value>
+    </variable>
+
+    <variable name="Image_Banner" containers="50">
+        <value condition="!String.IsEmpty({listitem}.Art(banner))">$INFO[{listitem}.Art(banner)]</value>
+        <value condition="!String.IsEmpty({listitem}.Art(season.banner))">$INFO[{listitem}.Art(season.banner)]</value>
+        <value condition="!String.IsEmpty({listitem}.Art(tvshow.banner))">$INFO[{listitem}.Art(tvshow.banner)]</value>
+        <value condition="!String.IsEmpty({listitem}.Art(fanart))">$INFO[{listitem}.Art(fanart)]</value>
+        <value condition="!String.IsEmpty({listitem}.Art(tvshow.fanart))">$INFO[{listitem}.Art(tvshow.fanart)]</value>
+    </variable>
+
+    <variable name="Image_Landscape" containers="51,513" start="-2" end="6">
+        <value condition="Container.Content(images)">$INFO[{listitem}.Icon]</value>
+        <value condition="[String.IsEqual({listitem}.DBType,episode) | String.IsEqual({listitem}.DBType,video)] + !String.IsEmpty({listitem}.Art(thumb)) + !String.IsEqual({listitem}.Icon,{listitem}.Art(fanart)) + !String.IsEqual({listitem}.Icon,OverlaySpoiler.png) + !String.IsEqual({listitem}.Art(thumb),{listitem}.Art(poster)) + !String.IsEqual({listitem}.Art(thumb),{listitem}.Art(tvshow.poster))">$INFO[{listitem}.Art(thumb)]</value>
+        <value condition="!String.IsEmpty({listitem}.Art(landscape)) + !Skin.HasSetting(DisableLandscapeArt)">$INFO[{listitem}.Art(landscape)]</value>
+        <value condition="!String.IsEmpty({listitem}.Art(tvshow.landscape)) + !Skin.HasSetting(DisableLandscapeArt)">$INFO[{listitem}.Art(tvshow.landscape)]</value>
+        <value condition="!String.IsEmpty({listitem}.Art(fanart))">$INFO[{listitem}.Art(fanart)]</value>
+        <value condition="!String.IsEmpty({listitem}.Art(tvshow.fanart))">$INFO[{listitem}.Art(tvshow.fanart)]</value>
+        <value condition="!String.IsEmpty({listitem}.Property(fanart))">$INFO[{listitem}.Property(fanart)]</value>
+        <value condition="!String.IsEmpty({listitem}.EPGEventIcon)">$INFO[{listitem}.EPGEventIcon]</value>
+        <value condition="!String.IsEmpty({listitem}.Art(thumb))">$INFO[{listitem}.Art(thumb)]</value>
+        <value>$INFO[{listitem}.Icon]</value>
+    </variable>
+
+    <variable name="Image_Overlay" containers="50,51,52,513,553" start="-15" end="31">
+
+        <!-- Unwatched Episodes -->
+        <value condition="[String.IsEqual({listitem}.DBType,tvshow) | String.IsEqual({listitem}.DBType,season)] + !Integer.IsEqual({listitem}.Property(UnWatchedEpisodes),0) + !Skin.HasSetting(Indicator.DisableEpisodes)">common/null.png</value>
+
+        <!-- PVR Timers / Recording -->
+        <value condition="{listitem}.IsRecording">indicator/record.png</value>
+        <value condition="{listitem}.HasTimer">indicator/timer.png</value>
+
+        <!-- Progress / Resume -->
+        <value condition="{listitem}.IsResumable + !Skin.HasSetting(Indicator.DisableProgress)">indicator/timer.png</value>
+        <value condition="!Integer.IsEqual({listitem}.Progress,0) + !Skin.HasSetting(Indicator.DisableProgress)">indicator/unwatched.png</value>
+
+        <!-- Watched -->
+        <value condition="String.IsEqual({listitem}.Overlay,OverlayWatched.png) + !Skin.HasSetting(Indicator.DisableWatched)">common/null.png</value>
+        <value condition="Integer.IsGreater({listitem}.PlayCount,0) + !String.IsEqual({listitem}.DBType,song) + !String.IsEqual({listitem}.DBType,album) + !String.IsEqual({listitem}.DBType,artist) + !String.IsEqual({listitem}.DBType,image) + !String.IsEqual({listitem}.DBType,addon) + !Skin.HasSetting(Indicator.DisableWatched)">common/null.png</value>
+
+        <!-- New Movie -->
+        <value condition="String.IsEqual({listitem}.Overlay,OverlayUnwatched.png) + String.IsEqual({listitem}.DBType,movie) + [String.IsEqual({listitem}.Title,Window(Home).Property(LatestMovie.1.Title)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestMovie.2.Title)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestMovie.3.Title)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestMovie.4.Title)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestMovie.5.Title)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestMovie.6.Title)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestMovie.7.Title)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestMovie.8.Title)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestMovie.9.Title)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestMovie.10.Title))] + !Skin.HasSetting(Indicator.DisableLatest)">indicator/new.png</value>
+
+        <!-- New Episode -->
+        <value condition="String.IsEqual({listitem}.Overlay,OverlayUnwatched.png) + String.IsEqual({listitem}.DBType,episode) + [String.IsEqual({listitem}.Title,Window(Home).Property(LatestEpisode.1.EpisodeTitle)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestEpisode.2.EpisodeTitle)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestEpisode.3.EpisodeTitle)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestEpisode.4.EpisodeTitle)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestEpisode.5.EpisodeTitle)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestEpisode.6.EpisodeTitle)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestEpisode.7.EpisodeTitle)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestEpisode.8.EpisodeTitle)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestEpisode.9.EpisodeTitle)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestEpisode.10.EpisodeTitle))] + !Skin.HasSetting(Indicator.DisableLatest)">indicator/new.png</value>
+
+        <!-- Is Library DBID -->
+        <value condition="!String.IsEmpty({listitem}.Property(Item.Info)) + !String.IsEmpty({listitem}.DBID) + !Skin.HasSetting(Indicator.DisableLibrary)">indicator/library.png</value>
+
+        <!-- Is Collection -->
+        <value condition="{listitem}.IsCollection + !Skin.HasSetting(Indicator.DisableCollection)">indicator/movieset.png</value>
+    </variable>
+
+    <variable name="Image_Overlay_Backing" containers="50,51,52,513,553" start="-15" end="31">
+        <!-- Unwatched Episodes -->
+        <value condition="[String.IsEqual({listitem}.DBType,tvshow) | String.IsEqual({listitem}.DBType,season)] + !Integer.IsEqual({listitem}.Property(UnWatchedEpisodes),0) + !Skin.HasSetting(Indicator.DisableEpisodes)">indicator/circle</value>
+
+        <!-- PVR Timers / Recording -->
+        <value condition="{listitem}.IsRecording">indicator/circle</value>
+        <value condition="{listitem}.HasTimer">indicator/circle</value>
+
+        <!-- Progress / Resume -->
+        <value condition="[{listitem}.IsResumable | !Integer.IsEqual({listitem}.Progress,0)] + !Skin.HasSetting(Indicator.DisableProgress)">indicator/circle</value>
+
+        <!-- Watched -->
+        <value condition="String.IsEqual({listitem}.Overlay,OverlayWatched.png) + !Skin.HasSetting(Indicator.DisableWatched)">indicator/circle</value>
+        <value condition="Integer.IsGreater({listitem}.PlayCount,0) + !String.IsEqual({listitem}.DBType,song) + !String.IsEqual({listitem}.DBType,album) + !String.IsEqual({listitem}.DBType,artist) + !String.IsEqual({listitem}.DBType,image) + !String.IsEqual({listitem}.DBType,addon) + !Skin.HasSetting(Indicator.DisableWatched)">indicator/circle</value>
+
+        <!-- New Movie -->
+        <value condition="String.IsEqual({listitem}.Overlay,OverlayUnwatched.png) + String.IsEqual({listitem}.DBType,movie) + [String.IsEqual({listitem}.Title,Window(Home).Property(LatestMovie.1.Title)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestMovie.2.Title)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestMovie.3.Title)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestMovie.4.Title)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestMovie.5.Title)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestMovie.6.Title)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestMovie.7.Title)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestMovie.8.Title)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestMovie.9.Title)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestMovie.10.Title))] + !Skin.HasSetting(Indicator.DisableLatest)">indicator/circle</value>
+
+        <!-- New Episode -->
+        <value condition="String.IsEqual({listitem}.Overlay,OverlayUnwatched.png) + String.IsEqual({listitem}.DBType,episode) + [String.IsEqual({listitem}.Title,Window(Home).Property(LatestEpisode.1.EpisodeTitle)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestEpisode.2.EpisodeTitle)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestEpisode.3.EpisodeTitle)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestEpisode.4.EpisodeTitle)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestEpisode.5.EpisodeTitle)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestEpisode.6.EpisodeTitle)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestEpisode.7.EpisodeTitle)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestEpisode.8.EpisodeTitle)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestEpisode.9.EpisodeTitle)) | String.IsEqual({listitem}.Title,Window(Home).Property(LatestEpisode.10.EpisodeTitle))] + !Skin.HasSetting(Indicator.DisableLatest)">indicator/circle</value>
+
+        <!-- Is Library DBID -->
+        <value condition="!String.IsEmpty({listitem}.Property(Item.Info)) + !String.IsEmpty({listitem}.DBID) + !Skin.HasSetting(Indicator.DisableLibrary)">indicator/circle</value>
+
+        <!-- Is Collection -->
+        <value condition="{listitem}.IsCollection + !Skin.HasSetting(Indicator.DisableCollection)">indicator/circle</value>
+    </variable>
+</includes>

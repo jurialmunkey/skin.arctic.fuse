@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<includes>
+
+    <variable name="Action_Menu_Position">
+        <value condition="Skin.String(CustomShortcut.Item01,movies) + $EXP[Exp_HomeMenu_movies]">1</value>
+        <value condition="Skin.String(CustomShortcut.Item01,tvshows) + $EXP[Exp_HomeMenu_tvshows]">1</value>
+        <value condition="Skin.String(CustomShortcut.Item01,music) + $EXP[Exp_HomeMenu_music]">1</value>
+        <value condition="Skin.String(CustomShortcut.Item01,livetv) + $EXP[Exp_HomeMenu_livetv]">1</value>
+        <value condition="Skin.String(CustomShortcut.Item01,addons) + $EXP[Exp_HomeMenu_addons]">1</value>
+        <value condition="Skin.String(CustomShortcut.Item01,pictures) + $EXP[Exp_HomeMenu_pictures]">1</value>
+        <value condition="Skin.String(CustomShortcut.Item01,weather) + $EXP[Exp_HomeMenu_weather]">1</value>
+
+        <value condition="Skin.String(CustomShortcut.Item02,movies) + $EXP[Exp_HomeMenu_movies]">2</value>
+        <value condition="Skin.String(CustomShortcut.Item02,tvshows) + $EXP[Exp_HomeMenu_tvshows]">2</value>
+        <value condition="Skin.String(CustomShortcut.Item02,music) + $EXP[Exp_HomeMenu_music]">2</value>
+        <value condition="Skin.String(CustomShortcut.Item02,livetv) + $EXP[Exp_HomeMenu_livetv]">2</value>
+        <value condition="Skin.String(CustomShortcut.Item02,addons) + $EXP[Exp_HomeMenu_addons]">2</value>
+        <value condition="Skin.String(CustomShortcut.Item02,pictures) + $EXP[Exp_HomeMenu_pictures]">2</value>
+        <value condition="Skin.String(CustomShortcut.Item02,weather) + $EXP[Exp_HomeMenu_weather]">2</value>
+
+        <value condition="Skin.String(CustomShortcut.Item03,movies) + $EXP[Exp_HomeMenu_movies]">3</value>
+        <value condition="Skin.String(CustomShortcut.Item03,tvshows) + $EXP[Exp_HomeMenu_tvshows]">3</value>
+        <value condition="Skin.String(CustomShortcut.Item03,music) + $EXP[Exp_HomeMenu_music]">3</value>
+        <value condition="Skin.String(CustomShortcut.Item03,livetv) + $EXP[Exp_HomeMenu_livetv]">3</value>
+        <value condition="Skin.String(CustomShortcut.Item03,addons) + $EXP[Exp_HomeMenu_addons]">3</value>
+        <value condition="Skin.String(CustomShortcut.Item03,pictures) + $EXP[Exp_HomeMenu_pictures]">3</value>
+        <value condition="Skin.String(CustomShortcut.Item03,weather) + $EXP[Exp_HomeMenu_weather]">3</value>
+
+        <value condition="Skin.String(CustomShortcut.Item04,movies) + $EXP[Exp_HomeMenu_movies]">4</value>
+        <value condition="Skin.String(CustomShortcut.Item04,tvshows) + $EXP[Exp_HomeMenu_tvshows]">4</value>
+        <value condition="Skin.String(CustomShortcut.Item04,music) + $EXP[Exp_HomeMenu_music]">4</value>
+        <value condition="Skin.String(CustomShortcut.Item04,livetv) + $EXP[Exp_HomeMenu_livetv]">4</value>
+        <value condition="Skin.String(CustomShortcut.Item04,addons) + $EXP[Exp_HomeMenu_addons]">4</value>
+        <value condition="Skin.String(CustomShortcut.Item04,pictures) + $EXP[Exp_HomeMenu_pictures]">4</value>
+        <value condition="Skin.String(CustomShortcut.Item04,weather) + $EXP[Exp_HomeMenu_weather]">4</value>
+
+        <value>0</value>
+    </variable>
+
+    <include name="Action_UpdateSearchTerm">
+        <onclick>AlarmClock(SetSearchTerm,SetProperty(SearchTerm,$INFO[Control.GetLabel(9099).index(1)]),00:01,silent)</onclick>
+        <onfocus>AlarmClock(SetSearchTerm,SetProperty(SearchTerm,$INFO[Control.GetLabel(9099).index(1)]),00:01,silent)</onfocus>
+        <onunfocus>AlarmClock(SetSearchTerm,SetProperty(SearchTerm,$INFO[Control.GetLabel(9099).index(1)]),00:01,silent)</onunfocus>
+    </include>
+
+    <include name="Action_OSD_OpenInfo_OnClick">
+        <onclick>SetProperty(OSDExtendedInfo,1,Home)</onclick>
+        <onclick condition="!Player.Paused + !Skin.HasSetting(OSD.DisablePauseOnInfo)">Pause</onclick>
+        <onclick>Dialog.Close(1140,force)</onclick>
+        <onclick>Dialog.Close(1141,force)</onclick>
+        <onclick>Dialog.Close(videobookmarks,force)</onclick>
+        <onclick>Dialog.Close(videoosd,force)</onclick>
+        <onclick>RunScript(plugin.video.themoviedb.helper,add_path=$INFO[Container(6501).ListItem.FolderPath],call_auto=1190,return)</onclick>
+    </include>
+
+    <include name="Action_Recommendations_OnClick">
+        <onclick>Action(Info)</onclick>
+        <onclick>Dialog.Close(1120,true)</onclick>
+        <onclick>Dialog.Close(1121,true)</onclick>
+        <onclick>Dialog.Close(1122,true)</onclick>
+        <onclick>Dialog.Close(1123,true)</onclick>
+        <onclick>SetFocus(4001)</onclick>
+    </include>
+
+    <include name="Action_HomeMenu_OnRightLeft">
+        <param name="onlist">320</param>
+        <definition>
+            <onleft condition="String.IsEmpty(Window.Property(TMDbHelper.WidgetContainer)) + !String.IsEmpty(Window.Property(List.ViewContainer))">SetFocus($INFO[Window.Property(List.ViewContainer)],99999,absolute)</onleft>
+            <onright condition="String.IsEmpty(Window.Property(TMDbHelper.WidgetContainer)) + !String.IsEmpty(Window.Property(List.ViewContainer))">SetFocus($INFO[Window.Property(List.ViewContainer)],0,absolute)</onright>
+            <onleft condition="!String.IsEmpty(Window.Property(TMDbHelper.WidgetContainer)) + !Integer.IsEqual(Window.Property(TMDbHelper.WidgetContainer),301)">SetFocus($INFO[Window.Property(TMDbHelper.WidgetContainer)],99999,absolute)</onleft>
+            <onright condition="!String.IsEmpty(Window.Property(TMDbHelper.WidgetContainer)) + !Integer.IsEqual(Window.Property(TMDbHelper.WidgetContainer),301)">SetFocus($INFO[Window.Property(TMDbHelper.WidgetContainer)],0,absolute)</onright>
+            <onleft condition="!String.IsEmpty(Window.Property(TMDbHelper.WidgetContainer)) + Integer.IsEqual(Window.Property(TMDbHelper.WidgetContainer),301)">SetFocus(314)</onleft>
+            <onright condition="!String.IsEmpty(Window.Property(TMDbHelper.WidgetContainer)) + Integer.IsEqual(Window.Property(TMDbHelper.WidgetContainer),301)">SetFocus(311)</onright>
+            <onleft>$PARAM[onlist]</onleft>
+            <onright>$PARAM[onlist]</onright>
+        </definition>
+    </include>
+
+    <include name="Action_BuildSkinShortcuts_OnLoad">
+        <onload>RunScript(script.skinshortcuts,type=buildxml&amp;mainmenuID=300&amp;levels=2&amp;group=mainmenu|powermenu|searchmenu|exploremenu|moviemenu|tvshowmenu|musicmenu|pvrmenu|moviesubmenu|tvshowsubmenu|musicsubmenu|pvrsubmenu|moviewidgets|tvshowwidgets|musicwidgets|pvrwidgets)</onload>
+    </include>
+    <include name="Action_BuildSkinShortcuts_OnUnload">
+        <onunload>RunScript(script.skinshortcuts,type=buildxml&amp;mainmenuID=300&amp;levels=2&amp;group=mainmenu|powermenu|searchmenu|exploremenu|moviemenu|tvshowmenu|musicmenu|pvrmenu|moviesubmenu|tvshowsubmenu|musicsubmenu|pvrsubmenu|moviewidgets|tvshowwidgets|musicwidgets|pvrwidgets)</onunload>
+    </include>
+
+    <include name="Action_View_Transition">
+        <onload>SetProperty(ViewTransition,Hidden,$PARAM[window])</onload>
+        <onunload>SetProperty(ViewTransition,Visible,$PARAM[window])</onunload>
+    </include>
+
+    <include name="Acting_SetImage_Reverse_OnRight">
+        <onright condition="$PARAM[condition]">SetProperty(TMDbHelper.ListItem.BlurImage.Original,$INFO[Window(Home).Property(BlurImage.Original)],Home)</onright>
+        <onright condition="$PARAM[condition]">SetProperty(TMDbHelper.ListItem.BlurImage,$INFO[Window(Home).Property(BlurImage)],Home)</onright>
+        <onright condition="$PARAM[condition]">SetProperty(TMDbHelper.ListItem.CropImage,$INFO[Window(Home).Property(CropImage)],Home)</onright>
+    </include>
+
+    <include name="Acting_SetImage_OnRight">
+        <onright condition="$PARAM[condition]">SetProperty(BlurImage.Original,$INFO[Window(Home).Property(TMDbHelper.ListItem.BlurImage.Original)],Home)</onright>
+        <onright condition="$PARAM[condition]">SetProperty(BlurImage,$INFO[Window(Home).Property(TMDbHelper.ListItem.BlurImage)],Home)</onright>
+        <onright condition="$PARAM[condition]">SetProperty(CropImage,$INFO[Window(Home).Property(TMDbHelper.ListItem.CropImage)],Home)</onright>
+    </include>
+
+    <include name="Action_VideoInfo_Main_OnRight">
+        <onright condition="$PARAM[condition]">SetProperty(Director_Label,$VAR[Label_FromDirector],1120)</onright>
+        <onright condition="$PARAM[condition]">SetProperty(Director_Image,$VAR[Image_DirectorIcon],1120)</onright>
+        <onright condition="$PARAM[condition]">SetProperty(Director_Query,$VAR[Path_FromDirector],1120)</onright>
+
+        <onright condition="$PARAM[condition]">SetProperty(Writer_Label,$VAR[Label_FromWriter],1120)</onright>
+        <onright condition="$PARAM[condition]">SetProperty(Writer_Image,$VAR[Image_WriterIcon],1120)</onright>
+        <onright condition="$PARAM[condition]">SetProperty(Writer_Query,$VAR[Path_FromWriter],1120)</onright>
+
+        <onright condition="$PARAM[condition]">SetProperty(Creator_Label,$VAR[Label_FromCreator],1120)</onright>
+        <onright condition="$PARAM[condition]">SetProperty(Creator_Image,$VAR[Image_CreatorIcon],1120)</onright>
+        <onright condition="$PARAM[condition]">SetProperty(Creator_Query,$VAR[Path_FromCreator],1120)</onright>
+
+        <onright condition="$PARAM[condition]">SetProperty(Studio_Label,$VAR[Label_FromStudio],1120)</onright>
+        <onright condition="$PARAM[condition]">SetProperty(Studio_Image,$VAR[Image_StudioIcon],1120)</onright>
+        <onright condition="$PARAM[condition]">SetProperty(Studio_Query,$VAR[Path_FromStudio],1120)</onright>
+
+        <onright condition="$PARAM[condition]">SetProperty(Item_Title,$VAR[Label_Title],1120)</onright>
+        <onright condition="$PARAM[condition]">SetProperty(Item_Query,$VAR[Path_Param_Query],1120)</onright>
+        <onright condition="$PARAM[condition]">SetProperty(Item_Type,$VAR[Path_Param_Type],1120)</onright>
+        
+        <include content="Acting_SetImage_OnRight">
+            <param name="condition">$PARAM[condition]</param>
+        </include>
+
+        <onright condition="$PARAM[condition]">SetProperty(Episodes_Label,$INFO[ListItem.Property(watchedepisodes)]$INFO[ListItem.Property(totalepisodes), of ,] $LOCALIZE[16102],1120)</onright>
+
+        <onright condition="$PARAM[condition]">SetFocus(7001)</onright>
+        <onright condition="$PARAM[condition]">ActivateWindow(1120)</onright>
+        <onright condition="$PARAM[condition]">SetFocus(4000)</onright>
+    </include>
+
+    <include name="Action_VideoInfo_Cast_OnRight">
+        <onright condition="$PARAM[condition]">SetProperty(Item_Title,$VAR[Label_Title],1122)</onright>
+        <onright condition="$PARAM[condition]">SetProperty(Item_Query,$VAR[Path_Param_Query],1122)</onright>
+        <onright condition="$PARAM[condition]">SetProperty(Item_Type,$VAR[Path_Param_Type],1122)</onright>
+
+        <include content="Acting_SetImage_OnRight">
+            <param name="condition">$PARAM[condition]</param>
+        </include>
+
+        <onright condition="$PARAM[condition]">SetProperty(Episodes_Label,$INFO[ListItem.Property(watchedepisodes)]$INFO[ListItem.Property(totalepisodes), of ,] $LOCALIZE[16102],1122)</onright>
+
+        <onright condition="$PARAM[condition]">SetFocus(7001)</onright>
+        <onright condition="$PARAM[condition]">ActivateWindow(1122)</onright>
+        <onright condition="$PARAM[condition]">SetFocus(4000)</onright>
+    </include>
+
+    <include name="Action_Info_Cast_OnClick">
+        <onclick>SetProperty(Item_Title,$VAR[Label_Title],1121)</onclick>
+        <onclick>SetProperty(Item_Query,$VAR[Path_Param_Query],1121)</onclick>
+        <onclick>SetProperty(Item_Type,$VAR[Path_Param_Type],1121)</onclick>
+        <onclick>SetProperty(Item_Year,$INFO[ListItem.Year],1121)</onclick>
+
+        <onclick>SetProperty(Genre_Title,$INFO[Container(99950).ListItem.Property(Genre.1.Name)]$INFO[Container(99950).ListItem.Property(Genre.2.Name), / ,]$INFO[Container(99950).ListItem.Property(Genre.3.Name), / ,],1121)</onclick>
+        <onclick>SetProperty(Genre_Query,$INFO[Container(99950).ListItem.Property(Genre.1.TMDB_ID),&amp;with_separator=AND&amp;with_id=True&amp;with_genres=,]$INFO[Container(99950).ListItem.Property(Genre.2.TMDB_ID), / ,]$INFO[Container(99950).ListItem.Property(Genre.3.TMDB_ID), / ,],1121)</onclick>
+
+        <onclick>SetFocus(7001)</onclick>
+        <onclick>ActivateWindow(1121)</onclick>
+        <onclick>SetFocus(4000)</onclick>
+    </include>
+
+    <include name="Action_SetCustomShortcut_OnClick">
+        <onclick condition="Skin.String(CustomShortcut.Item$PARAM[id],movies)">RunScript(script.skinshortcuts,type=shortcuts&amp;custom=True&amp;showNone=True&amp;skinAction=CustomShortcut.Movies)</onclick>
+        <onclick condition="Skin.String(CustomShortcut.Item$PARAM[id],tvshows)">RunScript(script.skinshortcuts,type=shortcuts&amp;custom=True&amp;showNone=True&amp;skinAction=CustomShortcut.TVShows)</onclick>
+        <onclick condition="Skin.String(CustomShortcut.Item$PARAM[id],music)">RunScript(script.skinshortcuts,type=shortcuts&amp;custom=True&amp;showNone=True&amp;skinAction=CustomShortcut.Music)</onclick>
+        <onclick condition="Skin.String(CustomShortcut.Item$PARAM[id],livetv)">RunScript(script.skinshortcuts,type=shortcuts&amp;custom=True&amp;showNone=True&amp;skinAction=CustomShortcut.PVR)</onclick>
+        <onclick condition="Skin.String(CustomShortcut.Item$PARAM[id],addons)">RunScript(script.skinshortcuts,type=shortcuts&amp;custom=True&amp;showNone=True&amp;skinAction=CustomShortcut.Addons)</onclick>
+        <onclick condition="Skin.String(CustomShortcut.Item$PARAM[id],videos)">RunScript(script.skinshortcuts,type=shortcuts&amp;custom=True&amp;showNone=True&amp;skinAction=CustomShortcut.Videos)</onclick>
+        <onclick condition="Skin.String(CustomShortcut.Item$PARAM[id],pictures)">RunScript(script.skinshortcuts,type=shortcuts&amp;custom=True&amp;showNone=True&amp;skinAction=CustomShortcut.Pictures)</onclick>
+        <onclick condition="Skin.String(CustomShortcut.Item$PARAM[id],custom)">RunScript(script.skinshortcuts,type=shortcuts&amp;custom=True&amp;showNone=True&amp;skinAction=CustomShortcut.Custom$PARAM[id]&amp;skinLabel=CustomShortcut.Custom$PARAM[id].Label&amp;skinThumbnail=CustomShortcut.Custom$PARAM[id].Icon)</onclick>
+        <label2>$VAR[Label_Setting_Item$PARAM[id]_Action]</label2>
+        <enable>!Skin.String(CustomShortcut.Item$PARAM[id],weather)</enable>
+    </include>
+
+    <include name="Action_SetCustomHub_OnClick">
+        <onclick condition="Skin.String(CustomShortcut.Item$PARAM[id],movies)">RunScript(script.skinshortcuts,type=manage&amp;group=moviemenu)</onclick>
+        <onclick condition="Skin.String(CustomShortcut.Item$PARAM[id],tvshows)">RunScript(script.skinshortcuts,type=manage&amp;group=tvshowmenu)</onclick>
+        <onclick condition="Skin.String(CustomShortcut.Item$PARAM[id],music)">RunScript(script.skinshortcuts,type=manage&amp;group=musicmenu)</onclick>
+        <onclick condition="Skin.String(CustomShortcut.Item$PARAM[id],livetv)">RunScript(script.skinshortcuts,type=manage&amp;group=pvrmenu)</onclick>
+        <enable>[String.IsEmpty(Skin.String(CustomShortcut.Movies)) | !Skin.String(CustomShortcut.Item$PARAM[id],movies)] + [String.IsEmpty(Skin.String(CustomShortcut.TVShows)) | !Skin.String(CustomShortcut.Item$PARAM[id],tvshows)] + [String.IsEmpty(Skin.String(CustomShortcut.Music)) | !Skin.String(CustomShortcut.Item$PARAM[id],music)] + [String.IsEmpty(Skin.String(CustomShortcut.PVR)) | !Skin.String(CustomShortcut.Item$PARAM[id],livetv)] + !Skin.String(CustomShortcut.Item$PARAM[id],weather) + !Skin.String(CustomShortcut.Item$PARAM[id],pictures) + !Skin.String(CustomShortcut.Item$PARAM[id],addons) + !Skin.String(CustomShortcut.Item$PARAM[id],videos)</enable>
+        <visible>!Skin.String(CustomShortcut.Item$PARAM[id],custom)</visible>
+    </include>
+
+    <include name="Action_View_Movement_OnUp">
+        <onup>ActivateWindow(1113)</onup>
+        <!-- <onup>SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onup>
+        <onup>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onup> -->
+    </include>
+
+    <include name="Action_View_Movement_OnLeft">
+        <onleft>SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onleft>
+        <onleft>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onleft>
+    </include>
+
+    <include name="Action_View_Movement_OnRight">
+        <onright>SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onright>
+        <onright>SetFocus($PARAM[id],0,absolute)</onright>
+        <onright>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onright>
+    </include>
+
+    <include name="Action_View_Movement_OnBack">
+        <onback condition="!Integer.IsEqual(Container($PARAM[id]).CurrentItem,1) + !Integer.IsEqual(Container($PARAM[id]).CurrentItem,0)">62</onback>
+        <onback condition="!Integer.IsEqual(Container($PARAM[id]).CurrentItem,1) + !Integer.IsEqual(Container($PARAM[id]).CurrentItem,0)">AlarmClock(refocus,SetFocus($PARAM[id],0,absolute),00:00,silent)</onback>
+    </include>
+
+    <include name="Action_SkinShortcuts_ContentType_AutoSetOnFocus">
+        <onfocus condition="String.IsEmpty(Container(211).ListItem.Property(widgetTarget))">SetProperty(customProperty,widgetTarget)</onfocus>
+        <onfocus condition="String.IsEmpty(Container(211).ListItem.Property(widgetTarget))">SetProperty(customValue,$VAR[Action_SkinShortcuts_ContentType])</onfocus>
+        <onfocus condition="String.IsEmpty(Container(211).ListItem.Property(widgetTarget))">SendClick(404)</onfocus>
+    </include>
+    <include name="Action_SkinShortcuts_ContentType_AutoSetOnUnFocus">
+        <onunfocus condition="String.IsEmpty(Container(211).ListItem.Property(widgetTarget))">SetProperty(customProperty,widgetTarget)</onunfocus>
+        <onunfocus condition="String.IsEmpty(Container(211).ListItem.Property(widgetTarget))">SetProperty(customValue,$VAR[Action_SkinShortcuts_ContentType])</onunfocus>
+        <onunfocus condition="String.IsEmpty(Container(211).ListItem.Property(widgetTarget))">SendClick(404)</onunfocus>
+    </include>
+
+    <variable name="Action_SkinShortcuts_ContentType">
+        <value condition="String.StartsWith(Container(211).ListItem.Label2,Video)">videos</value>
+        <value condition="String.StartsWith(Container(211).ListItem.Label2,Music)">music</value>
+        <value condition="String.StartsWith(Container(211).ListItem.Label2,Program)">programs</value>
+        <value condition="String.StartsWith(Container(211).ListItem.Label2,Picture)">pictures</value>
+        <value condition="String.StartsWith(Container(211).ListItem.Label2,PVR)">tvguide</value>
+        <value condition="String.Contains(Container(211).ListItem.Property(path),Videos)">videos</value>
+        <value condition="String.Contains(Container(211).ListItem.Property(path),Music)">music</value>
+        <value condition="String.Contains(Container(211).ListItem.Property(path),Programs)">programs</value>
+        <value condition="String.Contains(Container(211).ListItem.Property(path),Pictures)">pictures</value>
+        <value condition="String.Contains(Container(211).ListItem.Property(path),pvr://)">tvguide</value>
+    </variable>
+
+    <include name="Action_OSD_Button_OnFocus">
+        <onfocus condition="!String.IsEmpty(Skin.String(OSD_Timeout))">AlarmClock(osd_timeout,SetFocus(99997),$INFO[Skin.String(OSD_Timeout),00:,],silent)</onfocus>
+        <onunfocus>CancelAlarm(osd_timeout,true)</onunfocus>
+    </include>
+
+
+    <include name="Action_OptionsMenu_Default">
+        <param name="id" default="50" />
+        <definition>
+            <onleft>$PARAM[id]</onleft>
+            <onright>$PARAM[id]</onright>
+            <onback>$PARAM[id]</onback>
+        </definition>
+    </include>
+
+    <include name="Action_OptionsMenu_PVRGuide">
+        <onleft>10</onleft>
+        <onright>10</onright>
+    </include>
+
+    <include name="Action_OptionsMenu_ButtonMenu">
+        <onleft>Close</onleft>
+        <onright>Close</onright>
+    </include>
+
+    <include name="Action_Row_OnDown">
+        <ondown condition="$EXP[Exp_AlphabetTypes_Only] + !Skin.HasSetting(DisableAlphabetScrollbar)">65</ondown>
+        <ondown condition="!$EXP[Exp_AlphabetTypes_Only] | Skin.HasSetting(DisableAlphabetScrollbar)">60</ondown>
+    </include>
+
+    <include name="Action_Row_WallView_OnDown">
+        <ondown condition="[Container.HasNext | Container.HasPrevious] + [Control.IsVisible(50) | Control.IsVisible(51) | Control.IsVisible(52) | Control.IsVisible(57)]">SetProperty(WallMode,$INFO[Container.FolderPath])</ondown>
+        <ondown condition="[Container.HasNext | Container.HasPrevious] + Control.IsVisible(50)">SetFocus(506)</ondown>
+        <ondown condition="[Container.HasNext | Container.HasPrevious] + Control.IsVisible(51)">SetFocus(516)</ondown>
+        <ondown condition="[Container.HasNext | Container.HasPrevious] + Control.IsVisible(52)">SetFocus(526)</ondown>
+        <ondown condition="[Container.HasNext | Container.HasPrevious] + Control.IsVisible(57)">SetFocus(576)</ondown>
+    </include>
+
+    <include name="Action_Widget_Refocus_Click">
+        <onclick>SetFocus(5004)</onclick>
+        <onclick>SetFocus(5003)</onclick>
+        <onclick>SetFocus(5002)</onclick>
+        <onclick>SetFocus(5001)</onclick>
+        <onclick>SetFocus(5000)</onclick>
+    </include>
+
+    <include name="Action_Widget_Play_Click">
+        <include>Action_Widget_Refocus_Click</include>
+        <onclick>Close</onclick>
+        <onclick condition="!Window.IsVisible(MyVideoNav.xml)">AlarmClock(callinfo,RunScript(plugin.video.themoviedb.helper,close_dialog=1190,call_path=$INFO[Container($PARAM[id]).ListItem.FolderPath]),00:01,silent)</onclick>
+        <onclick condition="Window.IsVisible(MyVideoNav.xml)">AlarmClock(callinfo,RunScript(plugin.video.themoviedb.helper,close_dialog=1190,call_update=$INFO[Container($PARAM[id]).ListItem.FolderPath]),00:01,silent)</onclick>
+    </include>
+
+
+    <include name="Action_Settings_Onload">
+        <onload condition="Window.IsActive(skinsettings)">SetFocus(30001)</onload>
+        <onload condition="Window.IsActive(interfacesettings)">SetFocus(30002)</onload>
+        <onload condition="Window.IsActive(mediasettings)">SetFocus(30003)</onload>
+        <onload condition="Window.IsActive(playersettings)">SetFocus(30004)</onload>
+        <onload condition="Window.IsActive(systemsettings)">SetFocus(30005)</onload>
+        <onload condition="Window.IsActive(servicesettings)">SetFocus(30006)</onload>
+        <onload condition="Window.IsActive(pvrsettings)">SetFocus(30007)</onload>
+        <onload condition="Window.IsActive(systeminfo)">SetFocus(30008)</onload>
+        <onload condition="Window.IsActive(profiles)">SetFocus(30009)</onload>
+    </include>
+
+
+    <include name="_Action_Blur_Onload">
+        <param name="sourceimage">Art(fanart)</param>
+        <definition>
+            <onload>SetProperty(TMDbHelper.Blur.SourceImage,$PARAM[sourceimage],Home)</onload>
+            <onload>SetProperty(TMDbHelper.Blur.Fallback,$VAR[Image_SimpleBackground],Home)</onload>
+        </definition>
+    </include>
+    <include name="Action_Blur_Onload">
+        <include content="_Action_Blur_Onload">
+            <param name="sourceimage">Art(fanart)|Property(fanart)|Art(profile)</param>
+        </include>
+    </include>
+
+    <include name="_Action_Blur_OnUnload">
+        <param name="sourceimage">Art(fanart)</param>
+        <definition>
+            <onunload>SetProperty(TMDbHelper.Blur.SourceImage,$PARAM[sourceimage],Home)</onunload>
+            <onunload>SetProperty(TMDbHelper.Blur.Fallback,$VAR[Image_SimpleBackground],Home)</onunload>
+        </definition>
+    </include>
+    <include name="Action_Blur_OnUnload">
+        <include content="_Action_Blur_OnUnload">
+            <param name="sourceimage">Art(fanart)|Property(fanart)|Art(profile)</param>
+        </include>
+    </include>
+
+
+
+    <include name="Action_BuildTextures_Onload">
+        <onload>RunScript(script.texturemaker,bg=$VAR[ColorHighlight],fg=$VAR[ColorGradient],alpha=1.0,folder=ArcticFuse,selectbox=special://skin/extras/textures/selectbox.png,selectbox_thin=special://skin/extras/textures/selectbox_thin.png,scrollv=special://skin/extras/textures/scrollv.png,scrollh=special://skin/extras/textures/scrollh.png,underline=special://skin/extras/textures/underline.png,box=special://skin/extras/textures/box.png,circle=special://skin/extras/textures/circle.png,menu=special://skin/extras/textures/menu.png,menumain+overlay+slicing{240|80}=special://skin/extras/textures/menumain.png,buttonmain+slicing{240|80}=special://skin/extras/textures/menumain.png,main=special://skin/extras/textures/main.png,circlebutton+overlay=special://skin/extras/textures/circlebutton.png,circlebuttondialog=special://skin/extras/textures/circlebutton.png,squarebutton+overlay=special://skin/extras/textures/squarebutton.png,glow=special://skin/extras/textures/glow.png,no_reload)</onload>
+    </include>
+    <include name="Action_BuildTextures_Onclick">
+        <onclick condition="!String.IsEqual(Window(Home).Property(ColorPicker_Type),Indicator)">runscript(script.texturemaker,bg=$VAR[ColorHighlight],fg=$VAR[ColorGradient],alpha=1.0,folder=ArcticFuse,selectbox=special://skin/extras/textures/selectbox.png,selectbox_thin=special://skin/extras/textures/selectbox_thin.png,scrollv=special://skin/extras/textures/scrollv.png,scrollh=special://skin/extras/textures/scrollh.png,underline=special://skin/extras/textures/underline.png,box=special://skin/extras/textures/box.png,circle=special://skin/extras/textures/circle.png,menu=special://skin/extras/textures/menu.png,menumain+overlay+slicing{240|80}=special://skin/extras/textures/menumain.png,buttonmain+slicing{240|80}=special://skin/extras/textures/menumain.png,main=special://skin/extras/textures/main.png,circlebutton+overlay=special://skin/extras/textures/circlebutton.png,circlebuttondialog=special://skin/extras/textures/circlebutton.png,squarebutton+overlay=special://skin/extras/textures/squarebutton.png,glow=special://skin/extras/textures/glow.png,reload=1111)</onclick>
+    </include>
+    <include name="Action_BuildTextures_Onclick_Preset">
+        <onclick>runscript(script.texturemaker,bg=$VAR[ColorHighlight],fg=$VAR[ColorGradient],alpha=1.0,folder=ArcticFuse,selectbox=special://skin/extras/textures/selectbox.png,selectbox_thin=special://skin/extras/textures/selectbox_thin.png,scrollv=special://skin/extras/textures/scrollv.png,scrollh=special://skin/extras/textures/scrollh.png,underline=special://skin/extras/textures/underline.png,box=special://skin/extras/textures/box.png,circle=special://skin/extras/textures/circle.png,menu=special://skin/extras/textures/menu.png,menumain+overlay+slicing{240|80}=special://skin/extras/textures/menumain.png,buttonmain+slicing{240|80}=special://skin/extras/textures/menumain.png,main=special://skin/extras/textures/main.png,circlebutton+overlay=special://skin/extras/textures/circlebutton.png,circlebuttondialog=special://skin/extras/textures/circlebutton.png,squarebutton+overlay=special://skin/extras/textures/squarebutton.png,glow=special://skin/extras/textures/glow.png,reload=1115)</onclick>
+    </include>
+</includes>

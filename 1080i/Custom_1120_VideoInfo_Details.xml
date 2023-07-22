@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window type="dialog" id="1120">
+    <onload>SetFocus(5001,0,absolute)</onload>
+    <onload>SetFocus(5002,0,absolute)</onload>
+    <onload>SetFocus(5003,0,absolute)</onload>
+    <onload>SetFocus(5004,0,absolute)</onload>
+    <onload>SetFocus(5005,0,absolute)</onload>
+    <onload>SetFocus(7000,0,absolute)</onload>
+    <onload>ClearProperty(TMDbHelper.WidgetContainer)</onload>
+    <onload>ClearProperty(TMDbHelper.Image.Override,Home)</onload>
+    <controls>
+
+        <include>Defs_TMDbHelper_Loader</include>
+
+        <include content="DialogInfo_Main_Group">
+            <control type="group">
+                <animation effect="fade" start="100" end="0" condition="!ControlGroup(5000).HasFocus()">Conditional</animation>
+                <control type="image">
+                    <texture colordiffuse="$VAR[ColorBackground]">common/white.png</texture>
+                </control>
+                <include>Background_Main</include>
+            </control>
+
+            <control type="grouplist" id="5000">
+
+                <onup>SetFocus($INFO[System.CurrentControlID],0,absolute)</onup>
+                <onup>7000</onup>
+                <ondown>SetFocus($INFO[System.CurrentControlID],0,absolute)</ondown>
+                <ondown>7000</ondown>
+
+                <animation type="WindowOpen" reversible="false">
+                    <effect type="fade" start="0" end="100" time="300" delay="0" tween="sine" easing="out"/>
+                    <effect type="slide" start="320" end="0" time="400" delay="0" tween="cubic" easing="out" />
+                </animation>
+
+                <top>500</top>
+
+                <animation effect="slide" start="420" end="0" tween="quadratic" easing="out" time="400" reversible="false" condition="ControlGroup(5000).HasFocus()">Conditional</animation>
+                <animation effect="slide" start="0" end="420" tween="quadratic" easing="out" time="400" reversible="false" condition="!ControlGroup(5000).HasFocus()">Conditional</animation>
+                <orientation>vertical</orientation>
+
+                <control type="group" id="5999">
+                    <height>widget_tbump_h</height>
+                </control>
+                <include content="DialogInfo_WidgetRow">
+                    <param name="id">01</param>
+                    <param name="secondary_label">$INFO[Window.Property(Director_Label)]</param>
+                    <param name="label">$LOCALIZE[20339]</param>
+                    <param name="include">List_Landscape_Row</param>
+                    <param name="visible">[!String.IsEmpty(Window.Property(Director_Query)) + [String.IsEqual(Container(7000).ListItem.Label,$LOCALIZE[20339])]]</param>
+                    <content>plugin://plugin.video.themoviedb.helper/?info=crew_in_both&amp;type=person&amp;filter_key=job&amp;filter_value=Director$INFO[Window.Property(Director_Query)]$VAR[Path_Param_Widget]</content>
+                    <include>Action_Recommendations_OnClick</include>
+                </include>
+                <include content="DialogInfo_WidgetRow">
+                    <param name="id">02</param>
+                    <param name="secondary_label">$INFO[Window.Property(Writer_Label)]</param>
+                    <param name="label">$LOCALIZE[20417]</param>
+                    <param name="include">List_Landscape_Row</param>
+                    <param name="visible">[!String.IsEmpty(Window.Property(Writer_Query)) + [String.IsEqual(Container(7000).ListItem.Label,$LOCALIZE[20417])]]</param>
+                    <content>plugin://plugin.video.themoviedb.helper/?info=crew_in_both&amp;type=person&amp;filter_key=department&amp;filter_value=Writing$INFO[Window.Property(Writer_Query)]$VAR[Path_Param_Widget]</content>
+                    <include>Action_Recommendations_OnClick</include>
+                </include>
+                <include content="DialogInfo_WidgetRow">
+                    <param name="id">03</param>
+                    <param name="secondary_label">$INFO[Window.Property(Creator_Label)]</param>
+                    <param name="label">$LOCALIZE[31065]</param>
+                    <param name="include">List_Landscape_Row</param>
+                    <param name="visible">[!String.IsEmpty(Window.Property(Creator_Query)) + [String.IsEqual(Container(7000).ListItem.Label,$LOCALIZE[31065])]]</param>
+                    <content>plugin://plugin.video.themoviedb.helper/?info=crew_in_both&amp;type=person&amp;filter_key=department&amp;filter_value=Creator$INFO[Window.Property(Creator_Query)]$VAR[Path_Param_Widget]</content>
+                    <include>Action_Recommendations_OnClick</include>
+                </include>
+                <include content="DialogInfo_WidgetRow">
+                    <param name="id">04</param>
+                    <param name="secondary_label">$INFO[Window.Property(Studio_Label)]</param>
+                    <param name="label">$LOCALIZE[572]</param>
+                    <param name="include">List_Landscape_Row</param>
+                    <param name="visible">[!String.IsEmpty(Window.Property(Studio_Query)) + [String.IsEqual(Container(7000).ListItem.Label,$LOCALIZE[572])]]</param>
+                    <content>plugin://plugin.video.themoviedb.helper/?info=discover$INFO[Window.Property(Studio_Query)]$VAR[Path_Param_Widget]</content>
+                    <include>Action_Recommendations_OnClick</include>
+                </include>
+
+                <include content="DialogInfo_WidgetRow">
+                    <param name="id">05</param>
+                    <param name="secondary_label">$LOCALIZE[31196]</param>
+                    <param name="label">$LOCALIZE[20360]</param>
+                    <param name="include">List_Landscape_Row</param>
+                    <param name="visible">[String.IsEqual(Window.Property(Item_Type),type=tv) + [String.IsEqual(Container(7000).ListItem.Label,$LOCALIZE[20360])]]</param>
+                    <content target="videos">plugin://plugin.video.themoviedb.helper/?info=trakt_upnext&amp;tmdb_type=tv$INFO[Window.Property(Item_Query)]$VAR[Path_Param_Widget]</content>
+                </include>
+            </control>
+
+            <control type="group">
+                <include>Dimension_Info</include>
+                <include content="Info_Panel">
+                    <param name="titlelabel">$VAR[Label_Title_Container]</param>
+                    <param name="container">Container.</param>
+                    <param name="plotlabel">$VAR[Label_Plot_Container]</param>
+                    <width>info_panel_w</width>
+                    <visible>ControlGroup(5000).HasFocus()</visible>
+                </include>
+                <control type="group">
+                    <top>390</top>
+                    <include content="List_Button_Row">
+                        <param name="id">7000</param>
+                        <param name="orientation">vertical</param>
+                        <param name="offset_x">60</param>
+                        <param name="offset_y">25</param>
+                        <param name="item_h">80</param>
+                        <param name="itemlayout_h">80</param>
+                        <param name="item_w">400</param>
+                        <param name="itemlayout_w">x60</param>
+                        <param name="itemlayout_include">Layout_InfoDialog_Details</param>
+
+                        <onleft>Close</onleft>
+
+                        <!-- <include content="Acting_SetImage_Reverse_OnRight">
+                            <param name="condition">true</param>
+                        </include> -->
+                        <onright>SetFocus(5000)</onright>
+                        <onfocus>ClearProperty(TMDbHelper.WidgetContainer)</onfocus>
+
+                        <left>-x08</left>
+                        <top>-x04</top>
+                        <width>x60</width>
+                        <height>345</height>
+
+                        <preloaditems>0</preloaditems>
+                        <focusposition>1</focusposition>
+                        <movement>2</movement>
+
+                        <include content="Animation_Reposition">
+                            <param name="id">7000</param>
+                            <param name="slide_y">-x08</param>
+                        </include>
+
+                        <visible allowhiddenfocus="true">!ControlGroup(5000).HasFocus()</visible>
+
+                        <content>
+                            <item>
+                                <label2>$INFO[Window.Property(Director_Label)]</label2>
+                                <label>$LOCALIZE[20339]</label>
+                                <icon>$INFO[Window.Property(Director_Image)]</icon>
+                                <property name="icon">special://skin/extras/icons/video-addons.png</property>
+
+                                <onclick>runscript(script.wikipedia,wikipedia=$INFO[Window.Property(Director_Label)],tmdb_type=person)</onclick>
+                                <!-- <include content="Action_Recommendations_OnClick">
+                                    <param name="path">add_path=plugin://plugin.video.themoviedb.helper/?info=details&amp;type=person$INFO[Window.Property(Director_Query)]</param>
+                                </include> -->
+                                <visible>!String.IsEmpty(Window.Property(Director_Query))</visible>
+                            </item>
+                            <item>
+                                <label2>$INFO[Window.Property(Writer_Label)]</label2>
+                                <label>$LOCALIZE[20417]</label>
+                                <icon>$INFO[Window.Property(Writer_Image)]</icon>
+                                <property name="icon">special://skin/extras/icons/write.png</property>
+                                <visible>!String.IsEmpty(Window.Property(Writer_Query))</visible>
+                                <onclick>runscript(script.wikipedia,wikipedia=$INFO[Window.Property(Writer_Label)],tmdb_type=person)</onclick>
+                                <!-- <include content="Action_Recommendations_OnClick">
+                                    <param name="path">add_path=plugin://plugin.video.themoviedb.helper/?info=details&amp;type=person$INFO[Window.Property(Writer_Query)]</param>
+                                </include> -->
+                                <visible>!String.IsEmpty(Window.Property(Writer_Query))</visible>
+                            </item>
+                            <item>
+                                <label2>$INFO[Window.Property(Creator_Label)]</label2>
+                                <label>$LOCALIZE[31065]</label>
+                                <icon>$INFO[Window.Property(Creator_Image)]</icon>
+                                <property name="icon">special://skin/extras/icons/person.png</property>
+                                <visible>!String.IsEmpty(Window.Property(Creator_Query))</visible>
+                                <onclick>runscript(script.wikipedia,wikipedia=$INFO[Window.Property(Creator_Label)],tmdb_type=person)</onclick>
+                                <!-- <include content="Action_Recommendations_OnClick">
+                                    <param name="path">add_path=plugin://plugin.video.themoviedb.helper/?info=details&amp;type=person$INFO[Window.Property(Creator_Query)]</param>
+                                </include> -->
+                                <visible>!String.IsEmpty(Window.Property(Creator_Query))</visible>
+                            </item>
+                            <item>
+                                <label2>$INFO[Window.Property(Studio_Label)]</label2>
+                                <label>$LOCALIZE[572]</label>
+                                <icon>$INFO[Window.Property(Studio_Image)]</icon>
+                                <property name="icon">special://skin/extras/icons/director.png</property>
+                                <onclick>runscript(script.wikipedia,wikipedia=$INFO[Window.Property(Studio_Label)])</onclick>
+                                <visible>!String.IsEmpty(Window.Property(Studio_Query))</visible>
+                            </item>
+                            <item>
+                                <label2>$INFO[Window.Property(Episodes_Label)]</label2>
+                                <label>$LOCALIZE[20360]</label>
+                                <icon>$INFO[Window.Property(Seasons_Image)]</icon>
+                                <property name="icon">special://skin/extras/icons/tv.png</property>
+                                <visible>String.IsEqual(Window.Property(Item_Type),type=tv)</visible>
+                            </item>
+                        </content>
+                    </include>
+                </control>
+            </control>
+
+
+
+            <control type="group">
+                <visible>ControlGroup(5000).HasFocus()</visible>
+                <include content="DialogInfo_ButtonGroup">
+                    <param name="include">Items_DialogVideoInfo_MenuBar</param>
+                </include>
+                <include content="Furniture_Top">
+                    <param name="label">Information</param>
+                </include>
+                <include content="Info_Providers">
+                    <centerbottom>100</centerbottom>
+                    <left>view_top</left>
+                </include>
+                <include content="Info_Studio">
+                    <centerbottom>100</centerbottom>
+                    <right>view_pad</right>
+                </include>
+            </control>
+        </include>
+
+    </controls>
+</window>

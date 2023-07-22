@@ -1,0 +1,735 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<includes>
+
+    <include name="Home_Controls">
+        <include>Defs_TMDbHelper_Loader</include>
+        <include>Background_Main</include>
+        <include>Background_Transition</include>
+        <include>Home_Fullscreen_Widget_List</include>
+        <include>Home_Widgets</include>
+        <include>Home_Transitions</include>
+        <include>Home_Fade</include>
+        <include>Home_Header</include>
+        <include>Home_Bumper</include>
+        <include>Home_Menu</include>
+        <include>View_Dialog_Plot</include>
+    </include>
+
+    <include name="Home_Transitions">
+        <control type="group">
+            <visible>String.IsEqual(Window(Home).Property(Transition.WidgetStyle),List_Poster_Row)</visible>
+            <include>Transitions_List_Poster_Row</include>
+        </control>
+        <control type="group">
+            <visible>String.IsEqual(Window(Home).Property(Transition.WidgetStyle),List_Landscape_Row)</visible>
+            <include>Transitions_List_Landscape_Row</include>
+        </control>
+        <control type="group">
+            <visible>String.IsEqual(Window(Home).Property(Transition.WidgetStyle),List_Square_Row)</visible>
+            <include>Transitions_List_Square_Row</include>
+        </control>
+    </include>
+
+    <include name="Home_Header">
+        <control type="group">
+            <visible>!$EXP[Exp_InfoDialogs]</visible>
+            <include>Furniture_Top</include>
+        </control>
+    </include>
+
+    <include name="Home_Bumper">
+        <control type="button" id="330">
+            <width>1</width>
+            <height>1</height>
+            <left>-1000</left>
+            <onfocus>SetFocus(320)</onfocus>
+            <onclick>SetFocus(320)</onclick>
+            <visible allowhiddenfocus="true">Control.HasFocus(330)</visible>
+            <animation effect="fade" time="300" start="0" end="0">Focus</animation>
+        </control>
+    </include>
+
+    <include name="Home_Menu_List">
+        <param name="items_include">Home_Menu_Items</param>
+        <param name="onlist">320</param>
+        <definition>
+            <control type="list" id="303">
+                <nested />
+
+                <onup>308</onup>
+                <ondown>309</ondown>
+                <onback>$PARAM[onlist]</onback>
+                <onback>SetFocus($PARAM[onlist])</onback>
+                <onback condition="!Window.IsVisible(Home) + ![Window.IsVisible(1101) | Window.IsVisible(1102) | Window.IsVisible(1103) | Window.IsVisible(1104)]">PreviousMenu</onback>
+                <onback condition="!Window.IsVisible(Home) + [Window.IsVisible(1101) | Window.IsVisible(1102) | Window.IsVisible(1103) | Window.IsVisible(1104)]">ReplaceWindow(Home)</onback>
+                <include content="Action_HomeMenu_OnRightLeft">
+                    <param name="onlist">$PARAM[onlist]</param>
+                </include>
+
+                <left>0</left>
+                <top>260</top>
+                <bottom>300</bottom>
+                <width>400</width>
+                <orientation>vertical</orientation>
+                <scrolltime tween="quadratic">400</scrolltime>
+                <itemlayout height="100" width="400">
+                    <control type="group">
+                        <left>view_pad</left>
+                        <top>40</top>
+                        <bottom>-40</bottom>
+                        <include content="Layout_Home_Menu">
+                            <param name="selected">false</param>
+                            <param name="detailed">Control.HasFocus(303)</param>
+                        </include>
+                    </control>
+                </itemlayout>
+                <focusedlayout height="100" width="400">
+                    <control type="group">
+                        <left>view_pad</left>
+                        <top>40</top>
+                        <bottom>-40</bottom>
+                        <control type="group">
+                            <visible>!Control.HasFocus(303)</visible>
+                            <include content="Layout_Home_Menu">
+                                <param name="selected">false</param>
+                                <param name="detailed">Control.HasFocus(303)</param>
+                            </include>
+                        </control>
+                        <control type="group">
+                            <visible>Control.HasFocus(303)</visible>
+                            <include content="Layout_Home_Menu">
+                                <param name="selected">true</param>
+                                <param name="detailed">Control.HasFocus(303)</param>
+                            </include>
+                        </control>
+                    </control>
+                </focusedlayout>
+                <include>$PARAM[items_include]</include>
+            </control>
+            <control type="grouplist">
+                <nested />
+                <left>0</left>
+                <top>260</top>
+                <bottom>300</bottom>
+                <width>400</width>
+                <orientation>vertical</orientation>
+                <include>Animation_Home_Menu</include>
+                <visible>$EXP[Exp_HomeMenu_HasFocus]</visible>
+                <include content="Layout_Home_Menu_Label">
+                    <param name="detailed">Control.HasFocus(303)</param>
+                    <param name="selected">String.IsEqual(Container(303).ListItemAbsolute(0).Label,Container(303).ListItem.Label)</param>
+                    <param name="label">$INFO[Container(303).ListItemAbsolute(0).Label]</param>
+                </include>
+                <include content="Layout_Home_Menu_Label">
+                    <param name="detailed">Control.HasFocus(303)</param>
+                    <param name="selected">String.IsEqual(Container(303).ListItemAbsolute(1).Label,Container(303).ListItem.Label)</param>
+                    <param name="label">$INFO[Container(303).ListItemAbsolute(1).Label]</param>
+                </include>
+                <include content="Layout_Home_Menu_Label">
+                    <param name="detailed">Control.HasFocus(303)</param>
+                    <param name="selected">String.IsEqual(Container(303).ListItemAbsolute(2).Label,Container(303).ListItem.Label)</param>
+                    <param name="label">$INFO[Container(303).ListItemAbsolute(2).Label]</param>
+                </include>
+                <include content="Layout_Home_Menu_Label">
+                    <param name="detailed">Control.HasFocus(303)</param>
+                    <param name="selected">String.IsEqual(Container(303).ListItemAbsolute(3).Label,Container(303).ListItem.Label)</param>
+                    <param name="label">$INFO[Container(303).ListItemAbsolute(3).Label]</param>
+                </include>
+                <include content="Layout_Home_Menu_Label">
+                    <param name="detailed">Control.HasFocus(303)</param>
+                    <param name="selected">String.IsEqual(Container(303).ListItemAbsolute(4).Label,Container(303).ListItem.Label)</param>
+                    <param name="label">$INFO[Container(303).ListItemAbsolute(4).Label]</param>
+                </include>
+            </control>
+        </definition>
+    </include>
+
+    <include name="Home_Menu_Item_Movies">
+        <item>
+            <label>$LOCALIZE[342]</label>
+            <icon>special://skin/extras/icons/film.png</icon>
+            <property name="expression">movies</property>
+            <onclick>Action(Right)</onclick>
+            <onclick condition="String.IsEmpty(Skin.String(CustomShortcut.Movies))">ActivateWindow(1101)</onclick>
+            <onclick condition="!String.IsEmpty(Skin.String(CustomShortcut.Movies))">$INFO[Skin.String(CustomShortcut.Movies)]</onclick>
+        </item>
+    </include>
+
+    <include name="Home_Menu_Item_TVShows">
+        <item>
+            <label>$LOCALIZE[20343]</label>
+            <icon>special://skin/extras/icons/tv.png</icon>
+            <property name="expression">tvshows</property>
+            <onclick>Action(Right)</onclick>
+            <onclick condition="String.IsEmpty(Skin.String(CustomShortcut.TVShows))">ActivateWindow(1102)</onclick>
+            <onclick condition="!String.IsEmpty(Skin.String(CustomShortcut.TVShows))">$INFO[Skin.String(CustomShortcut.TVShows)]</onclick>
+        </item>
+    </include>
+
+    <include name="Home_Menu_Item_Music">
+        <item>
+            <label>$LOCALIZE[2]</label>
+            <icon>special://skin/extras/icons/songs.png</icon>
+            <property name="expression">music</property>
+            <onclick>Action(Right)</onclick>
+            <onclick condition="String.IsEmpty(Skin.String(CustomShortcut.Music))">ActivateWindow(1103)</onclick>
+            <onclick condition="!String.IsEmpty(Skin.String(CustomShortcut.Music))">$INFO[Skin.String(CustomShortcut.Music)]</onclick>
+        </item>
+    </include>
+
+    <include name="Home_Menu_Item_LiveTV">
+        <item>
+            <label>$LOCALIZE[31085]</label>
+            <icon>special://skin/extras/icons/livetv.png</icon>
+            <property name="expression">livetv</property>
+            <onclick>Action(Right)</onclick>
+            <onclick condition="String.IsEmpty(Skin.String(CustomShortcut.PVR))">ActivateWindow(1104)</onclick>
+            <onclick condition="!String.IsEmpty(Skin.String(CustomShortcut.PVR))">$INFO[Skin.String(CustomShortcut.PVR)]</onclick>
+        </item>
+    </include>
+
+    <include name="Home_Menu_Item_Addons">
+        <item>
+            <label>$LOCALIZE[24001]</label>
+            <icon>special://skin/extras/icons/addons.png</icon>
+            <property name="expression">addons</property>
+            <onclick>Action(Right)</onclick>
+            <onclick condition="String.IsEmpty(Skin.String(CustomShortcut.Addons))">ActivateWindow(1132)</onclick>
+            <onclick condition="!String.IsEmpty(Skin.String(CustomShortcut.Addons))">$INFO[Skin.String(CustomShortcut.Addons)]</onclick>
+        </item>
+    </include>
+
+    <include name="Home_Menu_Item_Videos">
+        <item>
+            <label>$LOCALIZE[10025]</label>
+            <icon>special://skin/extras/icons/video.png</icon>
+            <property name="expression">videos</property>
+            <onclick>Action(Right)</onclick>
+            <onclick condition="String.IsEmpty(Skin.String(CustomShortcut.Videos))">ActivateWindow(videos,-,return)</onclick>
+            <onclick condition="!String.IsEmpty(Skin.String(CustomShortcut.Videos))">$INFO[Skin.String(CustomShortcut.Videos)]</onclick>
+        </item>
+    </include>
+
+    <include name="Home_Menu_Item_Pictures">
+        <item>
+            <label>$LOCALIZE[10002]</label>
+            <icon>special://skin/extras/icons/image.png</icon>
+            <property name="expression">pictures</property>
+            <onclick>Action(Right)</onclick>
+            <onclick condition="String.IsEmpty(Skin.String(CustomShortcut.Pictures))">ActivateWindow(pictures,-,return)</onclick>
+            <onclick condition="!String.IsEmpty(Skin.String(CustomShortcut.Pictures))">$INFO[Skin.String(CustomShortcut.Pictures)]</onclick>
+        </item>
+    </include>
+
+    <include name="Home_Menu_Item_Weather">
+        <item>
+            <label>$LOCALIZE[8]</label>
+            <icon>special://skin/extras/icons/sun.png</icon>
+            <property name="expression">weather</property>
+            <onclick>Action(Right)</onclick>
+            <onclick>ActivateWindow(weather)</onclick>
+        </item>
+    </include>
+
+    <include name="Home_Menu_Item_Custom">
+        <item>
+            <label>$INFO[Skin.String(CustomShortcut.Custom$PARAM[id].Label)]</label>
+            <icon>$INFO[Skin.String(CustomShortcut.Custom$PARAM[id].Icon)]</icon>
+            <property name="expression">custom$PARAM[id]</property>
+            <onclick>Action(Right)</onclick>
+            <onclick>$INFO[Skin.String(CustomShortcut.Custom$PARAM[id])]</onclick>
+            <visible>!String.IsEmpty(Skin.String(CustomShortcut.Custom$PARAM[id]))</visible>
+        </item>
+    </include>
+
+    <include name="Home_Menu_Item_Configure">
+        <item>
+            <label>Add item</label>
+            <icon>special://skin/extras/icons/circle-plus.png</icon>
+            <property name="expression">custom$PARAM[id]</property>
+            <onclick>RunScript(script.skinshortcuts,type=shortcuts&amp;custom=True&amp;showNone=True&amp;skinAction=CustomShortcut.Custom$PARAM[id]&amp;skinLabel=CustomShortcut.Custom$PARAM[id].Label&amp;skinThumbnail=CustomShortcut.Custom$PARAM[id].Icon)</onclick>
+            <visible>String.IsEmpty(Skin.String(CustomShortcut.Custom$PARAM[id]))</visible>
+        </item>
+    </include>
+
+    <include name="Home_Menu_Item">
+        <include condition="Skin.String(CustomShortcut.Item$PARAM[id],movies)">Home_Menu_Item_Movies</include>
+        <include condition="Skin.String(CustomShortcut.Item$PARAM[id],tvshows)">Home_Menu_Item_TVShows</include>
+        <include condition="Skin.String(CustomShortcut.Item$PARAM[id],music)">Home_Menu_Item_Music</include>
+        <include condition="Skin.String(CustomShortcut.Item$PARAM[id],livetv)">Home_Menu_Item_LiveTV</include>
+        <include condition="Skin.String(CustomShortcut.Item$PARAM[id],addons)">Home_Menu_Item_Addons</include>
+        <include condition="Skin.String(CustomShortcut.Item$PARAM[id],pictures)">Home_Menu_Item_Pictures</include>
+        <include condition="Skin.String(CustomShortcut.Item$PARAM[id],weather)">Home_Menu_Item_Weather</include>
+        <include condition="Skin.String(CustomShortcut.Item$PARAM[id],custom)" content="Home_Menu_Item_Custom">
+            <param name="id">$PARAM[id]</param>
+        </include>
+        <include condition="Skin.String(CustomShortcut.Item$PARAM[id],custom) + String.IsEmpty(Skin.String(CustomShortcut.Custom$PARAM[id]))" content="Home_Menu_Item_Configure">
+            <param name="id">$PARAM[id]</param>
+        </include>
+    </include>
+
+    <include name="Home_Menu_Items">
+        <content>
+            <item>
+                <label>$LOCALIZE[10000]</label>
+                <icon>special://skin/extras/icons/home.png</icon>
+                <property name="expression">home</property>
+                <onclick>Action(Right)</onclick>
+                <onclick>ActivateWindow(home)</onclick>
+            </item>
+            <include content="Home_Menu_Item">
+                <param name="id">01</param>
+            </include>
+            <include content="Home_Menu_Item">
+                <param name="id">02</param>
+            </include>
+            <include content="Home_Menu_Item">
+                <param name="id">03</param>
+            </include>
+            <include content="Home_Menu_Item">
+                <param name="id">04</param>
+            </include>
+        </content>
+    </include>
+
+    <include name="Home_Menu_Button_Back">
+        <control type="button" id="$PARAM[id]">
+            <texturenofocus />
+            <include>Texture_KeyboardButton</include>
+            <include content="Dimension_Padding">
+                <param name="pad">-20</param>
+            </include>
+            <nested />
+        </control>
+    </include>
+
+    <include name="Home_Menu_Button_Icon">
+        <param name="focused">$EXP[Exp_HomeMenu_HasFocus]</param>
+        <definition>
+            <control type="group">
+                <nested />
+                <width>40</width>
+                <height>40</height>
+                <control type="image">
+                    <aspectratio>keep</aspectratio>
+                    <bordersize>-4</bordersize>
+                    <texture colordiffuse="main_fg_30">$PARAM[icon]</texture>
+                    <visible>!Control.HasFocus($PARAM[id])</visible>
+                </control>
+                <control type="image">
+                    <aspectratio>keep</aspectratio>
+                    <bordersize>-4</bordersize>
+                    <texture colordiffuse="$VAR[ColorSelected]">$PARAM[icon]</texture>
+                    <visible>Control.HasFocus($PARAM[id])</visible>
+                </control>
+                <control type="group">
+                    <include>Animation_Home_Menu</include>
+                    <visible>$PARAM[focused]</visible>
+                    <control type="label">
+                        <width>200</width>
+                        <left>120</left>
+                        <font>font_main_black</font>
+                        <textcolor>main_fg_30</textcolor>
+                        <label>$PARAM[label]</label>
+                        <visible>!Control.HasFocus($PARAM[id])</visible>
+                    </control>
+                    <control type="label">
+                        <width>200</width>
+                        <left>120</left>
+                        <font>font_main_black</font>
+                        <textcolor>main_fg_100</textcolor>
+                        <label>$PARAM[label]</label>
+                        <visible>Control.HasFocus($PARAM[id])</visible>
+                    </control>
+                </control>
+            </control>
+        </definition>
+    </include>
+
+    <include name="Home_Fade">
+        <param name="visible">!$EXP[Exp_InfoDialogs]</param>
+        <definition>
+            <control type="image">
+                <visible>$PARAM[visible]</visible>
+                <left>-400</left>
+                <width>800</width>
+                <texture border="0,0,400,0" colordiffuse="$VAR[ColorBackgroundFade]">common/dim-side.png</texture>
+            </control>
+        </definition>
+    </include>
+
+    <include name="Home_Menu">
+        <control type="group">
+            <visible>!$EXP[Exp_InfoDialogs]</visible>
+
+            <control type="group">
+                <visible>Control.HasFocus(303) | Control.HasFocus(308) | Control.HasFocus(309)</visible>
+                <include>Animation_Home_Menu</include>
+                <control type="image">
+                    <left>0</left>
+                    <width>880</width>
+                    <texture border="0,0,400,0" colordiffuse="$VAR[ColorBackgroundFade]">common/dim-side.png</texture>
+                </control>
+                <control type="image">
+                    <left>0</left>
+                    <width>720</width>
+                    <texture border="0,0,400,0" colordiffuse="$VAR[ColorBackgroundFade]">common/dim-side.png</texture>
+                </control>
+            </control>
+
+            <control type="group">
+                <!-- Search -->
+                <include content="Home_Menu_Button_Icon">
+                    <param name="id">308</param>
+                    <param name="icon">special://skin/extras/icons/search.png</param>
+                    <param name="label">$LOCALIZE[137]</param>
+                    <include content="Home_Menu_Button_Back">
+                        <param name="id">308</param>
+                        <ondown>SetFocus(303,0,absolute)</ondown>
+                        <onup>309</onup>
+                        <onclick>Action(Right)</onclick>
+                        <onclick>ActivateWindow(1105)</onclick>
+                        <include content="Action_HomeMenu_OnRightLeft">
+                            <param name="onlist">$PARAM[onlist]</param>
+                        </include>
+                    </include>
+                    <left>view_pad</left>
+                    <top>view_pad</top>
+                </include>
+
+                <!-- Settings -->
+                <include content="Home_Menu_Button_Icon">
+                    <param name="id">309</param>
+                    <param name="icon">special://skin/extras/icons/bars.png</param>
+                    <param name="label">$LOCALIZE[33063]</param>
+                    <include content="Home_Menu_Button_Back">
+                        <param name="id">309</param>
+                        <onup>SetFocus(303,9999,absolute)</onup>
+                        <ondown>308</ondown>
+                        <onclick>Action(Right)</onclick>
+                        <onclick>ActivateWindow(shutdownmenu)</onclick>
+                        <include content="Action_HomeMenu_OnRightLeft">
+                            <param name="onlist">$PARAM[onlist]</param>
+                        </include>
+                    </include>
+                    <left>view_pad</left>
+                    <bottom>view_pad</bottom>
+                </include>
+
+                <include content="Home_Menu_List">
+                    <param name="onlist">$PARAM[onlist]</param>
+                </include>
+            </control>
+        </control>
+    </include>
+
+    <include name="Home_Fullscreen_Widget_List">
+        <param name="window_id">Home</param>
+        <param name="content">$INFO[Skin.String(skinshortcuts-mainmenu-widgetPath)]</param>
+        <param name="target">$INFO[Skin.String(skinshortcuts-mainmenu-widgetTarget)]</param>
+        <definition>
+            <control type="wraplist" id="301">
+                <preloaditems>2</preloaditems>
+
+                <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,$PARAM[window_id])</onfocus>
+                <onup>SetFocus(300)</onup>
+                <ondown>SetFocus(300)</ondown>
+                <onback>300</onback>
+                <orientation>horizontal</orientation>
+
+                <scrolltime tween="quadratic">400</scrolltime>
+
+                <hitrect x="0" y="0" w="0" h="0" />
+
+                <include content="Defs_AutoScroll">
+                    <param name="condition">[!ControlGroup(310).HasFocus() + !System.HasAlarm(playtrailer)]</param>
+                </include>
+
+                <itemlayout width="1920" height="1080" />
+                <focusedlayout width="1920" height="1080" />
+
+                <include content="Object_ContentDynamic">
+                    <param name="sortby">$PARAM[sortby]</param>
+                    <param name="sortorder">$PARAM[sortorder]</param>
+                    <param name="target">$PARAM[target]</param>
+                    <param name="limit">$PARAM[limit]</param>
+                    <param name="content">$PARAM[content]</param>
+                </include>
+
+            </control>
+        </definition>
+    </include>
+
+    <include name="Home_Fullscreen_Widget_Group">
+        <param name="window_id">Home</param>
+        <param name="visible">True</param>
+        <definition>
+            <control type="group" id="304">
+                <top>fullscreenwidget_buttongroup_t</top>
+                <height>fullscreenwidget_buttongroup_h</height>
+
+                <include content="Animation_Fade_In">
+                    <param name="condition">[Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + !Integer.IsEqual(Container(301).NumItems,0) + $PARAM[visible]]</param>
+                    <param name="delay">400</param>
+                </include>
+                <include content="Animation_ConditionalFade">
+                    <param name="condition">![Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + !Integer.IsEqual(Container(301).NumItems,0) + $PARAM[visible]]</param>
+                </include>
+
+                <animation effect="slide" tween="quadratic" easing="out" reversible="false" start="0" end="0,fullscreenwidget_buttongroup_s" time="200" condition="!ControlGroup(310).HasFocus()">Conditional</animation>
+                <animation effect="slide" tween="quadratic" easing="out" reversible="false" start="0,fullscreenwidget_buttongroup_s" end="0" time="200" condition="ControlGroup(310).HasFocus()">Conditional</animation>
+
+                <control type="grouplist" id="310">
+                    <orientation>horizontal</orientation>
+                    <onup>330</onup>
+                    <!-- <onup>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onup> -->
+                    <onleft>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onleft>
+                    <onback>303</onback>
+                    <onback>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onback>
+                    <onright condition="Player.HasMedia + String.IsEqual(Player.FileNameAndPath,Container(301).ListItem.Trailer)">PlayerControl(Stop)</onright>
+                    <onright>Control.Move(301,1)</onright>
+                    <!-- <onright condition="!Player.HasMedia + !String.IsEmpty(Container(301).ListItem.Trailer)">AlarmClock(playtrailer,PlayMedia($ESCINFO[Container(301).ListItem.Trailer],False,1),00:03,silent)</onright> -->
+                    <ondown>300</ondown>
+                    <centertop>180</centertop>
+                    <left>140</left>
+                    <height>256</height>
+                    <itemgap>-60</itemgap>
+
+                    <control type="group" id="321">
+                        <left>60</left>
+                        <height>100</height>
+                        <width>100</width>
+                        <centertop>50%</centertop>
+                        <control type="group">
+                            <visible>!Control.HasFocus(311)</visible>
+                            <control type="image">
+                                <texture colordiffuse="main_fg_100">common/circle.png</texture>
+                            </control>
+                            <control type="image">
+                                <bordersize>20</bordersize>
+                                <texture colordiffuse="main_bg_100">$VAR[Image_FullscreenWidget_PlayButton]</texture>
+                            </control>
+                        </control>
+                        <control type="group">
+                            <visible>Control.HasFocus(311)</visible>
+                            <control type="image">
+                                <include>Texture_Circle_Highlight_H</include>
+                            </control>
+                            <control type="image">
+                                <bordersize>20</bordersize>
+                                <texture colordiffuse="$VAR[ColorSelected]">$VAR[Image_FullscreenWidget_PlayButton]</texture>
+                            </control>
+                        </control>
+                    </control>
+
+                    <control type="button" id="311">
+                        <font>font_mini_black</font>
+                        <textcolor>main_fg_70</textcolor>
+                        <focusedcolor>main_fg_100</focusedcolor>
+                        <label>$VAR[Label_FullscreenWidget_PlayButton]</label>
+                        <width>auto</width>
+                        <textoffsetx>80</textoffsetx>
+                        <texturenofocus />
+                        <texturefocus />
+                        <!-- <onfocus condition="!Player.HasMedia + !String.IsEmpty(Container(301).ListItem.Trailer)">AlarmClock(playtrailer,PlayMedia($ESCINFO[Container(301).ListItem.Trailer],False,1),00:03,silent)</onfocus>
+                        <onunfocus>CancelAlarm(playtrailer,silent)</onunfocus>
+                        <onunfocus condition="Player.HasMedia + String.IsEqual(Player.FileNameAndPath,Container(301).ListItem.Trailer)">PlayerControl(Stop)</onunfocus> -->
+                    </control>
+
+                    <include content="Object_Info_Button">
+                        <param name="id">312</param>
+                        <param name="groupid">322</param>
+                        <param name="sliceid">332</param>
+                        <param name="itempad">-20</param>
+                        <param name="label">$VAR[Label_FullscreenWidget_InfoButton]</param>
+                        <param name="icon">$VAR[Image_FullscreenWidget_InfoButton]</param>
+                        <onclick>SetFocus(301)</onclick>
+                        <onclick>Action(Info)</onclick>
+                        <onclick>SetFocus(312)</onclick>
+                        <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,$PARAM[window_id])</onfocus>
+                        <onfocus>SetProperty(FullscreenWidgetRefocus,312,$PARAM[window_id])</onfocus>
+
+                        <!-- <onfocus condition="!Player.HasMedia + !String.IsEmpty(Container(301).ListItem.Trailer)">AlarmClock(playtrailer,PlayMedia($ESCINFO[Container(301).ListItem.Trailer],False,1),00:03,silent)</onfocus>
+                        <onunfocus>CancelAlarm(playtrailer,silent)</onunfocus>
+                        <onunfocus condition="Player.HasMedia + String.IsEqual(Player.FileNameAndPath,Container(301).ListItem.Trailer)">PlayerControl(Stop)</onunfocus> -->
+                    </include>
+                </control>
+            </control>
+
+            <control type="group" id="305">
+                <top>fullscreenwidget_buttongroup_b</top>
+                <height>0</height>
+            </control>
+        </definition>
+    </include>
+
+    <include name="Home_Selector_Widget">
+        <param name="id">300</param>
+        <param name="window_id">home</param>
+        <param name="font">font_main_black</param>
+        <param name="color_fo">main_fg_100</param>
+        <param name="color_nf">main_fg_30</param>
+        <param name="hidden_button">List_ButtonMenu_Row_HiddenButton_Home</param>
+        <definition>
+            <include content="List_ButtonMenu_Row">
+                <param name="id">$PARAM[id]</param>
+                <param name="color_fo">$PARAM[color_fo]</param>
+                <param name="color_nf">$PARAM[color_nf]</param>
+                <param name="itemlayout_w">240</param>
+                <param name="offset_x">40</param>
+                <!-- <param name="offset_x">200</param> -->
+                <param name="control">fixedlist</param>
+                <param name="font">$PARAM[font]</param>
+                <param name="backing">true</param>
+                <param name="hidden_button">$PARAM[hidden_button]</param>
+
+                <nested />
+
+                <focusposition>2</focusposition>
+                <movement>2</movement>
+                <width>1240</width>
+                <left>400</left>
+
+                <preloaditems>0</preloaditems>
+                <height>selectorwidget_h</height>
+                <top>selectorwidget_t</top>
+                <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,$PARAM[window_id])</onfocus>
+
+                <animation effect="slide" start="0" end="-120" condition="Integer.IsEqual(Container($PARAM[id]).NumItems,2) | Integer.IsEqual(Container($PARAM[id]).NumItems,4) | Integer.IsEqual(Container($PARAM[id]).NumItems,6)">Conditional</animation>
+
+                <onleft>$PARAM[id]</onleft>
+                <onright>$PARAM[id]</onright>
+
+                <animation effect="fade" start="0" end="100" time="400" delay="400" reversible="false" condition="[Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)]">Conditional</animation>
+
+                <animation effect="fade" start="100" end="0" time="0" reversible="false" condition="![Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)]">Conditional</animation>
+
+            </include>
+        </definition>
+    </include>
+
+    <include name="Home_Widgets">
+        <control type="group" id="320">
+
+            <include>Animation_View_WindowChange</include>
+
+            <animation type="Conditional" condition="Control.IsVisible(330)" reversible="false">
+                <effect type="slide" end="0,-20" time="60" tween="sine" />
+                <effect type="slide" end="0,20" time="180" tween="sine" delay="80" />
+            </animation>
+
+            <include content="Home_Widgets_Infopanel">
+                <include content="Info_Panel">
+                    <param name="titlelabel">$VAR[Label_Title_C301]</param>
+                    <param name="plotlabel">$VAR[Label_Plot_C301]</param>
+                    <param name="container">Container(301).</param>
+                    <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)</visible>
+                    <visible>!Integer.IsEqual(Container(301).NumItems,0)</visible>
+                </include>
+                <include content="Info_Viewline">
+                    <param name="label">$INFO[Skin.String(skinshortcuts-mainmenu-widgetName)]</param>
+                    <param name="secondary_label">$LOCALIZE[31371] $LOCALIZE[13278]</param>
+                    <param name="sort_condition">True</param>
+                    <param name="sort_descending">False</param>
+                    <left>0</left>
+                    <top>320</top>
+                    <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)</visible>
+                    <visible>!Integer.IsEqual(Container(301).NumItems,0)</visible>
+                </include>
+            </include>
+
+            <control type="group">
+                <include>Animation_Half_WindowChange</include>
+                <control type="grouplist">
+                    <onup>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onup>
+                    <onleft>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onleft>
+                    <onright>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onright>
+                    <onback>303</onback>
+                    <onback>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onback>
+                    <ondown>340</ondown>
+                    <visible>!$EXP[Exp_InfoDialogs]</visible>
+                    <include>Animation_Transition_InfoPanel_Hide</include>
+                    <include>Home_Fullscreen_Widget_Group</include>
+                    <include>Transitions_Down_Visibility</include>
+                    <include content="Home_Selector_Widget">
+                        <content>
+                            <include>skinshortcuts-mainmenu</include>
+                        </content>
+                    </include>
+                    <include content="Hub_Submenu_Grouplist">
+                        <include content="Hub_Submenu_List">
+                            <param name="id">302</param>
+                            <content>
+                                <include>skinshortcuts-submenu</include>
+                            </content>
+                        </include>
+                    </include>
+                </control>
+                <control type="group" id="340">
+                    <include>skinshortcuts-template-widgets</include>
+                </control>
+            </control>
+        </control>
+    </include>
+
+    <include name="Home_Widgets_Infopanel">
+        <param name="visible">True</param>
+        <definition>
+            <control type="group">
+                <width>info_panel_w</width>
+                <height>300</height>
+                <left>view_top</left>
+                <top>view_top</top>
+                <visible>$PARAM[visible]</visible>
+                <include>Animation_Transition_InfoPanel_Cond</include>
+                <nested />
+            </control>
+        </definition>
+    </include>
+
+    <include name="Home_Widgets_Grouplist">
+
+        <control type="grouplist" id="$PARAM[id]">
+
+            <top>500</top>
+
+            <onup>300</onup>
+            <ondown>SetFocus(330)</ondown>
+
+            <onleft>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onleft>
+            <onright>SetFocus($INFO[Window.Property(TMDbHelper.WidgetContainer)],0,absolute)</onright>
+            <onright>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onright>
+
+            <visible>$PARAM[visible]</visible>
+
+            <animation type="Conditional" reversible="false" condition="$PARAM[visible]">
+                <effect type="fade" start="0" end="100" time="300" tween="sine" easing="out"/>
+            </animation>
+            <animation type="Conditional" reversible="false" condition="$PARAM[visible] + Integer.IsGreater(Window.Property(CurrentMainMenuID),$PARAM[mainmenuid])">
+                <effect type="slide" start="-320" end="0" delay="0" time="400" tween="cubic" easing="out" />
+            </animation>
+            <animation type="Conditional" reversible="false" condition="$PARAM[visible] + Integer.IsLess(Window.Property(CurrentMainMenuID),$PARAM[mainmenuid])">
+                <effect type="slide" start="320" end="0" delay="0" time="400" tween="cubic" easing="out" />
+            </animation>
+
+            <animation type="Hidden" reversible="false">
+                <effect type="fade" start="100" end="0" delay="300" time="300" tween="sine" easing="out" />
+            </animation>
+            <animation type="Conditional" reversible="false" condition="!$PARAM[visible]">
+                <effect type="fade" start="100" end="0" time="300" tween="sine" easing="out" />
+            </animation>
+            <animation type="Conditional" reversible="false" condition="!$PARAM[visible] + Integer.IsLess(Container(300).ListItem.Property(id),$PARAM[mainmenuid])">
+                <effect type="slide" end="320" start="0" time="400" tween="cubic" easing="out" />
+            </animation>
+            <animation type="Conditional" reversible="false" condition="!$PARAM[visible] + Integer.IsGreater(Container(300).ListItem.Property(id),$PARAM[mainmenuid])">
+                <effect type="slide" end="-320" start="0" time="400" tween="cubic" easing="out" />
+            </animation>
+
+            <animation effect="slide" time="400" start="0,widget_sbump_h" end="0" tween="quadratic" easing="out" reversible="false" condition="!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)">Conditional</animation>
+
+            <animation effect="slide" time="400" start="0" end="0,widget_sbump_h" tween="quadratic" easing="out" reversible="false" condition="Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)">Conditional</animation>
+
+            <nested />
+        </control>
+    </include>
+</includes>

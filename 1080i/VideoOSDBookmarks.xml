@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window>
+    <defaultcontrol always="true">2</defaultcontrol>
+    <onload>CancelAlarm(osd_timeout,true)</onload>
+    <include>Animation_OSD_Dialog_WindowChange</include>
+    <controls>
+        <control type="group">
+            <visible>!Window.IsActive(1141)</visible>
+            <include>Animation_OSD_Dialog_VisibleChange</include>
+            <include content="OSD_CastInfo_ExpandGroup">
+                <control type="group">
+                    <width>view_landscape_item_w</width>
+                    <height>view_smallposter_item_h</height>
+                    <visible>Integer.IsEqual(Container(11).NumItems,0)</visible>
+                    <include>Object_ItemBack</include>
+                    <control type="image">
+                        <width>128</width>
+                        <height>128</height>
+                        <centerleft>50%</centerleft>
+                        <centertop>50%</centertop>
+                        <texture colordiffuse="panel_fg_70">special://skin/extras/icons/image.png</texture>
+                    </control>
+                </control>
+
+                <!-- Episodes List -->
+                <include content="List_Landscape_Row">
+                    <param name="orientation">horizontal</param>
+                    <param name="control">fixedlist</param>
+                    <param name="id">11</param>
+                    <include>OSD_List_Dimensions</include>
+                    <onup>Close</onup>
+                    <ondown>2</ondown>
+                </include>
+
+                <control type="grouplist">
+                    <height>x08</height>
+                    <bottom>-20</bottom>
+                    <left>-20</left>
+                    <orientation>horizontal</orientation>
+                    <itemgap>40</itemgap>
+                    <onup>11</onup>
+                    <ondown>ActivateWindow(1141)</ondown>
+
+                    <include content="OSD_Button">
+                        <param name="icon" value="special://skin/extras/icons/plus.png" />
+                        <param name="visible" value="Control.IsEnabled(2)" />
+                        <param name="id" value="2" />
+                        <param name="groupid" value="9002" />
+                    </include>
+                    <include content="OSD_Button">
+                        <param name="icon" value="special://skin/extras/icons/trash-can.png" />
+                        <param name="visible" value="Control.IsEnabled(3) + !Integer.IsEqual(Container(11).NumItems,0)" />
+                        <param name="id" value="3" />
+                        <param name="groupid" value="9003" />
+                    </include>
+                    <include content="OSD_Button">
+                        <param name="icon" value="special://skin/extras/icons/image.png" />
+                        <param name="visible" value="Control.IsEnabled(4)" />
+                        <param name="id" value="4" />
+                        <param name="groupid" value="9004" />
+                    </include>
+                </control>
+
+            </include>
+        </control>
+    </controls>
+</window>

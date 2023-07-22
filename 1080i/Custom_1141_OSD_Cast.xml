@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window type="dialog" id="1141">
+    <defaultcontrol always="true">6501</defaultcontrol>
+    <onload>CancelAlarm(osd_timeout,true)</onload>
+    <onload>SetProperty(TMDbHelper.WidgetContainer,6501,1141)</onload>
+    <onload>SetProperty(CastMemberList,plugin://plugin.video.themoviedb.helper/?info=stars_in_both&amp;limit=50&amp;tmdb_type=person&amp;tmdb_id=$INFO[Container(6501).ListItem.Property(TMDb_ID)]$VAR[Path_Param_Widget])</onload>
+    <!-- <onload>ClearProperty(TMDbHelper.WidgetContainer,1141)</onload> -->
+    <onunload>ClearProperty(TMDbHelper.WidgetContainer,1141)</onunload>
+    <include>Animation_OSD_Dialog_WindowChange</include>
+    <controls>
+
+        <include content="Defs_TMDbHelper_Loader">
+            <param name="label">$VAR[Label_Title]</param>
+        </include>
+
+        <include content="OSD_CastInfo_ExpandGroup">
+
+            <visible>!Window.IsVisible(script-wikipedia.xml)</visible>
+            <visible>!$EXP[Exp_InfoDialogs]</visible>
+
+            <!-- Cast Icon -->
+            <control type="group">
+                <height>60</height>
+                <centerbottom>20</centerbottom>
+                <left>0</left>
+                <include content="Object_InfoCircle_Horizontal">
+                    <param name="icon" value="$INFO[Container(6501).ListItem.Icon]" />
+                    <param name="role" value="$INFO[Container(6501).ListItem.Label]" />
+                    <param name="name">$VAR[Label_OSD_CastMember_Appearances]</param>
+                    <param name="max">560</param>
+                    <param name="top_label_left">80</param>
+                    <param name="bottom_label_left">80</param>
+                </include>
+                <!-- Info Box -->
+                <control type="textbox">
+                    <top>-2</top>
+                    <left>480</left>
+                    <width>1080</width>
+                    <label>$INFO[Container(99950).ListItem.Plot]</label>
+                    <font>font_mini_cond</font>
+                    <textcolor>panel_fg_70</textcolor>
+                </control>
+            </control>
+
+            <!-- Cast List -->
+            <include content="List_Poster_Row">
+                <param name="orientation">horizontal</param>
+                <param name="control">fixedlist</param>
+                <param name="id">6501</param>
+                <content>$VAR[Path_OSD_Cast]</content>
+                <include>OSD_List_Dimensions</include>
+                <!-- <onup>6000</onup> -->
+                <onup>Close</onup>
+                <onfocus>SetProperty(TMDbHelper.WidgetContainer,6501,1141)</onfocus>
+                <onunfocus>ClearProperty(TMDbHelper.WidgetContainer,1141)</onunfocus>
+                <onfocus>SetProperty(CastMemberList,plugin://plugin.video.themoviedb.helper/?info=stars_in_both&amp;limit=50&amp;tmdb_type=person&amp;tmdb_id=$INFO[Container(6501).ListItem.Property(TMDb_ID)]$VAR[Path_Param_Widget])</onfocus>
+                <ondown>SetProperty(CastMemberList,plugin://plugin.video.themoviedb.helper/?info=stars_in_both&amp;limit=50&amp;tmdb_type=person&amp;tmdb_id=$INFO[Container(6501).ListItem.Property(TMDb_ID)]$VAR[Path_Param_Widget])</ondown>
+                <ondown>SetFocus(6539)</ondown>
+                <ondown>6539</ondown>
+                <include>Animation_OSD_Dialog_VisibleChange</include>
+                <visible allowhiddenfocus="true">Control.HasFocus(6501)</visible>
+                <include content="Animation_Busy_Fade">
+                    <param name="end">0</param>
+                    <param name="id">6501</param>
+                </include>
+
+                <onclick>SetProperty(OSDExtendedInfo,1,Home)</onclick>
+                <onclick condition="!Player.Paused + !Skin.HasSetting(OSD.DisablePauseOnInfo)">Pause</onclick>
+                <onclick>runscript(script.wikipedia,wikipedia=$INFO[Container(6501).ListItem.Label],tmdb_type=person)</onclick>
+                <!-- <include content="Action_OSD_OpenInfo_OnClick">
+                    <param name="id">6501</param>
+                </include> -->
+            </include>
+
+            <!-- Starring in List -->
+            <include content="List_Poster_Row">
+                <param name="orientation" value="horizontal" />
+                <param name="control" value="fixedlist" />
+                <param name="id" value="6539" />
+                <param name="detailed">true</param>
+                <content>$INFO[Window.Property(CastMemberList)]</content>
+                <include>OSD_List_Dimensions</include>
+                <onunfocus>ClearProperty(TMDbHelper.WidgetContainer,1141)</onunfocus>
+                <onfocus>SetProperty(TMDbHelper.WidgetContainer,6539,1141)</onfocus>
+                <onup>SetFocus(6501)</onup>
+                <include>Animation_OSD_Dialog_VisibleChange</include>
+                <visible allowhiddenfocus="true">Control.HasFocus(6539)</visible>
+                <include content="Animation_Busy_Fade">
+                    <param name="end">0</param>
+                    <param name="id">6539</param>
+                </include>
+                <onclick>SetProperty(OSDExtendedInfo,1,Home)</onclick>
+                <onclick condition="!Player.Paused + !Skin.HasSetting(OSD.DisablePauseOnInfo)">Pause</onclick>
+                <onclick>runscript(script.wikipedia,wikipedia=$INFO[Container(6539).ListItem.Label],tmdb_type=$INFO[Container(6539).ListItem.Property(tmdb_type)])</onclick>
+                <!-- <include content="Action_OSD_OpenInfo_OnClick">
+                    <param name="id">6539</param>
+                </include> -->
+            </include>
+        </include>
+
+        <include content="Widget_Busy">
+            <param name="label">$LOCALIZE[206]...</param>
+            <param name="visible">Container(6501).IsUpdating</param>
+            <height>divider_bottom</height>
+            <bottom>46</bottom>
+            <left>200</left>
+            <visible>!Window.IsVisible(script-wikipedia.xml)</visible>
+            <visible>String.IsEqual(Window.Property(TMDBHelper.WidgetContainer),6501)</visible>
+        </include>
+
+        <include content="Widget_Busy">
+            <param name="label">$LOCALIZE[31415]...</param>
+            <param name="visible">Container(6539).IsUpdating</param>
+            <height>divider_bottom</height>
+            <bottom>46</bottom>
+            <left>200</left>
+            <visible>!Window.IsVisible(script-wikipedia.xml)</visible>
+            <visible>String.IsEqual(Window.Property(TMDBHelper.WidgetContainer),6539)</visible>
+        </include>
+    </controls>
+</window>

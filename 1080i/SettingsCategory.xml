@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window>
+    <include content="Object_DefaultControl" condition="Window.IsVisible(interfacesettings)">
+        <param name="defaultcontrol">30002</param>
+        <param name="always">true</param>
+    </include>
+    <include content="Object_DefaultControl" condition="Window.IsVisible(mediasettings)">
+        <param name="defaultcontrol">30003</param>
+        <param name="always">true</param>
+    </include>
+    <include content="Object_DefaultControl" condition="Window.IsVisible(playersettings)">
+        <param name="defaultcontrol">30004</param>
+        <param name="always">true</param>
+    </include>
+    <include content="Object_DefaultControl" condition="Window.IsVisible(systemsettings)">
+        <param name="defaultcontrol">30005</param>
+        <param name="always">true</param>
+    </include>
+    <include content="Object_DefaultControl" condition="Window.IsVisible(servicesettings)">
+        <param name="defaultcontrol">30006</param>
+        <param name="always">true</param>
+    </include>
+    <include content="Object_DefaultControl" condition="Window.IsVisible(pvrsettings)">
+        <param name="defaultcontrol">30007</param>
+        <param name="always">true</param>
+    </include>
+
+    <onload>RunScript(plugin.video.themoviedb.helper,blur_image=$VAR[Image_SimpleBackground])</onload>
+
+    <onload condition="String.IsEmpty(Window(Home).Property(SettingsChanger.Switch))">SetFocus(3)</onload>
+    <onload condition="!String.IsEmpty(Window(Home).Property(SettingsChanger.Switch))">SetFocus($INFO[Window(Home).Property(SettingsChanger.Switch)])</onload>
+    <onload>ClearProperty(SettingsChanger.Switch,Home)</onload>
+
+    <controls>
+
+        <include content="Background_Main">
+            <param name="plain_background">true</param>
+        </include>
+
+        <include content="Background_Transition">
+            <param name="windowopen_condition">!$EXP[Exp_SettingsDialogs_Prev]</param>
+            <param name="windowclose_condition">!$EXP[Exp_SettingsDialogs_Next]</param>
+        </include>
+
+        <include content="Settings_Dialog">
+            <include content="DialogInfo_ButtonGroup_Basic">
+                <param name="id">9000</param>
+                <param name="dim_visible">false</param>
+                <onright>3</onright>
+                
+                <!-- <include content="Dialog_Side_Button">
+                    <param name="id">01</param>
+                    <param name="label">$LOCALIZE[15067]</param>
+                    <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
+                    <onclick>PreviousMenu</onclick>
+                </include> -->
+                <include content="Dialog_Side_Button">
+                    <param name="id">02</param>
+                    <param name="label">$LOCALIZE[33061]</param>
+                    <param name="icon">special://skin/extras/icons/list-check.png</param>
+                    <onclick>SetFocus(30040)</onclick>
+                </include>
+                <include content="Dialog_Side_Button">
+                    <param name="id">03</param>
+                    <param name="label">$INFO[Control.GEtLabel(20)]</param>
+                    <param name="icon">special://skin/extras/icons/settings.png</param>
+                    <onclick>settingslevelchange</onclick>
+                </include>
+            </include>
+            <include content="Settings_Main_Group">
+                <include content="Settings_Left_Group">
+                    <include content="Settings_Left_Content">
+                        <control type="grouplist" id="3">
+                            <onleft>9000</onleft>
+                            <onup>30032</onup>
+                            <onright>5</onright>
+                            <ondown>20</ondown>
+                        </control>
+                        <!-- <include content="Settings_Level">
+                            <param name="id">20</param>
+                            <param name="onup">3</param>
+                            <param name="ondown">-</param>
+                            <param name="onleft">9000</param>
+                            <param name="onright">30000</param>
+                        </include> -->
+                    </include>
+
+                </include>
+                <include content="Settings_Right_Group">
+                    <include content="Settings_Right_Grouplist">
+                        <param name="id">5</param>
+                        <onleft>3</onleft>
+                        
+                    </include>
+                    <include content="Settings_InfoText">
+                        <param name="id" value="6" />
+                    </include>
+                </include>
+                <include>Settings_KodiVersion</include>
+            </include>
+            <include content="Settings_Changer">
+                <onup>3</onup>
+            </include>
+        </include>
+
+        <include content="Settings_Button">
+            <param name="id" value="10" />
+            <param name="control" value="togglebutton" />
+            <include>Texture_Highlight_ToggleButton_Settings</include>
+            <focusedcolor>$VAR[ColorSettingsToggleButtonText]</focusedcolor>
+            <altfocusedcolor>$VAR[ColorSettingsToggleButtonText]</altfocusedcolor>
+            <width>settings_category_w</width>
+            <description>Default Category Button</description>
+        </include>
+
+        <include content="Settings_Button">
+            <param name="id" value="7" />
+            <param name="control" value="button" />
+            <description>Default Setting Button</description>
+        </include>
+
+        <include content="Settings_Button">
+            <param name="id" value="8" />
+            <param name="control" value="radiobutton" />
+            <description>Default Setting Button</description>
+            <textwidth>settings_radiobutton_text_w</textwidth>
+        </include>
+
+        <include content="Settings_Button">
+            <param name="id" value="9" />
+            <param name="control" value="spincontrolex" />
+            <description>Default Setting Button</description>
+            <textwidth>settings_radiobutton_text_w</textwidth>
+        </include>
+
+        <include content="Settings_Button">
+            <param name="id" value="12" />
+            <param name="control" value="edit" />
+            <description>Default Setting Button</description>
+        </include>
+
+        <include content="Settings_Button">
+            <param name="id" value="13" />
+            <param name="control" value="sliderex" />
+            <description>Default Setting Button</description>
+            <textwidth>settings_slider_text_w</textwidth>
+        </include>
+
+        <include content="Settings_Label">
+            <param name="id" value="14" />
+            <param name="control" value="label" />
+            <description>Default Setting Label</description>
+        </include>
+
+        <include content="Settings_Button">
+            <param name="id" value="15" />
+            <param name="control" value="colorbutton" />
+            <description>Default Setting Button</description>
+        </include>
+
+        <include content="Object_Hidden_Button">
+            <param name="id">20</param>
+            <param name="control">button</param>
+        </include>
+    </controls>
+
+</window>

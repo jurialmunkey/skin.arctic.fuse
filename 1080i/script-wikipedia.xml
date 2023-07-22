@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window type="dialog">
+    <defaultcontrol always="true">9902</defaultcontrol>
+    <onload>SetProperty(TMDbHelper.Image.Override,1,Home)</onload>
+    <!-- <onload>SetProperty(TMDbHelper.ServicePause,1)</onload> -->
+    <onload>ClearProperty(TMDbHelper.ServicePause)</onload>
+    <onload>SetProperty(TMDbHelper.WidgetContainer,9999)</onload>
+    <onload>SetProperty(Wikipedia.Backup.Background,$VAR[Image_Background_Blur],Home)</onload>
+    <onload>SetProperty(Wikipedia.Backup.Foreground,$VAR[Image_Foreground_FlixArt],Home)</onload>
+    <onload>RunScript(plugin.video.themoviedb.helper,blur_image=$VAR[Image_SimpleBackground])</onload>
+    <onunload>SetProperty(TMDbHelper.ListItem.BlurImage,$INFO[Window(Home).Property(Wikipedia.Backup.Background)],Home)</onunload>
+    <onunload>SetProperty(TMDbHelper.ListItem.BlurImage.Original,$INFO[Window(Home).Property(Wikipedia.Backup.Foreground)],Home)</onunload>
+    <onunload>ClearProperty(TMDbHelper.Image.Override,Home)</onunload>
+    <onunload condition="Player.Paused + !String.IsEmpty(Window(Home).Property(OSDExtendedInfo)) + !$EXP[Exp_InfoDialogs]">PlayerControl(Play)</onunload>
+    <onunload condition="Player.Paused + !String.IsEmpty(Window(Home).Property(OSDExtendedInfo)) + !$EXP[Exp_InfoDialogs]">ClearProperty(OSDExtendedInfo,Home)</onunload>
+    <controls>
+
+        <control type="list" id="9999">
+            <itemlayout />
+            <focusedlayout />
+            <content>
+                <item>
+                    <label>$INFO[Window.Property(backdrop)]</label>
+                    <icon>$INFO[Window.Property(backdrop)]</icon>
+                    <property name="fanart">$INFO[Window.Property(backdrop)]</property>
+                    <visible>!String.IsEmpty(Window.Property(backdrop))</visible>
+                </item>
+            </content>
+        </control>
+        <include>Defs_TMDbHelper_Loader</include>
+
+        <control type="image">
+            <texture colordiffuse="$VAR[ColorBackground]">background/combined_overlay.png</texture>
+            <include>Animation_FadeIn</include>
+            <include>Animation_FadeOut</include>
+        </control>
+
+        <include content="Settings_Main_Group">
+
+            <control type="image" id="9905">
+                <width>200</width>
+                <height>40</height>
+                <bottom>0</bottom>
+                <aspectratio align="left">keep</aspectratio>
+            </control>
+
+            <include content="Settings_Left_Group">
+                <include content="Settings_Left_Content">
+                    <include content="List_DialogSelect">
+                        <param name="id">9902</param>
+                        <onleft>4000</onleft>
+                        <onright>61</onright>
+                        <right>x08</right>
+                    </include>
+                </include>
+            </include>
+
+            <include content="Settings_Right_Group">
+                <control type="group">
+                    <left>20</left>
+                    <right>40</right>
+                    <top>-40</top>
+                    <bottom>160</bottom>
+                    <control type="label" id="9901">
+                        <aligny>center</aligny>
+                        <height>40</height>
+                        <textcolor>main_fg_100</textcolor>
+                        <font>font_huge_black</font>
+                        <top>40</top>
+                    </control>
+
+                    <control type="textbox" id="9903">
+                        <top>120</top>
+                        <bottom>-40</bottom>
+                        <align>left</align>
+                        <textcolor>main_fg_70</textcolor>
+                        <font>font_main_plot</font>
+                        <pagecontrol>61</pagecontrol>
+                        <autoscroll delay="8000" time="4000" repeat="12000">!Control.HasFocus(61)</autoscroll>
+                        <right>360</right>
+                    </control>
+
+                    <control type="group">
+                        <right>0</right>
+                        <width>280</width>
+                        <top>0</top>
+                        <visible>!String.IsEmpty(Window.Property(Image))</visible>
+                        <control type="image">
+                            <top>120</top>
+                            <aspectratio align="center" aligny="top">keep</aspectratio>
+                            <texture background="true">$INFO[Window.Property(Image)]</texture>
+                            <bottom>160</bottom>
+                        </control>
+                        <control type="textbox">
+                            <aligny>center</aligny>
+                            <align>center</align>
+                            <height>110</height>
+                            <bottom>0</bottom>
+                            <textcolor>main_fg_70</textcolor>
+                            <font>font_tiny</font>
+                            <label>$INFO[Window.Property(ImageText)]</label>
+                        </control>
+                    </control>
+
+                    <control type="scrollbar" id="61">
+                        <onleft>9902</onleft>
+                        <onright>9902</onright>
+                        <orientation>vertical</orientation>
+                        <width>scrollbar_w</width>
+                        <centerright>-40</centerright>
+                        <top>40</top>
+                        <bottom>-40</bottom>
+                        <texturesliderbackground colordiffuse="main_fg_12" border="4">scrollbar/scrollv_line.png</texturesliderbackground>
+                        <texturesliderbar colordiffuse="00ffffff" border="4">scrollbar/scrollv_line.png</texturesliderbar>
+                        <include>Texture_Scrollbar_V</include>
+                        <visible allowhiddenfocus="true">Control.HasFocus(61)</visible>
+                    </control>
+
+                </control>
+
+                <include content="Settings_InfoText">
+                    <param name="id" value="9904" />
+                    <param name="font">font_tiny</param>
+                </include>
+            </include>
+        </include>
+
+        <include content="DialogInfo_ButtonGroup_Basic">
+            <param name="include">Items_Wikipedia_MenuBar</param>
+        </include>
+
+
+        <include content="Furniture_Top">
+            <param name="label">Wikipedia</param>
+        </include>
+
+
+    </controls>
+</window>

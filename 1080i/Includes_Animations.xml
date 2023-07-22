@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<includes>
+
+    <!-- ============== -->
+    <!-- OSD Animations -->
+    <!-- ============== -->
+
+    <!-- Transitions for Dialogs -->
+    <include name="Animation_OSD_Dialog_WindowChange">
+        <animation type="WindowOpen" reversible="false">
+            <effect type="fade" start="0" end="100" time="200" delay="200" tween="sine" easing="out"/>
+        </animation>
+        <animation type="WindowClose" reversible="false">
+            <effect type="fade" start="100" end="0" time="200" delay="0" tween="sine" easing="out"/>
+        </animation>
+    </include>
+    <include name="Animation_OSD_Dialog_VisibleChange">
+        <animation type="Visible" reversible="false">
+            <effect type="fade" start="0" end="100" time="200" delay="200" tween="sine" easing="out"/>
+        </animation>
+        <animation type="Hidden" reversible="false">
+            <effect type="fade" start="100" end="0" time="200" delay="0" tween="sine" easing="out"/>
+        </animation>
+    </include>
+
+    <!-- Slide Expansions for Seekbar -->
+    <include name="Animation_OSD_Seekbar_Slide">
+        <animation effect="slide" start="0" end="0,80" time="300" tween="sine" easing="out" reversible="false" condition="![Window.IsVisible(videoosd) | Window.IsVisible(musicosd) | Window.IsVisible(script-cu-lrclyrics-main.xml) | $EXP[Exp_OSD_ExpandInfo]]">Conditional</animation>
+        <animation effect="slide" end="0" start="0,80" time="300" tween="sine" easing="out" reversible="false" condition="[Window.IsVisible(videoosd) | Window.IsVisible(musicosd) | Window.IsVisible(script-cu-lrclyrics-main.xml) | $EXP[Exp_OSD_ExpandInfo]]">Conditional</animation>
+    </include>
+    <include name="Animation_OSD_Seekbar_Expand">
+        <animation effect="slide" start="0" end="0,-360" time="300" tween="sine" easing="out" reversible="false" condition="$EXP[Exp_OSD_ExpandInfo]">Conditional</animation>
+        <animation effect="slide" end="0" start="0,-360" time="400" tween="sine" easing="inout" reversible="false" condition="!$EXP[Exp_OSD_ExpandInfo]">Conditional</animation>
+    </include>
+
+    <!-- Fullscreen Window Changes -->
+    <include name="Animation_OSD_Fullscreen_Change">
+        <animation effect="fade" start="0" end="100" time="300">WindowOpen</animation>
+        <animation effect="fade" end="0" start="100" time="300">WindowClose</animation>
+        <animation effect="fade" start="0" end="100" time="300">VisibleChange</animation>
+    </include>
+
+    <!-- =========== -->
+    <!-- Transitions -->
+    <!-- =========== -->
+    <include name="Animation_Transition_InfoPanel_Hide">
+        <animation effect="fade" start="100" end="0" delay="400" time="1" reversible="false">Hidden</animation>
+    </include>
+    <include name="Animation_Transition_InfoPanel_Show">
+        <animation effect="fade" start="0" end="100" delay="400" time="1" reversible="false">Visible</animation>
+    </include>
+    <include name="Animation_Transition_InfoPanel_Shut">
+        <animation effect="fade" start="100" end="0" delay="400" time="1" reversible="false">WindowClose</animation>
+    </include>
+    <include name="Animation_Transition_InfoPanel_Open">
+        <animation effect="fade" start="0" end="100" delay="400" time="1" reversible="false">WindowOpen</animation>
+    </include>
+    <include name="Animation_Transition_InfoPanel_Cond">
+        <animation effect="fade" start="100" end="0" delay="400" time="1" reversible="false" condition="$EXP[Exp_InfoDialogs]">Conditional</animation>
+    </include>
+
+    <!-- ==== -->
+    <!-- Busy -->
+    <!-- ==== -->
+    <include name="Animation_Busy_Fade">
+        <param name="end">20</param>
+        <definition>
+            <animation effect="fade" start="100" end="$PARAM[end]" time="200" condition="Container($PARAM[id]).IsUpdating">Conditional</animation>
+        </definition>
+    </include>
+
+
+    <!-- ======== -->
+    <!-- Standard -->
+    <!-- ======== -->
+
+    <!-- Zoom Animations -->
+    <include name="Animation_Zoom_In">
+        <param name="type">Conditional</param>
+        <param name="condition">true</param>
+        <param name="reversible">false</param>
+        <definition>
+            <animation type="$PARAM[type]" reversible="$PARAM[reversible]" condition="$PARAM[condition]">
+                <effect type="fade" start="0" end="100" time="300" delay="0" tween="sine" easing="in" />
+                <effect type="zoom" start="85" end="100" time="300" delay="0" center="auto" tween="sine" easing="out" />
+            </animation>
+        </definition>
+    </include>
+    <include name="Animation_Zoom_Out">
+        <param name="type">Conditional</param>
+        <param name="condition">true</param>
+        <param name="reversible">false</param>
+        <definition>
+            <animation type="$PARAM[type]" reversible="$PARAM[reversible]" condition="$PARAM[condition]">
+                <effect type="zoom" start="100" end="85" center="auto" tween="sine" delay="0" easing="out" time="300" />
+                <effect type="fade" start="100" end="0" tween="cubic" easing="out" delay="0" time="300" />
+            </animation>
+        </definition>
+    </include>
+
+    <!-- Slide Animations -->
+    <include name="Animation_Slide_In">
+        <param name="type">Conditional</param>
+        <param name="condition">true</param>
+        <param name="delay">0</param>
+        <param name="posx">0</param>
+        <param name="posy">0</param>
+        <param name="reversible">false</param>
+        <definition>
+            <animation type="$PARAM[type]" reversible="$PARAM[reversible]" condition="$PARAM[condition]">
+                <effect type="fade" start="0" end="100" time="300" delay="$PARAM[delay]" tween="sine" easing="out"/>
+                <effect type="slide" start="$PARAM[posx],$PARAM[posy]" end="0" time="400" delay="$PARAM[delay]" tween="cubic" easing="out" />
+            </animation>
+        </definition>
+    </include>
+    <include name="Animation_Slide_Out">
+        <param name="type">Conditional</param>
+        <param name="condition">true</param>
+        <param name="delay">0</param>
+        <param name="posx">0</param>
+        <param name="posy">0</param>
+        <param name="reversible">false</param>
+        <definition>
+            <animation type="$PARAM[type]" reversible="$PARAM[reversible]" condition="$PARAM[condition]">
+                <effect type="fade" start="100" end="0" time="300" delay="$PARAM[delay]" tween="sine" easing="out"/>
+                <effect type="slide" start="0" end="$PARAM[posx],$PARAM[posy]" time="300" delay="$PARAM[delay]" tween="cubic" easing="out" />
+            </animation>
+        </definition>
+    </include>
+
+    <!-- Directional Slides -->
+    <include name="Animation_Direction">
+        <param name="windowopen_condition">true</param>
+        <param name="windowclose_condition">true</param>
+        <param name="delay">0</param>
+        <param name="posx">0</param>
+        <param name="posy">0</param>
+        <definition>
+            <include content="Animation_Slide_In">
+                <param name="type">Visible</param>
+                <param name="delay">$PARAM[delay]</param>
+                <param name="posx">$PARAM[posx]</param>
+                <param name="posy">$PARAM[posy]</param>
+            </include>
+            <include content="Animation_Slide_In">
+                <param name="condition">$PARAM[windowopen_condition]</param>
+                <param name="type">WindowOpen</param>
+                <param name="delay">$PARAM[delay]</param>
+                <param name="posx">$PARAM[posx]</param>
+                <param name="posy">$PARAM[posy]</param>
+            </include>
+            <include content="Animation_Slide_Out">
+                <param name="type">Hidden</param>
+                <param name="posx">$PARAM[posx]</param>
+                <param name="posy">$PARAM[posy]</param>
+            </include>
+            <include content="Animation_Slide_Out">
+                <param name="condition">$PARAM[windowclose_condition]</param>
+                <param name="type">WindowClose</param>
+                <param name="posx">$PARAM[posx]</param>
+                <param name="posy">$PARAM[posy]</param>
+            </include>
+        </definition>
+    </include>
+
+    <include name="Animation_Direction_Delay">
+        <definition>
+            <include content="Animation_Direction">
+                <param name="windowopen_condition">$PARAM[windowopen_condition]</param>
+                <param name="windowclose_condition">$PARAM[windowclose_condition]</param>
+                <param name="delay">400</param>
+                <param name="posx">$PARAM[posx]</param>
+                <param name="posy">$PARAM[posy]</param>
+            </include>
+        </definition>
+    </include>
+
+    <include name="Animation_Right">
+        <definition>
+            <include content="Animation_Direction">
+                <param name="windowopen_condition">$PARAM[windowopen_condition]</param>
+                <param name="windowclose_condition">$PARAM[windowclose_condition]</param>
+                <param name="posx">320</param>
+            </include>
+        </definition>
+    </include>
+
+    <include name="Animation_Right_Delay">
+        <definition>
+            <include content="Animation_Direction_Delay">
+                <param name="windowopen_condition">$PARAM[windowopen_condition]</param>
+                <param name="windowclose_condition">$PARAM[windowclose_condition]</param>
+                <param name="posx">320</param>
+            </include>
+        </definition>
+    </include>
+
+    <include name="Animation_Down">
+        <definition>
+            <include content="Animation_Direction">
+                <param name="windowopen_condition">$PARAM[windowopen_condition]</param>
+                <param name="windowclose_condition">$PARAM[windowclose_condition]</param>
+                <param name="posy">320</param>
+            </include>
+        </definition>
+    </include>
+
+    <include name="Animation_Down_Delay">
+        <definition>
+            <include content="Animation_Direction_Delay">
+                <param name="windowopen_condition">$PARAM[windowopen_condition]</param>
+                <param name="windowclose_condition">$PARAM[windowclose_condition]</param>
+                <param name="posy">320</param>
+            </include>
+        </definition>
+    </include>
+
+    <!-- Window Transition For Views -->
+    <include name="Animation_View_WindowChange">
+        <include content="Animation_Fade_Out">
+            <param name="condition">[Window.Next(fullscreenvideo) | Window.Next(musicvisualisation) | $EXP[Exp_SettingsDialogs_Next] | Window.Next(11105) | Window.IsVisible(11105)]</param>
+            <param name="type">WindowClose</param>
+        </include>
+        <include content="Animation_Slide_In">
+            <param name="condition">[Window.Previous(fullscreenvideo) | Window.Previous(musicvisualisation) | $EXP[Exp_SettingsDialogs_Prev] | Window.Previous(11105) | Window.IsVisible(11105)]</param>
+            <param name="type">WindowOpen</param>
+            <param name="posx">320</param>
+            <param name="delay">0</param>
+        </include>
+    </include>
+
+    <!-- Window Transition For Views -->
+    <include name="Animation_Half_WindowChange">
+        <include content="Animation_Fade_Out">
+            <param name="condition">![Window.Next(fullscreenvideo) | Window.Next(musicvisualisation) | $EXP[Exp_SettingsDialogs_Next] | Window.Next(11105) | Window.IsVisible(11105)]</param>
+            <param name="type">WindowClose</param>
+        </include>
+        <include content="Animation_Slide_In">
+            <param name="condition">![Window.Previous(fullscreenvideo) | Window.Previous(musicvisualisation) | $EXP[Exp_SettingsDialogs_Prev] | Window.Previous(11105) | Window.IsVisible(11105)]</param>
+            <param name="type">WindowOpen</param>
+            <param name="posy">320</param>
+            <param name="delay">0</param>
+        </include>
+    </include>
+
+    <!-- Home Slide In -->
+    <include name="Animation_Home_Menu">
+        <include content="Animation_Slide_In">
+            <param name="type">Visible</param>
+            <param name="posx">-60</param>
+        </include>
+        <include content="Animation_Slide_Out">
+            <param name="type">Hidden</param>
+            <param name="posx">-60</param>
+        </include>
+    </include>
+
+    <!-- Conditional Fade to allow Include Conditions -->
+    <include name="Animation_ConditionalFade">
+        <param name="end">0</param>
+        <definition>
+            <animation effect="fade" start="100" end="$PARAM[end]" condition="$PARAM[condition]">Conditional</animation>
+        </definition>
+    </include>
+
+    <!-- Focus Bounce for Select Box -->
+    <include name="Animation_FocusBounce">
+        <animation type="Focus" reversible="false">
+            <effect type="zoom" start="96.5" end="100" time="150" tween="sine" easing="inout" center="auto"/>
+            <effect type="fade" start="20" end="100" time="150" tween="back" easing="out"/>
+        </animation>
+    </include>
+
+    <!-- Standard Animations -->
+    <include name="Animation_Fade_In">
+        <param name="condition">true</param>
+        <param name="type">Conditional</param>
+        <param name="delay">0</param>
+        <definition>
+            <animation effect="fade" start="0" end="100" delay="$PARAM[delay]" time="400" tween="sine" easing="in" reversible="false" condition="$PARAM[condition]">$PARAM[type]</animation>
+        </definition>
+    </include>
+
+    <include name="Animation_Fade_Out">
+        <param name="condition">true</param>
+        <param name="type">Conditional</param>
+        <param name="delay">0</param>
+        <definition>
+            <animation effect="fade" start="100" end="0" delay="$PARAM[delay]" time="300" tween="sine" easing="in" reversible="false" condition="$PARAM[condition]">$PARAM[type]</animation>
+        </definition>
+    </include>
+
+
+    <include name="Animation_FadeIn">
+        <include content="Animation_Fade_In">
+            <param name="type">Visible</param>
+        </include>
+        <include content="Animation_Fade_In">
+            <param name="type">WindowOpen</param>
+        </include>
+    </include>
+
+    <include name="Animation_FadeIn_Delay">
+        <include content="Animation_Fade_In">
+            <param name="type">Visible</param>
+            <param name="delay">400</param>
+        </include>
+        <include content="Animation_Fade_In">
+            <param name="type">WindowOpen</param>
+            <param name="delay">400</param>
+        </include>
+    </include>
+
+    <include name="Animation_FadeOut">
+        <include content="Animation_Fade_Out">
+            <param name="type">Hidden</param>
+        </include>
+        <include content="Animation_Fade_Out">
+            <param name="type">WindowClose</param>
+        </include>
+    </include>
+
+    <include name="Animation_SlideIn_Dialog">
+        <param name="visible_delay" default="150" />
+        <param name="visible_condition" default="true" />
+        <param name="windowopen_delay" default="400" />
+        <param name="windowopen_condition" default="true" />
+        <definition>
+            <animation type="Visible" reversible="false" condition="$PARAM[visible_condition]">
+                <effect type="fade" start="0" end="100" time="300" delay="$PARAM[visible_delay]"/>
+                <effect type="slide" start="0,-48" end="0" center="auto" tween="back" easing="out" time="400" delay="$PARAM[visible_delay]"/>
+            </animation>
+            <animation type="WindowOpen" reversible="false" condition="$PARAM[windowopen_condition]">
+                <effect type="fade" start="0" end="100" time="300" delay="$PARAM[windowopen_delay]"/>
+                <effect type="slide" start="0,-48" end="0" center="auto" tween="back" easing="out" time="400" delay="$PARAM[windowopen_delay]"/>
+            </animation>
+        </definition>
+    </include>
+
+    <include name="Animation_Overlay_FadeIn">
+        <param name="delay" default="0" />
+        <definition>
+            <animation effect="fade" start="0" end="100" time="300" delay="$PARAM[delay]">WindowOpen</animation>
+            <animation effect="fade" start="100" end="0" time="300">WindowClose</animation>
+        </definition>
+    </include>
+
+    <include name="Animation_Settings_WindowChange">
+        <param name="windowopen">!$EXP[Exp_SettingsDialogs_Prev]</param>
+        <param name="windowclose">!$EXP[Exp_SettingsDialogs_Next]</param>
+        <param name="windowopen_delay">400</param>
+        <definition>
+            <animation type="WindowOpen" reversible="false" condition="$PARAM[windowopen]">
+                <effect type="fade" start="0" end="100" time="300" delay="$PARAM[windowopen_delay]" tween="sine" easing="out"/>
+                <effect type="slide" start="320" end="0" time="400" delay="$PARAM[windowopen_delay]" tween="cubic" easing="out" />
+            </animation>
+            <animation type="WindowClose" reversible="false"  condition="$PARAM[windowclose]">
+                <effect type="fade" start="100" end="0" time="300" delay="0" tween="sine" easing="out" />
+                <effect type="slide" start="0" end="320" time="300" delay="0" tween="cubic" easing="out" />
+            </animation>
+        </definition>
+    </include>
+
+    <include name="Animation_Reposition">
+        <param name="slide_x">0</param>
+        <param name="slide_y">-x08</param>
+        <param name="numitems">3</param>
+        <definition>
+            <animation effect="slide" end="$PARAM[slide_x],$PARAM[slide_y]" condition="Integer.IsLess(Container($PARAM[id]).NumItems,$PARAM[numitems]) + !Integer.IsEqual(Container($PARAM[id]).NumItems,0)">Conditional</animation>
+        </definition>
+    </include>
+
+</includes>

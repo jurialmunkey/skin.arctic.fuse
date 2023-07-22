@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window>
+    <defaultcontrol>3</defaultcontrol>
+    <onunload>ClearProperty(DialogSelectType,Home)</onunload>
+    <controls>
+
+        <control type="group">
+            <include>Animation_Right_Delay</include>
+            <include content="Dialog_Overlay_Side">
+                <!-- <include>Dimension_DialogSideMenu</include> -->
+                <include>Dimension_DialogWideMenu</include>
+                <visible>!Control.IsVisible(6) | Window.IsVisible(script-skinshortcuts.xml)</visible>
+            </include>
+            <include content="Dialog_Overlay_Side">
+                <include>Dimension_DialogWideMenu</include>
+                <visible>![!Control.IsVisible(6) | Window.IsVisible(script-skinshortcuts.xml)]</visible>
+            </include>
+            <control type="group">
+                <!-- <include>Dimension_DialogSideMenu</include> -->
+                <include>Dimension_DialogWideMenu</include>
+                <include content="Dialog_Head">
+                    <param name="label">$INFO[System.ProfileName]</param>
+                    <visible>!Control.IsVisible(6) | Window.IsVisible(script-skinshortcuts.xml)</visible>
+                </include>
+                <include content="Dialog_Head">
+                    <param name="id">0</param>
+                    <param name="label">$INFO[Control.GetLabel(1)]</param>
+                    <!-- <left>-x16</left> -->
+                    <visible>![!Control.IsVisible(6) | Window.IsVisible(script-skinshortcuts.xml)]</visible>
+                </include>
+                <include content="Dialog_Body">
+                    <include content="List_DialogSelect">
+                        <param name="id">3</param>
+                        <include>Dimension_Dialog_Body_Group</include>
+                        <pagecontrol>61</pagecontrol>
+                        <onright>61</onright>
+                        <onleft>Close</onleft>
+                    </include>
+                    <include content="List_DialogSelect" condition="!Window.IsVisible(script-skinshortcuts.xml)">
+                        <param name="id">6</param>
+                        <param name="detailed">True</param>
+                        <param name="item_height">x10</param>
+                        <!-- <left>-220</left> -->
+                        <include>Dimension_Dialog_Body_Group</include>
+                        <pagecontrol>62</pagecontrol>
+                        <onright>62</onright>
+                        <onleft>Close</onleft>
+                    </include>
+                    <include content="List_DialogSelect" condition="Window.IsVisible(script-skinshortcuts.xml)">
+                        <param name="id" value="6" />
+                        <param name="itemlayout_include">Layout_SkinShortcuts</param>
+                        <include>Dimension_Dialog_Body_Group</include>
+                        <pagecontrol>62</pagecontrol>
+                        <onright>62</onright>
+                        <onleft>Close</onleft>
+                    </include>
+
+                    <include content="Dialog_Scrollbar">
+                        <param name="id">61</param>
+                        <visible>Control.IsVisible(3)</visible>
+                        <onleft>3</onleft>
+                        <onright>9000</onright>
+                    </include>
+
+                    <include content="Dialog_Scrollbar">
+                        <param name="id">62</param>
+                        <visible>Control.IsVisible(6)</visible>
+                        <onleft>6</onleft>
+                        <onright>9000</onright>
+                    </include>
+
+                    <include content="Dialog_Side_Grouplist">
+                        <param name="id">9000</param>
+                        <onleft condition="Control.IsVisible(3)">61</onleft>
+                        <onleft condition="Control.IsVisible(6)">62</onleft>
+                        <include content="Dialog_Side_Button">
+                            <param name="id">01</param>
+                            <param name="label">$INFO[Control.GetLabel(5)]</param>
+                            <param name="icon">special://skin/extras/icons/circle-check.png</param>
+                            <param name="visible">Control.IsEnabled(5) + Control.IsVisible(5)</param>
+                            <onclick>SendClick(5)</onclick>
+                        </include>
+                        <include content="Dialog_Side_Button">
+                            <param name="id">02</param>
+                            <param name="label">$INFO[Control.GetLabel(7)]</param>
+                            <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
+                            <param name="visible">Control.IsEnabled(7) + Control.IsVisible(7)</param>
+                            <onclick>SendClick(7)</onclick>
+                        </include>
+                        <include content="Dialog_Side_Button">
+                            <param name="id">03</param>
+                            <param name="label">$INFO[Control.GetLabel(8)]</param>
+                            <param name="icon">special://skin/extras/icons/circle-plus.png</param>
+                            <param name="visible">Control.IsEnabled(8) + Control.IsVisible(8)</param>
+                            <onclick>SendClick(8)</onclick>
+                        </include>
+                        <include content="Dialog_Side_Button">
+                            <param name="id">04</param>
+                            <param name="label">$LOCALIZE[184]</param>
+                            <param name="icon">special://skin/extras/icons/update.png</param>
+                            <param name="visible">String.IsEqual(Control.GetLabel(1),$LOCALIZE[13511])</param>
+                            <onclick>Close</onclick>
+                            <onclick>SendClick(12003,6)</onclick>
+                        </include>
+                        <include content="Dialog_Side_Button">
+                            <param name="id">05</param>
+                            <param name="label">$LOCALIZE[563]</param>
+                            <param name="icon">special://skin/extras/icons/star.png</param>
+                            <param name="visible">String.IsEqual(Control.GetLabel(1),$LOCALIZE[13511])</param>
+                            <onclick>Close</onclick>
+                            <onclick>SendClick(12003,7)</onclick>
+                        </include>
+                    </include>
+                </include>
+            </control>
+
+        </control>
+
+
+        <!-- Hidden Buttons -->
+        <include content="Object_Hidden_Button">
+            <param name="id">5</param>
+            <onfocus>SetFocus(9001)</onfocus>
+        </include>
+        <include content="Object_Hidden_Button">
+            <param name="id">7</param>
+            <onfocus>SetFocus(9002)</onfocus>
+        </include>
+        <include content="Object_Hidden_Button">
+            <param name="id">8</param>
+            <onfocus>SetFocus(9003)</onfocus>
+        </include>
+    </controls>
+</window>

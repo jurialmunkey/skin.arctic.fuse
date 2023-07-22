@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window type="window" id="1198">
+    <onload>AlarmClock(RepWin,SetFocus(9002),00:01,silent)</onload>
+    <onload condition="String.IsEmpty(Window.Property(ReloadDone))">SetProperty(InitStatus,$LOCALIZE[31145])</onload>
+
+    <!-- Start TMDbH service -->
+    <onload condition="String.IsEmpty(Window.Property(ReloadDone))">Skin.SetBool(TMDbHelper.Service)</onload>
+    <onload condition="String.IsEmpty(Window.Property(ReloadDone))">Skin.SetBool(TMDbHelper.EnableBlur)</onload>
+    <onload condition="String.IsEmpty(Window.Property(ReloadDone))">Skin.SetBool(TMDbHelper.EnableCrop)</onload>
+    <onload condition="String.IsEmpty(Window.Property(ReloadDone))">Skin.Reset(TMDbHelper.DisableArtwork)</onload>
+    <onload condition="String.IsEmpty(Window.Property(ReloadDone))">Skin.SetBool(TMDbHelper.UseLocalWidgetContainer)</onload>
+    <onload condition="String.IsEmpty(Window.Property(ReloadDone))">Skin.SetString(TMDbHelper.MonitorContainer,99950)</onload>
+    <onload condition="String.IsEmpty(Window.Property(ReloadDone))">Skin.SetBool(TMDbHelper.DirectCallAuto)</onload>
+
+    <!-- Set Default Items -->
+    <onload condition="String.IsEmpty(Skin.String(CustomShortcut.Item01))">Skin.SetString(CustomShortcut.Item01,movies)</onload>
+    <onload condition="String.IsEmpty(Skin.String(CustomShortcut.Item02))">Skin.SetString(CustomShortcut.Item02,tvshows)</onload>
+    <onload condition="String.IsEmpty(Skin.String(CustomShortcut.Item03))">Skin.SetString(CustomShortcut.Item03,music)</onload>
+    <onload condition="String.IsEmpty(Skin.String(CustomShortcut.Item04)) + System.HasPVRAddon">Skin.SetString(CustomShortcut.Item04,livetv)</onload>
+    <onload condition="String.IsEmpty(Skin.String(CustomShortcut.Item04)) + !System.HasPVRAddon">Skin.SetString(CustomShortcut.Item04,addons)</onload>
+
+    <!-- Set Default Ratings -->
+    <onload condition="String.IsEmpty(Skin.String(CustomRating.Movies.Item01))">Skin.SetString(CustomRating.Movies.Item01,Kodi)</onload>
+    <onload condition="String.IsEmpty(Skin.String(CustomRating.Movies.Item02))">Skin.SetString(CustomRating.Movies.Item02,TMDb)</onload>
+    <onload condition="String.IsEmpty(Skin.String(CustomRating.Movies.Item03))">Skin.SetString(CustomRating.Movies.Item03,Trakt)</onload>
+    <onload condition="String.IsEmpty(Skin.String(CustomRating.TVShows.Item01))">Skin.SetString(CustomRating.TVShows.Item01,Kodi)</onload>
+    <onload condition="String.IsEmpty(Skin.String(CustomRating.TVShows.Item02))">Skin.SetString(CustomRating.TVShows.Item02,TMDb)</onload>
+    <onload condition="String.IsEmpty(Skin.String(CustomRating.TVShows.Item03))">Skin.SetString(CustomRating.TVShows.Item03,Trakt)</onload>
+
+    <!-- Set Default Containers -->
+    <onload condition="String.IsEmpty(Window.Property(ReloadDone))">SetProperty(TMDbHelper.widgetContainer,301,Home)</onload>
+    <onload condition="String.IsEmpty(Window.Property(ReloadDone))">SetProperty(TMDbHelper.widgetContainer,301,1101)</onload>
+    <onload condition="String.IsEmpty(Window.Property(ReloadDone))">SetProperty(TMDbHelper.widgetContainer,301,1102)</onload>
+    <onload condition="String.IsEmpty(Window.Property(ReloadDone))">SetProperty(TMDbHelper.widgetContainer,301,1103)</onload>
+    <onload condition="String.IsEmpty(Window.Property(ReloadDone))">SetProperty(TMDbHelper.widgetContainer,301,1104)</onload>
+
+    <!-- Build includes for textures / views / menus -->
+    <include condition="String.IsEmpty(Window.Property(ReloadDone))">Action_BuildTextures_Onload</include>
+    <onload condition="!String.IsEmpty(Window.Property(ReloadDone))">SetProperty(InitStatus,$LOCALIZE[31248])</onload>
+    <onload>SetProperty(ReloadDone,1)</onload>
+    <onload>SetProperty(ReloadDone,1,Home)</onload>
+    <onload>SetProperty(TMDbHelper.WidgetContainer,301,Home)</onload>
+
+    <controls>
+
+        <control type="button" id="9001">
+            <texturefocus />
+            <texturenofocus />
+            <onfocus condition="[System.HasPVRAddon + !PVR.HasTVChannels + !Pvr.HasRadioChannels]">SetProperty(InitStatus,$LOCALIZE[31249])</onfocus>
+            <onfocus condition="![System.HasPVRAddon + !PVR.HasTVChannels + !Pvr.HasRadioChannels]">SetProperty(InitStatus,$LOCALIZE[31358])</onfocus>
+            <onfocus>AlarmClock(RepWin,SetFocus(9002),00:01,silent)</onfocus>
+        </control>
+        <control type="button" id="9002">
+            <texturefocus />
+            <texturenofocus />
+            <onfocus condition="[System.HasPVRAddon + !PVR.HasTVChannels + !Pvr.HasRadioChannels]">AlarmClock(ReFocus,SetFocus(9001),00:00,silent)</onfocus>
+            <onfocus>AlarmClock(RepWin,ReplaceWindow($INFO[System.StartupWindow]),00:01,silent)</onfocus>
+        </control>
+        <control type="group">
+            <include>Background_StartUp</include>
+            <include>Object_StartUp_Logo</include>
+            <control type="label">
+                <centertop>610</centertop>
+                <height>40</height>
+                <aligny>center</aligny>
+                <align>center</align>
+                <textcolor>main_logo</textcolor>
+                <label>$INFO[Window.Property(InitStatus)]...</label>
+            </control>
+            <control type="group">
+                <centertop>700</centertop>
+                <height>80</height>
+                <include content="Object_BusySpinner">
+                    <param name="colordiffuse" value="main_fg" />
+                    <param name="haslabel" value="false" />
+                </include>
+            </control>
+        </control>
+
+
+    </controls>
+</window>

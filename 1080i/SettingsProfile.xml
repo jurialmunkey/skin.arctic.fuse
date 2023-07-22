@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window>
+    <defaultcontrol always="true">30009</defaultcontrol>
+    <onload condition="String.IsEmpty(Window(Home).Property(SettingsChanger.Switch))">SetFocus(3)</onload>
+    <onload condition="!String.IsEmpty(Window(Home).Property(SettingsChanger.Switch))">SetFocus($INFO[Window(Home).Property(SettingsChanger.Switch)])</onload>
+    <onload>ClearProperty(SettingsChanger.Switch,Home)</onload>
+
+    <onload>RunScript(plugin.video.themoviedb.helper,blur_image=$VAR[Image_SimpleBackground])</onload>
+    <controls>
+
+        <include content="Background_Main">
+            <param name="plain_background">true</param>
+        </include>
+        <include content="Background_Transition">
+            <param name="windowopen_condition">!$EXP[Exp_SettingsDialogs_Prev]</param>
+            <param name="windowclose_condition">!$EXP[Exp_SettingsDialogs_Next]</param>
+        </include>
+
+
+
+        <include content="Settings_Dialog">
+            <include content="DialogInfo_ButtonGroup_Basic">
+                <param name="id">9000</param>
+                <param name="dim_visible">false</param>
+                <onright>3</onright>
+                
+                <!-- <include content="Dialog_Side_Button">
+                    <param name="id">01</param>
+                    <param name="label">$LOCALIZE[15067]</param>
+                    <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
+                    <onclick>PreviousMenu</onclick>
+                </include> -->
+                <include content="Dialog_Side_Button">
+                    <param name="id">02</param>
+                    <param name="label">$LOCALIZE[33061]</param>
+                    <param name="icon">special://skin/extras/icons/list-check.png</param>
+                    <onclick>SetFocus(30040)</onclick>
+                </include>
+            </include>
+            <include content="Settings_Main_Group">
+                <include content="Settings_Left_Group">
+                    <include content="Settings_Left_Grouplist">
+                        <param name="id">3</param>
+                        <onleft>9000</onleft>
+                        <onup>30032</onup>
+                        <onright>2</onright>
+                        <ondown>-</ondown>
+                        <include content="Settings_Button">
+                            <param name="id" value="4" />
+                            <param name="control" value="radiobutton" />
+                            <include>Texture_Highlight_ToggleButton_Settings</include>
+                            <radiowidth>104</radiowidth>
+                            <focusedcolor>$VAR[ColorSettingsToggleButtonText]</focusedcolor>
+                            <width>settings_category_w</width>
+                            <description>Default Category Button</description>
+                            <label>$LOCALIZE[10029]</label>
+                        </include>
+                        <include content="Settings_Label">
+                            <param name="control" value="label" />
+                            <param name="id" value="9003" />
+                            <label>$LOCALIZE[33084]</label>
+                            <enable>!System.HasLoginScreen</enable>
+                            <disabledcolor>main_fg_12</disabledcolor>
+                        </include>
+                        <include content="Settings_Button">
+                            <param name="id" value="5" />
+                            <param name="control" value="button" />
+                            <include>Texture_Highlight_ToggleButton_Settings</include>
+                            <focusedcolor>$VAR[ColorSettingsToggleButtonText]</focusedcolor>
+                            <description>Default Category Button</description>
+                            <label>$INFO[System.ProfileAutoLogin]</label>
+                            <enable>!System.HasLoginScreen</enable>
+                            <disabledcolor>main_fg_12</disabledcolor>
+                        </include>
+                    </include>
+                </include>
+
+                <include content="Settings_Right_Group">
+                    <include content="Settings_Right_Grouplist">
+                        <param name="id">8000</param>
+                        <onleft>3</onleft>
+                        
+                        <!-- <include content="Settings_Label">
+                            <param name="control" value="label" />
+                            <param name="id" value="9002" />
+                            <label>$LOCALIZE[24020]</label>
+                        </include> -->
+                        <control type="panel" id="2">
+                            <height>720</height>
+                            <onleft>3</onleft>
+                            <onup>2</onup>
+                            <ondown>2</ondown>
+                            
+                            <itemlayout height="x12">
+                                <control type="group">
+                                    <left>x04</left>
+                                    <right>x04</right>
+                                    <include content="Object_ListItem_Iconic">
+                                        <param name="icon">$VAR[Image_ProfileIcon]</param>
+                                    </include>
+                                    <include content="Object_IsSelected_Checkmark">
+                                        <param name="selected">String.IsEqual(ListItem.Label,System.ProfileName)</param>
+                                    </include>
+                                </control>
+                            </itemlayout>
+                            <focusedlayout height="x12">
+                                <control type="image">
+                                    <include>Texture_Menu_Highlight_H</include>
+                                </control>
+                                <control type="group">
+                                    <left>x04</left>
+                                    <right>x04</right>
+                                    <include content="Object_ListItem_Iconic">
+                                        <param name="color">$VAR[ColorSelected]</param>
+                                        <param name="icon">$VAR[Image_ProfileIcon]</param>
+                                    </include>
+                                    <include content="Object_IsSelected_Checkmark_Focus">
+                                        <param name="selected">String.IsEqual(ListItem.Label,System.ProfileName)</param>
+                                    </include>
+                                </control>
+                            </focusedlayout>
+                        </control>
+                    </include>
+
+                    <include content="Settings_InfoText">
+                        <param name="id" value="6" />
+                    </include>
+                </include>
+                <include>Settings_KodiVersion</include>
+            </include>
+            <include content="Settings_Changer">
+                <onup>3</onup>
+            </include>
+        </include>
+
+
+    </controls>
+
+</window>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<includes>
+
+    <include name="View_Combined_Info">
+        <include content="Info_Panel">
+            <param name="container">Container($PARAM[id]3).</param>
+            <param name="plotlabel">$VAR[Label_Plot_C$PARAM[id]3]</param>
+            <top>view_top</top>
+            <width>info_panel_w</width>
+            <left>view_top</left>
+            <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),$PARAM[id]3)</visible>
+            <visible>$EXP[Exp_DBType_HasInfo_C$PARAM[id]3]</visible>
+        </include>
+        <include content="Weather_InfoPanel">
+            <top>view_top</top>
+            <width>info_panel_w</width>
+            <left>view_top</left>
+            <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),$PARAM[id]3)</visible>
+            <visible>!$EXP[Exp_DBType_HasInfo_C$PARAM[id]3]</visible>
+        </include>
+    </include>
+
+    <variable name="View_Combined_SortBy">
+        <value condition="Container.Content(seasons)">episode</value>
+        <value condition="Container.Content(sets) | Container.Content(artists)">year</value>
+    </variable>
+
+    <variable name="View_503_Content">
+        <value condition="String.IsEmpty(Window.Property(SpecialFolderPath)) + !String.IsEmpty(Container(502).ListItem.FolderPath) + Container(502).ListItem.IsFolder">$INFO[Container(502).ListItem.FolderPath]</value>
+        <value condition="!String.IsEmpty(Window.Property(SpecialFolderPath))">$INFO[Window.Property(SpecialFolderPath)]</value>
+    </variable>
+    <variable name="View_513_Content">
+        <value condition="String.IsEmpty(Window.Property(SpecialFolderPath)) + !String.IsEmpty(Container(512).ListItem.FolderPath) + Container(512).ListItem.IsFolder">$INFO[Container(512).ListItem.FolderPath]</value>
+        <value condition="!String.IsEmpty(Window.Property(SpecialFolderPath))">$INFO[Window.Property(SpecialFolderPath)]</value>
+    </variable>
+    <variable name="View_523_Content">
+        <value condition="String.IsEmpty(Window.Property(SpecialFolderPath)) + !String.IsEmpty(Container(522).ListItem.FolderPath) + Container(522).ListItem.IsFolder">$INFO[Container(522).ListItem.FolderPath]</value>
+        <value condition="!String.IsEmpty(Window.Property(SpecialFolderPath))">$INFO[Window.Property(SpecialFolderPath)]</value>
+    </variable>
+
+    <include name="View_Combined_Row">
+        <definition>
+            <control type="group">
+                <animation effect="slide" start="420" end="0" tween="quadratic" easing="out" time="400" reversible="false" condition="[Control.HasFocus($PARAM[id]3) | Control.HasFocus(60)]">Conditional</animation>
+                <animation effect="slide" start="0" end="420" tween="quadratic" easing="out" time="400" reversible="false" condition="![Control.HasFocus($PARAM[id]3) | Control.HasFocus(60)]">Conditional</animation>
+                <visible>Control.IsVisible($PARAM[id]2)</visible>
+                <include content="Transitions_List_Group">
+                    <include content="$PARAM[include]">
+                        <param name="id" value="$PARAM[id]3" />
+                        <height>divider_bottom</height>
+                        <bottom>40</bottom>
+                        <onleft>$PARAM[id]2</onleft>
+                        <onright>SetFocus($PARAM[id]3,0,absolute)</onright>
+                        <onright>$PARAM[id]2</onright>
+
+                        <onback>SetFocus($PARAM[id]3,0,absolute)</onback>
+                        <onback>$PARAM[id]2</onback>
+                        <pagecontrol>60</pagecontrol>
+                        <ondown>60</ondown>
+
+                        <animation type="Conditional" reversible="false" condition="Container($PARAM[id]3).IsUpdating">
+                            <effect type="fade" start="100" end="0" time="200" delay="600" />
+                        </animation>
+
+                        <include content="Action_View_Movement_OnUp">
+                            <param name="id">$PARAM[id]3</param>
+                        </include>
+                        <visible>Container($PARAM[id]2).ListItem.IsFolder</visible>
+                        <onclick condition="Container($PARAM[id]3).ListItem.IsFolder">Container.Update($INFO[Container($PARAM[id]3).ListItem.FolderPath])</onclick>
+                        <onclick condition="Container($PARAM[id]3).ListItem.IsFolder">SetFocus(50)</onclick>
+                        <onclick condition="!Container($PARAM[id]3).ListItem.IsFolder">PlayMedia($ESCINFO[Container($PARAM[id]3).ListItem.FileNameAndPath])</onclick>
+                        <content target="$VAR[Path_CollectionNode_Target]" sortby="$VAR[View_Combined_SortBy]" sortorder="ascending">$VAR[View_$PARAM[id]3_Content]</content>
+                        <onback>SetFocus($PARAM[id]2)</onback>
+                        <onfocus>SetProperty(TMDbHelper.WidgetContainer,$PARAM[id]3)</onfocus>
+                    </include>
+
+                    <include content="Widget_Busy">
+                        <param name="label">$INFO[Container($PARAM[id]2).ListItem.Label]</param>
+                        <param name="visible">Container($PARAM[id]3).IsUpdating</param>
+                        <height>divider_bottom</height>
+                        <bottom>46</bottom>
+                        <left>200</left>
+                    </include>
+                </include>
+                <include content="Transitions_List_Landscape_Row">
+                    <param name="id">$PARAM[id]3</param>
+                    <param name="affix">_C$PARAM[id]3</param>
+                </include>
+            </control>
+        </definition>
+    </include>
+    <include name="View_Combined_List">
+        <control type="group">
+            <left>view_top</left>
+            <top>590</top>
+            <visible allowhiddenfocus="true">![Control.HasFocus($PARAM[id]3) | Control.HasFocus(60)]</visible>
+            <animation effect="fade" start="0" end="100" time="200" delay="200" reversible="false">Visible</animation>
+            <animation effect="fade" start="100" end="0" time="200" reversible="false">Hidden</animation>
+
+            <include content="List_Button_Row">
+                <param name="id">$PARAM[id]2</param>
+                <param name="orientation">vertical</param>
+                <param name="offset_x">60</param>
+                <param name="offset_y">25</param>
+                <param name="item_h">80</param>
+                <param name="itemlayout_h">80</param>
+                <param name="item_w">400</param>
+                <param name="itemlayout_w">x60</param>
+                <param name="itemlayout_include">Layout_InfoDialog_Details</param>
+
+                <onleft>303</onleft>
+                <onright condition="!Container($PARAM[id]3).IsUpdating">$PARAM[id]3</onright>
+                <onfocus>SetProperty(TMDbHelper.WidgetContainer,$PARAM[id]3)</onfocus>
+                <onfocus>ClearProperty(SpecialFolderPath)</onfocus>
+                <visible>$PARAM[visible]</visible>
+                <viewtype label="$PARAM[viewtype_label]">wrap</viewtype>
+
+                <left>-x08</left>
+                <top>-x04</top>
+                <width>x60</width>
+                <height>345</height>
+
+                <preloaditems>0</preloaditems>
+                <focusposition>1</focusposition>
+                <movement>1</movement>
+
+                <include content="Animation_Reposition">
+                    <param name="id">$PARAM[id]2</param>
+                    <param name="slide_y">-x08</param>
+                </include>
+            </include>
+        </control>
+    </include>
+
+    <!-- Combined Landscape -->
+    <include name="View_512_Landscape_Combined_Row">
+        <include content="View_Combined_List">
+            <param name="id">51</param>
+            <param name="viewtype_label">$LOCALIZE[31119]</param>
+            <param name="visible">$EXP[Exp_View_512]</param>
+        </include>
+        <include content="View_Combined_Row">
+            <param name="id">51</param>
+            <param name="include">List_Landscape_Row</param>
+            <param name="visible">$EXP[Exp_View_512]</param>
+            <param name="icon_base_var">Image_Landscape</param>
+        </include>
+    </include>
+</includes>
