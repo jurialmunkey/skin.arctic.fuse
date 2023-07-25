@@ -6,17 +6,41 @@
 
         <control type="group">
             <include>Animation_Right_Delay</include>
-            <include content="Dialog_Overlay_Side">
-                <!-- <include>Dimension_DialogSideMenu</include> -->
-                <include>Dimension_DialogWideMenu</include>
-                <visible>!Control.IsVisible(6) | Window.IsVisible(script-skinshortcuts.xml)</visible>
-            </include>
-            <include content="Dialog_Overlay_Side">
-                <include>Dimension_DialogWideMenu</include>
-                <visible>![!Control.IsVisible(6) | Window.IsVisible(script-skinshortcuts.xml)]</visible>
-            </include>
+
             <control type="group">
-                <!-- <include>Dimension_DialogSideMenu</include> -->
+                <include>Dimension_DialogWideMenu</include>
+                <control type="image">
+                    <top>-200</top>
+                    <bottom>-200</bottom>
+                    <left>-320</left>
+                    <right>-320</right>
+                    <texture border="400,0,400,0" colordiffuse="$VAR[ColorBackgroundFade]" flipx="true">common/dim-thick-side.png</texture>
+                </control>
+            </control>
+
+            <include content="Dialog_Preview">
+                <param name="icon">$INFO[Container(6).ListItem.Icon]</param>
+                <visible>Control.IsVisible(6)</visible>
+                <visible>Control.HasFocus(6)</visible>
+                <visible>!Window.IsVisible(script-skinshortcuts.xml)</visible>
+                <visible>String.IsEqual(Control.GetLabel(1),$LOCALIZE[13511]) | String.IsEqual(Control.GetLabel(1),$LOCALIZE[20437])</visible>
+                <animation effect="slide" end="0,200" condition="Container(6).Position(4) | Container(6).Position(5) | Container(6).Position(6) | Container(6).Position(7)">Conditional</animation>
+                <control type="image">
+                    <centertop>70</centertop>
+                    <right>-16</right>
+                    <height>16</height>
+                    <width>16</width>
+                    <texture colordiffuse="dialog_nib" flipx="true">arrows/arrow-menu.png</texture>
+                    <animation effect="slide" end="0,100" condition="Container(6).Position(1)">Conditional</animation>
+                    <animation effect="slide" end="0,200" condition="Container(6).Position(2) | Container(6).Position(4)">Conditional</animation>
+                    <animation effect="slide" end="0,300" condition="Container(6).Position(3) | Container(6).Position(5)">Conditional</animation>
+                    <animation effect="slide" end="0,400" condition="Container(6).Position(6)">Conditional</animation>
+                    <animation effect="slide" end="0,500" condition="Container(6).Position(7)">Conditional</animation>
+                </control>
+            </include>
+
+            <include content="Dialog_Overlay_Side">
+                <param name="dim_visible">false</param>
                 <include>Dimension_DialogWideMenu</include>
                 <include content="Dialog_Head">
                     <param name="label">$INFO[System.ProfileName]</param>
@@ -25,11 +49,9 @@
                 <include content="Dialog_Head">
                     <param name="id">0</param>
                     <param name="label">$INFO[Control.GetLabel(1)]</param>
-                    <!-- <left>-x16</left> -->
                     <visible>![!Control.IsVisible(6) | Window.IsVisible(script-skinshortcuts.xml)]</visible>
                 </include>
                 <include content="Dialog_Body">
-
                     <include content="Dialog_Body_Group">
                         <include content="List_DialogSelect">
                             <param name="id">3</param>
@@ -97,7 +119,7 @@
                             <param name="id">04</param>
                             <param name="label">$LOCALIZE[184]</param>
                             <param name="icon">special://skin/extras/icons/update.png</param>
-                            <param name="visible">String.IsEqual(Control.GetLabel(1),$LOCALIZE[13511])</param>
+                            <param name="visible">[String.IsEqual(Control.GetLabel(1),$LOCALIZE[13511]) | String.IsEqual(Control.GetLabel(1),$LOCALIZE[20437])]</param>
                             <onclick>Close</onclick>
                             <onclick>SendClick(12003,6)</onclick>
                         </include>
@@ -105,16 +127,14 @@
                             <param name="id">05</param>
                             <param name="label">$LOCALIZE[563]</param>
                             <param name="icon">special://skin/extras/icons/star.png</param>
-                            <param name="visible">String.IsEqual(Control.GetLabel(1),$LOCALIZE[13511])</param>
+                            <param name="visible">[String.IsEqual(Control.GetLabel(1),$LOCALIZE[13511]) | String.IsEqual(Control.GetLabel(1),$LOCALIZE[20437])]</param>
                             <onclick>Close</onclick>
                             <onclick>SendClick(12003,7)</onclick>
                         </include>
                     </include>
                 </include>
-            </control>
-
+            </include>
         </control>
-
 
         <!-- Hidden Buttons -->
         <include content="Object_Hidden_Button">

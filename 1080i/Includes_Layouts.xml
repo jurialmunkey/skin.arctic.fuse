@@ -923,7 +923,7 @@
         </definition>
     </include>
 
-    <include name="Layout_AddonBrowser">
+    <include name="Layout_IconBrowser">
         <param name="selected">false</param>
         <param name="detailed">false</param>
         <definition>
@@ -937,25 +937,22 @@
                 </include>
                 <include condition="!$PARAM[selected]">Dialog_Outline_Box</include>
                 <control type="group">
-                    <width>$PARAM[item_h]</width>
-                    <control type="group">
-                        <include content="Object_Bottom" condition="$PARAM[detailed]">
-                            <param name="bottom">40</param>
+                    <include content="Object_Bottom" condition="$PARAM[detailed]">
+                        <param name="bottom">40</param>
+                    </include>
+                    <control type="image">
+                        <texture background="true" diffuse="diffuse/square-sml.png">$INFO[ListItem.Icon]</texture>
+                        <aspectratio scalediffuse="false">keep</aspectratio>
+                        <visible>![String.StartsWith(ListItem.Icon,Default) | String.StartsWith(ListItem.Icon,special://skin/extras/icons/) | String.StartsWith(ListItem.Icon,image://special)]</visible>
+                    </control>
+                    <control type="image">
+                        <include content="Object_ColorDiffuse" condition="$PARAM[selected]">
+                            <param name="colordiffuse">$VAR[ColorSelected]</param>
                         </include>
-                        <control type="image">
-                            <texture background="true" diffuse="diffuse/square-sml.png">$INFO[ListItem.Icon]</texture>
-                            <aspectratio scalediffuse="false">keep</aspectratio>
-                            <visible>![String.StartsWith(ListItem.Icon,Default) | String.StartsWith(ListItem.Icon,special://skin/extras/icons/) | String.StartsWith(ListItem.Icon,image://special)]</visible>
-                        </control>
-                        <control type="image">
-                            <include content="Object_ColorDiffuse" condition="$PARAM[selected]">
-                                <param name="colordiffuse">$VAR[ColorSelected]</param>
-                            </include>
-                            <colordiffuse>main_fg_70</colordiffuse>
-                            <texture background="true" diffuse="diffuse/square-sml.png">$INFO[ListItem.Icon]</texture>
-                            <aspectratio scalediffuse="false">keep</aspectratio>
-                            <visible>[String.StartsWith(ListItem.Icon,Default) | String.StartsWith(ListItem.Icon,special://skin/extras/icons/) | String.StartsWith(ListItem.Icon,image://special)]</visible>
-                        </control>
+                        <colordiffuse>main_fg_70</colordiffuse>
+                        <texture background="true" diffuse="diffuse/square-sml.png">$INFO[ListItem.Icon]</texture>
+                        <aspectratio scalediffuse="false">keep</aspectratio>
+                        <visible>[String.StartsWith(ListItem.Icon,Default) | String.StartsWith(ListItem.Icon,special://skin/extras/icons/) | String.StartsWith(ListItem.Icon,image://special)]</visible>
                     </control>
                 </control>
                 <control type="group">
@@ -973,39 +970,8 @@
                         <aligny>center</aligny>
                     </control>
                 </control>
-                <control type="group">
-                    <visible>!$PARAM[detailed]</visible>
-                    <left>$PARAM[item_h]</left>
-                    <control type="label">
-                        <include condition="$PARAM[selected]">Color_SelectedText</include>
-                        <textcolor>main_fg_90</textcolor>
-                        <label>$INFO[ListItem.Label]</label>
-                        <left>40</left>
-                        <right>40</right>
-                        <centertop>38%</centertop>
-                        <align>left</align>
-                        <height>20</height>
-                        <font>font_mini_bold</font>
-                        <aligny>center</aligny>
-                    </control>
-                    <control type="label">
-                        <include condition="$PARAM[selected]">Color_SelectedText</include>
-                        <textcolor>main_fg_70</textcolor>
-                        <label fallback="Folder">$INFO[ListItem.AddonType,, ]$INFO[ListItem.AddonVersion,v,]</label>
-                        <height>20</height>
-                        <centerbottom>38%</centerbottom>
-                        <left>40</left>
-                        <right>40</right>
-                        <align>left</align>
-                        <font>font_mini</font>
-                        <aligny>center</aligny>
-                    </control>
-                </control>
-
-                <include content="Object_Indicator" condition="!$PARAM[selected]">
-                </include>
                 <include content="Object_SelectBox" condition="$PARAM[selected]">
-                    <param name="indicator">true</param>
+                    <param name="indicator">false</param>
                     <param name="focusbounce">true</param>
                 </include>
             </control>
