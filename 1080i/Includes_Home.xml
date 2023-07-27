@@ -571,6 +571,74 @@
         </definition>
     </include>
 
+    <include name="Home_Selector_Widget_Item_FO">
+        <control type="group">
+            <width>240</width>
+            <height>120</height>
+            <control type="group">
+                <left>40</left>
+                <right>0</right>
+                <control type="group">
+                    <visible>Control.HasFocus($PARAM[id])</visible>
+                    <control type="group">
+                        <centertop>50%</centertop>
+                        <height>256</height>
+                        <left>-x06</left>
+                        <right>-x06</right>
+                        <control type="image">
+                            <include>Texture_MainMenu_Highlight_H</include>
+                        </control>
+                    </control>
+                    <control type="label">
+                        <centertop>50%</centertop>
+                        <height>20</height>
+                        <aligny>center</aligny>
+                        <textoffsetx>0</textoffsetx>
+                        <align>center</align>
+                        <font>$PARAM[font]</font>
+                        <textcolor>$VAR[ColorSelected]</textcolor>
+                        <label>$INFO[Container($PARAM[id]).ListItem($PARAM[pos]).Label]</label>
+                    </control>
+                </control>
+                <control type="label">
+                    <centertop>50%</centertop>
+                    <height>20</height>
+                    <aligny>center</aligny>
+                    <textoffsetx>0</textoffsetx>
+                    <align>center</align>
+                    <font>$PARAM[font]</font>
+                    <textcolor>$PARAM[textcolor]</textcolor>
+                    <label>$INFO[Container($PARAM[id]).ListItem($PARAM[pos]).Label]</label>
+                    <visible>!Control.HasFocus($PARAM[id])</visible>
+                </control>
+            </control>
+        </control>
+    </include>
+
+    <include name="Home_Selector_Widget_Item_NF">
+        <control type="group">
+            <width>240</width>
+            <height>120</height>
+            <nested />
+            <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,$PARAM[pos]) | [!Integer.IsLess(Container($PARAM[id]).NumItems,$PARAM[pos]) + Control.HasFocus($PARAM[id])]</visible>
+            <animation effect="fade" start="100" end="0" delay="0" time="400" tween="quadratic" reversible="false" condition="!Container($PARAM[id]).OnPrevious + Integer.IsEqual(Container($PARAM[id]).NumItems,$PARAM[pos])">Conditional</animation>
+            <control type="group">
+                <left>40</left>
+                <right>0</right>
+                <control type="label">
+                    <centertop>50%</centertop>
+                    <height>20</height>
+                    <aligny>center</aligny>
+                    <textoffsetx>0</textoffsetx>
+                    <align>center</align>
+                    <font>$PARAM[font]</font>
+                    <textcolor>$PARAM[textcolor]</textcolor>
+                    <label>$INFO[Container($PARAM[id]).ListItem($PARAM[mod]$PARAM[pos]).Label]</label>
+                </control>
+            </control>
+        </control>
+    </include>
+
     <include name="Home_Selector_Widget">
         <param name="id">300</param>
         <param name="window_id">home</param>
@@ -580,12 +648,89 @@
         <param name="color_nf">main_fg_30</param>
         <param name="hidden_button">List_ButtonMenu_Row_HiddenButton_Home</param>
         <definition>
+            <control type="grouplist">
+                <orientation>horizontal</orientation>
+
+                <animation effect="slide" end="-240" time="400" tween="quadratic" reversible="false" condition="!Container($PARAM[id]).OnNext">Conditional</animation>
+                <animation effect="slide" end="240" time="400" tween="quadratic" reversible="false" condition="!Container($PARAM[id]).OnPrevious">Conditional</animation>
+
+                <include content="Home_Selector_Widget_Item_NF">
+                    <param name="id">$PARAM[id]</param>
+                    <param name="pos">1</param>
+                    <param name="mod">-</param>
+                    <param name="font">$PARAM[font]</param>
+                    <param name="textcolor">$PARAM[color_nf]</param>
+                    <animation effect="fade" start="100" end="0" delay="200" time="400" tween="quadratic" reversible="false" condition="!Container($PARAM[id]).OnNext">Conditional</animation>
+                </include>
+                <include content="Home_Selector_Widget_Item_FO">
+                    <param name="id">$PARAM[id]</param>
+                    <param name="pos">0</param>
+                    <param name="font">$PARAM[font]</param>
+                    <param name="textcolor">$PARAM[color_fo]</param>
+                </include>
+                <include content="Home_Selector_Widget_Item_NF">
+                    <param name="id">$PARAM[id]</param>
+                    <param name="pos">1</param>
+                    <param name="font">$PARAM[font]</param>
+                    <param name="textcolor">$PARAM[color_nf]</param>
+                </include>
+                <include content="Home_Selector_Widget_Item_NF">
+                    <param name="id">$PARAM[id]</param>
+                    <param name="pos">2</param>
+                    <param name="font">$PARAM[font]</param>
+                    <param name="textcolor">$PARAM[color_nf]</param>
+                </include>
+                <include content="Home_Selector_Widget_Item_NF">
+                    <param name="id">$PARAM[id]</param>
+                    <param name="pos">3</param>
+                    <param name="font">$PARAM[font]</param>
+                    <param name="textcolor">$PARAM[color_nf]</param>
+                </include>
+                <include content="Home_Selector_Widget_Item_NF">
+                    <param name="id">$PARAM[id]</param>
+                    <param name="pos">4</param>
+                    <param name="font">$PARAM[font]</param>
+                    <param name="textcolor">$PARAM[color_nf]</param>
+                </include>
+                <include content="Home_Selector_Widget_Item_NF">
+                    <param name="id">$PARAM[id]</param>
+                    <param name="pos">5</param>
+                    <param name="font">$PARAM[font]</param>
+                    <param name="textcolor">$PARAM[color_nf]</param>
+                </include>
+                <include content="Home_Selector_Widget_Item_NF">
+                    <param name="id">$PARAM[id]</param>
+                    <param name="pos">6</param>
+                    <param name="font">$PARAM[font]</param>
+                    <param name="textcolor">$PARAM[color_nf]</param>
+                </include>
+                <include content="Home_Selector_Widget_Item_NF">
+                    <param name="id">$PARAM[id]</param>
+                    <param name="pos">7</param>
+                    <param name="font">$PARAM[font]</param>
+                    <param name="textcolor">$PARAM[color_nf]</param>
+                </include>
+
+
+                <nested />
+                <left>-80</left>
+                <width>2080</width>
+                <height>selectorwidget_h</height>
+                <top>selectorwidget_t</top>
+
+                <include content="Animation_Fade_In">
+                    <param name="condition">Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)</param>
+                    <param name="delay">200</param>
+                </include>
+                <include content="Animation_ConditionalFade">
+                    <param name="condition">!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)</param>
+                </include>
+            </control>
             <include content="List_ButtonMenu_Row">
                 <param name="id">$PARAM[id]</param>
                 <param name="color_fo">$PARAM[color_fo]</param>
                 <param name="color_nf">$PARAM[color_nf]</param>
                 <param name="itemlayout_w">240</param>
-                <!-- <param name="offset_x">40</param> -->
                 <param name="offset_x">280</param>
                 <param name="control">fixedlist</param>
                 <param name="font">$PARAM[font]</param>
@@ -599,25 +744,26 @@
                 <movement>0</movement>
                 <left>-80</left>
                 <width>2080</width>
-                <!-- <width>1240</width>
-                <left>400</left> -->
-
                 <preloaditems>0</preloaditems>
                 <height>selectorwidget_h</height>
                 <top>selectorwidget_t</top>
                 <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,$PARAM[window_id])</onfocus>
                 <onfocus condition="$PARAM[slide]">SetProperty(Slide.WidgetContainer,True,$PARAM[window_id])</onfocus>
                 <onfocus condition="![$PARAM[slide]]">ClearProperty(Slide.WidgetContainer,$PARAM[window_id])</onfocus>
-
-                <!-- <animation effect="slide" start="0" end="-120" condition="Integer.IsEqual(Container($PARAM[id]).NumItems,2) | Integer.IsEqual(Container($PARAM[id]).NumItems,4) | Integer.IsEqual(Container($PARAM[id]).NumItems,6)">Conditional</animation> -->
-
                 <onleft>$PARAM[id]</onleft>
                 <onright>$PARAM[id]</onright>
 
-                <animation effect="fade" start="0" end="100" time="400" delay="400" reversible="false" condition="[Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)]">Conditional</animation>
+                <include content="Animation_ConditionalFade">
+                    <param name="condition">True</param>
+                </include>
 
-                <animation effect="fade" start="100" end="0" time="0" reversible="false" condition="![Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)]">Conditional</animation>
-
+                <!-- <include content="Animation_Fade_In">
+                    <param name="condition">Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)</param>
+                    <param name="delay">200</param>
+                </include>
+                <include content="Animation_ConditionalFade">
+                    <param name="condition">!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)</param>
+                </include> -->
             </include>
         </definition>
     </include>
@@ -662,18 +808,20 @@
             </include>
 
             <include content="Hub_Menu_Group">
-                <control type="grouplist">
-                    <onup>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onup>
+                <control type="group">
+                    <!-- <onup>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onup>
                     <onleft>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onleft>
                     <onright>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onright>
                     <onback>303</onback>
                     <onback>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onback>
-                    <ondown>340</ondown>
+                    <ondown>340</ondown> -->
                     <visible>!$EXP[Exp_InfoDialogs]</visible>
                     <include>Animation_Transition_InfoPanel_Hide</include>
                     <include>Home_Fullscreen_Widget_Group</include>
                     <include>Transitions_Down_Visibility</include>
                     <include content="Home_Selector_Widget">
+                        <onup>311</onup>
+                        <ondown>302</ondown>
                         <include content="Animation_Fade_In">
                             <param name="condition">String.IsEmpty(Window.Property(Slide.WidgetContainer))</param>
                             <param name="delay">200</param>
@@ -685,7 +833,7 @@
                             <include>skinshortcuts-mainmenu</include>
                         </content>
                     </include>
-                    <include content="Hub_Submenu_Grouplist">
+                    <include content="Home_Submenu_Group">
                         <include content="Hub_Submenu_List">
                             <param name="id">302</param>
                             <param name="ondown">340</param>
