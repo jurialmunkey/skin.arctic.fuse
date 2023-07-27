@@ -1,27 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
     <include name="Hub_Submenu_List">
-        <include content="Home_Selector_Widget">
-            <param name="id">$PARAM[id]</param>
-            <param name="window_id">$PARAM[window_id]</param>
-            <param name="font">font_mini</param>
-            <param name="color_fo">main_fg_30</param>
-            <param name="color_nf">main_fg_30</param>
-            <param name="hidden_button">List_ButtonMenu_Row_HiddenButton_View</param>
-            <top>0</top>
-            <left>0</left>
-            <height>240</height>
-            <width>2080</width>
-            <focusposition>4</focusposition>
-            <movement>3</movement>
-            <onback>303</onback>
-            <onback>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onback>
-            <nested />
-        </include>
+        <param name="ondown">5990</param>
+        <definition>
+            <include content="Home_Selector_Widget">
+                <param name="id">$PARAM[id]</param>
+                <param name="window_id">$PARAM[window_id]</param>
+                <param name="font">font_mini</param>
+                <param name="color_fo">main_fg_30</param>
+                <param name="color_nf">main_fg_30</param>
+                <param name="hidden_button">List_ButtonMenu_Row_HiddenButton_View</param>
+                <param name="slide">True</param>
+                <top>0</top>
+                <left>0</left>
+                <height>240</height>
+                <width>2080</width>
+                <focusposition>0</focusposition>
+                <movement>0</movement>
+                <onfocus>SetProperty(TMDbHelper.WidgetContainer,5991,$PARAM[window_id])</onfocus>
+                <onback>303</onback>
+                <onback>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onback>
+                <!-- <onup>SetFocus($PARAM[id],0,absolute)</onup> -->
+                <onup>300</onup>
+                <ondown>$PARAM[ondown]</ondown>
+                <nested />
+            </include>
+        </definition>
     </include>
 
     <include name="Hub_Submenu_Grouplist">
-        <control type="grouplist" id="3000">
+        <control type="group" id="3000">
             <top>-240</top>
             <height>240</height>
             <left>-80</left>
@@ -29,6 +37,11 @@
             <orientation>vertical</orientation>
             <onback>303</onback>
             <onback>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onback>
+
+
+            <animation effect="slide" time="400" end="0" start="0,30" tween="quadratic" easing="out" reversible="false" condition="String.IsEmpty(Window.Property(Slide.WidgetContainer))">Conditional</animation>
+            <animation effect="slide" time="400" end="0,30" start="0" tween="quadratic" easing="out" reversible="false" condition="!String.IsEmpty(Window.Property(Slide.WidgetContainer))">Conditional</animation>
+
             <nested />
         </control>
     </include>
@@ -36,15 +49,27 @@
     <include name="Hub_Menu_List">
         <include content="Home_Selector_Widget">
             <param name="window_id">$PARAM[window_id]</param>
-            <param name="hidden_button">List_ButtonMenu_Row_HiddenButton_Hubs</param>
-            <focusposition>3</focusposition>
-            <movement>3</movement>
-            <width>1720</width>
-            <left>160</left>
+            <!-- <param name="hidden_button">List_ButtonMenu_Row_HiddenButton_Hubs</param> -->
+            <focusposition>0</focusposition>
+            <movement>0</movement>
+            <left>-80</left>
+            <width>2080</width>
+            <!-- <width>1720</width>
+            <left>160</left> -->
             <height>selectorwidget_h</height>
             <top>selectorwidget_t</top>
+            <onup>SetFocus(300,0,absolute)</onup>
+            <onup>311</onup>
             <onback>303</onback>
             <onback>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onback>
+            <include content="Animation_Fade_In">
+                <param name="condition">String.IsEmpty(Window.Property(Slide.WidgetContainer))</param>
+                <param name="delay">200</param>
+            </include>
+            <include content="Animation_ConditionalFade">
+                <param name="condition">!String.IsEmpty(Window.Property(Slide.WidgetContainer))</param>
+            </include>
+
             <nested />
         </include>
     </include>
@@ -68,10 +93,10 @@
 
     <include name="Hub_Widget_Grouplist">
         <control type="grouplist" id="5000">
-            <animation effect="slide" time="400" end="0" start="0,440" tween="quadratic" easing="out" reversible="false" condition="!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)">Conditional</animation>
-            <animation effect="slide" time="400" end="0,440" start="0" tween="quadratic" easing="out" reversible="false" condition="Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)">Conditional</animation>
-            <top>500</top>
-            <bottom>0</bottom>
+            <animation effect="slide" time="400" end="0,-120" start="0" tween="quadratic" easing="out" reversible="false" condition="!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)">Conditional</animation>
+            <animation effect="slide" time="400" end="0" start="0,-120" tween="quadratic" easing="out" reversible="false" condition="Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)">Conditional</animation>
+            <top>940</top>
+            <bottom>-440</bottom>
             <orientation>vertical</orientation>
             <onleft>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onleft>
             <onright>SetFocus($INFO[Window.Property(TMDbHelper.WidgetContainer)],0,absolute)</onright>
@@ -116,15 +141,16 @@
     <include name="Hub_Menu_Group">
         <control type="group">
             <include>Animation_Half_WindowChange</include>
+            <animation effect="slide" time="400" end="0" start="0,-320" tween="quadratic" easing="out" reversible="false" condition="String.IsEmpty(Window.Property(Slide.WidgetContainer))">Conditional</animation>
+            <animation effect="slide" time="400" end="0,-320" start="0" tween="quadratic" easing="out" reversible="false" condition="!String.IsEmpty(Window.Property(Slide.WidgetContainer))">Conditional</animation>
             <nested />
         </control>
     </include>
 
 
     <include name="Hub_Main_Group">
-        <param name="fullscreen_content">$VAR[Path_Hub_Content]</param>
-        <param name="fullscreen_target">$VAR[Path_Hub_Target]</param>
-        <!-- <param name="fullscreen_label">$VAR[Label_Hub_WidgetOnly_Background]</param> -->
+        <param name="fullscreen_content">$VAR[Path_Hub_WidgetOnly_Content]</param>
+        <param name="fullscreen_target">$VAR[Path_Hub_WidgetOnly_Target]</param>
         <param name="fullscreen_label">$LOCALIZE[31105]</param>
         <param name="fullscreen_sort">$VAR[Label_Hub_Sort]</param>
         <param name="fullscreen_descending">False</param>
@@ -162,8 +188,6 @@
                         <visible>!Integer.IsEqual(Container(301).NumItems,0)</visible>
                     </include>
                     <include content="Info_Viewline">
-                        <!-- <param name="label">$LOCALIZE[31105]</param>
-                        <param name="secondary_label">$LOCALIZE[31371] $LOCALIZE[590]</param> -->
                         <param name="label">$PARAM[fullscreen_label]</param>
                         <param name="secondary_label">$PARAM[fullscreen_sort]</param>
                         <param name="sort_condition">True</param>
@@ -174,6 +198,13 @@
                         <top>320</top>
                         <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)</visible>
                         <visible>!Integer.IsEqual(Container(301).NumItems,0)</visible>
+                        <include content="Animation_Fade_In">
+                            <param name="condition">String.IsEmpty(Window.Property(Slide.WidgetContainer))</param>
+                            <param name="delay">200</param>
+                        </include>
+                        <include content="Animation_ConditionalFade">
+                            <param name="condition">!String.IsEmpty(Window.Property(Slide.WidgetContainer))</param>
+                        </include>
                     </include>
                 </include>
 

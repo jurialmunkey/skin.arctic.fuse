@@ -469,11 +469,11 @@
                 <height>fullscreenwidget_buttongroup_h</height>
 
                 <include content="Animation_Fade_In">
-                    <param name="condition">[Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + !Integer.IsEqual(Container(301).NumItems,0) + $PARAM[visible]]</param>
-                    <param name="delay">400</param>
+                    <param name="condition">[Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + !Integer.IsEqual(Container(301).NumItems,0) + String.IsEmpty(Window.Property(Slide.WidgetContainer)) + $PARAM[visible]]</param>
+                    <param name="delay">200</param>
                 </include>
                 <include content="Animation_ConditionalFade">
-                    <param name="condition">![Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + !Integer.IsEqual(Container(301).NumItems,0) + $PARAM[visible]]</param>
+                    <param name="condition">![Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + !Integer.IsEqual(Container(301).NumItems,0) + String.IsEmpty(Window.Property(Slide.WidgetContainer)) + $PARAM[visible]]</param>
                 </include>
 
                 <animation effect="slide" tween="quadratic" easing="out" reversible="false" start="0" end="0,fullscreenwidget_buttongroup_s" time="200" condition="!ControlGroup(310).HasFocus()">Conditional</animation>
@@ -493,6 +493,7 @@
                     <left>140</left>
                     <height>256</height>
                     <itemgap>-60</itemgap>
+                    <onfocus>ClearProperty(Slide.WidgetContainer,$PARAM[window_id])</onfocus>
 
                     <control type="group" id="321">
                         <left>60</left>
@@ -536,6 +537,7 @@
                         <onclick>SetFocus(311)</onclick>
                         <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,$PARAM[window_id])</onfocus>
                         <onfocus>SetProperty(FullscreenWidgetRefocus,311,$PARAM[window_id])</onfocus>
+                        <onfocus>ClearProperty(Slide.WidgetContainer,$PARAM[window_id])</onfocus>
                         <!-- <onfocus condition="!Player.HasMedia + !String.IsEmpty(Container(301).ListItem.Trailer)">AlarmClock(playtrailer,PlayMedia($ESCINFO[Container(301).ListItem.Trailer],False,1),00:03,silent)</onfocus>
                         <onunfocus>CancelAlarm(playtrailer,silent)</onunfocus>
                         <onunfocus condition="Player.HasMedia + String.IsEqual(Player.FileNameAndPath,Container(301).ListItem.Trailer)">PlayerControl(Stop)</onunfocus> -->
@@ -553,6 +555,7 @@
                         <onclick>SetFocus(312)</onclick>
                         <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,$PARAM[window_id])</onfocus>
                         <onfocus>SetProperty(FullscreenWidgetRefocus,312,$PARAM[window_id])</onfocus>
+                        <onfocus>ClearProperty(Slide.WidgetContainer,$PARAM[window_id])</onfocus>
 
                         <!-- <onfocus condition="!Player.HasMedia + !String.IsEmpty(Container(301).ListItem.Trailer)">AlarmClock(playtrailer,PlayMedia($ESCINFO[Container(301).ListItem.Trailer],False,1),00:03,silent)</onfocus>
                         <onunfocus>CancelAlarm(playtrailer,silent)</onunfocus>
@@ -571,6 +574,7 @@
     <include name="Home_Selector_Widget">
         <param name="id">300</param>
         <param name="window_id">home</param>
+        <param name="slide">False</param>
         <param name="font">font_main_black</param>
         <param name="color_fo">main_fg_100</param>
         <param name="color_nf">main_fg_30</param>
@@ -581,8 +585,8 @@
                 <param name="color_fo">$PARAM[color_fo]</param>
                 <param name="color_nf">$PARAM[color_nf]</param>
                 <param name="itemlayout_w">240</param>
-                <param name="offset_x">40</param>
-                <!-- <param name="offset_x">200</param> -->
+                <!-- <param name="offset_x">40</param> -->
+                <param name="offset_x">280</param>
                 <param name="control">fixedlist</param>
                 <param name="font">$PARAM[font]</param>
                 <param name="backing">true</param>
@@ -590,17 +594,22 @@
 
                 <nested />
 
-                <focusposition>2</focusposition>
-                <movement>2</movement>
-                <width>1240</width>
-                <left>400</left>
+                <preloaditems>2</preloaditems>
+                <focusposition>0</focusposition>
+                <movement>0</movement>
+                <left>-80</left>
+                <width>2080</width>
+                <!-- <width>1240</width>
+                <left>400</left> -->
 
                 <preloaditems>0</preloaditems>
                 <height>selectorwidget_h</height>
                 <top>selectorwidget_t</top>
                 <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,$PARAM[window_id])</onfocus>
+                <onfocus condition="$PARAM[slide]">SetProperty(Slide.WidgetContainer,True,$PARAM[window_id])</onfocus>
+                <onfocus condition="![$PARAM[slide]]">ClearProperty(Slide.WidgetContainer,$PARAM[window_id])</onfocus>
 
-                <animation effect="slide" start="0" end="-120" condition="Integer.IsEqual(Container($PARAM[id]).NumItems,2) | Integer.IsEqual(Container($PARAM[id]).NumItems,4) | Integer.IsEqual(Container($PARAM[id]).NumItems,6)">Conditional</animation>
+                <!-- <animation effect="slide" start="0" end="-120" condition="Integer.IsEqual(Container($PARAM[id]).NumItems,2) | Integer.IsEqual(Container($PARAM[id]).NumItems,4) | Integer.IsEqual(Container($PARAM[id]).NumItems,6)">Conditional</animation> -->
 
                 <onleft>$PARAM[id]</onleft>
                 <onright>$PARAM[id]</onright>
@@ -642,11 +651,17 @@
                     <top>320</top>
                     <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)</visible>
                     <visible>!Integer.IsEqual(Container(301).NumItems,0)</visible>
+                    <include content="Animation_Fade_In">
+                        <param name="condition">String.IsEmpty(Window.Property(Slide.WidgetContainer))</param>
+                        <param name="delay">200</param>
+                    </include>
+                    <include content="Animation_ConditionalFade">
+                        <param name="condition">!String.IsEmpty(Window.Property(Slide.WidgetContainer))</param>
+                    </include>
                 </include>
             </include>
 
-            <control type="group">
-                <include>Animation_Half_WindowChange</include>
+            <include content="Hub_Menu_Group">
                 <control type="grouplist">
                     <onup>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onup>
                     <onleft>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onleft>
@@ -659,6 +674,13 @@
                     <include>Home_Fullscreen_Widget_Group</include>
                     <include>Transitions_Down_Visibility</include>
                     <include content="Home_Selector_Widget">
+                        <include content="Animation_Fade_In">
+                            <param name="condition">String.IsEmpty(Window.Property(Slide.WidgetContainer))</param>
+                            <param name="delay">200</param>
+                        </include>
+                        <include content="Animation_ConditionalFade">
+                            <param name="condition">!String.IsEmpty(Window.Property(Slide.WidgetContainer))</param>
+                        </include>
                         <content>
                             <include>skinshortcuts-mainmenu</include>
                         </content>
@@ -666,15 +688,16 @@
                     <include content="Hub_Submenu_Grouplist">
                         <include content="Hub_Submenu_List">
                             <param name="id">302</param>
+                            <param name="ondown">340</param>
                             <content>
                                 <include>skinshortcuts-submenu</include>
                             </content>
                         </include>
                     </include>
                 </control>
-                <control type="group" id="340">
-                    <include>skinshortcuts-template-widgets</include>
-                </control>
+            </include>
+            <control type="group" id="340">
+                <include>skinshortcuts-template-widgets</include>
             </control>
         </control>
     </include>
@@ -697,9 +720,10 @@
     <include name="Home_Widgets_Grouplist">
         <control type="grouplist" id="$PARAM[id]">
 
-            <top>500</top>
+            <top>940</top>
+            <bottom>-440</bottom>
 
-            <onup>300</onup>
+            <onup>302</onup>
 
             <include content="Action_Widget_End">
                 <param name="topid">$PARAM[topid]</param>
@@ -711,14 +735,14 @@
 
             <visible>$PARAM[visible]</visible>
 
-            <animation type="Conditional" reversible="false" condition="$PARAM[visible]">
+            <!-- <animation type="Conditional" reversible="false" condition="$PARAM[visible]">
                 <effect type="fade" start="0" end="100" time="300" tween="sine" easing="out"/>
             </animation>
             <animation type="Conditional" reversible="false" condition="$PARAM[visible] + Integer.IsGreater(Window.Property(CurrentMainMenuID),$PARAM[mainmenuid])">
-                <effect type="slide" start="-320" end="0" delay="0" time="400" tween="cubic" easing="out" />
+                <effect type="slide" start="-320" end="0" delay="0" time="400" tween="quadratic" easing="out" />
             </animation>
             <animation type="Conditional" reversible="false" condition="$PARAM[visible] + Integer.IsLess(Window.Property(CurrentMainMenuID),$PARAM[mainmenuid])">
-                <effect type="slide" start="320" end="0" delay="0" time="400" tween="cubic" easing="out" />
+                <effect type="slide" start="320" end="0" delay="0" time="400" tween="quadratic" easing="out" />
             </animation>
 
             <animation type="Hidden" reversible="false">
@@ -728,15 +752,15 @@
                 <effect type="fade" start="100" end="0" time="300" tween="sine" easing="out" />
             </animation>
             <animation type="Conditional" reversible="false" condition="!$PARAM[visible] + Integer.IsLess(Container(300).ListItem.Property(id),$PARAM[mainmenuid])">
-                <effect type="slide" end="320" start="0" time="400" tween="cubic" easing="out" />
+                <effect type="slide" end="320" start="0" time="400" tween="quadratic" easing="out" />
             </animation>
             <animation type="Conditional" reversible="false" condition="!$PARAM[visible] + Integer.IsGreater(Container(300).ListItem.Property(id),$PARAM[mainmenuid])">
-                <effect type="slide" end="-320" start="0" time="400" tween="cubic" easing="out" />
-            </animation>
+                <effect type="slide" end="-320" start="0" time="400" tween="quadratic" easing="out" />
+            </animation> -->
 
-            <animation effect="slide" time="400" start="0,widget_sbump_h" end="0" tween="quadratic" easing="out" reversible="false" condition="!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)">Conditional</animation>
+            <animation effect="slide" time="400" start="0,widget_sbump_h" end="0" tween="quadratic" easing="out" reversible="false" condition="Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)">Conditional</animation>
 
-            <animation effect="slide" time="400" start="0" end="0,widget_sbump_h" tween="quadratic" easing="out" reversible="false" condition="Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)">Conditional</animation>
+            <animation effect="slide" time="400" start="0" end="0,widget_sbump_h" tween="quadratic" easing="out" reversible="false" condition="!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)">Conditional</animation>
 
             <nested />
         </control>
