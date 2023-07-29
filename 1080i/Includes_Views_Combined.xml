@@ -30,7 +30,50 @@
         <value condition="!String.IsEmpty(Window.Property(SpecialFolderPath))">$INFO[Window.Property(SpecialFolderPath)]</value>
     </variable>
 
-    <include name="View_Combined_Row">
+    <!-- Horizontal Layout -->
+    <include name="View_Combined_List_Horz">
+        <control type="group">
+            <left>view_top</left>
+            <top>590</top>
+            <visible allowhiddenfocus="true">![Control.HasFocus($PARAM[id]3) | Control.HasFocus(60)]</visible>
+            <animation effect="fade" start="0" end="100" time="200" delay="200" reversible="false">Visible</animation>
+            <animation effect="fade" start="100" end="0" time="200" reversible="false">Hidden</animation>
+
+            <include content="List_Button_Row">
+                <param name="id">$PARAM[id]2</param>
+                <param name="orientation">vertical</param>
+                <param name="offset_x">60</param>
+                <param name="offset_y">25</param>
+                <param name="item_h">80</param>
+                <param name="itemlayout_h">80</param>
+                <param name="item_w">400</param>
+                <param name="itemlayout_w">x60</param>
+                <param name="itemlayout_include">Layout_InfoDialog_Details</param>
+
+                <onleft>303</onleft>
+                <onright condition="!Container($PARAM[id]3).IsUpdating">$PARAM[id]3</onright>
+                <onfocus>SetProperty(TMDbHelper.WidgetContainer,$PARAM[id]3)</onfocus>
+                <onfocus>ClearProperty(SpecialFolderPath)</onfocus>
+                <visible>$PARAM[visible]</visible>
+                <viewtype label="$PARAM[viewtype_label]">wrap</viewtype>
+
+                <left>-x08</left>
+                <top>-x04</top>
+                <width>x60</width>
+                <height>345</height>
+
+                <preloaditems>0</preloaditems>
+                <focusposition>1</focusposition>
+                <movement>1</movement>
+
+                <include content="Animation_Reposition">
+                    <param name="id">$PARAM[id]2</param>
+                    <param name="slide_y">-x08</param>
+                </include>
+            </include>
+        </control>
+    </include>
+    <include name="View_Combined_Row_Horz">
         <definition>
             <control type="group">
                 <animation effect="slide" start="420" end="0" tween="quadratic" easing="out" time="400" reversible="false" condition="[Control.HasFocus($PARAM[id]3) | Control.HasFocus(60)]">Conditional</animation>
@@ -81,57 +124,106 @@
             </control>
         </definition>
     </include>
-    <include name="View_Combined_List">
+
+    <!-- Vertical Layout -->
+    <include name="View_Combined_Row_Vert">
+        <definition>
+            <control type="group">
+                <visible>Control.IsVisible($PARAM[id]2)</visible>
+                <include content="Transitions_List_Group">
+                    <include content="$PARAM[include]">
+                        <param name="id" value="$PARAM[id]3" />
+                        <height>divider_bottom</height>
+                        <bottom>40</bottom>
+
+                        <onleft>303</onleft>
+                        <onright>SetFocus($PARAM[id]3,0,absolute)</onright>
+                        <onright>303</onright>
+                        <onback>SetFocus($PARAM[id]3,0,absolute)</onback>
+                        <onback>$PARAM[id]2</onback>
+                        <!-- <ondown>SetFocus($PARAM[id]3,0,absolute)</ondown> -->
+                        <ondown>$PARAM[id]2</ondown>
+
+                        <include content="Action_View_Movement_OnUp">
+                            <param name="id">$PARAM[id]3</param>
+                        </include>
+
+                        <animation type="Conditional" reversible="false" condition="Container($PARAM[id]3).IsUpdating">
+                            <effect type="fade" start="100" end="0" time="200" delay="600" />
+                        </animation>
+
+                        <visible>Container($PARAM[id]2).ListItem.IsFolder</visible>
+                        <onclick condition="Container($PARAM[id]3).ListItem.IsFolder">Container.Update($INFO[Container($PARAM[id]3).ListItem.FolderPath])</onclick>
+                        <onclick condition="Container($PARAM[id]3).ListItem.IsFolder">SetFocus(50)</onclick>
+                        <onclick condition="!Container($PARAM[id]3).ListItem.IsFolder">PlayMedia($ESCINFO[Container($PARAM[id]3).ListItem.FileNameAndPath])</onclick>
+                        <content target="$VAR[Path_CollectionNode_Target]" sortby="$VAR[View_Combined_SortBy]" sortorder="ascending">$VAR[View_$PARAM[id]3_Content]</content>
+                        <onback>SetFocus($PARAM[id]2)</onback>
+                        <onfocus>SetProperty(TMDbHelper.WidgetContainer,$PARAM[id]3)</onfocus>
+                    </include>
+
+                    <include content="Widget_Busy">
+                        <param name="label">$INFO[Container($PARAM[id]2).ListItem.Label]</param>
+                        <param name="visible">Container($PARAM[id]3).IsUpdating</param>
+                        <height>divider_bottom</height>
+                        <bottom>46</bottom>
+                        <left>200</left>
+                    </include>
+                </include>
+                <include content="Transitions_List_Landscape_Row">
+                    <param name="id">$PARAM[id]3</param>
+                    <param name="affix">_C$PARAM[id]3</param>
+                </include>
+                <!-- <include content="Info_Viewline">
+                    <param name="sort_condition">true</param>
+                    <param name="library_condition">true</param>
+                </include> -->
+            </control>
+        </definition>
+    </include>
+    <include name="View_Combined_List_Vert">
         <control type="group">
-            <left>view_top</left>
-            <top>590</top>
-            <visible allowhiddenfocus="true">![Control.HasFocus($PARAM[id]3) | Control.HasFocus(60)]</visible>
-            <animation effect="fade" start="0" end="100" time="200" delay="200" reversible="false">Visible</animation>
-            <animation effect="fade" start="100" end="0" time="200" reversible="false">Hidden</animation>
-
-            <include content="List_Button_Row">
+            <include content="Animation_ConditionalFade">
+                <param name="condition">Control.HasFocus(60)</param>
+            </include>
+            <include content="Home_Selector_Widget">
                 <param name="id">$PARAM[id]2</param>
-                <param name="orientation">vertical</param>
-                <param name="offset_x">60</param>
-                <param name="offset_y">25</param>
-                <param name="item_h">80</param>
-                <param name="itemlayout_h">80</param>
-                <param name="item_w">400</param>
-                <param name="itemlayout_w">x60</param>
-                <param name="itemlayout_include">Layout_InfoDialog_Details</param>
-
-                <onleft>303</onleft>
-                <onright condition="!Container($PARAM[id]3).IsUpdating">$PARAM[id]3</onright>
+                <param name="visible">True</param>
+                <param name="font">font_mini</param>
+                <param name="shorten">True</param>
+                <left>-80</left>
+                <width>2080</width>
+                <height>selectorwidget_h</height>
+                <top>920</top>
+                <onup>$PARAM[id]3</onup>
+                <ondown>60</ondown>
                 <onfocus>SetProperty(TMDbHelper.WidgetContainer,$PARAM[id]3)</onfocus>
                 <onfocus>ClearProperty(SpecialFolderPath)</onfocus>
                 <visible>$PARAM[visible]</visible>
                 <viewtype label="$PARAM[viewtype_label]">wrap</viewtype>
-
-                <left>-x08</left>
-                <top>-x04</top>
-                <width>x60</width>
-                <height>345</height>
-
-                <preloaditems>0</preloaditems>
-                <focusposition>1</focusposition>
-                <movement>1</movement>
-
-                <include content="Animation_Reposition">
-                    <param name="id">$PARAM[id]2</param>
-                    <param name="slide_y">-x08</param>
-                </include>
             </include>
         </control>
     </include>
 
+
     <!-- Combined Landscape -->
     <include name="View_512_Landscape_Combined_Row">
-        <include content="View_Combined_List">
+        <include content="View_Combined_List_Vert" condition="Skin.HasSetting(Views.UseClassicCombined)">
             <param name="id">51</param>
             <param name="viewtype_label">$LOCALIZE[31119]</param>
             <param name="visible">$EXP[Exp_View_512]</param>
         </include>
-        <include content="View_Combined_Row">
+        <include content="View_Combined_Row_Vert" condition="Skin.HasSetting(Views.UseClassicCombined)">
+            <param name="id">51</param>
+            <param name="include">List_Landscape_Row</param>
+            <param name="visible">$EXP[Exp_View_512]</param>
+            <param name="icon_base_var">Image_Landscape</param>
+        </include>
+        <include content="View_Combined_List_Horz" condition="!Skin.HasSetting(Views.UseClassicCombined)">
+            <param name="id">51</param>
+            <param name="viewtype_label">$LOCALIZE[31119]</param>
+            <param name="visible">$EXP[Exp_View_512]</param>
+        </include>
+        <include content="View_Combined_Row_Horz" condition="!Skin.HasSetting(Views.UseClassicCombined)">
             <param name="id">51</param>
             <param name="include">List_Landscape_Row</param>
             <param name="visible">$EXP[Exp_View_512]</param>

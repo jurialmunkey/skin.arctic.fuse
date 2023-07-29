@@ -645,12 +645,14 @@
 
     <include name="Home_Selector_Widget">
         <param name="id">300</param>
-        <param name="window_id">home</param>
+        <param name="window_id" />
         <param name="slide">False</param>
         <param name="font">font_main_black</param>
         <param name="color_fo">main_fg_100</param>
         <param name="color_nf">main_fg_30</param>
         <param name="hidden_button">List_ButtonMenu_Row_HiddenButton_Home</param>
+        <param name="visible">Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)</param>
+        <param name="shorten">False</param>
         <definition>
             <control type="grouplist">
                 <orientation>horizontal</orientation>
@@ -703,13 +705,13 @@
                     <param name="font">$PARAM[font]</param>
                     <param name="textcolor">$PARAM[color_nf]</param>
                 </include>
-                <include content="Home_Selector_Widget_Item_NF">
+                <include content="Home_Selector_Widget_Item_NF" condition="![$PARAM[shorten]]">
                     <param name="id">$PARAM[id]</param>
                     <param name="pos">6</param>
                     <param name="font">$PARAM[font]</param>
                     <param name="textcolor">$PARAM[color_nf]</param>
                 </include>
-                <include content="Home_Selector_Widget_Item_NF">
+                <include content="Home_Selector_Widget_Item_NF" condition="![$PARAM[shorten]]">
                     <param name="id">$PARAM[id]</param>
                     <param name="pos">7</param>
                     <param name="font">$PARAM[font]</param>
@@ -724,11 +726,11 @@
                 <top>selectorwidget_t</top>
 
                 <include content="Animation_Fade_In">
-                    <param name="condition">Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)</param>
+                    <param name="condition">$PARAM[visible]</param>
                     <param name="delay">200</param>
                 </include>
                 <include content="Animation_ConditionalFade">
-                    <param name="condition">!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)</param>
+                    <param name="condition">!$PARAM[visible]</param>
                 </include>
             </control>
             <include content="List_ButtonMenu_Row">
@@ -744,6 +746,9 @@
 
                 <nested />
 
+                <onfocus condition="$PARAM[slide]">SetProperty(Slide.WidgetContainer,True,$PARAM[window_id])</onfocus>
+                <onfocus condition="![$PARAM[slide]]">ClearProperty(Slide.WidgetContainer,$PARAM[window_id])</onfocus>
+
                 <preloaditems>2</preloaditems>
                 <focusposition>0</focusposition>
                 <movement>0</movement>
@@ -752,24 +757,9 @@
                 <preloaditems>0</preloaditems>
                 <height>selectorwidget_h</height>
                 <top>selectorwidget_t</top>
-                <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,$PARAM[window_id])</onfocus>
-                <onfocus condition="$PARAM[slide]">SetProperty(Slide.WidgetContainer,True,$PARAM[window_id])</onfocus>
-                <onfocus condition="![$PARAM[slide]]">ClearProperty(Slide.WidgetContainer,$PARAM[window_id])</onfocus>
-                <onleft>$PARAM[id]</onleft>
-                <!-- <onleft>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onleft> -->
-                <onright>$PARAM[id]</onright>
-
                 <include content="Animation_ConditionalFade">
                     <param name="condition">True</param>
                 </include>
-
-                <!-- <include content="Animation_Fade_In">
-                    <param name="condition">Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)</param>
-                    <param name="delay">200</param>
-                </include>
-                <include content="Animation_ConditionalFade">
-                    <param name="condition">!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)</param>
-                </include> -->
             </include>
         </definition>
     </include>
@@ -820,10 +810,14 @@
                     <include>Home_Fullscreen_Widget_Group</include>
                     <include>Transitions_Down_Visibility</include>
                     <include content="Home_Selector_Widget">
+                        <param name="window_id">home</param>
                         <onup>311</onup>
                         <onback>303</onback>
                         <onback>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onback>
                         <ondown>302</ondown>
+                        <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,home)</onfocus>
+                        <onleft>300</onleft>
+                        <onright>300</onright>
                         <include content="Animation_Fade_In">
                             <param name="condition">String.IsEmpty(Window.Property(Slide.WidgetContainer))</param>
                             <param name="delay">200</param>
@@ -840,6 +834,7 @@
                             <param name="id">302</param>
                             <param name="ondown">340</param>
                             <param name="hidden_button">List_ButtonMenu_Row_HiddenButton_Home</param>
+                            <param name="window_id">home</param>
                             <content>
                                 <include>skinshortcuts-submenu</include>
                             </content>
