@@ -616,27 +616,31 @@
     </include>
 
     <include name="Home_Selector_Widget_Item_NF">
-        <control type="group">
-            <width>240</width>
-            <height>120</height>
-            <nested />
-            <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,$PARAM[pos]) | [!Integer.IsLess(Container($PARAM[id]).NumItems,$PARAM[pos]) + Control.HasFocus($PARAM[id])]</visible>
-            <animation effect="fade" start="100" end="0" delay="0" time="400" tween="quadratic" reversible="false" condition="!Container($PARAM[id]).OnPrevious + Integer.IsEqual(Container($PARAM[id]).NumItems,$PARAM[pos])">Conditional</animation>
+        <param name="listitem">ListItem</param>
+        <definition>
             <control type="group">
-                <left>40</left>
-                <right>0</right>
-                <control type="label">
-                    <centertop>50%</centertop>
-                    <height>20</height>
-                    <aligny>center</aligny>
-                    <textoffsetx>0</textoffsetx>
-                    <align>center</align>
-                    <font>$PARAM[font]</font>
-                    <textcolor>$PARAM[textcolor]</textcolor>
-                    <label>$INFO[Container($PARAM[id]).ListItem($PARAM[mod]$PARAM[pos]).Label]</label>
+                <width>240</width>
+                <height>120</height>
+                <nested />
+                <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,$PARAM[pos])</visible>
+                <!-- <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,$PARAM[pos]) | [!Integer.IsLess(Container($PARAM[id]).NumItems,$PARAM[pos]) + Control.HasFocus($PARAM[id])]</visible> -->
+                <!-- <animation effect="fade" start="100" end="0" delay="0" time="400" tween="quadratic" reversible="false" condition="!Container($PARAM[id]).OnPrevious + Integer.IsEqual(Container($PARAM[id]).NumItems,$PARAM[pos])">Conditional</animation> -->
+                <control type="group">
+                    <left>40</left>
+                    <right>0</right>
+                    <control type="label">
+                        <centertop>50%</centertop>
+                        <height>20</height>
+                        <aligny>center</aligny>
+                        <textoffsetx>0</textoffsetx>
+                        <align>center</align>
+                        <font>$PARAM[font]</font>
+                        <textcolor>$PARAM[textcolor]</textcolor>
+                        <label>$INFO[Container($PARAM[id]).$PARAM[listitem]($PARAM[mod]$PARAM[pos]).Label]</label>
+                    </control>
                 </control>
             </control>
-        </control>
+        </definition>
     </include>
 
     <include name="Home_Selector_Widget">
@@ -660,6 +664,7 @@
                     <param name="mod">-</param>
                     <param name="font">$PARAM[font]</param>
                     <param name="textcolor">$PARAM[color_nf]</param>
+                    <param name="listitem">ListItem</param>
                     <animation effect="fade" start="100" end="0" delay="200" time="400" tween="quadratic" reversible="false" condition="!Container($PARAM[id]).OnNext">Conditional</animation>
                 </include>
                 <include content="Home_Selector_Widget_Item_FO">
@@ -751,6 +756,7 @@
                 <onfocus condition="$PARAM[slide]">SetProperty(Slide.WidgetContainer,True,$PARAM[window_id])</onfocus>
                 <onfocus condition="![$PARAM[slide]]">ClearProperty(Slide.WidgetContainer,$PARAM[window_id])</onfocus>
                 <onleft>$PARAM[id]</onleft>
+                <!-- <onleft>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onleft> -->
                 <onright>$PARAM[id]</onright>
 
                 <include content="Animation_ConditionalFade">
@@ -809,18 +815,14 @@
 
             <include content="Hub_Menu_Group">
                 <control type="group">
-                    <!-- <onup>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onup>
-                    <onleft>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onleft>
-                    <onright>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onright>
-                    <onback>303</onback>
-                    <onback>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onback>
-                    <ondown>340</ondown> -->
                     <visible>!$EXP[Exp_InfoDialogs]</visible>
                     <include>Animation_Transition_InfoPanel_Hide</include>
                     <include>Home_Fullscreen_Widget_Group</include>
                     <include>Transitions_Down_Visibility</include>
                     <include content="Home_Selector_Widget">
                         <onup>311</onup>
+                        <onback>303</onback>
+                        <onback>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onback>
                         <ondown>302</ondown>
                         <include content="Animation_Fade_In">
                             <param name="condition">String.IsEmpty(Window.Property(Slide.WidgetContainer))</param>
