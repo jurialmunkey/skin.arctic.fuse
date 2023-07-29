@@ -287,14 +287,24 @@
                                     <param name="control" value="radiobutton" />
                                     <description>useWidgetList</description>
                                     <label> - $LOCALIZE[31040]</label>
-                                    <!-- <enable>!String.IsEmpty(Container(211).ListItem.Property(widgetPath))</enable> -->
-                                    <selected>String.IsEmpty(Container(211).ListItem.Property(useWidgetList))</selected>
+                                    <selected>[String.IsEmpty(Container(211).ListItem.Property(useWidgetList)) + ![!String.IsEmpty(Window.Property(groupdisplayname)) + !String.EndsWith(Window.Property(groupname),.1)]] | [!String.IsEmpty(Container(211).ListItem.Property(useWidgetList)) + [!String.IsEmpty(Window.Property(groupdisplayname)) + !String.EndsWith(Window.Property(groupname),.1)]]</selected>
                                     <onclick>SetProperty(customProperty,useWidgetList)</onclick>
                                     <onclick condition="String.IsEmpty(Container(211).ListItem.Property(useWidgetList))">SetProperty(customValue,True)</onclick>
                                     <onclick condition="!String.IsEmpty(Container(211).ListItem.Property(useWidgetList))">ClearProperty(customValue)</onclick>
                                     <onclick>SendClick(404)</onclick>
                                     <visible>!String.IsEqual(Container(211).ListItem.Property(skinshortcuts-disabled),True)</visible>
-                                    <visible>String.IsEqual(Window.Property(groupname),moviemenu) | String.IsEqual(Window.Property(groupname),tvshowmenu) | String.IsEqual(Window.Property(groupname),musicmenu) | String.IsEqual(Window.Property(groupname),pvrmenu)</visible>
+                                    <visible>String.IsEqual(Window.Property(groupname),moviemenu) | String.IsEqual(Window.Property(groupname),tvshowmenu) | String.IsEqual(Window.Property(groupname),musicmenu) | String.IsEqual(Window.Property(groupname),pvrmenu) | [!String.IsEmpty(Window.Property(groupdisplayname)) + !String.EndsWith(Window.Property(groupname),.1)]</visible>
+                                </include>
+                                <include content="Settings_Button">
+                                    <param name="id" value="4312" />
+                                    <param name="control" value="button" />
+                                    <description>Choose Widget Shortcut</description>
+                                    <label> - $LOCALIZE[31104]</label>
+                                    <label2>$INFO[Container(211).ListItem.Property(widgetPath)]</label2>
+                                    <onclick>SendClick(312)</onclick>
+                                    <enable>[!String.IsEmpty(Container(211).ListItem.Property(useWidgetList)) + [!String.IsEmpty(Window.Property(groupdisplayname)) + !String.EndsWith(Window.Property(groupname),.1)]]</enable>
+                                    <visible>[!String.IsEmpty(Window.Property(groupdisplayname)) + !String.EndsWith(Window.Property(groupname),.1)]</visible>
+                                    <include>Action_SkinShortcuts_ContentType_AutoSetOnUnFocus</include>
                                 </include>
                                 <include content="Settings_Button">
                                     <param name="id" value="9905" />
@@ -302,9 +312,9 @@
                                     <description>Aspect</description>
                                     <label> - $LOCALIZE[31084]</label>
                                     <label2>$VAR[Label_SkinShortcuts_AdaptiveWidgetStyle]</label2>
-                                    <enable>String.IsEmpty(Container(211).ListItem.Property(useWidgetList))</enable>
+                                    <enable>[String.IsEmpty(Container(211).ListItem.Property(useWidgetList)) + ![!String.IsEmpty(Window.Property(groupdisplayname)) + !String.EndsWith(Window.Property(groupname),.1)]] | [!String.IsEmpty(Container(211).ListItem.Property(useWidgetList)) + [!String.IsEmpty(Window.Property(groupdisplayname)) + !String.EndsWith(Window.Property(groupname),.1)]]</enable>
                                     <visible>!String.IsEqual(Container(211).ListItem.Property(skinshortcuts-disabled),True)</visible>
-                                    <visible>String.IsEqual(Window.Property(groupname),moviemenu) | String.IsEqual(Window.Property(groupname),tvshowmenu) | String.IsEqual(Window.Property(groupname),musicmenu) | String.IsEqual(Window.Property(groupname),pvrmenu)</visible>
+                                    <visible>String.IsEqual(Window.Property(groupname),moviemenu) | String.IsEqual(Window.Property(groupname),tvshowmenu) | String.IsEqual(Window.Property(groupname),musicmenu) | String.IsEqual(Window.Property(groupname),pvrmenu) | [!String.IsEmpty(Window.Property(groupdisplayname)) + !String.EndsWith(Window.Property(groupname),.1)]</visible>
                                 </include>
                             </control>
                         </control>

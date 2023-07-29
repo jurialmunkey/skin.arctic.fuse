@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <template>
 
-    <submenu include="widgets" container="302" level="1">
+    <submenu include="widgets" level="1">
+        <condition tag="mainmenuid" />
+        <condition tag="property" attribute="name|submenuVisibility"/>
 
         <property name="mainmenuid" tag="mainmenuid" />
-
         <property name="submenuVisibility" tag="property" attribute="name|submenuVisibility"/>
 
         <property name="mainmenuIcon" tag="thumb" />
@@ -16,17 +17,75 @@
         <property name="includeCondition">True</property>
         <controls>
             <include content="Home_Widgets_Infopanel">
+                <include content="Info_Panel">
+                    <param name="container">Container($PYTHON[int(mainmenuid) * 1000 + 411]).</param>
+                    <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),$PYTHON[int(mainmenuid) * 1000 + 411])</visible>
+                </include>
+                <include content="Info_Panel">
+                    <param name="container">Container($PYTHON[int(mainmenuid) * 1000 + 421]).</param>
+                    <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),$PYTHON[int(mainmenuid) * 1000 + 421])</visible>
+                </include>
                 <skinshortcuts insert="infopanels">items</skinshortcuts>
             </include>
             <include content="Hub_Menu_Group">
                 <include content="Home_Widgets_Grouplist">
                     <param name="id">$PYTHON[int(mainmenuid) * 1000 + 400]</param>
-                    <param name="topid">$PYTHON[int(mainmenuid) * 1000 + 601]</param>
+                    <param name="topid">$PYTHON[int(mainmenuid) * 1000 + 411]</param>
                     <param name="mainmenuid">$SKINSHORTCUTS[mainmenuid]</param>
                     <param name="visible">String.IsEqual(Container(300).ListItem.Property(submenuVisibility),$SKINSHORTCUTS[submenuVisibility])</param>
                     <control type="group" id="$PYTHON[int(mainmenuid) * 1000 + 401]">
                         <height>widget_tbump_h</height>
                     </control>
+
+                    <include content="_DialogInfo_WidgetRow">
+                        <param name="id">$PYTHON[int(mainmenuid) * 1000 + 411]</param>
+                        <param name="groupid">$PYTHON[int(mainmenuid) * 1000 + 412]</param>
+                        <param name="label">[CAPITALIZE]$VAR[Label_Hub_Background][/CAPITALIZE]</param>
+                        <param name="secondary_label">$LOCALIZE[31371] $LOCALIZE[571]</param>
+                        <param name="sort_condition">True</param>
+                        <param name="sort_descending">False</param>
+                        <param name="include">List_Landscape_Row</param>
+                        <param name="transition_include">true</param>
+                        <param name="transition_hidden">Control.HasFocus($PYTHON[int(mainmenuid) * 1000 + 411])</param>
+                        <param name="visible">[!String.IsEqual(Window.Property(SpecialFolderStyle),Square) + !String.IsEmpty(Window.Property(SpecialFolderPath)) + !String.IsEmpty(Container(302).ListItem.Property(useWidgetList))]</param>
+                        <param name="altvisible">[[[Control.HasFocus(300) | Control.HasFocus(302)] + !System.IdleTime(1)] + !String.IsEmpty(Window.Property(SpecialFolderPath)) + !String.IsEmpty(Container(302).ListItem.Property(useWidgetList))]</param>
+                        <content target="$VAR[Path_Hub_Target]">$VAR[Path_Hub_Content_Landscape]</content>
+
+                        <onfocus>SetProperty(TMDbHelper.WidgetContainer,$PYTHON[int(mainmenuid) * 1000 + 411])</onfocus>
+                        <onback condition="!Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 411]).ListItem.CurrentItem,1)">SetFocus($PYTHON[int(mainmenuid) * 1000 + 411],0,absolute)</onback>
+                        <onback condition="Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 411]).ListItem.CurrentItem,1)">SetFocus($PYTHON[int(mainmenuid) * 1000 + 601])</onback>
+                        <onback condition="Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 411]).ListItem.CurrentItem,1)">SetFocus(301)</onback>
+                        <onback condition="Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 411]).ListItem.CurrentItem,1)">SetFocus($PYTHON[int(mainmenuid) * 1000 + 411])</onback>
+                        <onback condition="Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 411]).ListItem.CurrentItem,1)">SetFocus(300)</onback>
+
+                        <onfocus>SetProperty(Transition.WidgetStyle,List_Landscape_Row,Home)</onfocus>
+                        <onunfocus>ClearProperty(Transition.WidgetStyle,Home)</onunfocus>
+                    </include>
+
+                    <include content="_DialogInfo_WidgetRow">
+                        <param name="id">$PYTHON[int(mainmenuid) * 1000 + 421]</param>
+                        <param name="groupid">$PYTHON[int(mainmenuid) * 1000 + 422]</param>
+                        <param name="label">[CAPITALIZE]$VAR[Label_Hub_Background][/CAPITALIZE]</param>
+                        <param name="secondary_label">$LOCALIZE[31371] $LOCALIZE[571]</param>
+                        <param name="sort_condition">True</param>
+                        <param name="sort_descending">False</param>
+                        <param name="include">List_Square_Row</param>
+                        <param name="transition_include">true</param>
+                        <param name="transition_hidden">Control.HasFocus($PYTHON[int(mainmenuid) * 1000 + 421])</param>
+                        <param name="visible">[String.IsEqual(Window.Property(SpecialFolderStyle),Square) + !String.IsEmpty(Window.Property(SpecialFolderPath)) + !String.IsEmpty(Container(302).ListItem.Property(useWidgetList))]</param>
+                        <param name="altvisible">[[[Control.HasFocus(300) | Control.HasFocus(302)] + !System.IdleTime(1)] + !String.IsEmpty(Window.Property(SpecialFolderPath)) + !String.IsEmpty(Container(302).ListItem.Property(useWidgetList))]</param>
+                        <content target="$VAR[Path_Hub_Target]">$VAR[Path_Hub_Content_Square]</content>
+
+                        <onfocus>SetProperty(TMDbHelper.WidgetContainer,$PYTHON[int(mainmenuid) * 1000 + 421])</onfocus>
+                        <onback condition="!Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 421]).ListItem.CurrentItem,1)">SetFocus($PYTHON[int(mainmenuid) * 1000 + 421],0,absolute)</onback>
+                        <onback condition="Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 421]).ListItem.CurrentItem,1)">SetFocus($PYTHON[int(mainmenuid) * 1000 + 601])</onback>
+                        <onback condition="Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 421]).ListItem.CurrentItem,1)">SetFocus(301)</onback>
+                        <onback condition="Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 421]).ListItem.CurrentItem,1)">SetFocus($PYTHON[int(mainmenuid) * 1000 + 411])</onback>
+                        <onback condition="Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 421]).ListItem.CurrentItem,1)">SetFocus(300)</onback>
+
+                        <onfocus>SetProperty(Transition.WidgetStyle,List_Landscape_Row,Home)</onfocus>
+                        <onunfocus>ClearProperty(Transition.WidgetStyle,Home)</onunfocus>
+                    </include>
 
                     <skinshortcuts insert="widgets">items</skinshortcuts>
 
@@ -147,7 +206,7 @@
                     <onback condition="!Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 600 + int(id)]).ListItem.CurrentItem,1)">SetFocus($PYTHON[int(mainmenuid) * 1000 + 600 + int(id)],0,absolute)</onback>
                     <onback condition="Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 600 + int(id)]).ListItem.CurrentItem,1)">SetFocus($PYTHON[int(mainmenuid) * 1000 + 601])</onback>
                     <onback condition="Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 600 + int(id)]).ListItem.CurrentItem,1)">SetFocus(301)</onback>
-                    <onback condition="Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 600 + int(id)]).ListItem.CurrentItem,1)">SetFocus($PYTHON[int(mainmenuid) * 1000 + 599])</onback>
+                    <onback condition="Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 600 + int(id)]).ListItem.CurrentItem,1)">SetFocus($PYTHON[int(mainmenuid) * 1000 + 411])</onback>
                     <onback condition="Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 600 + int(id)]).ListItem.CurrentItem,1)">SetFocus(300)</onback>
 
                     <onfocus>SetProperty(Transition.WidgetStyle,$SKINSHORTCUTS[widgetStyle],Home)</onfocus>
