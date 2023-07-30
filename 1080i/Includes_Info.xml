@@ -1479,18 +1479,21 @@
         <param name="colordiffuse">main_fg</param>
         <param name="details">true</param>
         <param name="ratings">true</param>
+        <param name="weather">true</param>
         <param name="title">true</param>
         <param name="infoline">true</param>
         <param name="plotlabel">$VAR[Label_Plot]</param>
         <definition>
 
-            <include content="Weather_InfoPanel">
-                <visible>![String.IsEqual($PARAM[container]ListItem.DBType,movie) | String.IsEqual($PARAM[container]ListItem.DBType,set) | String.IsEqual($PARAM[container]ListItem.DBType,tvshow) | String.IsEqual($PARAM[container]ListItem.DBType,season) | String.IsEqual($PARAM[container]ListItem.DBType,episode) | String.IsEqual($PARAM[container]ListItem.DBType,artist) | String.IsEqual($PARAM[container]ListItem.DBType,album) | String.IsEqual($PARAM[container]ListItem.DBType,song) | String.IsEqual($PARAM[container]ListItem.DBType,actor) | String.IsEqual($PARAM[container]ListItem.DBType,director) | !String.IsEmpty($PARAM[container]ListItem.ChannelNumberLabel) | !String.IsEmpty($PARAM[container]ListItem.AddonVersion)]</visible>
+            <include content="Weather_InfoPanel" condition="$PARAM[title] + $PARAM[infoline] + $PARAM[details] + $PARAM[weather]">
+                <visible>![String.IsEqual($PARAM[container]ListItem.DBType,video) | String.IsEqual($PARAM[container]ListItem.DBType,movie) | String.IsEqual($PARAM[container]ListItem.DBType,set) | String.IsEqual($PARAM[container]ListItem.DBType,tvshow) | String.IsEqual($PARAM[container]ListItem.DBType,season) | String.IsEqual($PARAM[container]ListItem.DBType,episode) | String.IsEqual($PARAM[container]ListItem.DBType,artist) | String.IsEqual($PARAM[container]ListItem.DBType,album) | String.IsEqual($PARAM[container]ListItem.DBType,song) | String.IsEqual($PARAM[container]ListItem.DBType,actor) | String.IsEqual($PARAM[container]ListItem.DBType,director) | !String.IsEmpty($PARAM[container]ListItem.ChannelNumberLabel) | !String.IsEmpty($PARAM[container]ListItem.AddonVersion)]</visible>
                 <nested />
             </include>
 
             <control type="group">
-                <visible>[String.IsEqual($PARAM[container]ListItem.DBType,movie) | String.IsEqual($PARAM[container]ListItem.DBType,set) | String.IsEqual($PARAM[container]ListItem.DBType,tvshow) | String.IsEqual($PARAM[container]ListItem.DBType,season) | String.IsEqual($PARAM[container]ListItem.DBType,episode) | String.IsEqual($PARAM[container]ListItem.DBType,artist) | String.IsEqual($PARAM[container]ListItem.DBType,album) | String.IsEqual($PARAM[container]ListItem.DBType,song) | String.IsEqual($PARAM[container]ListItem.DBType,actor) | String.IsEqual($PARAM[container]ListItem.DBType,director) | !String.IsEmpty($PARAM[container]ListItem.ChannelNumberLabel) | !String.IsEmpty($PARAM[container]ListItem.AddonVersion)]</visible>
+                <include content="Object_Visible" condition="$PARAM[title] + $PARAM[infoline] + $PARAM[details] + $PARAM[weather]">
+                    <param name="visible">[String.IsEqual($PARAM[container]ListItem.DBType,video) | String.IsEqual($PARAM[container]ListItem.DBType,movie) | String.IsEqual($PARAM[container]ListItem.DBType,set) | String.IsEqual($PARAM[container]ListItem.DBType,tvshow) | String.IsEqual($PARAM[container]ListItem.DBType,season) | String.IsEqual($PARAM[container]ListItem.DBType,episode) | String.IsEqual($PARAM[container]ListItem.DBType,artist) | String.IsEqual($PARAM[container]ListItem.DBType,album) | String.IsEqual($PARAM[container]ListItem.DBType,song) | String.IsEqual($PARAM[container]ListItem.DBType,actor) | String.IsEqual($PARAM[container]ListItem.DBType,director) | !String.IsEmpty($PARAM[container]ListItem.ChannelNumberLabel) | !String.IsEmpty($PARAM[container]ListItem.AddonVersion)]</param>
+                </include>
                 <nested />
                 <control type="grouplist">
                     <top>-20</top>
