@@ -22,7 +22,7 @@
             <include content="Furniture_Topbar_Group" condition="$PARAM[enabled]">
                 <nested />
                 <include content="Furniture_Gutters">
-                     <include content="Furniture_MainLabel">
+                    <include content="Furniture_MainLabel">
                         <param name="id" value="$PARAM[id]" />
                         <aligny>center</aligny>
                         <label>$PARAM[label]</label>
@@ -43,6 +43,7 @@
                             <centertop>50%</centertop>
                         </include>
                         <include content="Furniture_Clock" condition="Skin.HasSetting(Furniture.EnableClock)">
+                            <param name="flipx">true</param>
                         </include>
                     </control>
 
@@ -114,11 +115,14 @@
         <definition>
             <include content="Furniture_Bottombar_Group" condition="$PARAM[enabled]">
                 <include content="Furniture_Gutters">
-                    <include content="Info_Media" condition="!$EXP[Exp_Furniture_PVR]">
+                    <include content="Furniture_Clock" condition="Skin.HasSetting(Furniture.EnableClock.BottomLeft)">
+                        <param name="flipx">false</param>
+                    </include>
+                    <include content="Info_Media" condition="!Skin.HasSetting(Furniture.EnableClock.BottomLeft) + !$EXP[Exp_Furniture_PVR]">
                         <param name="align">left</param>
                         <param name="container">$PARAM[container]</param>
                     </include>
-                    <include content="View_PVR_GroupSwitcher" condition="$EXP[Exp_Furniture_PVR]">
+                    <include content="View_PVR_GroupSwitcher" condition="!Skin.HasSetting(Furniture.EnableClock.BottomLeft) + $EXP[Exp_Furniture_PVR]">
                     </include>
                 </include>
                 <nested />
@@ -259,6 +263,10 @@
 
     <include name="Furniture_Clock">
         <param name="flipx">true</param>
+        <param name="toplabel">$INFO[System.Time]</param>
+        <param name="bottomlabel">$INFO[System.Date]</param>
+        <param name="topcolor">main_fg_90</param>
+        <param name="bottomcolor">main_fg_70</param>
         <definition>
             <control type="group">
                 <include content="Object_Left" condition="!$PARAM[flipx]">
@@ -278,9 +286,30 @@
                         <param name="right">0</param>
                     </include>
                     <include content="Info_Codec_LabelIcon">
-                        <param name="icon">special://skin/extras/icons/clock.png</param>
+                        <param name="icon">special://skin/extras/icons/circle.png</param>
+                        <param name="bordersize">-12</param>
                         <centerleft>50%</centerleft>
                     </include>
+                    <control type="group">
+                        <centerleft>50%</centerleft>
+                        <centertop>50%</centertop>
+                        <width>40</width>
+                        <height>40</height>
+                        <control type="image">
+                            <texture diffuse="clock/minute_diffuse.png" colordiffuse="main_fg_100">$VAR[Image_Clock_Minutes]</texture>
+                        </control>
+                        <control type="image">
+                            <texture diffuse="clock/hour_diffuse.png" colordiffuse="main_fg_100">$VAR[Image_Clock_Hours]</texture>
+                        </control>
+                        <control type="image">
+                            <centerleft>50%</centerleft>
+                            <centertop>50%</centertop>
+                            <width>4</width>
+                            <height>4</height>
+                            <texture colordiffuse="main_fg_100">common/circle.png</texture>
+                        </control>
+                    </control>
+
                 </control>
                 <control type="group">
                     <include content="Object_Left" condition="!$PARAM[flipx]">
@@ -292,7 +321,7 @@
                     <control type="label">
                         <height>x01</height>
                         <top>x02</top>
-                        <label>$INFO[System.Time]</label>
+                        <label>$PARAM[toplabel]</label>
                         <include content="Object_Align" condition="!$PARAM[flipx]">
                             <param name="align">left</param>
                         </include>
@@ -300,12 +329,13 @@
                             <param name="align">right</param>
                         </include>
                         <font>font_mini_black</font>
-                        <textcolor>main_fg_90</textcolor>
+                        <textcolor>$PARAM[topcolor]</textcolor>
+                        <shadowcolor>$PARAM[topshadowcolor]</shadowcolor>
                     </control>
                     <control type="label">
                         <height>x01</height>
                         <bottom>x02</bottom>
-                        <label>$INFO[System.Date]</label>
+                        <label>$PARAM[bottomlabel]</label>
                         <include content="Object_Align" condition="!$PARAM[flipx]">
                             <param name="align">left</param>
                         </include>
@@ -313,7 +343,8 @@
                             <param name="align">right</param>
                         </include>
                         <font>font_tiny</font>
-                        <textcolor>main_fg_70</textcolor>
+                        <textcolor>$PARAM[bottomcolor]</textcolor>
+                        <shadowcolor>$PARAM[bottomshadowcolor]</shadowcolor>
                     </control>
                 </control>
             </control>
