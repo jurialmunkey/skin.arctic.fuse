@@ -72,87 +72,100 @@
     </include>
 
     <include name="Hub_Menu_Grouplist">
-        <control type="group">
-            <onup>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onup>
-            <onleft>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onleft>
-            <onright>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onright>
-            <ondown>5000</ondown>
-            <right>-x16</right>
-            <visible>!$EXP[Exp_InfoDialogs]</visible>
-            <include>Animation_Transition_InfoPanel_Hide</include>
-            <include content="Home_Fullscreen_Widget_Group">
-                <param name="window_id">$PARAM[window_id]</param>
-                <param name="visible">[!ControlGroup(5000).HasFocus()]</param>
-            </include>
-            <nested />
-        </control>
+        <param name="widgets_only">false</param>
+        <definition>
+            <control type="group">
+                <onup>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onup>
+                <onleft>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onleft>
+                <onright>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onright>
+                <ondown>5000</ondown>
+                <right>-x16</right>
+                <visible>!$EXP[Exp_InfoDialogs]</visible>
+                <include>Animation_Transition_InfoPanel_Hide</include>
+                <include content="Home_Fullscreen_Widget_Group" condition="!$PARAM[widgets_only]">
+                    <param name="window_id">$PARAM[window_id]</param>
+                    <param name="visible">[!ControlGroup(5000).HasFocus()]</param>
+                </include>
+                <nested />
+            </control>
+        </definition>
     </include>
 
     <include name="Hub_Widget_Grouplist">
-        <control type="grouplist" id="5000">
-            <animation effect="slide" time="400" end="0,-120" start="0" tween="quadratic" easing="out" reversible="false" condition="!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)">Conditional</animation>
-            <animation effect="slide" time="400" end="0" start="0,-120" tween="quadratic" easing="out" reversible="false" condition="Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)">Conditional</animation>
-            <top>940</top>
-            <bottom>-440</bottom>
-            <orientation>vertical</orientation>
-            <onleft>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onleft>
-            <onright>SetFocus($INFO[Window.Property(TMDbHelper.WidgetContainer)],0,absolute)</onright>
-            <onright>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onright>
-            <onup>3000</onup>
+        <param name="widgets_only">false</param>
+        <definition>
+            <control type="grouplist" id="5000">
+                <animation effect="slide" time="400" end="0,-120" start="0" tween="quadratic" easing="out" reversible="false" condition="!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)">Conditional</animation>
+                <animation effect="slide" time="400" end="0" start="0,-120" tween="quadratic" easing="out" reversible="false" condition="Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)">Conditional</animation>
 
-            <include content="Action_Widget_End">
-                <param name="topid">5991</param>
-            </include>
+                <top>940</top>
+                <bottom>-440</bottom>
+                <orientation>vertical</orientation>
+                <onleft>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onleft>
+                <onright>SetFocus($INFO[Window.Property(TMDbHelper.WidgetContainer)],0,absolute)</onright>
+                <onright>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onright>
 
-            <control type="group" id="5990">
-                <height>widget_tbump_h</height>
+                <onup condition="!$PARAM[widgets_only]">3000</onup>
+                <include content="Action_Widget_Top" condition="$PARAM[widgets_only]">
+                    <param name="topid">5001</param>
+                </include>
+                <include content="Action_Widget_End" condition="!$PARAM[widgets_only]">
+                    <param name="topid">5991</param>
+                </include>
+                <include content="Action_Widget_End" condition="$PARAM[widgets_only]">
+                    <param name="topid">5001</param>
+                </include>
+
+                <control type="group" id="5990">
+                    <height>widget_tbump_h</height>
+                </control>
+                <include content="_DialogInfo_WidgetRow" condition="!$PARAM[widgets_only]">
+                    <param name="id">5991</param>
+                    <param name="groupid">5992</param>
+                    <param name="label">[CAPITALIZE]$VAR[Label_Hub_Background][/CAPITALIZE]</param>
+                    <param name="secondary_label">$LOCALIZE[31371] $LOCALIZE[571]</param>
+                    <param name="sort_condition">True</param>
+                    <param name="sort_descending">False</param>
+                    <param name="include">List_Landscape_Row</param>
+                    <param name="transition_include">true</param>
+                    <param name="transition_hidden">Control.HasFocus(5991)</param>
+                    <param name="visible">[!String.IsEqual(Window.Property(SpecialFolderStyle),Square) + !String.IsEmpty(Window.Property(SpecialFolderPath)) + String.IsEmpty(container(300).listitem.property(useWidgetList))]</param>
+                    <param name="altvisible">[[!ControlGroup(5000).HasFocus() + !System.IdleTime(1)] + !String.IsEmpty(Window.Property(SpecialFolderPath)) + String.IsEmpty(container(300).listitem.property(useWidgetList))]</param>
+                    <content target="$VAR[Path_Hub_Target]">$VAR[Path_Hub_Content_Landscape]</content>
+                    <onfocus>SetProperty(TMDbHelper.WidgetContainer,5991)</onfocus>
+                    <onback condition="!Integer.IsEqual(Container(5991).ListItem.CurrentItem,1)">5000</onback>
+                    <onback condition="!Integer.IsEqual(Container(5991).ListItem.CurrentItem,1)">SetFocus(5991,0,absolute)</onback>
+                    <onback condition="Integer.IsEqual(Container(5991).ListItem.CurrentItem,1)">3000</onback>
+                    <onfocus>SetProperty(Transition.WidgetStyle,List_Landscape_Row,Home)</onfocus>
+                    <onunfocus>ClearProperty(Transition.WidgetStyle,Home)</onunfocus>
+                </include>
+                <include content="_DialogInfo_WidgetRow" condition="!$PARAM[widgets_only]">
+                    <param name="id">5993</param>
+                    <param name="groupid">5994</param>
+                    <param name="label">[CAPITALIZE]$VAR[Label_Hub_Background][/CAPITALIZE]</param>
+                    <param name="secondary_label">$LOCALIZE[31371] $LOCALIZE[571]</param>
+                    <param name="sort_condition">True</param>
+                    <param name="sort_descending">False</param>
+                    <param name="include">List_Square_Row</param>
+                    <param name="transition_include">true</param>
+                    <param name="transition_hidden">Control.HasFocus(5993)</param>
+                    <param name="visible">[String.IsEqual(Window.Property(SpecialFolderStyle),Square) + !String.IsEmpty(Window.Property(SpecialFolderPath)) + String.IsEmpty(container(300).listitem.property(useWidgetList))]</param>
+                    <param name="altvisible">[[!ControlGroup(5000).HasFocus() + !System.IdleTime(1)] + !String.IsEmpty(Window.Property(SpecialFolderPath)) + String.IsEmpty(container(300).listitem.property(useWidgetList))]</param>
+                    <content target="$VAR[Path_Hub_Target]">$VAR[Path_Hub_Content_Square]</content>
+                    <onfocus>SetProperty(TMDbHelper.WidgetContainer,5993)</onfocus>
+                    <onback condition="!Integer.IsEqual(Container(5993).ListItem.CurrentItem,1)">5000</onback>
+                    <onback condition="!Integer.IsEqual(Container(5993).ListItem.CurrentItem,1)">SetFocus(5993,0,absolute)</onback>
+                    <onback condition="Integer.IsEqual(Container(5993).ListItem.CurrentItem,1)">3000</onback>
+                    <onfocus>SetProperty(Transition.WidgetStyle,List_Landscape_Row,Home)</onfocus>
+                    <onunfocus>ClearProperty(Transition.WidgetStyle,Home)</onunfocus>
+                </include>
+                <nested />
+                <control type="group" id="5999">
+                    <visible>!$EXP[Exp_InfoDialogs]</visible>
+                    <include>Furniture_Bottom</include>
+                </control>
             </control>
-            <include content="_DialogInfo_WidgetRow">
-                <param name="id">5991</param>
-                <param name="groupid">5992</param>
-                <param name="label">[CAPITALIZE]$VAR[Label_Hub_Background][/CAPITALIZE]</param>
-                <param name="secondary_label">$LOCALIZE[31371] $LOCALIZE[571]</param>
-                <param name="sort_condition">True</param>
-                <param name="sort_descending">False</param>
-                <param name="include">List_Landscape_Row</param>
-                <param name="transition_include">true</param>
-                <param name="transition_hidden">Control.HasFocus(5991)</param>
-                <param name="visible">[!String.IsEqual(Window.Property(SpecialFolderStyle),Square) + !String.IsEmpty(Window.Property(SpecialFolderPath)) + String.IsEmpty(container(300).listitem.property(useWidgetList))]</param>
-                <param name="altvisible">[[!ControlGroup(5000).HasFocus() + !System.IdleTime(1)] + !String.IsEmpty(Window.Property(SpecialFolderPath)) + String.IsEmpty(container(300).listitem.property(useWidgetList))]</param>
-                <content target="$VAR[Path_Hub_Target]">$VAR[Path_Hub_Content_Landscape]</content>
-                <onfocus>SetProperty(TMDbHelper.WidgetContainer,5991)</onfocus>
-                <onback condition="!Integer.IsEqual(Container(5991).ListItem.CurrentItem,1)">5000</onback>
-                <onback condition="!Integer.IsEqual(Container(5991).ListItem.CurrentItem,1)">SetFocus(5991,0,absolute)</onback>
-                <onback condition="Integer.IsEqual(Container(5991).ListItem.CurrentItem,1)">3000</onback>
-                <onfocus>SetProperty(Transition.WidgetStyle,List_Landscape_Row,Home)</onfocus>
-                <onunfocus>ClearProperty(Transition.WidgetStyle,Home)</onunfocus>
-            </include>
-            <include content="_DialogInfo_WidgetRow">
-                <param name="id">5993</param>
-                <param name="groupid">5994</param>
-                <param name="label">[CAPITALIZE]$VAR[Label_Hub_Background][/CAPITALIZE]</param>
-                <param name="secondary_label">$LOCALIZE[31371] $LOCALIZE[571]</param>
-                <param name="sort_condition">True</param>
-                <param name="sort_descending">False</param>
-                <param name="include">List_Square_Row</param>
-                <param name="transition_include">true</param>
-                <param name="transition_hidden">Control.HasFocus(5993)</param>
-                <param name="visible">[String.IsEqual(Window.Property(SpecialFolderStyle),Square) + !String.IsEmpty(Window.Property(SpecialFolderPath)) + String.IsEmpty(container(300).listitem.property(useWidgetList))]</param>
-                <param name="altvisible">[[!ControlGroup(5000).HasFocus() + !System.IdleTime(1)] + !String.IsEmpty(Window.Property(SpecialFolderPath)) + String.IsEmpty(container(300).listitem.property(useWidgetList))]</param>
-                <content target="$VAR[Path_Hub_Target]">$VAR[Path_Hub_Content_Square]</content>
-                <onfocus>SetProperty(TMDbHelper.WidgetContainer,5993)</onfocus>
-                <onback condition="!Integer.IsEqual(Container(5993).ListItem.CurrentItem,1)">5000</onback>
-                <onback condition="!Integer.IsEqual(Container(5993).ListItem.CurrentItem,1)">SetFocus(5993,0,absolute)</onback>
-                <onback condition="Integer.IsEqual(Container(5993).ListItem.CurrentItem,1)">3000</onback>
-                <onfocus>SetProperty(Transition.WidgetStyle,List_Landscape_Row,Home)</onfocus>
-                <onunfocus>ClearProperty(Transition.WidgetStyle,Home)</onunfocus>
-            </include>
-            <nested />
-            <control type="group" id="5999">
-                <visible>!$EXP[Exp_InfoDialogs]</visible>
-                <include>Furniture_Bottom</include>
-            </control>
-        </control>
+        </definition>
     </include>
 
     <include name="Hub_Menu_Group">
@@ -172,12 +185,19 @@
         <param name="fullscreen_sort">$VAR[Label_Hub_Sort]</param>
         <param name="fullscreen_descending">False</param>
         <param name="fullscreen_sortby">random</param>
+        <param name="widgets_only">false</param>
         <definition>
+
+            <include content="Object_Hidden_Button" condition="$PARAM[widgets_only]">
+                <param name="id">300</param>
+                <onfocus>SetFocus(5001)</onfocus>
+            </include>
+
             <include>Defs_TMDbHelper_Loader</include>
             <include>Background_Main</include>
             <include>Background_Transition</include>
 
-            <include content="Home_Fullscreen_Widget_List">
+            <include content="Home_Fullscreen_Widget_List" condition="!$PARAM[widgets_only]">
                 <param name="content">$PARAM[fullscreen_content]</param>
                 <param name="target">$PARAM[fullscreen_target]</param>
                 <param name="sortby">$PARAM[fullscreen_sortby]</param>
@@ -195,7 +215,7 @@
                     <effect type="slide" end="0,20" time="180" tween="sine" delay="80" />
                 </animation>
 
-                <include content="Home_Widgets_Infopanel">
+                <include content="Home_Widgets_Infopanel" condition="!$PARAM[widgets_only]">
                     <param name="visible">true</param>
                     <include content="Info_Panel">
                         <param name="titlelabel">$VAR[Label_Title_C301]</param>
@@ -225,7 +245,7 @@
                     </include>
                 </include>
 
-                <include content="Info_Panel">
+                <include content="Info_Panel" condition="!$PARAM[widgets_only]">
                     <param name="titlelabel">$VAR[Label_Title_Container]</param>
                     <param name="container">Container(5991).</param>
                     <param name="plotlabel">$VAR[Label_Plot_Container]</param>
@@ -235,7 +255,7 @@
                     <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),5991)</visible>
                     <include>Animation_Transition_InfoPanel_Cond</include>
                 </include>
-                <include content="Info_Panel">
+                <include content="Info_Panel" condition="!$PARAM[widgets_only]">
                     <param name="titlelabel">$VAR[Label_Title_Container]</param>
                     <param name="container">Container(5993).</param>
                     <param name="plotlabel">$VAR[Label_Plot_Container]</param>
