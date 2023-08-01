@@ -64,7 +64,6 @@
     </include>
 
     <include name="DialogInfo_Onload">
-        <onunload>ClearProperty(HasTrailer,Home)</onunload>
         <onload>ClearProperty(TMDbHelper.WidgetContainer)</onload>
         <onload>SetProperty(TMDbHelper.Blur.SourceImage,$INFO[Window(home).Property(TMDbHelper.Blur.SourceImage)])</onload>
         <include content="_Action_Blur_Onload" condition="String.IsEqual(ListItem.DBType,episode)">
@@ -176,9 +175,10 @@
                 <param name="id">5002</param>
             </include>
 
-            <onclick>PlayMedia($ESCINFO[Container(5002).ListItem.FileNameAndPath],False,1)</onclick>
-            <onclick>SetProperty(HasTrailer,$ESCINFO[Container(5002).ListItem.FileNameAndPath],Home)</onclick>
-            <onclick>SetFocus(7001)</onclick>
+            <onclick condition="Skin.HasSetting(Trailers.PlayFullscreen)">Dialog.Close(musicinformation)</onclick>
+            <onclick condition="Skin.HasSetting(Trailers.PlayFullscreen)">PlayMedia($ESCINFO[Container(5002).ListItem.FileNameAndPath])</onclick>
+            <onclick condition="!Skin.HasSetting(Trailers.PlayFullscreen)">PlayMedia($ESCINFO[Container(5002).ListItem.FileNameAndPath],False,1)</onclick>
+            <onclick condition="!Skin.HasSetting(Trailers.PlayFullscreen)">SetFocus(7001)</onclick>
 
             <content target="videos">$VAR[Path_Youtube_Query,plugin://plugin.video.youtube/kodion/search/query/?q=,&amp;search_type=notvalid]</content>
             <visible>String.IsEqual(Window.Property(DetailsView),Trailer)</visible>
@@ -213,9 +213,12 @@
             <include content="DialogInfo_List_Movement">
                 <param name="id">5002</param>
             </include>
-            <onclick>PlayMedia($ESCINFO[Container(5002).ListItem.FileNameAndPath],False,1)</onclick>
-            <onclick>SetProperty(HasTrailer,$ESCINFO[Container(5002).ListItem.FileNameAndPath],Home)</onclick>
-            <onclick>SetFocus(7001)</onclick>
+
+            <onclick condition="Skin.HasSetting(Trailers.PlayFullscreen)">Dialog.Close(movienformation)</onclick>
+            <onclick condition="Skin.HasSetting(Trailers.PlayFullscreen)">PlayMedia($ESCINFO[Container(5002).ListItem.FileNameAndPath])</onclick>
+            <onclick condition="!Skin.HasSetting(Trailers.PlayFullscreen)">PlayMedia($ESCINFO[Container(5002).ListItem.FileNameAndPath],False,1)</onclick>
+            <onclick condition="!Skin.HasSetting(Trailers.PlayFullscreen)">SetFocus(7001)</onclick>
+
             <content target="videos">$VAR[Path_VideoInfo_Generic,,&amp;info=videos]</content>
             <visible>String.IsEqual(Window.Property(DetailsView),Trailer)</visible>
             <animation effect="fade" start="100" end="0" condition="Container(5002).IsUpdating">Conditional</animation>

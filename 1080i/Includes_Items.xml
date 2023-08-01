@@ -498,10 +498,11 @@
             <param name="sliceid">4202</param>
             <param name="label">$LOCALIZE[20410]</param>
             <param name="icon">special://skin/extras/icons/videoplay.png</param>
-            <onclick condition="String.IsEmpty(ListItem.Trailer)">PlayMedia($ESCINFO[Container(99950).ListItem.Trailer],False,1)</onclick>
-            <onclick condition="!String.IsEmpty(ListItem.Trailer)">PlayMedia($ESCINFO[ListItem.Trailer],False,1)</onclick>
-            <onclick condition="String.IsEmpty(ListItem.Trailer)">SetProperty(HasTrailer,$INFO[Container(99950).ListItem.Trailer],Home)</onclick>
-            <onclick condition="!String.IsEmpty(ListItem.Trailer)">SetProperty(HasTrailer,$INFO[ListItem.Trailer],Home)</onclick>
+            <onclick condition="!Skin.HasSetting(Trailers.PlayFullscreen) + String.IsEmpty(ListItem.Trailer)">PlayMedia($ESCINFO[Container(99950).ListItem.Trailer],False,1)</onclick>
+            <onclick condition="!Skin.HasSetting(Trailers.PlayFullscreen) + !String.IsEmpty(ListItem.Trailer)">PlayMedia($ESCINFO[ListItem.Trailer],False,1)</onclick>
+            <onclick condition="Skin.HasSetting(Trailers.PlayFullscreen)">Dialog.Close(movieinformation)</onclick>
+            <onclick condition="Skin.HasSetting(Trailers.PlayFullscreen) + String.IsEmpty(ListItem.Trailer)">PlayMedia($ESCINFO[Container(99950).ListItem.Trailer])</onclick>
+            <onclick condition="Skin.HasSetting(Trailers.PlayFullscreen) + !String.IsEmpty(ListItem.Trailer)">PlayMedia($ESCINFO[ListItem.Trailer])</onclick>
             <onfocus>SetProperty(DetailsView,Trailer)</onfocus>
             <include content="DialogInfo_Button_HintLabel">
                 <param name="label">$LOCALIZE[20410]</param>
