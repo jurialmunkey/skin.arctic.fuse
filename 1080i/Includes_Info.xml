@@ -1097,6 +1097,27 @@
                 </include>
 
 
+                <!-- Addon Info Fallback -->
+                <control type="grouplist">
+                    <hitrect x="0" y="0" w="0" h="0" />
+                    <height>80</height>
+                    <orientation>horizontal</orientation>
+                    <itemgap>10</itemgap>
+                    <visible>!Integer.IsEqual(Container(99956).NumItems,0)</visible>
+                    <visible>![String.IsEqual($PARAM[container]ListItem.DBType,video) | String.IsEqual($PARAM[container]ListItem.DBType,movie) | String.IsEqual($PARAM[container]ListItem.DBType,set) | String.IsEqual($PARAM[container]ListItem.DBType,tvshow) | String.IsEqual($PARAM[container]ListItem.DBType,season) | String.IsEqual($PARAM[container]ListItem.DBType,episode) | String.IsEqual($PARAM[container]ListItem.DBType,artist) | String.IsEqual($PARAM[container]ListItem.DBType,album) | String.IsEqual($PARAM[container]ListItem.DBType,song) | String.IsEqual($PARAM[container]ListItem.DBType,actor) | String.IsEqual($PARAM[container]ListItem.DBType,director) | !String.IsEmpty($PARAM[container]ListItem.ChannelNumberLabel) | !String.IsEmpty($PARAM[container]ListItem.AddonVersion)]</visible>
+                    <include content="Info_Line_Item">
+                        <param name="label">$VAR[Label_Addon_Fallback_PluginSource]</param>
+                        <param name="visible">!String.IsEmpty(Container(99956).ListItem.Property(type))</param>
+                        <param name="textcolor">$PARAM[colordiffuse]_90</param>
+                    </include>
+                    <include content="Info_Line_Item">
+                        <param name="label">$INFO[Container(99956).ListItem.Property(version),v,]</param>
+                        <param name="visible">!String.IsEmpty(Container(99956).ListItem.Property(version))</param>
+                        <param name="textcolor">$PARAM[colordiffuse]_90</param>
+                    </include>
+                </control>
+
+
                 <nested />
             </control>
 
@@ -1632,21 +1653,11 @@
         <param name="weather">true</param>
         <param name="title">true</param>
         <param name="infoline">true</param>
-        <param name="plotlabel">$VAR[Label_Plot]</param>
+        <param name="plotlabel">$VAR[Label_Plot_Container]</param>
         <param name="titlelabel">$VAR[Label_Title_Container]</param>
         <definition>
 
-            <include content="Weather_InfoPanel" condition="$PARAM[title] + $PARAM[infoline] + $PARAM[details] + $PARAM[weather]">
-                <param name="toplabel">$PARAM[titlelabel]</param>
-                <param name="sublabel">$INFO[Weather.Conditions]</param>
-                <visible>![String.IsEqual($PARAM[container]ListItem.DBType,video) | String.IsEqual($PARAM[container]ListItem.DBType,movie) | String.IsEqual($PARAM[container]ListItem.DBType,set) | String.IsEqual($PARAM[container]ListItem.DBType,tvshow) | String.IsEqual($PARAM[container]ListItem.DBType,season) | String.IsEqual($PARAM[container]ListItem.DBType,episode) | String.IsEqual($PARAM[container]ListItem.DBType,artist) | String.IsEqual($PARAM[container]ListItem.DBType,album) | String.IsEqual($PARAM[container]ListItem.DBType,song) | String.IsEqual($PARAM[container]ListItem.DBType,actor) | String.IsEqual($PARAM[container]ListItem.DBType,director) | !String.IsEmpty($PARAM[container]ListItem.ChannelNumberLabel) | !String.IsEmpty($PARAM[container]ListItem.AddonVersion) | !String.IsEmpty($PARAM[container]ListItem.Plot) | !String.IsEmpty(Container(99950).ListItem.Plot)]</visible>
-                <nested />
-            </include>
-
             <control type="group">
-                <include content="Object_Visible" condition="$PARAM[title] + $PARAM[infoline] + $PARAM[details] + $PARAM[weather]">
-                    <param name="visible">[String.IsEqual($PARAM[container]ListItem.DBType,video) | String.IsEqual($PARAM[container]ListItem.DBType,movie) | String.IsEqual($PARAM[container]ListItem.DBType,set) | String.IsEqual($PARAM[container]ListItem.DBType,tvshow) | String.IsEqual($PARAM[container]ListItem.DBType,season) | String.IsEqual($PARAM[container]ListItem.DBType,episode) | String.IsEqual($PARAM[container]ListItem.DBType,artist) | String.IsEqual($PARAM[container]ListItem.DBType,album) | String.IsEqual($PARAM[container]ListItem.DBType,song) | String.IsEqual($PARAM[container]ListItem.DBType,actor) | String.IsEqual($PARAM[container]ListItem.DBType,director) | !String.IsEmpty($PARAM[container]ListItem.ChannelNumberLabel) | !String.IsEmpty($PARAM[container]ListItem.AddonVersion) | !String.IsEmpty($PARAM[container]ListItem.Plot) | !String.IsEmpty(Container(99950).ListItem.Plot)]</param>
-                </include>
                 <nested />
                 <control type="grouplist">
                     <top>-20</top>
@@ -1669,7 +1680,6 @@
                             <param name="container">$PARAM[container]</param>
                             <param name="starrating">$PARAM[starrating]</param>
                             <centertop>45%</centertop>
-                            <visible>!String.IsEmpty($PARAM[container]ListItem.Label)</visible>
                         </include>
                     </control>
 
