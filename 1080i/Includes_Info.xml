@@ -897,20 +897,6 @@
                         <param name="rating">$PARAM[container]ListItem.Rating</param>
                     </include>
 
-                    <!-- PVR Channel Name -->
-                    <!-- <include content="Info_Line_Item">
-                        <param name="label">$INFO[$PARAM[container]ListItem.ChannelName]</param>
-                        <param name="visible">[!String.IsEmpty($PARAM[container]ListItem.ChannelNumberLabel) | String.IsEqual($PARAM[container]ListItem.Path,pvr://channels/tv/)] + !String.IsEmpty($PARAM[container]ListItem.ChannelName)</param>
-                        <param name="textcolor">$PARAM[colordiffuse]_90</param>
-                    </include> -->
-
-                    <!-- PVR Start End -->
-                    <!-- <include content="Info_Line_Item">
-                        <param name="label">$INFO[$PARAM[container]ListItem.StartTime]$INFO[$PARAM[container]ListItem.EndTime, - ,]</param>
-                        <param name="visible">[[!String.IsEmpty($PARAM[container]ListItem.ChannelNumberLabel) | String.IsEqual($PARAM[container]ListItem.Path,pvr://channels/tv/)]] + !String.IsEmpty($PARAM[container]ListItem.StartTime)</param>
-                        <param name="textcolor">$PARAM[colordiffuse]_90</param>
-                    </include> -->
-
                     <!-- Album -->
                     <include content="Info_Line_Item">
                         <include content="Info_Line_Visible_02">
@@ -920,6 +906,26 @@
                         </include>
                         <param name="label">$INFO[$PARAM[container]ListItem.Album]</param>
                         <param name="visible">!String.IsEmpty($PARAM[container]ListItem.Album)</param>
+                        <param name="textcolor">$PARAM[colordiffuse]_90</param>
+                    </include>
+
+                    <!-- Season / Episode -->
+                    <include content="Info_Line_Item">
+                        <include content="Info_Line_Visible_01">
+                            <param name="container">$PARAM[container]</param>
+                            <param name="dbtype_01">episode</param>
+                        </include>
+                        <param name="label">$INFO[$PARAM[container]ListItem.Season,,x]$INFO[$PARAM[container]ListItem.Episode,0,]</param>
+                        <param name="visible">!String.IsEmpty($PARAM[container]ListItem.Episode) + Integer.IsLess($PARAM[container]ListItem.Episode,10)</param>
+                        <param name="textcolor">$PARAM[colordiffuse]_90</param>
+                    </include>
+                    <include content="Info_Line_Item">
+                        <include content="Info_Line_Visible_01">
+                            <param name="container">$PARAM[container]</param>
+                            <param name="dbtype_01">episode</param>
+                        </include>
+                        <param name="label">$INFO[$PARAM[container]ListItem.Season,,x]$INFO[$PARAM[container]ListItem.Episode,,]</param>
+                        <param name="visible">!String.IsEmpty($PARAM[container]ListItem.Episode) + !Integer.IsLess($PARAM[container]ListItem.Episode,10)</param>
                         <param name="textcolor">$PARAM[colordiffuse]_90</param>
                     </include>
 
