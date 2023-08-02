@@ -870,17 +870,24 @@
 
     <include name="Home_Widgets_Grouplist_Standard">
         <onup>302</onup>
+
         <animation effect="slide" time="400" start="0,widget_sbump_h" end="0" tween="quadratic" easing="out" reversible="false" condition="Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)">Conditional</animation>
         <animation effect="slide" time="400" start="0" end="0,widget_sbump_h" tween="quadratic" easing="out" reversible="false" condition="!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)">Conditional</animation>
     </include>
 
     <include name="Home_Widgets_Grouplist_Categories">
         <onup>300</onup>
+
         <animation effect="slide" time="400" start="0,-80" end="0" tween="quadratic" easing="out" reversible="false" condition="!String.IsEmpty(Window.Property(Slide.WidgetContainer))">Conditional</animation>
         <animation effect="slide" time="400" start="0" end="0,-80" tween="quadratic" easing="out" reversible="false" condition="String.IsEmpty(Window.Property(Slide.WidgetContainer))">Conditional</animation>
 
         <animation effect="slide" time="400" start="0,widget_sbump_h" end="0" tween="quadratic" easing="out" reversible="false" condition="Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)">Conditional</animation>
         <animation effect="slide" time="400" start="0" end="0,widget_sbump_h" tween="quadratic" easing="out" reversible="false" condition="!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)">Conditional</animation>
+    </include>
+
+    <include name="Home_Widgets_Grouplist_Widgets">
+        <include>Action_Widget_Top</include>
+        <animation effect="slide" end="0,widget_sbump_h" condition="true">Conditional</animation>
     </include>
 
     <include name="Home_Widgets_Grouplist">
@@ -890,9 +897,10 @@
             <bottom>-440</bottom>
 
             <include condition="String.IsEmpty(Skin.String(Home.LayoutStyle))">Home_Widgets_Grouplist_Standard</include>
-            <include condition="!String.IsEmpty(Skin.String(Home.LayoutStyle))">Home_Widgets_Grouplist_Categories</include>
+            <include condition="String.IsEqual(Skin.String(Home.LayoutStyle),Categories)">Home_Widgets_Grouplist_Categories</include>
+            <include condition="String.IsEqual(Skin.String(Home.LayoutStyle),Widgets)">Home_Widgets_Grouplist_Widgets</include>
 
-            <include content="Action_Widget_End">
+            <include content="Action_Widget_End" condition="!String.IsEqual(Skin.String(Home.LayoutStyle),Widgets) | !Skin.String(Hubs.WidgetsLoopback,Loop)">
                 <param name="topid">$PARAM[topid]</param>
             </include>
 
