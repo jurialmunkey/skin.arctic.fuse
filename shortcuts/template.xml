@@ -37,7 +37,7 @@
                         <height>widget_tbump_h</height>
                     </control>
 
-                    <include content="_DialogInfo_WidgetRow" condition="String.IsEmpty(Skin.String(Home.LayoutStyle))">
+                    <include content="_Widget_Row" condition="String.IsEmpty(Skin.String(Home.LayoutStyle))">
                         <param name="id">$PYTHON[int(mainmenuid) * 1000 + 411]</param>
                         <param name="groupid">$PYTHON[int(mainmenuid) * 1000 + 412]</param>
                         <param name="label">[CAPITALIZE]$VAR[Label_Hub_Background][/CAPITALIZE]</param>
@@ -56,13 +56,14 @@
                         <onback condition="Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 411]).ListItem.CurrentItem,1)">SetFocus($PYTHON[int(mainmenuid) * 1000 + 601])</onback>
                         <onback condition="Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 411]).ListItem.CurrentItem,1)">SetFocus(301)</onback>
                         <onback condition="Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 411]).ListItem.CurrentItem,1)">SetFocus($PYTHON[int(mainmenuid) * 1000 + 411])</onback>
-                        <onback condition="Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 411]).ListItem.CurrentItem,1)">SetFocus(300)</onback>
+                        <onback condition="Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 411]).ListItem.CurrentItem,1) + !Skin.String(Home.LayoutStyle,Widgets)">SetFocus(300)</onback>
+                        <onback condition="Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 411]).ListItem.CurrentItem,1) + Skin.String(Home.LayoutStyle,Widgets)">SetFocus(303,$VAR[Action_Menu_Position],absolute)</onback>
 
                         <onfocus>SetProperty(Transition.WidgetStyle,List_Landscape_Row,Home)</onfocus>
                         <onunfocus>ClearProperty(Transition.WidgetStyle,Home)</onunfocus>
                     </include>
 
-                    <include content="_DialogInfo_WidgetRow" condition="String.IsEmpty(Skin.String(Home.LayoutStyle))">
+                    <include content="_Widget_Row" condition="String.IsEmpty(Skin.String(Home.LayoutStyle))">
                         <param name="id">$PYTHON[int(mainmenuid) * 1000 + 421]</param>
                         <param name="groupid">$PYTHON[int(mainmenuid) * 1000 + 422]</param>
                         <param name="label">[CAPITALIZE]$VAR[Label_Hub_Background][/CAPITALIZE]</param>
@@ -81,7 +82,8 @@
                         <onback condition="Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 421]).ListItem.CurrentItem,1)">SetFocus($PYTHON[int(mainmenuid) * 1000 + 601])</onback>
                         <onback condition="Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 421]).ListItem.CurrentItem,1)">SetFocus(301)</onback>
                         <onback condition="Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 421]).ListItem.CurrentItem,1)">SetFocus($PYTHON[int(mainmenuid) * 1000 + 411])</onback>
-                        <onback condition="Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 421]).ListItem.CurrentItem,1)">SetFocus(300)</onback>
+                        <onback condition="Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 421]).ListItem.CurrentItem,1) + !Skin.String(Home.LayoutStyle,Widgets)">SetFocus(300)</onback>
+                        <onback condition="Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 421]).ListItem.CurrentItem,1) + Skin.String(Home.LayoutStyle,Widgets)">SetFocus(303,$VAR[Action_Menu_Position],absolute)</onback>
 
                         <onfocus>SetProperty(Transition.WidgetStyle,List_Landscape_Row,Home)</onfocus>
                         <onunfocus>ClearProperty(Transition.WidgetStyle,Home)</onunfocus>
@@ -207,7 +209,8 @@
                     <onback condition="Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 600 + int(id)]).ListItem.CurrentItem,1)">SetFocus($PYTHON[int(mainmenuid) * 1000 + 601])</onback>
                     <onback condition="Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 600 + int(id)]).ListItem.CurrentItem,1)">SetFocus(301)</onback>
                     <onback condition="Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 600 + int(id)]).ListItem.CurrentItem,1)">SetFocus($PYTHON[int(mainmenuid) * 1000 + 411])</onback>
-                    <onback condition="Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 600 + int(id)]).ListItem.CurrentItem,1)">SetFocus(300)</onback>
+                    <onback condition="Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 600 + int(id)]).ListItem.CurrentItem,1) + !Skin.String(Home.LayoutStyle,Widgets)">SetFocus(300)</onback>
+                    <onback condition="Integer.IsEqual(Container($PYTHON[int(mainmenuid) * 1000 + 600 + int(id)]).ListItem.CurrentItem,1) + Skin.String(Home.LayoutStyle,Widgets)">SetFocus(303,$VAR[Action_Menu_Position],absolute)</onback>
 
                     <onfocus>SetProperty(Transition.WidgetStyle,$SKINSHORTCUTS[widgetStyle],Home)</onfocus>
                     <onunfocus>ClearProperty(Transition.WidgetStyle,Home)</onunfocus>
@@ -665,25 +668,18 @@
             <property name="isVisible">True</property>
 
             <controls>
-                <include content="_DialogInfo_WidgetRow" condition="$SKINSHORTCUTS[isVisible]">
+                <include content="Widget_Row" condition="$SKINSHORTCUTS[isVisible]">
                     <param name="id">$PYTHON[5000 + int(id)]</param>
                     <param name="groupid">$PYTHON[5100 + int(id)]</param>
                     <param name="label">$SKINSHORTCUTS[widgetName]</param>
                     <param name="secondary_label">$LOCALIZE[31371] $SKINSHORTCUTS[widgetSortlabel]</param>
                     <param name="sort_condition">True</param>
-                    <param name="sort_descending">$SKINSHORTCUTS[widgetSorticon]</param>
+                    <param name="sort_descending">$PARAM[widgetSorticon]</param>
                     <param name="include">$SKINSHORTCUTS[widgetStyle]</param>
                     <param name="transition_include">true</param>
                     <param name="transition_hidden">Control.HasFocus($PYTHON[5000 + int(id)])</param>
                     <content sortby="$SKINSHORTCUTS[widgetSortby]" sortorder="$SKINSHORTCUTS[widgetSortorder]" target="$SKINSHORTCUTS[widgetTarget]" limit="$SKINSHORTCUTS[widgetLimit]">$SKINSHORTCUTS[widgetPath]</content>
-
-                    <onfocus>SetProperty(TMDbHelper.WidgetContainer,$PYTHON[5000 + int(id)])</onfocus>
-                    <onback condition="!Integer.IsEqual(Container($PYTHON[5000 + int(id)]).ListItem.CurrentItem,1)">5000</onback>
-                    <onback condition="!Integer.IsEqual(Container($PYTHON[5000 + int(id)]).ListItem.CurrentItem,1)">SetFocus($PYTHON[5000 + int(id)],0,absolute)</onback>
-                    <onback condition="Integer.IsEqual(Container($PYTHON[5000 + int(id)]).ListItem.CurrentItem,1)">3000</onback>
-
-                    <onfocus>SetProperty(Transition.WidgetStyle,$SKINSHORTCUTS[widgetStyle],Home)</onfocus>
-                    <onunfocus>ClearProperty(Transition.WidgetStyle,Home)</onunfocus>
+                    <param name="topid">5991</param>
                 </include>
             </controls>
         </items>
@@ -805,25 +801,18 @@
             <property name="isVisible">True</property>
 
             <controls>
-                <include content="_DialogInfo_WidgetRow" condition="$SKINSHORTCUTS[isVisible]">
+                <include content="Widget_Row" condition="$SKINSHORTCUTS[isVisible]">
                     <param name="id">$PYTHON[5000 + int(id)]</param>
                     <param name="groupid">$PYTHON[5100 + int(id)]</param>
                     <param name="label">$SKINSHORTCUTS[widgetName]</param>
                     <param name="secondary_label">$LOCALIZE[31371] $SKINSHORTCUTS[widgetSortlabel]</param>
                     <param name="sort_condition">True</param>
-                    <param name="sort_descending">$SKINSHORTCUTS[widgetSorticon]</param>
+                    <param name="sort_descending">$PARAM[widgetSorticon]</param>
                     <param name="include">$SKINSHORTCUTS[widgetStyle]</param>
                     <param name="transition_include">true</param>
                     <param name="transition_hidden">Control.HasFocus($PYTHON[5000 + int(id)])</param>
                     <content sortby="$SKINSHORTCUTS[widgetSortby]" sortorder="$SKINSHORTCUTS[widgetSortorder]" target="$SKINSHORTCUTS[widgetTarget]" limit="$SKINSHORTCUTS[widgetLimit]">$SKINSHORTCUTS[widgetPath]</content>
-
-                    <onfocus>SetProperty(TMDbHelper.WidgetContainer,$PYTHON[5000 + int(id)])</onfocus>
-                    <onback condition="!Integer.IsEqual(Container($PYTHON[5000 + int(id)]).ListItem.CurrentItem,1)">5000</onback>
-                    <onback condition="!Integer.IsEqual(Container($PYTHON[5000 + int(id)]).ListItem.CurrentItem,1)">SetFocus($PYTHON[5000 + int(id)],0,absolute)</onback>
-                    <onback condition="Integer.IsEqual(Container($PYTHON[5000 + int(id)]).ListItem.CurrentItem,1)">3000</onback>
-
-                    <onfocus>SetProperty(Transition.WidgetStyle,$SKINSHORTCUTS[widgetStyle],Home)</onfocus>
-                    <onunfocus>ClearProperty(Transition.WidgetStyle,Home)</onunfocus>
+                    <param name="topid">5991</param>
                 </include>
             </controls>
         </items>
@@ -945,25 +934,18 @@
             <property name="isVisible">True</property>
 
             <controls>
-                <include content="_DialogInfo_WidgetRow" condition="$SKINSHORTCUTS[isVisible]">
+                <include content="Widget_Row" condition="$SKINSHORTCUTS[isVisible]">
                     <param name="id">$PYTHON[5000 + int(id)]</param>
                     <param name="groupid">$PYTHON[5100 + int(id)]</param>
                     <param name="label">$SKINSHORTCUTS[widgetName]</param>
                     <param name="secondary_label">$LOCALIZE[31371] $SKINSHORTCUTS[widgetSortlabel]</param>
                     <param name="sort_condition">True</param>
-                    <param name="sort_descending">$SKINSHORTCUTS[widgetSorticon]</param>
+                    <param name="sort_descending">$PARAM[widgetSorticon]</param>
                     <param name="include">$SKINSHORTCUTS[widgetStyle]</param>
                     <param name="transition_include">true</param>
                     <param name="transition_hidden">Control.HasFocus($PYTHON[5000 + int(id)])</param>
                     <content sortby="$SKINSHORTCUTS[widgetSortby]" sortorder="$SKINSHORTCUTS[widgetSortorder]" target="$SKINSHORTCUTS[widgetTarget]" limit="$SKINSHORTCUTS[widgetLimit]">$SKINSHORTCUTS[widgetPath]</content>
-
-                    <onfocus>SetProperty(TMDbHelper.WidgetContainer,$PYTHON[5000 + int(id)])</onfocus>
-                    <onback condition="!Integer.IsEqual(Container($PYTHON[5000 + int(id)]).ListItem.CurrentItem,1)">5000</onback>
-                    <onback condition="!Integer.IsEqual(Container($PYTHON[5000 + int(id)]).ListItem.CurrentItem,1)">SetFocus($PYTHON[5000 + int(id)],0,absolute)</onback>
-                    <onback condition="Integer.IsEqual(Container($PYTHON[5000 + int(id)]).ListItem.CurrentItem,1)">3000</onback>
-
-                    <onfocus>SetProperty(Transition.WidgetStyle,$SKINSHORTCUTS[widgetStyle],Home)</onfocus>
-                    <onunfocus>ClearProperty(Transition.WidgetStyle,Home)</onunfocus>
+                    <param name="topid">5991</param>
                 </include>
             </controls>
         </items>
@@ -1085,7 +1067,7 @@
             <property name="isVisible">True</property>
 
             <controls>
-                <include content="_DialogInfo_WidgetRow" condition="$SKINSHORTCUTS[isVisible]">
+                <include content="Widget_Row" condition="$SKINSHORTCUTS[isVisible]">
                     <param name="id">$PYTHON[5000 + int(id)]</param>
                     <param name="groupid">$PYTHON[5100 + int(id)]</param>
                     <param name="label">$SKINSHORTCUTS[widgetName]</param>
@@ -1096,14 +1078,7 @@
                     <param name="transition_include">true</param>
                     <param name="transition_hidden">Control.HasFocus($PYTHON[5000 + int(id)])</param>
                     <content sortby="$SKINSHORTCUTS[widgetSortby]" sortorder="$SKINSHORTCUTS[widgetSortorder]" target="$SKINSHORTCUTS[widgetTarget]" limit="$SKINSHORTCUTS[widgetLimit]">$SKINSHORTCUTS[widgetPath]</content>
-
-                    <onfocus>SetProperty(TMDbHelper.WidgetContainer,$PYTHON[5000 + int(id)])</onfocus>
-                    <onback condition="!Integer.IsEqual(Container($PYTHON[5000 + int(id)]).ListItem.CurrentItem,1)">5000</onback>
-                    <onback condition="!Integer.IsEqual(Container($PYTHON[5000 + int(id)]).ListItem.CurrentItem,1)">SetFocus($PYTHON[5000 + int(id)],0,absolute)</onback>
-                    <onback condition="Integer.IsEqual(Container($PYTHON[5000 + int(id)]).ListItem.CurrentItem,1)">3000</onback>
-
-                    <onfocus>SetProperty(Transition.WidgetStyle,$SKINSHORTCUTS[widgetStyle],Home)</onfocus>
-                    <onunfocus>ClearProperty(Transition.WidgetStyle,Home)</onunfocus>
+                    <param name="topid">5991</param>
                 </include>
             </controls>
         </items>

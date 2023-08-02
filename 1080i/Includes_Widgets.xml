@@ -237,4 +237,107 @@
             </include>
         </control>
     </include>
+
+    <include name="_Widget_Row">
+        <param name="labeltop">widget_label_t</param>
+        <param name="labelheight">widget_label_h</param>
+        <param name="widgettop">widget_items_t</param>
+        <param name="widgetheight">widget_items_h</param>
+        <definition>
+            <include content="Widget_Poster">
+                <param name="id">$PARAM[id]</param>
+                <param name="groupid">$PARAM[groupid]</param>
+                <param name="label">$PARAM[label]</param>
+                <param name="secondary_label">$PARAM[secondary_label]</param>
+                <param name="sort_condition">$PARAM[sort_condition]</param>
+                <param name="sort_descending">$PARAM[sort_descending]</param>
+                <param name="labelvisible">true</param>
+                <param name="infowidget">true</param>
+                <param name="include">$PARAM[include]</param>
+                <param name="visible">$PARAM[visible]</param>
+                <param name="altvisible">$PARAM[altvisible]</param>
+                <param name="detailed">$PARAM[detailed]</param>
+                <param name="busy_isupdating">$PARAM[busy_isupdating]</param>
+                <param name="labeltop">$PARAM[labeltop]</param>
+                <param name="labelheight">$PARAM[labelheight]</param>
+                <param name="widgettop">$PARAM[widgettop]</param>
+                <param name="widgetheight">$PARAM[widgetheight]</param>
+                <param name="transition_include">$PARAM[transition_include]</param>
+                <param name="transition_hidden">$PARAM[transition_hidden]</param>
+                <nested />
+            </include>
+        </definition>
+    </include>
+
+    <include name="Widget_Row">
+        <definition>
+            <include content="_Widget_Row">
+                <param name="id">$PARAM[id]</param>
+                <param name="groupid">$PARAM[groupid]</param>
+                <param name="label">$PARAM[label]</param>
+                <param name="secondary_label">$PARAM[secondary_label]</param>
+                <param name="sort_condition">$PARAM[sort_condition]</param>
+                <param name="sort_descending">$PARAM[sort_descending]</param>
+                <param name="include">$PARAM[include]</param>
+                <param name="visible">$PARAM[visible]</param>
+                <param name="altvisible">$PARAM[altvisible]</param>
+                <param name="detailed">$PARAM[detailed]</param>
+                <param name="busy_isupdating">$PARAM[busy_isupdating]</param>
+                <param name="transition_include">$PARAM[transition_include]</param>
+                <param name="transition_hidden">$PARAM[transition_hidden]</param>
+
+                <onback condition="!Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)">5000</onback>
+                <onback condition="!Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)">SetFocus($PARAM[id],0,absolute)</onback>
+                <onback condition="Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)">SetFocus($PARAM[topid],0,absolute)</onback>
+                <onback condition="Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)">SetFocus(5001,0,absolute)</onback>
+                <onback condition="Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)">3000</onback>
+
+                <onfocus>SetProperty(TMDbHelper.WidgetContainer,$PARAM[id])</onfocus>
+                <onfocus>SetProperty(Transition.WidgetStyle,$PARAM[include],Home)</onfocus>
+                <onunfocus>ClearProperty(Transition.WidgetStyle,Home)</onunfocus>
+
+                <nested />
+            </include>
+        </definition>
+    </include>
+
+    <include name="Widget_Info_Row_action">
+        <onback condition="!Integer.IsEqual(Container(50$PARAM[id]).ListItem.CurrentItem,1)">SetFocus(50$PARAM[id],0,absolute)</onback>
+        <onback>Action(Left)</onback>
+        <onback>7000</onback>
+        <onleft>7000</onleft>
+        <onright>SetFocus(50$PARAM[id],0,absolute)</onright>
+        <onright>7000</onright>
+    </include>
+
+    <include name="Widget_Info_Row">
+        <param name="include_action">Widget_Info_Row_action</param>
+        <param name="set_widgetcontainer">true</param>
+        <param name="set_imageoverride">true</param>
+        <definition>
+            <include content="_Widget_Row">
+                <param name="id">50$PARAM[id]</param>
+                <param name="groupid">51$PARAM[id]</param>
+                <param name="label">$PARAM[label]</param>
+                <param name="secondary_label">$PARAM[secondary_label]</param>
+                <param name="include">$PARAM[include]</param>
+                <param name="visible">$PARAM[visible]</param>
+                <param name="altvisible">$PARAM[altvisible]</param>
+                <param name="detailed">$PARAM[detailed]</param>
+                <param name="include_action">$PARAM[include_action]</param>
+                <param name="transition_include">$PARAM[transition_include]</param>
+                <param name="transition_hidden">$PARAM[transition_hidden]</param>
+
+                <include content="$PARAM[include_action]">
+                    <param name="id">$PARAM[id]</param>
+                </include>
+
+                <onfocus condition="$PARAM[set_imageoverride]">SetProperty(TMDbHelper.Image.Override,1,Home)</onfocus>
+                <onunfocus condition="$PARAM[set_imageoverride]">ClearProperty(TMDbHelper.Image.Override,Home)</onunfocus>
+                <onfocus condition="$PARAM[set_widgetcontainer]">SetProperty(TMDbHelper.WidgetContainer,50$PARAM[id])</onfocus>
+
+                <nested />
+            </include>
+        </definition>
+    </include>
 </includes>
