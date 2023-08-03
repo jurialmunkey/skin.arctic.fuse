@@ -39,6 +39,14 @@
             <animation effect="fade" start="0" end="100" time="200" delay="200" reversible="false">Visible</animation>
             <animation effect="fade" start="100" end="0" time="200" reversible="false">Hidden</animation>
 
+            <include content="Animation_Fade_In">
+                <param name="condition">!$EXP[Exp_InfoDialogs]</param>
+            </include>
+            <include content="Animation_Fade_Out">
+                <param name="condition">$EXP[Exp_InfoDialogs]</param>
+                <param name="delay">300</param>
+            </include>
+
             <include content="List_Button_Row">
                 <param name="id">$PARAM[id]2</param>
                 <param name="orientation">vertical</param>
@@ -119,19 +127,19 @@
                         <bottom>46</bottom>
                         <left>200</left>
                     </include>
+
+                    <include content="Widget_Fake_Row">
+                        <param name="id">$PARAM[id]3</param>
+                        <param name="affix">_C$PARAM[id]3</param>
+                        <param name="overhang_visible">Control.HasFocus(60)</param>
+                        <animation type="Conditional" reversible="false" condition="Container($PARAM[id]3).IsUpdating">
+                            <effect type="fade" start="100" end="0" time="200" delay="600" />
+                        </animation>
+                    </include>
                 </include>
                 <include content="Transitions_List_Landscape_Row">
                     <param name="id">$PARAM[id]3</param>
                     <param name="affix">_C$PARAM[id]3</param>
-                </include>
-
-                <include content="Widget_Fake_Row">
-                    <param name="id">$PARAM[id]3</param>
-                    <param name="affix">_C$PARAM[id]3</param>
-                    <param name="overhang_visible">Control.HasFocus(60)</param>
-                    <animation type="Conditional" reversible="false" condition="Container($PARAM[id]3).IsUpdating">
-                        <effect type="fade" start="100" end="0" time="200" delay="600" />
-                    </animation>
                 </include>
             </control>
         </definition>
@@ -186,10 +194,6 @@
                     <param name="id">$PARAM[id]3</param>
                     <param name="affix">_C$PARAM[id]3</param>
                 </include>
-                <!-- <include content="Info_Viewline">
-                    <param name="sort_condition">true</param>
-                    <param name="library_condition">true</param>
-                </include> -->
             </control>
         </definition>
     </include>
@@ -197,6 +201,9 @@
         <control type="group">
             <include content="Animation_ConditionalFade">
                 <param name="condition">Control.HasFocus(60)</param>
+            </include>
+            <include content="Animation_ConditionalFade">
+                <param name="condition">$EXP[Exp_InfoDialogs]</param>
             </include>
             <include content="Home_Selector_Widget">
                 <param name="id">$PARAM[id]2</param>
