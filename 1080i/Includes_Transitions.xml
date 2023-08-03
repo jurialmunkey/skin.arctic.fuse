@@ -59,6 +59,9 @@
     </include>
 
     <include name="Transitions_List_Row_Item">
+        <param name="conditional_fade">true</param>
+        <param name="transition_animation">true</param>
+        <param name="selected">false</param>
         <definition>
             <include content="$PARAM[content]">
                 <param name="icon">$VAR[$PARAM[icon_base_var]$PARAM[affix]_$PARAM[pos]]</param>
@@ -67,10 +70,13 @@
                 <param name="affix">$PARAM[affix]_$PARAM[pos]</param>
                 <param name="listitem">Container($PARAM[id]).ListItem($PARAM[pos])</param>
                 <param name="id">$PARAM[id]</param>
+                <param name="selected">$PARAM[selected]</param>
 
-                <animation effect="fade" start="100" end="0" condition="String.IsEmpty(Container($PARAM[id]).ListItemNoWrap($PARAM[pos]).CurrentItem)">Conditional</animation>
+                <include content="Animation_ConditionalFade" condition="$PARAM[conditional_fade]">
+                    <param name="condition">String.IsEmpty(Container($PARAM[id]).ListItemNoWrap($PARAM[pos]).CurrentItem)</param>
+                </include>
 
-                <include content="Transitions_List_Row_Animation">
+                <include content="Transitions_List_Row_Animation" condition="$PARAM[transition_animation]">
                     <param name="col">$PARAM[pos]</param>
                 </include>
 

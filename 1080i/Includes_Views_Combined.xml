@@ -30,8 +30,8 @@
         <value condition="!String.IsEmpty(Window.Property(SpecialFolderPath))">$INFO[Window.Property(SpecialFolderPath)]</value>
     </variable>
 
-    <!-- Horizontal Layout -->
-    <include name="View_Combined_List_Horz">
+    <!-- Vertical Layout (Detailed) -->
+    <include name="View_Combined_List_Vert">
         <control type="group">
             <left>view_top</left>
             <top>590</top>
@@ -73,7 +73,7 @@
             </include>
         </control>
     </include>
-    <include name="View_Combined_Row_Horz">
+    <include name="View_Combined_Row_Vert">
         <definition>
             <control type="group">
                 <animation effect="slide" start="420" end="0" tween="quadratic" easing="out" time="400" reversible="false" condition="[Control.HasFocus($PARAM[id]3) | Control.HasFocus(60)]">Conditional</animation>
@@ -96,6 +96,9 @@
                         <animation type="Conditional" reversible="false" condition="Container($PARAM[id]3).IsUpdating">
                             <effect type="fade" start="100" end="0" time="200" delay="600" />
                         </animation>
+                        <include content="Animation_ConditionalFade">
+                            <param name="condition">true</param>
+                        </include>
 
                         <include content="Action_View_Movement_OnUp">
                             <param name="id">$PARAM[id]3</param>
@@ -121,12 +124,21 @@
                     <param name="id">$PARAM[id]3</param>
                     <param name="affix">_C$PARAM[id]3</param>
                 </include>
+
+                <include content="Widget_Fake_Row">
+                    <param name="id">$PARAM[id]3</param>
+                    <param name="affix">_C$PARAM[id]3</param>
+                    <param name="overhang_visible">Control.HasFocus(60)</param>
+                    <animation type="Conditional" reversible="false" condition="Container($PARAM[id]3).IsUpdating">
+                        <effect type="fade" start="100" end="0" time="200" delay="600" />
+                    </animation>
+                </include>
             </control>
         </definition>
     </include>
 
-    <!-- Vertical Layout -->
-    <include name="View_Combined_Row_Vert">
+    <!-- Horizontal Layout (Classic) -->
+    <include name="View_Combined_Row_Horz">
         <definition>
             <control type="group">
                 <visible>Control.IsVisible($PARAM[id]2)</visible>
@@ -181,7 +193,7 @@
             </control>
         </definition>
     </include>
-    <include name="View_Combined_List_Vert">
+    <include name="View_Combined_List_Horz">
         <control type="group">
             <include content="Animation_ConditionalFade">
                 <param name="condition">Control.HasFocus(60)</param>
@@ -208,23 +220,23 @@
 
     <!-- Combined Landscape -->
     <include name="View_512_Landscape_Combined_Row">
-        <include content="View_Combined_List_Vert" condition="!Skin.HasSetting(Views.UseAltCombined)">
+        <include content="View_Combined_List_Horz" condition="!Skin.HasSetting(Views.UseAltCombined)">
             <param name="id">51</param>
             <param name="viewtype_label">$LOCALIZE[31119]</param>
             <param name="visible">$EXP[Exp_View_512]</param>
         </include>
-        <include content="View_Combined_Row_Vert" condition="!Skin.HasSetting(Views.UseAltCombined)">
+        <include content="View_Combined_Row_Horz" condition="!Skin.HasSetting(Views.UseAltCombined)">
             <param name="id">51</param>
             <param name="include">List_Landscape_Row</param>
             <param name="visible">$EXP[Exp_View_512]</param>
             <param name="icon_base_var">Image_Landscape</param>
         </include>
-        <include content="View_Combined_List_Horz" condition="Skin.HasSetting(Views.UseAltCombined)">
+        <include content="View_Combined_List_Vert" condition="Skin.HasSetting(Views.UseAltCombined)">
             <param name="id">51</param>
             <param name="viewtype_label">$LOCALIZE[31119]</param>
             <param name="visible">$EXP[Exp_View_512]</param>
         </include>
-        <include content="View_Combined_Row_Horz" condition="Skin.HasSetting(Views.UseAltCombined)">
+        <include content="View_Combined_Row_Vert" condition="Skin.HasSetting(Views.UseAltCombined)">
             <param name="id">51</param>
             <param name="include">List_Landscape_Row</param>
             <param name="visible">$EXP[Exp_View_512]</param>

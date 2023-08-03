@@ -215,9 +215,6 @@
                 <right>-40</right>
                 <orientation>horizontal</orientation>
                 <visible>$PARAM[visible]</visible>
-                <!-- <animation type="Visible" reversible="false">
-                    <effect type="fade" start="0" end="100" time="200" delay="600" />
-                </animation> -->
                 <include>Widget_Busy_BlankItem_Landscape</include>
                 <include>Widget_Busy_BlankItem_Landscape</include>
                 <include>Widget_Busy_BlankItem_Landscape</include>
@@ -236,6 +233,128 @@
                 </animation>
             </include>
         </control>
+    </include>
+
+    <include name="Widget_Fake_Row">
+        <param name="content">Layout_Landscape</param>
+        <param name="icon_base_var">Image_Landscape</param>
+        <param name="itemlayout_w">420</param>
+        <param name="item_w">380</param>
+        <param name="item_h">view_smallposter_item_h</param>
+        <param name="prefix">transition_landscape</param>
+        <param name="overhang_visible">false</param>
+        <definition>
+            <control type="group">
+                <nested />
+                <left>200</left>
+                <top>586</top>
+
+                <animation effect="slide" end="-$PARAM[itemlayout_w]" time="400" tween="quadratic" reversible="false" condition="!Container($PARAM[id]).OnNext">Conditional</animation>
+                <animation effect="slide" end="$PARAM[itemlayout_w]" time="400" tween="quadratic" reversible="false" condition="!Container($PARAM[id]).OnPrevious">Conditional</animation>
+
+                <!-- Overhang -->
+                <include content="Transitions_List_Row_Item">
+                    <param name="pos">-1</param>
+                    <param name="content">$PARAM[content]</param>
+                    <param name="icon_base_var">$PARAM[icon_base_var]</param>
+                    <param name="item_w">$PARAM[item_w]</param>
+                    <param name="item_h">$PARAM[item_h]</param>
+                    <param name="id">$PARAM[id]</param>
+                    <param name="prefix">$PARAM[prefix]</param>
+                    <param name="affix">$PARAM[affix]</param>
+                    <param name="conditional_fade">!Skin.HasSetting(Views.WrapLists)</param>
+                    <param name="transition_animation">false</param>
+                    <include content="Animation_Fade_In">
+                        <param name="type">Visible</param>
+                        <param name="delay">0</param>
+                    </include>
+                    <include content="Animation_Fade_Out">
+                        <param name="type">Hidden</param>
+                    </include>
+                    <visible>Control.HasFocus($PARAM[id]) | $PARAM[overhang_visible]</visible>
+                </include>
+
+                <!-- Focus -->
+                <include content="Transitions_List_Row_Item">
+                    <param name="pos">0</param>
+                    <param name="content">$PARAM[content]</param>
+                    <param name="icon_base_var">$PARAM[icon_base_var]</param>
+                    <param name="item_w">$PARAM[item_w]</param>
+                    <param name="item_h">$PARAM[item_h]</param>
+                    <param name="id">$PARAM[id]</param>
+                    <param name="prefix">$PARAM[prefix]</param>
+                    <param name="affix">$PARAM[affix]</param>
+                    <param name="conditional_fade">!Skin.HasSetting(Views.WrapLists)</param>
+                    <param name="transition_animation">false</param>
+                    <param name="selected">true</param>
+                    <visible>Control.HasFocus($PARAM[id])</visible>
+                </include>
+                <include content="Transitions_List_Row_Item">
+                    <param name="pos">0</param>
+                    <param name="content">$PARAM[content]</param>
+                    <param name="icon_base_var">$PARAM[icon_base_var]</param>
+                    <param name="item_w">$PARAM[item_w]</param>
+                    <param name="item_h">$PARAM[item_h]</param>
+                    <param name="id">$PARAM[id]</param>
+                    <param name="prefix">$PARAM[prefix]</param>
+                    <param name="affix">$PARAM[affix]</param>
+                    <param name="conditional_fade">!Skin.HasSetting(Views.WrapLists)</param>
+                    <param name="transition_animation">false</param>
+                    <param name="selected">false</param>
+                    <visible>![Control.HasFocus($PARAM[id])]</visible>
+                </include>
+
+                <!-- Rest of Items -->
+                <include content="Transitions_List_Row_Item">
+                    <param name="pos">1</param>
+                    <param name="content">$PARAM[content]</param>
+                    <param name="icon_base_var">$PARAM[icon_base_var]</param>
+                    <param name="item_w">$PARAM[item_w]</param>
+                    <param name="item_h">$PARAM[item_h]</param>
+                    <param name="id">$PARAM[id]</param>
+                    <param name="prefix">$PARAM[prefix]</param>
+                    <param name="affix">$PARAM[affix]</param>
+                    <param name="conditional_fade">!Skin.HasSetting(Views.WrapLists)</param>
+                    <param name="transition_animation">false</param>
+                </include>
+                <include content="Transitions_List_Row_Item">
+                    <param name="pos">2</param>
+                    <param name="content">$PARAM[content]</param>
+                    <param name="icon_base_var">$PARAM[icon_base_var]</param>
+                    <param name="item_w">$PARAM[item_w]</param>
+                    <param name="item_h">$PARAM[item_h]</param>
+                    <param name="id">$PARAM[id]</param>
+                    <param name="prefix">$PARAM[prefix]</param>
+                    <param name="affix">$PARAM[affix]</param>
+                    <param name="conditional_fade">!Skin.HasSetting(Views.WrapLists)</param>
+                    <param name="transition_animation">false</param>
+                </include>
+                <include content="Transitions_List_Row_Item">
+                    <param name="pos">3</param>
+                    <param name="content">$PARAM[content]</param>
+                    <param name="icon_base_var">$PARAM[icon_base_var]</param>
+                    <param name="item_w">$PARAM[item_w]</param>
+                    <param name="item_h">$PARAM[item_h]</param>
+                    <param name="id">$PARAM[id]</param>
+                    <param name="prefix">$PARAM[prefix]</param>
+                    <param name="affix">$PARAM[affix]</param>
+                    <param name="conditional_fade">!Skin.HasSetting(Views.WrapLists)</param>
+                    <param name="transition_animation">false</param>
+                </include>
+                <include content="Transitions_List_Row_Item">
+                    <param name="pos">4</param>
+                    <param name="content">$PARAM[content]</param>
+                    <param name="icon_base_var">$PARAM[icon_base_var]</param>
+                    <param name="item_w">$PARAM[item_w]</param>
+                    <param name="item_h">$PARAM[item_h]</param>
+                    <param name="id">$PARAM[id]</param>
+                    <param name="prefix">$PARAM[prefix]</param>
+                    <param name="affix">$PARAM[affix]</param>
+                    <param name="conditional_fade">!Skin.HasSetting(Views.WrapLists)</param>
+                    <param name="transition_animation">false</param>
+                </include>
+            </control>
+        </definition>
     </include>
 
     <include name="_Widget_Row">
@@ -302,11 +421,11 @@
     </include>
 
     <include name="Widget_Info_Row_action">
-        <onback condition="!Integer.IsEqual(Container(50$PARAM[id]).ListItem.CurrentItem,1)">SetFocus(50$PARAM[id],0,absolute)</onback>
+        <onback condition="!Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)">SetFocus($PARAM[id],0,absolute)</onback>
         <onback>Action(Left)</onback>
         <onback>7000</onback>
         <onleft>7000</onleft>
-        <onright>SetFocus(50$PARAM[id],0,absolute)</onright>
+        <onright>SetFocus($PARAM[id],0,absolute)</onright>
         <onright>7000</onright>
     </include>
 
@@ -314,10 +433,12 @@
         <param name="include_action">Widget_Info_Row_action</param>
         <param name="set_widgetcontainer">true</param>
         <param name="set_imageoverride">true</param>
+        <param name="baseid">50</param>
+        <param name="basegroupid">51</param>
         <definition>
             <include content="_Widget_Row">
-                <param name="id">50$PARAM[id]</param>
-                <param name="groupid">51$PARAM[id]</param>
+                <param name="id">$PARAM[baseid]$PARAM[id]</param>
+                <param name="groupid">$PARAM[basegroupid]$PARAM[id]</param>
                 <param name="label">$PARAM[label]</param>
                 <param name="secondary_label">$PARAM[secondary_label]</param>
                 <param name="include">$PARAM[include]</param>
@@ -333,12 +454,12 @@
                 <param name="widgetheight">$PARAM[widgetheight]</param>
 
                 <include content="$PARAM[include_action]">
-                    <param name="id">$PARAM[id]</param>
+                    <param name="id">$PARAM[baseid]$PARAM[id]</param>
                 </include>
 
                 <onfocus condition="$PARAM[set_imageoverride]">SetProperty(TMDbHelper.Image.Override,1,Home)</onfocus>
                 <onunfocus condition="$PARAM[set_imageoverride]">ClearProperty(TMDbHelper.Image.Override,Home)</onunfocus>
-                <onfocus condition="$PARAM[set_widgetcontainer]">SetProperty(TMDbHelper.WidgetContainer,50$PARAM[id])</onfocus>
+                <onfocus condition="$PARAM[set_widgetcontainer]">SetProperty(TMDbHelper.WidgetContainer,$PARAM[baseid]$PARAM[id])</onfocus>
 
                 <nested />
             </include>
