@@ -2,10 +2,27 @@
 <includes>
 
     <include name="Action_Hub_Refocus_Onload">
+        <onload>SetFocus(5001)</onload>
+        <onload>SetFocus(5993)</onload>
         <onload>SetFocus(5991)</onload>
         <onload condition="String.IsEmpty(Window.Property(LastFocus))">SetFocus(300)</onload>
         <onload condition="!String.IsEmpty(Window.Property(LastFocus))">SetFocus($INFO[Window.Property(LastFocus)])</onload>
+
         <onunload>SetProperty(LastFocus,$INFO[System.CurrentControlID])</onunload>
+    </include>
+
+    <include name="Action_Widget_OnBack">
+        <onback condition="!Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)">$PARAM[grouplistid]</onback>
+        <onback condition="!Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)">SetFocus($PARAM[id],0,absolute)</onback>
+        <onback condition="Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1) + Control.IsVisible($PARAM[landscapeid]) + !Control.HasFocus($PARAM[landscapeid])">$PARAM[landscapeid]</onback>
+        <onback condition="Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1) + Control.IsVisible($PARAM[squareid]) + !Control.HasFocus($PARAM[squareid]) + !Control.IsVisible($PARAM[landscapeid])">$PARAM[squareid]</onback>
+        <onback condition="Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1) + Control.IsVisible($PARAM[topid]) + !Control.HasFocus($PARAM[topid]) + !Control.IsVisible($PARAM[landscapeid]) + !Control.IsVisible($PARAM[squareid])">$PARAM[topid]</onback>
+
+        <onback condition="Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1) + Control.IsVisible($PARAM[landscapeid]) + Control.HasFocus($PARAM[landscapeid])">$PARAM[grouplistid]</onback>
+        <onback condition="Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1) + Control.IsVisible($PARAM[squareid]) + Control.HasFocus($PARAM[squareid]) + !Control.IsVisible($PARAM[landscapeid])">$PARAM[grouplistid]</onback>
+        <onback condition="Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1) + Control.IsVisible($PARAM[topid]) + Control.HasFocus($PARAM[topid]) + !Control.IsVisible($PARAM[landscapeid]) + !Control.IsVisible($PARAM[squareid])">$PARAM[grouplistid]</onback>
+
+        <onback condition="Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)">AlarmClock(refocus,$PARAM[refocus],00:00,silent)</onback>
     </include>
 
     <include name="Action_Widget_Top_HomeLoop">
