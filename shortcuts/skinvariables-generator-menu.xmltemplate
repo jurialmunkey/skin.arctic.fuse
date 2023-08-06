@@ -1,0 +1,48 @@
+    <submenu include="{include_name}" name="{include_name}">
+        <controls>
+            <include content="Hub_Menu_Group">
+                <include content="Hub_Menu_Grouplist">
+                    <param name="window_id">{window_id}</param>
+                    <param name="widgets_only">Skin.HasSetting(Hub.{hub_type}.DisableSubmenu)</param>
+                    <include content="Hub_Menu_List" condition="!Skin.HasSetting(Hub.{hub_type}.DisableSubmenu)">
+                        <param name="window_id">{window_id}</param>
+                        <content><include>skinshortcuts-group-{include_name}</include></content>
+                    </include>
+                    <include content="Home_Submenu_Group" condition="!Skin.HasSetting(Hub.{hub_type}.DisableSubmenu)">
+                        <skinshortcuts insert="submenulist">items</skinshortcuts>
+                    </include>
+                </include>
+            </include>
+        </controls>
+        <items insert="submenulist">
+            <property name="widgetPath" tag="property" attribute="name|widgetPath"/>
+            <property name="widgetTarget" tag="property" attribute="name|widgetTarget" />
+            <property name="widgetTarget">videos</property>
+
+            <property name="widgetSortby" tag="property" attribute="name|widgetSortby" />
+            <property name="widgetSortorder" tag="property" attribute="name|widgetSortorder" />
+
+            <!-- Menu ID -->
+            <property name="id" tag="mainmenuid" />
+
+            <!-- isVisible -->
+            <property name="isWidget" tag="property" attribute="name|widgetPath">True</property>
+            <property name="isWidget">False</property>
+            <controls>
+                <include content="Hub_Submenu_List" condition="![$SKINSHORTCUTS[isWidget]]">
+                    <param name="window_id">{window_id}</param>
+                    <param name="id">$PYTHON[3000 + int(id)]</param>
+                    <content>
+                        <include>skinshortcuts-group-moviesubmenu</include>
+                    </content>
+                    <visible>Integer.IsEqual(Container(300).ListItem.Property(id),$SKINSHORTCUTS[id])</visible>
+                </include>
+                <include content="Hub_Submenu_List" condition="$SKINSHORTCUTS[isWidget]">
+                    <param name="window_id">{window_id}</param>
+                    <param name="id">$PYTHON[3000 + int(id)]</param>
+                    <content target="$SKINSHORTCUTS[widgetTarget]" sortby="$SKINSHORTCUTS[widgetSortby]" sortorder="$SKINSHORTCUTS[widgetSortorder]">$SKINSHORTCUTS[widgetPath]</content>
+                    <visible>Integer.IsEqual(Container(300).ListItem.Property(id),$SKINSHORTCUTS[id])</visible>
+                </include>
+            </controls>
+        </items>
+    </submenu>
