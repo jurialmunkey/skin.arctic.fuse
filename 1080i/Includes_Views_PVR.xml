@@ -1,102 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
 
-    <!-- Common Parts -->
-    <include name="View_PVR_GroupSwitcher_Button">
-        <control type="button">
-            <width>auto</width>
-            <height>x08</height>
-            <font>font_mini_bold</font>
-            <textcolor>main_fg_30</textcolor>
-            <focusedcolor>main_fg_30</focusedcolor>
-            <textoffsetx>4</textoffsetx>
-            <label>$INFO[Container(11).ListItemAbsolute($PARAM[pos]).Label]</label>
-            <texturefocus />
-            <texturenofocus />
-            <visible>!String.IsEmpty(Container(11).ListItemAbsolute($PARAM[pos]).Label)</visible>
-            <visible>!String.IsEqual(Container(11).ListItemAbsolute($PARAM[pos]).Label,Container(11).ListItem.Label)</visible>
-        </control>
-        <control type="button">
-            <width>auto</width>
-            <height>x08</height>
-            <font>font_mini_bold</font>
-            <textcolor>main_fg_90</textcolor>
-            <focusedcolor>main_fg_90</focusedcolor>
-            <textoffsetx>4</textoffsetx>
-            <label>$INFO[Container(11).ListItemAbsolute($PARAM[pos]).Label]</label>
-            <texturefocus />
-            <texturenofocus />
-            <visible>!String.IsEmpty(Container(11).ListItemAbsolute($PARAM[pos]).Label)</visible>
-            <visible>!Control.HasFocus(11) + String.IsEqual(Container(11).ListItemAbsolute($PARAM[pos]).Label,Container(11).ListItem.Label)</visible>
-        </control>
-        <control type="button">
-            <width>auto</width>
-            <height>x08</height>
-            <font>font_mini_bold</font>
-            <textcolor>main_fg_100</textcolor>
-            <focusedcolor>main_fg_100</focusedcolor>
-            <textoffsetx>4</textoffsetx>
-            <label>$INFO[Container(11).ListItemAbsolute($PARAM[pos]).Label]</label>
-            <texturefocus border="5">special://profile/addon_data/script.texturemaker/ArcticFuse/underline_h.png</texturefocus>
-            <texturenofocus border="5">special://profile/addon_data/script.texturemaker/ArcticFuse/underline_h.png</texturenofocus>
-            <visible>!String.IsEmpty(Container(11).ListItemAbsolute($PARAM[pos]).Label)</visible>
-            <visible>Control.HasFocus(11) + String.IsEqual(Container(11).ListItemAbsolute($PARAM[pos]).Label,Container(11).ListItem.Label)</visible>
-        </control>
-    </include>
+    <!-- Group Switcher -->
     <include name="View_PVR_GroupSwitcher">
-        <control type="grouplist">
-            <orientation>horizontal</orientation>
-            <align>left</align>
-            <itemgap>30</itemgap>
-            <height>x08</height>
-            <centertop>50%</centertop>
-            <usecontrolcoords>true</usecontrolcoords>
-            <include content="Info_Codec_LabelIcon">
-                <param name="icon">special://skin/extras/icons/pager.png</param>
-            </include>
-            <include content="View_PVR_GroupSwitcher_Button">
-                <param name="pos">0</param>
-            </include>
-            <include content="View_PVR_GroupSwitcher_Button">
-                <param name="pos">1</param>
-            </include>
-            <include content="View_PVR_GroupSwitcher_Button">
-                <param name="pos">2</param>
-            </include>
-            <include content="View_PVR_GroupSwitcher_Button">
-                <param name="pos">3</param>
-            </include>
-            <include content="View_PVR_GroupSwitcher_Button">
-                <param name="pos">4</param>
-            </include>
-            <include content="View_PVR_GroupSwitcher_Button">
-                <param name="pos">5</param>
-            </include>
-            <include content="View_PVR_GroupSwitcher_Button">
-                <param name="pos">6</param>
-            </include>
-            <include content="View_PVR_GroupSwitcher_Button">
-                <param name="pos">7</param>
-            </include>
-            <include content="View_PVR_GroupSwitcher_Button">
-                <param name="pos">8</param>
-            </include>
-            <include content="View_PVR_GroupSwitcher_Button">
-                <param name="pos">9</param>
-            </include>
-        </control>
-        <control type="list" id="11">
-            <width>1</width>
-            <height>1</height>
-            <left>-1920</left>
-            <orientation>horizontal</orientation>
+        <include content="Home_Selector_Widget">
+            <param name="id">11</param>
+            <param name="visible">True</param>
+            <param name="font">font_mini_bold</param>
+            <param name="shorten">True</param>
+            <param name="hidden_button">Items_Null</param>
+            <top>920</top>
             <ondown condition="!Window.IsVisible(MyPVRGuide.xml)">SetFocus(50,0,absolute)</ondown>
             <onup condition="!Window.IsVisible(MyPVRGuide.xml)">SetFocus(50,99999,absolute)</onup>
             <ondown condition="Window.IsVisible(MyPVRGuide.xml)">50</ondown>
             <onup condition="Window.IsVisible(MyPVRGuide.xml)">50</onup>
-            <itemlayout width="1" height="1" />
-            <focusedlayout width="1" height="1" />
-        </control>
+        </include>
     </include>
 
     <!-- EPG -->
@@ -188,6 +106,7 @@
             <include>Animation_Half_WindowChange</include>
             <visible>!$EXP[Exp_InfoDialogs]</visible>
             <include>Furniture_Bottom</include>
+            <include condition="!Skin.HasSetting(Furniture.EnableClock.BottomLeft)">View_PVR_GroupSwitcher</include>
         </control>
         <include>Home_Menu</include>
     </include>
