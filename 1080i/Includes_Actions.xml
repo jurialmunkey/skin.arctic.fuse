@@ -2,11 +2,11 @@
 <includes>
 
     <include name="Action_Hub_Refocus_Onload">
-        <onload>SetFocus(5001)</onload>
-        <onload>SetFocus(5002)</onload>
-        <onload>SetFocus(5003)</onload>
-        <onload condition="String.IsEmpty(Window.Property(LastFocus))">SetFocus(300)</onload>
-        <onload condition="!String.IsEmpty(Window.Property(LastFocus))">SetFocus($INFO[Window.Property(LastFocus)])</onload>
+        <onload condition="Control.IsVisible(5001)">SetFocus(5001)</onload>
+        <onload condition="Control.IsVisible(5002) + !Control.IsVisible(5001)">SetFocus(5002)</onload>
+        <onload condition="Control.IsVisible(5003) + !Control.IsVisible(5002) + !Control.IsVisible(5001)">SetFocus(5003)</onload>
+        <onload condition="String.IsEmpty(Window.Property(LastFocus))">AlarmClock(refocus,SetFocus(300),00:00,silent)</onload>
+        <onload condition="!String.IsEmpty(Window.Property(LastFocus))">AlarmClock(refocus,SetFocus($INFO[Window.Property(LastFocus)]),00:00,silent)</onload>
 
         <onunload>SetProperty(LastFocus,$INFO[System.CurrentControlID])</onunload>
     </include>
