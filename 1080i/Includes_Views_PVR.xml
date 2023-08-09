@@ -33,6 +33,7 @@
                 <param name="include_programs" value="$PARAM[include_programs]" />
                 <onup>11</onup>
                 <ondown>11</ondown>
+                <onback>11</onback>
                 <viewtype label="$PARAM[viewtype_label]">list</viewtype>
                 <progresstexture border="0,160,40,0" colordiffuse="main_fg_30">$PARAM[progresstexture]</progresstexture>
                 <pagecontrol>8060</pagecontrol>
@@ -57,8 +58,37 @@
         </control>
     </include>
 
-    <include name="View_PVR_Main">
-        <include>Home_Fade</include>
+    <include name="View_PVR_Full">
+        <control type="image">
+            <texture colordiffuse="$VAR[ColorBackground]">background/combined_overlay.png</texture>
+            <include>Animation_FadeIn</include>
+            <include>Animation_FadeOut</include>
+        </control>
+        <control type="group">
+            <include>Animation_View_WindowChange</include>
+            <control type="group">
+                <height>880</height>
+                <bottom>80</bottom>
+                <right>view_pad</right>
+                <left>view_top</left>
+                <include content="Settings_Left_Group">
+                    <top>80</top>
+                </include>
+                <control type="image">
+                    <texture border="20" colordiffuse="main_fg_12">common/dialog.png</texture>
+                    <bottom>80</bottom>
+                    <top>40</top>
+                    <left>480</left>
+                </control>
+                <include>$PARAM[include]</include>
+            </control>
+            <nested />
+            <include>Furniture_Bottom</include>
+            <include condition="!Skin.HasSetting(Furniture.EnableClock.BottomLeft)">View_PVR_GroupSwitcher</include>
+        </control>
+    </include>
+
+    <include name="View_PVR_Half">
         <control type="group">
             <include>Animation_Half_WindowChange</include>
             <visible>!$EXP[Exp_InfoDialogs]</visible>
@@ -84,6 +114,8 @@
                 <include>$PARAM[include]</include>
             </control>
             <nested />
+            <include>Furniture_Bottom</include>
+            <include condition="!Skin.HasSetting(Furniture.EnableClock.BottomLeft)">View_PVR_GroupSwitcher</include>
         </control>
         <control type="group">
             <visible>!$EXP[Exp_InfoDialogs]</visible>
@@ -101,14 +133,21 @@
                 <param name="label">$INFO[System.Date(ddd),,$COMMA ]$INFO[System.Date(d MMM)]</param>
             </include>
         </control>
+    </include>
+
+    <include name="View_PVR_Main">
+        <include>Home_Fade</include>
+        <include content="View_PVR_Half" condition="!Skin.HasSetting(Views.UseFullPVRGuide)">
+            <param name="include">$PARAM[include]</param>
+            <nested />
+        </include>
+        <include content="View_PVR_Full" condition="Skin.HasSetting(Views.UseFullPVRGuide)">
+            <param name="include">$PARAM[include]</param>
+            <nested />
+        </include>
         <include>View_Row_Header</include>
-        <control type="group">
-            <include>Animation_Half_WindowChange</include>
-            <visible>!$EXP[Exp_InfoDialogs]</visible>
-            <include>Furniture_Bottom</include>
-            <include condition="!Skin.HasSetting(Furniture.EnableClock.BottomLeft)">View_PVR_GroupSwitcher</include>
-        </control>
         <include>Home_Menu</include>
+        <include>View_Dialog_Plot</include>
     </include>
 
     <!-- CHANNELS -->
@@ -155,6 +194,7 @@
             <control type="fixedlist" id="$PARAM[id]">
                 <onup>11</onup>
                 <ondown>11</ondown>
+                <onback>11</onback>
                 <onright>11</onright>
                 <onleft>303</onleft>
                 <top>60</top>
@@ -192,28 +232,22 @@
         </definition>
     </include>
 
-    <include name="View_054_PVRChannels_Full_SmallRow">
-        <control type="group">
-            <visible>Control.IsVisible(54)</visible>
-            <include content="View_PVRChannels_Standard">
-                <param name="id" value="54" />
-                <param name="viewtype_label" value="$LOCALIZE[35232]" />
-                <param name="focusposition" value="4" />
-                <param name="movement" value="4" />
-                <top>40</top>
-            </include>
-        </control>
-    </include>
-
     <include name="View_PVRChannels">
         <control type="group">
             <visible>Control.IsVisible(50)</visible>
-            <include content="View_PVRChannels_Standard">
+            <include content="View_PVRChannels_Standard" condition="!Skin.HasSetting(Views.UseFullPVRGuide)">
                 <param name="id" value="50" />
                 <param name="epg_bottom" value="0" />
                 <param name="viewtype_label" value="$LOCALIZE[571]" />
                 <param name="focusposition" value="1" />
                 <param name="movement" value="2" />
+            </include>
+            <include content="View_PVRChannels_Standard" condition="Skin.HasSetting(Views.UseFullPVRGuide)">
+                <param name="id" value="50" />
+                <param name="epg_bottom" value="0" />
+                <param name="viewtype_label" value="$LOCALIZE[571]" />
+                <param name="focusposition" value="4" />
+                <param name="movement" value="4" />
             </include>
         </control>
     </include>
