@@ -55,6 +55,44 @@
         </include>
     </include>
 
+    <include name="Home_Menu_List_Labels">
+        <control type="grouplist">
+            <nested />
+            <left>0</left>
+            <top>260</top>
+            <bottom>300</bottom>
+            <width>400</width>
+            <orientation>vertical</orientation>
+            <include>Animation_Home_Menu</include>
+            <visible>$EXP[Exp_HomeMenu_HasFocus]</visible>
+            <include content="Layout_Home_Menu_Label">
+                <param name="detailed">Control.HasFocus(303)</param>
+                <param name="selected">String.IsEqual(Container(303).ListItemAbsolute(0).Label,Container(303).ListItem.Label)</param>
+                <param name="label">$INFO[Container(303).ListItemAbsolute(0).Label]</param>
+            </include>
+            <include content="Layout_Home_Menu_Label">
+                <param name="detailed">Control.HasFocus(303)</param>
+                <param name="selected">String.IsEqual(Container(303).ListItemAbsolute(1).Label,Container(303).ListItem.Label)</param>
+                <param name="label">$INFO[Container(303).ListItemAbsolute(1).Label]</param>
+            </include>
+            <include content="Layout_Home_Menu_Label">
+                <param name="detailed">Control.HasFocus(303)</param>
+                <param name="selected">String.IsEqual(Container(303).ListItemAbsolute(2).Label,Container(303).ListItem.Label)</param>
+                <param name="label">$INFO[Container(303).ListItemAbsolute(2).Label]</param>
+            </include>
+            <include content="Layout_Home_Menu_Label">
+                <param name="detailed">Control.HasFocus(303)</param>
+                <param name="selected">String.IsEqual(Container(303).ListItemAbsolute(3).Label,Container(303).ListItem.Label)</param>
+                <param name="label">$INFO[Container(303).ListItemAbsolute(3).Label]</param>
+            </include>
+            <include content="Layout_Home_Menu_Label">
+                <param name="detailed">Control.HasFocus(303)</param>
+                <param name="selected">String.IsEqual(Container(303).ListItemAbsolute(4).Label,Container(303).ListItem.Label)</param>
+                <param name="label">$INFO[Container(303).ListItemAbsolute(4).Label]</param>
+            </include>
+        </control>
+    </include>
+
     <include name="Home_Menu_List">
         <param name="items_include">Home_Menu_Items</param>
         <param name="onlist">320</param>
@@ -112,41 +150,9 @@
                 </focusedlayout>
                 <include>$PARAM[items_include]</include>
             </control>
-            <control type="grouplist">
+            <include content="Home_Menu_List_Labels" condition="Skin.HasSetting(Home.SideLabels)">
                 <nested />
-                <left>0</left>
-                <top>260</top>
-                <bottom>300</bottom>
-                <width>400</width>
-                <orientation>vertical</orientation>
-                <include>Animation_Home_Menu</include>
-                <visible>$EXP[Exp_HomeMenu_HasFocus]</visible>
-                <include content="Layout_Home_Menu_Label">
-                    <param name="detailed">Control.HasFocus(303)</param>
-                    <param name="selected">String.IsEqual(Container(303).ListItemAbsolute(0).Label,Container(303).ListItem.Label)</param>
-                    <param name="label">$INFO[Container(303).ListItemAbsolute(0).Label]</param>
-                </include>
-                <include content="Layout_Home_Menu_Label">
-                    <param name="detailed">Control.HasFocus(303)</param>
-                    <param name="selected">String.IsEqual(Container(303).ListItemAbsolute(1).Label,Container(303).ListItem.Label)</param>
-                    <param name="label">$INFO[Container(303).ListItemAbsolute(1).Label]</param>
-                </include>
-                <include content="Layout_Home_Menu_Label">
-                    <param name="detailed">Control.HasFocus(303)</param>
-                    <param name="selected">String.IsEqual(Container(303).ListItemAbsolute(2).Label,Container(303).ListItem.Label)</param>
-                    <param name="label">$INFO[Container(303).ListItemAbsolute(2).Label]</param>
-                </include>
-                <include content="Layout_Home_Menu_Label">
-                    <param name="detailed">Control.HasFocus(303)</param>
-                    <param name="selected">String.IsEqual(Container(303).ListItemAbsolute(3).Label,Container(303).ListItem.Label)</param>
-                    <param name="label">$INFO[Container(303).ListItemAbsolute(3).Label]</param>
-                </include>
-                <include content="Layout_Home_Menu_Label">
-                    <param name="detailed">Control.HasFocus(303)</param>
-                    <param name="selected">String.IsEqual(Container(303).ListItemAbsolute(4).Label,Container(303).ListItem.Label)</param>
-                    <param name="label">$INFO[Container(303).ListItemAbsolute(4).Label]</param>
-                </include>
-            </control>
+            </include>
         </definition>
     </include>
 
@@ -311,6 +317,7 @@
 
     <include name="Home_Menu_Button_Icon">
         <param name="focused">$EXP[Exp_HomeMenu_HasFocus]</param>
+        <param name="side_labels">true</param>
         <definition>
             <control type="group">
                 <nested />
@@ -328,7 +335,8 @@
                     <texture colordiffuse="$VAR[ColorSelected]">$PARAM[icon]</texture>
                     <visible>Control.HasFocus($PARAM[id])</visible>
                 </control>
-                <control type="group">
+                <include content="Object_Control" condition="$PARAM[side_labels]">
+                    <param name="control">group</param>
                     <include>Animation_Home_Menu</include>
                     <visible>$PARAM[focused]</visible>
                     <control type="label">
@@ -347,7 +355,7 @@
                         <label>$PARAM[label]</label>
                         <visible>Control.HasFocus($PARAM[id])</visible>
                     </control>
-                </control>
+                </include>
             </control>
         </definition>
     </include>
@@ -364,24 +372,28 @@
         </definition>
     </include>
 
+    <include name="Home_Menu_Fade_Labels">
+        <control type="group">
+            <visible>Control.HasFocus(303) | Control.HasFocus(308) | Control.HasFocus(309)</visible>
+            <include>Animation_Home_Menu</include>
+            <control type="image">
+                <left>0</left>
+                <width>880</width>
+                <texture border="0,0,400,0" colordiffuse="$VAR[ColorBackgroundFade]">common/dim-side.png</texture>
+            </control>
+            <control type="image">
+                <left>0</left>
+                <width>720</width>
+                <texture border="0,0,400,0" colordiffuse="$VAR[ColorBackgroundFade]">common/dim-side.png</texture>
+            </control>
+        </control>
+    </include>
+
     <include name="Home_Menu">
         <control type="group">
             <visible>!$EXP[Exp_InfoDialogs]</visible>
 
-            <control type="group">
-                <visible>Control.HasFocus(303) | Control.HasFocus(308) | Control.HasFocus(309)</visible>
-                <include>Animation_Home_Menu</include>
-                <control type="image">
-                    <left>0</left>
-                    <width>880</width>
-                    <texture border="0,0,400,0" colordiffuse="$VAR[ColorBackgroundFade]">common/dim-side.png</texture>
-                </control>
-                <control type="image">
-                    <left>0</left>
-                    <width>720</width>
-                    <texture border="0,0,400,0" colordiffuse="$VAR[ColorBackgroundFade]">common/dim-side.png</texture>
-                </control>
-            </control>
+            <include condition="Skin.HasSetting(Home.SideLabels)">Home_Menu_Fade_Labels</include>
 
             <control type="group">
                 <!-- Search -->
@@ -389,6 +401,7 @@
                     <param name="id">308</param>
                     <param name="icon">special://skin/extras/icons/search.png</param>
                     <param name="label">$LOCALIZE[137]</param>
+                    <param name="side_labels">Skin.HasSetting(Home.SideLabels)</param>
                     <include content="Home_Menu_Button_Back">
                         <param name="id">308</param>
                         <ondown>SetFocus(303,0,absolute)</ondown>
@@ -408,11 +421,12 @@
                     <param name="id">309</param>
                     <param name="icon">special://skin/extras/icons/bars.png</param>
                     <param name="label">$LOCALIZE[33063]</param>
+                    <param name="side_labels">Skin.HasSetting(Home.SideLabels)</param>
                     <include content="Home_Menu_Button_Back">
                         <param name="id">309</param>
                         <onup>SetFocus(303,9999,absolute)</onup>
                         <ondown>308</ondown>
-                        <onclick>Action(Right)</onclick>
+                        <!-- <onclick>Action(Right)</onclick> -->
                         <onclick>ActivateWindow(shutdownmenu)</onclick>
                         <include content="Action_HomeMenu_OnRightLeft">
                             <param name="onlist">$PARAM[onlist]</param>
