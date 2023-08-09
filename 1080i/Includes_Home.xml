@@ -18,19 +18,39 @@
     </include>
 
     <include name="Home_FloatingClock">
-        <include content="Furniture_Bottombar_Group" condition="Skin.HasSetting(Furniture.EnableClock)">
-            <visible>!$EXP[Exp_InfoDialogs]</visible>
-            <nested />
-            <include content="Furniture_Gutters">
-                <control type="group">
-                    <visible>!Player.HasMedia | Skin.HasSetting(Furniture.DisableNowPlaying)</visible>
-                    <include content="Furniture_Clock">
-                        <param name="center_label">$PARAM[center_label]</param>
-                        <param name="flipx">true</param>
-                    </include>
-                </control>
+        <param name="center_label">false</param>
+        <definition>
+            <include content="Furniture_Bottombar_Group">
+                <visible>!$EXP[Exp_InfoDialogs]</visible>
+                <nested />
+                <include content="Furniture_Gutters">
+                    <control type="group">
+                        <visible>!Player.HasMedia | Skin.HasSetting(Furniture.DisableNowPlaying)</visible>
+                        <include content="Furniture_Clock" condition="Skin.HasSetting(Furniture.EnableClock)">
+                            <param name="center_label">$PARAM[center_label]</param>
+                            <param name="flipx">true</param>
+                        </include>
+                        <control type="grouplist">
+                            <visible>![$PARAM[center_label]]</visible>
+                            <include content="Animation_Fade_In">
+                                <param name="type">Visible</param>
+                            </include>
+                            <centertop>50%</centertop>
+                            <orientation>horizontal</orientation>
+                            <align>left</align>
+                            <itemgap>30</itemgap>
+                            <height>x08</height>
+                            <usecontrolcoords>true</usecontrolcoords>
+
+                            <include content="Info_Codec_Label">
+                                <param name="icon">special://skin/extras/icons/kodi.png</param>
+                                <param name="label">Kodi $INFO[System.BuildVersionCode,v,]</param>
+                            </include>
+                        </control>
+                    </control>
+                </include>
             </include>
-        </include>
+        </definition>
     </include>
 
     <include name="Home_Transitions">
