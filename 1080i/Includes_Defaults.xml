@@ -405,6 +405,7 @@
 
     <include name="Defs_TMDbHelper_Loader">
         <definition>
+            <include>Defs_AddonDetails_Loader</include>
             <include content="Object_Hidden_List">
                 <param name="id">99950</param>
             </include>
@@ -439,15 +440,32 @@
         </include>
     </include>
 
-    <variable name="Defs_AddonDetails_Loader_Content">
-        <value condition="String.IsEmpty(Container.PluginName)">-</value>
-        <value>$INFO[Container.PluginName,plugin://script.skinvariables/?info=get_dbitem_addon_details&amp;dbid=,]</value>
+    <variable name="Defs_AddonDetails_Loader_Description">
+        <value condition="$EXP[Exp_HomeMenu_tvshows]">$LOCALIZE[31172]</value>
+        <value condition="$EXP[Exp_HomeMenu_movies]">$LOCALIZE[31175]</value>
+        <value>$LOCALIZE[31176]</value>
+    </variable>
+
+    <variable name="Defs_AddonDetails_Loader_Path">
+        <value condition="Window.IsMedia">$INFO[Container.PluginName]</value>
+        <value condition="Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + String.StartsWith(Container(301).ListItem.Path,plugin://)">$INFO[Container(301).ListItem.Path,,&amp;convert_path=True]</value>
+        <value condition="!String.IsEmpty(Container.ListItem.Path) + String.StartsWith(Container.ListItem.Path,plugin://)">$INFO[Container.ListItem.Path,,&amp;convert_path=True]</value>
+        <value condition="!String.IsEmpty(ListItem.Path) + String.StartsWith(ListItem.Path,plugin://)">$INFO[ListItem.Path,,&amp;convert_path=True]</value>
     </variable>
 
     <include name="Defs_AddonDetails_Loader">
         <include content="Object_Hidden_List">
             <param name="id">99956</param>
-            <content>$VAR[Defs_AddonDetails_Loader_Content]</content>
+            <content>$VAR[Defs_AddonDetails_Loader_Path,plugin://script.skinvariables/?info=get_dbitem_addon_details&amp;dbid=,]</content>
+            <content>
+                <item>
+                    <label>null</label>
+                    <property name="description">$VAR[Defs_AddonDetails_Loader_Description]</property>
+                    <property name="type">xbmc.core</property>
+                    <property name="version">$INFO[System.BuildVersionCode]</property>
+                    <visible>Integer.IsEqual(Container(99956).NumItems,0) | [Integer.IsEqual(Container(99956).NumItems,1) + String.IsEqual(Container(99956).ListItemAbsolute(0).Label,null)]</visible>
+                </item>
+            </content>
         </include>
     </include>
 
