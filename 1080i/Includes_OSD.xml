@@ -666,7 +666,7 @@
                             <param name="visible">!String.IsEmpty(VideoPlayer.Year) + [String.IsEmpty(VideoPlayer.Premiered) | VideoPlayer.Content(movies)]</param>
                             <param name="textcolor">panel_fg_90</param>
                         </include>
-                        <include content="Info_Line_Item">
+                        <include content="Info_Line_Item" condition="!Skin.HasSetting(InfoLine.EndTime)">
                             <param name="label">$INFO[VideoPlayer.Premiered]</param>
                             <param name="visible">!String.IsEmpty(VideoPlayer.Premiered) + !VideoPlayer.Content(movies)</param>
                             <param name="textcolor">panel_fg_90</param>
@@ -680,9 +680,16 @@
                         </include>
 
                         <!-- Genres -->
-                        <include content="Info_Line_Item">
+                        <include content="Info_Line_Item" condition="!Skin.HasSetting(InfoLine.EndTime)">
                             <param name="label">$INFO[Window(Home).Property(TMDbHelper.Player.Genre.1.Name)]</param>
                             <param name="visible">String.IsEmpty(VideoPlayer.Property(Genre.1.Name)) + !String.IsEmpty(Window(Home).Property(TMDbHelper.Player.Genre.1.Name))</param>
+                            <param name="textcolor">panel_fg_90</param>
+                        </include>
+
+                        <!-- Ends -->
+                        <include content="Info_Line_Item" condition="Skin.HasSetting(InfoLine.EndTime)">
+                            <param name="label">$INFO[Player.FinishTime,$LOCALIZE[31184] ,]</param>
+                            <param name="visible">!String.IsEmpty(Player.FinishTime)</param>
                             <param name="textcolor">panel_fg_90</param>
                         </include>
 
