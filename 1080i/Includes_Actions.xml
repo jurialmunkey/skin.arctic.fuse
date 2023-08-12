@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
 
+    <include name="Action_SettingsCategories_Onload">
+        <include content="Object_DefaultControl" condition="!String.IsEmpty(Window(Home).Property(SettingsChanger.Switch))">
+            <param name="defaultcontrol">30030</param>
+            <param name="always">true</param>
+        </include>
+        <include content="Object_DefaultControl" condition="String.IsEmpty(Window(Home).Property(SettingsChanger.Switch))">
+            <param name="defaultcontrol">$PARAM[defaultcontrol]</param>
+            <param name="always">true</param>
+        </include>
+        <onload condition="String.IsEmpty(Window(Home).Property(SettingsChanger.Switch))">SetFocus($PARAM[defaultcontrol])</onload>
+        <onload condition="!String.IsEmpty(Window(Home).Property(SettingsChanger.Switch))">SetFocus($INFO[Window(Home).Property(SettingsChanger.Switch)])</onload>
+        <onload>ClearProperty(SettingsChanger.Switch,Home)</onload>
+        <onload>RunScript(plugin.video.themoviedb.helper,blur_image=$VAR[Image_SimpleBackground])</onload>
+        <menucontrol>30000</menucontrol>
+    </include>
+
     <include name="Action_Hub_Refocus_Onload">
         <onload condition="Control.IsVisible(5001)">SetFocus(5001)</onload>
         <onload condition="Control.IsVisible(5002) + !Control.IsVisible(5001)">SetFocus(5002)</onload>
@@ -362,20 +378,6 @@
         <onclick condition="!Window.IsVisible(MyVideoNav.xml)">AlarmClock(callinfo,RunScript(plugin.video.themoviedb.helper,close_dialog=1190,call_path=$INFO[Container($PARAM[id]).ListItem.FolderPath]),00:01,silent)</onclick>
         <onclick condition="Window.IsVisible(MyVideoNav.xml)">AlarmClock(callinfo,RunScript(plugin.video.themoviedb.helper,close_dialog=1190,call_update=$INFO[Container($PARAM[id]).ListItem.FolderPath]),00:01,silent)</onclick>
     </include>
-
-
-    <include name="Action_Settings_Onload">
-        <onload condition="Window.IsActive(skinsettings)">SetFocus(30001)</onload>
-        <onload condition="Window.IsActive(interfacesettings)">SetFocus(30002)</onload>
-        <onload condition="Window.IsActive(mediasettings)">SetFocus(30003)</onload>
-        <onload condition="Window.IsActive(playersettings)">SetFocus(30004)</onload>
-        <onload condition="Window.IsActive(systemsettings)">SetFocus(30005)</onload>
-        <onload condition="Window.IsActive(servicesettings)">SetFocus(30006)</onload>
-        <onload condition="Window.IsActive(pvrsettings)">SetFocus(30007)</onload>
-        <onload condition="Window.IsActive(systeminfo)">SetFocus(30008)</onload>
-        <onload condition="Window.IsActive(profiles)">SetFocus(30009)</onload>
-    </include>
-
 
     <include name="_Action_Blur_Onload">
         <param name="sourceimage">Art(fanart)</param>

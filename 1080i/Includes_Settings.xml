@@ -131,7 +131,7 @@
                 <centertop>100</centertop>
                 <centerleft>100</centerleft>
                 <control type="group">
-                    <visible>![ControlGroup(30000).HasFocus() | ControlGroup(30030).HasFocus()]</visible>
+                    <visible>![ControlGroup(30030).HasFocus()]</visible>
                     <control type="image">
                         <bordersize>14</bordersize>
                         <aspectratio>keep</aspectratio>
@@ -139,7 +139,7 @@
                     </control>
                 </control>
                 <control type="group">
-                    <visible>[ControlGroup(30000).HasFocus() | ControlGroup(30030).HasFocus()]</visible>
+                    <visible>[ControlGroup(30030).HasFocus()]</visible>
                     <control type="image">
                         <texture flipy="true">special://profile/addon_data/script.texturemaker/ArcticFuse/circle_v.png</texture>
                         <aspectratio>keep</aspectratio>
@@ -239,21 +239,6 @@
                     <width>40</width>
                 </control>
             </control>
-            <control type="grouplist" id="30000">
-                <nested />
-                <height>x08</height>
-                <right>x08</right>
-                <left>680</left>
-                <align>center</align>
-                <centerbottom>100</centerbottom>
-                <orientation>horizontal</orientation>
-                <include>Items_Settings_Changer</include>
-                <visible allowhiddenfocus="true">False</visible>
-                <!-- <visible allowhiddenfocus="true">ControlGroup(30030).HasFocus() | ControlGroup(30000).HasFocus()</visible> -->
-                <animation effect="fade" start="0" end="100" time="400" delay="200">Visible</animation>
-                <animation effect="fade" start="100" end="0" time="400">Hidden</animation>
-            </control>
-
             <include content="Dialog_Overlay_Side">
                 <visible>ControlGroup(30040).HasFocus() | ControlGroup(30700).HasFocus()</visible>
                 <include>Animation_Right_Delay</include>
@@ -290,86 +275,6 @@
             </include>
         </definition>
     </include>
-
-    <include name="Settings_Changer_Button">
-        <param name="width">80</param>
-        <param name="itemgap">80</param>
-        <definition>
-            <control type="button" id="$PARAM[button_id]">
-                <!-- <left>16</left> -->
-                <width>$PARAM[width]</width>
-                <height>$PARAM[width]</height>
-                <texturenofocus />
-                <include>Texture_KeyboardButton</include>
-                <onclick>SetProperty(SettingsChanger.Switch,$PARAM[button_id],Home)</onclick>
-                <onclick>ReplaceWindow($PARAM[window])</onclick>
-                <onfocus condition="!Window.IsVisible($PARAM[window])">SetProperty(SettingsChanger.Switch,$PARAM[button_id],Home)</onfocus>
-                <onfocus condition="!Window.IsVisible($PARAM[window])">ReplaceWindow($PARAM[window])</onfocus>
-            </control>
-            <control type="group" id="$PARAM[group_id]">
-                <left>-$PARAM[itemgap]</left>
-                <width>$PARAM[width]</width>
-                <height>$PARAM[width]</height>
-
-                <control type="image">
-                    <texture flipy="true">special://profile/addon_data/script.texturemaker/ArcticFuse/circle_v.png</texture>
-                    <aspectratio>keep</aspectratio>
-                    <width>10</width>
-                    <height>10</height>
-                    <centerleft>50%</centerleft>
-                    <bottom>0</bottom>
-                    <visible>Window.IsActive($PARAM[window])</visible>
-                    <visible>!Control.HasFocus($PARAM[button_id])</visible>
-                    <animation effect="fade" start="0" end="100" delay="50" time="100" reversible="false">Visible</animation>
-                    <animation effect="fade" start="100" end="0" delay="50" time="100" reversible="false">Hidden</animation>
-                </control>
-
-                <control type="group">
-                    <visible>![Window.IsActive($PARAM[window]) | Control.HasFocus($PARAM[button_id])]</visible>
-                    <animation effect="fade" start="0" end="100" delay="50" time="100" reversible="false">Visible</animation>
-                    <animation effect="fade" start="100" end="0" delay="50" time="100" reversible="false">Hidden</animation>
-                    <!-- <control type="label">
-                        <label>[CR][CR]$PARAM[label]</label>
-                        <textcolor>main_fg_30</textcolor>
-                        <font>font_hint_button</font>
-                        <align>center</align>
-                        <aligny>top</aligny>
-                        <textoffsetx>0</textoffsetx>
-                        <top>2</top>
-                    </control> -->
-                    <control type="image">
-                        <bordersize>14</bordersize>
-                        <!-- <top>-10</top>
-                        <bottom>10</bottom> -->
-                        <aspectratio>keep</aspectratio>
-                        <texture colordiffuse="main_fg_30">$PARAM[icon]</texture>
-                    </control>
-                </control>
-                <control type="group">
-                    <visible>Window.IsActive($PARAM[window]) | Control.HasFocus($PARAM[button_id])</visible>
-                    <animation effect="fade" start="0" end="100" delay="50" time="100" reversible="false">Visible</animation>
-                    <animation effect="fade" start="100" end="0" delay="50" time="100" reversible="false">Hidden</animation>
-                    <!-- <control type="label">
-                        <label>[CR][CR]$PARAM[label]</label>
-                        <textcolor>$VAR[ColorSelected]</textcolor>
-                        <font>font_hint_button</font>
-                        <align>center</align>
-                        <aligny>top</aligny>
-                        <textoffsetx>0</textoffsetx>
-                        <top>2</top>
-                    </control> -->
-                    <control type="image">
-                        <bordersize>14</bordersize>
-                        <!-- <top>-10</top>
-                        <bottom>10</bottom> -->
-                        <aspectratio>keep</aspectratio>
-                        <texture colordiffuse="$VAR[ColorSelected]">$PARAM[icon]</texture>
-                    </control>
-                </control>
-            </control>
-        </definition>
-    </include>
-
 
     <include name="Settings_Button">
         <param name="control" default="button" />
@@ -443,7 +348,6 @@
 
     <include name="Settings_InfoText">
         <param name="visible">true</param>
-        <!-- <param name="visible">![ControlGroup(30000).HasFocus() | ControlGroup(30030).HasFocus()]</param> -->
         <param name="font">font_mini_plot</param>
         <param name="icon">buttons/info.png</param>
         <definition>
@@ -452,8 +356,6 @@
                 <bottom>-20</bottom>
                 <left>0</left>
                 <right>40</right>
-                <!-- <bottom>-20</bottom> -->
-                <!-- <left>40</left> -->
                 <height>x08</height>
                 <animation effect="fade" start="0" end="100" time="400" delay="200">Visible</animation>
                 <animation effect="fade" start="100" end="0" time="400">Hidden</animation>
