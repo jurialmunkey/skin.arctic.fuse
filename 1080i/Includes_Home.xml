@@ -18,7 +18,7 @@
     </include>
 
     <include name="Home_FloatingClock">
-        <param name="center_label">false</param>
+        <param name="minify">false</param>
         <definition>
             <include content="Furniture_Bottombar_Group">
                 <visible>!$EXP[Exp_InfoDialogs]</visible>
@@ -26,18 +26,21 @@
                 <include content="Furniture_Gutters">
                     <control type="group">
                         <visible>!Player.HasMedia | Skin.HasSetting(Furniture.DisableNowPlaying)</visible>
-                        <visible>![Integer.IsEqual(Window.Property(TMDbHelper.WidgetContainer),301) | $PARAM[center_label]] | !Skin.HasSetting(Slide.WidgetContainer)</visible>
+                        <visible>![Integer.IsEqual(Window.Property(TMDbHelper.WidgetContainer),301) | $PARAM[minify]] | !Skin.HasSetting(Slide.WidgetContainer)</visible>
                         <include content="Animation_Fade_In">
                             <param name="type">Visible</param>
                         </include>
-                        <include content="Furniture_Clock" condition="Skin.HasSetting(Furniture.EnableClock)">
-                            <param name="center_label">[$PARAM[center_label] | String.IsEmpty(Window.Property(Slide.WidgetContainer))]</param>
+                        <include content="Furniture_Clock" condition="Skin.HasSetting(Furniture.EnableClock) + Skin.HasSetting(Furniture.ExpandClock)">
+                            <param name="minify">[$PARAM[minify] | String.IsEmpty(Window.Property(Slide.WidgetContainer))]</param>
+                            <param name="flipx">true</param>
+                        </include>
+                        <include content="Furniture_Clock" condition="Skin.HasSetting(Furniture.EnableClock) + !Skin.HasSetting(Furniture.ExpandClock)">
                             <param name="flipx">true</param>
                         </include>
                         <include content="Object_Control">
                             <param name="control">grouplist</param>
                             <visible>!String.IsEmpty(Window.Property(Slide.WidgetContainer))</visible>
-                            <visible>![$PARAM[center_label]]</visible>
+                            <visible>![$PARAM[minify]]</visible>
                             <include content="Animation_Fade_In">
                                 <param name="type">Visible</param>
                             </include>
