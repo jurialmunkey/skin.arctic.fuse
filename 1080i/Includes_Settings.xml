@@ -83,15 +83,21 @@
     </include>
 
     <include name="Settings_KodiVersion">
-        <control type="label">
-            <nested />
-            <label>$INFO[System.FriendlyName][CR]$INFO[System.ProfileName]</label>
-            <textcolor>main_fg_30</textcolor>
-            <height>x08</height>
-            <centerbottom>20</centerbottom>
-            <left>0</left>
-            <font>font_mini</font>
-        </control>
+        <param name="dialog">false</param>
+        <definition>
+            <control type="label">
+                <nested />
+                <include content="Object_TextColor" condition="$PARAM[dialog]">
+                    <param name="textcolor">dialog_fg_30</param>
+                </include>
+                <label>$INFO[System.FriendlyName][CR]$INFO[System.ProfileName]</label>
+                <textcolor>main_fg_30</textcolor>
+                <height>x08</height>
+                <centerbottom>20</centerbottom>
+                <left>0</left>
+                <font>font_mini</font>
+            </control>
+        </definition>
     </include>
 
     <include name="Settings_Dialog">
@@ -372,6 +378,7 @@
         <param name="visible">true</param>
         <param name="font">font_mini_plot</param>
         <param name="icon">buttons/info.png</param>
+        <param name="dialog">false</param>
         <definition>
             <control type="group">
                 <nested />
@@ -383,14 +390,21 @@
                 <animation effect="fade" start="100" end="0" time="400">Hidden</animation>
                 <visible>$PARAM[visible]</visible>
                 <control type="image">
+                    <include content="Object_ColorDiffuse" condition="$PARAM[dialog]">
+                        <param name="colordiffuse">dialog_fg_70</param>
+                    </include>
                     <centertop>50%</centertop>
                     <left>0</left>
                     <height>32</height>
                     <width>32</width>
                     <aspectratio align="left">keep</aspectratio>
-                    <texture colordiffuse="main_fg_70">$PARAM[icon]</texture>
+                    <colordiffuse>main_fg_70</colordiffuse>
+                    <texture>$PARAM[icon]</texture>
                 </control>
                 <control type="textbox" id="$PARAM[id]">
+                    <include content="Object_TextColor" condition="$PARAM[dialog]">
+                        <param name="textcolor">dialog_fg_70</param>
+                    </include>
                     <left>60</left>
                     <height>80</height>
                     <centertop>50%</centertop>
@@ -400,6 +414,9 @@
                     <label>$PARAM[label]</label>
                 </control>
                 <control type="textbox">
+                    <include content="Object_TextColor" condition="$PARAM[dialog]">
+                        <param name="textcolor">dialog_fg_70</param>
+                    </include>
                     <left>60</left>
                     <height>80</height>
                     <centertop>50%</centertop>
