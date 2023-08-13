@@ -210,20 +210,32 @@
         <control type="group">
             <visible>!$EXP[Exp_InfoDialogs]</visible>
             <include>Animation_Transition_InfoPanel_Hide</include>
-            <include>MediaFilter_Info_Transition</include>
-            <include content="Info_Panel">
-                <top>view_top</top>
-                <width>info_panel_w</width>
-                <left>view_side</left>
-                <visible>String.IsEmpty(Window.Property(TMDBHelper.WidgetContainer))</visible>
-            </include>
-            <include content="View_Combined_Info"><param name="id">51</param></include>
-            <include content="View_Combined_Info"><param name="id">55</param></include>
 
-            <include content="Info_Viewline">
-                <param name="sort_condition">true</param>
-                <param name="library_condition">true</param>
-            </include>
+            <control type="group">
+                <include>MediaFilter_Info_Transition</include>
+                <include content="Info_Panel">
+                    <top>view_top</top>
+                    <width>info_panel_w</width>
+                    <left>view_side</left>
+                    <visible>String.IsEmpty(Window.Property(TMDBHelper.WidgetContainer))</visible>
+                </include>
+                <include content="View_Combined_Info"><param name="id">51</param></include>
+                <include content="View_Combined_Info"><param name="id">55</param></include>
+            </control>
+
+            <control type="group">
+                <animation type="Conditional" reversible="false" condition="$EXP[Exp_MediaFilter_Wall]">
+                    <effect type="slide" end="0,-334" start="0" time="400" delay="280" tween="cubic" easing="out" />
+                </animation>
+                <animation type="Conditional" reversible="false" condition="!$EXP[Exp_MediaFilter_Wall]">
+                    <effect type="slide" start="0,-334" end="0" time="400" delay="80" tween="cubic" easing="out" />
+                </animation>
+
+                <include content="Info_Viewline">
+                    <param name="sort_condition">true</param>
+                    <param name="library_condition">true</param>
+                </include>
+            </control>
         </control>
     </include>
 
@@ -257,9 +269,16 @@
             <control type="group">
                 <visible>!$EXP[Exp_AlphabetVisible]</visible>
                 <visible>!Control.HasFocus(60)</visible>
-                <include content="Furniture_Bottom_Left">
-                    <visible>!Control.IsVisible(512)</visible>
-                </include>
+                <control type="group">
+                    <visible>String.IsEmpty(Window.Property(MediaFilterBase))</visible>
+                    <include content="Animation_Fade_In">
+                        <param name="delay">400</param>
+                        <param name="type">Visible</param>
+                    </include>
+                    <include content="Furniture_Bottom_Left">
+                        <visible>!Control.IsVisible(512)</visible>
+                    </include>
+                </control>
                 <include content="Furniture_Bottom_Left">
                     <param name="container">Container(513).</param>
                     <visible>Control.IsVisible(512) + Skin.HasSetting(Views.UseAltCombined)</visible>
@@ -275,7 +294,7 @@
     <include name="View_Furniture_Edges">
         <include>Home_Fade</include>
         <control type="group">
-            <include>MediaFilter_Info_Transition</include>
+            <!-- <include>MediaFilter_Info_Transition</include> -->
             <include>View_Row_Header</include>
             <include>View_Row_Gutter</include>
         </control>
