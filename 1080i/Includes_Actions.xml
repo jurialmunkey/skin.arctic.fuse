@@ -281,6 +281,7 @@
     </include>
 
     <include name="Action_View_Movement_OnUp">
+        <!-- <onup condition="$EXP[Exp_HasMediaFilterWall]">SetFocus(67)</onup> -->
         <onup>ActivateWindow(1113)</onup>
         <!-- <onup>SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onup>
         <onup>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onup> -->
@@ -351,9 +352,28 @@
         <onright>Close</onright>
     </include>
 
+    <include name="Action_Scrollbar_OnUp">
+        <!-- <onup condition="!$EXP[Exp_View_512]">50</onup>
+        <onup condition="$EXP[Exp_View_512]">513</onup>
+        <onback condition="!$EXP[Exp_View_512]">50</onback>
+        <onback condition="$EXP[Exp_View_512]">513</onback>
+        <onclick>SetFocus(67)</onclick> -->
+
+        <onup condition="$EXP[Exp_HasMediaFilterWall]">SetFocus(67)</onup>
+        <onup condition="!$EXP[Exp_HasMediaFilterWall] + !$EXP[Exp_View_512]">50</onup>
+        <onup condition="!$EXP[Exp_HasMediaFilterWall] + $EXP[Exp_View_512]">513</onup>
+        <onback condition="!$EXP[Exp_View_512]">50</onback>
+        <onback condition="$EXP[Exp_View_512]">513</onback>
+        <onclick>ClearProperty(View.WallSwitchRow)</onclick>
+        <onclick>SetFocus(50)</onclick>
+    </include>
+
     <include name="Action_Row_OnDown">
         <ondown condition="$EXP[Exp_AlphabetTypes_Only] + !Skin.HasSetting(DisableAlphabetScrollbar)">65</ondown>
-        <ondown condition="!$EXP[Exp_AlphabetTypes_Only] | Skin.HasSetting(DisableAlphabetScrollbar)">60</ondown>
+        <ondown condition="[!$EXP[Exp_AlphabetTypes_Only] | Skin.HasSetting(DisableAlphabetScrollbar)]">60</ondown>
+        <!-- <ondown condition="$EXP[Exp_HasMediaFilterWall]">SetFocus(67)</ondown>
+        <ondown condition="!$EXP[Exp_HasMediaFilterWall] + $EXP[Exp_AlphabetTypes_Only] + !Skin.HasSetting(DisableAlphabetScrollbar)">65</ondown>
+        <ondown condition="!$EXP[Exp_HasMediaFilterWall] + [!$EXP[Exp_AlphabetTypes_Only] | Skin.HasSetting(DisableAlphabetScrollbar)]">60</ondown> -->
     </include>
 
     <include name="Action_Row_WallView_OnDown">

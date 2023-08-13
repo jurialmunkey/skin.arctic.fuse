@@ -591,20 +591,6 @@
                 <param name="row">$PARAM[row]</param>
                 <param name="ver">$PARAM[ver]</param>
                 <param name="col">1</param>
-                <animation effect="fade" start="100" end="0" condition="$PARAM[selected]">Conditional</animation>
-            </include>
-            <include content="MediaFilter_Wall_Poster">
-                <param name="icon_base_var">$PARAM[icon_base_var]</param>
-                <param name="interchange_condition">$PARAM[interchange_condition]</param>
-                <param name="visible">$PARAM[visible]</param>
-                <param name="visible_animation_include">$PARAM[visible_animation_include]</param>
-                <param name="id">$PARAM[id]</param>
-                <param name="pos">$PARAM[p_1]</param>
-                <param name="row">$PARAM[row]</param>
-                <param name="ver">$PARAM[ver]</param>
-                <param name="col">1</param>
-                <param name="selected">true</param>
-                <animation effect="fade" start="100" end="0" condition="![$PARAM[selected]]">Conditional</animation>
             </include>
             <include content="MediaFilter_Wall_Poster">
                 <param name="icon_base_var">$PARAM[icon_base_var]</param>
@@ -616,6 +602,20 @@
                 <param name="row">$PARAM[row]</param>
                 <param name="ver">$PARAM[ver]</param>
                 <param name="col">2</param>
+                <animation effect="fade" start="100" end="0" condition="$PARAM[selected]">Conditional</animation>
+            </include>
+            <include content="MediaFilter_Wall_Poster">
+                <param name="icon_base_var">$PARAM[icon_base_var]</param>
+                <param name="interchange_condition">$PARAM[interchange_condition]</param>
+                <param name="visible">$PARAM[visible]</param>
+                <param name="visible_animation_include">$PARAM[visible_animation_include]</param>
+                <param name="id">$PARAM[id]</param>
+                <param name="pos">$PARAM[p_2]</param>
+                <param name="row">$PARAM[row]</param>
+                <param name="ver">$PARAM[ver]</param>
+                <param name="col">2</param>
+                <param name="selected">true</param>
+                <animation effect="fade" start="100" end="0" condition="![$PARAM[selected]]">Conditional</animation>
             </include>
             <include content="MediaFilter_Wall_Poster">
                 <param name="icon_base_var">$PARAM[icon_base_var]</param>
@@ -721,7 +721,6 @@
 
     <include name="MediaFilter_Wall">
         <param name="id">52</param>
-        <param name="selected">[false]</param>
         <definition>
 
             <control type="group">
@@ -735,10 +734,10 @@
                     <param name="interchange_condition">$PARAM[interchange_condition]</param>
                     <param name="visible">$PARAM[visible]</param>
                     <param name="visible_animation_include">$PARAM[visible_animation_include]</param>
+                    <param name="selected">[Control.HasFocus(67) | Control.HasFocus(52)] + String.IsEmpty(Window.Property(View.WallSwitchRow))</param>
                     <param name="id">$PARAM[id]</param>
                     <param name="ver">b</param>
                     <param name="row">2</param>
-                    <param name="selected">$PARAM[selected]</param>
                     <param name="p_0">-4</param>
                     <param name="p_1">-2</param>
                     <param name="p_2">0</param>
@@ -758,6 +757,7 @@
                     <param name="interchange_condition">$PARAM[interchange_condition]</param>
                     <param name="visible">$PARAM[visible]</param>
                     <param name="visible_animation_include">$PARAM[visible_animation_include]</param>
+                    <param name="selected">[Control.HasFocus(67) | Control.HasFocus(52)] + !String.IsEmpty(Window.Property(View.WallSwitchRow))</param>
                     <param name="id">$PARAM[id]</param>
                     <param name="ver">b</param>
                     <param name="row">1</param>
@@ -831,7 +831,9 @@
             <right>-x02</right>
 
             <onback>50</onback>
-            <onup>50</onup>
+            <onup>ClearProperty(MediaFilterBase)</onup>
+            <onup condition="$EXP[Exp_AlphabetTypes_Only] + !Skin.HasSetting(DisableAlphabetScrollbar)">65</onup>
+            <onup condition="[!$EXP[Exp_AlphabetTypes_Only] | Skin.HasSetting(DisableAlphabetScrollbar)]">60</onup>
             <ondown>SetFocus(20000)</ondown>
 
             <visible>!String.IsEmpty(Window.Property(MediaFilterBase))</visible>

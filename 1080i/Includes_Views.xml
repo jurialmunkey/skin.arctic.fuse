@@ -92,6 +92,53 @@
         </include>
         <include content="Furniture_Bottombar_Group">
             <include content="Object_Hidden_Button">
+                <param name="id">68</param>
+                <onfocus>ClearProperty(View.WallSwitchRow)</onfocus>
+                <onfocus>SetFocus(50)</onfocus>
+                <onfocus condition="String.IsEqual(Window.Property(View.WallSwitchRow.Action),Info)">Action(Info)</onfocus>
+                <onfocus condition="String.IsEqual(Window.Property(View.WallSwitchRow.Action),Select)">Action(Select)</onfocus>
+                <onfocus>ClearProperty(View.WallSwitchRow.Action)</onfocus>
+                <animation effect="fade" start="0" end="0" time="600" reversible="false">Focus</animation>
+            </include>
+            <include content="Object_Hidden_Button">
+                <param name="id" value="67" />
+                <onup condition="String.IsEmpty(Window.Property(View.WallSwitchRow))">SetProperty(View.WallSwitchRow,1)</onup>
+                <onup condition="!String.IsEmpty(Window.Property(View.WallSwitchRow))">SetProperty(View.WallSwitchRow.Action,None)</onup>
+                <onup condition="!String.IsEmpty(Window.Property(View.WallSwitchRow))">SetFocus(68)</onup>
+
+                <!-- <ondown condition="!String.IsEmpty(Window.Property(View.WallSwitchRow))">ClearProperty(View.WallSwitchRow)</ondown>
+                <ondown condition="String.IsEmpty(Window.Property(View.WallSwitchRow))">SetProperty(View.WallSwitchRow.Action,None)</ondown>
+                <ondown condition="String.IsEmpty(Window.Property(View.WallSwitchRow))">SetFocus(68)</ondown> -->
+
+                <ondown condition="!String.IsEmpty(Window.Property(View.WallSwitchRow))">ClearProperty(View.WallSwitchRow)</ondown>
+                <ondown condition="String.IsEmpty(Window.Property(View.WallSwitchRow)) + $EXP[Exp_AlphabetTypes_Only] + !Skin.HasSetting(DisableAlphabetScrollbar)">65</ondown>
+                <ondown condition="String.IsEmpty(Window.Property(View.WallSwitchRow)) + [!$EXP[Exp_AlphabetTypes_Only] | Skin.HasSetting(DisableAlphabetScrollbar)]">60</ondown>
+
+                <!-- <onup>SetProperty(View.WallSwitchRow.Action,None)</onup>
+                <onup>SetFocus(68)</onup>
+                <ondown condition="$EXP[Exp_AlphabetTypes_Only] + !Skin.HasSetting(DisableAlphabetScrollbar)">65</ondown>
+                <ondown condition="[!$EXP[Exp_AlphabetTypes_Only] | Skin.HasSetting(DisableAlphabetScrollbar)]">60</ondown> -->
+
+                <onback>ClearProperty(View.WallSwitchRow)</onback>
+                <onback>50</onback>
+
+                <onclick>SetProperty(View.WallSwitchRow.Action,Select)</onclick>
+                <onclick>SetFocus(68)</onclick>
+
+                <onleft>SetFocus(50)</onleft>
+                <onleft>Action(Left)</onleft>
+                <onleft>Action(Left)</onleft>
+                <onleft>SetFocus(67)</onleft>
+
+                <onright>SetFocus(50)</onright>
+                <onright>Action(Right)</onright>
+                <onright>Action(Right)</onright>
+                <onright>SetFocus(67)</onright>
+
+                <oninfo>SetProperty(View.WallSwitchRow.Action,Info)</oninfo>
+                <oninfo>SetFocus(68)</oninfo>
+            </include>
+            <include content="Object_Hidden_Button">
                 <param name="id">62</param>
                 <onfocus>SetFocus(50)</onfocus>
             </include>
@@ -105,10 +152,7 @@
                     <centertop>50%</centertop>
                 </control>
                 <control type="scrollbar" id="60">
-                    <onup condition="!$EXP[Exp_View_512]">50</onup>
-                    <onup condition="$EXP[Exp_View_512]">513</onup>
-                    <onback condition="!$EXP[Exp_View_512]">50</onback>
-                    <onback condition="$EXP[Exp_View_512]">513</onback>
+                    <include>Action_Scrollbar_OnUp</include>
                     <orientation>horizontal</orientation>
                     <texturesliderbackground />
                     <texturesliderbar border="4">special://profile/addon_data/script.texturemaker/ArcticFuse/scrollh_h.png</texturesliderbar>
@@ -156,11 +200,12 @@
                 <onright condition="[!Container.HasNext | String.IsEqual(ListItem.SortLetter,Z)] + !$EXP[Exp_MediaFilter_Wall]">Action(prevletter)</onright>
                 <onright>SetFocus(65)</onright>
 
-                <onup>50</onup>
+                <include>Action_Scrollbar_OnUp</include>
                 <onback>50</onback>
                 <ondown>SetProperty(MediaFilterBase,$INFO[Container.FolderPath])</ondown>
                 <ondown>SetFocus(9001)</ondown>
             </include>
+
             <include content="Object_Control" condition="!Skin.HasSetting(DisableAlphabetScrollbar)">
                 <param name="control" value="grouplist" />
                 <visible>$EXP[Exp_AlphabetVisible]</visible>
@@ -312,7 +357,7 @@
 
     <include name="View_MediaFilter_Wall">
         <include condition="Window.IsVisible(MyVideoNav.xml)">MediaFilter_Discover_Wall</include>
-        <include condition="Window.IsVisible(MyVideoNav.xml) + !Skin.HasSetting(DisableDefaultExploreMenu) + !Skin.HasSetting(DisableMediaFilterWall) + [!Skin.String(Viewtype.Movies,Landscape) | !Skin.String(Viewtype.TVShows,Landscape)]">MediaFilter_Wall</include>
+        <include condition="$EXP[Exp_HasMediaFilterWall]">MediaFilter_Wall</include>
     </include>
 
     <include name="View_MediaFilter_Node">
