@@ -97,22 +97,24 @@
             <include content="Object_Hidden_Button">
                 <param name="id" value="67" />
 
-                <onup condition="String.IsEmpty(Window.Property(View.WallSwitchRow))">SetProperty(View.WallSwitchRow,1)</onup>
-                <onup condition="!String.IsEmpty(Window.Property(View.WallSwitchRow))">SetProperty(View.WallSwitchRow.Action,None)</onup>
-                <onup condition="!String.IsEmpty(Window.Property(View.WallSwitchRow))">SetFocus(68)</onup>
+                <onup condition="!String.IsEmpty(Window.Property(View.WallSwitchRow))">ClearProperty(View.WallSwitchRow)</onup>
+                <onup condition="String.IsEmpty(Window.Property(View.WallSwitchRow))">SetProperty(View.WallSwitchRow.Action,None)</onup>
+                <onup condition="String.IsEmpty(Window.Property(View.WallSwitchRow))">SetFocus(68)</onup>
 
-                <ondown condition="!String.IsEmpty(Window.Property(View.WallSwitchRow))">ClearProperty(View.WallSwitchRow)</ondown>
+                <ondown condition="String.IsEmpty(Window.Property(View.WallSwitchRow))">SetProperty(View.WallSwitchRow,1)</ondown>
+                <!-- <ondown condition="!String.IsEmpty(Window.Property(View.WallSwitchRow))">SetProperty(View.WallSwitchRow.Action,None)</ondown>
+                <ondown condition="!String.IsEmpty(Window.Property(View.WallSwitchRow))">SetFocus(68)</ondown> -->
                 <include content="Action_ToScrollbar_OnDown">
-                    <param name="condition">String.IsEmpty(Window.Property(View.WallSwitchRow))</param>
+                    <param name="condition">!String.IsEmpty(Window.Property(View.WallSwitchRow))</param>
                 </include>
-                <ondown condition="String.IsEmpty(Window.Property(View.WallSwitchRow))">SetProperty(View.WallSwitchRow.Hold,1)</ondown>
-                <!-- <ondown condition="String.IsEmpty(Window.Property(View.WallSwitchRow))">SetProperty(View.WallSwitchRow.Action,None)</ondown>
-                <ondown condition="String.IsEmpty(Window.Property(View.WallSwitchRow))">SetFocus(68)</ondown> -->
+                <ondown condition="!String.IsEmpty(Window.Property(View.WallSwitchRow))">SetProperty(View.WallSwitchRow.Hold,1)</ondown>
+                <ondown condition="!String.IsEmpty(Window.Property(View.WallSwitchRow))">ClearProperty(View.WallSwitchRow)</ondown>
 
                 <onback>ClearProperty(View.WallSwitchRow)</onback>
                 <onback>50</onback>
 
-                <onclick condition="!String.IsEmpty(Window.Property(View.WallSwitchRow))">Control.Move(52,1)</onclick>
+                <onclick condition="!String.IsEmpty(Window.Property(View.WallSwitchRow)) + Control.IsVisible(52)">Control.Move(52,1)</onclick>
+                <onclick condition="!String.IsEmpty(Window.Property(View.WallSwitchRow)) + Control.IsVisible(51)">Control.Move(51,1)</onclick>
                 <onclick>SetProperty(View.WallSwitchRow.Action,Select)</onclick>
                 <onclick>SetFocus(68)</onclick>
 
@@ -126,7 +128,8 @@
                 <onright>Action(Right)</onright>
                 <onright>SetFocus(67)</onright>
 
-                <oninfo condition="!String.IsEmpty(Window.Property(View.WallSwitchRow))">Control.Move(52,1)</oninfo>
+                <oninfo condition="!String.IsEmpty(Window.Property(View.WallSwitchRow)) + Control.IsVisible(52)">Control.Move(52,1)</oninfo>
+                <oninfo condition="!String.IsEmpty(Window.Property(View.WallSwitchRow)) + Control.IsVisible(51)">Control.Move(51,1)</oninfo>
                 <oninfo>SetProperty(View.WallSwitchRow.Action,Info)</oninfo>
                 <oninfo>SetFocus(68)</oninfo>
             </include>
@@ -278,10 +281,10 @@
 
             <control type="group">
                 <animation type="Conditional" reversible="false" condition="$EXP[Exp_MediaFilter_Wall]">
-                    <effect type="slide" end="0,-334" start="0" time="400" delay="mf_wp_delay_v_2" tween="cubic" easing="out" />
+                    <effect type="slide" end="0,-334" start="0" time="400" delay="mf_delay_v_2" tween="cubic" easing="out" />
                 </animation>
                 <animation type="Conditional" reversible="false" condition="!$EXP[Exp_MediaFilter_Wall]">
-                    <effect type="slide" start="0,-334" end="0" time="400" delay="mf_wp_delay_h_2" tween="cubic" easing="out" />
+                    <effect type="slide" start="0,-334" end="0" time="400" delay="mf_delay_h_2" tween="cubic" easing="out" />
                 </animation>
 
                 <include content="Info_Viewline">
