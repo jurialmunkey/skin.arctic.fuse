@@ -83,16 +83,10 @@
     </include>
 
     <include name="View_Scrollbars">
-        <include content="View_Scrollbar_V">
-            <top>view_top</top>
-        </include>
-        <include content="View_Scrollbar_V">
-            <param name="id">64</param>
-            <height>x44</height>
-        </include>
         <include content="Furniture_Bottombar_Group">
             <include content="Object_Hidden_Button">
                 <param name="id">68</param>
+                <onfocus>ClearProperty(View.WallSwitchRow.Hold)</onfocus>
                 <onfocus>ClearProperty(View.WallSwitchRow)</onfocus>
                 <onfocus>SetFocus(50)</onfocus>
                 <onfocus condition="String.IsEqual(Window.Property(View.WallSwitchRow.Action),Info)">Action(Info)</onfocus>
@@ -103,25 +97,17 @@
             <include content="Object_Hidden_Button">
                 <param name="id" value="67" />
 
-                <!-- <onup condition="String.IsEmpty(Window.Property(View.WallSwitchRow))">SetProperty(View.WallSwitchRow,1)</onup>
-                <ondown condition="!String.IsEmpty(Window.Property(View.WallSwitchRow))">ClearProperty(View.WallSwitchRow)</ondown> -->
-
                 <onup condition="String.IsEmpty(Window.Property(View.WallSwitchRow))">SetProperty(View.WallSwitchRow,1)</onup>
                 <onup condition="!String.IsEmpty(Window.Property(View.WallSwitchRow))">SetProperty(View.WallSwitchRow.Action,None)</onup>
                 <onup condition="!String.IsEmpty(Window.Property(View.WallSwitchRow))">SetFocus(68)</onup>
 
-                <!-- <ondown condition="!String.IsEmpty(Window.Property(View.WallSwitchRow))">ClearProperty(View.WallSwitchRow)</ondown>
-                <ondown condition="String.IsEmpty(Window.Property(View.WallSwitchRow))">SetProperty(View.WallSwitchRow.Action,None)</ondown>
-                <ondown condition="String.IsEmpty(Window.Property(View.WallSwitchRow))">SetFocus(68)</ondown> -->
-
                 <ondown condition="!String.IsEmpty(Window.Property(View.WallSwitchRow))">ClearProperty(View.WallSwitchRow)</ondown>
-                <ondown condition="String.IsEmpty(Window.Property(View.WallSwitchRow)) + $EXP[Exp_AlphabetTypes_Only] + !Skin.HasSetting(DisableAlphabetScrollbar)">65</ondown>
-                <ondown condition="String.IsEmpty(Window.Property(View.WallSwitchRow)) + [!$EXP[Exp_AlphabetTypes_Only] | Skin.HasSetting(DisableAlphabetScrollbar)]">60</ondown>
-
-                <!-- <onup>SetProperty(View.WallSwitchRow.Action,None)</onup>
-                <onup>SetFocus(68)</onup>
-                <ondown condition="$EXP[Exp_AlphabetTypes_Only] + !Skin.HasSetting(DisableAlphabetScrollbar)">65</ondown>
-                <ondown condition="[!$EXP[Exp_AlphabetTypes_Only] | Skin.HasSetting(DisableAlphabetScrollbar)]">60</ondown> -->
+                <include content="Action_ToScrollbar_OnDown">
+                    <param name="condition">String.IsEmpty(Window.Property(View.WallSwitchRow))</param>
+                </include>
+                <ondown condition="String.IsEmpty(Window.Property(View.WallSwitchRow))">SetProperty(View.WallSwitchRow.Hold,1)</ondown>
+                <!-- <ondown condition="String.IsEmpty(Window.Property(View.WallSwitchRow))">SetProperty(View.WallSwitchRow.Action,None)</ondown>
+                <ondown condition="String.IsEmpty(Window.Property(View.WallSwitchRow))">SetFocus(68)</ondown> -->
 
                 <onback>ClearProperty(View.WallSwitchRow)</onback>
                 <onback>50</onback>
@@ -148,28 +134,40 @@
                 <param name="id">62</param>
                 <onfocus>SetFocus(50)</onfocus>
             </include>
+            <include content="Object_Hidden_Button">
+                <param name="id">64</param>
+                <include>Action_Scrollbar</include>
+                <onleft>SetFocus(50)</onleft>
+                <onleft condition="Container.HasPrevious">Action(PageUp)</onleft>
+                <onleft condition="Container.HasPrevious + $EXP[Exp_MediaFilter_Wall]">Action(PageUp)</onleft>
+                <onleft>SetFocus(64)</onleft>
+                <onright>SetFocus(50)</onright>
+                <onright condition="Container.HasNext">Action(PageDown)</onright>
+                <onright condition="Container.HasNext + $EXP[Exp_MediaFilter_Wall]">Action(PageDown)</onright>
+                <onright>SetFocus(64)</onright>
+            </include>
             <control type="group">
-                <visible allowhiddenfocus="true">Control.HasFocus(60) | Control.HasFocus(65)</visible>
                 <height>scrollbar_w</height>
                 <centertop>-x04</centertop>
                 <control type="image">
                     <texture colordiffuse="main_fg_12">common/white.png</texture>
                     <height>1</height>
                     <centertop>50%</centertop>
+                    <visible>$EXP[Exp_ScrollbarVisible] | Control.HasFocus(67)</visible>
                 </control>
                 <control type="scrollbar" id="60">
-                    <include>Action_Scrollbar_OnUp</include>
                     <orientation>horizontal</orientation>
                     <texturesliderbackground />
                     <texturesliderbar border="4">special://profile/addon_data/script.texturemaker/ArcticFuse/scrollh_h.png</texturesliderbar>
                     <include>Texture_Scrollbar_H</include>
                     <showonepage>true</showonepage>
-                    <ondown>SetProperty(MediaFilterBase,$INFO[Container.FolderPath])</ondown>
-                    <ondown>SetFocus(9001)</ondown>
+                    <include>Action_Scrollbar</include>
+                    <onfocus>SetFocus(64)</onfocus>
+                    <visible allowhiddenfocus="true">$EXP[Exp_ScrollbarVisible]</visible>
                 </control>
             </control>
             <control type="grouplist">
-                <visible>Control.HasFocus(60)</visible>
+                <visible>$EXP[Exp_ItemCountVisible]</visible>
                 <hitrect x="0" y="0" w="0" h="0" />
                 <orientation>horizontal</orientation>
                 <itemgap>30</itemgap>
@@ -206,10 +204,7 @@
                 <onright condition="[!Container.HasNext | String.IsEqual(ListItem.SortLetter,Z)] + !$EXP[Exp_MediaFilter_Wall]">Action(prevletter)</onright>
                 <onright>SetFocus(65)</onright>
 
-                <include>Action_Scrollbar_OnUp</include>
-                <onback>50</onback>
-                <ondown>SetProperty(MediaFilterBase,$INFO[Container.FolderPath])</ondown>
-                <ondown>SetFocus(9001)</ondown>
+                <include>Action_Scrollbar</include>
             </include>
 
             <include content="Object_Control" condition="!Skin.HasSetting(DisableAlphabetScrollbar)">
@@ -326,24 +321,23 @@
             </control>
             <control type="group">
                 <visible>!$EXP[Exp_AlphabetVisible]</visible>
-                <visible>!Control.HasFocus(60)</visible>
                 <control type="group">
-                    <visible>String.IsEmpty(Window.Property(MediaFilterBase))</visible>
-                    <include content="Animation_Fade_In">
-                        <param name="delay">400</param>
-                        <param name="type">Visible</param>
-                    </include>
+                    <visible>!$EXP[Exp_ItemCountVisible]</visible>
+                    <control type="group">
+                        <visible>String.IsEmpty(Window.Property(MediaFilterBase))</visible>
+                        <include content="Animation_Fade_In">
+                            <param name="delay">400</param>
+                            <param name="type">Visible</param>
+                        </include>
+                        <include content="Furniture_Bottom_Left">
+                            <visible>!Control.IsVisible(512)</visible>
+                        </include>
+                    </control>
                     <include content="Furniture_Bottom_Left">
-                        <visible>!Control.IsVisible(512)</visible>
+                        <param name="container">Container(513).</param>
+                        <visible>Control.IsVisible(512) + Skin.HasSetting(Views.UseAltCombined)</visible>
                     </include>
                 </control>
-                <include content="Furniture_Bottom_Left">
-                    <param name="container">Container(513).</param>
-                    <visible>Control.IsVisible(512) + Skin.HasSetting(Views.UseAltCombined)</visible>
-                </include>
-            </control>
-            <control type="group">
-                <visible>!$EXP[Exp_AlphabetVisible]</visible>
                 <include>Furniture_Bottom_Right</include>
             </control>
         </control>
