@@ -18,11 +18,26 @@
     <include name="Furniture_Top">
         <param name="label" default="[CAPITALIZE]$VAR[Label_Header_Main][/CAPITALIZE]" />
         <param name="enabled">true</param>
+        <param name="clock">Skin.HasSetting(Furniture.EnableClock.TopLeft)</param>
+        <param name="clock_toplabel">$INFO[System.Time]</param>
+        <param name="minify">true</param>
         <definition>
             <include content="Furniture_Topbar_Group" condition="$PARAM[enabled]">
                 <nested />
                 <include content="Furniture_Gutters">
-                    <include content="Furniture_MainLabel">
+                    <include content="Furniture_Clock" condition="$PARAM[clock]">
+                        <param name="minify">$PARAM[minify]</param>
+                        <param name="flipx">false</param>
+                        <param name="toplabel">$PARAM[clock_toplabel]</param>
+                        <param name="bottomlabel">$PARAM[label]</param>
+                        <param name="topshadowcolor">main_bg_70</param>
+                        <param name="bottomshadowcolor">main_bg_70</param>
+                        <param name="bottomcolor">main_fg_90</param>
+                        <param name="topfont">font_mini</param>
+                        <param name="bottomfont">font_tiny</param>
+                        <param name="centerfont">font_mini</param>
+                    </include>
+                    <include content="Furniture_MainLabel" condition="!$PARAM[clock]">
                         <param name="id">$PARAM[id]</param>
                         <param name="textcolor">$PARAM[textcolor]</param>
                         <aligny>center</aligny>
@@ -273,6 +288,9 @@
         <param name="topcolor">main_fg_90</param>
         <param name="bottomcolor">main_fg_70</param>
         <param name="minify">!Skin.HasSetting(Furniture.ExpandClock)</param>
+        <param name="topfont">font_mini_black</param>
+        <param name="bottomfont">font_tiny</param>
+        <param name="centerfont">font_mini</param>
         <definition>
             <control type="group">
                 <include content="Object_Left" condition="!$PARAM[flipx]">
@@ -334,7 +352,7 @@
                         <include content="Object_Align" condition="$PARAM[flipx]">
                             <param name="align">right</param>
                         </include>
-                        <font>font_mini</font>
+                        <font>$PARAM[centerfont]</font>
                         <textcolor>$PARAM[bottomcolor]</textcolor>
                         <shadowcolor>$PARAM[bottomshadowcolor]</shadowcolor>
                         <visible>[$PARAM[minify]]</visible>
@@ -352,7 +370,7 @@
                         <include content="Object_Align" condition="$PARAM[flipx]">
                             <param name="align">right</param>
                         </include>
-                        <font>font_mini_black</font>
+                        <font>$PARAM[topfont]</font>
                         <textcolor>$PARAM[topcolor]</textcolor>
                         <shadowcolor>$PARAM[topshadowcolor]</shadowcolor>
                         <visible>![$PARAM[minify]]</visible>
@@ -370,7 +388,7 @@
                         <include content="Object_Align" condition="$PARAM[flipx]">
                             <param name="align">right</param>
                         </include>
-                        <font>font_tiny</font>
+                        <font>$PARAM[bottomfont]</font>
                         <textcolor>$PARAM[bottomcolor]</textcolor>
                         <shadowcolor>$PARAM[bottomshadowcolor]</shadowcolor>
                         <visible>![$PARAM[minify]]</visible>
