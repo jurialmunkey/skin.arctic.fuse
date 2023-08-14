@@ -706,6 +706,10 @@
         </definition>
     </include>
 
+    <include name="_Home_Selector_Widget_PreItemFade">
+        <animation effect="fade" start="100" end="0" delay="200" time="400" tween="quadratic" reversible="false" condition="!Container($PARAM[id]).OnNext">Conditional</animation>
+    </include>
+
     <include name="Home_Selector_Widget">
         <param name="id">300</param>
         <param name="window_id" />
@@ -716,6 +720,7 @@
         <param name="hidden_button">List_ButtonMenu_Row_HiddenButton_Home</param>
         <param name="visible">Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)</param>
         <param name="shorten">False</param>
+        <param name="preitem_fade">False</param>
         <definition>
             <control type="grouplist">
                 <orientation>horizontal</orientation>
@@ -730,7 +735,9 @@
                     <param name="font">$PARAM[font]</param>
                     <param name="textcolor">$PARAM[color_nf]</param>
                     <param name="listitem">ListItem</param>
-                    <animation effect="fade" start="100" end="0" delay="200" time="400" tween="quadratic" reversible="false" condition="!Container($PARAM[id]).OnNext">Conditional</animation>
+                    <include content="_Home_Selector_Widget_PreItemFade" condition="$PARAM[preitem_fade]">
+                        <param name="id">$PARAM[id]</param>
+                    </include>
                 </include>
                 <include content="Home_Selector_Widget_Item_FO">
                     <param name="id">$PARAM[id]</param>
@@ -802,19 +809,21 @@
                 <param name="color_nf">$PARAM[color_nf]</param>
                 <param name="itemlayout_w">view_button_item_w</param>
                 <param name="offset_x">view_button_offset_x</param>
-                <param name="control">wraplist</param>
+                <param name="control">fixedlist</param>
                 <param name="font">$PARAM[font]</param>
                 <param name="backing">true</param>
                 <param name="hidden_button">$PARAM[hidden_button]</param>
+
+                <preloaditems>2</preloaditems>
+                <focusposition>0</focusposition>
+                <movement>0</movement>
 
                 <nested />
 
                 <onfocus condition="$PARAM[slide]">SetProperty(Slide.WidgetContainer,True,$PARAM[window_id])</onfocus>
                 <onfocus condition="![$PARAM[slide]]">ClearProperty(Slide.WidgetContainer,$PARAM[window_id])</onfocus>
 
-                <preloaditems>0</preloaditems>
-                <focusposition>0</focusposition>
-                <movement>0</movement>
+
                 <left>view_button_left</left>
                 <width>2080</width>
                 <preloaditems>0</preloaditems>
