@@ -36,7 +36,7 @@
                         <include content="Furniture_Clock" condition="Skin.HasSetting(Furniture.EnableClock) + !Skin.HasSetting(Furniture.ExpandClock)">
                             <param name="flipx">true</param>
                         </include>
-                        <include content="Object_Control">
+                        <!-- <include content="Object_Control">
                             <param name="control">grouplist</param>
                             <visible>!String.IsEmpty(Window.Property(Slide.WidgetContainer))</visible>
                             <visible>![$PARAM[minify]]</visible>
@@ -49,18 +49,15 @@
                             <itemgap>30</itemgap>
                             <height>80</height>
                             <usecontrolcoords>true</usecontrolcoords>
-
-                            <!-- Buffer for Shadow-->
                             <left>-80</left>
                             <control type="group">
                                 <width>50</width>
                             </control>
-
                             <include content="Info_Codec_Label">
                                 <param name="icon">special://skin/extras/icons/kodi.png</param>
                                 <param name="label">Kodi $INFO[System.BuildVersionCode,v,]</param>
                             </include>
-                        </include>
+                        </include> -->
                     </control>
                 </include>
             </include>
@@ -716,12 +713,45 @@
         <param name="font">font_main_black</param>
         <param name="color_fo">main_fg_100</param>
         <param name="color_nf">main_fg_30</param>
-        <param name="hidden_button">List_ButtonMenu_Row_HiddenButton_Home</param>
+        <param name="hidden_button">List_ButtonMenu_Row_HiddenButton_Temp</param>
         <param name="visible">Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)</param>
         <param name="shorten">False</param>
         <param name="preitem_fade">True</param>
+        <param name="control">fixedlist</param>
         <definition>
-            <control type="grouplist">
+            <include content="List_ButtonMenu_Row">
+                <param name="id">$PARAM[id]</param>
+                <param name="color_fo">$PARAM[color_fo]</param>
+                <param name="color_nf">$PARAM[color_nf]</param>
+                <param name="itemlayout_w">view_button_item_w</param>
+                <param name="offset_x">view_button_offset_x</param>
+                <param name="control">$PARAM[control]</param>
+                <param name="font">$PARAM[font]</param>
+                <param name="backing">true</param>
+                <param name="hidden_button">$PARAM[hidden_button]</param>
+                <param name="hidden_button_prefix">$PARAM[hidden_button_prefix]</param>
+                <param name="hidden_button_force_widget">$PARAM[hidden_button_force_widget]</param>
+
+                <preloaditems>2</preloaditems>
+                <focusposition>0</focusposition>
+                <movement>0</movement>
+
+                <nested />
+
+                <onfocus condition="$PARAM[slide]">SetProperty(Slide.WidgetContainer,True,$PARAM[window_id])</onfocus>
+                <onfocus condition="![$PARAM[slide]]">ClearProperty(Slide.WidgetContainer,$PARAM[window_id])</onfocus>
+
+
+                <left>view_button_left</left>
+                <width>2080</width>
+                <preloaditems>0</preloaditems>
+                <height>selectorwidget_h</height>
+                <top>selectorwidget_t</top>
+                <include content="Animation_ConditionalFade">
+                    <param name="condition">True</param>
+                </include>
+            </include>
+            <control type="grouplist" id="$PARAM[grouplistid]">
                 <orientation>horizontal</orientation>
 
                 <animation effect="slide" end="-view_button_item_w" time="400" tween="quadratic" reversible="false" condition="!Container($PARAM[id]).OnNext">Conditional</animation>
@@ -802,36 +832,6 @@
                     <param name="condition">!$PARAM[visible]</param>
                 </include>
             </control>
-            <include content="List_ButtonMenu_Row">
-                <param name="id">$PARAM[id]</param>
-                <param name="color_fo">$PARAM[color_fo]</param>
-                <param name="color_nf">$PARAM[color_nf]</param>
-                <param name="itemlayout_w">view_button_item_w</param>
-                <param name="offset_x">view_button_offset_x</param>
-                <param name="control">fixedlist</param>
-                <param name="font">$PARAM[font]</param>
-                <param name="backing">true</param>
-                <param name="hidden_button">$PARAM[hidden_button]</param>
-
-                <preloaditems>2</preloaditems>
-                <focusposition>0</focusposition>
-                <movement>0</movement>
-
-                <nested />
-
-                <onfocus condition="$PARAM[slide]">SetProperty(Slide.WidgetContainer,True,$PARAM[window_id])</onfocus>
-                <onfocus condition="![$PARAM[slide]]">ClearProperty(Slide.WidgetContainer,$PARAM[window_id])</onfocus>
-
-
-                <left>view_button_left</left>
-                <width>2080</width>
-                <preloaditems>0</preloaditems>
-                <height>selectorwidget_h</height>
-                <top>selectorwidget_t</top>
-                <include content="Animation_ConditionalFade">
-                    <param name="condition">True</param>
-                </include>
-            </include>
         </definition>
     </include>
 
@@ -919,7 +919,7 @@
                         <include content="Hub_Submenu_List">
                             <param name="id">302</param>
                             <param name="ondown">340</param>
-                            <param name="hidden_button">List_ButtonMenu_Row_HiddenButton_Home</param>
+                            <param name="hidden_button">List_ButtonMenu_Row_HiddenButton_Temp</param>
                             <param name="window_id">home</param>
                             <content>
                                 <include>skinshortcuts-submenu</include>
