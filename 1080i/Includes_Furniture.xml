@@ -25,17 +25,29 @@
             <include content="Furniture_Topbar_Group" condition="$PARAM[enabled]">
                 <nested />
                 <include content="Furniture_Gutters">
-                    <include content="Furniture_Clock" condition="$PARAM[clock]">
+                    <include content="Furniture_Clock" condition="$PARAM[clock] + !Skin.HasSetting(Furniture.TopLeftClock.LabelOnly)">
                         <param name="minify">$PARAM[minify]</param>
                         <param name="flipx">false</param>
                         <param name="toplabel">$PARAM[clock_toplabel]</param>
                         <param name="bottomlabel">$PARAM[label]</param>
-                        <param name="topshadowcolor">main_bg_70</param>
-                        <param name="bottomshadowcolor">main_bg_70</param>
+                        <param name="topshadowcolor">main_bg_30</param>
+                        <param name="bottomshadowcolor">main_bg_30</param>
                         <param name="bottomcolor">main_fg_90</param>
                         <param name="topfont">font_mini</param>
                         <param name="bottomfont">font_tiny</param>
                         <param name="centerfont">font_mini</param>
+                    </include>
+                    <include content="Furniture_ClockLabel" condition="$PARAM[clock] + Skin.HasSetting(Furniture.TopLeftClock.LabelOnly)">
+                        <param name="minify">$PARAM[minify]</param>
+                        <param name="flipx">false</param>
+                        <param name="toplabel">$PARAM[clock_toplabel]</param>
+                        <param name="bottomlabel">$PARAM[label]</param>
+                        <param name="topshadowcolor">main_bg_30</param>
+                        <param name="bottomshadowcolor">main_bg_30</param>
+                        <param name="bottomcolor">main_fg_90</param>
+                        <param name="topfont">font_mini_black</param>
+                        <param name="bottomfont">font_tiny</param>
+                        <param name="centerfont">font_mini_black</param>
                     </include>
                     <include content="Furniture_MainLabel" condition="!$PARAM[clock]">
                         <param name="id">$PARAM[id]</param>
@@ -276,6 +288,86 @@
                     <label>$PARAM[minilabel]</label>
                     <font>font_tiny</font>
                     <textcolor>dialog_fg_70</textcolor>
+                </control>
+            </control>
+        </definition>
+    </include>
+
+    <include name="Furniture_ClockLabel">
+        <param name="flipx">true</param>
+        <param name="toplabel">$INFO[System.Time]</param>
+        <param name="bottomlabel">$INFO[System.Date]</param>
+        <param name="topcolor">main_fg_90</param>
+        <param name="bottomcolor">main_fg_70</param>
+        <param name="minify">!Skin.HasSetting(Furniture.ExpandClock)</param>
+        <param name="topfont">font_mini_black</param>
+        <param name="bottomfont">font_tiny</param>
+        <param name="centerfont">font_mini</param>
+        <definition>
+            <control type="group">
+                <include content="Object_Left" condition="!$PARAM[flipx]">
+                    <param name="left">0</param>
+                </include>
+                <include content="Object_Right" condition="$PARAM[flipx]">
+                    <param name="right">0</param>
+                </include>
+                <height>x08</height>
+                <centertop>50%</centertop>
+                <control type="group">
+                    <control type="label">
+                        <height>x01</height>
+                        <centertop>50%</centertop>
+                        <label>$PARAM[toplabel]</label>
+                        <include content="Object_Align" condition="!$PARAM[flipx]">
+                            <param name="align">left</param>
+                        </include>
+                        <include content="Object_Align" condition="$PARAM[flipx]">
+                            <param name="align">right</param>
+                        </include>
+                        <font>$PARAM[centerfont]</font>
+                        <textcolor>$PARAM[bottomcolor]</textcolor>
+                        <shadowcolor>$PARAM[bottomshadowcolor]</shadowcolor>
+                        <visible>[$PARAM[minify]]</visible>
+                        <include content="Animation_Fade_Out">
+                            <param name="type">Hidden</param>
+                        </include>
+                    </control>
+                    <control type="label">
+                        <height>x01</height>
+                        <top>x02</top>
+                        <label>$PARAM[toplabel]</label>
+                        <include content="Object_Align" condition="!$PARAM[flipx]">
+                            <param name="align">left</param>
+                        </include>
+                        <include content="Object_Align" condition="$PARAM[flipx]">
+                            <param name="align">right</param>
+                        </include>
+                        <font>$PARAM[topfont]</font>
+                        <textcolor>$PARAM[topcolor]</textcolor>
+                        <shadowcolor>$PARAM[topshadowcolor]</shadowcolor>
+                        <visible>![$PARAM[minify]]</visible>
+                        <include content="Animation_Fade_In">
+                            <param name="type">Visible</param>
+                        </include>
+                    </control>
+                    <control type="label">
+                        <height>x01</height>
+                        <bottom>x02</bottom>
+                        <label>$PARAM[bottomlabel]</label>
+                        <include content="Object_Align" condition="!$PARAM[flipx]">
+                            <param name="align">left</param>
+                        </include>
+                        <include content="Object_Align" condition="$PARAM[flipx]">
+                            <param name="align">right</param>
+                        </include>
+                        <font>$PARAM[bottomfont]</font>
+                        <textcolor>$PARAM[bottomcolor]</textcolor>
+                        <shadowcolor>$PARAM[bottomshadowcolor]</shadowcolor>
+                        <visible>![$PARAM[minify]]</visible>
+                        <include content="Animation_Fade_In">
+                            <param name="type">Visible</param>
+                        </include>
+                    </control>
                 </control>
             </control>
         </definition>
