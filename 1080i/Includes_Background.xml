@@ -32,12 +32,69 @@
                 <height>$PARAM[flixart_size_h]</height>
                 <width>$PARAM[flixart_size_w]</width>
                 <aspectratio scalediffuse="false" align="$PARAM[align]" aligny="$PARAM[aligny]">$PARAM[aspectratio]</aspectratio>
-                <texture background="true" diffuse="$PARAM[diffuse]">$VAR[Image_Foreground_FlixArt]</texture>
+                <texture background="true" diffuse="$PARAM[diffuse]">$VAR[Image_Foreground]</texture>
                 <animation effect="fade" start="100" end="0" reversible="false" time="400" condition="[$EXP[Exp_FilterWall_IsMedia] | $EXP[Exp_FilterWall_IsDiscover]]">Conditional</animation>
                 <animation effect="fade" start="0" end="100" reversible="false" delay="400" time="800" condition="![$EXP[Exp_FilterWall_IsMedia] | $EXP[Exp_FilterWall_IsDiscover]]">Conditional</animation>
                 <include>Background_NotVideo</include>
             </control>
         </definition>
+    </include>
+
+    <include name="Background_Blur_Quadrants">
+        <control type="group">
+            <!-- Left -->
+            <control type="group">
+                <right>$PARAM[flixart_size_w]</right>
+                <width>150%</width>
+                <!-- Top  -->
+                <control type="image">
+                    <fadetime>$PARAM[fadetime]</fadetime>
+                    <height>$PARAM[flixart_size_h]</height>
+                    <texture background="true" flipx="true" flipy="false">$VAR[Image_Background_Blur]</texture>
+                </control>
+                <!-- Bottom -->
+                <control type="image">
+                    <fadetime>$PARAM[fadetime]</fadetime>
+                    <height>$PARAM[flixart_size_h]</height>
+                    <top>$PARAM[flixart_size_h]</top>
+                    <texture background="true" flipx="true" flipy="true">$VAR[Image_Background_Blur]</texture>
+                </control>
+            </control>
+
+            <!-- Right -->
+            <control type="group">
+                <right>0</right>
+                <width>$PARAM[flixart_size_w]</width>
+                <!-- Top  -->
+                <control type="image">
+                    <fadetime>$PARAM[fadetime]</fadetime>
+                    <height>$PARAM[flixart_size_h]</height>
+                    <texture background="true" flipx="false" flipy="false">$VAR[Image_Background_Blur]</texture>
+                </control>
+                <!-- Bottom -->
+                <control type="image">
+                    <fadetime>$PARAM[fadetime]</fadetime>
+                    <height>$PARAM[flixart_size_h]</height>
+                    <top>$PARAM[flixart_size_h]</top>
+                    <texture background="true" flipx="false" flipy="true">$VAR[Image_Background_Blur]</texture>
+                </control>
+            </control>
+
+        </control>
+    </include>
+
+    <include name="Background_Blur_Cheater">
+        <control type="group">
+            <centertop>50%</centertop>
+            <height>108000</height>
+            <control type="image">
+                <fadetime>$PARAM[fadetime]</fadetime>
+                <width>192000</width>
+                <height>108000</height>
+                <centertop>64%</centertop>
+                <texture background="true">$VAR[Image_Background_Cheater_Parent]</texture>
+            </control>
+        </control>
     </include>
 
     <include name="Background_Blur">
@@ -47,49 +104,14 @@
         <definition>
             <control type="group">
                 <include>Background_NotVideo</include>
-
-                <!-- FlixArt (Quadrant Blur) -->
-                <control type="group">
-
-                    <!-- Left -->
-                    <control type="group">
-                        <right>$PARAM[flixart_size_w]</right>
-                        <width>150%</width>
-                        <!-- Top  -->
-                        <control type="image">
-                            <fadetime>$PARAM[fadetime]</fadetime>
-                            <height>$PARAM[flixart_size_h]</height>
-                            <texture background="true" flipx="true" flipy="false">$VAR[Image_Background_Blur]</texture>
-                        </control>
-                        <!-- Bottom -->
-                        <control type="image">
-                            <fadetime>$PARAM[fadetime]</fadetime>
-                            <height>$PARAM[flixart_size_h]</height>
-                            <top>$PARAM[flixart_size_h]</top>
-                            <texture background="true" flipx="true" flipy="true">$VAR[Image_Background_Blur]</texture>
-                        </control>
-                    </control>
-
-                    <!-- Right -->
-                    <control type="group">
-                        <right>0</right>
-                        <width>$PARAM[flixart_size_w]</width>
-                        <!-- Top  -->
-                        <control type="image">
-                            <fadetime>$PARAM[fadetime]</fadetime>
-                            <height>$PARAM[flixart_size_h]</height>
-                            <texture background="true" flipx="false" flipy="false">$VAR[Image_Background_Blur]</texture>
-                        </control>
-                        <!-- Bottom -->
-                        <control type="image">
-                            <fadetime>$PARAM[fadetime]</fadetime>
-                            <height>$PARAM[flixart_size_h]</height>
-                            <top>$PARAM[flixart_size_h]</top>
-                            <texture background="true" flipx="false" flipy="true">$VAR[Image_Background_Blur]</texture>
-                        </control>
-                    </control>
-
-                </control>
+                <include content="Background_Blur_Quadrants" condition="Skin.HasSetting(TMDbHelper.EnableBlur)">
+                    <param name="flixart_size_w">$PARAM[flixart_size_w]</param>
+                    <param name="flixart_size_h">$PARAM[flixart_size_h]</param>
+                    <param name="fadetime">$PARAM[fadetime]</param>
+                </include>
+                <include content="Background_Blur_Cheater" condition="!Skin.HasSetting(TMDbHelper.EnableBlur)">
+                    <param name="fadetime">$PARAM[fadetime]</param>
+                </include>
             </control>
         </definition>
     </include>
