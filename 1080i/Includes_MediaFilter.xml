@@ -474,7 +474,7 @@
         <param name="icon_base_var">Image_Poster</param>
         <param name="interchange_condition">[String.IsEmpty(Window.Property(MediaFilterSwap)) + !Window.IsVisible(DialogBusy.xml)]</param>
         <param name="interchange_animation_include">MediaFilter_Wall_Interchange</param>
-        <param name="visible">$EXP[Exp_MediaFilter_Wall]</param>
+        <param name="visible">$EXP[Exp_FilterWall_IsMedia]</param>
         <param name="visible_animation_include">MediaFilter_Wall_Visible</param>
         <param name="prefix">mf_wp</param>
         <param name="id">50</param>
@@ -729,6 +729,14 @@
     </include>
 
     <include name="MediaFilter_Wall_All">
+        <include content="MediaFilter_Wall">
+            <param name="id">50</param>
+            <param name="icon_base_var">Image_Icon</param>
+            <param name="layout_include">Layout_Square</param>
+            <param name="item_w">view_poster_item_w</param>
+            <param name="item_h">view_poster_item_h</param>
+            <param name="prefix">mf_wp</param>
+        </include>
         <include content="MediaFilter_Wall">
             <param name="id">51</param>
             <param name="icon_base_var">Image_Landscape</param>
@@ -1121,7 +1129,7 @@
     <include name="MediaFilter_Discover_Wall">
         <include content="MediaFilter_Wall" condition="!Skin.HasSetting(DisableDefaultExploreMenu) + !Skin.HasSetting(DisableMediaFilterWall) + [!Skin.String(Viewtype.Movies,Landscape) | !Skin.String(Viewtype.TVShows,Landscape)]">
             <param name="id">553</param>
-            <param name="visible">$EXP[Exp_DiscoverFilter_Wall]</param>
+            <param name="visible">$EXP[Exp_FilterWall_IsDiscover]</param>
             <param name="interchange_condition">[!Container(553).IsUpdating]</param>
         </include>
         <include content="List_Poster_Row">
@@ -1246,7 +1254,7 @@
 
 
     <include name="MediaFilter_View_Transition">
-        <param name="condition">[$EXP[Exp_MediaFilter_Wall] | $EXP[Exp_DiscoverFilter_Wall]]</param>
+        <param name="condition">[$EXP[Exp_FilterWall_IsMedia] | $EXP[Exp_FilterWall_IsDiscover]]</param>
         <definition>
             <animation effect="fade" start="0" end="100" delay="mf_faded_h_r" time="1" reversible="false" condition="!$PARAM[condition]">Conditional</animation>
             <animation effect="fade" start="100" end="0" reversible="false" condition="$PARAM[condition]">Conditional</animation>
@@ -1254,8 +1262,8 @@
     </include>
 
     <include name="MediaFilter_Info_Transition">
-        <animation effect="fade" start="0" end="100" delay="200" time="400" reversible="false" condition="![$EXP[Exp_MediaFilter_Wall] | $EXP[Exp_DiscoverFilter_Wall]]">Conditional</animation>
-        <animation effect="fade" start="100" end="0" delay="0" time="200" reversible="false" condition="[$EXP[Exp_MediaFilter_Wall] | $EXP[Exp_DiscoverFilter_Wall]]">Conditional</animation>
+        <animation effect="fade" start="0" end="100" delay="200" time="400" reversible="false" condition="![$EXP[Exp_FilterWall_IsMedia] | $EXP[Exp_FilterWall_IsDiscover]]">Conditional</animation>
+        <animation effect="fade" start="100" end="0" delay="0" time="200" reversible="false" condition="[$EXP[Exp_FilterWall_IsMedia] | $EXP[Exp_FilterWall_IsDiscover]]">Conditional</animation>
     </include>
 
     <include name="MediaFilter_Wall_Visible">
