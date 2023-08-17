@@ -718,6 +718,7 @@
         <param name="shorten">False</param>
         <param name="preitem_fade">True</param>
         <param name="control">fixedlist</param>
+        <param name="infinite_wrap">True</param>
         <definition>
             <include content="List_ButtonMenu_Row">
                 <param name="id">$PARAM[id]</param>
@@ -732,9 +733,15 @@
                 <param name="hidden_button_prefix">$PARAM[hidden_button_prefix]</param>
                 <param name="hidden_button_force_widget">$PARAM[hidden_button_force_widget]</param>
 
-                <preloaditems>2</preloaditems>
+
+                <preloaditems>0</preloaditems>
                 <focusposition>0</focusposition>
                 <movement>0</movement>
+
+                <!-- <preloaditems>2</preloaditems>
+                <focusposition>3</focusposition>
+                <movement>3</movement>
+                <animation effect="slide" start="0" end="-120" condition="Integer.IsEqual(Container($PARAM[id]).NumItems,2) | Integer.IsEqual(Container($PARAM[id]).NumItems,4) | Integer.IsEqual(Container($PARAM[id]).NumItems,6)">Conditional</animation> -->
 
                 <nested />
 
@@ -747,13 +754,14 @@
                 <preloaditems>0</preloaditems>
                 <height>selectorwidget_h</height>
                 <top>selectorwidget_t</top>
-                <include content="Animation_ConditionalFade">
+                <include content="Animation_ConditionalFade" condition="$PARAM[infinite_wrap]">
                     <param name="condition">True</param>
                 </include>
             </include>
-            <control type="grouplist" id="$PARAM[grouplistid]">
+            <include content="Object_Control" condition="$PARAM[infinite_wrap]">
+                <param name="control">grouplist</param>
+                <param name="id">$PARAM[grouplistid]</param>
                 <orientation>horizontal</orientation>
-
                 <animation effect="slide" end="-view_button_item_w" time="400" tween="quadratic" reversible="false" condition="!Container($PARAM[id]).OnNext">Conditional</animation>
                 <animation effect="slide" end="view_button_item_w" time="400" tween="quadratic" reversible="false" condition="!Container($PARAM[id]).OnPrevious">Conditional</animation>
 
@@ -831,7 +839,7 @@
                 <include content="Animation_ConditionalFade">
                     <param name="condition">!$PARAM[visible]</param>
                 </include>
-            </control>
+            </include>
         </definition>
     </include>
 
