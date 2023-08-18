@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window type="dialog" id="1118">
     <defaultcontrol always="true">8001</defaultcontrol>
+    <onunload>ClearProperty(CustomDialogSettingsStyle,Home)</onunload>
+    <onunload>ClearProperty(CustomDialogSettingsImage,Home)</onunload>
     <controls>
 
         <include content="Dialog_Overlay_Side">
             <include>Animation_Right_Delay</include>
-            <include>Dimension_DialogSideMenu</include>
+            <include condition="String.IsEmpty(Window(Home).Property(CustomDialogSettingsStyle))">Dimension_DialogSideMenu</include>
+            <include condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsStyle),Wide)">Dimension_DialogWideMenu</include>
             <include content="Dialog_Head">
                 <param name="id">7000</param>
                 <param name="label">$INFO[Window(Home).Property(CustomDialogSettingsTitle)]</param>
@@ -16,6 +19,21 @@
                     <pagecontrol>61</pagecontrol>
                     <onleft>Close</onleft>
                     <onright>61</onright>
+                    <include  condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SideMenu_1)" content="Items_Settings_SideButtonConfigure">
+                        <param name="item">1</param>
+                    </include>
+                    <include  condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SideMenu_2)" content="Items_Settings_SideButtonConfigure">
+                        <param name="item">2</param>
+                    </include>
+                    <include  condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SideMenu_3)" content="Items_Settings_SideButtonConfigure">
+                        <param name="item">3</param>
+                    </include>
+                    <include  condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SideMenu_4)" content="Items_Settings_SideButtonConfigure">
+                        <param name="item">4</param>
+                    </include>
+
+                    <include condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_HomeMenu)">Items_Settings_HomeMenu</include>
+                    <include condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SearchMenu)">Items_Settings_SearchMenu</include>
                     <include condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_ColourPresets)">Items_Settings_ColourPresets</include>
                     <include condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_ColourHighlights)">Items_Settings_ColourHighlights</include>
                     <include condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_BackgroundDialogImage)">Items_Settings_BackgroundDialogImage</include>
@@ -26,6 +44,40 @@
                     <include condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_Autoscroll)">Items_Settings_Autoscroll</include>
                     <include condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_MPAACountries)">Items_Settings_MPAACountries</include>
                 </include>
+
+                <control type="group">
+                    <left>-800</left>
+                    <width>720</width>
+                    <height>405</height>
+                    <top>40</top>
+                    <visible>!String.IsEmpty(Window(Home).Property(CustomDialogSettingsImage))</visible>
+                    <include content="Dialog_Background_Blur">
+                        <include content="Dimension_Padding">
+                            <param name="pad">-40</param>
+                        </include>
+                        <control type="image">
+                            <texture colordiffuse="dialog_fg_12" border="20">common/dialog.png</texture>
+                        </control>`
+                        <control type="group">
+                            <include content="Dimension_Padding">
+                                <param name="pad">40</param>
+                            </include>
+                            <include content="Dialog_Outline_Box">
+                                <control type="image">
+                                    <width>128</width>
+                                    <height>128</height>
+                                    <centertop>50%</centertop>
+                                    <centerleft>50%</centerleft>
+                                    <texture colordiffuse="main_fg_90">special://skin/extras/icons/image.png</texture>
+                                </control>
+                                <control type="image">
+                                    <aspectratio scalediffuse="false">scale</aspectratio>
+                                    <texture background="true" diffuse="diffuse/landscape_w720_h405.png">$INFO[Window(Home).Property(CustomDialogSettingsImage)]</texture>
+                                </control>
+                            </include>
+                        </control>
+                    </include>
+                </control>
 
                 <include content="Dialog_Scrollbar">
                     <param name="id">61</param>

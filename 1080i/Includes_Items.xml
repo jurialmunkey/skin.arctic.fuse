@@ -180,59 +180,74 @@
         </include>
     </include>
 
-    <include name="Items_SkinSettings_SideButtonConfigure">
+    <include name="Items_Settings_SideButtonConfigure">
         <include content="Settings_Button" description="Type">
-            <param name="id">102$PARAM[item]</param>
-            <label>$LOCALIZE[31025] $PARAM[item]</label>
+            <param name="id">8001</param>
+            <param name="dialog">True</param>
+            <label>$LOCALIZE[467]</label>
             <label2>[CAPITALIZE]$INFO[Skin.String(CustomShortcut.Item0$PARAM[item])][/CAPITALIZE]</label2>
-            <visible>Container(3).HasFocus(1)</visible>
             <onclick>SetProperty(ConfigureShortcutItem,Item0$PARAM[item],Home)</onclick>
             <onclick>ActivateWindow(1117)</onclick>
+            <onfocus>SetProperty(CustomDialogSettingsImage,special://skin/extras/screens/sidemenu.jpg,Home)</onfocus>
         </include>
         <include content="Settings_Button" description="Action">
-            <param name="id">103$PARAM[item]</param>
-            <label> - $LOCALIZE[31422]</label>
-            <visible>Container(3).HasFocus(1)</visible>
+            <param name="id">8002</param>
+            <param name="dialog">True</param>
+            <label>$LOCALIZE[31081]</label>
             <include content="Action_SetCustomShortcut_OnClick">
                 <param name="id">0$PARAM[item]</param>
             </include>
+            <onfocus>SetProperty(CustomDialogSettingsImage,special://skin/extras/screens/sidemenu.jpg,Home)</onfocus>
         </include>
-        <include content="Settings_Button" description="Hub">
-            <param name="id">104$PARAM[item]</param>
-            <label> - $LOCALIZE[31368]</label>
-            <visible>Container(3).HasFocus(1)</visible>
+        <include content="Settings_Button" description="Label (Custom)">
+            <param name="id">8004</param>
+            <param name="dialog">True</param>
+            <label>$LOCALIZE[21899]</label>
+            <label2>$INFO[Skin.String(CustomShortcut.Custom0$PARAM[item].Label)]</label2>
+            <onclick>Skin.SetString(CustomShortcut.Custom0$PARAM[item].Label)</onclick>
+            <visible>Skin.String(CustomShortcut.Item0$PARAM[item],custom)</visible>
+            <onfocus>SetProperty(CustomDialogSettingsImage,special://skin/extras/screens/sidemenu.jpg,Home)</onfocus>
+        </include>
+        <include content="Settings_Button" description="Icon (Custom)">
+            <param name="id">8005</param>
+            <param name="dialog">True</param>
+            <label>$LOCALIZE[31274]</label>
+            <label2>$INFO[Skin.String(CustomShortcut.Custom0$PARAM[item].Icon)]</label2>
+            <onclick>Skin.SetImage(CustomShortcut.Custom0$PARAM[item].Icon,special://skin/extras/icons/)</onclick>
+            <visible>Skin.String(CustomShortcut.Item0$PARAM[item],custom)</visible>
+            <onfocus>SetProperty(CustomDialogSettingsImage,special://skin/extras/screens/sidemenu.jpg,Home)</onfocus>
+        </include>
+
+        <include content="Settings_Button" description="Spotlight">
+            <param name="id">8010</param>
+            <param name="dialog">true</param>
+            <label>$LOCALIZE[31105]</label>
+
+            <onclick condition="Skin.String(CustomShortcut.Item0$PARAM[item],movies) + !Skin.HasSetting(Hub.Movies.DisableSubmenu)">SetProperty(groupname,moviemenu,1116)</onclick>
+            <onclick condition="Skin.String(CustomShortcut.Item0$PARAM[item],tvshows) + !Skin.HasSetting(Hub.TVShows.DisableSubmenu)">SetProperty(groupname,tvshowmenu,1116)</onclick>
+            <onclick condition="Skin.String(CustomShortcut.Item0$PARAM[item],music) + !Skin.HasSetting(Hub.Music.DisableSubmenu)">SetProperty(groupname,musicmenu,1116)</onclick>
+            <onclick condition="Skin.String(CustomShortcut.Item0$PARAM[item],livetv) + !Skin.HasSetting(Hub.PVR.DisableSubmenu)">SetProperty(groupname,pvrmenu,1116)</onclick>
+            <onclick condition="!Skin.HasSetting(Hub.Custom0$PARAM[item].DisableSubmenu) + Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1106))">SetProperty(groupname,custom01menu,1116)</onclick>
+            <onclick condition="!Skin.HasSetting(Hub.Custom0$PARAM[item].DisableSubmenu) + Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1107))">SetProperty(groupname,custom02menu,1116)</onclick>
+            <onclick condition="!Skin.HasSetting(Hub.Custom0$PARAM[item].DisableSubmenu) + Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1108))">SetProperty(groupname,custom03menu,1116)</onclick>
+            <onclick condition="!Skin.HasSetting(Hub.Custom0$PARAM[item].DisableSubmenu) + Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1109))">SetProperty(groupname,custom04menu,1116)</onclick>
+            <onclick>ActivateWindow(1116)</onclick>
+            <onfocus>SetProperty(CustomDialogSettingsImage,special://skin/extras/screens/spotlight.jpg,Home)</onfocus>
+            <enable>[Skin.String(CustomShortcut.Item0$PARAM[item],movies) + !Skin.HasSetting(Hub.Movies.DisableSubmenu)] | [Skin.String(CustomShortcut.Item0$PARAM[item],tvshows) + !Skin.HasSetting(Hub.TVShows.DisableSubmenu)] | [Skin.String(CustomShortcut.Item0$PARAM[item],music) + !Skin.HasSetting(Hub.Music.DisableSubmenu)] | [Skin.String(CustomShortcut.Item0$PARAM[item],livetv) + !Skin.HasSetting(Hub.PVR.DisableSubmenu)] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1106)) + !Skin.HasSetting(Hub.Custom01.DisableSubmenu)] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1107)) + !Skin.HasSetting(Hub.Custom02.DisableSubmenu)] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1108)) + !Skin.HasSetting(Hub.Custom03.DisableSubmenu)] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1109)) + !Skin.HasSetting(Hub.Custom04.DisableSubmenu)]</enable>
+        </include>
+        <include content="Settings_Button" description="Categories">
+            <param name="id">8003</param>
+            <param name="dialog">True</param>
+            <label>$LOCALIZE[31150]</label>
             <include content="Action_SetCustomHub_OnClick">
                 <param name="id">0$PARAM[item]</param>
             </include>
+            <onfocus>SetProperty(CustomDialogSettingsImage,special://skin/extras/screens/categories_widgets.jpg,Home)</onfocus>
         </include>
-        <include content="Settings_Button" description="HubSubmenus">
-            <param name="id">105$PARAM[item]</param>
-            <param name="control">radiobutton</param>
-            <label> - $LOCALIZE[31102]</label>
-            <include content="Action_ToggleHubSubmenus_OnClick">
-                <param name="id">0$PARAM[item]</param>
-            </include>
-            <visible>Container(3).HasFocus(1)</visible>
-        </include>
-        <include content="Settings_Button" description="CustomLabel">
-            <param name="id">106$PARAM[item]</param>
-            <label> - $LOCALIZE[21899]</label>
-            <label2>$INFO[Skin.String(CustomShortcut.Custom0$PARAM[item].Label)]</label2>
-            <onclick>Skin.SetString(CustomShortcut.Custom0$PARAM[item].Label)</onclick>
-            <visible>Container(3).HasFocus(1)</visible>
-            <visible>Skin.String(CustomShortcut.Item0$PARAM[item],custom)</visible>
-        </include>
-        <include content="Settings_Button" description="CustomIcon">
-            <param name="id">107$PARAM[item]</param>
-            <label> - $LOCALIZE[19284]</label>
-            <label2>$INFO[Skin.String(CustomShortcut.Custom0$PARAM[item].Icon)]</label2>
-            <onclick>Skin.SetImage(CustomShortcut.Custom0$PARAM[item].Icon,special://skin/extras/icons/)</onclick>
-            <visible>Container(3).HasFocus(1)</visible>
-            <visible>Skin.String(CustomShortcut.Item0$PARAM[item],custom)</visible>
-        </include>
-        <include content="Settings_Button" description="CustomHub">
-            <param name="id">108$PARAM[item]</param>
-            <label> - $LOCALIZE[31368]</label>
+        <include content="Settings_Button" description="Categories (Custom)">
+            <param name="id">8006</param>
+            <param name="dialog">True</param>
+            <label>$LOCALIZE[31150]</label>
 
             <onclick condition="!Skin.HasSetting(Hub.Custom0$PARAM[item].DisableSubmenu) + Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1106))">RunScript(script.skinshortcuts,type=manage&amp;group=custom01menu)</onclick>
             <onclick condition="!Skin.HasSetting(Hub.Custom0$PARAM[item].DisableSubmenu) + Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1107))">RunScript(script.skinshortcuts,type=manage&amp;group=custom02menu)</onclick>
@@ -244,15 +259,59 @@
             <onclick condition="Skin.HasSetting(Hub.Custom0$PARAM[item].DisableSubmenu) + Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1108))">RunScript(script.skinshortcuts,type=manage&amp;group=custom03widgets)</onclick>
             <onclick condition="Skin.HasSetting(Hub.Custom0$PARAM[item].DisableSubmenu) + Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1109))">RunScript(script.skinshortcuts,type=manage&amp;group=custom04widgets)</onclick>
 
-            <visible>Container(3).HasFocus(1)</visible>
             <visible>Skin.String(CustomShortcut.Item0$PARAM[item],custom)</visible>
             <visible>Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1106)) | Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1107)) | Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1108)) | Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1109))</visible>
+            <onfocus>SetProperty(CustomDialogSettingsImage,special://skin/extras/screens/categories_widgets.jpg,Home)</onfocus>
         </include>
 
-        <include content="Settings_Button" description="CustomHubSubmenus">
-            <param name="id">109$PARAM[item]</param>
+        <include content="Settings_Button" description="Widgets">
+            <param name="id">8011</param>
+            <param name="dialog">true</param>
+            <label>$LOCALIZE[31103]</label>
+
+            <onclick condition="Skin.String(CustomShortcut.Item0$PARAM[item],movies)">RunScript(script.skinshortcuts,type=manage&amp;group=moviewidgets)</onclick>
+            <onclick condition="Skin.String(CustomShortcut.Item0$PARAM[item],tvshows)">RunScript(script.skinshortcuts,type=manage&amp;group=tvshowwidgets)</onclick>
+            <onclick condition="Skin.String(CustomShortcut.Item0$PARAM[item],music)">RunScript(script.skinshortcuts,type=manage&amp;group=musicwidgets)</onclick>
+            <onclick condition="Skin.String(CustomShortcut.Item0$PARAM[item],livetv)">RunScript(script.skinshortcuts,type=manage&amp;group=pvrwidgets)</onclick>
+            <onclick condition="Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1106))">RunScript(script.skinshortcuts,type=manage&amp;group=custom01widgets)</onclick>
+            <onclick condition="Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1107))">RunScript(script.skinshortcuts,type=manage&amp;group=custom02widgets)</onclick>
+            <onclick condition="Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1108))">RunScript(script.skinshortcuts,type=manage&amp;group=custom03widgets)</onclick>
+            <onclick condition="Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1109))">RunScript(script.skinshortcuts,type=manage&amp;group=custom04widgets)</onclick>
+            <onfocus>SetProperty(CustomDialogSettingsImage,special://skin/extras/screens/widgets.jpg,Home)</onfocus>
+            <enable>[Skin.String(CustomShortcut.Item0$PARAM[item],movies)] | [Skin.String(CustomShortcut.Item0$PARAM[item],tvshows)] | [Skin.String(CustomShortcut.Item0$PARAM[item],music)] | [Skin.String(CustomShortcut.Item0$PARAM[item],livetv)] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1106))] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1107))] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1108))] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1109))]</enable>
+        </include>
+
+        <include content="Settings_Button" description="Submenu">
+            <param name="id">8012</param>
+            <param name="dialog">true</param>
+            <label>$LOCALIZE[1034] (Fallback)</label>
+
+            <onclick condition="Skin.String(CustomShortcut.Item0$PARAM[item],movies)">RunScript(script.skinshortcuts,type=manage&amp;group=moviesubmenu)</onclick>
+            <onclick condition="Skin.String(CustomShortcut.Item0$PARAM[item],tvshows)">RunScript(script.skinshortcuts,type=manage&amp;group=tvshowsubmenu)</onclick>
+            <onclick condition="Skin.String(CustomShortcut.Item0$PARAM[item],music)">RunScript(script.skinshortcuts,type=manage&amp;group=musicsubmenu)</onclick>
+            <onclick condition="Skin.String(CustomShortcut.Item0$PARAM[item],livetv)">RunScript(script.skinshortcuts,type=manage&amp;group=pvrsubmenu)</onclick>
+            <onclick condition="Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1106))">RunScript(script.skinshortcuts,type=manage&amp;group=custom01submenu)</onclick>
+            <onclick condition="Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1107))">RunScript(script.skinshortcuts,type=manage&amp;group=custom02submenu)</onclick>
+            <onclick condition="Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1108))">RunScript(script.skinshortcuts,type=manage&amp;group=custom03submenu)</onclick>
+            <onclick condition="Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1109))">RunScript(script.skinshortcuts,type=manage&amp;group=custom04submenu)</onclick>
+            <onfocus>SetProperty(CustomDialogSettingsImage,special://skin/extras/screens/submenu.jpg,Home)</onfocus>
+            <enable>[Skin.String(CustomShortcut.Item0$PARAM[item],movies)] | [Skin.String(CustomShortcut.Item0$PARAM[item],tvshows)] | [Skin.String(CustomShortcut.Item0$PARAM[item],music)] | [Skin.String(CustomShortcut.Item0$PARAM[item],livetv)] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1106))] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1107))] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1108))] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1109))]</enable>
+        </include>
+
+        <include content="Settings_Button" description="HubSubmenus">
+            <param name="id">8008</param>
+            <param name="dialog">True</param>
             <param name="control">radiobutton</param>
-            <label> - $LOCALIZE[31102]</label>
+            <label>$LOCALIZE[31102]</label>
+            <include content="Action_ToggleHubSubmenus_OnClick">
+                <param name="id">0$PARAM[item]</param>
+            </include>
+        </include>
+        <include content="Settings_Button" description="CustomHubSubmenus">
+            <param name="id">8009</param>
+            <param name="dialog">True</param>
+            <param name="control">radiobutton</param>
+            <label>$LOCALIZE[31102]</label>
 
             <onclick condition="Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1106))">Skin.ToggleSetting(Hub.Custom01.DisableSubmenu)</onclick>
             <onclick condition="Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1107))">Skin.ToggleSetting(Hub.Custom02.DisableSubmenu)</onclick>
@@ -261,10 +320,8 @@
 
             <selected>[Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1106)) + Skin.HasSetting(Hub.Custom01.DisableSubmenu)] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1107)) + Skin.HasSetting(Hub.Custom02.DisableSubmenu)] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1108)) + Skin.HasSetting(Hub.Custom03.DisableSubmenu)] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1109)) + Skin.HasSetting(Hub.Custom04.DisableSubmenu)]</selected>
 
-            <visible>Skin.String(CustomShortcut.Item0$PARAM[item],custom)</visible>
-            <visible>Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1106)) | Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1107)) | Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1108)) | Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1109))</visible>
+            <visible>Skin.String(CustomShortcut.Item0$PARAM[item],custom) + [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1106)) | Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1107)) | Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1108)) | Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1109))]</visible>
 
-            <visible>Container(3).HasFocus(1)</visible>
         </include>
     </include>
 
@@ -975,6 +1032,65 @@
             <label>$LOCALIZE[31195] (Arctic Zephyr)</label>
             <selected>$EXP[Exp_ColourTheme_IsLight]</selected>
             <onclick>RunScript(script.skinvariables,get_jsonrpc=Settings.SetSettingValue,setting=lookandfeel.skincolors,value=Light ~UNDER CONSTRUCTION~)</onclick>
+        </include>
+    </include>
+
+    <include name="Items_Settings_HomeMenu">
+        <include content="Settings_Button" description="Style">
+            <param name="id">8001</param>
+            <param name="dialog">true</param>
+            <label>$LOCALIZE[736]</label>
+            <label2>$VAR[Label_Setting_HomeStyle]</label2>
+            <onclick condition="String.IsEmpty(Skin.String(Home.LayoutStyle))">Skin.SetString(Home.LayoutStyle,Categories)</onclick>
+            <onclick condition="Skin.String(Home.LayoutStyle,Categories)">Skin.SetString(Home.LayoutStyle,Widgets)</onclick>
+            <onclick condition="Skin.String(Home.LayoutStyle,Widgets)">Skin.Reset(Home.LayoutStyle)</onclick>
+            <onfocus>ClearProperty(CustomDialogSettingsImage,Home)</onfocus>
+        </include>
+        <include content="Settings_Button" description="Spotlight">
+            <param name="id">8003</param>
+            <param name="dialog">true</param>
+            <label>$LOCALIZE[31105]</label>
+            <onclick>SetProperty(groupname,mainmenu,1116)</onclick>
+            <onclick>ActivateWindow(1116)</onclick>
+            <onfocus>SetProperty(CustomDialogSettingsImage,special://skin/extras/screens/spotlight.jpg,Home)</onfocus>
+            <enable>!Skin.String(Home.LayoutStyle,Widgets)</enable>
+        </include>
+        <include content="Settings_Button" description="Categories">
+            <param name="id">8002</param>
+            <param name="dialog">true</param>
+            <label>$LOCALIZE[31150]</label>
+            <onclick>RunScript(script.skinshortcuts,type=manage&amp;group=mainmenu)</onclick>
+            <onfocus>SetProperty(CustomDialogSettingsImage,special://skin/extras/screens/categories_widgets.jpg,Home)</onfocus>
+        </include>
+
+    </include>
+
+    <include name="Items_Settings_SearchMenu">
+        <include content="Settings_Button" description="Style">
+            <param name="id">8001</param>
+            <param name="dialog">true</param>
+            <label>$LOCALIZE[736]</label>
+            <label2>$VAR[Label_Setting_SearchStyle]</label2>
+            <onclick>Skin.ToggleSetting(Search.EnableDiscover)</onclick>
+        </include>
+        <include content="Settings_Button" description="Widgets">
+            <param name="id">8002</param>
+            <param name="dialog">true</param>
+            <label>$LOCALIZE[31103]</label>
+            <enable>!Skin.HasSetting(Search.EnableDiscover)</enable>
+            <onclick>RunScript(script.skinshortcuts,type=manage&amp;group=searchmenu)</onclick>
+        </include>
+        <include content="Settings_Label" description="Options Label">
+            <param name="id">8003</param>
+            <label>$LOCALIZE[33063]</label>
+        </include>
+        <include content="Settings_Button" description="SkinShortcuts searchmenu select edit">
+            <param name="id">8004</param>
+            <param name="dialog">true</param>
+            <param name="control">radiobutton</param>
+            <label>$LOCALIZE[31161]</label>
+            <selected>Skin.HasSetting(Search.FocusEditControl)</selected>
+            <onclick>Skin.ToggleSetting(Search.FocusEditControl)</onclick>
         </include>
     </include>
 
