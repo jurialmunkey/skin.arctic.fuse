@@ -751,7 +751,7 @@
         <param name="shorten">False</param>
         <param name="preitem_fade">True</param>
         <param name="control">fixedlist</param>
-        <param name="infinite_wrap">True</param>
+        <param name="infinite_wrap">[Skin.String(Rows.ContentLoopback,Loop) | Skin.String(Rows.ContentLoopback,Wrap)]</param>
         <definition>
             <include content="List_ButtonMenu_Row">
                 <param name="id">$PARAM[id]</param>
@@ -759,7 +759,7 @@
                 <param name="color_nf">$PARAM[color_nf]</param>
                 <param name="itemlayout_w">view_button_item_w</param>
                 <param name="offset_x">view_button_offset_x</param>
-                <param name="control">$PARAM[control]</param>
+                <param name="control">fixedlist</param>
                 <param name="font">$PARAM[font]</param>
                 <param name="backing">true</param>
                 <param name="hidden_button">$PARAM[hidden_button]</param>
@@ -767,9 +767,16 @@
                 <param name="hidden_button_force_widget">$PARAM[hidden_button_force_widget]</param>
 
 
-                <preloaditems>0</preloaditems>
+                <preloaditems>2</preloaditems>
                 <focusposition>0</focusposition>
                 <movement>0</movement>
+
+                <include content="Action_View_Movement_OnLeft" condition="![$PARAM[infinite_wrap]]">
+                    <param name="id">$PARAM[id]</param>
+                </include>
+                <include content="Action_View_Movement_OnRight" condition="![$PARAM[infinite_wrap]]">
+                    <param name="id">$PARAM[id]</param>
+                </include>
 
                 <!-- <preloaditems>2</preloaditems>
                 <focusposition>3</focusposition>
@@ -781,8 +788,18 @@
                 <onfocus condition="$PARAM[slide]">SetProperty(Slide.WidgetContainer,True,$PARAM[window_id])</onfocus>
                 <onfocus condition="![$PARAM[slide]]">ClearProperty(Slide.WidgetContainer,$PARAM[window_id])</onfocus>
 
+                <include content="Animation_Fade_In" condition="![$PARAM[infinite_wrap]]">
+                    <param name="condition">$PARAM[visible]</param>
+                    <param name="delay">200</param>
+                </include>
+                <include content="Animation_ConditionalFade" condition="![$PARAM[infinite_wrap]]">
+                    <param name="condition">!$PARAM[visible]</param>
+                </include>
 
                 <left>view_button_left</left>
+                <include content="Object_Width" condition="$PARAM[shorten]">
+                    <param name="width">1440</param>
+                </include>
                 <width>2080</width>
                 <preloaditems>0</preloaditems>
                 <height>selectorwidget_h</height>

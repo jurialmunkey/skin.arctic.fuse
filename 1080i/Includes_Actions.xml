@@ -139,19 +139,19 @@
         <definition>
 
             <!-- Loop Around -->
-            <onleft condition="!String.IsEmpty(Window.Property(List.ViewContainer)) + !String.IsEqual(Window.Property(List.ViewContainer),Window.Property(List.ViewContainer.Reset)) + Skin.HasSetting(Navigation.MenuLoopBack)">SetFocus($INFO[Window.Property(List.ViewContainer)],99999,absolute)</onleft>
+            <onleft condition="!String.IsEmpty(Window.Property(List.ViewContainer)) + !String.IsEqual(Window.Property(List.ViewContainer),Window.Property(List.ViewContainer.Reset)) + Skin.String(Rows.ContentLoopback,Loop)">SetFocus($INFO[Window.Property(List.ViewContainer)],99999,absolute)</onleft>
             <onright condition="!String.IsEmpty(Window.Property(List.ViewContainer)) + !String.IsEqual(Window.Property(List.ViewContainer),Window.Property(List.ViewContainer.Reset))">SetFocus($INFO[Window.Property(List.ViewContainer)],0,absolute)</onright>
 
             <!-- Refocus List (No Loop Around) -->
-            <onleft condition="!String.IsEmpty(Window.Property(List.ViewContainer)) + String.IsEqual(Window.Property(List.ViewContainer),Window.Property(List.ViewContainer.Reset)) + Skin.HasSetting(Navigation.MenuLoopBack)">SetFocus($INFO[Window.Property(List.ViewContainer)])</onleft>
+            <onleft condition="!String.IsEmpty(Window.Property(List.ViewContainer)) + String.IsEqual(Window.Property(List.ViewContainer),Window.Property(List.ViewContainer.Reset)) + Skin.String(Rows.ContentLoopback,Loop)">SetFocus($INFO[Window.Property(List.ViewContainer)])</onleft>
             <onright condition="!String.IsEmpty(Window.Property(List.ViewContainer)) + String.IsEqual(Window.Property(List.ViewContainer),Window.Property(List.ViewContainer.Reset))">SetFocus($INFO[Window.Property(List.ViewContainer)])</onright>
 
             <!-- Focus Default -->
-            <onleft condition="String.IsEmpty(Window.Property(List.ViewContainer)) + Skin.HasSetting(Navigation.MenuLoopBack)">$PARAM[onlist]</onleft>
+            <onleft condition="String.IsEmpty(Window.Property(List.ViewContainer)) + Skin.String(Rows.ContentLoopback,Loop)">$PARAM[onlist]</onleft>
             <onright condition="String.IsEmpty(Window.Property(List.ViewContainer))">$PARAM[onlist]</onright>
 
             <!-- Focus Bump -->
-            <onleft condition="!Skin.HasSetting(Navigation.MenuLoopBack)">331</onleft>
+            <onleft condition="!Skin.String(Rows.ContentLoopback,Loop)">331</onleft>
         </definition>
     </include>
 
@@ -290,17 +290,18 @@
     </include>
 
     <include name="Action_View_Movement_OnLeft">
+        <onleft>303</onleft>
         <onleft>SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onleft>
         <onleft>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onleft>
     </include>
 
     <include name="Action_View_Movement_OnRight">
-        <param name="refocus">Skin.HasSetting(Navigation.MenuLoopBack)</param>
+        <param name="refocus">Skin.String(Rows.ContentLoopback,Loop)</param>
         <definition>
-            <onright condition="Skin.HasSetting(Navigation.MenuLoopBack)">SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onright>
+            <onright condition="Skin.String(Rows.ContentLoopback,Loop)">SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onright>
             <onright condition="$PARAM[refocus]">SetFocus($PARAM[id],0,absolute)</onright>
-            <onright condition="Skin.HasSetting(Navigation.MenuLoopBack)">SetFocus(303,$VAR[Action_Menu_Position],absolute)</onright>
-            <onright condition="!Skin.HasSetting(Navigation.MenuLoopBack)">332</onright>
+            <onright condition="Skin.String(Rows.ContentLoopback,Loop)">SetFocus(303,$VAR[Action_Menu_Position],absolute)</onright>
+            <onright condition="!Skin.String(Rows.ContentLoopback,Loop)">332</onright>
         </definition>
     </include>
 
