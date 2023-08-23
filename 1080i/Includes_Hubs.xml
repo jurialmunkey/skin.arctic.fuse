@@ -116,68 +116,36 @@
                     <height>widget_tbump_h</height>
                 </control>
 
-                <include content="_Widget_Row" condition="!$PARAM[widgets_only]">
-                    <param name="id">5001</param>
-                    <param name="groupid">5101</param>
-                    <param name="label">[CAPITALIZE]$VAR[Label_Hub_Background][/CAPITALIZE]</param>
-                    <param name="secondary_label">$LOCALIZE[31371] $VAR[Label_Special_SortMethod]</param>
-                    <param name="sort_condition">True</param>
-                    <param name="sort_descending">String.IsEqual(Window.Property(SpecialFolderSortorder),descending)</param>
-                    <param name="include">List_Square_Row</param>
-                    <param name="transition_include">true</param>
-                    <param name="transition_hidden">Control.HasFocus(5001)</param>
-                    <param name="visible">[String.IsEqual(Window.Property(SpecialFolderStyle),Square) + !String.IsEmpty(Window.Property(SpecialFolderPath)) + String.IsEmpty(container(300).listitem.property(useWidgetList))]</param>
-                    <param name="altvisible">[[!ControlGroup(5000).HasFocus() + !System.IdleTime(1)] + !String.IsEmpty(Window.Property(SpecialFolderPath)) + String.IsEmpty(container(300).listitem.property(useWidgetList))]</param>
-                    <content target="$VAR[Path_Hub_Target]" sortby="$INFO[Window.Property(SpecialFolderSortby)]" sortorder="$INFO[Window.Property(SpecialFolderSortorder)]" limit="$INFO[Window.Property(SpecialFolderLimit)]">$VAR[Path_Hub_Content_Square]</content>
-                    <onfocus>SetProperty(TMDbHelper.WidgetContainer,5001)</onfocus>
-                    <onback condition="![!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container(5001).ListItem.CurrentItem,1)]">5000</onback>
-                    <onback condition="![!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container(5001).ListItem.CurrentItem,1)]">SetFocus(5001,0,absolute)</onback>
-                    <onback condition="[!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container(5001).ListItem.CurrentItem,1)]">3000</onback>
-                    <onfocus>SetProperty(Transition.WidgetStyle,List_Square_Row,Home)</onfocus>
-                    <onunfocus>ClearProperty(Transition.WidgetStyle,Home)</onunfocus>
+                <include content="Widget_Adaptive_Rows">
+                    <param name="include_condition">!$PARAM[widgets_only]</param>
+
+                    <param name="label">$VAR[Label_Hub_Background]</param>
+                    <param name="sort_label">$VAR[Label_Special_SortMethod]</param>
+
+                    <param name="prefix"></param>
+                    <param name="enabled">[!String.IsEmpty(Window.Property(SpecialFolderPath)) + String.IsEmpty(container(300).listitem.property(useWidgetList))]</param>
+                    <param name="altvisible">!ControlGroup(5000).HasFocus()</param>
+
+                    <param name="topid">5004</param>
+                    <param name="grouplistid">5000</param>
+
+                    <param name="toplandscapeid">5002</param>
+                    <param name="landscapeid">5002</param>
+                    <param name="landscapegroupid">5102</param>
+                    <param name="content_landscape">$VAR[Path_Hub_Content_Landscape]</param>
+
+                    <param name="topsquareid">5001</param>
+                    <param name="squareid">5001</param>
+                    <param name="squaregroupid">5101</param>
+                    <param name="content_square">$VAR[Path_Hub_Content_Square]</param>
+
+                    <param name="topposterid">5003</param>
+                    <param name="posterid">5003</param>
+                    <param name="postergroupid">5103</param>
+                    <param name="content_poster">$VAR[Path_Hub_Content_Poster]</param>
                 </include>
 
-                <include content="_Widget_Row" condition="!$PARAM[widgets_only]">
-                    <param name="id">5002</param>
-                    <param name="groupid">5102</param>
-                    <param name="label">[CAPITALIZE]$VAR[Label_Hub_Background][/CAPITALIZE]</param>
-                    <param name="secondary_label">$LOCALIZE[31371] $VAR[Label_Special_SortMethod]</param>
-                    <param name="sort_condition">True</param>
-                    <param name="sort_descending">String.IsEqual(Window.Property(SpecialFolderSortorder),descending)</param>
-                    <param name="include">List_Landscape_Row</param>
-                    <param name="transition_include">true</param>
-                    <param name="transition_hidden">Control.HasFocus(5002)</param>
-                    <param name="visible">[!String.IsEqual(Window.Property(SpecialFolderStyle),Square) + !String.IsEqual(Window.Property(SpecialFolderStyle),Poster) + !String.IsEmpty(Window.Property(SpecialFolderPath)) + String.IsEmpty(container(300).listitem.property(useWidgetList))]</param>
-                    <param name="altvisible">[[!ControlGroup(5000).HasFocus() + !System.IdleTime(1)] + !String.IsEmpty(Window.Property(SpecialFolderPath)) + String.IsEmpty(container(300).listitem.property(useWidgetList))]</param>
-                    <content target="$VAR[Path_Hub_Target]" sortby="$INFO[Window.Property(SpecialFolderSortby)]" sortorder="$INFO[Window.Property(SpecialFolderSortorder)]" limit="$INFO[Window.Property(SpecialFolderLimit)]">$VAR[Path_Hub_Content_Landscape]</content>
-                    <onfocus>SetProperty(TMDbHelper.WidgetContainer,5002)</onfocus>
-                    <onback condition="![!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container(5002).ListItem.CurrentItem,1)]">5000</onback>
-                    <onback condition="![!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container(5002).ListItem.CurrentItem,1)]">SetFocus(5002,0,absolute)</onback>
-                    <onback condition="[!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container(5002).ListItem.CurrentItem,1)]">3000</onback>
-                    <onfocus>SetProperty(Transition.WidgetStyle,List_Landscape_Row,Home)</onfocus>
-                    <onunfocus>ClearProperty(Transition.WidgetStyle,Home)</onunfocus>
-                </include>
 
-                <include content="_Widget_Row" condition="!$PARAM[widgets_only]">
-                    <param name="id">5003</param>
-                    <param name="groupid">5103</param>
-                    <param name="label">[CAPITALIZE]$VAR[Label_Hub_Background][/CAPITALIZE]</param>
-                    <param name="secondary_label">$LOCALIZE[31371] $VAR[Label_Special_SortMethod]</param>
-                    <param name="sort_condition">True</param>
-                    <param name="sort_descending">String.IsEqual(Window.Property(SpecialFolderSortorder),descending)</param>
-                    <param name="include">List_Poster_Row</param>
-                    <param name="transition_include">true</param>
-                    <param name="transition_hidden">Control.HasFocus(5003)</param>
-                    <param name="visible">[String.IsEqual(Window.Property(SpecialFolderStyle),Poster) + !String.IsEmpty(Window.Property(SpecialFolderPath)) + String.IsEmpty(container(300).listitem.property(useWidgetList))]</param>
-                    <param name="altvisible">[[!ControlGroup(5000).HasFocus() + !System.IdleTime(1)] + !String.IsEmpty(Window.Property(SpecialFolderPath)) + String.IsEmpty(container(300).listitem.property(useWidgetList))]</param>
-                    <content target="$VAR[Path_Hub_Target]" sortby="$INFO[Window.Property(SpecialFolderSortby)]" sortorder="$INFO[Window.Property(SpecialFolderSortorder)]" limit="$INFO[Window.Property(SpecialFolderLimit)]">$VAR[Path_Hub_Content_Poster]</content>
-                    <onfocus>SetProperty(TMDbHelper.WidgetContainer,5003)</onfocus>
-                    <onback condition="![!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container(5003).ListItem.CurrentItem,1)]">5000</onback>
-                    <onback condition="![!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container(5003).ListItem.CurrentItem,1)]">SetFocus(5003,0,absolute)</onback>
-                    <onback condition="[!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container(5003).ListItem.CurrentItem,1)]">3000</onback>
-                    <onfocus>SetProperty(Transition.WidgetStyle,List_Poster_Row,Home)</onfocus>
-                    <onunfocus>ClearProperty(Transition.WidgetStyle,Home)</onunfocus>
-                </include>
 
                 <nested />
 
@@ -239,11 +207,7 @@
             <control type="group" id="320">
 
                 <include>Animation_View_WindowChange</include>
-
-                <animation type="Conditional" condition="Control.IsVisible(330)" reversible="false">
-                    <effect type="slide" end="0,-20" time="60" tween="sine" />
-                    <effect type="slide" end="0,20" time="180" tween="sine" delay="80" />
-                </animation>
+                <include>Animation_Group_Bumper</include>
 
                 <include content="Home_Widgets_Infopanel" condition="!$PARAM[widgets_only]">
                     <param name="visible">true</param>
