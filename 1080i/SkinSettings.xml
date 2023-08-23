@@ -250,21 +250,6 @@
                             <onclick>SetProperty(CustomDialogSettingsItems,Items_Settings_CustomStartup,Home)</onclick>
                             <onclick>ActivateWindow(1118)</onclick>
                         </include>
-                        <include content="Settings_Label" description="Background">
-                            <param name="id">2010</param>
-                            <label>$LOCALIZE[33068]</label>
-                            <visible>Container(3).HasFocus(2)</visible>
-                        </include>
-                        <include content="Settings_Button" description="Background video">
-                            <param name="id">2011</param>
-                            <label>$LOCALIZE[31069]</label>
-                            <visible>Container(3).HasFocus(2)</visible>
-                            <label2>$VAR[Label_Setting_BackgroundVideo]</label2>
-                            <onclick condition="Skin.HasSetting(Background.VideoDisabled)">Skin.Reset(Background.VideoDisabled)</onclick>
-                            <onclick condition="Skin.HasSetting(Background.VideoDisabled)">Skin.Reset(Background.VideoAdaptive)</onclick>
-                            <onclick condition="!Skin.HasSetting(Background.VideoDisabled) + !Skin.HasSetting(Background.VideoAdaptive)">Skin.SetBool(Background.VideoAdaptive)</onclick>
-                            <onclick condition="!Skin.HasSetting(Background.VideoDisabled) + Skin.HasSetting(Background.VideoAdaptive)">Skin.SetBool(Background.VideoDisabled)</onclick>
-                        </include>
                         <include content="Settings_Button" description="Background blur">
                             <param name="id">2012</param>
                             <param name="control">button</param>
@@ -287,6 +272,22 @@
                             <onclick>AlarmClock(refocusblurb,SetFocus(2013),00:00,silent)</onclick>
                             <visible>Container(3).HasFocus(2)</visible>
                         </include>
+                        <include content="Settings_Label" description="Background">
+                            <param name="id">2010</param>
+                            <label>$LOCALIZE[33068]</label>
+                            <visible>Container(3).HasFocus(2)</visible>
+                        </include>
+                        <include content="Settings_Button" description="Background video">
+                            <param name="id">2011</param>
+                            <label>$LOCALIZE[31069]</label>
+                            <visible>Container(3).HasFocus(2)</visible>
+                            <label2>$VAR[Label_Setting_BackgroundVideo]</label2>
+                            <onclick condition="Skin.HasSetting(Background.VideoDisabled)">Skin.Reset(Background.VideoDisabled)</onclick>
+                            <onclick condition="Skin.HasSetting(Background.VideoDisabled)">Skin.Reset(Background.VideoAdaptive)</onclick>
+                            <onclick condition="!Skin.HasSetting(Background.VideoDisabled) + !Skin.HasSetting(Background.VideoAdaptive)">Skin.SetBool(Background.VideoAdaptive)</onclick>
+                            <onclick condition="!Skin.HasSetting(Background.VideoDisabled) + Skin.HasSetting(Background.VideoAdaptive)">Skin.SetBool(Background.VideoDisabled)</onclick>
+                        </include>
+
 
                         <!-- Viewtypes -->
                         <include content="Settings_Label" description="Viewtypes">
@@ -301,6 +302,7 @@
                             <visible>Container(3).HasFocus(3)</visible>
                             <onclick>runscript(script.skinvariables,action=buildviews,configure)</onclick>
                         </include>
+
                         <include content="Settings_Label" description="Combined viewtype style">
                             <param name="id">3020</param>
                             <label>$LOCALIZE[736]</label>
@@ -322,53 +324,45 @@
                             <visible>Container(3).HasFocus(3)</visible>
                             <onclick>Skin.ToggleSetting(Views.UseFullPVRGuide)</onclick>
                         </include>
-                        <include content="Settings_Button" description="Endless wrapping">
-                            <param name="id">3023</param>
-                            <param name="control">radiobutton</param>
-                            <label>$LOCALIZE[31144]</label>
-                            <selected>Skin.HasSetting(Views.WrapLists)</selected>
-                            <visible>Container(3).HasFocus(3)</visible>
-                            <onclick>Skin.ToggleSetting(Views.WrapLists)</onclick>
-                        </include>
 
-                        <!-- Navigation -->
-                        <include content="Settings_Label" description="Navigation">
-                            <param name="id">4020</param>
+                        <include content="Settings_Label" description="Media Filter and Wall">
+                            <param name="id">3030</param>
                             <label>$LOCALIZE[31038]</label>
-                            <visible>Container(3).HasFocus(4)</visible>
+                            <visible>Container(3).HasFocus(3)</visible>
                         </include>
                         <include content="Settings_Button" description="Media Filter Wall">
-                            <param name="id">4021</param>
+                            <param name="id">3031</param>
                             <param name="control">radiobutton</param>
-                            <label>$LOCALIZE[31037]</label>
-                            <visible>Container(3).HasFocus(4)</visible>
+                            <label>$LOCALIZE[31322]</label>
+                            <visible>Container(3).HasFocus(3)</visible>
+                            <onclick>Skin.ToggleSetting(DisableMediaFilterWall)</onclick>
+                            <selected>!Skin.HasSetting(DisableMediaFilterWall)</selected>
+                        </include>
+                        <include content="Settings_Button" description="Explore menu">
+                            <param name="id">3032</param>
+                            <param name="control">radiobutton</param>
+                            <label>$LOCALIZE[31323]</label>
+                            <visible>Container(3).HasFocus(3)</visible>
                             <onclick>Skin.ToggleSetting(DisableDefaultExploreMenu)</onclick>
                             <selected>!Skin.HasSetting(DisableDefaultExploreMenu)</selected>
                         </include>
-                        <include content="Settings_Button" description="Media Filter Wall">
-                            <param name="id">4022</param>
-                            <param name="control">radiobutton</param>
-                            <label>$LOCALIZE[31036]</label>
-                            <visible>Container(3).HasFocus(4)</visible>
-                            <onclick>Skin.ToggleSetting(DisableMediaFilterWall)</onclick>
-                            <selected>!Skin.HasSetting(DisableDefaultExploreMenu) + !Skin.HasSetting(DisableMediaFilterWall) + [!Skin.String(Viewtype.Movies,Landscape) | !Skin.String(Viewtype.TVShows,Landscape)]</selected>
-                            <enable>!Skin.HasSetting(DisableDefaultExploreMenu)</enable>
-                            <visible>[!Skin.String(Viewtype.Movies,Landscape) | !Skin.String(Viewtype.TVShows,Landscape)]</visible>
-                        </include>
+
                         <include content="Settings_Button" description="Media Filter Items">
-                            <param name="id">4023</param>
+                            <param name="id">3033</param>
                             <param name="control">button</param>
-                            <label>$LOCALIZE[31039]</label>
-                            <visible>Container(3).HasFocus(4)</visible>
+                            <label> - $LOCALIZE[31039]</label>
+                            <visible>Container(3).HasFocus(3)</visible>
                             <onclick>RunScript(script.skinshortcuts,type=manage&amp;group=exploremenu)</onclick>
                         </include>
+
+                        <!-- Navigation -->
                         <include content="Settings_Label" description="Widgets">
-                            <param name="id">4030</param>
+                            <param name="id">4000</param>
                             <label>$LOCALIZE[31103]</label>
                             <visible>Container(3).HasFocus(4)</visible>
                         </include>
                         <include content="Settings_Button" description="Widgets Slide Up">
-                            <param name="id">4031</param>
+                            <param name="id">4001</param>
                             <param name="control">radiobutton</param>
                             <label>$LOCALIZE[31087]</label>
                             <visible>Container(3).HasFocus(4)</visible>
@@ -376,7 +370,7 @@
                             <selected>Skin.HasSetting(Slide.WidgetContainer)</selected>
                         </include>
                         <include content="Settings_Button" description="Widgets Loopback">
-                            <param name="id">4032</param>
+                            <param name="id">4002</param>
                             <param name="control">button</param>
                             <label>$LOCALIZE[31072]</label>
                             <visible>Container(3).HasFocus(4)</visible>
@@ -384,6 +378,20 @@
                             <onclick condition="Skin.String(Hubs.WidgetsLoopback,Loop)">Skin.SetString(Hubs.WidgetsLoopback,Menu)</onclick>
                             <onclick condition="Skin.String(Hubs.WidgetsLoopback,Menu)">Skin.SetString(Hubs.WidgetsLoopback,Bump)</onclick>
                             <label2>$INFO[Skin.String(Hubs.WidgetsLoopback)]</label2>
+                        </include>
+
+                        <include content="Settings_Label" description="Content">
+                            <param name="id">4010</param>
+                            <label>$LOCALIZE[31324]</label>
+                            <visible>Container(3).HasFocus(4)</visible>
+                        </include>
+                        <include content="Settings_Button" description="Wrap lists">
+                            <param name="id">4011</param>
+                            <param name="control">radiobutton</param>
+                            <label>$LOCALIZE[31325]</label>
+                            <selected>Skin.HasSetting(Views.WrapLists)</selected>
+                            <visible>Container(3).HasFocus(4)</visible>
+                            <onclick>Skin.ToggleSetting(Views.WrapLists)</onclick>
                         </include>
                         <include content="Settings_Label" description="Kiosk Mode">
                             <param name="id">4090</param>
