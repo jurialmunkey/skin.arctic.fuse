@@ -28,33 +28,8 @@
                 <param name="control">image</param>
                 <include>Texture_Menu_Highlight_H</include>
             </include>
-            <control type="image">
-                <width>x08</width>
-                <bordersize>16</bordersize>
-                <include content="Object_Texture" condition="$PARAM[selected]">
-                    <param name="background">true</param>
-                    <param name="colordiffuse">$VAR[ColorSelected]</param>
-                    <param name="texture">$VAR[Image_SkinShortcut]</param>
-                </include>
-                <texture background="true" colordiffuse="dialog_fg_70">$VAR[Image_SkinShortcut]</texture>
-                <aspectratio>keep</aspectratio>
-                <visible>[String.StartsWith(ListItem.Icon,Default) | String.StartsWith(ListItem.Icon,special://skin/extras/icons/) | String.IsEqual(ListItem.Icon,thumb)]</visible>
-            </control>
-            <control type="image">
-                <width>x08</width>
-                <bordersize>16</bordersize>
-                <include content="Object_Texture" condition="$PARAM[selected]">
-                    <param name="background">true</param>
-                    <param name="colordiffuse">$VAR[ColorSelected]</param>
-                    <param name="texture">$VAR[Image_SkinShortcut]</param>
-                </include>
-                <texture background="true" colordiffuse="bfffffff">$VAR[Image_SkinShortcut]</texture>
-                <aspectratio>keep</aspectratio>
-                <visible>![String.StartsWith(ListItem.Icon,Default) | String.StartsWith(ListItem.Icon,special://skin/extras/icons/) | String.IsEqual(ListItem.Icon,thumb) | String.IsEqual(ListItem.Label,..)]</visible>
-            </control>
             <control type="label">
                 <include condition="$PARAM[selected]">Color_SelectedText</include>
-                <left>60</left>
                 <include content="Object_Width" condition="$PARAM[detailed]">
                     <param name="width">400</param>
                 </include>
@@ -1832,6 +1807,21 @@
                     <control type="image">
                         <texture background="true" diffuse="$PARAM[diffuse]">$PARAM[icon]</texture>
                         <aspectratio scalediffuse="false">keep</aspectratio>
+                        <visible>!String.IsEqual($PARAM[listitem].DBType,genre)</visible>
+                        <visible>!String.IsEqual($PARAM[listitem].DBType,studio)</visible>
+                        <visible>!String.IsEqual($PARAM[listitem].DBType,country)</visible>
+                    </control>
+                    <control type="image">
+                        <texture background="true" diffuse="$PARAM[diffuse]" colordiffuse="panel_fg_90">$PARAM[icon]</texture>
+                        <aspectratio scalediffuse="false">keep</aspectratio>
+                        <bordersize>50</bordersize>
+                        <visible>String.IsEqual($PARAM[listitem].DBType,genre)</visible>
+                    </control>
+                    <control type="image">
+                        <texture background="true" diffuse="$PARAM[diffuse]" colordiffuse="panel_fg_90">$PARAM[icon]</texture>
+                        <aspectratio scalediffuse="false">keep</aspectratio>
+                        <bordersize>20</bordersize>
+                        <visible>String.IsEqual($PARAM[listitem].DBType,studio) | String.IsEqual($PARAM[listitem].DBType,country)</visible>
                     </control>
                     <include content="Object_Indicator" condition="!$PARAM[selected]">
                         <param name="affix">$PARAM[affix]</param>
@@ -1847,7 +1837,7 @@
                 <control type="group">
                     <top>$PARAM[item_w]</top>
                     <control type="textbox">
-                        <label>$VAR[Label_Landscape_Upper$PARAM[affix]]</label>
+                        <label>$INFO[$PARAM[listitem].Label]</label>
                         <textcolor>main_fg_70</textcolor>
                         <font>font_mini</font>
                         <textoffsetx>0</textoffsetx>

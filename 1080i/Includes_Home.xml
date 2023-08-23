@@ -87,20 +87,53 @@
     </include>
 
     <include name="Home_Bumper">
-        <control type="button" id="330">
-            <width>1</width>
-            <height>1</height>
-            <left>-1000</left>
-            <onfocus>SetFocus(320)</onfocus>
-            <onclick>SetFocus(320)</onclick>
-            <visible allowhiddenfocus="true">Control.HasFocus(330)</visible>
-            <animation effect="fade" time="300" start="0" end="0">Focus</animation>
-        </control>
-        <include content="Object_Hidden_Button">
-            <param name="id">393</param>
-            <onfocus condition="Skin.String(Home.LayoutStyle,Widgets)">SetFocus(303,$VAR[Action_Menu_Position],absolute)</onfocus>
-            <onfocus condition="!Skin.String(Home.LayoutStyle,Widgets)">SetFocus(300)</onfocus>
-        </include>
+        <param name="groupid">320</param>
+        <definition>
+            <control type="button" id="330">
+                <width>1</width>
+                <height>1</height>
+                <left>-1000</left>
+                <onfocus condition="!String.IsEmpty(Window.Property(List.ViewContainer))">SetFocus($INFO[Window.Property(List.ViewContainer)])</onfocus>
+                <onfocus condition="String.IsEmpty(Window.Property(List.ViewContainer))">SetFocus($PARAM[groupid])</onfocus>
+                <onclick>SetFocus($PARAM[groupid])</onclick>
+                <visible allowhiddenfocus="true">Control.HasFocus(330)</visible>
+                <animation effect="fade" time="300" start="0" end="0">Focus</animation>
+            </control>
+            <control type="button" id="331">
+                <width>1</width>
+                <height>1</height>
+                <left>-1000</left>
+                <onfocus>SetFocus(303)</onfocus>
+                <onclick>SetFocus(303)</onclick>
+                <visible allowhiddenfocus="true">Control.HasFocus(331)</visible>
+                <animation effect="fade" time="300" start="0" end="0">Focus</animation>
+            </control>
+            <control type="button" id="332">
+                <width>1</width>
+                <height>1</height>
+                <left>-1000</left>
+                <onfocus condition="!String.IsEmpty(Window.Property(List.ViewContainer))">SetFocus($INFO[Window.Property(List.ViewContainer)])</onfocus>
+                <onfocus condition="String.IsEmpty(Window.Property(List.ViewContainer))">SetFocus($PARAM[groupid])</onfocus>
+                <onclick>SetFocus($PARAM[groupid])</onclick>
+                <visible allowhiddenfocus="true">Control.HasFocus(332)</visible>
+                <animation effect="fade" time="300" start="0" end="0">Focus</animation>
+            </control>
+            <control type="button" id="333">
+                <width>1</width>
+                <height>1</height>
+                <left>-1000</left>
+                <onfocus condition="!String.IsEmpty(Window.Property(List.ViewContainer))">SetFocus($INFO[Window.Property(List.ViewContainer)])</onfocus>
+                <onfocus condition="String.IsEmpty(Window.Property(List.ViewContainer))">SetFocus($PARAM[groupid])</onfocus>
+                <onclick>SetFocus($PARAM[groupid])</onclick>
+                <visible allowhiddenfocus="true">Control.HasFocus(333)</visible>
+                <animation effect="fade" time="300" start="0" end="0">Focus</animation>
+            </control>
+            <include content="Object_Hidden_Button">
+                <param name="id">393</param>
+                <onfocus condition="Skin.String(Home.LayoutStyle,Widgets)">SetFocus(303,$VAR[Action_Menu_Position],absolute)</onfocus>
+                <onfocus condition="!Skin.String(Home.LayoutStyle,Widgets)">SetFocus(300)</onfocus>
+            </include>
+        </definition>
     </include>
 
     <include name="Home_Menu_List_Labels">
@@ -152,8 +185,8 @@
                 <ondown>309</ondown>
                 <onback>$PARAM[onlist]</onback>
                 <onback>SetFocus($PARAM[onlist])</onback>
-                <onback condition="!Window.IsVisible(Home) + ![Window.IsVisible(1101) | Window.IsVisible(1102) | Window.IsVisible(1103) | Window.IsVisible(1104)]">PreviousMenu</onback>
-                <onback condition="!Window.IsVisible(Home) + [Window.IsVisible(1101) | Window.IsVisible(1102) | Window.IsVisible(1103) | Window.IsVisible(1104)]">ReplaceWindow(Home)</onback>
+                <onback condition="!Window.IsVisible(Home)">PreviousMenu</onback>
+
                 <include content="Action_HomeMenu_OnRightLeft">
                     <param name="onlist">$PARAM[onlist]</param>
                 </include>
@@ -426,7 +459,7 @@
             <include>Animation_Home_Menu</include>
             <control type="image">
                 <left>0</left>
-                <width>880</width>
+                <width>960</width>
                 <texture border="0,0,400,0" colordiffuse="$VAR[ColorBackgroundFade]">common/dim-side.png</texture>
             </control>
             <control type="image">
@@ -549,13 +582,18 @@
 
                 <control type="grouplist" id="310">
                     <orientation>horizontal</orientation>
-                    <include>Action_Widget_Top</include>
-                    <onleft>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onleft>
-                    <onback>303</onback>
-                    <onback>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onback>
-                    <onright condition="Player.HasMedia + String.IsEqual(Player.FileNameAndPath,Container(301).ListItem.Trailer)">PlayerControl(Stop)</onright>
+                    <include content="Action_Widget_Top">
+                        <param name="id">311</param>
+                    </include>
+                    <include content="Action_View_Movement_OnLeft" condition="!Skin.String(Rows.ContentLoopback,Wrap)">
+                        <param name="id">311</param>
+                    </include>
+                    <onleft condition="Skin.String(Rows.ContentLoopback,Wrap)">Control.Move(301,1)</onleft>
                     <onright>Control.Move(301,1)</onright>
-                    <!-- <onright condition="!Player.HasMedia + !String.IsEmpty(Container(301).ListItem.Trailer)">AlarmClock(playtrailer,PlayMedia($ESCINFO[Container(301).ListItem.Trailer],False,1),00:03,silent)</onright> -->
+                    <include content="Action_Menu_Movement_OnBack">
+                        <param name="id">311</param>
+                    </include>
+
                     <ondown>300</ondown>
                     <centertop>180</centertop>
                     <left>140</left>
@@ -611,7 +649,7 @@
                     <include content="Object_Info_Button">
                         <param name="id">312</param>
                         <param name="groupid">322</param>
-                        <param name="sliceid">332</param>
+                        <param name="sliceid">323</param>
                         <param name="itempad">-20</param>
                         <param name="label">$VAR[Label_FullscreenWidget_InfoButton]</param>
                         <param name="icon">$VAR[Image_FullscreenWidget_InfoButton]</param>
@@ -718,7 +756,7 @@
         <param name="shorten">False</param>
         <param name="preitem_fade">True</param>
         <param name="control">fixedlist</param>
-        <param name="infinite_wrap">True</param>
+        <param name="infinite_wrap">[Skin.String(Rows.ContentLoopback,Loop) | Skin.String(Rows.ContentLoopback,Wrap)]</param>
         <definition>
             <include content="List_ButtonMenu_Row">
                 <param name="id">$PARAM[id]</param>
@@ -726,7 +764,7 @@
                 <param name="color_nf">$PARAM[color_nf]</param>
                 <param name="itemlayout_w">view_button_item_w</param>
                 <param name="offset_x">view_button_offset_x</param>
-                <param name="control">$PARAM[control]</param>
+                <param name="control">fixedlist</param>
                 <param name="font">$PARAM[font]</param>
                 <param name="backing">true</param>
                 <param name="hidden_button">$PARAM[hidden_button]</param>
@@ -734,9 +772,16 @@
                 <param name="hidden_button_force_widget">$PARAM[hidden_button_force_widget]</param>
 
 
-                <preloaditems>0</preloaditems>
+                <preloaditems>2</preloaditems>
                 <focusposition>0</focusposition>
                 <movement>0</movement>
+
+                <include content="Action_View_Movement_OnLeft" condition="![$PARAM[infinite_wrap]]">
+                    <param name="id">$PARAM[id]</param>
+                </include>
+                <include content="Action_View_Movement_OnRight" condition="![$PARAM[infinite_wrap]]">
+                    <param name="id">$PARAM[id]</param>
+                </include>
 
                 <!-- <preloaditems>2</preloaditems>
                 <focusposition>3</focusposition>
@@ -748,8 +793,18 @@
                 <onfocus condition="$PARAM[slide]">SetProperty(Slide.WidgetContainer,True,$PARAM[window_id])</onfocus>
                 <onfocus condition="![$PARAM[slide]]">ClearProperty(Slide.WidgetContainer,$PARAM[window_id])</onfocus>
 
+                <include content="Animation_Fade_In" condition="![$PARAM[infinite_wrap]]">
+                    <param name="condition">$PARAM[visible]</param>
+                    <param name="delay">200</param>
+                </include>
+                <include content="Animation_ConditionalFade" condition="![$PARAM[infinite_wrap]]">
+                    <param name="condition">!$PARAM[visible]</param>
+                </include>
 
                 <left>view_button_left</left>
+                <include content="Object_Width" condition="$PARAM[shorten]">
+                    <param name="width">1440</param>
+                </include>
                 <width>2080</width>
                 <preloaditems>0</preloaditems>
                 <height>selectorwidget_h</height>
@@ -847,11 +902,7 @@
         <control type="group" id="320">
 
             <include>Animation_View_WindowChange</include>
-
-            <animation type="Conditional" condition="Control.IsVisible(330)" reversible="false">
-                <effect type="slide" end="0,-20" time="60" tween="sine" />
-                <effect type="slide" end="0,20" time="180" tween="sine" delay="80" />
-            </animation>
+            <include>Animation_Group_Bumper</include>
 
             <include content="Home_Widgets_Infopanel" condition="!Skin.String(Home.LayoutStyle,Widgets)">
                 <include content="Info_Panel">
@@ -901,8 +952,9 @@
                         <param name="window_id">home</param>
                         <param name="slide">!String.IsEmpty(Skin.String(Home.LayoutStyle))</param>
                         <onup>311</onup>
-                        <onback>303</onback>
-                        <onback>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onback>
+                        <include content="Action_Menu_Movement_OnBack">
+                            <param name="id">300</param>
+                        </include>
                         <ondown condition="String.IsEmpty(Skin.String(Home.LayoutStyle))">302</ondown>
                         <ondown condition="!String.IsEmpty(Skin.String(Home.LayoutStyle))">340</ondown>
                         <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,home)</onfocus>
@@ -975,7 +1027,9 @@
     </include>
 
     <include name="Home_Widgets_Grouplist_Widgets">
-        <include>Action_Widget_Top</include>
+        <include content="Action_Widget_Top">
+            <param name="id">311</param>
+        </include>
         <animation effect="slide" end="0,widget_sbump_h" condition="true">Conditional</animation>
     </include>
 
@@ -991,11 +1045,8 @@
 
             <include content="Action_Widget_End" condition="!String.IsEqual(Skin.String(Home.LayoutStyle),Widgets) | !Skin.String(Hubs.WidgetsLoopback,Loop)">
                 <param name="topid">$PARAM[topid]</param>
+                <param name="id">$PARAM[id]</param>
             </include>
-
-            <onleft>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onleft>
-            <onright>SetFocus($INFO[Window.Property(TMDbHelper.WidgetContainer)],0,absolute)</onright>
-            <onright>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onright>
 
             <visible>$PARAM[visible]</visible>
 

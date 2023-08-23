@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
     <include name="View_MediaWindows_ID">
-        <views>50,51,52,512,55,500</views>
+        <views>50,51,52,502,512,522,55,500</views>
     </include>
 
     <include name="View_Row_Header">
@@ -143,12 +143,12 @@
                 <param name="id">64</param>
                 <include>Action_Scrollbar</include>
                 <onleft>SetFocus(50)</onleft>
-                <onleft condition="Container.HasPrevious">Action(PageUp)</onleft>
-                <onleft condition="Container.HasPrevious + $EXP[Exp_FilterWall_IsMedia]">Action(PageUp)</onleft>
+                <onleft condition="[Container.HasPrevious | Skin.String(Rows.ContentLoopback,Wrap)]">Action(PageUp)</onleft>
+                <onleft condition="[Container.HasPrevious | Skin.String(Rows.ContentLoopback,Wrap)] + $EXP[Exp_FilterWall_IsMedia]">Action(PageUp)</onleft>
                 <onleft>SetFocus(64)</onleft>
                 <onright>SetFocus(50)</onright>
-                <onright condition="Container.HasNext">Action(PageDown)</onright>
-                <onright condition="Container.HasNext + $EXP[Exp_FilterWall_IsMedia]">Action(PageDown)</onright>
+                <onright condition="[Container.HasNext | Skin.String(Rows.ContentLoopback,Wrap)]">Action(PageDown)</onright>
+                <onright condition="[Container.HasNext | Skin.String(Rows.ContentLoopback,Wrap)] + $EXP[Exp_FilterWall_IsMedia]">Action(PageDown)</onright>
                 <onright>SetFocus(64)</onright>
             </include>
             <control type="group">
@@ -197,8 +197,8 @@
 
                 <onleft>SetFocus(50)</onleft>
                 <onleft>Action(prevletter)</onleft>
-                <onleft condition="!Container.HasPrevious">Action(PageUp)</onleft>
-                <onleft condition="!Container.HasPrevious">Action(Left)</onleft>
+                <!-- <onleft condition="!Container.HasPrevious">Action(PageUp)</onleft>
+                <onleft condition="!Container.HasPrevious">Action(Left)</onleft> -->
                 <!-- <onleft condition="Container.HasPrevious + $EXP[Exp_FilterWall_IsMedia]">Action(PageUp)</onleft>
                 <onleft condition="Container.HasPrevious + $EXP[Exp_FilterWall_IsMedia]">Action(PageUp)</onleft>
                 <onleft condition="!$EXP[Exp_FilterWall_IsMedia]">Action(prevletter)</onleft>
@@ -208,10 +208,10 @@
 
                 <onright>SetFocus(50)</onright>
                 <onright>Action(nextletter)</onright>
-                <onright condition="[!Container.HasNext | String.IsEqual(ListItem.SortLetter,Z)]">Action(jumpsms2)</onright>
+                <!-- <onright condition="[!Container.HasNext | String.IsEqual(ListItem.SortLetter,Z)]">Action(jumpsms2)</onright>
                 <onright condition="[!Container.HasNext | String.IsEqual(ListItem.SortLetter,Z)]">Action(prevletter)</onright>
                 <onright condition="[!Container.HasNext | String.IsEqual(ListItem.SortLetter,Z)]">Action(prevletter)</onright>
-                <onright condition="[!Container.HasNext | String.IsEqual(ListItem.SortLetter,Z)]">Action(prevletter)</onright>
+                <onright condition="[!Container.HasNext | String.IsEqual(ListItem.SortLetter,Z)]">Action(prevletter)</onright> -->
                 <!-- <onright condition="Container.HasNext + $EXP[Exp_FilterWall_IsMedia]">Action(PageDown)</onright>
                 <onright condition="Container.HasNext + $EXP[Exp_FilterWall_IsMedia]">Action(PageDown)</onright>
                 <onright condition="!$EXP[Exp_FilterWall_IsMedia]">Action(nextletter)</onright>
@@ -262,20 +262,6 @@
         </include>
     </include>
 
-    <include name="View_Divider">
-        <param name="visible">ControlGroup(9000).HasFocus() | Control.IsVisible(572) | Control.IsVisible(522) | Control.IsVisible(512) | Control.IsVisible(502)</param>
-        <definition>
-            <control type="image">
-                <texture colordiffuse="main_fg_12">common/white.png</texture>
-                <height>1</height>
-                <centerbottom>160</centerbottom>
-                <left>view_side</left>
-                <right>view_pad</right>
-                <visible>$PARAM[visible]</visible>
-            </control>
-        </definition>
-    </include>
-
     <include name="View_Row_Info">
         <control type="group">
             <visible>!$EXP[Exp_InfoDialogs]</visible>
@@ -289,7 +275,9 @@
                     <left>view_side</left>
                     <visible>String.IsEmpty(Window.Property(TMDBHelper.WidgetContainer))</visible>
                 </include>
+                <include content="View_Combined_Info"><param name="id">50</param></include>
                 <include content="View_Combined_Info"><param name="id">51</param></include>
+                <include content="View_Combined_Info"><param name="id">52</param></include>
                 <include content="View_Combined_Info"><param name="id">55</param></include>
             </control>
 
@@ -316,7 +304,9 @@
             <include>View_050_Square_Row</include>
             <include>View_051_Landscape_Row</include>
             <include>View_052_Poster_Row</include>
+            <include>View_502_Square_Combined_Row</include>
             <include>View_512_Landscape_Combined_Row</include>
+            <include>View_522_Poster_Combined_Row</include>
             <include>View_500_Square_List</include>
 
             <include content="Widget_Busy">
@@ -347,13 +337,21 @@
                             <param name="type">Visible</param>
                         </include>
                         <include content="Furniture_Bottom_Left">
-                            <visible>!Control.IsVisible(512)</visible>
+                            <visible>![$EXP[Exp_View_502] | $EXP[Exp_View_512] | $EXP[Exp_View_522]]</visible>
+                        </include>
+                        <include content="Furniture_Bottom_Left">
+                            <param name="container">Container(503).</param>
+                            <visible>$EXP[Exp_View_502] + Skin.HasSetting(Views.UseAltCombined)</visible>
+                        </include>
+                        <include content="Furniture_Bottom_Left">
+                            <param name="container">Container(513).</param>
+                            <visible>$EXP[Exp_View_512] + Skin.HasSetting(Views.UseAltCombined)</visible>
+                        </include>
+                        <include content="Furniture_Bottom_Left">
+                            <param name="container">Container(523).</param>
+                            <visible>$EXP[Exp_View_522] + Skin.HasSetting(Views.UseAltCombined)</visible>
                         </include>
                     </control>
-                    <include content="Furniture_Bottom_Left">
-                        <param name="container">Container(513).</param>
-                        <visible>Control.IsVisible(512) + Skin.HasSetting(Views.UseAltCombined)</visible>
-                    </include>
                 </control>
                 <include>Furniture_Bottom_Right</include>
             </control>
@@ -384,6 +382,10 @@
 
     <include name="View_Main">
         <definition>
+            <include content="Home_Bumper">
+                <param name="groupid">50</param>
+            </include>
+
             <include>Background_Main</include>
             <include>Background_Transition</include>
 
@@ -393,6 +395,7 @@
                 <include>View_MediaFilter_Wall</include>
 
                 <control type="group">
+                    <include>Animation_Group_Bumper</include>
                     <include>Animation_View_WindowChange</include>
                     <include>View_Row_Items</include>
                     <include>View_Row_Info</include>

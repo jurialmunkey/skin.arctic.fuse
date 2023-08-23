@@ -3,16 +3,16 @@
 
     <include name="Search_Side_Slide">
         <control type="group" id="$PARAM[id]">
-            <animation effect="slide" start="0" end="480" time="400" tween="quadratic" easing="out" reversible="false" condition="![ControlGroup(6000).HasFocus() | Control.HasFocus(330) | Control.HasFocus(340)]">Conditional</animation>
-            <animation effect="slide" end="0" start="480" time="400" tween="quadratic" easing="out" reversible="false" condition="[ControlGroup(6000).HasFocus() | Control.HasFocus(330) | Control.HasFocus(340)]">Conditional</animation>
+            <animation effect="slide" start="0" end="480" time="400" tween="quadratic" easing="out" reversible="false" condition="![ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus]]">Conditional</animation>
+            <animation effect="slide" end="0" start="480" time="400" tween="quadratic" easing="out" reversible="false" condition="[ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus]]">Conditional</animation>
             <nested />
         </control>
     </include>
 
     <include name="Search_View_Slide">
         <control type="group" id="$PARAM[id]">
-            <animation effect="slide" start="0" end="480,-320" time="400" tween="quadratic" easing="out" reversible="false" condition="![ControlGroup(6000).HasFocus() | Control.HasFocus(330) | Control.HasFocus(340)]">Conditional</animation>
-            <animation effect="slide" end="0" start="480,-320" time="400" tween="quadratic" easing="out" reversible="false" condition="[ControlGroup(6000).HasFocus() | Control.HasFocus(330) | Control.HasFocus(340)]">Conditional</animation>
+            <animation effect="slide" start="0" end="480,-320" time="400" tween="quadratic" easing="out" reversible="false" condition="![ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus]]">Conditional</animation>
+            <animation effect="slide" end="0" start="480,-320" time="400" tween="quadratic" easing="out" reversible="false" condition="[ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus]]">Conditional</animation>
             <nested />
             <include>Home_Transitions</include>
         </control>
@@ -32,14 +32,6 @@
 
             <ondown>330</ondown>
 
-            <animation type="Conditional" condition="Control.IsVisible(340)" reversible="false">
-                <effect type="slide" end="0,20" time="60" tween="sine" />
-                <effect type="slide" end="0,-20" time="180" tween="sine" delay="80" />
-            </animation>
-            <animation type="Conditional" condition="Control.IsVisible(330)" reversible="false">
-                <effect type="slide" end="0,-20" time="60" tween="sine" />
-                <effect type="slide" end="0,20" time="180" tween="sine" delay="80" />
-            </animation>
             <orientation>vertical</orientation>
             <control type="group" id="6100">
                 <height>widgetsearch_tbump_h</height>
@@ -113,7 +105,7 @@
 
             <visible>!$EXP[Exp_InfoDialogs]</visible>
             <control type="group">
-                <visible>[ControlGroup(6000).HasFocus() | Control.HasFocus(330) | Control.HasFocus(340)]</visible>
+                <visible>[ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus]]</visible>
                 <animation effect="fade" start="0" end="100" time="200" reversible="false">Visible</animation>
                 <animation effect="fade" start="100" end="0" time="200" reversible="false">Hidden</animation>
 
@@ -283,8 +275,8 @@
         <control type="group">
             <width>660</width>
 
-            <animation effect="fade" start="0" end="100" time="200" delay="200" condition="![ControlGroup(6000).HasFocus() | Control.HasFocus(330) | Control.HasFocus(340)]" reversible="false">Conditional</animation>
-            <animation effect="fade" start="100" end="0" time="1" condition="[ControlGroup(6000).HasFocus() | Control.HasFocus(330) | Control.HasFocus(340)]" reversible="false">Conditional</animation>
+            <animation effect="fade" start="0" end="100" time="200" delay="200" condition="![ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus]]" reversible="false">Conditional</animation>
+            <animation effect="fade" start="100" end="0" time="1" condition="[ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus]]" reversible="false">Conditional</animation>
 
             <control type="grouplist">
                 <control type="group">
@@ -305,8 +297,8 @@
             <param name="id">30099</param>
             <visible>!$EXP[Exp_InfoDialogs]</visible>
 
-            <animation effect="fade" start="0" end="100" time="200" delay="200" condition="![ControlGroup(6000).HasFocus() | Control.HasFocus(330) | Control.HasFocus(340)]" reversible="false">Conditional</animation>
-            <animation effect="fade" start="100" end="0" time="200" condition="[ControlGroup(6000).HasFocus() | Control.HasFocus(330) | Control.HasFocus(340)]" reversible="false">Conditional</animation>
+            <animation effect="fade" start="0" end="100" time="200" delay="200" condition="![ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus]]" reversible="false">Conditional</animation>
+            <animation effect="fade" start="100" end="0" time="200" condition="[ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus]]" reversible="false">Conditional</animation>
 
             <left>-480</left>
             <right>480</right>
@@ -815,13 +807,13 @@
             <content target="videos">$VAR[Path_DiscoverWidgets_Film,,&amp;page=1]</content>
             <content target="videos">$VAR[Path_DiscoverWidgets_Film,,&amp;page=2]</content>
 
-            <onback condition="!Integer.IsEqual(Container(5081).ListItem.CurrentItem,1)">6000</onback>
-            <onback condition="!Integer.IsEqual(Container(5081).ListItem.CurrentItem,1)">SetFocus(5081,0,absolute)</onback>
+            <onback condition="![!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container(5081).ListItem.CurrentItem,1)]">6000</onback>
+            <onback condition="![!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container(5081).ListItem.CurrentItem,1)]">SetFocus(5081,0,absolute)</onback>
 
 
-            <onback condition="Integer.IsEqual(Container(5081).ListItem.CurrentItem,1)">SetFocus(5081)</onback>
-            <onback condition="Integer.IsEqual(Container(5081).ListItem.CurrentItem,1)">9097</onback>
-            <onback condition="Integer.IsEqual(Container(5081).ListItem.CurrentItem,1)">AlarmClock(clear_twc,ClearProperty(TMDbHelper.WidgetContainer),00:00,silent)</onback>
+            <onback condition="[!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container(5081).ListItem.CurrentItem,1)]">SetFocus(5081)</onback>
+            <onback condition="[!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container(5081).ListItem.CurrentItem,1)]">9097</onback>
+            <onback condition="[!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container(5081).ListItem.CurrentItem,1)]">AlarmClock(clear_twc,ClearProperty(TMDbHelper.WidgetContainer),00:00,silent)</onback>
 
             <onfocus>SetProperty(ContainerNumItems,$INFO[Container(5081).NumItems])</onfocus>
             <onfocus>SetProperty(TMDbHelper.WidgetContainer,5081)</onfocus>
@@ -854,13 +846,13 @@
             <content target="videos">$VAR[Path_DiscoverWidgets_Show,,&amp;page=1]</content>
             <content target="videos">$VAR[Path_DiscoverWidgets_Show,,&amp;page=2]</content>
 
-            <onback condition="!Integer.IsEqual(Container(5082).ListItem.CurrentItem,1)">6000</onback>
-            <onback condition="!Integer.IsEqual(Container(5082).ListItem.CurrentItem,1)">SetFocus(5082,0,absolute)</onback>
+            <onback condition="![!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container(5082).ListItem.CurrentItem,1)]">6000</onback>
+            <onback condition="![!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container(5082).ListItem.CurrentItem,1)]">SetFocus(5082,0,absolute)</onback>
 
 
-            <onback condition="Integer.IsEqual(Container(5082).ListItem.CurrentItem,1)">SetFocus(5081)</onback>
-            <onback condition="Integer.IsEqual(Container(5082).ListItem.CurrentItem,1)">9097</onback>
-            <onback condition="Integer.IsEqual(Container(5082).ListItem.CurrentItem,1)">AlarmClock(clear_twc,ClearProperty(TMDbHelper.WidgetContainer),00:00,silent)</onback>
+            <onback condition="[!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container(5082).ListItem.CurrentItem,1)]">SetFocus(5081)</onback>
+            <onback condition="[!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container(5082).ListItem.CurrentItem,1)]">9097</onback>
+            <onback condition="[!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container(5082).ListItem.CurrentItem,1)]">AlarmClock(clear_twc,ClearProperty(TMDbHelper.WidgetContainer),00:00,silent)</onback>
 
             <onfocus>SetProperty(ContainerNumItems,$INFO[Container(5082).NumItems])</onfocus>
             <onfocus>SetProperty(TMDbHelper.WidgetContainer,5082)</onfocus>

@@ -27,19 +27,19 @@
     </include>
 
     <include name="Action_Widget_OnBack">
-        <onback condition="!Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)">$PARAM[grouplistid]</onback>
-        <onback condition="!Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)">SetFocus($PARAM[id],0,absolute)</onback>
-        <onback condition="Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1) + Control.IsVisible($PARAM[landscapeid]) + !Control.HasFocus($PARAM[landscapeid])">$PARAM[landscapeid]</onback>
-        <onback condition="Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1) + Control.IsVisible($PARAM[squareid]) + !Control.HasFocus($PARAM[squareid]) + !Control.IsVisible($PARAM[landscapeid])">$PARAM[squareid]</onback>
-        <onback condition="Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1) + Control.IsVisible($PARAM[posterid]) + !Control.HasFocus($PARAM[posterid]) + !Control.IsVisible($PARAM[landscapeid]) + !Control.IsVisible($PARAM[squareid])">$PARAM[squareid]</onback>
-        <onback condition="Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1) + Control.IsVisible($PARAM[topid]) + !Control.HasFocus($PARAM[topid]) + !Control.IsVisible($PARAM[landscapeid]) + !Control.IsVisible($PARAM[squareid]) + !Control.IsVisible($PARAM[posterid])">$PARAM[topid]</onback>
+        <onback condition="![!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)]">$PARAM[grouplistid]</onback>
+        <onback condition="![!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)]">SetFocus($PARAM[id],0,absolute)</onback>
+        <onback condition="[!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)] + Control.IsVisible($PARAM[landscapeid]) + !Control.HasFocus($PARAM[landscapeid])">$PARAM[landscapeid]</onback>
+        <onback condition="[!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)] + Control.IsVisible($PARAM[squareid]) + !Control.HasFocus($PARAM[squareid]) + !Control.IsVisible($PARAM[landscapeid])">$PARAM[squareid]</onback>
+        <onback condition="[!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)] + Control.IsVisible($PARAM[posterid]) + !Control.HasFocus($PARAM[posterid]) + !Control.IsVisible($PARAM[landscapeid]) + !Control.IsVisible($PARAM[squareid])">$PARAM[squareid]</onback>
+        <onback condition="[!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)] + Control.IsVisible($PARAM[topid]) + !Control.HasFocus($PARAM[topid]) + !Control.IsVisible($PARAM[landscapeid]) + !Control.IsVisible($PARAM[squareid]) + !Control.IsVisible($PARAM[posterid])">$PARAM[topid]</onback>
 
-        <onback condition="Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1) + Control.IsVisible($PARAM[landscapeid]) + Control.HasFocus($PARAM[landscapeid])">$PARAM[grouplistid]</onback>
-        <onback condition="Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1) + Control.IsVisible($PARAM[squareid]) + Control.HasFocus($PARAM[squareid]) + !Control.IsVisible($PARAM[landscapeid])">$PARAM[grouplistid]</onback>
-        <onback condition="Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1) + Control.IsVisible($PARAM[posterid]) + Control.HasFocus($PARAM[posterid]) + !Control.IsVisible($PARAM[landscapeid]) + !Control.IsVisible($PARAM[squareid])">$PARAM[grouplistid]</onback>
-        <onback condition="Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1) + Control.IsVisible($PARAM[topid]) + Control.HasFocus($PARAM[topid]) + !Control.IsVisible($PARAM[landscapeid]) + !Control.IsVisible($PARAM[squareid]) + !Control.IsVisible($PARAM[posterid])">$PARAM[grouplistid]</onback>
+        <onback condition="[!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)] + Control.IsVisible($PARAM[landscapeid]) + Control.HasFocus($PARAM[landscapeid])">$PARAM[grouplistid]</onback>
+        <onback condition="[!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)] + Control.IsVisible($PARAM[squareid]) + Control.HasFocus($PARAM[squareid]) + !Control.IsVisible($PARAM[landscapeid])">$PARAM[grouplistid]</onback>
+        <onback condition="[!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)] + Control.IsVisible($PARAM[posterid]) + Control.HasFocus($PARAM[posterid]) + !Control.IsVisible($PARAM[landscapeid]) + !Control.IsVisible($PARAM[squareid])">$PARAM[grouplistid]</onback>
+        <onback condition="[!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)] + Control.IsVisible($PARAM[topid]) + Control.HasFocus($PARAM[topid]) + !Control.IsVisible($PARAM[landscapeid]) + !Control.IsVisible($PARAM[squareid]) + !Control.IsVisible($PARAM[posterid])">$PARAM[grouplistid]</onback>
 
-        <onback condition="Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)">AlarmClock(refocus,$PARAM[refocus],00:00,silent)</onback>
+        <onback condition="[!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)]">AlarmClock(refocus,$PARAM[refocus],00:00,silent)</onback>
     </include>
 
     <include name="Action_Widget_Top_HomeLoop">
@@ -70,15 +70,19 @@
     </include>
 
     <include name="Action_Widget_Top">
+        <onup>SetProperty(List.ViewContainer.Reset,$NUMBER[$PARAM[id]])</onup>
+        <onup>SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onup>
         <include condition="Skin.String(Hubs.WidgetsLoopback,Loop) + !Window.IsVisible(Home)">Action_Widget_Top_HubsLoop</include>
         <include condition="Skin.String(Hubs.WidgetsLoopback,Loop) + Window.IsVisible(Home)">Action_Widget_Top_HomeLoop</include>
         <onup condition="Skin.String(Hubs.WidgetsLoopback,Menu)">SetFocus(303,$VAR[Action_Menu_Position],absolute)</onup>
-        <onup condition="!Skin.String(Hubs.WidgetsLoopback,Loop) + !Skin.String(Hubs.WidgetsLoopback,Menu)">330</onup>
+        <onup condition="!Skin.String(Hubs.WidgetsLoopback,Loop) + !Skin.String(Hubs.WidgetsLoopback,Menu)">333</onup>
     </include>
 
     <include name="Action_Widget_End">
-        <ondown condition="Skin.String(Hubs.WidgetsLoopback,Loop)">SetFocus($PARAM[topid])</ondown>
-        <ondown condition="Skin.String(Hubs.WidgetsLoopback,Loop)">311</ondown>
+        <ondown>SetProperty(List.ViewContainer.Reset,$NUMBER[$PARAM[id]])</ondown>
+        <ondown>SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</ondown>
+        <ondown condition="Skin.String(Hubs.WidgetsLoopback,Loop)">$PARAM[topid]</ondown>
+        <ondown condition="Skin.String(Hubs.WidgetsLoopback,Loop)">AlarmClock(refocus,SetFocus(311),00:00,silent)</ondown>
         <ondown condition="Skin.String(Hubs.WidgetsLoopback,Menu)">SetFocus(303,$VAR[Action_Menu_Position],absolute)</ondown>
         <ondown condition="!Skin.String(Hubs.WidgetsLoopback,Loop) + !Skin.String(Hubs.WidgetsLoopback,Menu)">330</ondown>
     </include>
@@ -137,22 +141,29 @@
     <include name="Action_HomeMenu_OnRightLeft">
         <param name="onlist">320</param>
         <definition>
-            <onleft condition="String.IsEmpty(Window.Property(TMDbHelper.WidgetContainer)) + !String.IsEmpty(Window.Property(List.ViewContainer))">SetFocus($INFO[Window.Property(List.ViewContainer)],99999,absolute)</onleft>
-            <onright condition="String.IsEmpty(Window.Property(TMDbHelper.WidgetContainer)) + !String.IsEmpty(Window.Property(List.ViewContainer))">SetFocus($INFO[Window.Property(List.ViewContainer)],0,absolute)</onright>
-            <onleft condition="!String.IsEmpty(Window.Property(TMDbHelper.WidgetContainer)) + !Integer.IsEqual(Window.Property(TMDbHelper.WidgetContainer),301)">SetFocus($INFO[Window.Property(TMDbHelper.WidgetContainer)],99999,absolute)</onleft>
-            <onright condition="!String.IsEmpty(Window.Property(TMDbHelper.WidgetContainer)) + !Integer.IsEqual(Window.Property(TMDbHelper.WidgetContainer),301)">SetFocus($INFO[Window.Property(TMDbHelper.WidgetContainer)],0,absolute)</onright>
-            <onleft condition="!String.IsEmpty(Window.Property(TMDbHelper.WidgetContainer)) + Integer.IsEqual(Window.Property(TMDbHelper.WidgetContainer),301)">SetFocus(314)</onleft>
-            <onright condition="!String.IsEmpty(Window.Property(TMDbHelper.WidgetContainer)) + Integer.IsEqual(Window.Property(TMDbHelper.WidgetContainer),301)">SetFocus(311)</onright>
-            <onleft condition="String.IsEmpty(Window.Property(TMDbHelper.WidgetContainer)) + String.IsEmpty(Window.Property(List.ViewContainer))">$PARAM[onlist]</onleft>
-            <onright condition="String.IsEmpty(Window.Property(TMDbHelper.WidgetContainer)) + String.IsEmpty(Window.Property(List.ViewContainer))">$PARAM[onlist]</onright>
+
+            <!-- Loop Around -->
+            <onleft condition="!String.IsEmpty(Window.Property(List.ViewContainer)) + !String.IsEqual(Window.Property(List.ViewContainer),Window.Property(List.ViewContainer.Reset)) + Skin.String(Rows.ContentLoopback,Loop)">SetFocus($INFO[Window.Property(List.ViewContainer)],99999,absolute)</onleft>
+            <onright condition="!String.IsEmpty(Window.Property(List.ViewContainer)) + !String.IsEqual(Window.Property(List.ViewContainer),Window.Property(List.ViewContainer.Reset))">SetFocus($INFO[Window.Property(List.ViewContainer)],0,absolute)</onright>
+
+            <!-- Refocus List (No Loop Around) -->
+            <onleft condition="!String.IsEmpty(Window.Property(List.ViewContainer)) + String.IsEqual(Window.Property(List.ViewContainer),Window.Property(List.ViewContainer.Reset)) + Skin.String(Rows.ContentLoopback,Loop)">SetFocus($INFO[Window.Property(List.ViewContainer)])</onleft>
+            <onright condition="!String.IsEmpty(Window.Property(List.ViewContainer)) + String.IsEqual(Window.Property(List.ViewContainer),Window.Property(List.ViewContainer.Reset))">SetFocus($INFO[Window.Property(List.ViewContainer)])</onright>
+
+            <!-- Focus Default -->
+            <onleft condition="String.IsEmpty(Window.Property(List.ViewContainer)) + Skin.String(Rows.ContentLoopback,Loop)">$PARAM[onlist]</onleft>
+            <onright condition="String.IsEmpty(Window.Property(List.ViewContainer))">$PARAM[onlist]</onright>
+
+            <!-- Focus Bump -->
+            <onleft condition="!Skin.String(Rows.ContentLoopback,Loop)">331</onleft>
         </definition>
     </include>
 
     <include name="Action_BuildSkinShortcuts_OnLoad">
-        <onload>RunScript(script.skinshortcuts,type=buildxml&amp;mainmenuID=300&amp;levels=3&amp;group=mainmenu|powermenu|searchmenu|exploremenu|moviemenu|tvshowmenu|musicmenu|pvrmenu|custom01menu|custom02menu|custom03menu|custom04menu|moviesubmenu|tvshowsubmenu|musicsubmenu|pvrsubmenu|custom01submenu|custom02submenu|custom03submenu|custom04submenu|moviewidgets|tvshowwidgets|musicwidgets|pvrwidgets|custom01widgets|custom02widgets|custom03widgets|custom04widgets)</onload>
+        <onload>RunScript(script.skinshortcuts,type=buildxml&amp;mainmenuID=300&amp;levels=2&amp;group=mainmenu|powermenu|searchmenu|exploremenu|moviemenu|tvshowmenu|musicmenu|pvrmenu|custom01menu|custom02menu|custom03menu|custom04menu|moviesubmenu|tvshowsubmenu|musicsubmenu|pvrsubmenu|custom01submenu|custom02submenu|custom03submenu|custom04submenu|moviewidgets|tvshowwidgets|musicwidgets|pvrwidgets|custom01widgets|custom02widgets|custom03widgets|custom04widgets)</onload>
     </include>
     <include name="Action_BuildSkinShortcuts_OnUnload">
-        <onunload>RunScript(script.skinshortcuts,type=buildxml&amp;mainmenuID=300&amp;levels=3&amp;group=mainmenu|powermenu|searchmenu|exploremenu|moviemenu|tvshowmenu|musicmenu|pvrmenu|custom01menu|custom02menu|custom03menu|custom04menu|moviesubmenu|tvshowsubmenu|musicsubmenu|pvrsubmenu|custom01submenu|custom02submenu|custom03submenu|custom04submenu|moviewidgets|tvshowwidgets|musicwidgets|pvrwidgets|custom01widgets|custom02widgets|custom03widgets|custom04widgets)</onunload>
+        <onunload>RunScript(script.skinshortcuts,type=buildxml&amp;mainmenuID=300&amp;levels=2&amp;group=mainmenu|powermenu|searchmenu|exploremenu|moviemenu|tvshowmenu|musicmenu|pvrmenu|custom01menu|custom02menu|custom03menu|custom04menu|moviesubmenu|tvshowsubmenu|musicsubmenu|pvrsubmenu|custom01submenu|custom02submenu|custom03submenu|custom04submenu|moviewidgets|tvshowwidgets|musicwidgets|pvrwidgets|custom01widgets|custom02widgets|custom03widgets|custom04widgets)</onunload>
     </include>
 
     <include name="Action_View_Transition">
@@ -269,39 +280,38 @@
         <visible>!Skin.String(CustomShortcut.Item$PARAM[id],custom)</visible>
     </include>
 
-    <include name="Action_ToggleHubSubmenus_OnClick">
-        <onclick condition="Skin.String(CustomShortcut.Item$PARAM[id],movies)">Skin.ToggleSetting(Hub.Movies.DisableSubmenu)</onclick>
-        <onclick condition="Skin.String(CustomShortcut.Item$PARAM[id],tvshows)">Skin.ToggleSetting(Hub.TVShows.DisableSubmenu)</onclick>
-        <onclick condition="Skin.String(CustomShortcut.Item$PARAM[id],music)">Skin.ToggleSetting(Hub.Music.DisableSubmenu)</onclick>
-        <onclick condition="Skin.String(CustomShortcut.Item$PARAM[id],livetv)">Skin.ToggleSetting(Hub.PVR.DisableSubmenu)</onclick>
-
-        <selected>[Skin.String(CustomShortcut.Item$PARAM[id],movies) + Skin.HasSetting(Hub.Movies.DisableSubmenu)] | [Skin.String(CustomShortcut.Item$PARAM[id],tvshows) + Skin.HasSetting(Hub.TVShows.DisableSubmenu)] | [Skin.String(CustomShortcut.Item$PARAM[id],music) + Skin.HasSetting(Hub.Music.DisableSubmenu)] | [Skin.String(CustomShortcut.Item$PARAM[id],livetv) + Skin.HasSetting(Hub.PVR.DisableSubmenu)]</selected>
-
-        <enable>[String.IsEmpty(Skin.String(CustomShortcut.Movies)) | !Skin.String(CustomShortcut.Item$PARAM[id],movies)] + [String.IsEmpty(Skin.String(CustomShortcut.TVShows)) | !Skin.String(CustomShortcut.Item$PARAM[id],tvshows)] + [String.IsEmpty(Skin.String(CustomShortcut.Music)) | !Skin.String(CustomShortcut.Item$PARAM[id],music)] + [String.IsEmpty(Skin.String(CustomShortcut.PVR)) | !Skin.String(CustomShortcut.Item$PARAM[id],livetv)] + !Skin.String(CustomShortcut.Item$PARAM[id],weather) + !Skin.String(CustomShortcut.Item$PARAM[id],pictures) + !Skin.String(CustomShortcut.Item$PARAM[id],addons) + !Skin.String(CustomShortcut.Item$PARAM[id],videos)</enable>
-        <visible>!Skin.String(CustomShortcut.Item$PARAM[id],custom)</visible>
-    </include>
-
     <include name="Action_View_Movement_OnUp">
         <onup>ActivateWindow(1113)</onup>
         <!-- <onup>SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onup>
         <onup>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onup> -->
     </include>
 
+    <include name="Action_Menu_Movement_OnBack">
+        <onback>303</onback>
+        <onback>SetProperty(List.ViewContainer.Reset,$NUMBER[$PARAM[id]])</onback>
+        <onback>SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onback>
+        <onback>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onback>
+    </include>
+
     <include name="Action_View_Movement_OnLeft">
+        <onleft>303</onleft>
         <onleft>SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onleft>
         <onleft>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onleft>
     </include>
 
     <include name="Action_View_Movement_OnRight">
-        <onright>SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onright>
-        <onright>SetFocus($PARAM[id],0,absolute)</onright>
-        <onright>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onright>
+        <param name="refocus">Skin.String(Rows.ContentLoopback,Loop)</param>
+        <definition>
+            <onright>SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onright>
+            <onright condition="$PARAM[refocus]">SetFocus($PARAM[id],0,absolute)</onright>
+            <onright condition="Skin.String(Rows.ContentLoopback,Loop)">SetFocus(303,$VAR[Action_Menu_Position],absolute)</onright>
+            <onright condition="!Skin.String(Rows.ContentLoopback,Loop)">332</onright>
+        </definition>
     </include>
 
     <include name="Action_View_Movement_OnBack">
-        <!-- <onback condition="!Integer.IsEqual(Container($PARAM[id]).CurrentItem,1) + !Integer.IsEqual(Container($PARAM[id]).CurrentItem,0)">SetFocus($PARAM[id],0,absolute)</onback> -->
-        <onback condition="!Integer.IsEqual(Container($PARAM[id]).CurrentItem,1) + !Integer.IsEqual(Container($PARAM[id]).CurrentItem,0)">62</onback>
-        <onback condition="!Integer.IsEqual(Container($PARAM[id]).CurrentItem,1) + !Integer.IsEqual(Container($PARAM[id]).CurrentItem,0)">AlarmClock(refocus,SetFocus($PARAM[id],0,absolute),00:00,silent)</onback>
+        <onback condition="!Integer.IsEqual(Container($PARAM[id]).CurrentItem,1) + !Integer.IsEqual(Container($PARAM[id]).CurrentItem,0) + $EXP[Exp_Navigation_IsBackToStart]">62</onback>
+        <onback condition="!Integer.IsEqual(Container($PARAM[id]).CurrentItem,1) + !Integer.IsEqual(Container($PARAM[id]).CurrentItem,0) + $EXP[Exp_Navigation_IsBackToStart]">AlarmClock(refocus,SetFocus($PARAM[id],0,absolute),00:00,silent)</onback>
     </include>
 
     <include name="Action_SkinShortcuts_ContentType_AutoSetOnFocus">
@@ -377,8 +387,9 @@
     </include>
 
     <include name="Action_ToScrollbar_OnUp">
-        <onup condition="$EXP[Exp_AlphabetTypes_Only] + !Skin.HasSetting(DisableAlphabetScrollbar)">65</onup>
-        <onup condition="[!$EXP[Exp_AlphabetTypes_Only] | Skin.HasSetting(DisableAlphabetScrollbar)]">64</onup>
+        <onup condition="$EXP[Exp_AlphabetTypes_Only] + !Skin.HasSetting(DisableAlphabetScrollbar) + !$EXP[Exp_View_512]">65</onup>
+        <onup condition="[!$EXP[Exp_AlphabetTypes_Only] | Skin.HasSetting(DisableAlphabetScrollbar)] + !$EXP[Exp_View_512]">64</onup>
+        <onup condition="$EXP[Exp_View_512]">512</onup>
     </include>
 
     <include name="Action_ToScrollbar_OnDown">
