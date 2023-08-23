@@ -35,7 +35,7 @@
         <control type="group">
             <left>view_side</left>
             <top>590</top>
-            <visible allowhiddenfocus="true">![Control.HasFocus($PARAM[id]3) | Control.HasFocus(60)]</visible>
+            <visible allowhiddenfocus="true">![Control.HasFocus($PARAM[id]3) | Control.HasFocus(60) | Control.HasFocus(332)]</visible>
             <animation effect="fade" start="0" end="100" time="200" delay="200" reversible="false">Visible</animation>
             <animation effect="fade" start="100" end="0" time="200" reversible="false">Hidden</animation>
 
@@ -58,7 +58,9 @@
                 <param name="itemlayout_w">x60</param>
                 <param name="itemlayout_include">Layout_InfoDialog_Details</param>
 
-                <onleft>303</onleft>
+                <include content="Action_View_Movement_OnLeft">
+                    <param name="id">$PARAM[id]2</param>
+                </include>
                 <onright condition="!Container($PARAM[id]3).IsUpdating">$PARAM[id]3</onright>
                 <onfocus>SetProperty(TMDbHelper.WidgetContainer,$PARAM[id]3)</onfocus>
                 <onfocus>ClearProperty(SpecialFolderPath)</onfocus>
@@ -86,8 +88,8 @@
     <include name="View_Combined_Row_Vert">
         <definition>
             <control type="group">
-                <animation effect="slide" start="$PARAM[slide_x]" end="0" tween="quadratic" easing="out" time="400" reversible="false" condition="[Control.HasFocus($PARAM[id]3) | Control.HasFocus(60)]">Conditional</animation>
-                <animation effect="slide" start="0" end="$PARAM[slide_x]" tween="quadratic" easing="out" time="400" reversible="false" condition="![Control.HasFocus($PARAM[id]3) | Control.HasFocus(60)]">Conditional</animation>
+                <animation effect="slide" start="$PARAM[slide_x]" end="0" tween="quadratic" easing="out" time="400" reversible="false" condition="[Control.HasFocus($PARAM[id]3) | Control.HasFocus(60) | Control.HasFocus(332)]">Conditional</animation>
+                <animation effect="slide" start="0" end="$PARAM[slide_x]" tween="quadratic" easing="out" time="400" reversible="false" condition="![Control.HasFocus($PARAM[id]3) | Control.HasFocus(60) | Control.HasFocus(332)]">Conditional</animation>
                 <visible>Control.IsVisible($PARAM[id]2)</visible>
                 <include content="Transitions_List_Group">
                     <include content="$PARAM[include]">
@@ -95,8 +97,10 @@
                         <height>divider_bottom</height>
                         <bottom>40</bottom>
                         <onleft>$PARAM[id]2</onleft>
-                        <onright>SetFocus($PARAM[id]3,0,absolute)</onright>
-                        <onright>$PARAM[id]2</onright>
+
+                        <include content="Action_View_Movement_OnRight">
+                            <param name="id">$PARAM[id]3</param>
+                        </include>
 
                         <onback>SetFocus($PARAM[id]3,0,absolute)</onback>
                         <onback>$PARAM[id]2</onback>
@@ -134,7 +138,7 @@
 
                     <include content="Widget_Fake_$PARAM[include]">
                         <param name="id">$PARAM[id]3</param>
-                        <param name="overhang_visible">Control.HasFocus(60)</param>
+                        <param name="overhang_visible">[Control.HasFocus($PARAM[id]3) | Control.HasFocus(60) | Control.HasFocus(332)]</param>
                         <animation type="Conditional" reversible="false" condition="Container($PARAM[id]3).IsUpdating">
                             <effect type="fade" start="100" end="0" time="200" delay="600" />
                         </animation>
@@ -159,8 +163,12 @@
                         <height>divider_bottom</height>
                         <bottom>40</bottom>
 
-                        <include content="Action_View_Movement_OnLeft"><param name="id">$PARAM[id]3</param></include>
-                        <include content="Action_View_Movement_OnRight"><param name="id">$PARAM[id]3</param></include>
+                        <include content="Action_View_Movement_OnLeft">
+                            <param name="id">$PARAM[id]3</param>
+                        </include>
+                        <include content="Action_View_Movement_OnRight">
+                            <param name="id">$PARAM[id]3</param>
+                        </include>
 
                         <onback>SetFocus($PARAM[id]3,0,absolute)</onback>
                         <onback>$PARAM[id]2</onback>
