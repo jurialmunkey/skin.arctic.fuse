@@ -152,8 +152,8 @@
                 <ondown>309</ondown>
                 <onback>$PARAM[onlist]</onback>
                 <onback>SetFocus($PARAM[onlist])</onback>
-                <onback condition="!Window.IsVisible(Home) + ![Window.IsVisible(1101) | Window.IsVisible(1102) | Window.IsVisible(1103) | Window.IsVisible(1104)]">PreviousMenu</onback>
-                <onback condition="!Window.IsVisible(Home) + [Window.IsVisible(1101) | Window.IsVisible(1102) | Window.IsVisible(1103) | Window.IsVisible(1104)]">ReplaceWindow(Home)</onback>
+                <onback condition="!Window.IsVisible(Home)">PreviousMenu</onback>
+
                 <include content="Action_HomeMenu_OnRightLeft">
                     <param name="onlist">$PARAM[onlist]</param>
                 </include>
@@ -550,12 +550,15 @@
                 <control type="grouplist" id="310">
                     <orientation>horizontal</orientation>
                     <include>Action_Widget_Top</include>
-                    <onleft>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onleft>
-                    <onback>303</onback>
-                    <onback>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onback>
-                    <onright condition="Player.HasMedia + String.IsEqual(Player.FileNameAndPath,Container(301).ListItem.Trailer)">PlayerControl(Stop)</onright>
+
+                    <include content="Action_View_Movement_OnLeft">
+                        <param name="id">311</param>
+                    </include>
                     <onright>Control.Move(301,1)</onright>
-                    <!-- <onright condition="!Player.HasMedia + !String.IsEmpty(Container(301).ListItem.Trailer)">AlarmClock(playtrailer,PlayMedia($ESCINFO[Container(301).ListItem.Trailer],False,1),00:03,silent)</onright> -->
+                    <include content="Action_Menu_Movement_OnBack">
+                        <param name="id">311</param>
+                    </include>
+
                     <ondown>300</ondown>
                     <centertop>180</centertop>
                     <left>140</left>
@@ -901,8 +904,9 @@
                         <param name="window_id">home</param>
                         <param name="slide">!String.IsEmpty(Skin.String(Home.LayoutStyle))</param>
                         <onup>311</onup>
-                        <onback>303</onback>
-                        <onback>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onback>
+                        <include content="Action_Menu_Movement_OnBack">
+                            <param name="id">300</param>
+                        </include>
                         <ondown condition="String.IsEmpty(Skin.String(Home.LayoutStyle))">302</ondown>
                         <ondown condition="!String.IsEmpty(Skin.String(Home.LayoutStyle))">340</ondown>
                         <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,home)</onfocus>
@@ -992,10 +996,6 @@
             <include content="Action_Widget_End" condition="!String.IsEqual(Skin.String(Home.LayoutStyle),Widgets) | !Skin.String(Hubs.WidgetsLoopback,Loop)">
                 <param name="topid">$PARAM[topid]</param>
             </include>
-
-            <onleft>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onleft>
-            <onright>SetFocus($INFO[Window.Property(TMDbHelper.WidgetContainer)],0,absolute)</onright>
-            <onright>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onright>
 
             <visible>$PARAM[visible]</visible>
 

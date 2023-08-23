@@ -137,14 +137,18 @@
     <include name="Action_HomeMenu_OnRightLeft">
         <param name="onlist">320</param>
         <definition>
-            <onleft condition="String.IsEmpty(Window.Property(TMDbHelper.WidgetContainer)) + !String.IsEmpty(Window.Property(List.ViewContainer))">SetFocus($INFO[Window.Property(List.ViewContainer)],99999,absolute)</onleft>
-            <onright condition="String.IsEmpty(Window.Property(TMDbHelper.WidgetContainer)) + !String.IsEmpty(Window.Property(List.ViewContainer))">SetFocus($INFO[Window.Property(List.ViewContainer)],0,absolute)</onright>
-            <onleft condition="!String.IsEmpty(Window.Property(TMDbHelper.WidgetContainer)) + !Integer.IsEqual(Window.Property(TMDbHelper.WidgetContainer),301)">SetFocus($INFO[Window.Property(TMDbHelper.WidgetContainer)],99999,absolute)</onleft>
-            <onright condition="!String.IsEmpty(Window.Property(TMDbHelper.WidgetContainer)) + !Integer.IsEqual(Window.Property(TMDbHelper.WidgetContainer),301)">SetFocus($INFO[Window.Property(TMDbHelper.WidgetContainer)],0,absolute)</onright>
-            <onleft condition="!String.IsEmpty(Window.Property(TMDbHelper.WidgetContainer)) + Integer.IsEqual(Window.Property(TMDbHelper.WidgetContainer),301)">SetFocus(314)</onleft>
-            <onright condition="!String.IsEmpty(Window.Property(TMDbHelper.WidgetContainer)) + Integer.IsEqual(Window.Property(TMDbHelper.WidgetContainer),301)">SetFocus(311)</onright>
-            <onleft condition="String.IsEmpty(Window.Property(TMDbHelper.WidgetContainer)) + String.IsEmpty(Window.Property(List.ViewContainer))">$PARAM[onlist]</onleft>
-            <onright condition="String.IsEmpty(Window.Property(TMDbHelper.WidgetContainer)) + String.IsEmpty(Window.Property(List.ViewContainer))">$PARAM[onlist]</onright>
+
+            <!-- Loop Around -->
+            <onleft condition="!String.IsEmpty(Window.Property(List.ViewContainer)) + !String.IsEqual(Window.Property(List.ViewContainer),Window.Property(List.ViewContainer.Reset))">SetFocus($INFO[Window.Property(List.ViewContainer)],99999,absolute)</onleft>
+            <onright condition="!String.IsEmpty(Window.Property(List.ViewContainer)) + !String.IsEqual(Window.Property(List.ViewContainer),Window.Property(List.ViewContainer.Reset))">SetFocus($INFO[Window.Property(List.ViewContainer)],0,absolute)</onright>
+
+            <!-- Refocus List (No Loop Around) -->
+            <onleft condition="!String.IsEmpty(Window.Property(List.ViewContainer)) + String.IsEqual(Window.Property(List.ViewContainer),Window.Property(List.ViewContainer.Reset))">SetFocus($INFO[Window.Property(List.ViewContainer)])</onleft>
+            <onright condition="!String.IsEmpty(Window.Property(List.ViewContainer)) + String.IsEqual(Window.Property(List.ViewContainer),Window.Property(List.ViewContainer.Reset))">SetFocus($INFO[Window.Property(List.ViewContainer)])</onright>
+
+            <!-- Focus Default -->
+            <onleft condition="String.IsEmpty(Window.Property(List.ViewContainer))">$PARAM[onlist]</onleft>
+            <onright condition="String.IsEmpty(Window.Property(List.ViewContainer))">$PARAM[onlist]</onright>
         </definition>
     </include>
 
@@ -275,15 +279,25 @@
         <onup>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onup> -->
     </include>
 
+    <include name="Action_Menu_Movement_OnBack">
+        <onback>303</onback>
+        <onback>SetProperty(List.ViewContainer.Reset,$NUMBER[$PARAM[id]])</onback>
+        <onback>SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onback>
+        <onback>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onback>
+    </include>
+
     <include name="Action_View_Movement_OnLeft">
         <onleft>SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onleft>
         <onleft>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onleft>
     </include>
 
     <include name="Action_View_Movement_OnRight">
-        <onright>SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onright>
-        <onright>SetFocus($PARAM[id],0,absolute)</onright>
-        <onright>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onright>
+        <param name="refocus">true</param>
+        <definition>
+            <onright>SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onright>
+            <onright condition="$PARAM[refocus]">SetFocus($PARAM[id],0,absolute)</onright>
+            <onright>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onright>
+        </definition>
     </include>
 
     <include name="Action_View_Movement_OnBack">
