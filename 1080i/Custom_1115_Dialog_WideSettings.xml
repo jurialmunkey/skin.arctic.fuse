@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window type="dialog" id="1115">
-    <defaultcontrol always="true">8001</defaultcontrol>
+    <defaultcontrol always="true">8000</defaultcontrol>
     <onunload>ClearProperty(CustomDialogSettingsStyle,Home)</onunload>
     <onunload>ClearProperty(CustomDialogSettingsImage,Home)</onunload>
     <onunload>ClearProperty(CustomDialogSettingsLabel,Home)</onunload>
@@ -13,8 +13,11 @@
             <include>Dimension_DialogFullMenu</include>
             <include content="Dialog_Head">
                 <param name="id">7000</param>
-                <param name="label">$INFO[Window(Home).Property(CustomDialogSettingsTitle)]</param>
+                <param name="label">$LOCALIZE[31326]</param>
             </include>
+
+
+
             <include content="Dialog_Body">
 
                 <include content="Dialog_Body_Group">
@@ -74,13 +77,132 @@
                     <control type="image">
                         <texture colordiffuse="dialog_fg_12" border="20">common/dialog.png</texture>
                     </control>
+                    <control type="panel" id="6000">
+                        <height>100</height>
+                        <top>20</top>
+                        <left>20</left>
+                        <orientation>horizontal</orientation>
+                        <ondown>8000</ondown>
+                        <onfocus>SetProperty(CustomDialogSettingsImage,special://skin/extras/screens/sidemenu.jpg,Home)</onfocus>
+                        <itemlayout width="100" height="100">
+                            <control type="group">
+                                <centerleft>50%</centerleft>
+                                <centertop>50%</centertop>
+                                <height>40</height>
+                                <width>40</width>
+                                <control type="image">
+                                    <texture flipy="true">special://profile/addon_data/script.texturemaker/ArcticFuse/circle_v.png</texture>
+                                    <aspectratio>keep</aspectratio>
+                                    <width>10</width>
+                                    <height>10</height>
+                                    <centerleft>50%</centerleft>
+                                    <bottom>-16</bottom>
+                                    <visible>String.IsEqual(Window(Home).PRoperty(CustomDialogSettingsItems),ListItem.Property(item))</visible>
+                                </control>
+                                <control type="image">
+                                    <texture colordiffuse="dialog_fg_100">$INFO[ListItem.Icon]</texture>
+                                    <aspectratio>keep</aspectratio>
+                                    <bordersize>-4</bordersize>
+                                    <visible>String.IsEqual(Window(Home).PRoperty(CustomDialogSettingsItems),ListItem.Property(item))</visible>
+                                </control>
+                                <control type="image">
+                                    <texture colordiffuse="dialog_fg_30">$INFO[ListItem.Icon]</texture>
+                                    <aspectratio>keep</aspectratio>
+                                    <bordersize>-4</bordersize>
+                                    <visible>!String.IsEqual(Window(Home).PRoperty(CustomDialogSettingsItems),ListItem.Property(item))</visible>
+                                </control>
+                            </control>
+                        </itemlayout>
+                        <focusedlayout width="100" height="100">
+                            <control type="button">
+                                <visible allowhiddenfocus="true">false</visible>
+                                <onfocus>SetProperty(CustomDialogSettingsTitle,$INFO[ListItem.Property(head)],Home)</onfocus>
+                                <onfocus>SetProperty(CustomDialogSettingsItems,$INFO[ListItem.Property(item)],Home)</onfocus>
+                            </control>
+                            <control type="group">
+                                <centerleft>50%</centerleft>
+                                <centertop>50%</centertop>
+                                <height>40</height>
+                                <width>40</width>
+                                <control type="image">
+                                    <texture flipy="true">special://profile/addon_data/script.texturemaker/ArcticFuse/circlebuttondialog_v.png</texture>
+                                    <bordersize>-60</bordersize>
+                                </control>
+                                <control type="image">
+                                    <texture colordiffuse="$VAR[ColorSelected]">$INFO[ListItem.Icon]</texture>
+                                    <aspectratio>keep</aspectratio>
+                                    <bordersize>-4</bordersize>
+                                </control>
+                            </control>
+                        </focusedlayout>
+                        <content>
+                            <item>
+                                <label>Search</label>
+                                <icon>special://skin/extras/icons/search.png</icon>
+                                <property name="head">[CAPITALIZE]$LOCALIZE[31275][/CAPITALIZE]</property>
+                                <property name="item">Items_Settings_SearchMenu</property>
+                            </item>
+                            <item>
+                                <label>Home</label>
+                                <icon>special://skin/extras/icons/home.png</icon>
+                                <property name="head">[CAPITALIZE]$LOCALIZE[31276][/CAPITALIZE]</property>
+                                <property name="item">Items_Settings_HomeMenu</property>
+                            </item>
+                            <item>
+                                <label>Item 1</label>
+                                <icon>$VAR[Image_Setting_SideIcon_C1]</icon>
+                                <property name="head">[CAPITALIZE]$LOCALIZE[31277] 1[/CAPITALIZE]</property>
+                                <property name="item">Items_Settings_SideMenu_1</property>
+                            </item>
+                            <item>
+                                <label>Item 2</label>
+                                <icon>$VAR[Image_Setting_SideIcon_C2]</icon>
+                                <property name="head">[CAPITALIZE]$LOCALIZE[31277] 2[/CAPITALIZE]</property>
+                                <property name="item">Items_Settings_SideMenu_2</property>
+                            </item>
+                            <item>
+                                <label>Item 3</label>
+                                <icon>$VAR[Image_Setting_SideIcon_C3]</icon>
+                                <property name="head">[CAPITALIZE]$LOCALIZE[31277] 3[/CAPITALIZE]</property>
+                                <property name="item">Items_Settings_SideMenu_3</property>
+                            </item>
+                            <item>
+                                <label>Item 4</label>
+                                <icon>$VAR[Image_Setting_SideIcon_C4]</icon>
+                                <property name="head">[CAPITALIZE]$LOCALIZE[31277] 4[/CAPITALIZE]</property>
+                                <property name="item">Items_Settings_SideMenu_4</property>
+                            </item>
+                        </content>
+
+                    </control>
                     <include content="Dialog_Body_Grouplist">
                         <param name="id">8000</param>
                         <right>20</right>
                         <pagecontrol>61</pagecontrol>
                         <onleft>Close</onleft>
                         <onright>61</onright>
-                        <include>Items_Settings_CustomDialog</include>
+                        <onup>6000</onup>
+                        <ondown>-</ondown>
+                        <top>100</top>
+                        <include content="Settings_Label" description="Style">
+                            <param name="id">8701</param>
+                            <param name="dialog">true</param>
+                            <label>$INFO[Window(Home).Property(CustomDialogSettingsTitle)]</label>
+                        </include>
+                        <include content="Items_Settings_SideButtonConfigure">
+                            <param name="item">1</param>
+                        </include>
+                        <include content="Items_Settings_SideButtonConfigure">
+                            <param name="item">2</param>
+                        </include>
+                        <include content="Items_Settings_SideButtonConfigure">
+                            <param name="item">3</param>
+                        </include>
+                        <include content="Items_Settings_SideButtonConfigure">
+                            <param name="item">4</param>
+                        </include>
+                        <include>Items_Settings_HomeMenu</include>
+                        <include>Items_Settings_SearchMenu</include>
                     </include>
                 </control>
 
@@ -101,6 +223,9 @@
                         <param name="visible">true</param>
                         <onclick>Close</onclick>
                     </include>
+
+
+
                 </include>
             </include>
         </include>

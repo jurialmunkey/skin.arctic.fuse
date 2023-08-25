@@ -23,20 +23,6 @@
     </variable>
 
     <include name="Items_Settings_CustomDialog">
-        <include condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SideMenu_1)" content="Items_Settings_SideButtonConfigure">
-            <param name="item">1</param>
-        </include>
-        <include condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SideMenu_2)" content="Items_Settings_SideButtonConfigure">
-            <param name="item">2</param>
-        </include>
-        <include condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SideMenu_3)" content="Items_Settings_SideButtonConfigure">
-            <param name="item">3</param>
-        </include>
-        <include condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SideMenu_4)" content="Items_Settings_SideButtonConfigure">
-            <param name="item">4</param>
-        </include>
-        <include condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_HomeMenu)">Items_Settings_HomeMenu</include>
-        <include condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SearchMenu)">Items_Settings_SearchMenu</include>
         <include condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_ColourPresets)">Items_Settings_ColourPresets</include>
         <include condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_ColourHighlights)">Items_Settings_ColourHighlights</include>
         <include condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_BackgroundDialogImage)">Items_Settings_BackgroundDialogImage</include>
@@ -221,7 +207,7 @@
 
     <include name="Items_Settings_SideButtonConfigure">
         <include content="Settings_Button" description="Type">
-            <param name="id">8001</param>
+            <param name="id">8$PARAM[item]01</param>
             <param name="dialog">True</param>
             <label>$LOCALIZE[467]</label>
             <label2>[CAPITALIZE]$INFO[Skin.String(CustomShortcut.Item0$PARAM[item])][/CAPITALIZE]</label2>
@@ -229,9 +215,10 @@
             <onclick>ActivateWindow(1117)</onclick>
             <onfocus>SetProperty(CustomDialogSettingsImage,special://skin/extras/screens/sidemenu.jpg,Home)</onfocus>
             <onfocus>SetProperty(CustomDialogSettingsLabel,[B]$LOCALIZE[467][/B][CR]$LOCALIZE[31278][CR][CR]$LOCALIZE[31283],Home)</onfocus>
+            <visible>String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SideMenu_$PARAM[item])</visible>
         </include>
         <include content="Settings_Button" description="Action">
-            <param name="id">8002</param>
+            <param name="id">8$PARAM[item]02</param>
             <param name="dialog">True</param>
             <label>$LOCALIZE[31081]</label>
             <include content="Action_SetCustomShortcut_OnClick">
@@ -239,9 +226,10 @@
             </include>
             <onfocus>SetProperty(CustomDialogSettingsImage,special://skin/extras/screens/sidemenu.jpg,Home)</onfocus>
             <onfocus>SetProperty(CustomDialogSettingsLabel,[B]$LOCALIZE[31081][/B][CR]$LOCALIZE[31280][CR][CR]$LOCALIZE[31281],Home)</onfocus>
+            <visible>String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SideMenu_$PARAM[item])</visible>
         </include>
         <include content="Settings_Button" description="Label (Custom)">
-            <param name="id">8003</param>
+            <param name="id">8$PARAM[item]03</param>
             <param name="dialog">True</param>
             <label>$LOCALIZE[21899]</label>
             <label2>$INFO[Skin.String(CustomShortcut.Custom0$PARAM[item].Label)]</label2>
@@ -249,9 +237,10 @@
             <visible>Skin.String(CustomShortcut.Item0$PARAM[item],custom)</visible>
             <onfocus>SetProperty(CustomDialogSettingsImage,special://skin/extras/screens/sidemenu.jpg,Home)</onfocus>
             <onfocus>SetProperty(CustomDialogSettingsLabel,[B]$LOCALIZE[21899][/B][CR]$LOCALIZE[31284],Home)</onfocus>
+            <visible>String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SideMenu_$PARAM[item])</visible>
         </include>
         <include content="Settings_Button" description="Icon (Custom)">
-            <param name="id">8004</param>
+            <param name="id">8$PARAM[item]04</param>
             <param name="dialog">True</param>
             <label>$LOCALIZE[31274]</label>
             <!-- <label2>$INFO[Skin.String(CustomShortcut.Custom0$PARAM[item].Icon)]</label2> -->
@@ -259,15 +248,17 @@
             <visible>Skin.String(CustomShortcut.Item0$PARAM[item],custom)</visible>
             <onfocus>SetProperty(CustomDialogSettingsImage,special://skin/extras/screens/sidemenu.jpg,Home)</onfocus>
             <onfocus>SetProperty(CustomDialogSettingsLabel,[B]$LOCALIZE[31274][/B][CR]$LOCALIZE[31288],Home)</onfocus>
+            <visible>String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SideMenu_$PARAM[item])</visible>
         </include>
         <include content="Settings_Image">
-            <param name="id">8005</param>
+            <param name="id">8$PARAM[item]05</param>
             <param name="buttonid">8004</param>
             <param name="icon">$INFO[Skin.String(CustomShortcut.Custom0$PARAM[item].Icon)]</param>
+            <visible>String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SideMenu_$PARAM[item])</visible>
         </include>
 
         <include content="Settings_Button" description="Spotlight">
-            <param name="id">8006</param>
+            <param name="id">8$PARAM[item]06</param>
             <param name="dialog">true</param>
             <label> - $LOCALIZE[31105]</label>
 
@@ -287,9 +278,10 @@
 
             <onfocus>SetProperty(CustomDialogSettingsImage,special://skin/extras/screens/spotlight.jpg,Home)</onfocus>
             <onfocus>SetProperty(CustomDialogSettingsLabel,[B]$LOCALIZE[31105][/B][CR]$LOCALIZE[31289],Home)</onfocus>
+            <visible>String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SideMenu_$PARAM[item])</visible>
         </include>
         <include content="Settings_Button" description="Categories">
-            <param name="id">8007</param>
+            <param name="id">8$PARAM[item]07</param>
             <param name="dialog">True</param>
             <label> - $LOCALIZE[31150]</label>
 
@@ -308,11 +300,12 @@
 
             <onfocus>SetProperty(CustomDialogSettingsImage,special://skin/extras/screens/categories_widgets.jpg,Home)</onfocus>
             <onfocus>SetProperty(CustomDialogSettingsLabel,[B]$LOCALIZE[31150][/B][CR]$LOCALIZE[31291][CR][CR]$LOCALIZE[31290],Home)</onfocus>
+            <visible>String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SideMenu_$PARAM[item])</visible>
         </include>
 
 
         <include content="Settings_Button" description="Submenu">
-            <param name="id">8008</param>
+            <param name="id">8$PARAM[item]08</param>
             <param name="dialog">true</param>
             <label> - $LOCALIZE[1034] ([LOWERCASE]$LOCALIZE[31297][/LOWERCASE])</label>
 
@@ -331,10 +324,11 @@
 
             <onfocus>SetProperty(CustomDialogSettingsImage,special://skin/extras/screens/submenu.jpg,Home)</onfocus>
             <onfocus>SetProperty(CustomDialogSettingsLabel,[B]$LOCALIZE[1034] ([LOWERCASE]$LOCALIZE[31297][/LOWERCASE])[/B][CR]$LOCALIZE[31300],Home)</onfocus>
+            <visible>String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SideMenu_$PARAM[item])</visible>
         </include>
 
         <include content="Settings_Button" description="Widgets">
-            <param name="id">8009</param>
+            <param name="id">8$PARAM[item]09</param>
             <param name="dialog">true</param>
             <label> - $LOCALIZE[31103]</label>
 
@@ -351,10 +345,11 @@
 
             <onfocus>SetProperty(CustomDialogSettingsImage,special://skin/extras/screens/widgets.jpg,Home)</onfocus>
             <onfocus>SetProperty(CustomDialogSettingsLabel,[B]$LOCALIZE[31103][/B][CR]$LOCALIZE[31292],Home)</onfocus>
+            <visible>String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SideMenu_$PARAM[item])</visible>
         </include>
 
         <include content="Settings_Button" description="HubSubmenus">
-            <param name="id">8010</param>
+            <param name="id">8$PARAM[item]10</param>
             <param name="dialog">True</param>
             <param name="control">radiobutton</param>
             <label> - $LOCALIZE[31102]</label>
@@ -372,9 +367,10 @@
 
             <onfocus>SetProperty(CustomDialogSettingsImage,special://skin/extras/screens/widgets.jpg,Home)</onfocus>
             <onfocus>SetProperty(CustomDialogSettingsLabel,[B]$LOCALIZE[31102][/B][CR]$LOCALIZE[31303],Home)</onfocus>
+            <visible>String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SideMenu_$PARAM[item])</visible>
         </include>
         <include content="Settings_Button" description="CustomHubSubmenus">
-            <param name="id">8011</param>
+            <param name="id">8$PARAM[item]11</param>
             <param name="dialog">True</param>
             <param name="control">radiobutton</param>
             <label> - $LOCALIZE[31102]</label>
@@ -392,6 +388,7 @@
             <onfocus>SetProperty(CustomDialogSettingsImage,special://skin/extras/screens/widgets.jpg,Home)</onfocus>
             <onfocus>SetProperty(CustomDialogSettingsLabel,[B]$LOCALIZE[31102][/B][CR]$LOCALIZE[31303],Home)</onfocus>
 
+            <visible>String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SideMenu_$PARAM[item])</visible>
         </include>
     </include>
 
@@ -1107,64 +1104,71 @@
 
     <include name="Items_Settings_HomeMenu">
         <include content="Settings_Button" description="Style">
-            <param name="id">8001</param>
+            <param name="id">8801</param>
             <param name="dialog">true</param>
             <label>$LOCALIZE[736]</label>
             <label2>$VAR[Label_Setting_HomeStyle]</label2>
             <onclick condition="String.IsEmpty(Skin.String(Home.LayoutStyle))">Skin.SetString(Home.LayoutStyle,Categories)</onclick>
             <onclick condition="Skin.String(Home.LayoutStyle,Categories)">Skin.SetString(Home.LayoutStyle,Widgets)</onclick>
             <onclick condition="Skin.String(Home.LayoutStyle,Widgets)">Skin.Reset(Home.LayoutStyle)</onclick>
-            <onclick>AlarmClock(refocus,SetFocus(8001),00:00,silent)</onclick>
+            <onclick>AlarmClock(refocus,SetFocus(8801),00:00,silent)</onclick>
             <onfocus condition="Skin.String(Home.LayoutStyle,Widgets)">SetProperty(CustomDialogSettingsImage,special://skin/extras/screens/basic.jpg,Home)</onfocus>
             <onfocus condition="Skin.String(Home.LayoutStyle,Categories)">SetProperty(CustomDialogSettingsImage,special://skin/extras/screens/combined.jpg,Home)</onfocus>
             <onfocus condition="String.IsEmpty(Skin.String(Home.LayoutStyle))">SetProperty(CustomDialogSettingsImage,special://skin/extras/screens/expanded.jpg,Home)</onfocus>
             <onfocus>SetProperty(CustomDialogSettingsLabel,[B]$LOCALIZE[31305][/B][CR]$LOCALIZE[31316][CR][CR][B]$LOCALIZE[31312][/B][CR]$LOCALIZE[31315][CR][CR][B]$LOCALIZE[31314][/B][CR]$LOCALIZE[31318],Home)</onfocus>
+            <visible>String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_HomeMenu)</visible>
         </include>
         <include content="Settings_Button" description="Spotlight">
-            <param name="id">8003</param>
+            <param name="id">8803</param>
             <param name="dialog">true</param>
             <label>$LOCALIZE[31105]</label>
             <onclick>SetProperty(groupname,mainmenu,1116)</onclick>
             <onclick>ActivateWindow(1116)</onclick>
             <onfocus>SetProperty(CustomDialogSettingsImage,special://skin/extras/screens/spotlight.jpg,Home)</onfocus>
             <enable>!Skin.String(Home.LayoutStyle,Widgets)</enable>
+            <visible>String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_HomeMenu)</visible>
         </include>
         <include content="Settings_Button" description="Categories">
-            <param name="id">8002</param>
+            <param name="id">8802</param>
             <param name="dialog">true</param>
             <label>$LOCALIZE[31150]</label>
             <onclick>RunScript(script.skinshortcuts,type=manage&amp;group=mainmenu)</onclick>
             <onfocus>SetProperty(CustomDialogSettingsImage,special://skin/extras/screens/categories_widgets.jpg,Home)</onfocus>
+            <visible>String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_HomeMenu)</visible>
         </include>
 
     </include>
 
     <include name="Items_Settings_SearchMenu">
         <include content="Settings_Button" description="Style">
-            <param name="id">8001</param>
+            <param name="id">8901</param>
             <param name="dialog">true</param>
             <label>$LOCALIZE[736]</label>
             <label2>$VAR[Label_Setting_SearchStyle]</label2>
             <onclick>Skin.ToggleSetting(Search.EnableDiscover)</onclick>
+            <visible>String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SearchMenu)</visible>
         </include>
         <include content="Settings_Button" description="Widgets">
-            <param name="id">8002</param>
+            <param name="id">8902</param>
             <param name="dialog">true</param>
             <label>$LOCALIZE[31103]</label>
             <enable>!Skin.HasSetting(Search.EnableDiscover)</enable>
             <onclick>RunScript(script.skinshortcuts,type=manage&amp;group=searchmenu)</onclick>
+            <visible>String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SearchMenu)</visible>
         </include>
         <include content="Settings_Label" description="Options Label">
-            <param name="id">8003</param>
+            <param name="id">8903</param>
             <label>$LOCALIZE[33063]</label>
+            <visible>String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SearchMenu)</visible>
         </include>
         <include content="Settings_Button" description="SkinShortcuts searchmenu select edit">
-            <param name="id">8004</param>
+            <param name="id">8904</param>
             <param name="dialog">true</param>
             <param name="control">radiobutton</param>
             <label>$LOCALIZE[31161]</label>
             <selected>Skin.HasSetting(Search.FocusEditControl)</selected>
             <onclick>Skin.ToggleSetting(Search.FocusEditControl)</onclick>
+            <visible>String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SearchMenu)</visible>
         </include>
     </include>
 

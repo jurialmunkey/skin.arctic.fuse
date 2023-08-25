@@ -222,7 +222,7 @@
             <visible>String.IsEqual(Window.Property(DetailsView),Trailer)</visible>
             <animation effect="fade" start="100" end="0" condition="Container(5002).IsUpdating">Conditional</animation>
         </include>
-        <include content="List_Button_Row">
+        <include content="List_Button_Row" condition="!Skin.HasSetting(Info.UseLocalCast)">
             <param name="id">5003</param>
             <param name="orientation">horizontal</param>
             <param name="offset_x">60</param>
@@ -244,6 +244,19 @@
             <visible>String.IsEqual(Window.Property(DetailsView),Cast)</visible>
             <content target="videos">$VAR[Path_VideoInfo_Generic,,&amp;info=cast&amp;aggregate=true]</content>
             <animation effect="fade" start="100" end="0" condition="Container(5003).IsUpdating">Conditional</animation>
+        </include>
+        <include content="List_Poster_Row" condition="Skin.HasSetting(Info.UseLocalCast)">
+            <param name="id">50</param>
+            <param name="detailed">true</param>
+            <height>divider_bottom</height>
+
+            <bottom>-160</bottom>
+            <include content="DialogInfo_List_Movement">
+                <param name="id">50</param>
+            </include>
+
+            <visible>String.IsEqual(Window.Property(DetailsView),Cast)</visible>
+            <animation effect="fade" start="100" end="0" condition="Container(50).IsUpdating">Conditional</animation>
         </include>
 
         <include content="List_Reviews_Row">
@@ -370,8 +383,8 @@
                         <param name="condition">[String.IsEqual(Window.Property(DetailsView),Cast) + !Integer.IsEqual(Container(5003).NumItems,0)]</param>
                     </include>
 
-                    <onleft condition="[String.IsEmpty(Window.Property(DetailsView)) + !Integer.IsEqual(Container(50).NumItems,0)]">SetFocus(50,99999,absolute)</onleft>
-                    <onright condition="[String.IsEmpty(Window.Property(DetailsView)) + !Integer.IsEqual(Container(50).NumItems,0)]">SetFocus(50,0,absolute)</onright>
+                    <onleft condition="[[String.IsEmpty(Window.Property(DetailsView)) | String.IsEqual(Window.Property(DetailsView),Cast)] + !Integer.IsEqual(Container(50).NumItems,0)]">SetFocus(50,99999,absolute)</onleft>
+                    <onright condition="[[String.IsEmpty(Window.Property(DetailsView)) | String.IsEqual(Window.Property(DetailsView),Cast)] + !Integer.IsEqual(Container(50).NumItems,0)]">SetFocus(50,0,absolute)</onright>
                     <onleft condition="[String.IsEmpty(Window.Property(DetailsView)) + !Integer.IsEqual(Container(5050).NumItems,0)]">SetFocus(5050,99999,absolute)</onleft>
                     <onright condition="[String.IsEmpty(Window.Property(DetailsView)) + !Integer.IsEqual(Container(5050).NumItems,0)]">SetFocus(5050,0,absolute)</onright>
 
