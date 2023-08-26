@@ -267,9 +267,17 @@
                         <include content="Settings_Button" description="Background blur">
                             <param name="id">2012</param>
                             <param name="control">button</param>
-                            <label>$LOCALIZE[31253]</label>
+                            <label>$LOCALIZE[31331]</label>
                             <label2>$VAR[Label_Setting_BackgroundBlur]</label2>
-                            <onclick>Skin.ToggleSetting(TMDbHelper.EnableBlur)</onclick>
+
+                            <onclick condition="!Skin.String(Background.ArtworkStyle,Fanart) + !Skin.HasSetting(TMDbHelper.EnableBlur)">Skin.SetString(Background.ArtworkStyle,Fanart)</onclick>
+
+                            <onclick condition="Skin.String(Background.ArtworkStyle,Fanart)">Skin.Reset(Background.ArtworkStyle)</onclick>
+                            <onclick condition="Skin.String(Background.ArtworkStyle,Fanart)">Skin.SetBool(TMDbHelper.EnableBlur)</onclick>
+
+                            <onclick condition="Skin.HasSetting(TMDbHelper.EnableBlur)">Skin.Reset(TMDBHelper.EnableBlur)</onclick>
+
+
                             <onclick>ReloadSkin()</onclick>
                             <onclick>AlarmClock(refocusblura,SetFocus(3,1,absolute),00:00,silent)</onclick>
                             <onclick>AlarmClock(refocusblurb,SetFocus(2012),00:00,silent)</onclick>

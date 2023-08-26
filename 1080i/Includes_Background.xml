@@ -40,6 +40,30 @@
         </definition>
     </include>
 
+    <include name="Background_Fanart">
+        <param name="fadetime">background_fadetime</param>
+        <definition>
+            <control type="image">
+                <fadetime>$PARAM[fadetime]</fadetime>
+                <aspectratio scalediffuse="false">scale</aspectratio>
+                <texture background="true">$VAR[Image_Foreground_Cheater_Parent]</texture>
+                <include>Background_NotVideo</include>
+            </control>
+        </definition>
+    </include>
+
+    <include name="Background_Artwork">
+        <param name="fadetime">background_fadetime</param>
+        <definition>
+            <include content="Background_FlixArt" condition="!Skin.String(Background.ArtworkStyle,Fanart)">
+                <param name="fadetime">$PARAM[fadetime]</param>
+            </include>
+            <include content="Background_Fanart" condition="Skin.String(Background.ArtworkStyle,Fanart)">
+                <param name="fadetime">$PARAM[fadetime]</param>
+            </include>
+        </definition>
+    </include>
+
     <include name="Background_Blur_Quadrants">
         <control type="group">
             <!-- Left -->
@@ -104,12 +128,15 @@
         <definition>
             <control type="group">
                 <include>Background_NotVideo</include>
-                <include content="Background_Blur_Quadrants" condition="Skin.HasSetting(TMDbHelper.EnableBlur)">
+                <include content="Background_Blur_Quadrants" condition="Skin.HasSetting(TMDbHelper.EnableBlur) + !Skin.String(Background.ArtworkStyle,Fanart)">
                     <param name="flixart_size_w">$PARAM[flixart_size_w]</param>
                     <param name="flixart_size_h">$PARAM[flixart_size_h]</param>
                     <param name="fadetime">$PARAM[fadetime]</param>
                 </include>
-                <include content="Background_Blur_Cheater" condition="!Skin.HasSetting(TMDbHelper.EnableBlur)">
+                <include content="Background_Blur_Cheater" condition="!Skin.HasSetting(TMDbHelper.EnableBlur) + !Skin.String(Background.ArtworkStyle,Fanart)">
+                    <param name="fadetime">$PARAM[fadetime]</param>
+                </include>
+                <include content="Background_Image" condition="Skin.String(Background.ArtworkStyle,Fanart)">
                     <param name="fadetime">$PARAM[fadetime]</param>
                 </include>
             </control>
@@ -356,7 +383,7 @@
             <include content="Background_Blur">
                 <param name="fadetime">0</param>
             </include>
-            <include content="Background_FlixArt">
+            <include content="Background_Artwork">
                 <param name="fadetime">0</param>
             </include>
         </control>
@@ -368,7 +395,7 @@
                 <animation effect="fade" start="0" end="100" time="background_fadetime">Visible</animation>
                 <animation effect="fade" start="100" end="0" time="background_fadetime">Hidden</animation>
                 <include>Background_Blur</include>
-                <include>Background_FlixArt</include>
+                <include>Background_Artwork</include>
             </control>
             <nested />
         </control>
