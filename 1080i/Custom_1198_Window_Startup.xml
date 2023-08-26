@@ -48,7 +48,7 @@
     <onload>SetProperty(ReloadDone,1)</onload>
     <onload>SetProperty(ReloadDone,1,Home)</onload>
     <onload>SetProperty(TMDbHelper.WidgetContainer,301,Home)</onload>
-
+    <onunload>ClearProperty(StartupReplaceWindow,Home)</onunload>
     <controls>
 
         <control type="button" id="9001">
@@ -62,7 +62,8 @@
             <texturefocus />
             <texturenofocus />
             <onfocus condition="[System.HasPVRAddon + !PVR.HasTVChannels + !Pvr.HasRadioChannels]">AlarmClock(ReFocus,SetFocus(9001),00:00,silent)</onfocus>
-            <onfocus>AlarmClock(RepWin,ReplaceWindow($INFO[System.StartupWindow]),00:01,silent)</onfocus>
+            <onfocus condition="String.IsEmpty(Window(Home).Property(StartupReplaceWindow))">AlarmClock(RepWin,ReplaceWindow($INFO[System.StartupWindow]),00:01,silent)</onfocus>
+            <onfocus condition="!String.IsEmpty(Window(Home).Property(StartupReplaceWindow))">AlarmClock(RepWin,ReplaceWindow($INFO[Window(Home).Property(StartupReplaceWindow)]),00:01,silent)</onfocus>
         </control>
         <control type="group">
             <include>Background_StartUp</include>
