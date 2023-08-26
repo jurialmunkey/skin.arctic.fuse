@@ -67,6 +67,7 @@
         <control type="group">
             <include>Animation_View_WindowChange</include>
             <control type="group">
+                <include>Animation_Group_Bumper</include>
                 <height>880</height>
                 <bottom>80</bottom>
                 <right>view_pad</right>
@@ -101,6 +102,7 @@
                 <effect type="slide" start="320" end="0" time="400" delay="0" tween="cubic" easing="out" />
             </animation>
             <control type="group">
+                <include>Animation_Group_Bumper</include>
                 <height>480</height>
                 <bottom>86</bottom>
                 <right>view_pad</right>
@@ -118,6 +120,7 @@
             <include condition="!Skin.HasSetting(Furniture.EnableClock.BottomLeft)">View_PVR_GroupSwitcher</include>
         </control>
         <control type="group">
+            <include>Animation_Group_Bumper</include>
             <visible>!$EXP[Exp_InfoDialogs]</visible>
             <include>Animation_Transition_InfoPanel_Hide</include>
             <include>Animation_View_WindowChange</include>
@@ -136,6 +139,9 @@
     </include>
 
     <include name="View_PVR_Main">
+        <include content="Home_Bumper">
+            <param name="groupid">50</param>
+        </include>
         <include>Home_Fade</include>
         <include content="View_PVR_Half" condition="!Skin.HasSetting(Views.UseFullPVRGuide)">
             <param name="include">$PARAM[include]</param>
@@ -195,8 +201,10 @@
                 <onup>11</onup>
                 <ondown>11</ondown>
                 <onback>11</onback>
-                <onright>11</onright>
-                <onleft>303</onleft>
+                <include content="Action_View_Movement_OnLeft"><param name="id">$PARAM[id]</param></include>
+                <onright>332</onright>
+                <onleft>SetProperty(List.ViewContainer.Reset,$NUMBER[$PARAM[id]])</onleft>
+                <onright>SetProperty(List.ViewContainer.Reset,$NUMBER[$PARAM[id]])</onright>
                 <top>60</top>
                 <bottom>99</bottom>
                 <left>-40</left>
@@ -212,7 +220,7 @@
                 </itemlayout>
                 <focusedlayout height="$PARAM[channelheight]">
                     <control type="group">
-                        <visible>[Control.HasFocus(11) | ControlGroup(9000).HasFocus()]</visible>
+                        <visible>[Control.HasFocus(11) | ControlGroup(9000).HasFocus() | $EXP[Exp_HomeMenu_HasFocus] | Control.HasFocus(331)]</visible>
                         <include content="Layout_PVRChannel">
                             <param name="channelwidth">$PARAM[channelwidth]</param>
                             <param name="detailed">$PARAM[detailed]</param>
@@ -220,7 +228,7 @@
                         </include>
                     </control>
                     <control type="group">
-                        <visible>![Control.HasFocus(11) | ControlGroup(9000).HasFocus()]</visible>
+                        <visible>![Control.HasFocus(11) | ControlGroup(9000).HasFocus() | $EXP[Exp_HomeMenu_HasFocus] | Control.HasFocus(331)]</visible>
                         <include content="Layout_PVRChannel">
                             <param name="channelwidth">$PARAM[channelwidth]</param>
                             <param name="detailed">$PARAM[detailed]</param>
