@@ -779,6 +779,9 @@
                 <focusposition>0</focusposition>
                 <movement>0</movement>
 
+                <onleft condition="$PARAM[infinite_wrap]">$PARAM[id]</onleft>
+                <onright condition="$PARAM[infinite_wrap]">$PARAM[id]</onright>
+
                 <include content="Action_View_Movement_OnLeft" condition="![$PARAM[infinite_wrap]]">
                     <param name="id">$PARAM[id]</param>
                 </include>
@@ -1032,7 +1035,7 @@
 
     <include name="Home_Widgets_Grouplist_Widgets">
         <include content="Action_Widget_Top">
-            <param name="id">311</param>
+            <param name="id">$PARAM[id]</param>
         </include>
         <animation effect="slide" end="0,widget_sbump_h" condition="true">Conditional</animation>
     </include>
@@ -1045,7 +1048,9 @@
 
             <include condition="String.IsEmpty(Skin.String(Home.LayoutStyle))">Home_Widgets_Grouplist_Standard</include>
             <include condition="String.IsEqual(Skin.String(Home.LayoutStyle),Categories)">Home_Widgets_Grouplist_Categories</include>
-            <include condition="String.IsEqual(Skin.String(Home.LayoutStyle),Widgets)">Home_Widgets_Grouplist_Widgets</include>
+            <include condition="String.IsEqual(Skin.String(Home.LayoutStyle),Widgets)" content="Home_Widgets_Grouplist_Widgets">
+                <param name="id">$PARAM[id]</param>
+            </include>
 
             <include content="Action_Widget_End" condition="!String.IsEqual(Skin.String(Home.LayoutStyle),Widgets) | !Skin.String(Hubs.WidgetsLoopback,Loop)">
                 <param name="topid">$PARAM[topid]</param>

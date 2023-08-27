@@ -52,6 +52,21 @@
 
                     <skinshortcuts insert="widgets">items</skinshortcuts>
 
+                    <include content="Widget_EndRow_Selector" condition="Skin.HasSetting(Hubs.WidgetSelector)">
+                        <param name="id">$PYTHON[int(mainmenuid) * 1000 + 419]</param>
+                        <param name="groupid">$PYTHON[int(mainmenuid) * 1000 + 429]</param>
+                        <param name="grouplistid">$PYTHON[int(mainmenuid) * 1000 + 400]</param>
+                        <param name="toplandscapeid">$PYTHON[int(mainmenuid) * 1000 + 601]</param>
+                        <param name="topsquareid">$PYTHON[int(mainmenuid) * 1000 + 602]</param>
+                        <param name="topposterid">$PYTHON[int(mainmenuid) * 1000 + 603]</param>
+                        <param name="topid">$PYTHON[int(mainmenuid) * 1000 + 604]</param>
+                        <param name="include_condition">Skin.HasSetting(Hubs.WidgetSelector)</param>
+
+                        <content>
+                            <skinshortcuts insert="endrowlist">items</skinshortcuts>
+                        </content>
+                    </include>
+
                     <control type="group" id="$PYTHON[int(mainmenuid) * 1000 + 499]">
                     </control>
                 </include>
@@ -83,6 +98,23 @@
                     <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),$PYTHON[int(mainmenuid) * 1000 + 603 + int(id)])</visible>
                 </include>
 
+            </controls>
+        </items>
+        <items insert="endrowlist">
+            <property name="id" tag="mainmenuid" />
+            <property name="isVisible" tag="visible" />
+            <property name="isVisible">True</property>
+            <property name="widgetName" tag="label" />
+            <property name="widgetName">$LOCALIZE[31105]</property>
+            <property name="widgetPath" tag="property" attribute="name|path"/>
+            <controls>
+                <item>
+                    <label>$SKINSHORTCUTS[widgetName]</label>
+                    <onclick>$SKINSHORTCUTS[widgetPath]</onclick>
+                    <property name="id">$NUMBER[$SKINSHORTCUTS[id]]</property>
+                    <property name="list_id">$NUMBER[$PYTHON[int(mainmenuid) * 1000 + 603 + int(id)]]</property>
+                    <visible>$SKINSHORTCUTS[isVisible]</visible>
+                </item>
             </controls>
         </items>
     </submenu>
