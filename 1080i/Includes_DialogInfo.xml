@@ -203,50 +203,16 @@
         </include>
     </include>
 
-    <include name="DialogInfo_VideoInfo">
-        <include content="DialogInfo_VideoDetails">
-            <visible>String.IsEmpty(Window.Property(DetailsView))</visible>
-        </include>
-
-        <include content="List_Landscape_Row">
-            <param name="id">5002</param>
-            <height>divider_bottom</height>
-
-            <bottom>-160</bottom>
-            <include content="DialogInfo_List_Movement">
-                <param name="id">5002</param>
-            </include>
-
-            <onclick condition="Skin.HasSetting(Trailers.PlayFullscreen)">Dialog.Close(movienformation)</onclick>
-            <onclick condition="Skin.HasSetting(Trailers.PlayFullscreen)">PlayMedia($ESCINFO[Container(5002).ListItem.FileNameAndPath])</onclick>
-            <onclick condition="!Skin.HasSetting(Trailers.PlayFullscreen)">PlayMedia($ESCINFO[Container(5002).ListItem.FileNameAndPath],False,1)</onclick>
-            <onclick condition="!Skin.HasSetting(Trailers.PlayFullscreen)">SetFocus(7001)</onclick>
-
-            <content target="videos">$VAR[Path_VideoInfo_Generic,,&amp;info=videos]</content>
-            <visible>String.IsEqual(Window.Property(DetailsView),Trailer)</visible>
-            <animation effect="fade" start="100" end="0" condition="Container(5002).IsUpdating">Conditional</animation>
-        </include>
-
-        <include content="Object_Control" condition="!Skin.HasSetting(Info.UseLocalCast)">
-            <param name="control">group</param>
-            <include content="Animation_ConditionalFade">
-                <param name="condition">Container(5003).IsUpdating</param>
-            </include>
-            <visible>String.IsEqual(Window.Property(DetailsView),Cast)</visible>
-
-            <include content="Object_Hidden_List">
-                <param name="id">5203</param>
-                <content sortby="year" sortorder="descending">$INFO[Container(5003).ListItem.Property(TMDb_ID),plugin://plugin.video.themoviedb.helper/?info=details&amp;tmdb_type=person&amp;tmdb_id=,]</content>
-            </include>
-
-
+    <include name="DialogInfo_VideoInfo_CastSpotlight">
+        <param name="icon">$INFO[Container(5003).ListItem.Icon]</param>
+        <param name="plot">$VAR[Label_VideoInfo_CastBio]</param>
+        <param name="label">$INFO[Container(5003).ListItem.Label]</param>
+        <param name="label2">$VAR[Label_VideoInfo_CastAge,   ,]</param>
+        <definition>
             <control type="group">
+                <nested />
                 <right>80</right>
-                <top>-390</top>
                 <height>320</height>
-                <width>320</width>
-                <visible>Control.HasFocus(5003) | Control.HasFocus(5103) | Control.HasFocus(5303)</visible>
-                <include>Animation_Right</include>
                 <control type="group">
                     <height>294</height>
                     <bottom>0</bottom>
@@ -284,7 +250,7 @@
                             <control type="label">
                                 <font>font_main_bold</font>
                                 <textcolor>dialog_fg_90</textcolor>
-                                <label>$INFO[Container(5003).ListItem.Label]</label>
+                                <label>$PARAM[label]</label>
                                 <height>40</height>
                                 <aligny>center</aligny>
                                 <top>0</top>
@@ -293,18 +259,17 @@
                             <control type="label">
                                 <font>font_mini</font>
                                 <textcolor>dialog_fg_90</textcolor>
-                                <label>$VAR[Label_VideoInfo_CastAge,   ,]</label>
+                                <label>$PARAM[label2]</label>
                                 <height>40</height>
                                 <aligny>center</aligny>
                                 <top>3</top>
-                                <!-- <align>right</align> -->
                             </control>
                         </control>
                         <control type="textbox">
                             <top>10</top>
                             <font>font_main_plot</font>
                             <textcolor>dialog_fg_90</textcolor>
-                            <label>$VAR[Label_VideoInfo_CastBio]</label>
+                            <label>$PARAM[plot]</label>
                             <height>200</height>
                         </control>
                     </control>
@@ -317,10 +282,55 @@
                     <include>Object_ItemBack</include>
                     <control type="image">
                         <aspectratio scalediffuse="false">scale</aspectratio>
-                        <texture background="true" diffuse="diffuse/poster_w200_h294.png">$INFO[Container(5003).ListItem.Icon]</texture>
+                        <texture background="true" diffuse="diffuse/poster_w200_h294.png">$PARAM[icon]</texture>
                     </control>
                 </control>
             </control>
+        </definition>
+    </include>
+
+    <include name="DialogInfo_VideoInfo">
+        <include content="DialogInfo_VideoDetails">
+            <visible>String.IsEmpty(Window.Property(DetailsView))</visible>
+        </include>
+
+        <include content="List_Landscape_Row">
+            <param name="id">5002</param>
+            <height>divider_bottom</height>
+
+            <bottom>-160</bottom>
+            <include content="DialogInfo_List_Movement">
+                <param name="id">5002</param>
+            </include>
+
+            <onclick condition="Skin.HasSetting(Trailers.PlayFullscreen)">Dialog.Close(movienformation)</onclick>
+            <onclick condition="Skin.HasSetting(Trailers.PlayFullscreen)">PlayMedia($ESCINFO[Container(5002).ListItem.FileNameAndPath])</onclick>
+            <onclick condition="!Skin.HasSetting(Trailers.PlayFullscreen)">PlayMedia($ESCINFO[Container(5002).ListItem.FileNameAndPath],False,1)</onclick>
+            <onclick condition="!Skin.HasSetting(Trailers.PlayFullscreen)">SetFocus(7001)</onclick>
+
+            <content target="videos">$VAR[Path_VideoInfo_Generic,,&amp;info=videos]</content>
+            <visible>String.IsEqual(Window.Property(DetailsView),Trailer)</visible>
+            <animation effect="fade" start="100" end="0" condition="Container(5002).IsUpdating">Conditional</animation>
+        </include>
+
+        <include content="Object_Control" condition="!Skin.HasSetting(Info.UseLocalCast)">
+            <param name="control">group</param>
+            <include content="Animation_ConditionalFade">
+                <param name="condition">Container(5003).IsUpdating</param>
+            </include>
+            <visible>String.IsEqual(Window.Property(DetailsView),Cast)</visible>
+
+            <include content="Object_Hidden_List">
+                <param name="id">5203</param>
+                <content sortby="year" sortorder="descending">$INFO[Container(5003).ListItem.Property(TMDb_ID),plugin://plugin.video.themoviedb.helper/?info=details&amp;tmdb_type=person&amp;tmdb_id=,]</content>
+            </include>
+
+
+            <include content="DialogInfo_VideoInfo_CastSpotlight">
+                <include>Animation_Right</include>
+                <visible>Control.HasFocus(5003) | Control.HasFocus(5103) | Control.HasFocus(5303)</visible>
+                <top>-390</top>
+            </include>
 
             <control type="group">
                 <top>-40</top>
