@@ -247,7 +247,7 @@
                 <top>-390</top>
                 <height>320</height>
                 <width>320</width>
-                <visible>Control.HasFocus(5003) | Control.HasFocus(5103)</visible>
+                <visible>Control.HasFocus(5003) | Control.HasFocus(5103) | Control.HasFocus(5303)</visible>
                 <include>Animation_Right</include>
                 <control type="group">
                     <height>294</height>
@@ -347,16 +347,21 @@
                     <onclick>runscript(script.wikipedia,wikipedia=$INFO[Container(5003).ListItem.Label],tmdb_type=person)</onclick>
                     <include content="DialogInfo_List_Movement">
                         <param name="id">5003</param>
-                        <param name="onright_condition">[Integer.IsEqual(Container(5103).NumItems,0) | Container(5103).IsUpdating]</param>
-                        <param name="onleft_condition">[Integer.IsEqual(Container(5103).NumItems,0) | Container(5103).IsUpdating | !Container(5103).HasPrevious]</param>
+                        <param name="onright_condition">false</param>
+                        <!-- <param name="onleft_condition">[Integer.IsEqual(Container(5103).NumItems,0) | Container(5103).IsUpdating | !Container(5103).HasPrevious]</param> -->
                         <param name="onup_condition">false</param>
                         <param name="ondown_condition">false</param>
                     </include>
-                    <onright condition="![Integer.IsEqual(Container(5103).NumItems,0) | Container(5103).IsUpdating]">Control.Message(5103,PageDown)</onright>
-                    <onleft condition="![Integer.IsEqual(Container(5103).NumItems,0) | Container(5103).IsUpdating | !Container(5103).HasPrevious]">Control.Move(5103,-4)</onleft>
+                    <onright condition="![Integer.IsEqual(Container(5103).NumItems,0) | Container(5103).IsUpdating]">SetFocus(5303)</onright>
+                    <!-- <onright condition="![Integer.IsEqual(Container(5103).NumItems,0) | Container(5103).IsUpdating]">Action(Right)</onright> -->
+                    <!-- <onright condition="![Integer.IsEqual(Container(5103).NumItems,0) | Container(5103).IsUpdating]">SetFocus(5003)</onright> -->
+
+                    <!-- <onleft condition="![Integer.IsEqual(Container(5103).NumItems,0) | Container(5103).IsUpdating | !Container(5103).HasPrevious]">SetFocus(5303)</onleft>
+                    <onleft condition="![Integer.IsEqual(Container(5103).NumItems,0) | Container(5103).IsUpdating | !Container(5103).HasPrevious]">Action(Left)</onleft>
+                    <onleft condition="![Integer.IsEqual(Container(5103).NumItems,0) | Container(5103).IsUpdating | !Container(5103).HasPrevious]">SetFocus(5003)</onleft> -->
                     <content target="videos">$VAR[Path_VideoInfo_Generic,,&amp;info=cast&amp;aggregate=true]</content>
                     <include content="Animation_ConditionalFade">
-                        <param name="condition">!Control.HasFocus(5003)</param>
+                        <param name="condition">!Control.HasFocus(5003) + !Control.HasFocus(5303)</param>
                     </include>
                 </include>
                 <control type="group">
@@ -364,7 +369,7 @@
                     <right>-60</right>
                     <top>25</top>
                     <bottom>-25</bottom>
-                    <visible>Control.IsVisible(5003) + !Control.HasFocus(5003) + !Control.HasFocus(5103)</visible>
+                    <visible>Control.IsVisible(5003) + !Control.HasFocus(5003) + !Control.HasFocus(5103) + !Control.HasFocus(5303)</visible>
                     <include content="ObjectWall_FixedList">
                         <param name="container">Container(5003).</param>
                         <param name="listitem">ListItemAbsolute</param>
@@ -372,9 +377,26 @@
                 </control>
 
                 <control type="group">
-                    <visible>Control.HasFocus(5003) | Control.HasFocus(5103)</visible>
+                    <visible>Control.HasFocus(5003) | Control.HasFocus(5103) | Control.HasFocus(5303)</visible>
 
                     <left>420</left>
+
+                    <control type="group">
+                        <visible>!Container(5103).IsUpdating</visible>
+                        <height>scrollbar_w</height>
+                        <centerbottom>-25</centerbottom>
+                        <left>80</left>
+                        <control type="image">
+                            <height>1</height>
+                            <centertop>50%</centertop>
+                            <texture colordiffuse="main_fg_12">common/white.png</texture>
+                        </control>
+                        <control type="scrollbar" id="5303">
+                            <orientation>horizontal</orientation>
+                            <onleft>5003</onleft>
+                            <texturesliderbar colordiffuse="main_logo" border="4">scrollbar/scrollv.png</texturesliderbar>
+                        </control>
+                    </control>
 
                     <include content="List_Button_Row">
                         <param name="id">5103</param>
@@ -388,8 +410,7 @@
                         <param name="itemlayout_include">Layout_InfoDialog_Simple</param>
                         <param name="control">panel</param>
                         <preloaditems>0</preloaditems>
-                        <focusposition>1</focusposition>
-                        <movement>1</movement>
+                        <pagecontrol>5303</pagecontrol>
                         <onleft>SetFocus(5103,0,absolute)</onleft>
                         <onleft>5003</onleft>
                         <onright>SetFocus(5103,0,absolute)</onright>
@@ -401,7 +422,7 @@
                     </include>
 
                     <include content="Widget_Busy">
-                        <param name="label">Timeline</param>
+                        <param name="label">$LOCALIZE[19032]</param>
                         <param name="visible">Container(5103).IsUpdating</param>
                         <top>-50</top>
                         <left>80</left>
