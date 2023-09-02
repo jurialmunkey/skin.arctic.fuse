@@ -700,7 +700,42 @@
                 <control type="group">
                     <left>40</left>
                     <right>0</right>
-                    <control type="togglebutton">
+                    <control type="group">
+                        <centertop>50%</centertop>
+                        <height>256</height>
+                        <left>-60</left>
+                        <right>-60</right>
+                        <control type="group">
+                            <visible>!$PARAM[usealttexture]</visible>
+                            <control type="label">
+                                <align>center</align>
+                                <aligny>center</aligny>
+                                <font>$PARAM[font]</font>
+                                <textcolor>$PARAM[textcolor]</textcolor>
+                                <textoffsetx>60</textoffsetx>
+                                <height>80</height>
+                                <centertop>50%</centertop>
+                                <label>$INFO[Container($PARAM[id]).$PARAM[listitem]($PARAM[mod]$PARAM[pos]).Label]</label>
+                            </control>
+                        </control>
+                        <control type="group">
+                            <visible>$PARAM[usealttexture]</visible>
+                            <control type="image">
+                                <texture border="80">special://profile/addon_data/script.texturemaker/ArcticFuse/menumain_h.png</texture>
+                            </control>
+                            <control type="label">
+                                <align>center</align>
+                                <aligny>center</aligny>
+                                <font>$PARAM[font]</font>
+                                <textcolor>$VAR[ColorSelected]</textcolor>
+                                <textoffsetx>60</textoffsetx>
+                                <height>80</height>
+                                <centertop>50%</centertop>
+                                <label>$INFO[Container($PARAM[id]).$PARAM[listitem]($PARAM[mod]$PARAM[pos]).Label]</label>
+                            </control>
+                        </control>
+                    </control>
+                    <!-- <control type="togglebutton">
                         <centertop>50%</centertop>
                         <height>256</height>
                         <left>-60</left>
@@ -718,7 +753,7 @@
                         <hitrect x="0" y="40" w="240" h="80" />
                         <onclick>SetFocus($PARAM[id],$PARAM[pos])</onclick>
                         <onclick>Action(Select)</onclick>
-                    </control>
+                    </control> -->
                 </control>
             </control>
         </definition>
@@ -740,6 +775,11 @@
         <param name="shorten">False</param>
         <param name="preitem_fade">[Skin.String(Rows.ContentLoopback,Loop) | Skin.String(Rows.ContentLoopback,Wrap)]</param>
         <param name="wraplist">[Skin.String(Rows.ContentLoopback,Loop) | Skin.String(Rows.ContentLoopback,Wrap)]</param>
+
+        <param name="hitrect_x">0</param>
+        <param name="hitrect_y">0</param>
+        <param name="hitrect_w">0</param>
+        <param name="hitrect_h">0</param>
         <definition>
             <include content="List_ButtonMenu_Row">
                 <param name="id">$PARAM[id]</param>
@@ -756,11 +796,13 @@
                 <param name="wraplist">$PARAM[wraplist]</param>
 
 
-                <preloaditems>2</preloaditems>
+                <preloaditems>0</preloaditems>
                 <focusposition>0</focusposition>
                 <movement>0</movement>
 
-                <hitrect x="0" y="0" w="0" h="0" />
+                <animation effect="slide" start="0" end="240" condition="true">Conditional</animation>
+
+                <hitrect x="$PARAM[hitrect_x]" y="$PARAM[hitrect_y]" w="$PARAM[hitrect_w]" h="$PARAM[hitrect_h]" />
 
                 <onleft condition="$PARAM[wraplist]">$PARAM[id]</onleft>
                 <onright condition="$PARAM[wraplist]">$PARAM[id]</onright>
@@ -804,6 +846,8 @@
                 <orientation>horizontal</orientation>
                 <animation effect="slide" end="-view_button_item_w" time="400" tween="quadratic" reversible="false" condition="Control.HasFocus($PARAM[id]) + !Container($PARAM[id]).OnNext">Conditional</animation>
                 <animation effect="slide" end="view_button_item_w" time="400" tween="quadratic" reversible="false" condition="Control.HasFocus($PARAM[id]) + !Container($PARAM[id]).OnPrevious">Conditional</animation>
+
+                <hitrect x="0" y="0" w="0" h="0" />
 
                 <include content="Home_Selector_Widget_Item">
                     <param name="id">$PARAM[id]</param>
@@ -947,6 +991,11 @@
                     <include content="Home_Selector_Widget">
                         <param name="window_id">home</param>
                         <param name="slide">!String.IsEmpty(Skin.String(Home.LayoutStyle))</param>
+                        <param name="hitrect_x">-40</param>
+                        <param name="hitrect_y">740</param>
+                        <param name="hitrect_w">1640</param>
+                        <param name="hitrect_h">80</param>
+
                         <onup>311</onup>
                         <include content="Action_Menu_Movement_OnBack">
                             <param name="id">300</param>
