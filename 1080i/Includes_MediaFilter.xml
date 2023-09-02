@@ -956,7 +956,25 @@
                 <param name="label">$LOCALIZE[31319]</param>
                 <param name="icon">special://skin/extras/icons/object-group.png</param>
                 <onclick>Runscript(script.skinvariables,action=buildviews,contentid=$VAR[Items_ViewMode_Switch],pluginname=$INFO[Container.PluginName])</onclick>
-                <!-- <onclick>SetFocus(50)</onclick> -->
+            </include>
+
+            <include content="Dialog_Side_Button">
+                <param name="vertical">false</param>
+                <param name="id">07</param>
+                <param name="label">$LOCALIZE[587]</param>
+                <param name="icon">$VAR[Image_Filtered]</param>
+                <onclick condition="Container.CanFilterAdvanced">SetProperty(DialogSettings.Style,mediafilter,Home)</onclick>
+                <onclick condition="Container.CanFilterAdvanced">Filter</onclick>
+                <onclick condition="!Container.CanFilterAdvanced">SetFocus(19)</onclick>
+                <onclick condition="!Container.CanFilterAdvanced">Action(Select)</onclick>
+            </include>
+
+            <include content="Dialog_Side_Button">
+                <param name="vertical">false</param>
+                <param name="id">10</param>
+                <param name="label">Explore</param>
+                <param name="icon">special://skin/extras/icons/gem.png</param>
+                <onclick>SetFocus(20000)</onclick>
             </include>
 
             <include content="Dialog_Side_Button">
@@ -1000,22 +1018,7 @@
                 <onclick>SendClick(videos,4)</onclick>
             </include>
 
-            <include content="Dialog_Side_Button">
-                <param name="vertical">false</param>
-                <param name="id">07</param>
-                <param name="label">$LOCALIZE[587]</param>
-                <param name="icon">$VAR[Image_Filtered]</param>
-                <onclick>SetProperty(DialogSettings.Style,mediafilter,Home)</onclick>
-                <onclick>Filter</onclick>
-            </include>
 
-            <include content="Dialog_Side_Button">
-                <param name="vertical">false</param>
-                <param name="id">10</param>
-                <param name="label">Explore</param>
-                <param name="icon">special://skin/extras/icons/gem.png</param>
-                <onclick>SetFocus(20000)</onclick>
-            </include>
 
             <include content="Dialog_Side_Button">
                 <param name="vertical">false</param>
@@ -1043,13 +1046,27 @@
             <include>Animation_Right_Delay</include>
             <include>Dimension_DialogSideMenu</include>
             <visible>!String.IsEmpty(Window.Property(MediaFilterBase))</visible>
-            <visible>Control.HasFocus(20000) | Control.HasFocus(20001) | Control.HasFocus(21002) | Control.HasFocus(21001) | !String.IsEmpty(Window.Property(MediaFilterNode)) | ControlGroup(28900).HasFocus()</visible>
+            <visible>Control.HasFocus(19) | Control.HasFocus(20000) | Control.HasFocus(20001) | Control.HasFocus(21002) | Control.HasFocus(21001) | !String.IsEmpty(Window.Property(MediaFilterNode)) | ControlGroup(28900).HasFocus()</visible>
             <include content="Dialog_Head">
                 <param name="id">0</param>
                 <param name="label">$LOCALIZE[31370]</param>
             </include>
             <include content="Dialog_Body">
                 <include content="Dialog_Body_Group">
+                    <param name="id">20003</param>
+                    <include content="Settings_Button">
+                        <param name="id">19</param>
+                        <param name="control">edit</param>
+                        <param name="dialog">true</param>
+                        <description>Default Setting Button</description>
+                        <onup>SetFocus(20000,9999,absolute)</onup>
+                        <ondown>SetFocus(20000,0,absolute)</ondown>
+                        <label>$LOCALIZE[369]</label>
+                        <onleft>9000</onleft>
+                        <onback>9000</onback>
+                        <onright>28900</onright>
+                        <onfocus>SetProperty(KeyboardStyle,Side,Home)</onfocus>
+                    </include>
                     <!-- Folders -->
                     <include content="List_DialogSelect">
                         <param name="id">20000</param>
@@ -1062,6 +1079,10 @@
                         <onback>9000</onback>
                         <onright>28900</onright>
                         <onfocus>ClearProperty(MediaFilterNode)</onfocus>
+                        <top>80</top>
+                        <onup>19</onup>
+                        <ondown>SetFocus(20000,0,absolute)</ondown>
+                        <ondown>19</ondown>
                         <content>
                             <include>MediaFilter_FolderItems</include>
                         </content>
@@ -1070,7 +1091,7 @@
                 <include content="Dialog_Side_Grouplist">
                     <param name="id">28900</param>
                     <onright>noop</onright>
-                    <onleft>20000</onleft>
+                    <onleft>20003</onleft>
                     <onback>50</onback>
                     <include content="Dialog_Side_Button">
                         <param name="id">01</param>
