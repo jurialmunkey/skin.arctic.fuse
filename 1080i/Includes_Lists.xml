@@ -775,6 +775,23 @@
         <include content="_List_ButtonMenu_Row_HiddenButton_Hubs_OnFocus"><param name="pos">20</param></include>
     </include>
 
+    <include name="List_Core_UseWrapList">
+        <param name="control">list</param>
+        <param name="wraplist">[False]</param>
+        <definition>
+            <include content="Object_Control" condition="$PARAM[wraplist]">
+                <param name="control">wraplist</param>
+                <param name="id">$PARAM[id]</param>
+                <nested />
+            </include>
+            <include content="Object_Control" condition="!$PARAM[wraplist]">
+                <param name="control">$PARAM[control]</param>
+                <param name="id">$PARAM[id]</param>
+                <nested />
+            </include>
+        </definition>
+    </include>
+
     <include name="List_ButtonMenu_Row">
         <param name="control">list</param>
         <param name="itemlayout_w">240</param>
@@ -785,8 +802,12 @@
         <param name="offset_x">40</param>
         <param name="hidden_button">List_ButtonMenu_Row_HiddenButton_View</param>
         <param name="backing">false</param>
+        <param name="wraplist">[False]</param>
         <definition>
-            <control type="$PARAM[control]" id="$PARAM[id]">
+            <include content="List_Core_UseWrapList">
+                <param name="id">$PARAM[id]</param>
+                <param name="control">$PARAM[control]</param>
+                <param name="wraplist">$PARAM[wraplist]</param>
                 <nested />
                 <include content="$PARAM[hidden_button]_OnFocus">
                     <param name="id">$PARAM[id]</param>
@@ -867,7 +888,7 @@
                         </control>
                     </control>
                 </focusedlayout>
-            </control>
+            </include>
         </definition>
     </include>
 
