@@ -1291,6 +1291,7 @@
     <include name="Object_SearchLetter_Button">
         <param name="base_id">300</param>
         <param name="top_row">false</param>
+        <param name="bottom_row">false</param>
         <param name="edit_id">9099</param>
         <param name="autocomplete_id">9098</param>
         <definition>
@@ -1300,7 +1301,7 @@
                 <label>[CAPITALIZE]$PARAM[letter][/CAPITALIZE]</label>
                 <onup condition="$PARAM[top_row]">$PARAM[edit_id]</onup>
                 <onup condition="![$PARAM[top_row]]">$PARAM[base_id]$PARAM[prev_row_id]$PARAM[pos]</onup>
-                <ondown>$PARAM[base_id]$PARAM[next_row_id]$PARAM[pos]</ondown>
+                <ondown condition="![$PARAM[bottom_row]]">$PARAM[base_id]$PARAM[next_row_id]$PARAM[pos]</ondown>
                 <onclick>SetFocus($PARAM[edit_id])</onclick>
                 <include>Object_SearchLetter_Click_$PARAM[letter]</include>
                 <onclick>SetFocus($PARAM[base_id]$PARAM[this_row_id]$PARAM[pos])</onclick>
@@ -1316,12 +1317,9 @@
         <definition>
             <control type="grouplist" id="300$PARAM[this_row_id]0">
                 <orientation>horizontal</orientation>
-                <itemgap>10</itemgap>
+                <itemgap>8</itemgap>
                 <height>80</height>
-                <onright>6000</onright>
-                <onleft>SetProperty(SearchTerm,$INFO[Control.GetLabel(9099).index(1)])</onleft>
-                <onleft>308</onleft>
-                <!-- <onleft>6000</onleft> -->
+                <onleft>6000</onleft>
                 <include content="Object_SearchLetter_Button">
                     <param name="letter">$PARAM[letter_1]</param>
                     <param name="pos">1</param>
@@ -1361,6 +1359,15 @@
                 <include content="Object_SearchLetter_Button">
                     <param name="letter">$PARAM[letter_5]</param>
                     <param name="pos">5</param>
+                    <param name="top_row">$PARAM[top_row]</param>
+                    <param name="bottom_row">$PARAM[bottom_row]</param>
+                    <param name="next_row_id">$PARAM[next_row_id]</param>
+                    <param name="this_row_id">$PARAM[this_row_id]</param>
+                    <param name="prev_row_id">$PARAM[prev_row_id]</param>
+                </include>
+                <include content="Object_SearchLetter_Button">
+                    <param name="letter">$PARAM[letter_6]</param>
+                    <param name="pos">6</param>
                     <param name="top_row">$PARAM[top_row]</param>
                     <param name="bottom_row">$PARAM[bottom_row]</param>
                     <param name="next_row_id">$PARAM[next_row_id]</param>

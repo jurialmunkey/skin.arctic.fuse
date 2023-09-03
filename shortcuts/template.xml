@@ -366,16 +366,36 @@
         </items>
     </submenu>
 
+    <other include="home_floatingclock">
+        <property name="submenuVisibility" tag="property" attribute="name|submenuVisibility"/>
+        <property name="mainmenuid" tag="mainmenuid" />
+
+        <controls>
+
+            <include content="Home_FloatingClock">
+                <param name="minify">Container($PYTHON[int(mainmenuid) * 1000 + 400]).HasNext</param>
+                <visible>String.IsEqual(Container(300).ListItem.Property(submenuVisibility),$SKINSHORTCUTS[submenuVisibility])</visible>
+            </include>
+
+        </controls>
+    </other>
+
+    
     <submenu include="searchmenu" name="searchmenu">
         <controls>
             <control type="group">
                 <include>Animation_Group_Bumper</include>
-                <include content="Search_View_Slide">
-                    <include content="Home_Widgets_Infopanel">
-                        <param name="visible">[ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus]]</param>
-                        <skinshortcuts insert="searchinfopanels">items</skinshortcuts>
-                        <include>Search_View_DiscoverInfoPanel</include>
+                <include content="Home_Widgets_Infopanel">
+                    <param name="visible">[ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus] | $EXP[Exp_HomeMenu_HasFocus]]</param>
+                    <skinshortcuts insert="searchinfopanels">items</skinshortcuts>
+                    <include>Search_View_DiscoverInfoPanel</include>
+                    <include content="Animation_Fade_In">
+                        <param name="type">Visible</param>
+                        <param name="delay">200</param>
                     </include>
+                    <animation effect="fade" start="100" end="0" time="150" tween="sine" easing="in" reversible="false">Hidden</animation>
+                </include>
+                <include content="Search_View_Slide">
                     <include content="Search_View_Widgets">
                         <skinshortcuts insert="searchlist">items</skinshortcuts>
                         <include>Search_View_DiscoverWidgets</include>
@@ -616,21 +636,6 @@
             </controls>
         </items>
     </submenu>
-
-    <other include="home_floatingclock">
-        <property name="submenuVisibility" tag="property" attribute="name|submenuVisibility"/>
-        <property name="mainmenuid" tag="mainmenuid" />
-
-        <controls>
-
-            <include content="Home_FloatingClock">
-                <param name="minify">Container($PYTHON[int(mainmenuid) * 1000 + 400]).HasNext</param>
-                <visible>String.IsEqual(Container(300).ListItem.Property(submenuVisibility),$SKINSHORTCUTS[submenuVisibility])</visible>
-            </include>
-
-        </controls>
-    </other>
-
     <submenu include="moviemenu" name="moviemenu">
         <controls>
             <include content="Hub_Menu_Group">
