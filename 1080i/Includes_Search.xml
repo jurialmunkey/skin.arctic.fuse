@@ -11,10 +11,12 @@
 
     <include name="Search_View_Slide">
         <control type="group" id="$PARAM[id]">
-            <!-- <animation effect="slide" start="0" end="480,-320" time="400" tween="quadratic" easing="out" reversible="false" condition="![ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus] | $EXP[Exp_HomeMenu_HasFocus]]">Conditional</animation>
-            <animation effect="slide" end="0" start="480,-320" time="400" tween="quadratic" easing="out" reversible="false" condition="[ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus] | $EXP[Exp_HomeMenu_HasFocus]]">Conditional</animation> -->
-            <animation effect="slide" start="0" end="0,-320" time="400" tween="quadratic" easing="out" reversible="false" condition="![ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus] | $EXP[Exp_HomeMenu_HasFocus]]">Conditional</animation>
-            <animation effect="slide" end="0" start="0,-320" time="400" tween="quadratic" easing="out" reversible="false" condition="[ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus] | $EXP[Exp_HomeMenu_HasFocus]]">Conditional</animation>
+            <animation effect="slide" start="0" end="0,-320" time="400" tween="quadratic" easing="out" reversible="false" condition="![ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus] | $EXP[Exp_HomeMenu_HasFocus]] + Skin.HasSetting(Search.EnableDiscover)">Conditional</animation>
+            <animation effect="slide" end="0" start="0,-320" time="400" tween="quadratic" easing="out" reversible="false" condition="[ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus] | $EXP[Exp_HomeMenu_HasFocus]] + Skin.HasSetting(Search.EnableDiscover)">Conditional</animation>
+
+            <animation effect="slide" start="0" end="0,-440" time="400" tween="quadratic" easing="out" reversible="false" condition="![ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus] | $EXP[Exp_HomeMenu_HasFocus]] + !Skin.HasSetting(Search.EnableDiscover)">Conditional</animation>
+            <animation effect="slide" end="0" start="0,-440" time="400" tween="quadratic" easing="out" reversible="false" condition="[ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus] | $EXP[Exp_HomeMenu_HasFocus]] + !Skin.HasSetting(Search.EnableDiscover)">Conditional</animation>
+
             <include>Animation_View_WindowChange</include>
             <nested />
             <include>Home_Transitions</include>
@@ -29,13 +31,17 @@
 
             <onleft>SetFocus(5081,0,absolute)</onleft>
             <onleft>SetFocus(5001,0,absolute)</onleft>
+            <onleft>AlarmClock(reset,ClearProperty(TMDbHelper.WidgetContainer),00:00,silent)</onleft>
             <onleft>9099</onleft>
             <onright>SetFocus(5081,0,absolute)</onright>
             <onright>SetFocus(5001,0,absolute)</onright>
+            <onright>AlarmClock(reset,ClearProperty(TMDbHelper.WidgetContainer),00:00,silent)</onright>
             <onright>9099</onright>
+            <onup>AlarmClock(reset,ClearProperty(TMDbHelper.WidgetContainer),00:00,silent)</onup>
             <onup>9099</onup>
             <ondown>SetFocus(5081,0,absolute)</ondown>
             <ondown>SetFocus(5001,0,absolute)</ondown>
+            <ondown>AlarmClock(reset,ClearProperty(TMDbHelper.WidgetContainer),00:00,silent)</ondown>
             <ondown>9099</ondown>
 
             <orientation>vertical</orientation>
@@ -148,7 +154,8 @@
             </control>
 
             <include content="Furniture_Top">
-                <param name="label">$VAR[Label_Setting_SearchStyle]$INFO[Control.GetLabel(9099).index(1),: [CAPITALIZE],[/CAPITALIZE]]</param>
+                <param name="label">$VAR[Label_Setting_SearchStyle][CAPITALIZE]$VAR[Label_Search_HeadingFilter,: ,][/CAPITALIZE]</param>
+                <visible>Skin.HasSetting(Search.EnableDiscover) | [ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus] | $EXP[Exp_HomeMenu_HasFocus]]</visible>
             </include>
 
         </control>
