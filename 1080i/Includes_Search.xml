@@ -1,6 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
 
+    <include name="Search_Discover_SelectionDialog">
+        <include content="Dialog_Overlay_Side">
+            <include>Animation_Right_Delay</include>
+            <include>Dimension_DialogSideMenu</include>
+            <include content="Dialog_Head">
+                <param name="label">$PARAM[header]</param>
+            </include>
+            <include content="Dialog_Body">
+                <include content="List_DialogSelect">
+                    <param name="id">8000</param>
+                    <param name="misc">String.IsEqual(Window(1105).Property($PARAM[property]),ListItem.Label)</param>
+                    <include>Dimension_Dialog_Body_Group</include>
+                    <pagecontrol>61</pagecontrol>
+                    <onright>61</onright>
+                    <onleft>Close</onleft>
+
+                    <onclick condition="!String.IsEqual(Window(1105).Property($PARAM[property]),Container(8000).ListItem.Label)">SetProperty($PARAM[property],$INFO[Container(8000).ListItem.Label],1105)</onclick>
+                    <onclick condition="String.IsEqual(Window(1105).Property($PARAM[property]),Container(8000).ListItem.Label)">ClearProperty($PARAM[property],1105)</onclick>
+
+                    <onclick>Close</onclick>
+                    <content sortby="label">$PARAM[folderpath]</content>
+                </include>
+                <include content="Dialog_Scrollbar">
+                    <param name="id">61</param>
+                    <onleft>8000</onleft>
+                    <onright>9000</onright>
+                </include>
+                <include content="Dialog_Side_Grouplist">
+                    <param name="id">9000</param>
+                    <onright>Close</onright>
+                    <onleft>8000</onleft>
+                    <include content="Dialog_Side_Button">
+                        <param name="id">01</param>
+                        <param name="label">$LOCALIZE[15067]</param>
+                        <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
+                        <onclick>Close</onclick>
+                    </include>
+                    <include content="Dialog_Side_Button">
+                        <param name="id">02</param>
+                        <param name="label">$LOCALIZE[192]</param>
+                        <param name="icon">special://skin/extras/icons/triangle-exclamation.png</param>
+                        <onclick>ClearProperty($PARAM[property],1105)</onclick>
+                        <onclick>Close</onclick>
+                    </include>
+                </include>
+            </include>
+        </include>
+    </include>
+
     <include name="Search_Side_Slide">
         <control type="group" id="$PARAM[id]">
             <!-- <animation effect="slide" start="0" end="480" time="400" tween="quadratic" easing="out" reversible="false" condition="![ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus] | $EXP[Exp_HomeMenu_HasFocus]]">Conditional</animation>
@@ -29,14 +78,16 @@
             <top>500</top>
             <bottom>-440</bottom>
 
-            <onleft>SetFocus(5081,0,absolute)</onleft>
+            <!-- <onleft>SetFocus(5081,0,absolute)</onleft>
             <onleft>SetFocus(5001,0,absolute)</onleft>
             <onleft>AlarmClock(reset,ClearProperty(TMDbHelper.WidgetContainer),00:00,silent)</onleft>
             <onleft>9099</onleft>
             <onright>SetFocus(5081,0,absolute)</onright>
             <onright>SetFocus(5001,0,absolute)</onright>
             <onright>AlarmClock(reset,ClearProperty(TMDbHelper.WidgetContainer),00:00,silent)</onright>
-            <onright>9099</onright>
+            <onright>9099</onright> -->
+            <onup>SetFocus(5081,0,absolute)</onup>
+            <onup>SetFocus(5001,0,absolute)</onup>
             <onup>AlarmClock(reset,ClearProperty(TMDbHelper.WidgetContainer),00:00,silent)</onup>
             <onup>9099</onup>
             <ondown>SetFocus(5081,0,absolute)</ondown>
@@ -284,6 +335,218 @@
         </include>
     </include>
 
+    <include name="Search_Discover_LibraryItems">
+        <control type="button" id="30019">
+            <label>$LOCALIZE[515]</label>
+            <label2>$INFO[Window.Property(SearchDiscover.GenreLabel)]</label2>
+            <align>left</align>
+            <textoffsetx>x03</textoffsetx>
+            <width>520</width>
+            <onclick>ActivateWindow(1161)</onclick>
+        </control>
+        <control type="button" id="30029">
+            <label>$LOCALIZE[572]</label>
+            <label2>$INFO[Window.Property(SearchDiscover.StudioLabel)]</label2>
+            <align>left</align>
+            <textoffsetx>x03</textoffsetx>
+            <width>520</width>
+            <onclick>ActivateWindow(1162)</onclick>
+        </control>
+        <control type="button" id="30039">
+            <label>$LOCALIZE[20339]</label>
+            <label2>$INFO[Window.Property(SearchDiscover.DirectorLabel)]</label2>
+            <align>left</align>
+            <textoffsetx>x03</textoffsetx>
+            <width>520</width>
+            <onclick>ActivateWindow(1163)</onclick>
+        </control>
+        <control type="button" id="30049">
+            <label>$LOCALIZE[581]</label>
+            <label2>$INFO[Window.Property(SearchDiscover.SortBy),[CAPITALIZE],[/CAPITALIZE]]</label2>
+            <align>left</align>
+            <textoffsetx>x03</textoffsetx>
+            <width>520</width>
+            <onclick>ActivateWindow(1164)</onclick>
+        </control>
+        <control type="button" id="30059">
+            <label>$LOCALIZE[580]</label>
+            <label2>$INFO[Window.Property(SearchDiscover.SortOrder),[CAPITALIZE],[/CAPITALIZE]]</label2>
+            <align>left</align>
+            <textoffsetx>x03</textoffsetx>
+            <width>520</width>
+            <onclick condition="!String.IsEqual(Window.Property(SearchDiscover.SortOrder),descending)">SetProperty(SearchDiscover.SortOrder,descending)</onclick>
+            <onclick condition="String.IsEqual(Window.Property(SearchDiscover.SortOrder),descending)">SetProperty(SearchDiscover.SortOrder,ascending)</onclick>
+        </control>
+
+        <control type="grouplist" id="30069">
+            <height>80</height>
+            <width>520</width>
+            <orientation>horizontal</orientation>
+            <itemgap>10</itemgap>
+
+            <control type="button" id="30067">
+                <label>$LOCALIZE[345] &gt;=</label>
+                <label2>$INFO[Window.Property(SearchDiscover.YearLow)]</label2>
+                <align>left</align>
+                <textoffsetx>x03</textoffsetx>
+                <width>255</width>
+                <ondown>30077</ondown>
+                <onclick>SetProperty(SearchDiscover.YearLow.Dialog,1,1105)</onclick>
+                <onclick>ClearProperty(SearchDiscover.YearLow,1105)</onclick>
+                <onclick>ActivateWindow(1155)</onclick>
+            </control>
+
+            <control type="button" id="30068">
+                <label>$LOCALIZE[345] &lt;=</label>
+                <label2>$INFO[Window.Property(SearchDiscover.YearHigh)]</label2>
+                <align>left</align>
+                <textoffsetx>x03</textoffsetx>
+                <width>255</width>
+                <ondown>30078</ondown>
+                <onclick>ClearProperty(SearchDiscover.YearHigh,1105)</onclick>
+                <onclick>ClearProperty(SearchDiscover.YearLow.Dialog,1105)</onclick>
+                <onclick>ActivateWindow(1155)</onclick>
+            </control>
+        </control>
+
+        <control type="grouplist" id="30079">
+            <height>80</height>
+            <width>520</width>
+            <orientation>horizontal</orientation>
+            <itemgap>10</itemgap>
+
+            <control type="button" id="30077">
+                <label>$LOCALIZE[31188]</label>
+                <label2>$INFO[Skin.String(SearchDiscover.ItemLimit)]</label2>
+                <align>left</align>
+                <textoffsetx>x03</textoffsetx>
+                <width>255</width>
+                <onup>30067 </onup>
+                <ondown>-</ondown>
+                <onclick>Skin.Reset(SearchDiscover.ItemLimit)</onclick>
+                <onclick>Skin.SetNumeric(SearchDiscover.ItemLimit)</onclick>
+            </control>
+
+            <control type="button" id="30078">
+                <label>$LOCALIZE[563] &gt;=</label>
+                <label2>$INFO[Window.Property(SearchDiscover.RatingLow)]</label2>
+                <align>left</align>
+                <textoffsetx>x03</textoffsetx>
+                <width>255</width>
+                <onup>30068</onup>
+                <ondown>-</ondown>
+                <onclick>ClearProperty(SearchDiscover.RatingLow,1105)</onclick>
+                <onclick>ActivateWindow(1156)</onclick>
+            </control>
+        </control>
+    </include>
+
+    <include name="Search_Discover_TMDbItems">
+        <control type="button" id="30019">
+            <label>$LOCALIZE[515]</label>
+            <label2>$INFO[Window.Property(SearchDiscover.GenreLabel)]</label2>
+            <align>left</align>
+            <textoffsetx>x03</textoffsetx>
+            <width>520</width>
+            <onclick>ActivateWindow(1151)</onclick>
+        </control>
+
+        <control type="button" id="30029">
+            <label>$LOCALIZE[15225]</label>
+            <label2>$INFO[Window.Property(SearchDiscover.ProviderLabel)]</label2>
+            <align>left</align>
+            <textoffsetx>x03</textoffsetx>
+            <width>520</width>
+            <onclick>ActivateWindow(1152)</onclick>
+        </control>
+
+        <control type="button" id="30039">
+            <label>$LOCALIZE[31051]</label>
+            <label2>$INFO[Window.Property(SearchDiscover.PeopleLabel)]</label2>
+            <align>left</align>
+            <textoffsetx>x03</textoffsetx>
+            <width>520</width>
+            <onclick>SetProperty(SearchDiscover.PersonSearch,People,1105)</onclick>
+            <onclick>ActivateWindow(1153)</onclick>
+        </control>
+
+        <control type="button" id="30049">
+            <label>$LOCALIZE[31179]</label>
+            <label2>$INFO[Window.Property(SearchDiscover.KeywordLabel)]</label2>
+            <align>left</align>
+            <textoffsetx>x03</textoffsetx>
+            <width>520</width>
+            <onclick>ActivateWindow(1157)</onclick>
+        </control>
+
+        <control type="button" id="30059">
+            <label>$LOCALIZE[31048]</label>
+            <label2>$VAR[Label_DiscoverWidgets_Sort]</label2>
+            <align>left</align>
+            <textoffsetx>x03</textoffsetx>
+            <width>520</width>
+            <onclick>ActivateWindow(1154)</onclick>
+        </control>
+
+        <control type="grouplist" id="30069">
+            <height>80</height>
+            <width>520</width>
+            <orientation>horizontal</orientation>
+            <itemgap>10</itemgap>
+
+            <control type="button" id="30067">
+                <label>$LOCALIZE[345] &gt;=</label>
+                <label2>$INFO[Window.Property(SearchDiscover.YearLow)]</label2>
+                <align>left</align>
+                <textoffsetx>x03</textoffsetx>
+                <width>255</width>
+                <ondown>30077</ondown>
+                <onclick>SetProperty(SearchDiscover.YearLow.Dialog,1,1105)</onclick>
+                <onclick>ClearProperty(SearchDiscover.YearLow,1105)</onclick>
+                <onclick>ActivateWindow(1155)</onclick>
+            </control>
+
+            <control type="button" id="30068">
+                <label>$LOCALIZE[345] &lt;=</label>
+                <label2>$INFO[Window.Property(SearchDiscover.YearHigh)]</label2>
+                <align>left</align>
+                <textoffsetx>x03</textoffsetx>
+                <width>255</width>
+                <ondown>30078</ondown>
+                <onclick>ClearProperty(SearchDiscover.YearHigh,1105)</onclick>
+                <onclick>ClearProperty(SearchDiscover.YearLow.Dialog,1105)</onclick>
+                <onclick>ActivateWindow(1155)</onclick>
+            </control>
+        </control>
+
+        <control type="grouplist" id="30079">
+            <height>80</height>
+            <width>520</width>
+            <orientation>horizontal</orientation>
+            <itemgap>10</itemgap>
+
+            <include content="Search_View_DiscoverButton_Numeric">
+                <param name="id">30077</param>
+                <param name="onup">30067</param>
+                <param name="ondown">-</param>
+                <param name="label">$LOCALIZE[205] &gt;=</param>
+                <param name="string">SearchDiscover.VoteLow</param>
+            </include>
+
+            <control type="button" id="30078">
+                <label>$LOCALIZE[563] &gt;=</label>
+                <label2>$INFO[Window.Property(SearchDiscover.RatingLow)]</label2>
+                <align>left</align>
+                <textoffsetx>x03</textoffsetx>
+                <width>255</width>
+                <onup>30068</onup>
+                <ondown>-</ondown>
+                <onclick>ClearProperty(SearchDiscover.RatingLow,1105)</onclick>
+                <onclick>ActivateWindow(1156)</onclick>
+            </control>
+        </control>
+    </include>
+
     <include name="Search_View_Panel">
         <include content="Dialog_Overlay_Side">
             <visible>!$EXP[Exp_InfoDialogs]</visible>
@@ -514,109 +777,9 @@
                             <onleft condition="!String.IsEqual(Container(5081).ListItemAbsolute(0).Label,$LOCALIZE[31046])">5081</onleft>
                             <onleft condition="String.IsEqual(Container(5081).ListItemAbsolute(0).Label,$LOCALIZE[31046]) + !String.IsEqual(Container(5082).ListItemAbsolute(0).Label,$LOCALIZE[31046])">5082</onleft>
 
-                            <control type="button" id="30019">
-                                <label>$LOCALIZE[515]</label>
-                                <label2>$INFO[Window.Property(SearchDiscover.GenreLabel)]</label2>
-                                <align>left</align>
-                                <textoffsetx>x03</textoffsetx>
-                                <width>520</width>
-                                <onclick>ActivateWindow(1151)</onclick>
-                            </control>
+                            <include condition="!Skin.HasSetting(Search.LibraryDiscover)">Search_Discover_TMDbItems</include>
+                            <include condition="Skin.HasSetting(Search.LibraryDiscover)">Search_Discover_LibraryItems</include>
 
-                            <control type="button" id="30029">
-                                <label>$LOCALIZE[15225]</label>
-                                <label2>$INFO[Window.Property(SearchDiscover.ProviderLabel)]</label2>
-                                <align>left</align>
-                                <textoffsetx>x03</textoffsetx>
-                                <width>520</width>
-                                <onclick>ActivateWindow(1152)</onclick>
-                            </control>
-
-                            <control type="button" id="30039">
-                                <label>$LOCALIZE[31051]</label>
-                                <label2>$INFO[Window.Property(SearchDiscover.PeopleLabel)]</label2>
-                                <align>left</align>
-                                <textoffsetx>x03</textoffsetx>
-                                <width>520</width>
-                                <onclick>SetProperty(SearchDiscover.PersonSearch,People,1105)</onclick>
-                                <onclick>ActivateWindow(1153)</onclick>
-                            </control>
-
-                            <control type="button" id="30049">
-                                <label>$LOCALIZE[31179]</label>
-                                <label2>$INFO[Window.Property(SearchDiscover.KeywordLabel)]</label2>
-                                <align>left</align>
-                                <textoffsetx>x03</textoffsetx>
-                                <width>520</width>
-                                <onclick>ActivateWindow(1157)</onclick>
-                            </control>
-
-                            <control type="button" id="30059">
-                                <label>$LOCALIZE[31048]</label>
-                                <label2>$VAR[Label_DiscoverWidgets_Sort]</label2>
-                                <align>left</align>
-                                <textoffsetx>x03</textoffsetx>
-                                <width>520</width>
-                                <onclick>ActivateWindow(1154)</onclick>
-                            </control>
-
-                            <control type="grouplist" id="30069">
-                                <height>80</height>
-                                <width>520</width>
-                                <orientation>horizontal</orientation>
-                                <itemgap>10</itemgap>
-
-                                <control type="button" id="30067">
-                                    <label>$LOCALIZE[345] &gt;=</label>
-                                    <label2>$INFO[Window.Property(SearchDiscover.YearLow)]</label2>
-                                    <align>left</align>
-                                    <textoffsetx>x03</textoffsetx>
-                                    <width>255</width>
-                                    <ondown>30077</ondown>
-                                    <onclick>SetProperty(SearchDiscover.YearLow.Dialog,1,1105)</onclick>
-                                    <onclick>ClearProperty(SearchDiscover.YearLow,1105)</onclick>
-                                    <onclick>ActivateWindow(1155)</onclick>
-                                </control>
-
-                                <control type="button" id="30068">
-                                    <label>$LOCALIZE[345] &lt;=</label>
-                                    <label2>$INFO[Window.Property(SearchDiscover.YearHigh)]</label2>
-                                    <align>left</align>
-                                    <textoffsetx>x03</textoffsetx>
-                                    <width>255</width>
-                                    <ondown>30078</ondown>
-                                    <onclick>ClearProperty(SearchDiscover.YearHigh,1105)</onclick>
-                                    <onclick>ClearProperty(SearchDiscover.YearLow.Dialog,1105)</onclick>
-                                    <onclick>ActivateWindow(1155)</onclick>
-                                </control>
-                            </control>
-
-                            <control type="grouplist" id="30079">
-                                <height>80</height>
-                                <width>520</width>
-                                <orientation>horizontal</orientation>
-                                <itemgap>10</itemgap>
-
-                                <include content="Search_View_DiscoverButton_Numeric">
-                                    <param name="id">30077</param>
-                                    <param name="onup">30067</param>
-                                    <param name="ondown">-</param>
-                                    <param name="label">$LOCALIZE[205] &gt;=</param>
-                                    <param name="string">SearchDiscover.VoteLow</param>
-                                </include>
-
-                                <control type="button" id="30078">
-                                    <label>$LOCALIZE[563] &gt;=</label>
-                                    <label2>$INFO[Window.Property(SearchDiscover.RatingLow)]</label2>
-                                    <align>left</align>
-                                    <textoffsetx>x03</textoffsetx>
-                                    <width>255</width>
-                                    <onup>30068</onup>
-                                    <ondown>-</ondown>
-                                    <onclick>ClearProperty(SearchDiscover.RatingLow,1105)</onclick>
-                                    <onclick>ActivateWindow(1156)</onclick>
-                                </control>
-                            </control>
                         </control>
                     </control>
 
@@ -748,7 +911,12 @@
                         <onclick>ClearProperty(SearchDiscover.YearHigh)</onclick>
                         <onclick>ClearProperty(SearchDiscover.YearLow)</onclick>
                         <onclick>ClearProperty(SearchDiscover.RatingLow)</onclick>
+                        <onclick>ClearProperty(SearchDiscover.StudioLabel)</onclick>
+                        <onclick>ClearProperty(SearchDiscover.DirectorLabel)</onclick>
+                        <onclick>ClearProperty(SearchDiscover.SortBy)</onclick>
+                        <onclick>ClearProperty(SearchDiscover.SortOrder)</onclick>
                         <onclick>Skin.Reset(SearchDiscover.VoteLow)</onclick>
+                        <onclick>Skin.Reset(SearchDiscover.ItemLimit)</onclick>
                         <onclick condition="!Skin.HasSetting(Search.EnableDiscover) + String.IsEmpty(Control.GetLabel(9099).index(1))">Skin.Reset(SearchHistory)</onclick>
                     </include>
                     <include content="Dialog_Side_Button">
@@ -810,10 +978,16 @@
             <param name="labeltop">widgetsearch_label_t</param>
             <param name="labelheight">widgetsearch_label_h</param>
 
-            <content><item><label>$LOCALIZE[31046]</label><visible>[Integer.IsEqual(Container(5081).NumItems,1) | Integer.IsEqual(Container(5081).NumItems,0)] + !ControlGroup(6000).HasFocus()</visible></item></content>
+            <content>
+                <item>
+                    <label>$LOCALIZE[31046]</label>
+                    <visible>[[Integer.IsEqual(Container(5081).NumItems,1) + String.IsEqual(Container(5081).ListItem(1).Label,$LOCALIZE[31046])] | Integer.IsEqual(Container(5081).NumItems,0)]</visible>
+                </item>
+            </content>
 
-            <content target="videos">$VAR[Path_DiscoverWidgets_Film,,&amp;page=1]</content>
-            <content target="videos">$VAR[Path_DiscoverWidgets_Film,,&amp;page=2]</content>
+            <content target="videos" limit="$VAR[Path_DiscoverWidgets_ItemLimit]" sortby="$VAR[Path_DiscoverWidgets_SortBy]" sortorder="$VAR[Path_DiscoverWidgets_SortOrder]">$VAR[Path_DiscoverWidgets_Film]</content>
+
+            <onclick>PlayMedia($INFO[Container(5081).ListItem.FolderPath])</onclick>
 
             <onback condition="![!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container(5081).ListItem.CurrentItem,1)]">6000</onback>
             <onback condition="![!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container(5081).ListItem.CurrentItem,1)]">SetFocus(5081,0,absolute)</onback>
@@ -848,10 +1022,17 @@
             <param name="labeltop">widgetsearch_label_t</param>
             <param name="labelheight">widgetsearch_label_h</param>
 
-            <content><item><label>$LOCALIZE[31046]</label><visible>[Integer.IsEqual(Container(5082).NumItems,1) | Integer.IsEqual(Container(5082).NumItems,0)] + !ControlGroup(6000).HasFocus()</visible></item></content>
+            <content>
+                <item>
+                    <label>$LOCALIZE[31046]</label>
+                    <visible>[[Integer.IsEqual(Container(5082).NumItems,1) + String.IsEqual(Container(5082).ListItem(1).Label,$LOCALIZE[31046])] | Integer.IsEqual(Container(5082).NumItems,0)]</visible>
+                </item>
+            </content>
 
-            <content target="videos">$VAR[Path_DiscoverWidgets_Show,,&amp;page=1]</content>
-            <content target="videos">$VAR[Path_DiscoverWidgets_Show,,&amp;page=2]</content>
+            <content target="videos" limit="$VAR[Path_DiscoverWidgets_ItemLimit]" sortby="$VAR[Path_DiscoverWidgets_SortBy]" sortorder="$VAR[Path_DiscoverWidgets_SortOrder]">$VAR[Path_DiscoverWidgets_Show]</content>
+
+            <onclick condition="!Skin.HasSetting(Search.LibraryDiscover)">ActivateWindow(videos,$INFO[Container(5082).ListItem.FolderPath],return)</onclick>
+            <onclick condition="Skin.HasSetting(Search.LibraryDiscover)">ActivateWindow(videos,videodb://tvshows/titles/$INFO[Container(5082).ListItem.DBID])/,return)</onclick>
 
             <onback condition="![!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container(5082).ListItem.CurrentItem,1)]">6000</onback>
             <onback condition="![!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container(5082).ListItem.CurrentItem,1)]">SetFocus(5082,0,absolute)</onback>
