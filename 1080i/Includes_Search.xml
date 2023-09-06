@@ -708,44 +708,7 @@
                             </control>
                         </focusedlayout>
                         <content>plugin://plugin.program.autocompletion?info=autocomplete&amp;&amp;id=$VAR[Path_SearchTerm]&amp;&amp;limit=9</content>
-
-                        <content>
-                            <item>
-                                <label>$INFO[Skin.String(SearchHistory.01)]</label>
-                                <visible>!String.IsEmpty(Skin.String(SearchHistory.01))</visible>
-                                <visible>Integer.IsLess(Container(9098).NumItems,8)</visible>
-                            </item>
-                            <item>
-                                <label>$INFO[Skin.String(SearchHistory.02)]</label>
-                                <visible>!String.IsEmpty(Skin.String(SearchHistory.02))</visible>
-                                <visible>Integer.IsLess(Container(9098).NumItems,8)</visible>
-                            </item>
-                            <item>
-                                <label>$INFO[Skin.String(SearchHistory.03)]</label>
-                                <visible>!String.IsEmpty(Skin.String(SearchHistory.03))</visible>
-                                <visible>Integer.IsLess(Container(9098).NumItems,8)</visible>
-                            </item>
-                            <item>
-                                <label>$INFO[Skin.String(SearchHistory.04)]</label>
-                                <visible>!String.IsEmpty(Skin.String(SearchHistory.04))</visible>
-                                <visible>Integer.IsLess(Container(9098).NumItems,8)</visible>
-                            </item>
-                            <item>
-                                <label>$INFO[Skin.String(SearchHistory.05)]</label>
-                                <visible>!String.IsEmpty(Skin.String(SearchHistory.05))</visible>
-                                <visible>Integer.IsLess(Container(9098).NumItems,8)</visible>
-                            </item>
-                            <item>
-                                <label>$INFO[Skin.String(SearchHistory.06)]</label>
-                                <visible>!String.IsEmpty(Skin.String(SearchHistory.06))</visible>
-                                <visible>Integer.IsLess(Container(9098).NumItems,8)</visible>
-                            </item>
-                            <item>
-                                <label>$INFO[Skin.String(SearchHistory.07)]</label>
-                                <visible>!String.IsEmpty(Skin.String(SearchHistory.07))</visible>
-                                <visible>Integer.IsLess(Container(9098).NumItems,8)</visible>
-                            </item>
-                        </content>
+                        <content>plugin://script.skinvariables/?info=get_split_string&amp;infolabel=Skin.String(SearchHistory)&amp;reload=$INFO[Skin.String(SearchHistory)]</content>
                     </control>
 
                 </include>
@@ -767,13 +730,27 @@
                         <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
                         <onclick>PreviousMenu</onclick>
                     </include>
-                    <!-- <include content="Dialog_Side_Button">
+                    <include content="Dialog_Side_Button">
                         <param name="id">03</param>
                         <param name="label">Clear</param>
                         <param name="icon">special://skin/extras/icons/triangle-exclamation.png</param>
-                        <onclick>SetFocus(9099)</onclick>
-                        <onclick>RunScript(script.skinvariables,set_editcontrol=9099,window_id=1105,setfocus=9003,text=%20)</onclick>
-                    </include> -->
+                        <onclick condition="!String.IsEmpty(Control.GetLabel(9099).index(1))">RunScript(script.skinvariables,set_editcontrol=9099,window_id=1105,setfocus=9003)</onclick>
+                        <onclick>ClearProperty(SearchTerm)</onclick>
+                        <onclick>ClearProperty(SearchDiscover.SortLabel)</onclick>
+                        <onclick>ClearProperty(SearchDiscover.FilmSort)</onclick>
+                        <onclick>ClearProperty(SearchDiscover.ShowSort)</onclick>
+                        <onclick>ClearProperty(SearchDiscover.GenreLabel)</onclick>
+                        <onclick>ClearProperty(SearchDiscover.GenreID)</onclick>
+                        <onclick>ClearProperty(SearchDiscover.ProviderLabel)</onclick>
+                        <onclick>ClearProperty(SearchDiscover.ProviderID)</onclick>
+                        <onclick>ClearProperty(SearchDiscover.PeopleLabel)</onclick>
+                        <onclick>ClearProperty(SearchDiscover.PeopleID)</onclick>
+                        <onclick>ClearProperty(SearchDiscover.YearHigh)</onclick>
+                        <onclick>ClearProperty(SearchDiscover.YearLow)</onclick>
+                        <onclick>ClearProperty(SearchDiscover.RatingLow)</onclick>
+                        <onclick>Skin.Reset(SearchDiscover.VoteLow)</onclick>
+                        <onclick condition="!Skin.HasSetting(Search.EnableDiscover) + String.IsEmpty(Control.GetLabel(9099).index(1))">Skin.Reset(SearchHistory)</onclick>
+                    </include>
                     <include content="Dialog_Side_Button">
                         <param name="id">04</param>
                         <param name="label">Discover</param>
@@ -790,7 +767,6 @@
                         <selected>!Skin.HasSetting(Search.EnableDiscover)</selected>
                         <onclick>Skin.ToggleSetting(Search.EnableDiscover)</onclick>
                     </include>
-
                 </include>
             </include>
 
