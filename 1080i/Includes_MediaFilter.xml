@@ -157,6 +157,7 @@
             <label>$LOCALIZE[136]</label>
             <property name="special_icon">special://skin/extras/icons/list-check.png</property>
             <property name="isSpecial">True</property>
+            <onclick>ClearProperty(MediaFilterName)</onclick>
             <onclick>ClearProperty(MediaFilterNode)</onclick>
             <onclick>ClearProperty(MediaFilterNode.SortBy)</onclick>
             <onclick>ClearProperty(MediaFilterNode.SortOrder)</onclick>
@@ -174,6 +175,7 @@
             <label>$LOCALIZE[515]</label>
             <property name="special_icon">special://skin/extras/icons/genre.png</property>
             <property name="isSpecial">True</property>
+            <onclick>SetProperty(MediaFilterName,1)</onclick>
             <onclick>ClearProperty(MediaFilterNode)</onclick>
             <onclick>SetProperty(MediaFilterNode.SortBy,label)</onclick>
             <onclick>SetProperty(MediaFilterNode.SortOrder,ascending)</onclick>
@@ -189,6 +191,7 @@
             <label>$LOCALIZE[572]</label>
             <property name="special_icon">special://skin/extras/icons/director.png</property>
             <property name="isSpecial">True</property>
+            <onclick>SetProperty(MediaFilterName,1)</onclick>
             <onclick>ClearProperty(MediaFilterNode)</onclick>
             <onclick>SetProperty(MediaFilterNode.SortBy,label)</onclick>
             <onclick>SetProperty(MediaFilterNode.SortOrder,ascending)</onclick>
@@ -204,10 +207,11 @@
             <label>$LOCALIZE[345]</label>
             <property name="special_icon">special://skin/extras/icons/calendar.png</property>
             <property name="isSpecial">True</property>
+            <onclick>SetProperty(MediaFilterName,1)</onclick>
             <onclick>ClearProperty(MediaFilterNode)</onclick>
             <onclick>SetProperty(MediaFilterNode.SortBy,label)</onclick>
             <onclick>SetProperty(MediaFilterNode.SortOrder,ascending)</onclick>
-            <onclick condition="Container.Content(movies)">SetProperty(MediaFilterNode,special://skin/extras/hub/movies/years/)</onclick>
+            <onclick condition="Container.Content(movies)">SetProperty(MediaFilterNode,videodb://movies/years/)</onclick>
             <onclick condition="Container.Content(tvshows)">SetProperty(MediaFilterNode,videodb://tvshows/years/)</onclick>
             <onclick>SetProperty(MediaFilterNodeLabel,$LOCALIZE[652])</onclick>
             <onclick>AlarmClock(refocus,SetFocus(20001,0,absolute),00:00,silent)</onclick>
@@ -219,6 +223,7 @@
             <label>$LOCALIZE[20337]</label>
             <property name="special_icon">special://skin/extras/icons/person.png</property>
             <property name="isSpecial">True</property>
+            <onclick>SetProperty(MediaFilterName,1)</onclick>
             <onclick>ClearProperty(MediaFilterNode)</onclick>
             <onclick>SetProperty(MediaFilterNode.SortBy,label)</onclick>
             <onclick>SetProperty(MediaFilterNode.SortOrder,ascending)</onclick>
@@ -234,6 +239,7 @@
             <label>$LOCALIZE[20339]</label>
             <property name="special_icon">special://skin/extras/icons/video-addons.png</property>
             <property name="isSpecial">True</property>
+            <onclick>SetProperty(MediaFilterName,1)</onclick>
             <onclick>ClearProperty(MediaFilterNode)</onclick>
             <onclick>SetProperty(MediaFilterNode.SortBy,label)</onclick>
             <onclick>SetProperty(MediaFilterNode.SortOrder,ascending)</onclick>
@@ -248,6 +254,7 @@
             <label>$LOCALIZE[31373]</label>
             <property name="special_icon">special://skin/extras/icons/tag.png</property>
             <property name="isSpecial">True</property>
+            <onclick>SetProperty(MediaFilterName,1)</onclick>
             <onclick>ClearProperty(MediaFilterNode)</onclick>
             <onclick>SetProperty(MediaFilterNode.SortBy,label)</onclick>
             <onclick>SetProperty(MediaFilterNode.SortOrder,ascending)</onclick>
@@ -263,6 +270,7 @@
             <label>$LOCALIZE[574]</label>
             <property name="special_icon">special://skin/extras/icons/world.png</property>
             <property name="isSpecial">True</property>
+            <onclick>SetProperty(MediaFilterName,1)</onclick>
             <onclick>ClearProperty(MediaFilterNode)</onclick>
             <onclick>SetProperty(MediaFilterNode.SortBy,label)</onclick>
             <onclick>SetProperty(MediaFilterNode.SortOrder,ascending)</onclick>
@@ -277,6 +285,7 @@
             <label>TMDb $LOCALIZE[515]</label>
             <property name="special_icon">special://skin/extras/icons/genre.png</property>
             <property name="isSpecial">True</property>
+            <onclick>ClearProperty(MediaFilterName)</onclick>
             <onclick>ClearProperty(MediaFilterNode)</onclick>
             <onclick>ClearProperty(MediaFilterNode.SortBy)</onclick>
             <onclick>ClearProperty(MediaFilterNode.SortOrder)</onclick>
@@ -292,6 +301,7 @@
             <label>TMDb $LOCALIZE[19334]</label>
             <property name="special_icon">special://skin/extras/icons/share-nodes.png</property>
             <property name="isSpecial">True</property>
+            <onclick>ClearProperty(MediaFilterName)</onclick>
             <onclick>ClearProperty(MediaFilterNode)</onclick>
             <onclick>ClearProperty(MediaFilterNode.SortBy)</onclick>
             <onclick>ClearProperty(MediaFilterNode.SortOrder)</onclick>
@@ -307,6 +317,7 @@
             <label>Trakt $LOCALIZE[31200]</label>
             <property name="special_icon">special://skin/extras/icons/trakttv.png</property>
             <property name="isSpecial">True</property>
+            <onclick>ClearProperty(MediaFilterName)</onclick>
             <onclick>ClearProperty(MediaFilterNode)</onclick>
             <onclick>ClearProperty(MediaFilterNode.SortBy)</onclick>
             <onclick>ClearProperty(MediaFilterNode.SortOrder)</onclick>
@@ -323,6 +334,7 @@
             <label>Trakt $LOCALIZE[31166]</label>
             <property name="special_icon">special://skin/extras/icons/rectangle-list.png</property>
             <property name="isSpecial">True</property>
+            <onclick>ClearProperty(MediaFilterName)</onclick>
             <onclick>ClearProperty(MediaFilterNode)</onclick>
             <onclick>ClearProperty(MediaFilterNode.SortBy)</onclick>
             <onclick>ClearProperty(MediaFilterNode.SortOrder)</onclick>
@@ -1115,14 +1127,30 @@
             </include>
             <include content="Dialog_Body">
                 <include content="Dialog_Body_Group">
+                    <include content="Settings_Button">
+                        <param name="id">20019</param>
+                        <param name="control">edit</param>
+                        <param name="dialog">true</param>
+                        <description>Default Setting Button</description>
+                        <onup>SetFocus(20001,9999,absolute)</onup>
+                        <ondown>SetFocus(20001,0,absolute)</ondown>
+                        <label>$LOCALIZE[587]</label>
+                        <enable>!String.IsEmpty(Window.Property(MediaFilterName))</enable>
+                        <onback>20000</onback>
+                        <onleft>20000</onleft>
+                        <onright>20061</onright>
+                    </include>
                     <include content="List_DialogSelect">
                         <param name="id">20001</param>
                         <param name="misc">[!String.IsEmpty(Window.Property(MediaFilterThis)) + [[!String.IsEmpty(ListItem.FolderPath) + String.IsEqual(ListItem.FolderPath,Window.Property(MediaFilterThis))] | [!String.IsEmpty(ListItem.Property(static_folderpath)) + String.IsEqual(ListItem.Property(static_folderpath),Window.Property(MediaFilterThis))]]]</param>
-                        <param name="control">fixedlist</param>
+                        <param name="control">list</param>
                         <param name="textcolor">dialog_fg</param>
                         <focusposition>4</focusposition>
                         <movement>5</movement>
+                        <top>80</top>
                         <pagecontrol>20061</pagecontrol>
+                        <onup>20019</onup>
+                        <ondown>20019</ondown>
                         <onback>20000</onback>
                         <onleft>20000</onleft>
                         <onright>20061</onright>
@@ -1147,7 +1175,7 @@
                             </item>
                         </content>
 
-                        <content sortby="$INFO[Window.Property(MediaFilterNode.SortBy)]" sortorder="$INFO[Window.Property(MediaFilterNode.SortOrder)]">$INFO[Window.Property(MediaFilterNode)]</content>
+                        <content sortby="$INFO[Window.Property(MediaFilterNode.SortBy)]" sortorder="$INFO[Window.Property(MediaFilterNode.SortOrder)]">$VAR[Path_MediaFilter_Node]</content>
 
                         <content>
                             <include>MediaFilter_StaticItems</include>
