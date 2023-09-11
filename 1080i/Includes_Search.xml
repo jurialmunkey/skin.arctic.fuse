@@ -342,7 +342,8 @@
             <align>left</align>
             <textoffsetx>x03</textoffsetx>
             <width>520</width>
-            <onclick>ActivateWindow(1161)</onclick>
+            <onclick>SetProperty(SearchDiscover.FilterLabel,Genre)</onclick>
+            <onclick>SetFocus(8000)</onclick>
         </control>
         <control type="button" id="30029">
             <label>$LOCALIZE[572]</label>
@@ -350,7 +351,8 @@
             <align>left</align>
             <textoffsetx>x03</textoffsetx>
             <width>520</width>
-            <onclick>ActivateWindow(1162)</onclick>
+            <onclick>SetProperty(SearchDiscover.FilterLabel,Studio)</onclick>
+            <onclick>SetFocus(8000)</onclick>
         </control>
         <control type="button" id="30039">
             <label>$LOCALIZE[20339]</label>
@@ -358,9 +360,19 @@
             <align>left</align>
             <textoffsetx>x03</textoffsetx>
             <width>520</width>
-            <onclick>ActivateWindow(1163)</onclick>
+            <onclick>SetProperty(SearchDiscover.FilterLabel,Director)</onclick>
+            <onclick>SetFocus(8000)</onclick>
         </control>
         <control type="button" id="30049">
+            <label>Country</label>
+            <label2>$INFO[Window.Property(SearchDiscover.CountryLabel)]</label2>
+            <align>left</align>
+            <textoffsetx>x03</textoffsetx>
+            <width>520</width>
+            <onclick>SetProperty(SearchDiscover.FilterLabel,Country)</onclick>
+            <onclick>SetFocus(8000)</onclick>
+        </control>
+        <control type="button" id="30059">
             <label>$LOCALIZE[581]</label>
             <label2>$INFO[Window.Property(SearchDiscover.SortBy),[CAPITALIZE],[/CAPITALIZE]]</label2>
             <align>left</align>
@@ -368,7 +380,7 @@
             <width>520</width>
             <onclick>ActivateWindow(1164)</onclick>
         </control>
-        <control type="button" id="30059">
+        <!-- <control type="button" id="30059">
             <label>$LOCALIZE[580]</label>
             <label2>$INFO[Window.Property(SearchDiscover.SortOrder),[CAPITALIZE],[/CAPITALIZE]]</label2>
             <align>left</align>
@@ -376,7 +388,7 @@
             <width>520</width>
             <onclick condition="!String.IsEqual(Window.Property(SearchDiscover.SortOrder),descending)">SetProperty(SearchDiscover.SortOrder,descending)</onclick>
             <onclick condition="String.IsEqual(Window.Property(SearchDiscover.SortOrder),descending)">SetProperty(SearchDiscover.SortOrder,ascending)</onclick>
-        </control>
+        </control> -->
 
         <control type="grouplist" id="30069">
             <height>80</height>
@@ -762,7 +774,7 @@
                         </control>
 
                         <!-- Discover Options -->
-                        <control type="grouplist">
+                        <control type="grouplist" id="8100">
 
                             <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
 
@@ -941,6 +953,80 @@
             <nested />
         </include>
 
+
+        <include content="Dialog_Overlay_Side">
+            <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+            <visible>!$EXP[Exp_InfoDialogs]</visible>
+            <visible allowhiddenfocus="true">[Control.HasFocus(8000) | ControlGroup(89000).HasFocus()]</visible>
+            <include>Animation_Right_Delay</include>
+            <include>Dimension_DialogSideMenu</include>
+            <include content="Dialog_Head">
+                <param name="id">0</param>
+                <param name="label">$INFO[Window.Property(SearchDiscover.FilterLabel)]</param>
+            </include>
+
+
+            <include content="Dialog_Body">
+                <include content="List_DialogSelect">
+                    <param name="id">8000</param>
+                    <param name="misc">[[String.IsEqual(Window.Property(SearchDiscover.FilterLabel),Genre) + !String.IsEmpty(Window.Property(SearchDiscover.GenreLabel)) + String.Contains(Window.Property(SearchDiscover.GenreLabel),ListItem.Label)] | [String.IsEqual(Window.Property(SearchDiscover.FilterLabel),Studio) + !String.IsEmpty(Window.Property(SearchDiscover.StudioLabel)) + String.Contains(Window.Property(SearchDiscover.StudioLabel),ListItem.Label)] | [String.IsEqual(Window.Property(SearchDiscover.FilterLabel),Director) + !String.IsEmpty(Window.Property(SearchDiscover.DirectorLabel)) + String.Contains(Window.Property(SearchDiscover.DirectorLabel),ListItem.Label)] | [String.IsEqual(Window.Property(SearchDiscover.FilterLabel),Country) + !String.IsEmpty(Window.Property(SearchDiscover.CountryLabel)) + String.Contains(Window.Property(SearchDiscover.CountryLabel),ListItem.Label)]]</param>
+                    <include>Dimension_Dialog_Body_Group</include>
+                    <!-- <pagecontrol>61</pagecontrol>
+                    <onright>61</onright> -->
+                    <onright>89000</onright>
+                    <onleft>8100</onleft>
+                    <onback>8100</onback>
+
+                    <!-- Genre -->
+                    <include content="Action_SearchLibrary_Filter_Onclick">
+                        <param name="type">Genre</param>
+                    </include>
+                    <!-- Studio -->
+                    <include content="Action_SearchLibrary_Filter_Onclick">
+                        <param name="type">Studio</param>
+                    </include>
+                    <!-- Director -->
+                    <include content="Action_SearchLibrary_Filter_Onclick">
+                        <param name="type">Director</param>
+                    </include>
+                    <!-- Country -->
+                    <include content="Action_SearchLibrary_Filter_Onclick">
+                        <param name="type">Country</param>
+                    </include>
+
+                    <content>
+                        <item>
+                            <label>$LOCALIZE[192]</label>
+                            <property name="clearfilter">True</property>
+                            <property name="special_icon">special://skin/extras/icons/_none.png</property>
+                            <!-- <property name="special_icon">special://skin/extras/icons/circle-minus.png</property> -->
+                        </item>
+                    </content>
+
+                    <content sortby="label">$VAR[Path_SearchFilter_Node]</content>
+                </include>
+                <include content="Dialog_Side_Grouplist">
+                    <param name="id">89000</param>
+                    <onright>8100</onright>
+                    <onleft>8000</onleft>
+                    <include content="Dialog_Side_Button">
+                        <param name="id">01</param>
+                        <param name="baseid">89</param>
+                        <param name="label">$LOCALIZE[186]</param>
+                        <param name="icon">special://skin/extras/icons/circle-check.png</param>
+                        <onclick>SetFocus(8100)</onclick>
+                    </include>
+                    <!-- <include content="Dialog_Side_Button">
+                        <param name="id">02</param>
+                        <param name="baseid">89</param>
+                        <param name="label">$LOCALIZE[192]</param>
+                        <param name="icon">special://skin/extras/icons/triangle-exclamation.png</param>
+                        <onclick>ClearProperty(SearchDiscover.GenreLabel)</onclick>
+                        <onclick>SetFocus(8100)</onclick>
+                    </include> -->
+                </include>
+            </include>
+        </include>
 
 
     </include>
