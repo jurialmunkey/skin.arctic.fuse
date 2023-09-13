@@ -956,9 +956,11 @@
             <right>-20</right>
 
             <onback>50</onback>
-            <onup>50</onup>
-            <!-- <onup>ClearProperty(MediaFilterBase)</onup>
-            <include>Action_ToScrollbar_OnUp</include> -->
+            <onup condition="String.IsEmpty(Window.Property(View.WallSwitchRow.Hold))">50</onup>
+            <onup condition="!String.IsEmpty(Window.Property(View.WallSwitchRow.Hold))">ClearProperty(MediaFilterBase)</onup>
+            <include content="Action_ToScrollbar_OnUp">
+                <param name="condition">!String.IsEmpty(Window.Property(View.WallSwitchRow.Hold))</param>
+            </include>
             <ondown>SetFocus(20000)</ondown>
 
             <visible>!String.IsEmpty(Window.Property(MediaFilterBase))</visible>
