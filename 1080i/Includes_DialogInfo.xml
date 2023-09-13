@@ -217,7 +217,8 @@
                     <height>294</height>
                     <bottom>0</bottom>
                     <right>240</right>
-                    <width>720</width>
+                    <left>920</left>
+                    <!-- <width>720</width> -->
                     <include content="Dialog_Background_Blur">
                         <animation effect="fade" end="90" condition="true">Conditional</animation>
                     </include>
@@ -324,8 +325,6 @@
                 <param name="id">5203</param>
                 <content sortby="year" sortorder="descending">$INFO[Container(5003).ListItem.Property(TMDb_ID),plugin://plugin.video.themoviedb.helper/?info=details&amp;tmdb_type=person&amp;tmdb_id=,]</content>
             </include>
-
-
             <include content="DialogInfo_VideoInfo_CastSpotlight">
                 <include>Animation_Right</include>
                 <visible>Control.HasFocus(5003) | Control.HasFocus(5103) | Control.HasFocus(5303)</visible>
@@ -354,7 +353,7 @@
                     <movement>1</movement>
                     <!-- <onclick>runscript(script.wikipedia,wikipedia=$INFO[Container(5003).ListItem.Label],tmdb_type=person)</onclick> -->
                     <onclick>SetProperty(Item_Title,$INFO[Container(5003).ListItem.Label],1122)</onclick>
-                    <onclick>SetProperty(Item_Query,$INFO[Container(5003).ListItem.Property(TMDb_ID)],1122)</onclick>
+                    <onclick>SetProperty(Item_Query,$INFO[Container(5003).ListItem.Property(TMDb_ID),&amp;tmdb_id=,],1122)</onclick>
                     <onclick>SetProperty(Item_Icon,$INFO[Container(5003).ListItem.Icon],1122)</onclick>
                     <onclick>SetProperty(Item_Plot,$VAR[Label_VideoInfo_CastBio_Prop],1122)</onclick>
                     <onclick>SetProperty(Item_Label,$INFO[Container(5003).ListItem.Label],1122)</onclick>
@@ -445,18 +444,55 @@
 
 
         </include>
-        <include content="List_Poster_Row" condition="Skin.HasSetting(Info.UseLocalCast)">
-            <param name="id">50</param>
-            <param name="detailed">true</param>
-            <height>divider_bottom</height>
-
-            <bottom>-160</bottom>
-            <include content="DialogInfo_List_Movement">
-                <param name="id">50</param>
-            </include>
+        <include content="Object_Control" condition="Skin.HasSetting(Info.UseLocalCast)">
+            <param name="control">group</param>
 
             <visible>String.IsEqual(Window.Property(DetailsView),Cast)</visible>
-            <animation effect="fade" start="100" end="0" condition="Container(50).IsUpdating">Conditional</animation>
+            <include content="Animation_ConditionalFade">
+                <param name="condition">Container(50).IsUpdating</param>
+            </include>
+            <include content="Object_Hidden_List">
+                <param name="id">5203</param>
+                <content sortby="year" sortorder="descending">$INFO[Container(50).ListItem.Label,plugin://plugin.video.themoviedb.helper/?info=details&amp;tmdb_type=person&amp;query=,]</content>
+            </include>
+            <include content="DialogInfo_VideoInfo_CastSpotlight">
+                <param name="icon">$INFO[Container(50).ListItem.Icon]</param>
+                <param name="label">$INFO[Container(50).ListItem.Label]</param>
+                <include>Animation_Right</include>
+                <visible>Control.HasFocus(50)</visible>
+                <top>-390</top>
+            </include>
+
+            <include content="List_Poster_Row">
+                <param name="id">50</param>
+                <param name="detailed">true</param>
+                <height>divider_bottom</height>
+
+                <bottom>-160</bottom>
+                <include content="DialogInfo_List_Movement">
+                    <param name="id">50</param>
+                    <param name="ondown_condition">false</param>
+                    <param name="onup_condition">false</param>
+                </include>
+
+                <onup>SetProperty(Item_Title,$INFO[Container(50).ListItem.Label],1122)</onup>
+                <onup>SetProperty(Item_Query,$INFO[Container(50).ListItem.Label,&amp;query=,],1122)</onup>
+                <onup>SetProperty(Item_Icon,$INFO[Container(50).ListItem.Icon],1122)</onup>
+                <onup>SetProperty(Item_Plot,$VAR[Label_VideoInfo_CastBio_Prop],1122)</onup>
+                <onup>SetProperty(Item_Label,$INFO[Container(50).ListItem.Label],1122)</onup>
+                <onup>SetProperty(Item_Label2,$VAR[Label_VideoInfo_CastAge],1122)</onup>
+                <onup>SetProperty(CustomDialogSettingsTitle,$INFO[Container(50).ListItem.Label],Home)</onup>
+                <onup>SetProperty(CustomDialogSettingsItems,Items_Settings_DialogInfo_ActorChoice,Home)</onup>
+                <onup>ActivateWindow(1118)</onup>
+
+                <ondown>SetProperty(Item_Title,$INFO[Container(50).ListItem.Label],1122)</ondown>
+                <ondown>SetProperty(Item_Query,$INFO[Container(50).ListItem.Label,&amp;query=,],1122)</ondown>
+                <ondown>SetProperty(Item_Icon,$INFO[Container(50).ListItem.Icon],1122)</ondown>
+                <ondown>SetProperty(Item_Plot,$VAR[Label_VideoInfo_CastBio_Prop],1122)</ondown>
+                <ondown>SetProperty(Item_Label,$INFO[Container(50).ListItem.Label],1122)</ondown>
+                <ondown>SetProperty(Item_Label2,$VAR[Label_VideoInfo_CastAge],1122)</ondown>
+                <ondown>ActivateWindow(1122)</ondown>
+            </include>
         </include>
 
         <include content="List_Reviews_Row">
