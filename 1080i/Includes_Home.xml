@@ -574,6 +574,7 @@
     <include name="Home_Fullscreen_Widget_Group">
         <param name="window_id">Home</param>
         <param name="visible">True</param>
+        <param name="target">$INFO[Skin.String(skinshortcuts-mainmenu-widgetTarget)]</param>
         <definition>
             <control type="group" id="304">
                 <top>fullscreenwidget_buttongroup_t</top>
@@ -649,7 +650,11 @@
                         <texturefocus />
                         <onclick>SetFocus(301)</onclick>
                         <onclick condition="!String.IsEqual(Window(Home).Property(TMDbHelper.KodiSetting.DefaultSelectAction),$NUMBER[3])">Action(Select)</onclick>
-                        <onclick condition="String.IsEqual(Window(Home).Property(TMDbHelper.KodiSetting.DefaultSelectAction),$NUMBER[3])">Action(ContextMenu)</onclick>
+                        <onclick condition="String.IsEqual(Window(Home).Property(TMDbHelper.KodiSetting.DefaultSelectAction),$NUMBER[3]) + Container(301).ListItem.IsFolder">ActivateWindow($PARAM[target],$INFO[Container(301).ListItem.FolderPath],return)</onclick>
+                        <onclick condition="String.IsEqual(Window(Home).Property(TMDbHelper.KodiSetting.DefaultSelectAction),$NUMBER[3]) + !Container(301).ListItem.IsFolder + !String.IsEmpty(Container(301).ListItem.FileNameAndPath)">PlayMedia($ESCINFO[Container(301).ListItem.FileNameAndPath])</onclick>
+                        <onclick condition="String.IsEqual(Window(Home).Property(TMDbHelper.KodiSetting.DefaultSelectAction),$NUMBER[3]) + !Container(301).ListItem.IsFolder + String.IsEmpty(Container(301).ListItem.FileNameAndPath) + !String.IsEmpty(Container(301).ListItem.FolderPath)">PlayMedia($ESCINFO[Container(301).ListItem.FolderPath])</onclick>
+
+                        <!-- <onclick condition="String.IsEqual(Window(Home).Property(TMDbHelper.KodiSetting.DefaultSelectAction),$NUMBER[3])">Action(ContextMenu)</onclick> -->
                         <onclick>SetFocus(311)</onclick>
                         <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,$PARAM[window_id])</onfocus>
                         <onfocus>SetProperty(FullscreenWidgetRefocus,311,$PARAM[window_id])</onfocus>
