@@ -1,131 +1,344 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<window type="dialog" id="1115">
+<window type="window" id="1115">
     <defaultcontrol always="true">8000</defaultcontrol>
-    <onload>ClearProperty(CustomDialogSettingsFocus,Home)</onload>
-    <onunload>ClearProperty(CustomDialogSettingsStyle,Home)</onunload>
-    <onunload>ClearProperty(CustomDialogSettingsImage,Home)</onunload>
+
+    <onload condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SearchMenu)">SetFocus(6000,0,absolute)</onload>
+    <onload condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_HomeMenu)">SetFocus(6000,1,absolute)</onload>
+    <onload condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SideMenu_1)">SetFocus(6000,2,absolute)</onload>
+    <onload condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SideMenu_2)">SetFocus(6000,3,absolute)</onload>
+    <onload condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SideMenu_3)">SetFocus(6000,4,absolute)</onload>
+    <onload condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SideMenu_4)">SetFocus(6000,5,absolute)</onload>
+    <onload>SetFocus(8000)</onload>
+
     <onunload>ClearProperty(CustomDialogSettingsLabel,Home)</onunload>
     <include content="Action_BuildSkinShortcuts_OnUnload">
-        <param name="condition">[!String.IsEmpty(Window(Home).Property(CustomDialogSettingsBuild)) + String.IsEmpty(Window(Home).Property(CustomDialogSettingsFocus))]</param>
+        <param name="condition">[!String.IsEmpty(Window(Home).Property(CustomDialogSettingsBuild))]</param>
     </include>
     <onunload>ClearProperty(CustomDialogSettingsBuild,Home)</onunload>
-    <onunload condition="!String.IsEmpty(Window(Home).Property(CustomDialogSettingsFocus))">SetFocus($INFO[Window(Home).Property(CustomDialogSettingsFocus)])</onunload>
     <controls>
 
+        <include content="Background_Main">
+            <param name="plain_background">true</param>
+        </include>
+        <include>Background_Transition</include>
 
-        <include content="Object_Control" condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsStyle),Side)">
-            <param name="control">group</param>
+        <!-- Layout Focus -->
+        <control type="image">
+            <left>160</left>
+            <bottom>-40</bottom>
+            <top>500</top>
+            <right>40</right>
+            <texture colordiffuse="3300ddff" border="20">common/box.png</texture>
+            <visible>String.IsEqual(Window.Property(Highlight),Layout)</visible>
+            <include>Animation_FadeIn</include>
+            <include>Animation_FadeOut</include>
+        </control>
 
-            <!-- Side Menu Focus -->
+        <!-- Spotlight Focus -->
+        <control type="image">
+            <left>160</left>
+            <top>160</top>
+            <bottom>360</bottom>
+            <right>40</right>
+            <texture colordiffuse="3300ddff" border="20">common/box.png</texture>
+            <visible>String.IsEqual(Window.Property(Highlight),Spotlight)</visible>
+            <include>Animation_FadeIn</include>
+            <include>Animation_FadeOut</include>
+        </control>
+
+        <!-- Side Menu Focus -->
+        <control type="image">
+            <left>40</left>
+            <bottom>40</bottom>
+            <top>40</top>
+            <width>120</width>
+            <texture colordiffuse="3300ddff" border="20">common/box.png</texture>
+            <visible>String.IsEmpty(Window.Property(Highlight))</visible>
+            <include>Animation_FadeIn</include>
+            <include>Animation_FadeOut</include>
+        </control>
+
+        <!-- Side Menu Search -->
+        <control type="group">
+            <centerleft>100</centerleft>
+            <centertop>100</centertop>
+            <height>80</height>
+            <width>80</width>
             <control type="image">
-                <left>40</left>
-                <bottom>40</bottom>
-                <top>40</top>
-                <width>120</width>
-                <texture colordiffuse="3300ddff" border="20">common/box.png</texture>
-                <visible>String.IsEmpty(Window.Property(Highlight))</visible>
-                <include>Animation_FadeIn</include>
-                <include>Animation_FadeOut</include>
-            </control>
-
-
-            <!-- Side Menu Search -->
-            <control type="image">
-                <centerleft>100</centerleft>
-                <centertop>100</centertop>
-                <height>80</height>
-                <width>80</width>
-                <texture colordiffuse="3300ddff" border="20">common/box.png</texture>
                 <visible>String.IsEqual(Window.Property(MenuHighlight),MenuSearch)</visible>
-                <include>Animation_FadeIn</include>
-                <include>Animation_FadeOut</include>
+                <texture colordiffuse="3300ddff" border="20">common/box.png</texture>
             </control>
+            <control type="group">
+                <width>40</width>
+                <height>40</height>
+                <centerleft>50%</centerleft>
+                <centertop>50%</centertop>
+                <control type="group">
+                    <visible>!String.IsEqual(Window.Property(MenuHighlight),MenuSearch)</visible>
+                    <control type="image">
+                        <aspectratio>keep</aspectratio>
+                        <bordersize>icon_home_bordersize</bordersize>
+                        <texture colordiffuse="main_fg_30">special://skin/extras/icons/search.png</texture>
+                    </control>
+                </control>
+                <control type="group">
+                    <visible>String.IsEqual(Window.Property(MenuHighlight),MenuSearch)</visible>
+                    <control type="image">
+                        <include>Texture_Circle_Highlight_V</include>
+                        <aspectratio>keep</aspectratio>
+                        <width>10</width>
+                        <height>10</height>
+                        <centertop>50%</centertop>
+                        <left>-16</left>
+                    </control>
+                    <control type="image">
+                        <aspectratio>keep</aspectratio>
+                        <bordersize>icon_home_bordersize</bordersize>
+                        <texture colordiffuse="main_fg_100">special://skin/extras/icons/search.png</texture>
+                    </control>
+                </control>
+            </control>
+        </control>
 
-            <!-- Side Menu Home -->
-            <control type="image">
-                <centerleft>100</centerleft>
-                <centertop>340</centertop>
-                <height>80</height>
-                <width>80</width>
-                <texture colordiffuse="3300ddff" border="20">common/box.png</texture>
-                <visible>String.IsEqual(Window.Property(MenuHighlight),MenuHome)</visible>
-                <include>Animation_FadeIn</include>
-                <include>Animation_FadeOut</include>
-            </control>
+        <!-- Side Menu Mockup -->
+        <control type="panel">
+            <width>100</width>
+            <centerleft>100</centerleft>
+            <height>500</height>
+            <centertop>50%</centertop>
+            <orientation>vertical</orientation>
+            <onfocus>SetFocus(6000)</onfocus>
+            <itemlayout width="100" height="100">
+                <include content="Layout_DialogWideSettings_Menu">
+                    <param name="detailed">true</param>
+                </include>
+            </itemlayout>
+            <focusedlayout width="100" height="100">
+                <include content="Layout_DialogWideSettings_Menu">
+                    <param name="detailed">true</param>
+                </include>
+            </focusedlayout>
+            <content>
+                <include>Items_Dialog_WideSettings_Menu</include>
+            </content>
+        </control>
 
-            <!-- Side Menu Items -->
-            <control type="image">
-                <centerleft>100</centerleft>
-                <centertop>440</centertop>
-                <height>80</height>
-                <width>80</width>
-                <texture colordiffuse="3300ddff" border="20">common/box.png</texture>
-                <visible>String.IsEqual(Window.Property(MenuHighlight),MenuItem01)</visible>
-                <include>Animation_FadeIn</include>
-                <include>Animation_FadeOut</include>
+        <!-- Spotlight Info Panel -->
+        <!-- <include content="Info_Panel">
+            <param name="titlelabel">[CAPITALIZE]$INFO[Container(6000).ListItem.Label][/CAPITALIZE][CR]Customisation</param>
+            <param name="plotlabel">$INFO[Window(Home).Property(CustomDialogSettingsLabel)]</param>
+            <param name="plotwidth">800</param>
+            <include>Dimension_Info</include>
+        </include> -->
+        <control type="group">
+            <include>Dimension_Info</include>
+            <control type="grouplist">
+                <top>-20</top>
+                <hitrect x="0" y="0" w="0" h="0" />
+                <orientation>vertical</orientation>
+                <itemgap>0</itemgap>
+                <right>800</right>
+                <control type="group" description="Avoid grouplist chop with spacer">
+                    <height>20</height>
+                </control>
+                <control type="label">
+                    <height>80</height>
+                    <aligny>center</aligny>
+                    <label>[CAPITALIZE]$INFO[Container(6000).ListItem.Label][/CAPITALIZE]</label>
+                    <textcolor>main_fg_100</textcolor>
+                    <font>font_info_black_doublerow</font>
+                    <autoscroll>false</autoscroll>
+                </control>
+                <control type="textbox">
+                    <label>$INFO[Window(Home).Property(CustomDialogSettingsLabel)]</label>
+                    <height>210</height>
+                    <top>-5</top>
+                    <aligny>center</aligny>
+                    <textcolor>main_fg_70</textcolor>
+                    <font>font_main_plot</font>
+                </control>
             </control>
-            <control type="image">
-                <centerleft>100</centerleft>
-                <centertop>540</centertop>
-                <height>80</height>
-                <width>80</width>
-                <texture colordiffuse="3300ddff" border="20">common/box.png</texture>
-                <visible>String.IsEqual(Window.Property(MenuHighlight),MenuItem02)</visible>
-                <include>Animation_FadeIn</include>
-                <include>Animation_FadeOut</include>
-            </control>
-            <control type="image">
-                <centerleft>100</centerleft>
+        </control>
+
+        <!-- Spotlight Button View Group -->
+        <control type="group">
+            <visible>!$EXP[Exp_WideSettings_IsWidgets]</visible>
+            <!-- Spotlight View Line -->
+            <include content="Info_Viewline">
+                <param name="sort_condition">true</param>
+                <param name="label">$LOCALIZE[31105]</param>
+            </include>
+
+            <!-- Spotlight Buttons -->
+            <control type="grouplist">
+                <orientation>horizontal</orientation>
                 <centertop>640</centertop>
-                <height>80</height>
-                <width>80</width>
-                <texture colordiffuse="3300ddff" border="20">common/box.png</texture>
-                <visible>String.IsEqual(Window.Property(MenuHighlight),MenuItem03)</visible>
-                <include>Animation_FadeIn</include>
-                <include>Animation_FadeOut</include>
+                <left>140</left>
+                <height>256</height>
+                <itemgap>-60</itemgap>
+                <hitrect x="0" y="0" w="0" h="0" />
+                <control type="group">
+                    <left>60</left>
+                    <height>100</height>
+                    <width>100</width>
+                    <centertop>50%</centertop>
+                    <control type="group">
+                        <visible>!Control.HasFocus(311)</visible>
+                        <control type="image">
+                            <texture colordiffuse="main_fg_100">common/circle.png</texture>
+                        </control>
+                        <control type="image">
+                            <bordersize>20</bordersize>
+                            <texture colordiffuse="main_bg_100">$VAR[Image_FullscreenWidget_PlayButton]</texture>
+                        </control>
+                    </control>
+                </control>
+                <control type="button">
+                    <font>font_mini_black</font>
+                    <textcolor>main_fg_70</textcolor>
+                    <label>$VAR[Label_FullscreenWidget_PlayButton]</label>
+                    <width>auto</width>
+                    <textoffsetx>80</textoffsetx>
+                    <texturenofocus />
+                    <texturefocus />
+                    <onfocus>SetFocus(6000)</onfocus>
+                    <hitrect x="0" y="0" w="0" h="0" />
+                </control>
+                <include content="Object_Info_Button">
+                    <param name="id">312</param>
+                    <param name="groupid">322</param>
+                    <param name="sliceid">323</param>
+                    <param name="itempad">-20</param>
+                    <param name="label">$VAR[Label_FullscreenWidget_InfoButton]</param>
+                    <param name="icon">$VAR[Image_FullscreenWidget_InfoButton]</param>
+                    <onfocus>SetFocus(6000)</onfocus>
+                    <hitrect x="0" y="0" w="0" h="0" />
+                </include>
             </control>
-            <control type="image">
-                <centerleft>100</centerleft>
-                <centertop>740</centertop>
-                <height>80</height>
-                <width>80</width>
-                <texture colordiffuse="3300ddff" border="20">common/box.png</texture>
-                <visible>String.IsEqual(Window.Property(MenuHighlight),MenuItem04)</visible>
-                <include>Animation_FadeIn</include>
-                <include>Animation_FadeOut</include>
-            </control>
+        </control>
 
-            <!-- Layout Focus -->
-            <control type="image">
+        <!-- Categories -->
+        <control type="group">
+            <visible>!$EXP[Exp_WideSettings_IsWidgets]</visible>
+            <include content="List_ButtonMenu_Row">
+                <param name="id">300</param>
+                <param name="font">font_main_black</param>
+                <param name="color_fo">main_fg_100</param>
+                <param name="color_nf">main_fg_30</param>
+                <param name="itemlayout_w">view_button_item_w</param>
+                <param name="offset_x">view_button_offset_x</param>
+                <param name="control">list</param>
+                <param name="backing">true</param>
                 <left>160</left>
-                <bottom>-40</bottom>
+                <right>240</right>
+                <height>selectorwidget_h</height>
+                <top>selectorwidget_t</top>
+                <onfocus>SetFocus(6000)</onfocus>
+                <hitrect x="0" y="0" w="0" h="0" />
+                <content>
+                    <item><label>$LOCALIZE[21866]</label></item>
+                    <item><label>$LOCALIZE[21866]</label></item>
+                    <item><label>$LOCALIZE[21866]</label></item>
+                    <item><label>$LOCALIZE[21866]</label></item>
+                    <item><label>$LOCALIZE[21866]</label></item>
+                    <item><label>$LOCALIZE[21866]</label></item>
+                    <item><label>$LOCALIZE[21866]</label></item>
+                    <item><label>$LOCALIZE[21866]</label></item>
+                    <!-- <include>skinshortcuts-mainmenu</include> -->
+                </content>
+            </include>
+            <include content="List_ButtonMenu_Row">
+                <param name="id">302</param>
+                <param name="font">font_mini</param>
+                <param name="color_fo">main_fg_30</param>
+                <param name="color_nf">main_fg_30</param>
+                <param name="itemlayout_w">view_button_item_w</param>
+                <param name="offset_x">view_button_offset_x</param>
+                <param name="control">list</param>
+                <param name="backing">true</param>
+                <left>160</left>
+                <right>240</right>
+                <height>selectorwidget_h</height>
+                <top>800</top>
+                <onfocus>SetFocus(6000)</onfocus>
+                <visible>$EXP[Exp_WideSettings_IsExpanded]</visible>
+                <hitrect x="0" y="0" w="0" h="0" />
+                <content>
+                    <item><label>$LOCALIZE[1034]</label></item>
+                    <item><label>$LOCALIZE[1034]</label></item>
+                    <item><label>$LOCALIZE[1034]</label></item>
+                    <item><label>$LOCALIZE[1034]</label></item>
+                    <item><label>$LOCALIZE[1034]</label></item>
+                    <item><label>$LOCALIZE[1034]</label></item>
+                    <item><label>$LOCALIZE[1034]</label></item>
+                    <item><label>$LOCALIZE[1034]</label></item>
+                    <!-- <include>skinshortcuts-submenu</include> -->
+                </content>
+            </include>
+        </control>
+
+        <!-- Widgets -->
+        <control type="group">
+            <top>440</top>
+            <animation effect="slide" start="0" end="0,-80" condition="$EXP[Exp_WideSettings_IsCategories]">Conditional</animation>
+            <animation effect="slide" start="0" end="0,-440" condition="$EXP[Exp_WideSettings_IsWidgets]">Conditional</animation>
+            <include content="Info_Viewline">
+                <param name="sort_condition">true</param>
+                <param name="label">Widgets</param>
+            </include>
+            <control type="group">
                 <top>500</top>
-                <right>40</right>
-                <texture colordiffuse="3300ddff" border="20">common/box.png</texture>
-                <visible>String.IsEqual(Window.Property(Highlight),Layout)</visible>
-                <include>Animation_FadeIn</include>
-                <include>Animation_FadeOut</include>
+                <left>view_side</left>
+                <control type="grouplist">
+                    <top>46</top>
+                    <height>400</height>
+                    <left>-40</left>
+                    <right>-40</right>
+                    <orientation>horizontal</orientation>
+                    <include>Widget_Busy_BlankItem_Landscape</include>
+                    <include>Widget_Busy_BlankItem_Landscape</include>
+                    <include>Widget_Busy_BlankItem_Landscape</include>
+                    <include>Widget_Busy_BlankItem_Landscape</include>
+                </control>
             </control>
+            <control type="group">
+                <top>440</top>
+                <include content="Info_Viewline">
+                    <param name="sort_condition">true</param>
+                    <param name="label">Widgets</param>
+                </include>
+                <control type="group">
+                    <top>500</top>
+                    <left>view_side</left>
+                    <control type="grouplist">
+                        <top>46</top>
+                        <height>400</height>
+                        <left>-40</left>
+                        <right>-40</right>
+                        <orientation>horizontal</orientation>
+                        <include>Widget_Busy_BlankItem_Landscape</include>
+                        <include>Widget_Busy_BlankItem_Landscape</include>
+                        <include>Widget_Busy_BlankItem_Landscape</include>
+                        <include>Widget_Busy_BlankItem_Landscape</include>
+                    </control>
+                </control>
+            </control>
+        </control>
 
-            <!-- Spotlight Focus -->
-            <control type="image">
-                <left>160</left>
-                <top>160</top>
-                <bottom>360</bottom>
-                <right>40</right>
-                <texture colordiffuse="3300ddff" border="20">common/box.png</texture>
-                <visible>String.IsEqual(Window.Property(Highlight),Spotlight)</visible>
-                <include>Animation_FadeIn</include>
-                <include>Animation_FadeOut</include>
-            </control>
+        <!-- Header -->
+        <include content="Furniture_Top">
+            <param name="label">$LOCALIZE[1000]</param>
+            <!-- <param name="label">[CAPITALIZE]$INFO[Container(6000).ListItem.Label][/CAPITALIZE]</param> -->
+            <param name="enabled">true</param>
+            <param name="clock">false</param>
         </include>
 
+        <!-- Menu Dialog -->
         <include content="Dialog_Overlay_Side">
             <param name="topline">false</param>
             <param name="subline">false</param>
             <include>Animation_Right_Delay</include>
-            <include condition="String.IsEmpty(Window(Home).Property(CustomDialogSettingsStyle))">Dimension_DialogFullMenu</include>
-            <include condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsStyle),Side)">Dimension_DialogHomeMenu</include>
+            <include>Dimension_DialogHomeMenu</include>
             <include content="Dialog_Head">
                 <param name="id">7000</param>
                 <param name="label">$LOCALIZE[31203]</param>
@@ -134,112 +347,19 @@
 
 
             <include content="Dialog_Body">
-
-                <include content="Dialog_Body_Group" condition="String.IsEmpty(Window(Home).Property(CustomDialogSettingsStyle))">
-                    <width>800</width>
-                    <control type="group">
-                        <top>20</top>
-                        <left>20</left>
-                        <bottom>20</bottom>
-                        <width>720</width>
-                        <control type="image">
-                            <top>-40</top>
-                            <height>1</height>
-                            <texture colordiffuse="dialog_fg_12">common/white.png</texture>
-                        </control>
-                        <control type="image">
-                            <bottom>-40</bottom>
-                            <height>1</height>
-                            <texture colordiffuse="dialog_fg_12">common/white.png</texture>
-                        </control>
-                        <control type="group">
-                            <height>405</height>
-                            <control type="image">
-                                <bottom>-40</bottom>
-                                <height>1</height>
-                                <texture colordiffuse="dialog_fg_12">common/white.png</texture>
-                            </control>
-                            <include content="Dialog_Outline_Box">
-                                <control type="image">
-                                    <width>128</width>
-                                    <height>128</height>
-                                    <centertop>50%</centertop>
-                                    <centerleft>50%</centerleft>
-                                    <texture colordiffuse="main_fg_90">special://skin/extras/icons/image.png</texture>
-                                </control>
-                                <control type="image">
-                                    <aspectratio scalediffuse="false">scale</aspectratio>
-                                    <texture background="true" diffuse="diffuse/landscape_w720_h405.png">$INFO[Window(Home).Property(CustomDialogSettingsImage)]</texture>
-                                </control>
-                            </include>
-                        </control>
-                        <control type="group">
-                            <top>405</top>
-                            <control type="textbox">
-                                <top>65</top>
-                                <bottom>-15</bottom>
-                                <font>font_mini_plot</font>
-                                <label>$INFO[Window(Home).Property(CustomDialogSettingsLabel)]</label>
-                            </control>
-                        </control>
-                    </control>
-                </include>
-
                 <control type="group" id="6001">
-                    <include content="Object_Right" condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsStyle),Side)">
-                        <param name="right">120</param>
-                    </include>
-                    <include content="Object_Right" condition="String.IsEmpty(Window(Home).Property(CustomDialogSettingsStyle))">
-                        <param name="right">160</param>
-                    </include>
-                    <include content="Object_Left" condition="String.IsEmpty(Window(Home).Property(CustomDialogSettingsStyle))">
-                        <param name="left">800</param>
-                    </include>
-                    <include content="Object_Control" condition="String.IsEmpty(Window(Home).Property(CustomDialogSettingsStyle))">
-                        <param name="control">image</param>
-                        <texture colordiffuse="dialog_fg_12" border="20">common/dialog.png</texture>
-                    </include>
+                    <right>120</right>
                     <control type="panel" id="6000">
                         <height>100</height>
-                        <include content="Object_Top" condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsStyle),Side)">
-                            <param name="top">10</param>
-                        </include>
-                        <top>20</top>
+                        <top>10</top>
                         <left>20</left>
                         <orientation>horizontal</orientation>
                         <onleft>-</onleft>
                         <onright>9001</onright>
                         <ondown>8000</ondown>
                         <onfocus>ClearProperty(Highlight)</onfocus>
-                        <onfocus>SetProperty(CustomDialogSettingsImage,special://skin/extras/screens/sidemenu.jpg,Home)</onfocus>
                         <itemlayout width="100" height="100">
-                            <control type="group">
-                                <centerleft>50%</centerleft>
-                                <centertop>50%</centertop>
-                                <height>40</height>
-                                <width>40</width>
-                                <control type="image">
-                                    <include>Texture_Circle_Highlight_V</include>
-                                    <aspectratio>keep</aspectratio>
-                                    <width>10</width>
-                                    <height>10</height>
-                                    <centerleft>50%</centerleft>
-                                    <bottom>-16</bottom>
-                                    <visible>String.IsEqual(Window(Home).PRoperty(CustomDialogSettingsItems),ListItem.Property(item))</visible>
-                                </control>
-                                <control type="image">
-                                    <texture colordiffuse="dialog_fg_100">$INFO[ListItem.Icon]</texture>
-                                    <aspectratio>keep</aspectratio>
-                                    <bordersize>icon_home_bordersize</bordersize>
-                                    <visible>String.IsEqual(Window(Home).PRoperty(CustomDialogSettingsItems),ListItem.Property(item))</visible>
-                                </control>
-                                <control type="image">
-                                    <texture colordiffuse="dialog_fg_30">$INFO[ListItem.Icon]</texture>
-                                    <aspectratio>keep</aspectratio>
-                                    <bordersize>icon_home_bordersize</bordersize>
-                                    <visible>!String.IsEqual(Window(Home).PRoperty(CustomDialogSettingsItems),ListItem.Property(item))</visible>
-                                </control>
-                            </control>
+                            <include>Layout_DialogWideSettings_Menu</include>
                         </itemlayout>
                         <focusedlayout width="100" height="100">
                             <control type="button">
@@ -248,21 +368,9 @@
                                 <onfocus>SetProperty(CustomDialogSettingsTitle,$INFO[ListItem.Property(head)],Home)</onfocus>
                                 <onfocus>SetProperty(CustomDialogSettingsItems,$INFO[ListItem.Property(item)],Home)</onfocus>
                             </control>
-                            <control type="group">
-                                <centerleft>50%</centerleft>
-                                <centertop>50%</centertop>
-                                <height>40</height>
-                                <width>40</width>
-                                <control type="image">
-                                    <include>Texture_CircleButtonDialog_Highlight_V</include>
-                                    <bordersize>-60</bordersize>
-                                </control>
-                                <control type="image">
-                                    <texture colordiffuse="$VAR[ColorSelected]">$INFO[ListItem.Icon]</texture>
-                                    <aspectratio>keep</aspectratio>
-                                    <bordersize>icon_home_bordersize</bordersize>
-                                </control>
-                            </control>
+                            <include content="Layout_DialogWideSettings_Menu">
+                                <param name="selected">true</param>
+                            </include>
                         </focusedlayout>
                         <content>
                             <item>
@@ -272,48 +380,13 @@
                                 <property name="item">Items_Settings_SearchMenu</property>
                                 <property name="highlight">MenuSearch</property>
                             </item>
-                            <item>
-                                <label>$LOCALIZE[10000]</label>
-                                <icon>special://skin/extras/icons/home.png</icon>
-                                <property name="head">[CAPITALIZE]$LOCALIZE[31276][/CAPITALIZE]</property>
-                                <property name="item">Items_Settings_HomeMenu</property>
-                                <property name="highlight">MenuHome</property>
-                            </item>
-                            <item>
-                                <label>$LOCALIZE[31025] 1</label>
-                                <icon>$VAR[Image_Setting_SideIcon_C1]</icon>
-                                <property name="head">[CAPITALIZE]$LOCALIZE[31277] 1[/CAPITALIZE]</property>
-                                <property name="item">Items_Settings_SideMenu_1</property>
-                                <property name="highlight">MenuItem01</property>
-                            </item>
-                            <item>
-                                <label>$LOCALIZE[31025] 2</label>
-                                <icon>$VAR[Image_Setting_SideIcon_C2]</icon>
-                                <property name="head">[CAPITALIZE]$LOCALIZE[31277] 2[/CAPITALIZE]</property>
-                                <property name="item">Items_Settings_SideMenu_2</property>
-                                <property name="highlight">MenuItem02</property>
-                            </item>
-                            <item>
-                                <label>$LOCALIZE[31025] 3</label>
-                                <icon>$VAR[Image_Setting_SideIcon_C3]</icon>
-                                <property name="head">[CAPITALIZE]$LOCALIZE[31277] 3[/CAPITALIZE]</property>
-                                <property name="item">Items_Settings_SideMenu_3</property>
-                                <property name="highlight">MenuItem03</property>
-                            </item>
-                            <item>
-                                <label>$LOCALIZE[31025] 4</label>
-                                <icon>$VAR[Image_Setting_SideIcon_C4]</icon>
-                                <property name="head">[CAPITALIZE]$LOCALIZE[31277] 4[/CAPITALIZE]</property>
-                                <property name="item">Items_Settings_SideMenu_4</property>
-                                <property name="highlight">MenuItem04</property>
-                            </item>
+                            <include>Items_Dialog_WideSettings_Menu</include>
                         </content>
-
                     </control>
                     <include content="Dialog_Body_Grouplist">
                         <param name="id">8000</param>
                         <right>20</right>
-                        <onleft>Close</onleft>
+                        <onleft>-</onleft>
                         <onright>9001</onright>
                         <onup>6000</onup>
                         <ondown>-</ondown>
@@ -345,7 +418,6 @@
                             <label>$VAR[Label_Setting_SideMenu_HomeAffix]$LOCALIZE[31341] ($LOCALIZE[31342])</label>
                             <selected>Skin.HasSetting(Hubs.WidgetSelector)</selected>
                             <onclick>Skin.ToggleSetting(Hubs.WidgetSelector)</onclick>
-                            <onfocus>SetProperty(CustomDialogSettingsImage,special://skin/extras/screens/categories_widgets.jpg,Home)</onfocus>
                             <onfocus>SetProperty(CustomDialogSettingsLabel,[B]$LOCALIZE[31341][/B][CR]$LOCALIZE[31343][CR][CR]$LOCALIZE[31344],Home)</onfocus>
                             <visible>!String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SearchMenu)</visible>
                         </include>
@@ -364,17 +436,13 @@
                         <param name="visible">true</param>
                         <onclick>Close</onclick>
                     </include>
-                    <include content="Dialog_Side_Button">
+                    <!-- <include content="Dialog_Side_Button">
                         <param name="id">02</param>
                         <param name="label">$LOCALIZE[31364]</param>
                         <param name="icon">special://skin/extras/icons/update.png</param>
                         <param name="visible">true</param>
-                        <onclick>SetProperty(CustomDialogSettingsFocus,392,Home)</onclick>
-                        <onclick>Close</onclick>
-                    </include>
-
-
-
+                        <onclick>ReloadSkin()</onclick>
+                    </include> -->
                 </include>
             </include>
         </include>
