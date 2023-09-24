@@ -117,7 +117,7 @@
                             <right>80</right>
                             <control type="label">
                                 <height>10</height>
-                                <top>20</top>
+                                <top>22</top>
                                 <label>$VAR[Label_NowPlayingTitle]</label>
                                 <align>right</align>
                                 <font>font_mini_black</font>
@@ -125,7 +125,7 @@
                             </control>
                             <control type="label">
                                 <height>10</height>
-                                <bottom>20</bottom>
+                                <bottom>22</bottom>
                                 <label>$VAR[Label_NowPlayingSubLabel,, • ]$INFO[Player.Time]$INFO[Player.Duration, / ,]</label>
                                 <align>right</align>
                                 <font>font_tiny</font>
@@ -199,43 +199,26 @@
         </definition>
     </include>
 
-    <include name="Furniture_Busy">
-        <param name="mainlabel">$LOCALIZE[20186]</param>
-        <param name="minilabel">$LOCALIZE[31023]...</param>
+    <include name="Furniture_BusyIcon">
         <param name="hasspinner">false</param>
         <param name="hasprogress">false</param>
         <param name="haslabel">true</param>
         <param name="hasicon">true</param>
-        <param name="size">104</param>
         <param name="spinspinner">false</param>
-        <!-- <param name="spinspinner">Window.IsVisible(DialogBusy.xml)</param> -->
+        <param name="icon">special://skin/extras/icons/kodi.png</param>
         <definition>
             <control type="group">
-                <top>0</top>
+                <description>Busy animation</description>
                 <height>80</height>
-                <width>480</width>
-                <right>80</right>
-                <control type="group">
-                    <top>-320</top>
-                    <include content="Dialog_Background_Blur">
-                        <param name="flipy">true</param>
-                    </include>
-                    <control type="image">
-                        <texture colordiffuse="dialog_fg_12" border="20">common/dialog.png</texture>
-                    </control>
-                </control>
+                <width>80</width>
+                <nested />
                 <include content="Info_Codec_LabelIcon" condition="$PARAM[hasicon]">
                     <param name="icon">$PARAM[icon]</param>
-                    <left>20</left>
+                    <centerleft>50%</centerleft>
                 </include>
-
-                <nested />
-
                 <include content="Object_Control" condition="$PARAM[hasspinner]">
                     <param name="control">group</param>
                     <description>Busy animation</description>
-                    <left>0</left>
-                    <width>80</width>
                     <animation effect="rotate" condition="$PARAM[spinspinner]" start="0" end="360" loop="true" time="1000" center="auto">Conditional</animation>
                     <control type="image">
                         <bordersize>-4</bordersize>
@@ -253,8 +236,6 @@
                     <param name="control">group</param>
                     <description>Busy animation</description>
                     <animation effect="rotate" condition="$PARAM[spinspinner]" start="0" end="360" loop="true" time="2000" center="auto">Conditional</animation>
-                    <left>0</left>
-                    <width>80</width>
                     <description>Busy animation</description>
                     <control type="image">
                         <bordersize>-4</bordersize>
@@ -271,23 +252,75 @@
                         </include>
                     </control>
                 </include>
+            </control>
+        </definition>
+    </include>
+
+    <include name="Furniture_Busy">
+        <param name="mainlabel">$LOCALIZE[20186]</param>
+        <param name="minilabel">$LOCALIZE[31023]...</param>
+        <param name="hasspinner">false</param>
+        <param name="hasprogress">false</param>
+        <param name="haslabel">true</param>
+        <param name="hasicon">true</param>
+        <param name="spinspinner">false</param>
+        <!-- <param name="spinspinner">Window.IsVisible(DialogBusy.xml)</param> -->
+        <definition>
+            <control type="group">
+                <centertop>100</centertop>
+                <height>80</height>
+                <width>480</width>
+                <!-- <left>60</left> -->
+                <right>60</right>
+                <control type="group">
+                    <!-- <top>-320</top> -->
+                    <include content="Dialog_Background_Blur">
+                        <param name="flipy">true</param>
+                        <param name="aspectratio">scale</param>
+                        <param name="diffuse">diffuse/dialog_w480_h80.png</param>
+                        <param name="border">0</param>
+                    </include>
+                    <control type="image">
+                        <texture colordiffuse="dialog_fg_12" border="20">common/dialog.png</texture>
+                    </control>
+                </control>
+
+                <include content="Furniture_BusyIcon">
+                    <param name="hasspinner">$PARAM[hasspinner]</param>
+                    <param name="hasprogress">$PARAM[hasprogress]</param>
+                    <param name="haslabel">$PARAM[haslabel]</param>
+                    <param name="hasicon">$PARAM[hasicon]</param>
+                    <param name="spinspinner">$PARAM[spinspinner]</param>
+                    <param name="icon">$PARAM[icon]</param>
+                    <param name="progress">$PARAM[progress]</param>
+                    <param name="progress_id">$PARAM[progress_id]</param>
+                    <right>0</right>
+                </include>
+
+                <nested />
 
                 <control type="label" id="$PARAM[mainlabel_id]">
                     <height>10</height>
-                    <top>20</top>
-                    <left>80</left>
-                    <right>20</right>
+                    <top>22</top>
+                    <left>20</left>
+                    <right>80</right>
+                    <align>right</align>
                     <label>$PARAM[mainlabel]</label>
                     <font>font_mini_black</font>
+                    <!-- <textcolor>main_fg_90</textcolor>
+                    <shadowcolor>main_bg_70</shadowcolor> -->
                     <textcolor>dialog_fg_90</textcolor>
                 </control>
                 <control type="label" id="$PARAM[minilabel_id]">
                     <height>10</height>
-                    <bottom>20</bottom>
-                    <left>80</left>
-                    <right>20</right>
+                    <bottom>22</bottom>
+                    <left>20</left>
+                    <right>80</right>
+                    <align>right</align>
                     <label>$PARAM[minilabel]</label>
                     <font>font_tiny</font>
+                    <!-- <textcolor>main_fg_70</textcolor>
+                    <shadowcolor>main_bg_70</shadowcolor> -->
                     <textcolor>dialog_fg_70</textcolor>
                 </control>
             </control>
@@ -335,7 +368,7 @@
                     </control>
                     <control type="label">
                         <height>10</height>
-                        <top>20</top>
+                        <top>22</top>
                         <label>$PARAM[toplabel]</label>
                         <include content="Object_Align" condition="!$PARAM[flipx]">
                             <param name="align">left</param>
@@ -353,7 +386,7 @@
                     </control>
                     <control type="label">
                         <height>10</height>
-                        <bottom>20</bottom>
+                        <bottom>22</bottom>
                         <label>$PARAM[bottomlabel]</label>
                         <include content="Object_Align" condition="!$PARAM[flipx]">
                             <param name="align">left</param>
@@ -455,7 +488,7 @@
                     </control>
                     <control type="label">
                         <height>10</height>
-                        <top>20</top>
+                        <top>22</top>
                         <label>$PARAM[toplabel]</label>
                         <include content="Object_Align" condition="!$PARAM[flipx]">
                             <param name="align">left</param>
@@ -473,7 +506,7 @@
                     </control>
                     <control type="label">
                         <height>10</height>
-                        <bottom>20</bottom>
+                        <bottom>22</bottom>
                         <label>$PARAM[bottomlabel]</label>
                         <include content="Object_Align" condition="!$PARAM[flipx]">
                             <param name="align">left</param>
