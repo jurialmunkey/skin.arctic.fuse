@@ -81,11 +81,17 @@
         <control type="button" id="9002">
             <texturefocus />
             <texturenofocus />
-            <onfocus condition="[System.HasPVRAddon + !PVR.HasTVChannels + !Pvr.HasRadioChannels]">AlarmClock(ReFocus,SetFocus(9001),00:00,silent)</onfocus>
-            <onfocus condition="String.IsEmpty(Window(Home).Property(StartupReplaceWindow))">AlarmClock(RepWin,ReplaceWindow($INFO[System.StartupWindow]),00:01,silent)</onfocus>
-            <onfocus condition="!String.IsEmpty(Window(Home).Property(StartupReplaceWindow))">AlarmClock(RepWin,ReplaceWindow($INFO[Window(Home).Property(StartupReplaceWindow)]),00:01,silent)</onfocus>
+
+            <onfocus condition="!String.IsEmpty(Skin.String(Startup.VideoPath)) + String.IsEmpty(Window(Home).Property(StartupReplaceWindow))">ReplaceWindow($INFO[System.StartupWindow])</onfocus>
+            <onfocus condition="!String.IsEmpty(Skin.String(Startup.VideoPath)) + !String.IsEmpty(Window(Home).Property(StartupReplaceWindow))">ReplaceWindow($INFO[Window(Home).Property(StartupReplaceWindow)])</onfocus>
+            <onfocus condition="!String.IsEmpty(Skin.String(Startup.VideoPath))">PlayMedia($ESCINFO[Skin.String(Startup.VideoPath)])</onfocus>
+
+            <onfocus condition="String.IsEmpty(Skin.String(Startup.VideoPath)) + [System.HasPVRAddon + !PVR.HasTVChannels + !Pvr.HasRadioChannels]">AlarmClock(ReFocus,SetFocus(9001),00:00,silent)</onfocus>
+            <onfocus condition="String.IsEmpty(Skin.String(Startup.VideoPath)) + String.IsEmpty(Window(Home).Property(StartupReplaceWindow))">AlarmClock(RepWin,ReplaceWindow($INFO[System.StartupWindow]),00:01,silent)</onfocus>
+            <onfocus condition="String.IsEmpty(Skin.String(Startup.VideoPath)) + !String.IsEmpty(Window(Home).Property(StartupReplaceWindow))">AlarmClock(RepWin,ReplaceWindow($INFO[Window(Home).Property(StartupReplaceWindow)]),00:01,silent)</onfocus>
         </control>
         <control type="group">
+            <visible>String.IsEmpty(Skin.String(Startup.VideoPath))</visible>
             <include>Background_StartUp</include>
             <include>Object_StartUp_Logo</include>
             <control type="label">
