@@ -199,14 +199,13 @@
         </definition>
     </include>
 
-    <include name="Furniture_BusyIcon">
+    <include name="Furniture_Busy_Icon">
         <param name="hasspinner">false</param>
         <param name="hasprogress">false</param>
-        <param name="haslabel">true</param>
         <param name="hasicon">true</param>
-        <param name="spinspinner">false</param>
         <param name="icon">special://skin/extras/icons/kodi.png</param>
-        <param name="ring_visible">true</param>
+        <param name="spinspinner">false</param>
+        <param name="spinnervisible">true</param>
         <definition>
             <control type="group">
                 <description>Busy animation</description>
@@ -220,7 +219,7 @@
                 <include content="Object_Control" condition="$PARAM[hasspinner]">
                     <param name="control">group</param>
                     <description>Busy animation</description>
-                    <visible>$PARAM[ring_visible]</visible>
+                    <visible>$PARAM[spinnervisible]</visible>
                     <animation effect="rotate" condition="$PARAM[spinspinner]" start="0" end="360" loop="true" time="1000" center="auto">Conditional</animation>
                     <control type="image">
                         <bordersize>-4</bordersize>
@@ -239,7 +238,7 @@
                     <description>Busy animation</description>
                     <animation effect="rotate" condition="$PARAM[spinspinner]" start="0" end="360" loop="true" time="2000" center="auto">Conditional</animation>
                     <description>Busy animation</description>
-                    <visible>$PARAM[ring_visible]</visible>
+                    <visible>$PARAM[spinnervisible]</visible>
                     <control type="image">
                         <bordersize>-4</bordersize>
                         <texture colordiffuse="$VAR[ColorHighlight]">$INFO[$PARAM[progress],progress/circle/p,.png]</texture>
@@ -259,22 +258,18 @@
         </definition>
     </include>
 
-    <include name="Furniture_Busy">
-        <param name="mainlabel">$LOCALIZE[20186]</param>
-        <param name="minilabel">$LOCALIZE[31023]...</param>
-        <param name="hasspinner">false</param>
-        <param name="hasprogress">false</param>
-        <param name="haslabel">true</param>
-        <param name="hasicon">true</param>
-        <param name="spinspinner">false</param>
+    <include name="Furniture_Busy_Group">
+        <param name="floating">false</param>
+        <param name="hasbackground">true</param>
         <definition>
             <control type="group">
-                <centertop>100</centertop>
-                <height>80</height>
-                <width>480</width>
-                <right>60</right>
-                <control type="group">
-                    <include content="Dialog_Background_Blur">
+                <include content="Object_Control" condition="$PARAM[hasbackground]">
+                    <param name="control">group</param>
+                    <include content="Object_Top" condition="![$PARAM[floating]]"><param name="top">-320</param></include>
+                    <include content="Dialog_Background_Blur" condition="![$PARAM[floating]]">
+                        <param name="flipy">true</param>
+                    </include>
+                    <include content="Dialog_Background_Blur" condition="$PARAM[floating]">
                         <param name="flipy">true</param>
                         <param name="aspectratio">scale</param>
                         <param name="diffuse">diffuse/dialog_w480_h80.png</param>
@@ -283,28 +278,26 @@
                     <control type="image">
                         <texture colordiffuse="dialog_fg_12" border="20">common/dialog.png</texture>
                     </control>
-                </control>
-
-                <include content="Furniture_BusyIcon">
-                    <param name="hasspinner">$PARAM[hasspinner]</param>
-                    <param name="hasprogress">$PARAM[hasprogress]</param>
-                    <param name="haslabel">$PARAM[haslabel]</param>
-                    <param name="hasicon">$PARAM[hasicon]</param>
-                    <param name="spinspinner">$PARAM[spinspinner]</param>
-                    <param name="icon">$PARAM[icon]</param>
-                    <param name="progress">$PARAM[progress]</param>
-                    <param name="progress_id">$PARAM[progress_id]</param>
-                    <param name="ring_visible">![Window.IsActive(DialogVolumeBar.xml) | Window.IsActive(DialogBusy.xml)]</param>
-                    <right>0</right>
                 </include>
-
                 <nested />
+                <height>80</height>
+                <width>480</width>
+                <include>Animation_SlideIn_Dialog</include>
+                <include content="Object_Top" condition="$PARAM[floating]"><param name="top">60</param></include>
+                <include content="Object_Right" condition="$PARAM[floating]"><param name="right">60</param></include>
+                <include content="Object_Right" condition="![$PARAM[floating]]"><param name="right">80</param></include>
+            </control>
+        </definition>
+    </include>
 
+    <include name="Furniture_Busy_Text">
+        <definition>
+            <control type="group">
+                <left>20</left>
+                <right>80</right>
                 <control type="label" id="$PARAM[mainlabel_id]">
                     <height>10</height>
                     <top>22</top>
-                    <left>20</left>
-                    <right>80</right>
                     <align>left</align>
                     <label>$PARAM[mainlabel]</label>
                     <font>font_mini_black</font>
@@ -313,14 +306,50 @@
                 <control type="label" id="$PARAM[minilabel_id]">
                     <height>10</height>
                     <bottom>22</bottom>
-                    <left>20</left>
-                    <right>80</right>
                     <align>left</align>
                     <label>$PARAM[minilabel]</label>
                     <font>font_tiny</font>
                     <textcolor>dialog_fg_70</textcolor>
                 </control>
             </control>
+        </definition>
+    </include>
+
+    <include name="Furniture_Busy">
+        <param name="mainlabel">$LOCALIZE[20186]</param>
+        <param name="minilabel">$LOCALIZE[31023]...</param>
+        <param name="hasspinner">false</param>
+        <param name="hasprogress">false</param>
+        <param name="haslabel">true</param>
+        <param name="hasicon">true</param>
+        <param name="spinspinner">false</param>
+        <param name="spinnervisible">true</param>
+        <param name="hasbackground">true</param>
+        <definition>
+
+            <include content="Furniture_Busy_Group">
+                <param name="hasbackground">$PARAM[hasbackground]</param>
+                <include content="Furniture_Busy_Icon">
+                    <param name="hasspinner">$PARAM[hasspinner]</param>
+                    <param name="hasprogress">$PARAM[hasprogress]</param>
+                    <param name="hasicon">$PARAM[hasicon]</param>
+                    <param name="spinspinner">$PARAM[spinspinner]</param>
+                    <param name="icon">$PARAM[icon]</param>
+                    <param name="progress">$PARAM[progress]</param>
+                    <param name="progress_id">$PARAM[progress_id]</param>
+                    <param name="spinnervisible">$PARAM[spinnervisible]</param>
+                    <right>0</right>
+                </include>
+
+                <nested />
+
+                <include content="Furniture_Busy_Text" condition="$PARAM[haslabel]">
+                    <param name="mainlabel_id">$PARAM[mainlabel_id]</param>
+                    <param name="mainlabel">$PARAM[mainlabel]</param>
+                    <param name="minilabel_id">$PARAM[minilabel_id]</param>
+                    <param name="minilabel">$PARAM[minilabel]</param>
+                </include>
+            </include>
         </definition>
     </include>
 
