@@ -88,12 +88,16 @@
             <onright>9099</onright> -->
             <onup>SetFocus(5081,0,absolute)</onup>
             <onup>SetFocus(5001,0,absolute)</onup>
-            <onup>AlarmClock(reset,ClearProperty(TMDbHelper.WidgetContainer),00:00,silent)</onup>
-            <onup>9099</onup>
+            <onup>90001</onup>
+            <!-- <onup>AlarmClock(reset,ClearProperty(TMDbHelper.WidgetContainer),00:00,silent)</onup>
+            <onup>9099</onup> -->
             <ondown>SetFocus(5081,0,absolute)</ondown>
             <ondown>SetFocus(5001,0,absolute)</ondown>
-            <ondown>AlarmClock(reset,ClearProperty(TMDbHelper.WidgetContainer),00:00,silent)</ondown>
-            <ondown>9099</ondown>
+            <ondown>90001</ondown>
+            <!-- <ondown>AlarmClock(reset,ClearProperty(TMDbHelper.WidgetContainer),00:00,silent)</ondown>
+            <ondown>9099</ondown> -->
+
+            <onleft>90001</onleft>
 
             <orientation>vertical</orientation>
             <control type="group" id="6100">
@@ -172,16 +176,47 @@
                 <animation effect="fade" start="0" end="100" time="200" reversible="false">Visible</animation>
                 <animation effect="fade" start="100" end="0" time="200" reversible="false">Hidden</animation> -->
 
-                <include content="Home_Fade">
+                <!-- <include content="Home_Fade">
                     <param name="visible">true</param>
+                </include> -->
+
+                <include content="DialogInfo_ButtonGroup_Basic">
+                    <param name="id">90000</param>
+                    <param name="dim_visible">true</param>
+                    <visible>!$EXP[Exp_InfoDialogs]</visible>
+                    <onleft>9001</onleft>
+                    <onright>6000</onright>
+                    <!-- <include content="Action_HomeMenu_OnRightLeft">
+                        <param name="onlist">6000</param>
+                    </include> -->
+                    <include content="Settings_Side_Button">
+                        <param name="baseid">90</param>
+                        <param name="id">01</param>
+                        <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
+                        <param name="label">Close</param>
+                        <onclick>PreviousMenu</onclick>
+                    </include>
+                    <include content="Settings_Side_Button">
+                        <param name="baseid">90</param>
+                        <param name="id">02</param>
+                        <param name="icon">special://skin/extras/icons/keyboard.png</param>
+                        <param name="label">$LOCALIZE[137]</param>
+                        <onclick>SetFocus(9099)</onclick>
+                    </include>
+
+                    <include content="Settings_Side_Button">
+                        <param name="baseid">90</param>
+                        <param name="id">03</param>
+                        <param name="icon">special://skin/extras/icons/square-poll-horizontal.png</param>
+                        <param name="label">$VAR[Label_Search_ItemCount]</param>
+                        <onclick>Action(Right)</onclick>
+                    </include>
                 </include>
 
-                <control type="grouplist">
+                <!-- <control type="grouplist">
                     <top>view_top</top>
                     <orientation>vertical</orientation>
                     <itemgap>60</itemgap>
-
-                    <!-- <visible>![ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus] | $EXP[Exp_HomeMenu_HasFocus]]</visible> -->
 
                     <control type="group">
                         <height>50</height>
@@ -201,7 +236,7 @@
                         <param name="icon">special://skin/extras/icons/square-poll-horizontal.png</param>
                         <param name="label">$VAR[Label_Search_ItemCount]</param>
                     </include>
-                </control>
+                </control> -->
 
             </control>
 
@@ -891,7 +926,7 @@
 
                 <include content="Dialog_Side_Grouplist">
                     <param name="id">9000</param>
-                    <onright>6000</onright>
+                    <onright>90001</onright>
                     <onleft>9096</onleft>
                     <include content="Dialog_Side_Button">
                         <param name="id">01</param>
@@ -900,12 +935,12 @@
                         <onclick>SetFocus(6000)</onclick>
                         <include>Action_UpdateSearchTerm</include>
                     </include>
-                    <include content="Dialog_Side_Button">
+                    <!-- <include content="Dialog_Side_Button">
                         <param name="id">02</param>
                         <param name="label">$LOCALIZE[15067]</param>
                         <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
                         <onclick>PreviousMenu</onclick>
-                    </include>
+                    </include> -->
                     <include content="Dialog_Side_Button">
                         <param name="id">03</param>
                         <param name="label">Clear</param>
@@ -1076,6 +1111,10 @@
 
             <onclick>PlayMedia($INFO[Container(5081).ListItem.FolderPath])</onclick>
 
+            <onleft>90001</onleft>
+            <onright>SetFocus(5081,0,absolute)</onright>
+            <onright>9097</onright>
+
             <onback condition="![!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container(5081).ListItem.CurrentItem,1)]">6000</onback>
             <onback condition="![!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container(5081).ListItem.CurrentItem,1)]">SetFocus(5081,0,absolute)</onback>
 
@@ -1118,6 +1157,10 @@
 
             <content target="videos" limit="$VAR[Path_DiscoverWidgets_ItemLimit]" sortby="$VAR[Path_DiscoverWidgets_SortBy]" sortorder="$VAR[Path_DiscoverWidgets_SortOrder]">$VAR[Path_DiscoverWidgets_Show]</content>
 
+            <onleft>90001</onleft>
+            <onright>SetFocus(5082,0,absolute)</onright>
+            <onright>9097</onright>
+
             <onclick condition="!Skin.HasSetting(Search.LibraryDiscover)">ActivateWindow(videos,$INFO[Container(5082).ListItem.FolderPath],return)</onclick>
             <onclick condition="Skin.HasSetting(Search.LibraryDiscover)">ActivateWindow(videos,videodb://tvshows/titles/$INFO[Container(5082).ListItem.DBID])/,return)</onclick>
 
@@ -1126,7 +1169,7 @@
 
 
             <onback condition="[!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container(5082).ListItem.CurrentItem,1)]">SetFocus(5081)</onback>
-            <onback condition="[!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container(5082).ListItem.CurrentItem,1)]">9097</onback>
+            <onback condition="[!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container(5081).ListItem.CurrentItem,1)]">9097</onback>
             <onback condition="[!$EXP[Exp_Navigation_IsBackToStart] | Integer.IsEqual(Container(5082).ListItem.CurrentItem,1)]">AlarmClock(clear_twc,ClearProperty(TMDbHelper.WidgetContainer),00:00,silent)</onback>
 
             <onfocus>SetProperty(TMDbHelper.WidgetContainer,5082)</onfocus>
