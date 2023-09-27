@@ -244,7 +244,7 @@
             <label>$LOCALIZE[342]</label>
             <icon>special://skin/extras/icons/film.png</icon>
             <property name="expression">movies</property>
-            <onclick>Action(Right)</onclick>
+            <onclick>$PARAM[preaction]</onclick>
             <onclick condition="String.IsEmpty(Skin.String(CustomShortcut.Movies))">ActivateWindow(1101)</onclick>
             <onclick condition="!String.IsEmpty(Skin.String(CustomShortcut.Movies))">$INFO[Skin.String(CustomShortcut.Movies)]</onclick>
         </item>
@@ -255,7 +255,7 @@
             <label>$LOCALIZE[20343]</label>
             <icon>special://skin/extras/icons/tv.png</icon>
             <property name="expression">tvshows</property>
-            <onclick>Action(Right)</onclick>
+            <onclick>$PARAM[preaction]</onclick>
             <onclick condition="String.IsEmpty(Skin.String(CustomShortcut.TVShows))">ActivateWindow(1102)</onclick>
             <onclick condition="!String.IsEmpty(Skin.String(CustomShortcut.TVShows))">$INFO[Skin.String(CustomShortcut.TVShows)]</onclick>
         </item>
@@ -266,7 +266,7 @@
             <label>$LOCALIZE[2]</label>
             <icon>special://skin/extras/icons/songs.png</icon>
             <property name="expression">music</property>
-            <onclick>Action(Right)</onclick>
+            <onclick>$PARAM[preaction]</onclick>
             <onclick condition="String.IsEmpty(Skin.String(CustomShortcut.Music))">ActivateWindow(1103)</onclick>
             <onclick condition="!String.IsEmpty(Skin.String(CustomShortcut.Music))">$INFO[Skin.String(CustomShortcut.Music)]</onclick>
         </item>
@@ -277,7 +277,7 @@
             <label>$LOCALIZE[31085]</label>
             <icon>special://skin/extras/icons/livetv.png</icon>
             <property name="expression">livetv</property>
-            <onclick>Action(Right)</onclick>
+            <onclick>$PARAM[preaction]</onclick>
             <onclick condition="String.IsEmpty(Skin.String(CustomShortcut.PVR))">ActivateWindow(1104)</onclick>
             <onclick condition="!String.IsEmpty(Skin.String(CustomShortcut.PVR))">$INFO[Skin.String(CustomShortcut.PVR)]</onclick>
         </item>
@@ -288,7 +288,7 @@
             <label>$LOCALIZE[24001]</label>
             <icon>special://skin/extras/icons/addons.png</icon>
             <property name="expression">addons</property>
-            <onclick>Action(Right)</onclick>
+            <onclick>$PARAM[preaction]</onclick>
             <onclick condition="String.IsEmpty(Skin.String(CustomShortcut.Addons))">ActivateWindow(1132)</onclick>
             <onclick condition="!String.IsEmpty(Skin.String(CustomShortcut.Addons))">$INFO[Skin.String(CustomShortcut.Addons)]</onclick>
         </item>
@@ -299,7 +299,7 @@
             <label>$LOCALIZE[10025]</label>
             <icon>special://skin/extras/icons/video.png</icon>
             <property name="expression">videos</property>
-            <onclick>Action(Right)</onclick>
+            <onclick>$PARAM[preaction]</onclick>
             <onclick condition="String.IsEmpty(Skin.String(CustomShortcut.Videos))">ActivateWindow(videos,-,return)</onclick>
             <onclick condition="!String.IsEmpty(Skin.String(CustomShortcut.Videos))">$INFO[Skin.String(CustomShortcut.Videos)]</onclick>
         </item>
@@ -310,7 +310,7 @@
             <label>$LOCALIZE[10002]</label>
             <icon>special://skin/extras/icons/image.png</icon>
             <property name="expression">pictures</property>
-            <onclick>Action(Right)</onclick>
+            <onclick>$PARAM[preaction]</onclick>
             <onclick condition="String.IsEmpty(Skin.String(CustomShortcut.Pictures))">ActivateWindow(pictures,-,return)</onclick>
             <onclick condition="!String.IsEmpty(Skin.String(CustomShortcut.Pictures))">$INFO[Skin.String(CustomShortcut.Pictures)]</onclick>
         </item>
@@ -321,7 +321,7 @@
             <label>$LOCALIZE[8]</label>
             <icon>special://skin/extras/icons/sun.png</icon>
             <property name="expression">weather</property>
-            <onclick>Action(Right)</onclick>
+            <onclick>$PARAM[preaction]</onclick>
             <onclick>ActivateWindow(weather)</onclick>
         </item>
     </include>
@@ -331,7 +331,7 @@
             <label>$INFO[Skin.String(CustomShortcut.Custom$PARAM[id].Label)]</label>
             <icon>$INFO[Skin.String(CustomShortcut.Custom$PARAM[id].Icon)]</icon>
             <property name="expression">custom$PARAM[id]</property>
-            <onclick>Action(Right)</onclick>
+            <onclick>$PARAM[preaction]</onclick>
             <onclick>$INFO[Skin.String(CustomShortcut.Custom$PARAM[id])]</onclick>
             <visible>!String.IsEmpty(Skin.String(CustomShortcut.Custom$PARAM[id]))</visible>
         </item>
@@ -348,43 +348,66 @@
     </include>
 
     <include name="Home_Menu_Item">
-        <include condition="Skin.String(CustomShortcut.Item$PARAM[id],movies)">Home_Menu_Item_Movies</include>
-        <include condition="Skin.String(CustomShortcut.Item$PARAM[id],tvshows)">Home_Menu_Item_TVShows</include>
-        <include condition="Skin.String(CustomShortcut.Item$PARAM[id],music)">Home_Menu_Item_Music</include>
-        <include condition="Skin.String(CustomShortcut.Item$PARAM[id],livetv)">Home_Menu_Item_LiveTV</include>
-        <include condition="Skin.String(CustomShortcut.Item$PARAM[id],addons)">Home_Menu_Item_Addons</include>
-        <include condition="Skin.String(CustomShortcut.Item$PARAM[id],pictures)">Home_Menu_Item_Pictures</include>
-        <include condition="Skin.String(CustomShortcut.Item$PARAM[id],weather)">Home_Menu_Item_Weather</include>
+        <include condition="Skin.String(CustomShortcut.Item$PARAM[id],movies)" content="Home_Menu_Item_Movies">
+            <param name="preaction">$PARAM[preaction]</param>
+        </include>
+        <include condition="Skin.String(CustomShortcut.Item$PARAM[id],tvshows)" content="Home_Menu_Item_TVShows">
+            <param name="preaction">$PARAM[preaction]</param>
+        </include>
+        <include condition="Skin.String(CustomShortcut.Item$PARAM[id],music)" content="Home_Menu_Item_Music">
+            <param name="preaction">$PARAM[preaction]</param>
+        </include>
+        <include condition="Skin.String(CustomShortcut.Item$PARAM[id],livetv)" content="Home_Menu_Item_LiveTV">
+            <param name="preaction">$PARAM[preaction]</param>
+        </include>
+        <include condition="Skin.String(CustomShortcut.Item$PARAM[id],addons)" content="Home_Menu_Item_Addons">
+            <param name="preaction">$PARAM[preaction]</param>
+        </include>
+        <include condition="Skin.String(CustomShortcut.Item$PARAM[id],pictures)" content="Home_Menu_Item_Pictures">
+            <param name="preaction">$PARAM[preaction]</param>
+        </include>
+        <include condition="Skin.String(CustomShortcut.Item$PARAM[id],weather)" content="Home_Menu_Item_Weather">
+            <param name="preaction">$PARAM[preaction]</param>
+        </include>
         <include condition="Skin.String(CustomShortcut.Item$PARAM[id],custom)" content="Home_Menu_Item_Custom">
+            <param name="preaction">$PARAM[preaction]</param>
             <param name="id">$PARAM[id]</param>
         </include>
         <include condition="Skin.String(CustomShortcut.Item$PARAM[id],custom) + String.IsEmpty(Skin.String(CustomShortcut.Custom$PARAM[id]))" content="Home_Menu_Item_Configure">
+            <param name="preaction">$PARAM[preaction]</param>
             <param name="id">$PARAM[id]</param>
         </include>
     </include>
 
     <include name="Home_Menu_Items">
-        <content>
-            <item>
-                <label>$LOCALIZE[10000]</label>
-                <icon>special://skin/extras/icons/home.png</icon>
-                <property name="expression">home</property>
-                <onclick>Action(Right)</onclick>
-                <onclick>ActivateWindow(home)</onclick>
-            </item>
-            <include content="Home_Menu_Item">
-                <param name="id">01</param>
-            </include>
-            <include content="Home_Menu_Item">
-                <param name="id">02</param>
-            </include>
-            <include content="Home_Menu_Item">
-                <param name="id">03</param>
-            </include>
-            <include content="Home_Menu_Item">
-                <param name="id">04</param>
-            </include>
-        </content>
+        <param name="preaction">Action(Right)</param>
+        <definition>
+            <content>
+                <item>
+                    <label>$LOCALIZE[10000]</label>
+                    <icon>special://skin/extras/icons/home.png</icon>
+                    <property name="expression">home</property>
+                    <onclick>$PARAM[preaction]</onclick>
+                    <onclick>ActivateWindow(home)</onclick>
+                </item>
+                <include content="Home_Menu_Item">
+                    <param name="id">01</param>
+                    <param name="preaction">$PARAM[preaction]</param>
+                </include>
+                <include content="Home_Menu_Item">
+                    <param name="id">02</param>
+                    <param name="preaction">$PARAM[preaction]</param>
+                </include>
+                <include content="Home_Menu_Item">
+                    <param name="id">03</param>
+                    <param name="preaction">$PARAM[preaction]</param>
+                </include>
+                <include content="Home_Menu_Item">
+                    <param name="id">04</param>
+                    <param name="preaction">$PARAM[preaction]</param>
+                </include>
+            </content>
+        </definition>
     </include>
 
     <include name="Home_Menu_Button_Back">
@@ -474,13 +497,11 @@
 
     <include name="Home_Menu">
 
-        <!-- <include content="DialogInfo_ButtonGroup_Basic">
+        <include content="DialogInfo_ButtonGroup_Basic" condition="Skin.HasSetting(Home.HideSideMenu)">
             <param name="id">30000</param>
             <param name="dim_visible">false</param>
-            <visible>!$EXP[Exp_HomeMenu_HasFocus]</visible>
             <visible>!$EXP[Exp_InfoDialogs]</visible>
-            <ondown>SetFocus(303,0,absolute)</ondown>
-            <onup>308</onup>
+            <onup>ActivateWindow(1105)</onup>
             <include content="Action_HomeMenu_OnRightLeft">
                 <param name="onlist">$PARAM[onlist]</param>
             </include>
@@ -489,11 +510,21 @@
                 <param name="id">01</param>
                 <param name="label">$LOCALIZE[33061]</param>
                 <param name="icon">special://skin/extras/icons/list-check.png</param>
-                <onclick>SetFocus(303,0,absolute)</onclick>
+                <onclick>ActivateWindow(1170)</onclick>
             </include>
-        </include> -->
+        </include>
 
-        <control type="group">
+        <include content="Object_Hidden_Button" condition="Skin.HasSetting(Home.HideSideMenu)">
+            <param name="id">303</param>
+            <onfocus>Action(Right)</onfocus>
+            <onfocus>ActivateWindow(1170)</onfocus>
+            <include content="Action_HomeMenu_OnRightLeft">
+                <param name="onlist">$PARAM[onlist]</param>
+            </include>
+        </include>
+
+        <include content="Object_Control" condition="!Skin.HasSetting(Home.HideSideMenu)">
+            <param name="control">group</param>
             <visible>!$EXP[Exp_InfoDialogs]</visible>
             <include condition="Skin.HasSetting(Home.SideLabels)">Home_Menu_Fade_Labels</include>
             <control type="group">
@@ -517,7 +548,6 @@
                     </include>
                     <left>view_pad</left>
                     <top>view_pad</top>
-                    <!-- <visible allowhiddenfocus="true">$EXP[Exp_HomeMenu_HasFocus]</visible> -->
                 </include>
 
                 <!-- Settings -->
@@ -537,15 +567,13 @@
                     </include>
                     <left>view_pad</left>
                     <bottom>view_pad</bottom>
-                    <!-- <visible allowhiddenfocus="true">$EXP[Exp_HomeMenu_HasFocus]</visible> -->
                 </include>
 
                 <include content="Home_Menu_List">
                     <param name="onlist">$PARAM[onlist]</param>
-                    <!-- <visible allowhiddenfocus="true">$EXP[Exp_HomeMenu_HasFocus]</visible> -->
                 </include>
             </control>
-        </control>
+        </include>
     </include>
 
     <include name="Home_Fullscreen_Widget_List">
