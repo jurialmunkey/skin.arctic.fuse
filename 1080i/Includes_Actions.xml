@@ -79,7 +79,7 @@
         <onup>SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onup>
         <include condition="Skin.String(Hubs.WidgetsLoopback,Loop) + !Window.IsVisible(Home)">Action_Widget_Top_HubsLoop</include>
         <include condition="Skin.String(Hubs.WidgetsLoopback,Loop) + Window.IsVisible(Home)">Action_Widget_Top_HomeLoop</include>
-        <onup condition="Skin.String(Hubs.WidgetsLoopback,Menu)">SetFocus(303,$VAR[Action_Menu_Position],absolute)</onup>
+        <onup condition="Skin.String(Hubs.WidgetsLoopback,Menu)">SetFocus($VAR[Action_Menu_ID],$VAR[Action_Menu_Position],absolute)</onup>
         <onup condition="!Skin.String(Hubs.WidgetsLoopback,Loop) + !Skin.String(Hubs.WidgetsLoopback,Menu)">333</onup>
     </include>
 
@@ -88,9 +88,14 @@
         <ondown>SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</ondown>
         <ondown condition="Skin.String(Hubs.WidgetsLoopback,Loop)">$PARAM[topid]</ondown>
         <ondown condition="Skin.String(Hubs.WidgetsLoopback,Loop)">AlarmClock(refocus,SetFocus(311),00:00,silent)</ondown>
-        <ondown condition="Skin.String(Hubs.WidgetsLoopback,Menu)">SetFocus(303,$VAR[Action_Menu_Position],absolute)</ondown>
+        <ondown condition="Skin.String(Hubs.WidgetsLoopback,Menu)">SetFocus($VAR[Action_Menu_ID],$VAR[Action_Menu_Position],absolute)</ondown>
         <ondown condition="!Skin.String(Hubs.WidgetsLoopback,Loop) + !Skin.String(Hubs.WidgetsLoopback,Menu)">330</ondown>
     </include>
+
+    <variable name="Action_Menu_ID">
+        <!-- <value>30001</value> -->
+        <value>303</value>
+    </variable>
 
     <variable name="Action_Menu_Position">
         <value condition="Skin.String(CustomShortcut.Item01,movies) + $EXP[Exp_HomeMenu_movies]">1</value>
@@ -303,20 +308,20 @@
     <include name="Action_View_Movement_OnUp">
         <onup>ActivateWindow(1113)</onup>
         <!-- <onup>SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onup>
-        <onup>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onup> -->
+        <onup>SetFocus($VAR[Action_Menu_ID],$VAR[Action_Menu_Position],absolute)</onup> -->
     </include>
 
     <include name="Action_Menu_Movement_OnBack">
-        <onback>303</onback>
+        <onback>$VAR[Action_Menu_ID]</onback>
         <onback>SetProperty(List.ViewContainer.Reset,$NUMBER[$PARAM[id]])</onback>
         <onback>SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onback>
-        <onback>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onback>
+        <onback>SetFocus($VAR[Action_Menu_ID],$VAR[Action_Menu_Position],absolute)</onback>
     </include>
 
     <include name="Action_View_Movement_OnLeft">
-        <onleft>303</onleft>
+        <onleft>$VAR[Action_Menu_ID]</onleft>
         <onleft>SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onleft>
-        <onleft>SetFocus(303,$VAR[Action_Menu_Position],absolute)</onleft>
+        <onleft>SetFocus($VAR[Action_Menu_ID],$VAR[Action_Menu_Position],absolute)</onleft>
     </include>
 
     <include name="Action_View_Movement_OnRight">
@@ -324,7 +329,7 @@
         <definition>
             <onright>SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onright>
             <onright condition="$PARAM[refocus]">SetFocus($PARAM[id],0,absolute)</onright>
-            <onright condition="Skin.String(Rows.ContentLoopback,Loop)">SetFocus(303,$VAR[Action_Menu_Position],absolute)</onright>
+            <onright condition="Skin.String(Rows.ContentLoopback,Loop)">SetFocus($VAR[Action_Menu_ID],$VAR[Action_Menu_Position],absolute)</onright>
             <onright condition="!Skin.String(Rows.ContentLoopback,Loop)">332</onright>
         </definition>
     </include>

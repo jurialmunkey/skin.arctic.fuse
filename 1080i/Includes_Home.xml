@@ -116,12 +116,12 @@
             </control>
             <include content="Object_Hidden_Button">
                 <param name="id">393</param>
-                <onfocus condition="Skin.String(Home.LayoutStyle,Widgets)">SetFocus(303,$VAR[Action_Menu_Position],absolute)</onfocus>
+                <onfocus condition="Skin.String(Home.LayoutStyle,Widgets)">SetFocus($VAR[Action_Menu_ID],$VAR[Action_Menu_Position],absolute)</onfocus>
                 <onfocus condition="!Skin.String(Home.LayoutStyle,Widgets)">SetFocus(300)</onfocus>
             </include>
             <include content="Object_Hidden_Button">
                 <param name="id">392</param>
-                <onfocus condition="Skin.String(Home.LayoutStyle,Widgets)">SetFocus(303,$VAR[Action_Menu_Position],absolute)</onfocus>
+                <onfocus condition="Skin.String(Home.LayoutStyle,Widgets)">SetFocus($VAR[Action_Menu_ID],$VAR[Action_Menu_Position],absolute)</onfocus>
                 <onfocus condition="!Skin.String(Home.LayoutStyle,Widgets)">SetFocus(300)</onfocus>
                 <onfocus>SetProperty(SkinShortcutsDialogBuild,True,Home)</onfocus>
                 <onfocus condition="Window.IsVisible(Home)">RunScript(script.skinvariables,$INFO[Window(Home).Property(SkinVariablesCommand)],skin=skin.arctic.fuse,name=$INFO[Container(300).ListItem.Property(submenuVisibility),,-1])</onfocus>
@@ -473,11 +473,29 @@
     </include>
 
     <include name="Home_Menu">
+
+        <!-- <include content="DialogInfo_ButtonGroup_Basic">
+            <param name="id">30000</param>
+            <param name="dim_visible">false</param>
+            <visible>!$EXP[Exp_HomeMenu_HasFocus]</visible>
+            <visible>!$EXP[Exp_InfoDialogs]</visible>
+            <ondown>SetFocus(303,0,absolute)</ondown>
+            <onup>308</onup>
+            <include content="Action_HomeMenu_OnRightLeft">
+                <param name="onlist">$PARAM[onlist]</param>
+            </include>
+            <include content="Settings_Side_Button">
+                <param name="baseid">30</param>
+                <param name="id">01</param>
+                <param name="label">$LOCALIZE[33061]</param>
+                <param name="icon">special://skin/extras/icons/list-check.png</param>
+                <onclick>SetFocus(303,0,absolute)</onclick>
+            </include>
+        </include> -->
+
         <control type="group">
             <visible>!$EXP[Exp_InfoDialogs]</visible>
-
             <include condition="Skin.HasSetting(Home.SideLabels)">Home_Menu_Fade_Labels</include>
-
             <control type="group">
                 <!-- Search -->
                 <include content="Home_Menu_Button_Icon">
@@ -499,6 +517,7 @@
                     </include>
                     <left>view_pad</left>
                     <top>view_pad</top>
+                    <!-- <visible allowhiddenfocus="true">$EXP[Exp_HomeMenu_HasFocus]</visible> -->
                 </include>
 
                 <!-- Settings -->
@@ -511,7 +530,6 @@
                         <param name="id">309</param>
                         <onup>SetFocus(303,9999,absolute)</onup>
                         <ondown>308</ondown>
-                        <!-- <onclick>Action(Right)</onclick> -->
                         <onclick>ActivateWindow(shutdownmenu)</onclick>
                         <include content="Action_HomeMenu_OnRightLeft">
                             <param name="onlist">$PARAM[onlist]</param>
@@ -519,10 +537,12 @@
                     </include>
                     <left>view_pad</left>
                     <bottom>view_pad</bottom>
+                    <!-- <visible allowhiddenfocus="true">$EXP[Exp_HomeMenu_HasFocus]</visible> -->
                 </include>
 
                 <include content="Home_Menu_List">
                     <param name="onlist">$PARAM[onlist]</param>
+                    <!-- <visible allowhiddenfocus="true">$EXP[Exp_HomeMenu_HasFocus]</visible> -->
                 </include>
             </control>
         </control>
