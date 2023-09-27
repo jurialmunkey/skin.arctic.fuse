@@ -497,30 +497,65 @@
 
     <include name="Home_Menu">
 
-        <include content="DialogInfo_ButtonGroup_Basic" condition="Skin.HasSetting(Home.HideSideMenu)">
-            <param name="id">30000</param>
-            <param name="dim_visible">false</param>
-            <visible>!$EXP[Exp_InfoDialogs]</visible>
-            <onup>ActivateWindow(1105)</onup>
-            <include content="Action_HomeMenu_OnRightLeft">
-                <param name="onlist">$PARAM[onlist]</param>
+        <include content="Object_Control" condition="Skin.HasSetting(Home.HideSideMenu)">
+            <param name="control">group</param>
+            <include content="DialogInfo_ButtonGroup_Basic">
+                <param name="id">30000</param>
+                <param name="dim_visible">false</param>
+                <visible>!$EXP[Exp_InfoDialogs]</visible>
+                <!-- <onup>ActivateWindow(1105)</onup> -->
+                <include content="Action_HomeMenu_OnRightLeft">
+                    <param name="onlist">$PARAM[onlist]</param>
+                </include>
+                <include content="Settings_Side_Button">
+                    <param name="baseid">30</param>
+                    <param name="id">01</param>
+                    <param name="label">$LOCALIZE[33061]</param>
+                    <param name="icon">special://skin/extras/icons/list-check.png</param>
+                    <onclick>ActivateWindow(1170)</onclick>
+                </include>
             </include>
-            <include content="Settings_Side_Button">
-                <param name="baseid">30</param>
-                <param name="id">01</param>
-                <param name="label">$LOCALIZE[33061]</param>
-                <param name="icon">special://skin/extras/icons/list-check.png</param>
-                <onclick>ActivateWindow(1170)</onclick>
-            </include>
-        </include>
 
-        <include content="Object_Hidden_Button" condition="Skin.HasSetting(Home.HideSideMenu)">
-            <param name="id">303</param>
-            <onfocus>Action(Right)</onfocus>
-            <onfocus>ActivateWindow(1170)</onfocus>
-            <include content="Action_HomeMenu_OnRightLeft">
-                <param name="onlist">$PARAM[onlist]</param>
+            <include content="Object_Hidden_Button">
+                <param name="id">303</param>
+                <onfocus>SetFocus(30000)</onfocus>
             </include>
+
+            <!-- <control type="group">
+                <width>40</width>
+                <height>40</height>
+                <centerbottom>100</centerbottom>
+                <centerleft>100</centerleft>
+                <control type="group">
+                    <control type="image">
+                        <bordersize>icon_home_bordersize</bordersize>
+                        <aspectratio>keep</aspectratio>
+                        <texture colordiffuse="main_fg_30">special://skin/extras/icons/bars.png</texture>
+                    </control>
+                </control>
+            </control> -->
+
+            <!-- <control type="group">
+                <width>40</width>
+                <height>40</height>
+                <centertop>100</centertop>
+                <centerleft>100</centerleft>
+                <control type="group">
+                    <control type="image">
+                        <include>Texture_Circle_Highlight_V</include>
+                        <aspectratio>keep</aspectratio>
+                        <width>10</width>
+                        <height>10</height>
+                        <centertop>50%</centertop>
+                        <left>-20</left>
+                    </control>
+                    <control type="image">
+                        <bordersize>icon_home_bordersize</bordersize>
+                        <aspectratio>keep</aspectratio>
+                        <texture colordiffuse="main_fg_100">$VAR[Image_CurrentWindow_Icon]</texture>
+                    </control>
+                </control>
+            </control> -->
         </include>
 
         <include content="Object_Control" condition="!Skin.HasSetting(Home.HideSideMenu)">
