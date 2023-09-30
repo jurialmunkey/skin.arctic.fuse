@@ -163,7 +163,7 @@
     <include name="OSD_PlaySpeed_Label">
         <param name="width">52</param>
         <param name="selected">false</param>
-        <param name="textcolor">main_bg_70</param>
+        <param name="textcolor">dialog_bg_70</param>
         <definition>
             <control type="label">
                 <font>font_tiny</font>
@@ -206,7 +206,7 @@
     
     <include name="OSD_Stream_Selector_Layout">
         <param name="selected">false</param>
-        <param name="color_fg">main_fg_90</param>
+        <param name="color_fg">dialog_fg_90</param>
         <param name="enabled">true</param>
         <definition>
             <control type="group">
@@ -274,14 +274,14 @@
 
     <include name="OSD_Stream_Selector_Divider">
         <control type="image">
-            <texture border="20" colordiffuse="main_fg_12">common/dialog.png</texture>
+            <texture border="20" colordiffuse="dialog_fg_12">common/dialog.png</texture>
         </control>
         <control type="image">
             <left>40</left>
             <right>40</right>
             <height>1</height>
             <centerbottom>40</centerbottom>
-            <texture colordiffuse="main_fg_12">common/white.png</texture>
+            <texture colordiffuse="dialog_fg_12">common/white.png</texture>
         </control>
     </include>
 
@@ -379,17 +379,6 @@
                 </control>
             </control>
         </definition>
-    </include>
-
-    <include name="OSD_Button_HintLabel">
-        <label>[CR][CR][CR]$PARAM[label]</label>
-        <textcolor>main_fg_90</textcolor>
-        <focusedcolor>main_fg_90</focusedcolor>
-        <shadowcolor>shadow_hard</shadowcolor>
-        <font>font_hint</font>
-        <align>center</align>
-        <aligny>top</aligny>
-        <textoffsetx>0</textoffsetx>
     </include>
 
     <include name="OSD_Button">
@@ -885,6 +874,7 @@
     <include name="OSD_Codecs">
         <param name="align">left</param>
         <param name="anchor">true</param>
+        <param name="color">panel_fg</param>
         <definition>
             <control type="grouplist">
                 <nested />
@@ -901,8 +891,8 @@
                 </include>
 
                 <include content="Info_Codecs_StackedText">
-                    <param name="topcolor">panel_fg_90</param>
-                    <param name="bottomcolor">panel_fg_70</param>
+                    <param name="topcolor">$PARAM[color]_90</param>
+                    <param name="bottomcolor">$PARAM[color]_70</param>
                     <param name="toplabel">$VAR[Label_OSD_VideoQuality]</param>
                     <param name="bottomlabel">$VAR[Label_OSD_VideoResolution]</param>
                     <visible>!String.IsEmpty(VideoPlayer.VideoResolution)</visible>
@@ -911,8 +901,8 @@
 
                 <!-- Codec / Aspect -->
                 <include content="Info_Codecs_StackedText">
-                    <param name="topcolor">panel_fg_90</param>
-                    <param name="bottomcolor">panel_fg_70</param>
+                    <param name="topcolor">$PARAM[color]_90</param>
+                    <param name="bottomcolor">$PARAM[color]_70</param>
                     <param name="bottomlabel">[UPPERCASE]$INFO[VideoPlayer.VideoCodec][/UPPERCASE]</param>
                     <param name="toplabel">$INFO[VideoPlayer.VideoAspect]</param>
                     <visible>!String.IsEmpty(VideoPlayer.VideoCodec)</visible>
@@ -921,15 +911,15 @@
 
                 <!-- FPS -->
                 <include content="OSD_Codecs_FPS">
-                    <param name="topcolor">panel_fg_100</param>
-                    <param name="bottomcolor">panel_fg_70</param>
+                    <param name="topcolor">$PARAM[color]_100</param>
+                    <param name="bottomcolor">$PARAM[color]_70</param>
                     <param name="directory">monochrome</param>
                 </include>
 
                 <!-- 3d Stereoscopic -->
                 <include content="Info_Codecs_MonoIcon">
                     <param name="icon">other/3D.png</param>
-                    <param name="colordiffuse">panel_fg_90</param>
+                    <param name="colordiffuse">$PARAM[color]_90</param>
                     <param name="basewidth">48</param>
                     <param name="iconwidth">64</param>
                     <param name="iconheight">56</param>
@@ -939,15 +929,15 @@
                 <!-- Audio Channels -->
                 <include content="Info_Codec_AudioChannels">
                     <param name="type">VideoPlayer</param>
-                    <param name="channelscolor">panel_fg_90</param>
-                    <param name="iconcolor">panel_fg_90</param>
-                    <param name="imagecolor">panel_fg_70</param>
+                    <param name="channelscolor">$PARAM[color]_90</param>
+                    <param name="iconcolor">$PARAM[color]_90</param>
+                    <param name="imagecolor">$PARAM[color]_70</param>
                 </include>
 
                 <!-- AudioCodec -->
                 <include content="Info_Codecs_MonoIcon">
                     <param name="icon">$VAR[Image_OSD_AudioCodec]</param>
-                    <param name="colordiffuse">panel_fg_90</param>
+                    <param name="colordiffuse">$PARAM[color]_90</param>
                     <param name="basewidth">80</param>
                     <param name="iconwidth">100</param>
                     <param name="iconheight">48</param>
@@ -959,9 +949,10 @@
 
 
     <include name="OSD_TempoControl">
-        <param name="textcolor">main_fg_70</param>
-        <param name="progresscolor">main_fg_12</param>
-        <param name="nibcolor">main_fg_100</param>
+        <param name="headercolor">dialog_fg_90</param>
+        <param name="textcolor">dialog_fg_70</param>
+        <param name="progresscolor">dialog_fg_12</param>
+        <param name="nibcolor">dialog_fg_100</param>
         <param name="selected">false</param>
         <param name="istempo">true</param>
         <definition>
@@ -973,7 +964,7 @@
                     <include content="Object_TextColor" condition="$PARAM[selected]">
                         <param name="textcolor">$VAR[ColorSelected]</param>
                     </include>
-                    <textcolor>$PARAM[textcolor]</textcolor>
+                    <textcolor>$PARAM[headercolor]</textcolor>
                     <align>left</align>
                     <height>70</height>
                     <top>0</top>
