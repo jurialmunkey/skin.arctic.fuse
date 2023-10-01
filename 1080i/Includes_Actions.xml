@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
 
+    <variable name="Action_OSD_Main_OnDown">
+        <value condition="VideoPlayer.Content(livetv) + !Skin.HasSetting(OSD.OnDown.DisablePVROSDGuide)">pvrosdguide</value>
+        <value condition="VideoPlayer.Content(livetv)">$VAR[Action_OSD_PVROSDGuide_OnDown]</value>
+        <value condition="$EXP[Exp_OSD_HasPlaylist] + !Skin.HasSetting(OSD.OnDown.Disable1140)">1140</value>
+        <value condition="$EXP[Exp_OSD_HasPlaylist]">$VAR[Action_OSD_1140_OnDown]</value>
+        <value condition="!Skin.HasSetting(OSD.OnDown.DisableVideoBookmarks)">videobookmarks</value>
+        <value>$VAR[Action_OSD_VideoBookmarks_OnDown]</value>
+    </variable>
+    <variable name="Action_OSD_PVROSDGuide_OnDown">
+        <value condition="!Skin.HasSetting(OSD.OnDown.DisablePVROSDChannels)">pvrosdchannels</value>
+    </variable>
+    <variable name="Action_OSD_1140_OnDown">
+        <value condition="VideoPlayer.Content(livetv) + !Skin.HasSetting(OSD.OnDown.DisablePVROSDGuide)">pvrosdguide</value>
+        <value condition="VideoPlayer.Content(livetv)">$VAR[Action_OSD_PVROSDGuide_OnDown]</value>
+        <value condition="!Skin.HasSetting(OSD.OnDown.DisableVideoBookmarks)">videobookmarks</value>
+        <value>$VAR[Action_OSD_VideoBookmarks_OnDown]</value>
+    </variable>
+    <variable name="Action_OSD_VideoBookmarks_OnDown">
+        <value condition="!Skin.HasSetting(OSD.OnDown.Disable1141)">1141</value>
+    </variable>
+
     <include name="Action_SearchLibrary_Filter_Onclick">
         <onclick condition="String.IsEqual(Window(1105).Property(SearchDiscover.FilterLabel),$PARAM[type]) + !String.IsEqual(Container(8000).ListItem.Property(clearfilter),True)">RunScript(script.skinvariables,add_skinstring_history=SearchDiscover.$PARAM[type]Label,value=$INFO[Container(8000).ListItem.Label],separator=' / ',toggle,use_window_prop)</onclick>
         <onclick condition="String.IsEqual(Window(1105).Property(SearchDiscover.FilterLabel),$PARAM[type]) + String.IsEqual(Container(8000).ListItem.Property(clearfilter),True)">ClearProperty(SearchDiscover.$PARAM[type]Label,1105)</onclick>
