@@ -94,14 +94,17 @@
 
     <!-- Scrollbar -->
     <expression name="Exp_AlphabetVisible">[Control.HasFocus(65) + $EXP[Exp_AlphabetTypes_Only]]</expression>
-    <expression name="Exp_ScrollbarVisible">[Control.HasFocus(65) | Control.HasFocus(60) | Control.HasFocus(64)]</expression>
+    <expression name="Exp_ScrollbarVisible">[Control.HasFocus(65) | Control.HasFocus(64) | Control.HasFocus(60)]</expression>
     <expression name="Exp_ItemCountVisible">[Control.HasFocus(60) | Control.HasFocus(64) | Control.HasFocus(67) | [Skin.HasSetting(Furniture.EnableCount) + !$EXP[Exp_AlphabetVisible] + String.IsEmpty(Window.Property(MediaFilterBase)) + [![$EXP[Exp_View_502] | $EXP[Exp_View_512] | $EXP[Exp_View_522]] | Skin.HasSetting(Views.UseAltCombined)]]]</expression>
 
     <!-- Discover Wall -->
     <expression name="Exp_FilterWall_IsDiscover">[Control.IsVisible(55) + !Integer.IsEqual(Container(553).NumItems,0) + !Skin.HasSetting(DisableMediaFilterWall)]</expression>
 
+    <expression name="Exp_CombinedWall_IsActive">[False]</expression>
+    <!-- <expression name="Exp_CombinedWall_IsActive">[[Control.HasFocus(502) | Control.HasFocus(512) | Control.HasFocus(522)] + !Skin.HasSetting(Views.UseAltCombined) + !Skin.HasSetting(Views.DisableCombinedWall)]</expression> -->
+
     <!-- Media Filter Wall -->
-    <expression name="Exp_FilterWall_IsMedia">[[Window.IsActive(mediafilter) | !String.IsEmpty(Window.Property(MediaFilterBase)) | Control.HasFocus(67) | $EXP[Exp_ScrollbarVisible]] + $EXP[Exp_FilterWall_IsEnabled] + $EXP[Exp_FilterWall_IsViewtype]]</expression>
+    <expression name="Exp_FilterWall_IsMedia">[[Window.IsActive(mediafilter) | !String.IsEmpty(Window.Property(MediaFilterBase)) | Control.HasFocus(67) | $EXP[Exp_ScrollbarVisible] | $EXP[Exp_CombinedWall_IsActive]] + $EXP[Exp_FilterWall_IsEnabled] + $EXP[Exp_FilterWall_IsViewtype]]</expression>
 
     <!-- Media Filter Has -->
     <expression name="Exp_FilterWall_IsEnabled">[Window.IsMedia + !Skin.HasSetting(DisableMediaFilterWall)]</expression>

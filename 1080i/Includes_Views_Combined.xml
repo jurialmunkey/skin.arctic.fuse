@@ -15,6 +15,7 @@
     <variable name="View_Combined_SortBy">
         <value condition="Container.Content(seasons)">episode</value>
         <value condition="Container.Content(sets) | Container.Content(artists)">year</value>
+        <value>label</value>
     </variable>
 
     <variable name="View_503_Content">
@@ -163,6 +164,8 @@
                         <height>divider_bottom</height>
                         <bottom>40</bottom>
 
+                        <pagecontrol>60</pagecontrol>
+
                         <include content="Action_View_Movement_OnLeft">
                             <param name="id">$PARAM[id]3</param>
                         </include>
@@ -170,11 +173,13 @@
                             <param name="id">$PARAM[id]3</param>
                         </include>
 
-                        <onback>SetFocus($PARAM[id]3,0,absolute)</onback>
-                        <onback>$PARAM[id]2</onback>
+                        <onback condition="!Integer.IsEqual(Container($PARAM[id]3).ListItem.CurrentItem,1)">SetFocus($PARAM[id]3,0,absolute)</onback>
+                        <onback condition="!Integer.IsEqual(Container($PARAM[id]3).ListItem.CurrentItem,1)">63</onback>
+                        <onback condition="Integer.IsEqual(Container($PARAM[id]3).ListItem.CurrentItem,1)">$PARAM[id]2</onback>
 
-                        <ondown>SetFocus($PARAM[id]3,0,absolute)</ondown>
-                        <ondown>$PARAM[id]2</ondown>
+                        <ondown condition="!Integer.IsEqual(Container($PARAM[id]3).ListItem.CurrentItem,1)">SetFocus($PARAM[id]3,0,absolute)</ondown>
+                        <ondown condition="!Integer.IsEqual(Container($PARAM[id]3).ListItem.CurrentItem,1)">63</ondown>
+                        <ondown condition="Integer.IsEqual(Container($PARAM[id]3).ListItem.CurrentItem,1)">$PARAM[id]2</ondown>
 
                         <include content="Action_View_Movement_OnUp">
                             <param name="id">$PARAM[id]3</param>
@@ -213,7 +218,7 @@
     <include name="View_Combined_List_Horz">
         <control type="group">
             <include content="Animation_ConditionalFade">
-                <param name="condition">[$EXP[Exp_InfoDialogs] | Control.HasFocus(60) | ControlGroup(9000).HasFocus() | !String.IsEmpty(Window.Property(MediaFilterBase))]</param>
+                <param name="condition">[$EXP[Exp_InfoDialogs] | Control.HasFocus(60) | Control.HasFocus(64) | Control.HasFocus(65) | Control.HasFocus(67) | ControlGroup(9000).HasFocus() | !String.IsEmpty(Window.Property(MediaFilterBase))]</param>
             </include>
             <include content="Home_Selector_Widget">
                 <param name="id">$PARAM[id]2</param>
@@ -222,7 +227,6 @@
                 <param name="shorten">True</param>
                 <param name="preitem_fade">True</param>
                 <top>920</top>
-                <pagecontrol>60</pagecontrol>
                 <onup>$PARAM[id]3</onup>
                 <ondown>SetProperty(MediaFilterBase,$INFO[Container.FolderPath])</ondown>
                 <ondown>SetFocus(9001)</ondown>
@@ -239,9 +243,6 @@
     <include name="View_Combined_Row">
         <definition>
             <control type="group">
-                <include content="MediaFilter_View_Transition">
-                    <param name="delay">0</param>
-                </include>
                 <include content="View_Combined_List_Horz" condition="!Skin.HasSetting(Views.UseAltCombined)">
                     <param name="id">$PARAM[id]</param>
                     <param name="viewtype_label">$LOCALIZE[31083]</param>
