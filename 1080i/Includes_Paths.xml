@@ -230,27 +230,59 @@
         <value condition="[!String.IsEmpty(Container(99950).ListItem.Director) | !String.IsEmpty(ListItem.Director)] + !String.IsEmpty(Container(99950).ListItem.Property(Director.3.TMDb_ID)) + !String.IsEmpty(Container(99950).ListItem.Property(Director.3.job)) + String.IsEqual(Container(99950).ListItem.Property(Director.3.job),Director)">$INFO[Container(99950).ListItem.Property(Director.3.TMDb_ID),&amp;tmdb_id=,]</value>
         <value condition="[!String.IsEmpty(Container(99950).ListItem.Director) | !String.IsEmpty(ListItem.Director)] + !String.IsEmpty(Container(99950).ListItem.Property(Director.1.TMDb_ID))">$INFO[Container(99950).ListItem.Property(Director.1.TMDb_ID),&amp;tmdb_id=,]</value>
     </variable>
-    <variable name="Path_Youtube_Query">
-        <value condition="[String.IsEqual(ListItem.DBType,set) | ListItem.IsCollection] + !String.IsEmpty(ListItem.Set)">$INFO[ListItem.Set]</value>
-        <value condition="String.IsEqual(ListItem.DBType,movie) + !String.IsEmpty(ListItem.Title)">$INFO[ListItem.Title]$INFO[ListItem.Year, ,] Movie</value>
-        <value condition="String.IsEqual(ListItem.DBType,tvshow) + !String.IsEmpty(ListItem.Title)">$INFO[ListItem.Title]$INFO[ListItem.Year, ,]</value>
-        <value condition="String.IsEqual(ListItem.DBType,season) + !String.IsEmpty(ListItem.TVShowTitle)">$INFO[ListItem.TVShowTitle]$INFO[ListItem.Season, Season ,]</value>
-        <value condition="String.IsEqual(ListItem.DBType,episode) + !String.IsEmpty(ListItem.Title)">$INFO[ListItem.TVShowTitle,, ]$INFO[ListItem.Title]</value>
-        <value condition="[String.IsEqual(ListItem.DBType,actor) | String.IsEqual(ListItem.Property(item.type),person)] + !String.IsEmpty(ListItem.Label)">$INFO[ListItem.Label]</value>
-        <value condition="String.IsEqual(ListItem.DBType,artist) + !String.IsEmpty(ListItem.AlbumArtist)">$INFO[ListItem.AlbumArtist] Music</value>
-        <value condition="String.IsEqual(ListItem.DBType,artist) + !String.IsEmpty(ListItem.Artist)">$INFO[ListItem.Artist] Music</value>
-        <value condition="String.IsEqual(ListItem.DBType,album) + !String.IsEmpty(ListItem.Album)">$INFO[ListItem.AlbumArtist,, ]$INFO[ListItem.Album] Music</value>
-        <value condition="String.IsEqual(ListItem.DBType,song) + !String.IsEmpty(ListItem.Title) + !String.IsEmpty(ListItem.AlbumArtist)">$INFO[ListItem.AlbumArtist,, ]$INFO[ListItem.Title] Music</value>
-        <value condition="String.IsEqual(ListItem.DBType,song) + !String.IsEmpty(ListItem.Title)">$INFO[ListItem.Artist,, ]$INFO[ListItem.Title] Music</value>
-        <value condition="!String.IsEmpty(ListItem.TvShowTitle)">$INFO[ListItem.TvShowTitle]</value>
-        <value condition="!String.IsEmpty(ListItem.AlbumArtist)">$INFO[ListItem.AlbumArtist]</value>
-        <value condition="!String.IsEmpty(ListItem.Artist)">$INFO[ListItem.Artist]</value>
-        <value condition="!String.IsEmpty(ListItem.Title)">$INFO[ListItem.Title]</value>
-        <value condition="!String.IsEmpty(ListItem.Label)">$INFO[ListItem.Label]</value>
+
+    <variable name="Path_Encoded_AlbumArtist">
+        <value condition="!String.IsEmpty(Window.Property(Encoded.ListItem.AlbumArtist))">$INFO[Window.Property(Encoded.ListItem.AlbumArtist)]</value>
+        <value>$INFO[ListItem.AlbumArtist]</value>
     </variable>
 
-    <variable name="Path_Youtube">
-        <value>$VAR[Path_Youtube_Query,plugin://plugin.video.youtube/search/?q=,&amp;search_type=notvalid]</value>
+    <variable name="Path_Encoded_Artist">
+        <value condition="!String.IsEmpty(Window.Property(Encoded.ListItem.Artist))">$INFO[Window.Property(Encoded.ListItem.Artist)]</value>
+        <value>$INFO[ListItem.Artist]</value>
+    </variable>
+
+    <variable name="Path_Encoded_Album">
+        <value condition="!String.IsEmpty(Window.Property(Encoded.ListItem.Album))">$INFO[Window.Property(Encoded.ListItem.Album)]</value>
+        <value>$INFO[ListItem.Album]</value>
+    </variable>
+
+    <variable name="Path_Encoded_Title">
+        <value condition="!String.IsEmpty(Window.Property(Encoded.ListItem.Title))">$INFO[Window.Property(Encoded.ListItem.Title)]</value>
+        <value>$INFO[ListItem.Title]</value>
+    </variable>
+
+    <variable name="Path_Encoded_TVShowTitle">
+        <value condition="!String.IsEmpty(Window.Property(Encoded.ListItem.TVShowTitle))">$INFO[Window.Property(Encoded.ListItem.TVShowTitle)]</value>
+        <value>$INFO[ListItem.TVShowTitle]</value>
+    </variable>
+
+    <variable name="Path_Encoded_Label">
+        <value condition="!String.IsEmpty(Window.Property(Encoded.ListItem.Label))">$INFO[Window.Property(Encoded.ListItem.Label)]</value>
+        <value>$INFO[ListItem.Label]</value>
+    </variable>
+
+    <variable name="Path_Encoded_Set">
+        <value condition="!String.IsEmpty(Window.Property(Encoded.ListItem.Set))">$INFO[Window.Property(Encoded.ListItem.Set)]</value>
+        <value>$INFO[ListItem.Set]</value>
+    </variable>
+
+    <variable name="Path_Youtube_Query">
+        <value condition="[String.IsEqual(ListItem.DBType,set) | ListItem.IsCollection] + !String.IsEmpty(ListItem.Set)">$VAR[Path_Encoded_Set]</value>
+        <value condition="String.IsEqual(ListItem.DBType,movie) + !String.IsEmpty(ListItem.Title)">$VAR[Path_Encoded_Title]$INFO[ListItem.Year, ,] Movie</value>
+        <value condition="String.IsEqual(ListItem.DBType,tvshow) + !String.IsEmpty(ListItem.Title)">$VAR[Path_Encoded_Title]$INFO[ListItem.Year, ,]</value>
+        <value condition="String.IsEqual(ListItem.DBType,season) + !String.IsEmpty(ListItem.TVShowTitle)">$VAR[Path_Encoded_TVShowTitle]$INFO[ListItem.Season, Season ,]</value>
+        <value condition="String.IsEqual(ListItem.DBType,episode) + !String.IsEmpty(ListItem.Title)">$VAR[Path_Encoded_TVShowTitle,, ]$VAR[Path_Encoded_Title]</value>
+        <value condition="[String.IsEqual(ListItem.DBType,actor) | String.IsEqual(ListItem.Property(item.type),person)] + !String.IsEmpty(ListItem.Label)">$VAR[Path_Encoded_Label]</value>
+        <value condition="String.IsEqual(ListItem.DBType,artist) + !String.IsEmpty(ListItem.AlbumArtist)">$VAR[Path_Encoded_AlbumArtist] Music</value>
+        <value condition="String.IsEqual(ListItem.DBType,artist) + !String.IsEmpty(ListItem.Artist)">$VAR[Path_Encoded_Artist] Music</value>
+        <value condition="String.IsEqual(ListItem.DBType,album) + !String.IsEmpty(ListItem.Album)">$VAR[Path_Encoded_AlbumArtist,, ]$VAR[Path_Encoded_Album] Music</value>
+        <value condition="String.IsEqual(ListItem.DBType,song) + !String.IsEmpty(ListItem.Title) + !String.IsEmpty(ListItem.AlbumArtist)">$VAR[Path_Encoded_AlbumArtist,, ]$VAR[Path_Encoded_Title] Music</value>
+        <value condition="String.IsEqual(ListItem.DBType,song) + !String.IsEmpty(ListItem.Title)">$VAR[Path_Encoded_Artist,, ]$VAR[Path_Encoded_Title] Music</value>
+        <value condition="!String.IsEmpty(ListItem.TvShowTitle)">$VAR[Path_Encoded_TVShowTitle]</value>
+        <value condition="!String.IsEmpty(ListItem.AlbumArtist)">$VAR[Path_Encoded_AlbumArtist]</value>
+        <value condition="!String.IsEmpty(ListItem.Artist)">$VAR[Path_Encoded_Artist]</value>
+        <value condition="!String.IsEmpty(ListItem.Title)">$VAR[Path_Encoded_Title]</value>
+        <value condition="!String.IsEmpty(ListItem.Label)">$VAR[Path_Encoded_Label]</value>
     </variable>
 
     <variable name="Path_Wikipedia_Title">
