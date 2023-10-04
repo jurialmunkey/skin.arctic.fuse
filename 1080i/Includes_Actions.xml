@@ -350,18 +350,22 @@
     </include>
 
     <include name="Action_View_Movement_OnLeft">
-        <onleft condition="Skin.HasSetting(Home.HideSideMenu)">30001</onleft>
-        <onleft condition="!Skin.HasSetting(Home.HideSideMenu)">303</onleft>
-        <onleft>SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onleft>
-        <onleft>SetFocus($VAR[Action_Menu_ID],$VAR[Action_Menu_Position],absolute)</onleft>
+        <param name="onmenu">SetFocus($VAR[Action_Menu_ID],$VAR[Action_Menu_Position],absolute)</param>
+        <definition>
+            <onleft condition="Skin.HasSetting(Home.HideSideMenu)">30001</onleft>
+            <onleft condition="!Skin.HasSetting(Home.HideSideMenu)">303</onleft>
+            <onleft>SetProperty(List.ViewContainer,$PARAM[id])</onleft>
+            <onleft>$PARAM[onmenu]</onleft>
+        </definition>
     </include>
 
     <include name="Action_View_Movement_OnRight">
         <param name="refocus">Skin.String(Rows.ContentLoopback,Loop)</param>
+        <param name="onmenu">SetFocus($VAR[Action_Menu_ID],$VAR[Action_Menu_Position],absolute)</param>
         <definition>
-            <onright>SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onright>
+            <onright>SetProperty(List.ViewContainer,$PARAM[id])</onright>
             <onright condition="$PARAM[refocus]">SetFocus($PARAM[id],0,absolute)</onright>
-            <onright condition="Skin.String(Rows.ContentLoopback,Loop)">SetFocus($VAR[Action_Menu_ID],$VAR[Action_Menu_Position],absolute)</onright>
+            <onright condition="Skin.String(Rows.ContentLoopback,Loop)">$PARAM[onmenu]</onright>
             <onright condition="!Skin.String(Rows.ContentLoopback,Loop)">332</onright>
         </definition>
     </include>
