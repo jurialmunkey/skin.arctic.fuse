@@ -180,6 +180,10 @@
                 <param name="id">5002</param>
             </include>
 
+            <include content="Animation_ConditionalFade">
+                <param name="condition">Container(5002).IsUpdating</param>
+            </include>
+
             <onclick condition="Skin.HasSetting(Trailers.PlayFullscreen)">Dialog.Close(musicinformation)</onclick>
             <onclick condition="Skin.HasSetting(Trailers.PlayFullscreen)">PlayMedia($ESCINFO[Container(5002).ListItem.FileNameAndPath])</onclick>
             <onclick condition="!Skin.HasSetting(Trailers.PlayFullscreen)">PlayMedia($ESCINFO[Container(5002).ListItem.FileNameAndPath],False,1)</onclick>
@@ -198,8 +202,19 @@
                 <param name="id">5008</param>
             </include>
 
+            <include content="Animation_ConditionalFade">
+                <param name="condition">Container(5008).IsUpdating</param>
+            </include>
+
             <content target="music">musicdb://albums/?xsp={"rules":{"and":[{"field":"artist","operator":"contains","value":["$INFO[Window.Property(Encoded.ListItem.Artist)]"]}]},"type":"albums"}</content>
             <visible>String.IsEqual(Window.Property(DetailsView),Albums)</visible>
+        </include>
+
+        <include content="Widget_Busy">
+            <param name="label">$INFO[Window.Property(DetailsView)]</param>
+            <param name="visible">[String.IsEqual(Window.Property(DetailsView),Trailer) + Container(5002).IsUpdating] | [String.IsEqual(Window.Property(DetailsView),Albums) + Container(5008).IsUpdating]</param>
+            <top>-90</top>
+            <left>200</left>
         </include>
     </include>
 
