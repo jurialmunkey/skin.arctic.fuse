@@ -447,30 +447,38 @@
     </include>
 
     <include name="Defs_MusicLibrary_Loader">
+
+        <!-- Lists -->
         <include content="Object_Hidden_List">
             <param name="id">99951</param>
             <visible>String.IsEqual(ListItem.DBType,song) | String.IsEqual(ListItem.DBType,album)</visible>
-            <content target="music">musicdb://artists/?xsp={"rules":{"and":[{"field":"artist","operator":"contains","value":["$INFO[ListItem.Artist]"]}]},"type":"artists"}</content>
+            <content target="music">musicdb://artists/?xsp={"rules":{"and":[{"field":"artist","operator":"contains","value":["$INFO[Container(99961).ListItemAbsolute(0).Label]"]}]},"type":"artists"}</content>
         </include>
         <include content="Object_Hidden_List">
             <param name="id">99952</param>
             <visible>String.IsEqual(ListItem.DBType,song)</visible>
-            <content target="music">musicdb://albums/?xsp={"rules":{"and":[{"field":"album","operator":"contains","value":["$INFO[ListItem.Album]"]}]},"type":"albums"}</content>
+            <content target="music">musicdb://albums/?xsp={"rules":{"and":[{"field":"album","operator":"contains","value":["$INFO[Container(99961).ListItemAbsolute(1).Label]"]}]},"type":"albums"}</content>
         </include>
         <include content="Object_Hidden_List">
             <param name="id">99953</param>
             <visible>String.IsEqual(ListItem.DBType,album)</visible>
-            <content target="music">musicdb://songs/?xsp={"rules":{"and":[{"field":"album","operator":"contains","value":["$INFO[ListItem.Album]"]}]},"type":"songs"}</content>
+            <content target="music">musicdb://songs/?xsp={"rules":{"and":[{"field":"album","operator":"contains","value":["$INFO[Container(99961).ListItemAbsolute(1).Label]"]}]},"type":"songs"}</content>
         </include>
         <include content="Object_Hidden_List">
             <param name="id">99954</param>
             <visible>String.IsEqual(ListItem.DBType,artist)</visible>
-            <content target="music">musicdb://songs/?xsp={"rules":{"and":[{"field":"artist","operator":"contains","value":["$INFO[ListItem.Artist]"]}]},"type":"songs"}</content>
+            <content target="music">musicdb://songs/?xsp={"rules":{"and":[{"field":"artist","operator":"contains","value":["$INFO[Container(99961).ListItemAbsolute(0).Label]"]}]},"type":"songs"}</content>
         </include>
         <include content="Object_Hidden_List">
             <param name="id">99955</param>
             <visible>String.IsEqual(ListItem.DBType,artist)</visible>
-            <content target="music">musicdb://albums/?xsp={"rules":{"and":[{"field":"artist","operator":"contains","value":["$INFO[ListItem.Artist]"]}]},"type":"albums"}</content>
+            <content target="music">musicdb://albums/?xsp={"rules":{"and":[{"field":"artist","operator":"contains","value":["$INFO[Container(99961).ListItemAbsolute(0).Label]"]}]},"type":"albums"}</content>
+        </include>
+
+        <!-- Encoding -->
+        <include content="Object_Hidden_List">
+            <param name="id">99961</param>
+            <content>plugin://script.skinvariables/?info=get_encoded_string&amp;&amp;$INFO[ListItem.Artist]&amp;&amp;$INFO[ListItem.Album]</content>
         </include>
     </include>
 
