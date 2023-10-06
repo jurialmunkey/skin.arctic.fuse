@@ -8,7 +8,8 @@
         <definition>
             <control type="group">
                 <nested />
-                <width>120</width>
+                <left>-360</left>
+                <width>480</width>
                 <control type="grouplist">
                     <width>100%</width>
                     <orientation>horizontal</orientation>
@@ -39,35 +40,41 @@
     </include>
 
     <include name="Home_Menu_Fade_Labels">
-
         <include content="Home_Fade">
             <visible>Control.HasFocus(303) | Control.HasFocus(308) | Control.HasFocus(309)</visible>
             <include>Animation_Home_Menu</include>
-            <width>440</width>
+            <left>-40</left>
         </include>
+    </include>
 
+    <include name="Keyboard_Overlay">
+        <control type="image">
+            <texture colordiffuse="dialog_fg_12" border="20">common/dialog.png</texture>
+        </control>
     </include>
 
 
     <include name="Dialog_Background_Blur">
         <param name="flipy">false</param>
         <param name="shadow">true</param>
-        <param name="border">20</param>
-        <aspectratio>scale</aspectratio>
+        <param name="outline">true</param>
+        <param name="diffuse">diffuse/dialog_w1120_h400.png</param>
         <definition>
             <control type="group">
                 <control type="image">
                     <texture colordiffuse="dialog_bg_100" border="20">common/dialog.png</texture>
                 </control>
                 <control type="image">
+                    <fadetime>background_fadetime</fadetime>
                     <aspectratio scalediffuse="false" align="left">scale</aspectratio>
                     <include condition="$PARAM[shadow]">Texture_Shadow_80</include>
-                    <texture border="$PARAM[border]" flipy="$PARAM[flipy]" diffuse="$PARAM[diffuse]" colordiffuse="dialog_fg_30">$VAR[Image_Background_Blur]</texture>
+                    <texture flipy="$PARAM[flipy]" diffuse="$PARAM[diffuse]" colordiffuse="dialog_fg_30">$VAR[Image_Background_Blur]</texture>
                 </control>
-                <control type="image">
-                    <bordersize>-1</bordersize>
+                <include content="Object_Control" condition="$PARAM[outline]">
+                    <param name="control">image</param>
+                    <bordersize>0</bordersize>
                     <texture colordiffuse="dialog_fg_12" border="20">common/box-outline.png</texture>
-                </control>
+                </include>
                 <nested />
             </control>
         </definition>
@@ -79,10 +86,10 @@
         <param name="flipside">true</param>
         <param name="topline">true</param>
         <param name="subline">true</param>
+        <param name="outline">true</param>
         <param name="dim_top">-640</param>
         <param name="dim_bottom">-640</param>
         <param name="dim_visible">true</param>
-        <param name="backing_visible">true</param>
         <definition>
             <control type="group">
                 <right>-40</right>
@@ -96,7 +103,6 @@
                 </include>
 
                 <control type="group">
-                    <visible>$PARAM[backing_visible]</visible>
                     <left>40</left>
                     <right>40</right>
                     <control type="grouplist">
@@ -109,6 +115,7 @@
                         <control type="image">
                             <left>-1920</left>
                             <width>1920</width>
+                            <fadetime>background_fadetime</fadetime>
                             <aspectratio align="right">scale</aspectratio>
                             <texture background="true" colordiffuse="dialog_fg_30">$VAR[Image_Background_Blur]</texture>
                         </control>
@@ -146,11 +153,12 @@
                         </include>
                         <texture colordiffuse="dialog_fg_12" border="20" flipx="$PARAM[flipside]">common/white.png</texture>
                     </control>
-                    <control type="image">
+                    <include content="Object_Control" condition="$PARAM[outline]">
+                        <param name="control">image</param>
                         <left>0</left>
                         <width>1</width>
                         <texture colordiffuse="dialog_fg_12">common/white.png</texture>
-                    </control>
+                    </include>
                 </control>
                 <nested />
             </control>
