@@ -498,11 +498,13 @@
 
         <include content="Object_Control" condition="Skin.HasSetting(Home.HideSideMenu)">
             <param name="control">group</param>
+            <visible>!$EXP[Exp_HomeMenu_HasFocus]</visible>
             <include content="DialogInfo_ButtonGroup_Basic">
                 <param name="id">30000</param>
                 <param name="dim_visible">false</param>
                 <visible>!$EXP[Exp_InfoDialogs]</visible>
-                <!-- <onup>ActivateWindow(1105)</onup> -->
+                <onup>SetFocus(303,0,absolute)</onup>
+                <ondown>SetFocus(303,0,absolute)</ondown>
                 <include content="Action_HomeMenu_OnRightLeft">
                     <param name="onlist">$PARAM[onlist]</param>
                 </include>
@@ -515,10 +517,10 @@
                 </include>
             </include>
 
-            <include content="Object_Hidden_Button">
+            <!-- <include content="Object_Hidden_Button">
                 <param name="id">303</param>
                 <onfocus>SetFocus(30000)</onfocus>
-            </include>
+            </include> -->
 
             <!-- <control type="group">
                 <width>40</width>
@@ -557,9 +559,10 @@
             </control> -->
         </include>
 
-        <include content="Object_Control" condition="!Skin.HasSetting(Home.HideSideMenu)">
+        <include content="Object_Control">
             <param name="control">group</param>
             <visible>!$EXP[Exp_InfoDialogs]</visible>
+            <visible>!Skin.HasSetting(Home.HideSideMenu) | $EXP[Exp_HomeMenu_HasFocus]</visible>
             <include condition="Skin.HasSetting(Home.SideLabels)">Home_Menu_Fade_Labels</include>
             <control type="group">
                 <!-- Search -->
