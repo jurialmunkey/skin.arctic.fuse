@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
 
-    <include name="Dialog_Background_Blur">
+    <include name="Dialog_Background_Blur_Standard">
         <param name="flipy">false</param>
         <param name="shadow">true</param>
         <param name="border">20</param>
@@ -18,6 +18,77 @@
                 <nested />
             </control>
         </definition>
+    </include>
+
+    <include name="Dialog_Background_Blur_Adaptive">
+        <param name="flipy">false</param>
+        <param name="shadow">true</param>
+        <param name="outline">true</param>
+        <param name="diffuse">diffuse/dialog_w1000_h1000.png</param>
+        <definition>
+            <control type="group">
+                <control type="image">
+                    <texture colordiffuse="dialog_bg_100" border="20">common/dialog.png</texture>
+                </control>
+                <control type="image">
+                    <fadetime>background_fadetime</fadetime>
+                    <aspectratio scalediffuse="false" align="left">scale</aspectratio>
+                    <include condition="$PARAM[shadow]">Texture_Shadow_80</include>
+                    <texture flipy="$PARAM[flipy]" diffuse="$PARAM[diffuse]" colordiffuse="dialog_fg_30">$VAR[Image_Background_Blur]</texture>
+                </control>
+                <include content="Object_Control" condition="$PARAM[outline]">
+                    <param name="control">image</param>
+                    <bordersize>0</bordersize>
+                    <texture colordiffuse="dialog_fg_12" border="20">common/box-outline.png</texture>
+                </include>
+                <nested />
+            </control>
+        </definition>
+    </include>
+
+    <include name="Dialog_Background_Blur">
+        <include content="Dialog_Background_Blur_Standard" condition="!$EXP[Exp_DialogTheme_IsAdaptive]">
+            <param name="shadow">$PARAM[shadow]</param>
+            <param name="flipy">$PARAM[flipy]</param>
+            <param name="flipx">$PARAM[flipx]</param>
+            <param name="diffuse">$PARAM[diffuse]</param>
+            <param name="outline">$PARAM[outline]</param>
+            <param name="border">$PARAM[border]</param>
+            <nested />
+        </include>
+        <include content="Dialog_Background_Blur_Adaptive" condition="$EXP[Exp_DialogTheme_IsAdaptive]">
+            <param name="shadow">$PARAM[shadow]</param>
+            <param name="flipy">$PARAM[flipy]</param>
+            <param name="flipx">$PARAM[flipx]</param>
+            <param name="diffuse">$PARAM[diffuse]</param>
+            <param name="outline">$PARAM[outline]</param>
+            <param name="border">$PARAM[border]</param>
+            <nested />
+        </include>
+    </include>
+
+    <include name="Dialog_Background_BlurDimension_DialogSideMenu">
+        <include content="Dialog_Background_Blur">
+            <param name="diffuse">diffuse/dialog_w680_h1000.png</param>
+        </include>
+    </include>
+
+    <include name="Dialog_Background_BlurDimension_DialogHomeMenu">
+        <include content="Dialog_Background_Blur">
+            <param name="diffuse">diffuse/dialog_w760_h1000.png</param>
+        </include>
+    </include>
+
+    <include name="Dialog_Background_BlurDimension_DialogWideMenu">
+        <include content="Dialog_Background_Blur">
+            <param name="diffuse">diffuse/dialog_w920_h1000.png</param>
+        </include>
+    </include>
+
+    <include name="Dialog_Background_BlurDimension_DialogFullMenu">
+        <include content="Dialog_Background_Blur">
+            <param name="diffuse">diffuse/dialog_w1480_h1000.png</param>
+        </include>
     </include>
 
     <include name="Dialog_Overlay_Side">
@@ -42,7 +113,8 @@
                     <include content="Dimension_Padding">
                         <param name="pad">40</param>
                     </include>
-                    <include>Dialog_Background_Blur</include>
+                    <include condition="$EXP[Exp_DialogTheme_IsAdaptive]">Dialog_Background_Blur$PARAM[dialog_size]</include>
+                    <include condition="!$EXP[Exp_DialogTheme_IsAdaptive]">Dialog_Background_Blur_Standard</include>
                     <control type="group">
                         <include content="Object_Right" condition="$PARAM[flipside]">
                             <param name="right">160</param>
@@ -75,6 +147,7 @@
                         <texture colordiffuse="dialog_fg_12" border="20" flipx="$PARAM[flipside]">common/dialog_overlay.png</texture>
                     </control>
                 </control>
+                <include>$PARAM[dialog_size]</include>
                 <nested />
             </control>
         </definition>
