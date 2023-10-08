@@ -1601,14 +1601,26 @@
 
     <include name="Layout_Home_Menu_Icon_Def">
         <control type="image">
-            <!-- <include content="Object_Top" condition="Skin.HasSetting(Home.SideLabels)"><param name="top">-10</param></include>
-            <include content="Object_Bottom" condition="Skin.HasSetting(Home.SideLabels)"><param name="bottom">10</param></include> -->
+            <nested />
             <aspectratio>keep</aspectratio>
             <bordersize>icon_home_bordersize</bordersize>
             <colordiffuse>$PARAM[color]</colordiffuse>
             <texture>$INFO[ListItem.Icon]</texture>
         </control>
-        <!-- <control type="label">
+    </include>
+
+    <include name="Layout_Home_Menu_IconLabel_Def">
+        <control type="image">
+            <nested />
+            <top>-10</top>
+            <bottom>10</bottom>
+            <aspectratio>keep</aspectratio>
+            <bordersize>icon_home_bordersize</bordersize>
+            <colordiffuse>$PARAM[color]</colordiffuse>
+            <texture>$INFO[ListItem.Icon]</texture>
+        </control>
+        <control type="label">
+            <nested />
             <top>25</top>
             <height>10</height>
             <label>$INFO[ListItem.Label]</label>
@@ -1618,10 +1630,10 @@
             <aligny>top</aligny>
             <left>-40</left>
             <right>-40</right>
-        </control> -->
+        </control>
     </include>
 
-    <include name="Layout_Home_Menu_Icon">
+    <include name="Layout_Home_Menu">
         <param name="selected">false</param>
         <param name="detailed">false</param>
         <definition>
@@ -1669,18 +1681,64 @@
         </definition>
     </include>
 
-    <include name="Layout_Home_Menu">
+    <include name="Layout_Home_Menu_Integrated">
         <param name="selected">false</param>
         <param name="detailed">false</param>
         <definition>
-            <include content="Layout_Home_Menu_Icon">
-                <param name="detailed">$PARAM[detailed]</param>
-                <param name="selected">$PARAM[selected]</param>
-            </include>
-            <!-- <include content="Layout_Home_Menu_Label">
-                <param name="detailed">$PARAM[detailed]</param>
-                <param name="selected">$PARAM[selected]</param>
-            </include> -->
+            <control type="group">
+                <top>20</top>
+                <width>40</width>
+                <height>40</height>
+
+                <control type="group">
+                    <visible>!$PARAM[selected]</visible>
+                    <include content="Layout_Home_Menu_Icon_Def">
+                        <param name="color">main_fg_30</param>
+                        <visible>[String.IsEmpty(ListItem.Property(showlabel))]</visible>
+                    </include>
+                    <include content="Layout_Home_Menu_IconLabel_Def">
+                        <param name="color">main_fg_30</param>
+                        <visible>![String.IsEmpty(ListItem.Property(showlabel))]</visible>
+                    </include>
+                </control>
+
+                <control type="group">
+                    <visible>$PARAM[selected] + $PARAM[detailed]</visible>
+                    <control type="image">
+                        <include>Texture_Circle_Highlight_V</include>
+                        <aspectratio>keep</aspectratio>
+                        <width>10</width>
+                        <height>10</height>
+                        <centertop>50%</centertop>
+                        <left>-20</left>
+                    </control>
+                    <include content="Layout_Home_Menu_Icon_Def">
+                        <param name="color">main_fg_90</param>
+                        <visible>[String.IsEmpty(ListItem.Property(showlabel))]</visible>
+                    </include>
+                    <include content="Layout_Home_Menu_IconLabel_Def">
+                        <param name="color">main_fg_90</param>
+                        <visible>![String.IsEmpty(ListItem.Property(showlabel))]</visible>
+                    </include>
+                </control>
+
+                <control type="group">
+                    <visible>$PARAM[selected] + !$PARAM[detailed]</visible>
+                    <control type="image">
+                        <include>Texture_CircleButtonDialog_Highlight_V</include>
+                        <aspectratio>keep</aspectratio>
+                        <bordersize>-60</bordersize>
+                    </control>
+                    <include content="Layout_Home_Menu_Icon_Def">
+                        <param name="color">$VAR[ColorSelected]</param>
+                        <visible>[String.IsEmpty(ListItem.Property(showlabel))]</visible>
+                    </include>
+                    <include content="Layout_Home_Menu_IconLabel_Def">
+                        <param name="color">$VAR[ColorSelected]</param>
+                        <visible>![String.IsEmpty(ListItem.Property(showlabel))]</visible>
+                    </include>
+                </control>
+            </control>
         </definition>
     </include>
 

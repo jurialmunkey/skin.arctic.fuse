@@ -172,7 +172,23 @@
 
     <include name="Home_Menu_Content">
         <content>
-            <include>skinshortcuts-mainmenu</include>
+            <include condition="Window.IsVisible(Home)">skinshortcuts-mainmenu</include>
+
+            <item>
+                <label>$LOCALIZE[10000]</label>
+                <icon>special://skin/extras/icons/home.png</icon>
+                <property name="showlabel">True</property>
+                <visible>!Window.IsVisible(Home)</visible>
+                <onclick>ActivateWindow(Home)</onclick>
+            </item>
+
+            <item>
+                <label>$LOCALIZE[33061]</label>
+                <icon>special://skin/extras/icons/list-check.png</icon>
+                <property name="showlabel">True</property>
+                <visible>!Window.IsVisible(Home)</visible>
+                <onclick>ActivateWindow(1170)</onclick>
+            </item>
         </content>
     </include>
 
@@ -200,44 +216,78 @@
                 <width>view_side</width>
                 <orientation>vertical</orientation>
                 <scrolltime tween="quadratic">400</scrolltime>
-                <itemlayout height="100" width="view_side">
-                    <control type="group">
-                        <left>view_menu</left>
-                        <top>40</top>
-                        <bottom>-40</bottom>
-                        <include content="Layout_Home_Menu">
-                            <param name="selected">false</param>
-                            <param name="detailed">Control.HasFocus($PARAM[id])</param>
-                        </include>
-                    </control>
-                </itemlayout>
-                <focusedlayout height="100" width="view_side">
-                    <control type="group">
-                        <left>view_menu</left>
-                        <top>40</top>
-                        <bottom>-40</bottom>
-                        <control type="group">
-                            <visible>!Control.HasFocus($PARAM[id])</visible>
-                            <include content="Layout_Home_Menu">
-                                <param name="selected">false</param>
-                                <param name="detailed">Control.HasFocus($PARAM[id])</param>
-                            </include>
-                        </control>
-                        <control type="group">
-                            <visible>Control.HasFocus($PARAM[id])</visible>
-                            <include content="Layout_Home_Menu">
-                                <param name="selected">true</param>
-                                <param name="detailed">Control.HasFocus($PARAM[id])</param>
-                            </include>
-                        </control>
-                    </control>
-                </focusedlayout>
+                <include content="Home_Menu_List_Integrated_ItemLayout" condition="Skin.HasSetting(Home.EnableIntegrationMode)">
+                    <param name="id">$PARAM[id]</param>
+                </include>
+                <include content="Home_Menu_List_ItemLayout" condition="!Skin.HasSetting(Home.EnableIntegrationMode)">
+                    <param name="id">$PARAM[id]</param>
+                </include>
                 <include>$PARAM[items_include]</include>
             </control>
             <include content="Home_Menu_List_Labels" condition="Skin.HasSetting(Home.SideLabels)">
                 <nested />
             </include>
         </definition>
+    </include>
+
+    <include name="Home_Menu_List_ItemLayout">
+        <itemlayout height="100" width="view_side">
+            <control type="group">
+                <left>view_menu</left>
+                <top>40</top>
+                <bottom>-40</bottom>
+                <include content="Layout_Home_Menu">
+                    <param name="selected">false</param>
+                    <param name="detailed">Control.HasFocus($PARAM[id])</param>
+                </include>
+            </control>
+        </itemlayout>
+        <focusedlayout height="100" width="view_side">
+            <control type="group">
+                <left>view_menu</left>
+                <top>40</top>
+                <bottom>-40</bottom>
+                <control type="group">
+                    <visible>!Control.HasFocus($PARAM[id])</visible>
+                    <include content="Layout_Home_Menu">
+                        <param name="selected">false</param>
+                        <param name="detailed">Control.HasFocus($PARAM[id])</param>
+                    </include>
+                </control>
+                <control type="group">
+                    <visible>Control.HasFocus($PARAM[id])</visible>
+                    <include content="Layout_Home_Menu">
+                        <param name="selected">true</param>
+                        <param name="detailed">Control.HasFocus($PARAM[id])</param>
+                    </include>
+                </control>
+            </control>
+        </focusedlayout>
+    </include>
+
+    <include name="Home_Menu_List_Integrated_ItemLayout">
+        <itemlayout height="100" width="view_side">
+            <control type="group">
+                <left>view_menu</left>
+                <top>40</top>
+                <bottom>-40</bottom>
+                <include content="Layout_Home_Menu_Integrated">
+                    <param name="selected">false</param>
+                    <param name="detailed">[!Control.HasFocus($PARAM[id]) + Window.IsVisible(Home)]</param>
+                </include>
+            </control>
+        </itemlayout>
+        <focusedlayout height="100" width="view_side">
+            <control type="group">
+                <left>view_menu</left>
+                <top>40</top>
+                <bottom>-40</bottom>
+                <include content="Layout_Home_Menu_Integrated">
+                    <param name="selected">[Control.HasFocus($PARAM[id]) | Window.IsVisible(Home)]</param>
+                    <param name="detailed">[!Control.HasFocus($PARAM[id]) + Window.IsVisible(Home)]</param>
+                </include>
+            </control>
+        </focusedlayout>
     </include>
 
     <include name="Home_Menu_Item_Movies">
