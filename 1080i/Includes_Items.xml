@@ -513,7 +513,7 @@
             <param name="id">8$PARAM[item]10</param>
             <param name="dialog">True</param>
             <param name="control">radiobutton</param>
-            <label> - $LOCALIZE[31102]</label>
+            <label>$LOCALIZE[31102]</label>
 
             <onclick condition="Skin.String(CustomShortcut.Item0$PARAM[item],movies)">Skin.ToggleSetting(Hub.Movies.DisableSubmenu)</onclick>
             <onclick condition="Skin.String(CustomShortcut.Item0$PARAM[item],tvshows)">Skin.ToggleSetting(Hub.TVShows.DisableSubmenu)</onclick>
@@ -535,7 +535,7 @@
             <param name="id">8$PARAM[item]11</param>
             <param name="dialog">True</param>
             <param name="control">radiobutton</param>
-            <label> - $LOCALIZE[31102]</label>
+            <label>$LOCALIZE[31102]</label>
 
             <onclick condition="Skin.String(CustomShortcut.Item0$PARAM[item],custom) + Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1106))">Skin.ToggleSetting(Hub.Custom01.DisableSubmenu)</onclick>
             <onclick condition="Skin.String(CustomShortcut.Item0$PARAM[item],custom) + Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1107))">Skin.ToggleSetting(Hub.Custom02.DisableSubmenu)</onclick>
@@ -1294,21 +1294,7 @@
             <onfocus>SetProperty(Highlight,Spotlight)</onfocus>
             <onfocus>SetProperty(MenuHighlight,MenuHome)</onfocus>
             <onfocus>SetProperty(CustomDialogSettingsLabel,[B]$LOCALIZE[31105][/B][CR]$LOCALIZE[31289],Home)</onfocus>
-            <enable>!Skin.String(Home.LayoutStyle,Widgets)</enable>
-            <visible>String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_HomeMenu)</visible>
-        </include>
-        <include content="Settings_Button" description="Style">
-            <param name="id">8801</param>
-            <param name="dialog">true</param>
-            <label>$LOCALIZE[736]</label>
-            <label2>$VAR[Label_Setting_HomeStyle]</label2>
-            <onclick condition="String.IsEmpty(Skin.String(Home.LayoutStyle))">Skin.SetString(Home.LayoutStyle,Categories)</onclick>
-            <onclick condition="Skin.String(Home.LayoutStyle,Categories)">Skin.SetString(Home.LayoutStyle,Widgets)</onclick>
-            <onclick condition="Skin.String(Home.LayoutStyle,Widgets)">Skin.Reset(Home.LayoutStyle)</onclick>
-            <onclick>AlarmClock(refocus,SetFocus(8801),00:00,silent)</onclick>
-            <onfocus>SetProperty(Highlight,Layout)</onfocus>
-            <onfocus>SetProperty(MenuHighlight,MenuHome)</onfocus>
-            <onfocus>SetProperty(CustomDialogSettingsLabel,[B]$LOCALIZE[10036][/B] = $LOCALIZE[31316][CR][B]$LOCALIZE[31083][/B] = $LOCALIZE[31315][CR][B]$LOCALIZE[31118][/B] = $LOCALIZE[31318],Home)</onfocus>
+            <enable>!Skin.HasSetting(Hub.Home.DisableSubmenu)</enable>
             <visible>String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_HomeMenu)</visible>
         </include>
         <include content="Settings_Button" description="Categories">
@@ -1319,6 +1305,19 @@
             <onfocus>SetProperty(MenuHighlight,MenuHome)</onfocus>
             <onclick>RunScript(script.skinshortcuts,type=manage&amp;group=mainmenu)</onclick>
             <onfocus>SetProperty(CustomDialogSettingsLabel,[B]$LOCALIZE[31150][/B][CR]$LOCALIZE[31291] $LOCALIZE[31327] $LOCALIZE[31328],Home)</onfocus>
+            <visible>String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_HomeMenu)</visible>
+        </include>
+        <include content="Settings_Button" description="Style">
+            <param name="id">8801</param>
+            <param name="dialog">true</param>
+            <param name="control">radiobutton</param>
+            <label>$LOCALIZE[31102]</label>
+            <selected>Skin.HasSetting(Hub.Home.DisableSubmenu)</selected>
+            <onclick>Skin.ToggleSetting(Hub.Home.DisableSubmenu)</onclick>
+            <onclick>AlarmClock(refocus,SetFocus(8801),00:00,silent)</onclick>
+            <onfocus>SetProperty(Highlight,Layout)</onfocus>
+            <onfocus>SetProperty(MenuHighlight,MenuHome)</onfocus>
+            <onfocus>SetProperty(CustomDialogSettingsLabel,[B]$LOCALIZE[31102][/B][CR]$LOCALIZE[31303],Home)</onfocus>
             <visible>String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_HomeMenu)</visible>
         </include>
 

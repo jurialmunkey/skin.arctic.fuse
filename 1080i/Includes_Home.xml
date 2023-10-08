@@ -5,7 +5,7 @@
         <include>Defs_TMDbHelper_Loader</include>
         <include>Background_Main</include>
         <include>Background_Transition</include>
-        <include>Home_Fullscreen_Widget_List</include>
+        <include condition="!Skin.HasSetting(Hub.Home.DisableSubmenu)">Home_Fullscreen_Widget_List</include>
         <include>Home_Widgets</include>
         <include>Home_Transitions</include>
         <include>Home_Fade</include>
@@ -115,13 +115,13 @@
             </control>
             <include content="Object_Hidden_Button">
                 <param name="id">393</param>
-                <onfocus condition="Skin.String(Home.LayoutStyle,Widgets)">SetFocus($VAR[Action_Menu_ID],$VAR[Action_Menu_Position],absolute)</onfocus>
-                <onfocus condition="!Skin.String(Home.LayoutStyle,Widgets)">SetFocus(300)</onfocus>
+                <onfocus condition="Skin.HasSetting(Hub.Home.DisableSubmenu)">SetFocus($VAR[Action_Menu_ID],$VAR[Action_Menu_Position],absolute)</onfocus>
+                <onfocus condition="!Skin.HasSetting(Hub.Home.DisableSubmenu)">SetFocus(300)</onfocus>
             </include>
             <include content="Object_Hidden_Button">
                 <param name="id">392</param>
-                <onfocus condition="Skin.String(Home.LayoutStyle,Widgets)">SetFocus($VAR[Action_Menu_ID],$VAR[Action_Menu_Position],absolute)</onfocus>
-                <onfocus condition="!Skin.String(Home.LayoutStyle,Widgets)">SetFocus(300)</onfocus>
+                <onfocus condition="Skin.HasSetting(Hub.Home.DisableSubmenu)">SetFocus($VAR[Action_Menu_ID],$VAR[Action_Menu_Position],absolute)</onfocus>
+                <onfocus condition="!Skin.HasSetting(Hub.Home.DisableSubmenu)">SetFocus(300)</onfocus>
                 <onfocus>SetProperty(SkinShortcutsDialogBuild,True,Home)</onfocus>
                 <onfocus>RunScript(script.skinvariables,$INFO[Window(Home).Property(SkinVariablesCommand)],skin=skin.arctic.fuse,$VAR[Action_SkinShortcuts_Modify])</onfocus>
             </include>
@@ -1002,7 +1002,7 @@
             <include>Animation_View_WindowChange</include>
             <include>Animation_Group_Bumper</include>
 
-            <include content="Home_Widgets_Infopanel" condition="!Skin.String(Home.LayoutStyle,Widgets)">
+            <include content="Home_Widgets_Infopanel" condition="!Skin.HasSetting(Hub.Home.DisableSubmenu)">
                 <include content="Info_Panel">
                     <param name="titlelabel">$VAR[Label_Title_C301]</param>
                     <param name="plotlabel">$VAR[Label_Plot_C301]</param>
@@ -1031,14 +1031,14 @@
             </include>
 
             <include content="Hub_Menu_Group">
-                <include content="Object_Hidden_List" condition="Skin.String(Home.LayoutStyle,Widgets)">
+                <include content="Object_Hidden_List" condition="Skin.HasSetting(Hub.Home.DisableSubmenu)">
                     <param name="id">300</param>
                     <onfocus>SetFocus(340)</onfocus>
                     <content>
                         <include>skinshortcuts-mainmenu</include>
                     </content>
                 </include>
-                <include content="Object_Control" condition="!Skin.String(Home.LayoutStyle,Widgets)">
+                <include content="Object_Control" condition="!Skin.HasSetting(Hub.Home.DisableSubmenu)">
                     <param name="control">group</param>
                     <visible>!$EXP[Exp_InfoDialogs]</visible>
                     <include>Animation_Transition_InfoPanel_Hide</include>
@@ -1046,7 +1046,7 @@
                     <include>Transitions_Down_Visibility</include>
                     <include content="Home_Selector_Widget">
                         <param name="window_id">home</param>
-                        <param name="slide">!String.IsEmpty(Skin.String(Home.LayoutStyle))</param>
+                        <param name="slide">Skin.HasSetting(Hub.Home.DisableSubmenu)</param>
                         <param name="hitrect_x">-40</param>
                         <param name="hitrect_y">740</param>
                         <param name="hitrect_w">1640</param>
@@ -1056,27 +1056,27 @@
                         <include content="Action_Menu_Movement_OnBack">
                             <param name="id">300</param>
                         </include>
-                        <ondown condition="String.IsEmpty(Skin.String(Home.LayoutStyle))">302</ondown>
-                        <ondown condition="!String.IsEmpty(Skin.String(Home.LayoutStyle))">340</ondown>
+                        <ondown condition="!Skin.HasSetting(Hub.Home.DisableSubmenu)">302</ondown>
+                        <ondown condition="Skin.HasSetting(Hub.Home.DisableSubmenu)">340</ondown>
                         <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,home)</onfocus>
                         <onleft>300</onleft>
                         <onright>300</onright>
 
-                        <animation effect="slide" time="400" end="0" start="0,110" tween="quadratic" easing="out" reversible="false" condition="String.IsEmpty(Window.Property(Slide.WidgetContainer)) + !String.IsEmpty(Skin.String(Home.LayoutStyle))">Conditional</animation>
-                        <animation effect="slide" time="400" end="0,110" start="0" tween="quadratic" easing="out" reversible="false" condition="!String.IsEmpty(Window.Property(Slide.WidgetContainer)) + !String.IsEmpty(Skin.String(Home.LayoutStyle))">Conditional</animation>
+                        <animation effect="slide" time="400" end="0" start="0,110" tween="quadratic" easing="out" reversible="false" condition="String.IsEmpty(Window.Property(Slide.WidgetContainer)) + Skin.HasSetting(Hub.Home.DisableSubmenu)">Conditional</animation>
+                        <animation effect="slide" time="400" end="0,110" start="0" tween="quadratic" easing="out" reversible="false" condition="!String.IsEmpty(Window.Property(Slide.WidgetContainer)) + Skin.HasSetting(Hub.Home.DisableSubmenu)">Conditional</animation>
 
                         <include content="Animation_Fade_In">
-                            <param name="condition">![!String.IsEmpty(Window.Property(Slide.WidgetContainer)) + String.IsEmpty(Skin.String(Home.LayoutStyle))]</param>
+                            <param name="condition">![!String.IsEmpty(Window.Property(Slide.WidgetContainer)) + !Skin.HasSetting(Hub.Home.DisableSubmenu)]</param>
                             <param name="delay">200</param>
                         </include>
                         <include content="Animation_ConditionalFade">
-                            <param name="condition">[!String.IsEmpty(Window.Property(Slide.WidgetContainer)) + String.IsEmpty(Skin.String(Home.LayoutStyle))]</param>
+                            <param name="condition">[!String.IsEmpty(Window.Property(Slide.WidgetContainer)) + !Skin.HasSetting(Hub.Home.DisableSubmenu)]</param>
                         </include>
                         <content>
                             <include>skinshortcuts-mainmenu</include>
                         </content>
                     </include>
-                    <include content="Home_Submenu_Group" condition="String.IsEmpty(Skin.String(Home.LayoutStyle))">
+                    <include content="Home_Submenu_Group" condition="!Skin.HasSetting(Hub.Home.DisableSubmenu)">
                         <include content="Hub_Submenu_List">
                             <param name="id">302</param>
                             <param name="ondown">340</param>
@@ -1117,16 +1117,6 @@
         <animation effect="slide" time="400" start="0" end="0,widget_sbump_h" tween="quadratic" easing="out" reversible="false" condition="!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)">Conditional</animation>
     </include>
 
-    <include name="Home_Widgets_Grouplist_Categories">
-        <onup>300</onup>
-
-        <animation effect="slide" time="400" start="0,-80" end="0" tween="quadratic" easing="out" reversible="false" condition="!String.IsEmpty(Window.Property(Slide.WidgetContainer))">Conditional</animation>
-        <animation effect="slide" time="400" start="0" end="0,-80" tween="quadratic" easing="out" reversible="false" condition="String.IsEmpty(Window.Property(Slide.WidgetContainer))">Conditional</animation>
-
-        <animation effect="slide" time="400" start="0,widget_sbump_h" end="0" tween="quadratic" easing="out" reversible="false" condition="Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)">Conditional</animation>
-        <animation effect="slide" time="400" start="0" end="0,widget_sbump_h" tween="quadratic" easing="out" reversible="false" condition="!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)">Conditional</animation>
-    </include>
-
     <include name="Home_Widgets_Grouplist_Widgets">
         <include content="Action_Widget_Top">
             <param name="id">$PARAM[id]</param>
@@ -1140,13 +1130,12 @@
             <top>940</top>
             <bottom>-440</bottom>
 
-            <include condition="String.IsEmpty(Skin.String(Home.LayoutStyle))">Home_Widgets_Grouplist_Standard</include>
-            <include condition="String.IsEqual(Skin.String(Home.LayoutStyle),Categories)">Home_Widgets_Grouplist_Categories</include>
-            <include condition="String.IsEqual(Skin.String(Home.LayoutStyle),Widgets)" content="Home_Widgets_Grouplist_Widgets">
+            <include condition="!Skin.HasSetting(Hub.Home.DisableSubmenu)">Home_Widgets_Grouplist_Standard</include>
+            <include condition="Skin.HasSetting(Hub.Home.DisableSubmenu)" content="Home_Widgets_Grouplist_Widgets">
                 <param name="id">$PARAM[id]</param>
             </include>
 
-            <include content="Action_Widget_End" condition="!String.IsEqual(Skin.String(Home.LayoutStyle),Widgets) | !Skin.String(Hubs.WidgetsLoopback,Loop)">
+            <include content="Action_Widget_End" condition="Skin.HasSetting(Hub.Home.DisableSubmenu) | !Skin.String(Hubs.WidgetsLoopback,Loop)">
                 <param name="topid">$PARAM[topid]</param>
                 <param name="id">$PARAM[id]</param>
             </include>
