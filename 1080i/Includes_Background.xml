@@ -55,8 +55,14 @@
     <include name="Background_Artwork">
         <param name="fadetime">background_fadetime</param>
         <definition>
-            <include content="Background_FlixArt" condition="!Skin.String(Background.ArtworkStyle,Fanart)">
+            <include content="Background_FlixArt" condition="!Skin.String(Background.ArtworkStyle,Fanart) + !Skin.String(Background.ArtworkStyle,Simple)">
                 <param name="fadetime">$PARAM[fadetime]</param>
+            </include>
+            <include content="Background_FlixArt" condition="Skin.String(Background.ArtworkStyle,Simple)">
+                <param name="fadetime">$PARAM[fadetime]</param>
+                <param name="flixart_size_w">flixart_large_size_w</param>
+                <param name="flixart_size_h">flixart_large_size_h</param>
+                <param name="diffuse">diffuse/flixart_new.png</param>
             </include>
             <include content="Background_Fanart" condition="Skin.String(Background.ArtworkStyle,Fanart)">
                 <param name="fadetime">$PARAM[fadetime]</param>
@@ -254,7 +260,7 @@
             <control type="group">
                 <animation effect="fade" start="0" end="100" time="background_fadetime">Visible</animation>
                 <animation effect="fade" start="100" end="0" time="background_fadetime">Hidden</animation>
-                <include>Background_Blur</include>
+                <include condition="!Skin.String(Background.ArtworkStyle,Simple)">Background_Blur</include>
                 <include>Background_Artwork</include>
             </control>
             <nested />
