@@ -1,6 +1,7 @@
     <submenu include="{include_name}" name="{include_name}">
         <controls>
             <include content="Hub_Menu_Group">
+                <skinshortcuts insert="spotlight">items</skinshortcuts>
                 <include content="Hub_Menu_Grouplist">
                     <param name="window_id">{window_id}</param>
                     <param name="target">$INFO[Skin.String(skinshortcuts-{include_name}-widgetTarget)]</param>
@@ -15,6 +16,26 @@
                 </include>
             </include>
         </controls>
+        <items insert="spotlight">
+            <property name="isWidget" tag="property" attribute="name|widgetPath.Spotlight">True</property>
+            <property name="isWidget">False</property>
+
+            <property name="widgetPath" tag="property" attribute="name|widgetPath.Spotlight"/>
+            <property name="widgetTarget" tag="property" attribute="name|widgetTarget.Spotlight"/>
+
+            <property name="id" tag="mainmenuid" />
+
+            <controls>
+
+                <include content="Home_Fullscreen_Widget_List" condition="$SKINSHORTCUTS[isWidget] + !Skin.HasSetting(Hub.{hub_type}.DisableSubmenu)">
+                    <param name="window_id">{window_id}</param>
+                    <param name="content">$SKINSHORTCUTS[widgetPath]</param>
+                    <param name="target">$SKINSHORTCUTS[widgetTarget]</param>
+                    <visible>Integer.IsEqual(Container(300).ListItem.Property(id),$SKINSHORTCUTS[id])</visible>
+                </include>
+
+            </controls>
+        </items>
         <items insert="submenulist">
             <property name="widgetPath" tag="property" attribute="name|widgetPath"/>
             <property name="widgetTarget" tag="property" attribute="name|widgetTarget" />
