@@ -73,6 +73,7 @@
 
     <include name="Home_Bumper">
         <param name="groupid">320</param>
+        <param name="menuid">303</param>
         <definition>
             <control type="button" id="330">
                 <width>1</width>
@@ -88,8 +89,8 @@
                 <width>1</width>
                 <height>1</height>
                 <left>-1000</left>
-                <onfocus>SetFocus(303)</onfocus>
-                <onclick>SetFocus(303)</onclick>
+                <onfocus>SetFocus($PARAM[menuid])</onfocus>
+                <onclick>SetFocus($PARAM[menuid])</onclick>
                 <visible allowhiddenfocus="true">Control.HasFocus(331)</visible>
                 <animation effect="fade" time="300" start="0" end="0">Focus</animation>
             </control>
@@ -666,11 +667,20 @@
                     <include content="Action_Widget_Top">
                         <param name="id">311</param>
                     </include>
-                    <include content="Action_View_Movement_OnLeft" condition="!Skin.String(Rows.ContentLoopback,Wrap)">
+
+                    <include content="Action_View_Movement_OnLeft">
                         <param name="id">311</param>
+                        <param name="string">Movement.Spotlight.OnLeft</param>
                     </include>
-                    <onleft condition="Skin.String(Rows.ContentLoopback,Wrap)">Control.Move(301,1)</onleft>
-                    <onright>Control.Move(301,1)</onright>
+                    <onleft condition="Skin.String(Movement.Spotlight.OnLeft,Move)">Control.Move(301,-1)</onleft>
+
+                    <include content="Action_View_Movement_OnRight">
+                        <param name="id">311</param>
+                        <param name="string">Movement.Spotlight.OnRight</param>
+                        <param name="refocus">False</param>
+                    </include>
+                    <onright condition="Skin.String(Movement.Spotlight.OnRight,Move)">Control.Move(301,1)</onright>
+
                     <include content="Action_Menu_Movement_OnBack">
                         <param name="id">311</param>
                     </include>
@@ -831,8 +841,8 @@
         <param name="hidden_button">List_ButtonMenu_Row_HiddenButton_Temp</param>
         <param name="visible">Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)</param>
         <param name="shorten">False</param>
-        <param name="preitem_fade">[Skin.String(Rows.ContentLoopback,Loop) | Skin.String(Rows.ContentLoopback,Wrap)]</param>
-        <param name="wraplist">[Skin.String(Rows.ContentLoopback,Loop) | Skin.String(Rows.ContentLoopback,Wrap)]</param>
+        <param name="preitem_fade">[True]</param>
+        <param name="wraplist">[True]</param>
 
         <param name="hitrect_x">0</param>
         <param name="hitrect_y">0</param>
@@ -1135,7 +1145,7 @@
                 <param name="id">$PARAM[id]</param>
             </include>
 
-            <include content="Action_Widget_End" condition="Skin.HasSetting(Hub.Home.DisableSubmenu) | !Skin.String(Hubs.WidgetsLoopback,Loop)">
+            <include content="Action_Widget_End" condition="Skin.HasSetting(Hub.Home.DisableSubmenu) | !Skin.String(Movement.Content.OnDown,Loop)">
                 <param name="topid">$PARAM[topid]</param>
                 <param name="id">$PARAM[id]</param>
             </include>
