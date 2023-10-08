@@ -138,27 +138,6 @@
     <include name="Settings_Changer">
         <definition>
             <control type="group">
-                <width>40</width>
-                <height>40</height>
-                <centertop>100</centertop>
-                <left>view_menu</left>
-                <control type="group">
-                    <control type="image">
-                        <include>Texture_Circle_Highlight_V</include>
-                        <aspectratio>keep</aspectratio>
-                        <width>10</width>
-                        <height>10</height>
-                        <centertop>50%</centertop>
-                        <left>-20</left>
-                    </control>
-                    <control type="image">
-                        <bordersize>icon_home_bordersize</bordersize>
-                        <aspectratio>keep</aspectratio>
-                        <texture colordiffuse="main_fg_100">$VAR[Image_SettingsWindow]</texture>
-                    </control>
-                </control>
-            </control>
-            <control type="group">
                 <height>80</height>
                 <left>160</left>
                 <centertop>100</centertop>
@@ -431,18 +410,43 @@
                 <animation effect="fade" start="0" end="100" time="400" delay="200">Visible</animation>
                 <animation effect="fade" start="100" end="0" time="400">Hidden</animation>
                 <visible>$PARAM[visible]</visible>
-                <control type="image">
-                    <include content="Object_ColorDiffuse" condition="$PARAM[dialog]">
-                        <param name="colordiffuse">dialog_fg_70</param>
-                    </include>
+                <control type="group">
+                    <width>40</width>
+                    <height>40</height>
                     <centertop>50%</centertop>
                     <left>0</left>
-                    <height>32</height>
-                    <width>32</width>
-                    <aspectratio align="left">keep</aspectratio>
-                    <colordiffuse>main_fg_70</colordiffuse>
-                    <texture>$PARAM[icon]</texture>
+                    <include content="Object_Control" condition="![$PARAM[dialog]]">
+                        <param name="control">group</param>
+                        <visible>ControlGroup(30030).HasFocus() | Integer.IsEqual(Window(Home).Property(SettingsChanger.Switch),30031) | Integer.IsEqual(Window(Home).Property(SettingsChanger.Switch),30032)</visible>
+                        <control type="image">
+                            <include>Texture_Circle_Highlight_V</include>
+                            <aspectratio>keep</aspectratio>
+                            <width>10</width>
+                            <height>10</height>
+                            <centertop>50%</centertop>
+                            <left>-20</left>
+                        </control>
+                        <control type="image">
+                            <bordersize>icon_home_bordersize</bordersize>
+                            <aspectratio>keep</aspectratio>
+                            <colordiffuse>main_fg_100</colordiffuse>
+                            <texture>$VAR[Image_SettingsWindow]</texture>
+                        </control>
+                    </include>
+                    <include content="Object_Control">
+                        <param name="control">group</param>
+                        <control type="image">
+                            <bordersize>4</bordersize>
+                            <aspectratio align="left">keep</aspectratio>
+                            <colordiffuse>dialog_fg_70</colordiffuse>
+                            <texture>$PARAM[icon]</texture>
+                            <include content="Object_Visible"  condition="![$PARAM[dialog]]">
+                                <param name="visible">![ControlGroup(30030).HasFocus() | Integer.IsEqual(Window(Home).Property(SettingsChanger.Switch),30031) | Integer.IsEqual(Window(Home).Property(SettingsChanger.Switch),30032)]</param>
+                            </include>
+                        </control>
+                    </include>
                 </control>
+
                 <control type="textbox" id="$PARAM[id]">
                     <include content="Object_TextColor" condition="$PARAM[dialog]">
                         <param name="textcolor">dialog_fg_70</param>
