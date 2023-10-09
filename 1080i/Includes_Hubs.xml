@@ -60,7 +60,8 @@
             <include content="Action_Menu_Movement_OnBack">
                 <param name="id">300</param>
             </include>
-            <ondown>3000</ondown>
+            <ondown condition="!Integer.IsEqual(Container(302).NumItems,0)">302</ondown>
+            <ondown condition="Integer.IsEqual(Container(302).NumItems,0)">5000</ondown>
             <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,$PARAM[window_id])</onfocus>
             <onleft>300</onleft>
             <onright>300</onright>
@@ -100,8 +101,6 @@
         <param name="widgets_only">false</param>
         <definition>
             <control type="grouplist" id="5000">
-                <animation effect="slide" time="400" end="0,-120" start="0" tween="quadratic" easing="out" reversible="false" condition="!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)">Conditional</animation>
-                <animation effect="slide" time="400" end="0" start="0,-120" tween="quadratic" easing="out" reversible="false" condition="Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)">Conditional</animation>
 
                 <top>940</top>
                 <bottom>-440</bottom>
@@ -110,10 +109,12 @@
                 <onright>SetFocus($INFO[Window.Property(TMDbHelper.WidgetContainer)],0,absolute)</onright>
                 <onright>SetFocus($VAR[Action_Menu_ID],$VAR[Action_Menu_Position],absolute)</onright>
 
-                <onup condition="!$PARAM[widgets_only]">3000</onup>
-                <include condition="$PARAM[widgets_only]" content="Action_Widget_Top">
+                <include condition="!$PARAM[widgets_only]">Home_Widgets_Grouplist_Standard</include>
+                <include condition="$PARAM[widgets_only]" content="Home_Widgets_Grouplist_Widgets">
                     <param name="id">5000</param>
                 </include>
+
+
                 <include content="Action_Widget_End" condition="!$PARAM[widgets_only]">
                     <param name="topid">5001</param>
                     <param name="id">5000</param>
