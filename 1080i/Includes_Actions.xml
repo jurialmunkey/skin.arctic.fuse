@@ -24,6 +24,16 @@
         <value>50</value>
     </variable>
 
+    <variable name="Action_View_Content_ItemWidth">
+        <value condition="$EXP[Exp_View_51] | $EXP[Exp_View_512]">420</value>
+        <value>240</value>
+    </variable>
+
+    <variable name="Action_View_Content_Movement">
+        <value condition="$EXP[Exp_View_51] | $EXP[Exp_View_512]">3</value>
+        <value>6</value>
+    </variable>
+
     <variable name="Action_OSD_Main_OnDown">
         <value condition="VideoPlayer.Content(livetv) + !Skin.HasSetting(OSD.OnDown.DisablePVROSDGuide)">pvrosdguide</value>
         <value condition="VideoPlayer.Content(livetv)">$VAR[Action_OSD_PVROSDGuide_OnDown]</value>
@@ -350,8 +360,7 @@
     </include>
 
     <include name="Action_View_Movement_OnUp">
-        <onup condition="$EXP[Exp_FilterWall_IsEnabled] + $EXP[Exp_FilterWall_IsViewtype]">ClearProperty(View.WallSwitchRow)</onup>
-        <onup condition="$EXP[Exp_FilterWall_IsEnabled] + $EXP[Exp_FilterWall_IsViewtype]">67</onup>
+        <onup condition="$EXP[Exp_FilterWall_IsEnabled] + $EXP[Exp_FilterWall_IsViewtype]">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=67,clear_prop=Null)</onup>
         <onup condition="![$EXP[Exp_FilterWall_IsEnabled] + $EXP[Exp_FilterWall_IsViewtype]]">ActivateWindow(1113)</onup>
     </include>
 
@@ -463,16 +472,14 @@
 
     <include name="Action_Scrollbar">
         <onup condition="$EXP[Exp_FilterWall_IsMedia]">SetProperty(View.WallSwitchRow,1)</onup>
-        <onup condition="$EXP[Exp_FilterWall_IsMedia]">67</onup>
+        <onup condition="$EXP[Exp_FilterWall_IsMedia]">SetFocus(67)</onup>
         <onup condition="!$EXP[Exp_FilterWall_IsMedia]">SetFocus($VAR[Action_View_ContentID])</onup>
 
         <onback>68</onback>
-
-        <onclick>SetProperty(View.WallSwitchRow.Action,None)</onclick>
         <onclick>SetFocus(68)</onclick>
 
-        <ondown>SetProperty(MediaFilterBase,$INFO[Container.FolderPath])</ondown>
-        <ondown>SetFocus(9001)</ondown>
+        <include>Action_ToMediaFilter_OnDown</include>
+
     </include>
 
     <include name="Action_ToScrollbar_OnUp">
@@ -491,17 +498,20 @@
         </definition>
     </include>
 
-    <include name="Action_ToScrollbar_OnClick">
-        <param name="condition">true</param>
-        <definition>
-            <onclick condition="$PARAM[condition] + $EXP[Exp_AlphabetTypes_Only] + !Skin.HasSetting(DisableAlphabetScrollbar)">SetFocus(65)</onclick>
-            <onclick condition="$PARAM[condition] + [!$EXP[Exp_AlphabetTypes_Only] | Skin.HasSetting(DisableAlphabetScrollbar)]">SetFocus(64)</onclick>
-        </definition>
+    <include name="Action_Row_OnDown">
+        <include>Action_ToMediaFilter_OnDown</include>
     </include>
 
-    <include name="Action_Row_OnDown">
-        <ondown>SetProperty(MediaFilterBase,$INFO[Container.FolderPath])</ondown>
-        <ondown>SetFocus(9001)</ondown>
+    <include name="Action_ToMediaFilter_OnDown">
+        <ondown>Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=9001,clear_prop=Null)</ondown>
+    </include>
+
+    <include name="Action_ToMediaWall_OnClick">
+        <param name="condition">true</param>
+        <definition>
+            <onclick condition="$PARAM[condition]">$PARAM[onclick]</onclick>
+            <onclick condition="$PARAM[condition]">$PARAM[onclick2]</onclick>
+        </definition>
     </include>
 
     <include name="Action_Row_WallView_OnDown">

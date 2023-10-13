@@ -90,22 +90,24 @@
         </definition>
     </include>
 
-    <include name="Transitions_List_Row_Item">
+    <include name="_Transitions_List_Row_Item">
         <param name="conditional_fade">true</param>
         <param name="transition_animation">true</param>
         <param name="selected">false</param>
+        <param name="positional_listitem">ListItem</param>
+        <param name="conditional_listitem">ListItemNoWrap</param>
         <definition>
             <include content="$PARAM[content]">
                 <param name="icon">$VAR[$PARAM[icon_base_var]$PARAM[affix]_$PARAM[pos]]</param>
                 <param name="item_w">$PARAM[item_w]</param>
                 <param name="item_h">$PARAM[item_h]</param>
                 <param name="affix">$PARAM[affix]_$PARAM[pos]</param>
-                <param name="listitem">Container($PARAM[id]).ListItem($PARAM[pos])</param>
+                <param name="listitem">Container($PARAM[id]).$PARAM[positional_listitem]($PARAM[pos])</param>
                 <param name="id">$PARAM[id]</param>
                 <param name="selected">$PARAM[selected]</param>
 
                 <include content="Animation_ConditionalFade" condition="$PARAM[conditional_fade]">
-                    <param name="condition">String.IsEmpty(Container($PARAM[id]).ListItemNoWrap($PARAM[pos]).CurrentItem)</param>
+                    <param name="condition">String.IsEmpty(Container($PARAM[id]).$PARAM[conditional_listitem]($PARAM[pos]).CurrentItem)</param>
                 </include>
 
                 <include content="Transitions_List_Row_Animation" condition="$PARAM[transition_animation]">
@@ -119,6 +121,76 @@
         </definition>
     </include>
 
+    <include name="Transitions_List_Row_Item_Alt_Visible">
+        <param name="condition_prefix" />
+        <definition>
+            <visible>[[$PARAM[condition_prefix]Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,Container($PARAM[id]).ListItemPosition(0).CurrentItem) + Integer.IsEqual(Skin.String(SkinConstant.Numeric.00),$PARAM[pos])] | [$PARAM[condition_prefix]Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,Container($PARAM[id]).ListItemPosition(1).CurrentItem) + Integer.IsEqual(Skin.String(SkinConstant.Numeric.01),$PARAM[pos])] | [$PARAM[condition_prefix]Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,Container($PARAM[id]).ListItemPosition(2).CurrentItem) + Integer.IsEqual(Skin.String(SkinConstant.Numeric.02),$PARAM[pos])] | [$PARAM[condition_prefix]Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,Container($PARAM[id]).ListItemPosition(3).CurrentItem) + Integer.IsEqual(Skin.String(SkinConstant.Numeric.03),$PARAM[pos])] | [$PARAM[condition_prefix]Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,Container($PARAM[id]).ListItemPosition(4).CurrentItem) + Integer.IsEqual(Skin.String(SkinConstant.Numeric.04),$PARAM[pos])] | [$PARAM[condition_prefix]Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,Container($PARAM[id]).ListItemPosition(5).CurrentItem) + Integer.IsEqual(Skin.String(SkinConstant.Numeric.05),$PARAM[pos])] | [$PARAM[condition_prefix]Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,Container($PARAM[id]).ListItemPosition(6).CurrentItem) + Integer.IsEqual(Skin.String(SkinConstant.Numeric.06),$PARAM[pos])] | [$PARAM[condition_prefix]Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,Container($PARAM[id]).ListItemPosition(7).CurrentItem) + Integer.IsEqual(Skin.String(SkinConstant.Numeric.07),$PARAM[pos])] | [$PARAM[condition_prefix]Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,Container($PARAM[id]).ListItemPosition(8).CurrentItem) + Integer.IsEqual(Skin.String(SkinConstant.Numeric.08),$PARAM[pos])] | [$PARAM[condition_prefix]Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,Container($PARAM[id]).ListItemPosition(9).CurrentItem) + Integer.IsEqual(Skin.String(SkinConstant.Numeric.09),$PARAM[pos])]]</visible>
+        </definition>
+    </include>
+
+    <include name="Transitions_List_Row_Item_Alt_Slide">
+        <definition>
+            <animation effect="slide" start="0" end="$PARAM[end]" reversible="false" condition="[[Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,Container($PARAM[id]).ListItemPosition(0).CurrentItem) + Integer.IsLess(Skin.String(SkinConstant.Numeric.00),$PARAM[pos])] | [Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,Container($PARAM[id]).ListItemPosition(1).CurrentItem) + Integer.IsLess(Skin.String(SkinConstant.Numeric.01),$PARAM[pos])] | [Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,Container($PARAM[id]).ListItemPosition(2).CurrentItem) + Integer.IsLess(Skin.String(SkinConstant.Numeric.02),$PARAM[pos])] | [Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,Container($PARAM[id]).ListItemPosition(3).CurrentItem) + Integer.IsLess(Skin.String(SkinConstant.Numeric.03),$PARAM[pos])] | [Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,Container($PARAM[id]).ListItemPosition(4).CurrentItem) + Integer.IsLess(Skin.String(SkinConstant.Numeric.04),$PARAM[pos])] | [Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,Container($PARAM[id]).ListItemPosition(5).CurrentItem) + Integer.IsLess(Skin.String(SkinConstant.Numeric.05),$PARAM[pos])] | [Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,Container($PARAM[id]).ListItemPosition(6).CurrentItem) + Integer.IsLess(Skin.String(SkinConstant.Numeric.06),$PARAM[pos])] | [Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,Container($PARAM[id]).ListItemPosition(7).CurrentItem) + Integer.IsLess(Skin.String(SkinConstant.Numeric.07),$PARAM[pos])] | [Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,Container($PARAM[id]).ListItemPosition(8).CurrentItem) + Integer.IsLess(Skin.String(SkinConstant.Numeric.08),$PARAM[pos])] | [Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,Container($PARAM[id]).ListItemPosition(9).CurrentItem) + Integer.IsLess(Skin.String(SkinConstant.Numeric.09),$PARAM[pos])]]">Conditional</animation>
+        </definition>
+    </include>
+
+    <include name="Transitions_List_Row_Item">
+        <param name="use_alternate">False</param>
+        <definition>
+            <include content="_Transitions_List_Row_Item">
+                <param name="pos">$PARAM[pos]</param>
+                <param name="content">$PARAM[content]</param>
+                <param name="icon_base_var">$PARAM[icon_base_var]</param>
+                <param name="item_w">$PARAM[item_w]</param>
+                <param name="item_h">$PARAM[item_h]</param>
+                <param name="id">$PARAM[id]</param>
+                <param name="prefix">$PARAM[prefix]</param>
+                <param name="affix">$PARAM[affix]</param>
+                <param name="positional_listitem">$PARAM[positional_listitem]</param>
+                <param name="conditional_listitem">$PARAM[conditional_listitem]</param>
+                <param name="transition_animation">$PARAM[transition_animation]</param>
+                <param name="conditional_fade">$PARAM[conditional_fade]</param>
+                <param name="selected">$PARAM[selected]</param>
+                <include content="Transitions_List_Row_Item_Alt_Visible" condition="$PARAM[use_alternate]">
+                    <param name="id">$PARAM[id]</param>
+                    <param name="pos">$PARAM[pos]</param>
+                    <param name="condition_prefix">!</param>
+                </include>
+                <include content="Transitions_List_Row_Item_Alt_Slide" condition="$PARAM[use_alternate]">
+                    <param name="id">$PARAM[id]</param>
+                    <param name="pos">$PARAM[pos]</param>
+                    <param name="end">$PARAM[alt_slide]</param>
+                </include>
+                <nested />
+            </include>
+            <include content="_Transitions_List_Row_Item" condition="$PARAM[use_alternate]">
+                <param name="pos">$PARAM[pos]</param>
+                <param name="content">$PARAM[alt_content]</param>
+                <param name="icon_base_var">$PARAM[alt_icon_base_var]</param>
+                <param name="item_w">$PARAM[alt_item_w]</param>
+                <param name="item_h">$PARAM[alt_item_h]</param>
+                <param name="id">$PARAM[id]</param>
+                <param name="prefix">$PARAM[prefix]</param>
+                <param name="affix">$PARAM[affix]</param>
+                <param name="positional_listitem">$PARAM[positional_listitem]</param>
+                <param name="conditional_listitem">$PARAM[conditional_listitem]</param>
+                <param name="transition_animation">$PARAM[transition_animation]</param>
+                <param name="conditional_fade">$PARAM[conditional_fade]</param>
+                <param name="selected">$PARAM[selected]</param>
+                <include content="Transitions_List_Row_Item_Alt_Visible">
+                    <param name="id">$PARAM[id]</param>
+                    <param name="pos">$PARAM[pos]</param>
+                </include>
+                <include content="Transitions_List_Row_Item_Alt_Slide">
+                    <param name="id">$PARAM[id]</param>
+                    <param name="pos">$PARAM[pos]</param>
+                    <param name="end">$PARAM[alt_slide]</param>
+                </include>
+                <nested />
+            </include>
+        </definition>
+    </include>
+
     <include name="Transitions_List_Row">
         <param name="visible">$EXP[Exp_InfoDialogs]</param>
         <param name="content">Layout_Poster</param>
@@ -127,10 +199,10 @@
         <param name="item_h">view_poster_item_h</param>
         <param name="prefix">transition_poster</param>
         <param name="shorten">false</param>
-        <param name="use_alt_focus">false</param>
         <param name="item_count">7</param>
         <definition>
             <control type="group">
+                <nested />
                 <left>200</left>
                 <top>586</top>
                 <include content="Transitions_List_Row_Item" condition="!Skin.HasSetting(Rows.EnableWrapList)">
@@ -142,130 +214,202 @@
                     <param name="id">$PARAM[id]</param>
                     <param name="prefix">$PARAM[prefix]</param>
                     <param name="affix">$PARAM[affix]</param>
+                    <param name="positional_listitem">$PARAM[positional_listitem]</param>
+                    <param name="conditional_listitem">$PARAM[conditional_listitem]</param>
+                    <param name="use_alternate">False</param>
                     <visible>$PARAM[visible]</visible>
                 </include>
-                <include content="Transitions_List_Row_Item" condition="![$PARAM[use_alt_focus]]">
+                <include content="Transitions_List_Row_Item">
                     <param name="pos">0</param>
                     <param name="content">$PARAM[content]</param>
                     <param name="icon_base_var">$PARAM[icon_base_var]</param>
                     <param name="item_w">$PARAM[item_w]</param>
                     <param name="item_h">$PARAM[item_h]</param>
+                    <param name="alt_content">$PARAM[alt_content]</param>
+                    <param name="alt_icon_base_var">$PARAM[alt_icon_base_var]</param>
+                    <param name="alt_item_w">$PARAM[alt_item_w]</param>
+                    <param name="alt_item_h">$PARAM[alt_item_h]</param>
                     <param name="id">$PARAM[id]</param>
                     <param name="prefix">$PARAM[prefix]</param>
                     <param name="affix">$PARAM[affix]</param>
+                    <param name="positional_listitem">$PARAM[positional_listitem]</param>
+                    <param name="conditional_listitem">$PARAM[conditional_listitem]</param>
+                    <param name="use_alternate">$PARAM[use_alternate]</param>
+                    <param name="alt_slide">$PARAM[alt_slide]</param>
                     <visible>$PARAM[visible]</visible>
                 </include>
-                <include content="Transitions_List_Row_Item" condition="$PARAM[use_alt_focus]">
-                    <param name="pos">0</param>
-                    <param name="content">$PARAM[alt_content]</param>
-                    <param name="icon_base_var">$PARAM[alt_icon_base_var]</param>
-                    <param name="item_w">$PARAM[alt_item_w]</param>
-                    <param name="item_h">$PARAM[alt_item_h]</param>
-                    <param name="id">$PARAM[id]</param>
-                    <param name="prefix">$PARAM[prefix]</param>
-                    <param name="affix">$PARAM[affix]</param>
-                    <visible>$PARAM[visible]</visible>
-                </include>
-                <include content="Transitions_List_Row_Item" condition="[Integer.IsLess(Skin.String(SkinConstant.Numeric.01),$PARAM[item_count]) | [!Integer.IsGreater(Skin.String(SkinConstant.Numeric.01),$PARAM[item_count]) + !Skin.HasSetting(Rows.EnableWrapList)]] | !String.IsEqual(Skin.AspectRatio,16:9)">
+                <include content="Transitions_List_Row_Item" condition="!Integer.IsGreater(Skin.String(SkinConstant.Numeric.01),$PARAM[item_count])">
                     <param name="pos">1</param>
                     <param name="content">$PARAM[content]</param>
                     <param name="icon_base_var">$PARAM[icon_base_var]</param>
                     <param name="item_w">$PARAM[item_w]</param>
                     <param name="item_h">$PARAM[item_h]</param>
+                    <param name="alt_content">$PARAM[alt_content]</param>
+                    <param name="alt_icon_base_var">$PARAM[alt_icon_base_var]</param>
+                    <param name="alt_item_w">$PARAM[alt_item_w]</param>
+                    <param name="alt_item_h">$PARAM[alt_item_h]</param>
                     <param name="id">$PARAM[id]</param>
                     <param name="prefix">$PARAM[prefix]</param>
                     <param name="affix">$PARAM[affix]</param>
+                    <param name="positional_listitem">$PARAM[positional_listitem]</param>
+                    <param name="conditional_listitem">$PARAM[conditional_listitem]</param>
+                    <param name="use_alternate">$PARAM[use_alternate]</param>
+                    <param name="alt_slide">$PARAM[alt_slide]</param>
                     <visible>$PARAM[visible]</visible>
                 </include>
-                <include content="Transitions_List_Row_Item" condition="[Integer.IsLess(Skin.String(SkinConstant.Numeric.02),$PARAM[item_count]) | [!Integer.IsGreater(Skin.String(SkinConstant.Numeric.02),$PARAM[item_count]) + !Skin.HasSetting(Rows.EnableWrapList)]] | !String.IsEqual(Skin.AspectRatio,16:9)">
+                <include content="Transitions_List_Row_Item" condition="!Integer.IsGreater(Skin.String(SkinConstant.Numeric.02),$PARAM[item_count])">
                     <param name="pos">2</param>
                     <param name="content">$PARAM[content]</param>
                     <param name="icon_base_var">$PARAM[icon_base_var]</param>
                     <param name="item_w">$PARAM[item_w]</param>
                     <param name="item_h">$PARAM[item_h]</param>
+                    <param name="alt_content">$PARAM[alt_content]</param>
+                    <param name="alt_icon_base_var">$PARAM[alt_icon_base_var]</param>
+                    <param name="alt_item_w">$PARAM[alt_item_w]</param>
+                    <param name="alt_item_h">$PARAM[alt_item_h]</param>
                     <param name="id">$PARAM[id]</param>
                     <param name="prefix">$PARAM[prefix]</param>
                     <param name="affix">$PARAM[affix]</param>
+                    <param name="positional_listitem">$PARAM[positional_listitem]</param>
+                    <param name="conditional_listitem">$PARAM[conditional_listitem]</param>
+                    <param name="use_alternate">$PARAM[use_alternate]</param>
+                    <param name="alt_slide">$PARAM[alt_slide]</param>
                     <visible>$PARAM[visible]</visible>
                 </include>
-                <include content="Transitions_List_Row_Item" condition="[Integer.IsLess(Skin.String(SkinConstant.Numeric.03),$PARAM[item_count]) | [!Integer.IsGreater(Skin.String(SkinConstant.Numeric.03),$PARAM[item_count]) + !Skin.HasSetting(Rows.EnableWrapList)]] | !String.IsEqual(Skin.AspectRatio,16:9)">
+                <include content="Transitions_List_Row_Item" condition="!Integer.IsGreater(Skin.String(SkinConstant.Numeric.03),$PARAM[item_count])">
                     <param name="pos">3</param>
                     <param name="content">$PARAM[content]</param>
                     <param name="icon_base_var">$PARAM[icon_base_var]</param>
                     <param name="item_w">$PARAM[item_w]</param>
                     <param name="item_h">$PARAM[item_h]</param>
+                    <param name="alt_content">$PARAM[alt_content]</param>
+                    <param name="alt_icon_base_var">$PARAM[alt_icon_base_var]</param>
+                    <param name="alt_item_w">$PARAM[alt_item_w]</param>
+                    <param name="alt_item_h">$PARAM[alt_item_h]</param>
                     <param name="id">$PARAM[id]</param>
                     <param name="prefix">$PARAM[prefix]</param>
                     <param name="affix">$PARAM[affix]</param>
+                    <param name="positional_listitem">$PARAM[positional_listitem]</param>
+                    <param name="conditional_listitem">$PARAM[conditional_listitem]</param>
+                    <param name="use_alternate">$PARAM[use_alternate]</param>
+                    <param name="alt_slide">$PARAM[alt_slide]</param>
                     <visible>$PARAM[visible]</visible>
                 </include>
-                <include content="Transitions_List_Row_Item" condition="[Integer.IsLess(Skin.String(SkinConstant.Numeric.04),$PARAM[item_count]) | [!Integer.IsGreater(Skin.String(SkinConstant.Numeric.04),$PARAM[item_count]) + !Skin.HasSetting(Rows.EnableWrapList)]] | !String.IsEqual(Skin.AspectRatio,16:9)">
+                <include content="Transitions_List_Row_Item" condition="!Integer.IsGreater(Skin.String(SkinConstant.Numeric.04),$PARAM[item_count])">
                     <param name="pos">4</param>
                     <param name="content">$PARAM[content]</param>
                     <param name="icon_base_var">$PARAM[icon_base_var]</param>
                     <param name="item_w">$PARAM[item_w]</param>
                     <param name="item_h">$PARAM[item_h]</param>
+                    <param name="alt_content">$PARAM[alt_content]</param>
+                    <param name="alt_icon_base_var">$PARAM[alt_icon_base_var]</param>
+                    <param name="alt_item_w">$PARAM[alt_item_w]</param>
+                    <param name="alt_item_h">$PARAM[alt_item_h]</param>
                     <param name="id">$PARAM[id]</param>
                     <param name="prefix">$PARAM[prefix]</param>
                     <param name="affix">$PARAM[affix]</param>
+                    <param name="positional_listitem">$PARAM[positional_listitem]</param>
+                    <param name="conditional_listitem">$PARAM[conditional_listitem]</param>
+                    <param name="use_alternate">$PARAM[use_alternate]</param>
+                    <param name="alt_slide">$PARAM[alt_slide]</param>
                     <visible>$PARAM[visible]</visible>
                 </include>
-                <include content="Transitions_List_Row_Item" condition="[Integer.IsLess(Skin.String(SkinConstant.Numeric.05),$PARAM[item_count]) | [!Integer.IsGreater(Skin.String(SkinConstant.Numeric.05),$PARAM[item_count]) + !Skin.HasSetting(Rows.EnableWrapList)]] | !String.IsEqual(Skin.AspectRatio,16:9)">
+                <include content="Transitions_List_Row_Item" condition="!Integer.IsGreater(Skin.String(SkinConstant.Numeric.05),$PARAM[item_count])">
                     <param name="pos">5</param>
                     <param name="content">$PARAM[content]</param>
                     <param name="icon_base_var">$PARAM[icon_base_var]</param>
                     <param name="item_w">$PARAM[item_w]</param>
                     <param name="item_h">$PARAM[item_h]</param>
+                    <param name="alt_content">$PARAM[alt_content]</param>
+                    <param name="alt_icon_base_var">$PARAM[alt_icon_base_var]</param>
+                    <param name="alt_item_w">$PARAM[alt_item_w]</param>
+                    <param name="alt_item_h">$PARAM[alt_item_h]</param>
                     <param name="id">$PARAM[id]</param>
                     <param name="prefix">$PARAM[prefix]</param>
                     <param name="affix">$PARAM[affix]</param>
+                    <param name="positional_listitem">$PARAM[positional_listitem]</param>
+                    <param name="conditional_listitem">$PARAM[conditional_listitem]</param>
+                    <param name="use_alternate">$PARAM[use_alternate]</param>
+                    <param name="alt_slide">$PARAM[alt_slide]</param>
                     <visible>$PARAM[visible]</visible>
                 </include>
-                <include content="Transitions_List_Row_Item" condition="[Integer.IsLess(Skin.String(SkinConstant.Numeric.06),$PARAM[item_count]) | [!Integer.IsGreater(Skin.String(SkinConstant.Numeric.06),$PARAM[item_count]) + !Skin.HasSetting(Rows.EnableWrapList)]] | !String.IsEqual(Skin.AspectRatio,16:9)">
+                <include content="Transitions_List_Row_Item" condition="!Integer.IsGreater(Skin.String(SkinConstant.Numeric.06),$PARAM[item_count])">
                     <param name="pos">6</param>
                     <param name="content">$PARAM[content]</param>
                     <param name="icon_base_var">$PARAM[icon_base_var]</param>
                     <param name="item_w">$PARAM[item_w]</param>
                     <param name="item_h">$PARAM[item_h]</param>
+                    <param name="alt_content">$PARAM[alt_content]</param>
+                    <param name="alt_icon_base_var">$PARAM[alt_icon_base_var]</param>
+                    <param name="alt_item_w">$PARAM[alt_item_w]</param>
+                    <param name="alt_item_h">$PARAM[alt_item_h]</param>
                     <param name="id">$PARAM[id]</param>
                     <param name="prefix">$PARAM[prefix]</param>
                     <param name="affix">$PARAM[affix]</param>
+                    <param name="positional_listitem">$PARAM[positional_listitem]</param>
+                    <param name="conditional_listitem">$PARAM[conditional_listitem]</param>
+                    <param name="use_alternate">$PARAM[use_alternate]</param>
+                    <param name="alt_slide">$PARAM[alt_slide]</param>
                     <visible>$PARAM[visible]</visible>
                 </include>
 
-                <include content="Transitions_List_Row_Item" condition="[Integer.IsLess(Skin.String(SkinConstant.Numeric.07),$PARAM[item_count]) | [!Integer.IsGreater(Skin.String(SkinConstant.Numeric.07),$PARAM[item_count]) + !Skin.HasSetting(Rows.EnableWrapList)]] | !String.IsEqual(Skin.AspectRatio,16:9)">
+                <include content="Transitions_List_Row_Item" condition="!Integer.IsGreater(Skin.String(SkinConstant.Numeric.07),$PARAM[item_count])">
                     <param name="pos">7</param>
                     <param name="content">$PARAM[content]</param>
                     <param name="icon_base_var">$PARAM[icon_base_var]</param>
                     <param name="item_w">$PARAM[item_w]</param>
                     <param name="item_h">$PARAM[item_h]</param>
+                    <param name="alt_content">$PARAM[alt_content]</param>
+                    <param name="alt_icon_base_var">$PARAM[alt_icon_base_var]</param>
+                    <param name="alt_item_w">$PARAM[alt_item_w]</param>
+                    <param name="alt_item_h">$PARAM[alt_item_h]</param>
                     <param name="id">$PARAM[id]</param>
                     <param name="prefix">$PARAM[prefix]</param>
                     <param name="affix">$PARAM[affix]</param>
+                    <param name="positional_listitem">$PARAM[positional_listitem]</param>
+                    <param name="conditional_listitem">$PARAM[conditional_listitem]</param>
+                    <param name="use_alternate">$PARAM[use_alternate]</param>
+                    <param name="alt_slide">$PARAM[alt_slide]</param>
                     <visible>$PARAM[visible]</visible>
                 </include>
 
-                <include content="Transitions_List_Row_Item" condition="[Integer.IsLess(Skin.String(SkinConstant.Numeric.08),$PARAM[item_count]) | [!Integer.IsGreater(Skin.String(SkinConstant.Numeric.08),$PARAM[item_count]) + !Skin.HasSetting(Rows.EnableWrapList)]] | !String.IsEqual(Skin.AspectRatio,16:9)">
+                <include content="Transitions_List_Row_Item" condition="!Integer.IsGreater(Skin.String(SkinConstant.Numeric.08),$PARAM[item_count])">
                     <param name="pos">8</param>
                     <param name="content">$PARAM[content]</param>
                     <param name="icon_base_var">$PARAM[icon_base_var]</param>
                     <param name="item_w">$PARAM[item_w]</param>
                     <param name="item_h">$PARAM[item_h]</param>
+                    <param name="alt_content">$PARAM[alt_content]</param>
+                    <param name="alt_icon_base_var">$PARAM[alt_icon_base_var]</param>
+                    <param name="alt_item_w">$PARAM[alt_item_w]</param>
+                    <param name="alt_item_h">$PARAM[alt_item_h]</param>
                     <param name="id">$PARAM[id]</param>
                     <param name="prefix">$PARAM[prefix]</param>
                     <param name="affix">$PARAM[affix]</param>
+                    <param name="positional_listitem">$PARAM[positional_listitem]</param>
+                    <param name="conditional_listitem">$PARAM[conditional_listitem]</param>
+                    <param name="use_alternate">$PARAM[use_alternate]</param>
+                    <param name="alt_slide">$PARAM[alt_slide]</param>
                     <visible>$PARAM[visible]</visible>
                 </include>
 
-                <include content="Transitions_List_Row_Item" condition="[Integer.IsLess(Skin.String(SkinConstant.Numeric.09),$PARAM[item_count]) | [!Integer.IsGreater(Skin.String(SkinConstant.Numeric.09),$PARAM[item_count]) + !Skin.HasSetting(Rows.EnableWrapList)]] | !String.IsEqual(Skin.AspectRatio,16:9)">
+                <include content="Transitions_List_Row_Item" condition="!Integer.IsGreater(Skin.String(SkinConstant.Numeric.09),$PARAM[item_count])">
                     <param name="pos">9</param>
                     <param name="content">$PARAM[content]</param>
                     <param name="icon_base_var">$PARAM[icon_base_var]</param>
                     <param name="item_w">$PARAM[item_w]</param>
                     <param name="item_h">$PARAM[item_h]</param>
+                    <param name="alt_content">$PARAM[alt_content]</param>
+                    <param name="alt_icon_base_var">$PARAM[alt_icon_base_var]</param>
+                    <param name="alt_item_w">$PARAM[alt_item_w]</param>
+                    <param name="alt_item_h">$PARAM[alt_item_h]</param>
                     <param name="id">$PARAM[id]</param>
                     <param name="prefix">$PARAM[prefix]</param>
                     <param name="affix">$PARAM[affix]</param>
+                    <param name="positional_listitem">$PARAM[positional_listitem]</param>
+                    <param name="conditional_listitem">$PARAM[conditional_listitem]</param>
+                    <param name="use_alternate">$PARAM[use_alternate]</param>
+                    <param name="alt_slide">$PARAM[alt_slide]</param>
                     <visible>$PARAM[visible]</visible>
                 </include>
             </control>
@@ -282,14 +426,17 @@
                 <param name="icon_base_var">Image_Poster</param>
                 <param name="item_w">view_poster_item_w</param>
                 <param name="item_h">view_poster_item_h</param>
-                <param name="prefix">transition_card</param>
-                <param name="affix">$PARAM[affix]</param>
-                <param name="use_alt_focus">true</param>
+                <param name="prefix">transition_poster</param>
+                <param name="affix">_LIP$PARAM[affix]</param>
+                <param name="use_alternate">True</param>
                 <param name="alt_item_w">view_card_item_w</param>
                 <param name="alt_item_h">view_poster_item_h</param>
                 <param name="alt_content">Layout_Card</param>
                 <param name="alt_icon_base_var">Image_Fanart</param>
+                <param name="alt_slide">480</param>
                 <param name="item_count">5</param>
+                <param name="positional_listitem">ListItemPosition</param>
+                <param name="conditional_listitem">ListItemPosition</param>
             </include>
         </definition>
     </include>
@@ -322,7 +469,9 @@
                 <param name="item_w">view_poster_item_w</param>
                 <param name="item_h">view_poster_item_h</param>
                 <param name="prefix">transition_poster</param>
-                <param name="affix">$PARAM[affix]</param>
+                <param name="affix">_LIP$PARAM[affix]</param>
+                <param name="positional_listitem">ListItemPosition</param>
+                <param name="conditional_listitem">ListItemPosition</param>
                 <param name="item_count">7</param>
             </include>
         </definition>
@@ -339,7 +488,9 @@
                 <param name="item_w">view_poster_item_w</param>
                 <param name="item_h">view_poster_item_h</param>
                 <param name="prefix">transition_poster</param>
-                <param name="affix">$PARAM[affix]</param>
+                <param name="affix">_LIP$PARAM[affix]</param>
+                <param name="positional_listitem">ListItemPosition</param>
+                <param name="conditional_listitem">ListItemPosition</param>
             </include>
         </definition>
     </include>
@@ -355,7 +506,9 @@
                 <param name="item_w">380</param>
                 <param name="item_h">view_landscape_item_h</param>
                 <param name="prefix">transition_landscape</param>
-                <param name="affix">$PARAM[affix]</param>
+                <param name="affix">_LIP$PARAM[affix]</param>
+                <param name="positional_listitem">ListItemPosition</param>
+                <param name="conditional_listitem">ListItemPosition</param>
                 <param name="item_count">4</param>
             </include>
         </definition>

@@ -66,7 +66,6 @@
                 <onfocus condition="!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),$PARAM[id]3)">SetProperty(TMDbHelper.WidgetContainer,$PARAM[id]3)</onfocus>
                 <onfocus>ClearProperty(SpecialFolderPath)</onfocus>
                 <onfocus>ClearProperty(MediaFilterBase)</onfocus>
-                <onfocus>ClearProperty(View.WallSwitchRow.Hold)</onfocus>
                 <visible>$PARAM[visible]</visible>
                 <viewtype label="$PARAM[viewtype_label]">wrap</viewtype>
 
@@ -112,7 +111,7 @@
                             <effect type="fade" start="100" end="0" time="200" delay="600" />
                         </animation>
                         <include content="Animation_ConditionalFade">
-                            <param name="condition">true</param>
+                            <param name="condition">!Control.HasFocus($PARAM[id]3)</param>
                         </include>
 
                         <include content="Action_View_Movement_OnUp">
@@ -126,7 +125,6 @@
                         <onback>SetFocus($PARAM[id]2)</onback>
                         <onfocus condition="!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),$PARAM[id]3)">SetProperty(TMDbHelper.WidgetContainer,$PARAM[id]3)</onfocus>
                         <onfocus>ClearProperty(MediaFilterBase)</onfocus>
-                        <onfocus>ClearProperty(View.WallSwitchRow.Hold)</onfocus>
                     </include>
 
                     <include content="Widget_Busy">
@@ -143,6 +141,7 @@
                         <animation type="Conditional" reversible="false" condition="Container($PARAM[id]3).IsUpdating">
                             <effect type="fade" start="100" end="0" time="200" delay="600" />
                         </animation>
+                        <visible>!Control.HasFocus($PARAM[id]3)</visible>
                     </include>
                 </include>
                 <include content="Transitions_$PARAM[include]">
@@ -197,7 +196,6 @@
                         <onback>SetFocus($PARAM[id]2)</onback>
                         <onfocus condition="!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),$PARAM[id]3)">SetProperty(TMDbHelper.WidgetContainer,$PARAM[id]3)</onfocus>
                         <onfocus>ClearProperty(MediaFilterBase)</onfocus>
-                        <onfocus>ClearProperty(View.WallSwitchRow.Hold)</onfocus>
                     </include>
 
                     <include content="Widget_Busy">
@@ -220,20 +218,17 @@
             <include content="Animation_ConditionalFade">
                 <param name="condition">[$EXP[Exp_InfoDialogs] | Control.HasFocus(60) | Control.HasFocus(64) | Control.HasFocus(65) | Control.HasFocus(67) | ControlGroup(9000).HasFocus() | !String.IsEmpty(Window.Property(MediaFilterBase))]</param>
             </include>
+            <right>480</right>
             <include content="Home_Selector_Widget">
                 <param name="id">$PARAM[id]2</param>
                 <param name="visible">True</param>
                 <param name="font">font_mini</param>
-                <param name="shorten">True</param>
-                <param name="preitem_fade">True</param>
                 <top>920</top>
                 <onup>$PARAM[id]3</onup>
-                <ondown>SetProperty(MediaFilterBase,$INFO[Container.FolderPath])</ondown>
-                <ondown>SetFocus(9001)</ondown>
+                <include>Action_ToMediaFilter_OnDown</include>
                 <onfocus condition="!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),$PARAM[id]3)">SetProperty(TMDbHelper.WidgetContainer,$PARAM[id]3)</onfocus>
                 <onfocus>ClearProperty(SpecialFolderPath)</onfocus>
                 <onfocus>ClearProperty(MediaFilterBase)</onfocus>
-                <onfocus>ClearProperty(View.WallSwitchRow.Hold)</onfocus>
                 <visible>$PARAM[visible]</visible>
                 <viewtype label="$PARAM[viewtype_label]">wrap</viewtype>
             </include>
@@ -250,7 +245,7 @@
                 </include>
             </control>
             <control type="group">
-                <include>MediaFilter_View_Transition</include>
+                <include>MediaWall_View_Transition</include>
                 <include content="View_Combined_Row_Horz" condition="!Skin.HasSetting(Views.UseAltCombined)">
                     <param name="id">$PARAM[id]</param>
                     <param name="include">$PARAM[include]</param>

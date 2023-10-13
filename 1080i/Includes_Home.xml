@@ -877,6 +877,15 @@
         <animation effect="fade" start="100" end="0" delay="100" time="300" tween="quadratic" reversible="false" condition="!Container($PARAM[id]).OnNext">Conditional</animation>
     </include>
 
+    <include name="Home_Selector_Widget_Movement_Submenu">
+        <movement>2</movement>
+        <width>1240</width>
+    </include>
+    <include name="Home_Selector_Widget_Movement_Mainmenu">
+        <movement>2</movement>
+        <width>1000</width>
+    </include>
+
     <include name="Home_Selector_Widget">
         <param name="id">300</param>
         <param name="window_id" />
@@ -887,8 +896,8 @@
         <param name="hidden_button">List_ButtonMenu_Row_HiddenButton_Temp</param>
         <param name="visible">Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)</param>
         <param name="shorten">False</param>
-        <param name="preitem_fade">[True]</param>
-        <param name="wraplist">[True]</param>
+        <param name="preitem_fade">True</param>
+        <param name="wraplist">Skin.HasSetting(Rows.EnableWrapList)</param>
 
         <param name="hitrect_x">0</param>
         <param name="hitrect_y">0</param>
@@ -909,11 +918,15 @@
                 <param name="hidden_button_force_widget">$PARAM[hidden_button_force_widget]</param>
                 <param name="wraplist">$PARAM[wraplist]</param>
 
+                <include content="Object_FocusPosition" condition="$PARAM[wraplist]">
+                    <param name="focusposition">0</param>
+                </include>
+                <include content="Object_Movement" condition="$PARAM[wraplist]">
+                    <param name="movement">0</param>
+                </include>
 
-                <preloaditems>0</preloaditems>
-                <focusposition>0</focusposition>
-                <movement>0</movement>
-
+                <preloaditems>2</preloaditems>
+                <focusposition>1</focusposition>
                 <animation effect="slide" start="0" end="240" condition="true">Conditional</animation>
 
                 <hitrect x="$PARAM[hitrect_x]" y="$PARAM[hitrect_y]" w="$PARAM[hitrect_w]" h="$PARAM[hitrect_h]" />
@@ -930,6 +943,9 @@
 
                 <nested />
 
+                <include condition="![$PARAM[shorten]]">Home_Selector_Widget_Movement_Submenu</include>
+                <include condition="$PARAM[shorten]">Home_Selector_Widget_Movement_Mainmenu</include>
+
                 <onfocus condition="$PARAM[slide]">SetProperty(Slide.WidgetContainer,True,$PARAM[window_id])</onfocus>
                 <onfocus condition="![$PARAM[slide]]">ClearProperty(Slide.WidgetContainer,$PARAM[window_id])</onfocus>
 
@@ -942,19 +958,14 @@
                 </include>
 
                 <left>view_button_left</left>
-                <include content="Object_Width" condition="$PARAM[shorten]">
-                    <param name="width">1440</param>
-                </include>
-                <right>-240</right>
-                <preloaditems>0</preloaditems>
                 <height>selectorwidget_h</height>
                 <top>selectorwidget_t</top>
-                <include content="Animation_ConditionalFade">
+                <include content="Animation_ConditionalFade" condition="$PARAM[wraplist]">
                     <param name="condition">True</param>
                 </include>
             </include>
 
-            <include content="Object_Control">
+            <include content="Object_Control" condition="$PARAM[wraplist]">
                 <param name="control">grouplist</param>
                 <param name="id">$PARAM[grouplistid]</param>
                 <orientation>horizontal</orientation>
@@ -1034,10 +1045,10 @@
                     <param name="wraplist">$PARAM[wraplist]</param>
                 </include>
 
+                <width>100%</width>
 
                 <nested />
                 <left>view_button_left</left>
-                <right>-240</right>
                 <height>selectorwidget_h</height>
                 <top>selectorwidget_t</top>
 
@@ -1116,6 +1127,7 @@
                     <param name="hitrect_w">1640</param>
                     <param name="hitrect_h">80</param>
                     <param name="id">352</param>
+                    <param name="shorten">True</param>
 
                     <onup>311</onup>
                     <include content="Action_Menu_Movement_OnBack">
@@ -1125,6 +1137,7 @@
                     <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,home)</onfocus>
                     <onleft>352</onleft>
                     <onright>352</onright>
+
 
                     <animation effect="slide" time="400" end="0" start="0,110" tween="quadratic" easing="out" reversible="false" condition="String.IsEmpty(Window.Property(Slide.WidgetContainer)) + Skin.HasSetting(Hub.Home.DisableSubmenu)">Conditional</animation>
                     <animation effect="slide" time="400" end="0,110" start="0" tween="quadratic" easing="out" reversible="false" condition="!String.IsEmpty(Window.Property(Slide.WidgetContainer)) + Skin.HasSetting(Hub.Home.DisableSubmenu)">Conditional</animation>
@@ -1177,6 +1190,7 @@
                     <param name="hitrect_y">740</param>
                     <param name="hitrect_w">1640</param>
                     <param name="hitrect_h">80</param>
+                    <param name="shorten">True</param>
 
                     <onup>311</onup>
                     <include content="Action_Menu_Movement_OnBack">
@@ -1185,8 +1199,6 @@
                     <ondown condition="!Skin.HasSetting(Hub.Home.DisableSubmenu)">302</ondown>
                     <ondown condition="Skin.HasSetting(Hub.Home.DisableSubmenu)">340</ondown>
                     <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,home)</onfocus>
-                    <onleft>300</onleft>
-                    <onright>300</onright>
 
                     <animation effect="slide" time="400" end="0" start="0,110" tween="quadratic" easing="out" reversible="false" condition="String.IsEmpty(Window.Property(Slide.WidgetContainer)) + Skin.HasSetting(Hub.Home.DisableSubmenu)">Conditional</animation>
                     <animation effect="slide" time="400" end="0,110" start="0" tween="quadratic" easing="out" reversible="false" condition="!String.IsEmpty(Window.Property(Slide.WidgetContainer)) + Skin.HasSetting(Hub.Home.DisableSubmenu)">Conditional</animation>
