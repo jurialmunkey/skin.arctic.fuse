@@ -105,21 +105,23 @@
             <include content="Hub_Main_Group">
                 <param name="widgets_only">$PARAM[widgets_only]</param>
 
-                <include content="Hub_Menu_Group">
+                <include content="Hub_Menu_Group" condition="![$PARAM[widgets_only]]">
                     <include content="Hub_Categories">
                         <param name="categories_include">$PARAM[categories_include]</param>
-                        <param name="widgets_only">$PARAM[widgets_only]</param>
                         <param name="window_id">$PARAM[window_id]</param>
                     </include>
                 </include>
 
                 <!-- Spotlight: Individual -->
-                <include condition="![$PARAM[widgets_only]]" content="Spotlight_List">
+                <include content="Spotlight_List" condition="![$PARAM[widgets_only]]">
                     <param name="window_id">$PARAM[window_id]</param>
                     <visible>String.IsEmpty(Container(300).ListItem.Property(widgetPath.Spotlight))</visible>
                 </include>
 
-                <include>$PARAM[include]</include>
+                <include condition="![$PARAM[widgets_only]]">$PARAM[include]</include>
+                <include content="Hub_Widgets_Only" condition="$PARAM[widgets_only]">
+                    <param name="widgets_include">$PARAM[widgets_include]</param>
+                </include>
 
             </include>
 
@@ -142,6 +144,39 @@
             <!-- Plot Dialog Overlay -->
             <include>View_Dialog_Plot</include>
         </definition>
+    </include>
+
+    <include name="Hub_Widgets_Only">
+
+        <include content="Object_Hidden_Button">
+            <param name="id">300</param>
+            <onfocus>SetFocus(400)</onfocus>
+        </include>
+
+        <include content="Hub_Widgets_Group">
+            <include content="Home_Widgets_Infopanel">
+                <include content="Info_Panel">
+                    <param name="container">Container.</param>
+                </include>
+            </include>
+            <include content="Hub_Menu_Group">
+                <include content="Hub_Widgets_Grouplist">
+                    <param name="id">400</param>
+                    <param name="topid">401</param>
+                    <param name="mainmenuid"></param>
+                    <param name="widgets_only">True</param>
+                    <param name="visible">True</param>
+                    <control type="group" id="401">
+                        <height>widget_tbump_h</height>
+                    </control>
+
+                    <include>$PARAM[widgets_include]</include>
+
+                    <control type="group" id="499">
+                    </control>
+                </include>
+            </include>
+        </include>
     </include>
 
     <include name="Hub_Home">
@@ -179,25 +214,13 @@
 
 
     <include name="Hub_Categories">
-
-        <!-- Hidden List Menu -->
-        <include content="Object_Hidden_List" condition="$PARAM[widgets_only]">
-            <param name="id">300</param>
-            <onfocus>SetFocus(340)</onfocus>
-            <content>
-                <include>$PARAM[categories_include]</include>
-            </content>
-        </include>
-
-        <include content="Object_Control" condition="![$PARAM[widgets_only]]">
-            <param name="control">group</param>
+        <control type="group">
             <visible>!$EXP[Exp_InfoDialogs]</visible>
             <include>Animation_Transition_InfoPanel_Hide</include>
             <include>Spotlight_Main</include>
             <include>Transitions_Down_Visibility</include>
             <include content="Categories_Selector">
                 <param name="window_id">$PARAM[window_id]</param>
-                <param name="slide">[$PARAM[widgets_only]]</param>
                 <param name="hitrect_x">-40</param>
                 <param name="hitrect_y">740</param>
                 <param name="hitrect_w">1640</param>
@@ -209,25 +232,21 @@
                 <include content="Action_Menu_Movement_OnBack">
                     <param name="id">300</param>
                 </include>
-                <ondown condition="![$PARAM[widgets_only]]">302</ondown>
-                <ondown condition="[$PARAM[widgets_only]]">340</ondown>
+                <ondown>302</ondown>
                 <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,$PARAM[window_id])</onfocus>
 
-                <animation effect="slide" time="400" end="0" start="0,110" tween="quadratic" easing="out" reversible="false" condition="String.IsEmpty(Window.Property(Slide.WidgetContainer)) + [$PARAM[widgets_only]]">Conditional</animation>
-                <animation effect="slide" time="400" end="0,110" start="0" tween="quadratic" easing="out" reversible="false" condition="!String.IsEmpty(Window.Property(Slide.WidgetContainer)) + [$PARAM[widgets_only]]">Conditional</animation>
-
                 <include content="Animation_Fade_In">
-                    <param name="condition">![!String.IsEmpty(Window.Property(Slide.WidgetContainer)) + ![$PARAM[widgets_only]]]</param>
+                    <param name="condition">![!String.IsEmpty(Window.Property(Slide.WidgetContainer))]</param>
                     <param name="delay">200</param>
                 </include>
                 <include content="Animation_ConditionalFade">
-                    <param name="condition">[!String.IsEmpty(Window.Property(Slide.WidgetContainer)) + ![$PARAM[widgets_only]]]</param>
+                    <param name="condition">[!String.IsEmpty(Window.Property(Slide.WidgetContainer))]</param>
                 </include>
                 <content>
                     <include>$PARAM[categories_include]</include>
                 </content>
             </include>
-        </include>
+        </control>
     </include>
 
     <include name="Hub_Widgets_Grouplist">
