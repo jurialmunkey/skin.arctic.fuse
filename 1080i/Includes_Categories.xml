@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<includes>
+    <include name="Categories_Selector_Item">
+        <param name="listitem">ListItem</param>
+        <param name="check_numitems">true</param>
+        <param name="usealttexture">False</param>
+        <param name="wraplist">True</param>
+        <definition>
+            <control type="group">
+                <width>view_button_item_w</width>
+                <height>120</height>
+                <nested />
+                <include content="Object_Visible" condition="$PARAM[check_numitems] + $PARAM[wraplist]">
+                    <param name="visible">Integer.IsGreater(Container($PARAM[id]).NumItems,$PARAM[pos])</param>
+                </include>
+                <include content="Object_Visible" condition="$PARAM[check_numitems] + ![$PARAM[wraplist]]">
+                    <param name="visible">!String.IsEmpty(Container($PARAM[id]).ListItemNoWrap($PARAM[mod]$PARAM[pos]).CurrentItem)</param>
+                </include>
+                <include content="Animation_ConditionalFade" condition="![$PARAM[check_numitems]] + ![$PARAM[wraplist]]">
+                    <param name="condition">String.IsEmpty(Container($PARAM[id]).ListItemNoWrap($PARAM[mod]$PARAM[pos]).CurrentItem)</param>
+                </include>
+                <control type="group">
+                    <left>40</left>
+                    <right>0</right>
+                    <control type="group">
+                        <centertop>50%</centertop>
+                        <height>256</height>
+                        <left>-60</left>
+                        <right>-60</right>
+                        <control type="group">
+                            <visible>!$PARAM[usealttexture]</visible>
+                            <control type="label">
+                                <align>center</align>
+                                <aligny>center</aligny>
+                                <font>$PARAM[font]</font>
+                                <textcolor>$PARAM[textcolor]</textcolor>
+                                <textoffsetx>60</textoffsetx>
+                                <height>80</height>
+                                <centertop>50%</centertop>
+                                <label>$INFO[Container($PARAM[id]).$PARAM[listitem]($PARAM[mod]$PARAM[pos]).Label]</label>
+                            </control>
+                        </control>
+                        <control type="group">
+                            <visible>$PARAM[usealttexture]</visible>
+                            <control type="image">
+                                <include>Texture_MainMenu_Highlight_H</include>
+                            </control>
+                            <control type="label">
+                                <align>center</align>
+                                <aligny>center</aligny>
+                                <font>$PARAM[font]</font>
+                                <textcolor>$VAR[ColorSelected]</textcolor>
+                                <textoffsetx>60</textoffsetx>
+                                <height>80</height>
+                                <centertop>50%</centertop>
+                                <label>$INFO[Container($PARAM[id]).$PARAM[listitem]($PARAM[mod]$PARAM[pos]).Label]</label>
+                            </control>
+                        </control>
+                    </control>
+                </control>
+            </control>
+        </definition>
+    </include>
+
+    <include name="_Categories_Selector_PreItemFade">
+        <animation effect="fade" start="100" end="0" delay="100" time="300" tween="quadratic" reversible="false" condition="!Container($PARAM[id]).OnNext">Conditional</animation>
+    </include>
+
+    <include name="Categories_Selector_Movement_Submenu">
+        <movement>2</movement>
+        <width>1240</width>
+    </include>
+    <include name="Categories_Selector_Movement_Mainmenu">
+        <movement>2</movement>
+        <width>1000</width>
+    </include>
+
+    <include name="Categories_Selector">
+        <param name="id">300</param>
+        <param name="window_id" />
+        <param name="slide">False</param>
+        <param name="font">font_main_black</param>
+        <param name="color_fo">main_fg_100</param>
+        <param name="color_nf">main_fg_30</param>
+        <param name="hidden_button">List_ButtonMenu_Row_HiddenButton_Home</param>
+        <param name="visible">Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)</param>
+        <param name="shorten">False</param>
+        <param name="preitem_fade">True</param>
+        <param name="wraplist">Skin.HasSetting(Rows.EnableWrapList)</param>
+
+        <param name="hitrect_x">0</param>
+        <param name="hitrect_y">0</param>
+        <param name="hitrect_w">0</param>
+        <param name="hitrect_h">0</param>
+        <definition>
+            <include content="List_ButtonMenu_Row">
+                <param name="id">$PARAM[id]</param>
+                <param name="color_fo">$PARAM[color_fo]</param>
+                <param name="color_nf">$PARAM[color_nf]</param>
+                <param name="itemlayout_w">view_button_item_w</param>
+                <param name="offset_x">view_button_offset_x</param>
+                <param name="control">fixedlist</param>
+                <param name="font">$PARAM[font]</param>
+                <param name="backing">true</param>
+                <param name="hidden_button">$PARAM[hidden_button]</param>
+                <param name="hidden_button_prefix">$PARAM[hidden_button_prefix]</param>
+                <param name="hidden_button_force_widget">$PARAM[hidden_button_force_widget]</param>
+                <param name="wraplist">$PARAM[wraplist]</param>
+
+                <include content="Object_FocusPosition" condition="$PARAM[wraplist]">
+                    <param name="focusposition">0</param>
+                </include>
+                <include content="Object_Movement" condition="$PARAM[wraplist]">
+                    <param name="movement">0</param>
+                </include>
+
+                <preloaditems>0</preloaditems>
+                <focusposition>1</focusposition>
+
+                <hitrect x="$PARAM[hitrect_x]" y="$PARAM[hitrect_y]" w="$PARAM[hitrect_w]" h="$PARAM[hitrect_h]" />
+
+                <onleft condition="$PARAM[wraplist]">$PARAM[id]</onleft>
+                <onright condition="$PARAM[wraplist]">$PARAM[id]</onright>
+
+                <include content="Action_View_Movement_OnLeft" condition="![$PARAM[wraplist]]">
+                    <param name="id">$PARAM[id]</param>
+                </include>
+                <include content="Action_View_Movement_OnRight" condition="![$PARAM[wraplist]]">
+                    <param name="id">$PARAM[id]</param>
+                </include>
+
+                <nested />
+
+                <include condition="![$PARAM[shorten]]">Categories_Selector_Movement_Submenu</include>
+                <include condition="$PARAM[shorten]">Categories_Selector_Movement_Mainmenu</include>
+
+                <onfocus condition="$PARAM[slide]">SetProperty(Slide.WidgetContainer,True,$PARAM[window_id])</onfocus>
+                <onfocus condition="![$PARAM[slide]]">ClearProperty(Slide.WidgetContainer,$PARAM[window_id])</onfocus>
+
+                <include content="Animation_Fade_In" condition="![$PARAM[wraplist]]">
+                    <param name="condition">$PARAM[visible]</param>
+                    <param name="delay">200</param>
+                </include>
+                <include content="Animation_ConditionalFade" condition="![$PARAM[wraplist]]">
+                    <param name="condition">!$PARAM[visible]</param>
+                </include>
+
+                <left>160</left>
+                <height>selectorwidget_h</height>
+                <top>selectorwidget_t</top>
+                <include content="Animation_ConditionalFade" condition="$PARAM[wraplist]">
+                    <param name="condition">True</param>
+                </include>
+            </include>
+
+            <include content="Object_Control" condition="$PARAM[wraplist]">
+                <param name="control">grouplist</param>
+                <param name="id">$PARAM[grouplistid]</param>
+                <orientation>horizontal</orientation>
+                <animation effect="slide" end="-view_button_item_w" time="400" tween="quadratic" reversible="false" condition="Control.HasFocus($PARAM[id]) + !Container($PARAM[id]).OnNext">Conditional</animation>
+                <animation effect="slide" end="view_button_item_w" time="400" tween="quadratic" reversible="false" condition="Control.HasFocus($PARAM[id]) + !Container($PARAM[id]).OnPrevious">Conditional</animation>
+
+                <hitrect x="0" y="0" w="0" h="0" />
+
+                <include content="Categories_Selector_Item">
+                    <param name="id">$PARAM[id]</param>
+                    <param name="pos">1</param>
+                    <param name="mod">-</param>
+                    <param name="font">$PARAM[font]</param>
+                    <param name="textcolor">$PARAM[color_nf]</param>
+                    <param name="wraplist">$PARAM[wraplist]</param>
+                    <param name="listitem">ListItem</param>
+                    <param name="check_numitems">false</param>
+                    <include content="_Categories_Selector_PreItemFade" condition="$PARAM[preitem_fade]">
+                        <param name="id">$PARAM[id]</param>
+                    </include>
+                </include>
+                <include content="Categories_Selector_Item">
+                    <param name="id">$PARAM[id]</param>
+                    <param name="pos">0</param>
+                    <param name="font">$PARAM[font]</param>
+                    <param name="textcolor">$PARAM[color_fo]</param>
+                    <param name="wraplist">$PARAM[wraplist]</param>
+                    <param name="usealttexture">Control.HasFocus($PARAM[id])</param>
+                </include>
+                <include content="Categories_Selector_Item">
+                    <param name="id">$PARAM[id]</param>
+                    <param name="pos">1</param>
+                    <param name="font">$PARAM[font]</param>
+                    <param name="textcolor">$PARAM[color_nf]</param>
+                    <param name="wraplist">$PARAM[wraplist]</param>
+                </include>
+                <include content="Categories_Selector_Item">
+                    <param name="id">$PARAM[id]</param>
+                    <param name="pos">2</param>
+                    <param name="font">$PARAM[font]</param>
+                    <param name="textcolor">$PARAM[color_nf]</param>
+                    <param name="wraplist">$PARAM[wraplist]</param>
+                </include>
+                <include content="Categories_Selector_Item">
+                    <param name="id">$PARAM[id]</param>
+                    <param name="pos">3</param>
+                    <param name="font">$PARAM[font]</param>
+                    <param name="textcolor">$PARAM[color_nf]</param>
+                    <param name="wraplist">$PARAM[wraplist]</param>
+                </include>
+                <include content="Categories_Selector_Item">
+                    <param name="id">$PARAM[id]</param>
+                    <param name="pos">4</param>
+                    <param name="font">$PARAM[font]</param>
+                    <param name="textcolor">$PARAM[color_nf]</param>
+                    <param name="wraplist">$PARAM[wraplist]</param>
+                </include>
+                <include content="Categories_Selector_Item" condition="![$PARAM[shorten]]">
+                    <param name="id">$PARAM[id]</param>
+                    <param name="pos">5</param>
+                    <param name="font">$PARAM[font]</param>
+                    <param name="textcolor">$PARAM[color_nf]</param>
+                    <param name="wraplist">$PARAM[wraplist]</param>
+                </include>
+                <include content="Categories_Selector_Item" condition="![$PARAM[shorten]]">
+                    <param name="id">$PARAM[id]</param>
+                    <param name="pos">6</param>
+                    <param name="font">$PARAM[font]</param>
+                    <param name="textcolor">$PARAM[color_nf]</param>
+                    <param name="wraplist">$PARAM[wraplist]</param>
+                </include>
+                <include content="Categories_Selector_Item" condition="![$PARAM[shorten]]">
+                    <param name="id">$PARAM[id]</param>
+                    <param name="pos">7</param>
+                    <param name="font">$PARAM[font]</param>
+                    <param name="textcolor">$PARAM[color_nf]</param>
+                    <param name="wraplist">$PARAM[wraplist]</param>
+                </include>
+
+                <width>100%</width>
+
+                <nested />
+                <left>view_button_left</left>
+                <height>selectorwidget_h</height>
+                <top>selectorwidget_t</top>
+
+                <include content="Animation_Fade_In">
+                    <param name="condition">$PARAM[visible]</param>
+                    <param name="delay">200</param>
+                </include>
+                <include content="Animation_ConditionalFade">
+                    <param name="condition">!$PARAM[visible]</param>
+                </include>
+            </include>
+        </definition>
+    </include>
+</includes>

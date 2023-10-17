@@ -1,39 +1,75 @@
 
-    <other include="home-adaptive">
-        <property name="submenuVisibility" tag="property" attribute="name|submenuVisibility"/>
-        <property name="mainmenuid" tag="mainmenuid" />
-
-        <controls>
-
-            <include content="List_ButtonMenu_Row_HiddenButton_Home_OnFocus">
-                <param name="id">302</param>
-                <param name="prefix">Item.$PYTHON[int(mainmenuid) * 1000 + 302].</param>
-                <param name="condition">String.IsEqual(Container(300).ListItem.Property(submenuVisibility),$SKINSHORTCUTS[submenuVisibility])</param>
-                <param name="force_widget">false</param>
-            </include>
-
-        </controls>
-    </other>
-
-    <other include="home-fullscreen">
-        <condition tag="property" attribute="name|widgetPath.Spotlight"/>
+    <other include="home-spotlight">
+        <property name="isWidget" tag="property" attribute="name|widgetPath.Spotlight">True</property>
+        <property name="isWidget">False</property>
 
         <property name="widgetPath" tag="property" attribute="name|widgetPath.Spotlight"/>
-        <property name="widgetName" tag="property" attribute="name|widgetName.Spotlight"/>
         <property name="widgetTarget" tag="property" attribute="name|widgetTarget.Spotlight"/>
 
         <property name="submenuVisibility" tag="property" attribute="name|submenuVisibility"/>
-        <property name="mainmenuid" tag="mainmenuid" />
 
         <controls>
 
-            <include content="Home_Fullscreen_Widget_List">
+            <include content="Spotlight_List" condition="$SKINSHORTCUTS[isWidget] + !Skin.HasSetting(Hub.Home.DisableSubmenu)">
                 <param name="window_id">Home</param>
                 <param name="content">$SKINSHORTCUTS[widgetPath]</param>
                 <param name="target">$SKINSHORTCUTS[widgetTarget]</param>
                 <visible>String.IsEqual(Container(300).ListItem.Property(submenuVisibility),$SKINSHORTCUTS[submenuVisibility])</visible>
             </include>
 
+        </controls>
+    </other>
+
+    <other include="home-floatingclock">
+        <property name="id" tag="mainmenuid" />
+        <controls>
+            <include content="Home_FloatingClock">
+                <param name="minify">Container($PYTHON[int(id) * 1000 + 400]).HasNext</param>
+                <visible>Integer.IsEqual(Container(300).ListItem.Property(id),$SKINSHORTCUTS[id])</visible>
+            </include>
+        </controls>
+    </other>
+
+    <other include="home-submenulist">
+        <property name="mainmenuid" tag="mainmenuid" />
+        <property name="submenuVisibility" tag="property" attribute="name|submenuVisibility"/>
+
+        <property name="widgetPath" tag="property" attribute="name|widgetPath"/>
+        <property name="widgetTarget" tag="property" attribute="name|widgetTarget" />
+        <property name="widgetTarget">videos</property>
+
+        <property name="widgetSortorder" tag="property" attribute="name|widgetSortorder" />
+        <property name="widgetSortby" tag="property" attribute="name|widgetSortby" />
+        <property name="widgetSortby">label</property>
+
+        <property name="widgetLimit" tag="property" attribute="name|widgetLimit" />
+
+        <property name="isWidget" tag="property" attribute="name|widgetPath">True</property>
+        <property name="isWidget">False</property>
+
+        <controls>
+
+            <include content="Hub_Submenu_List" condition="![$SKINSHORTCUTS[isWidget]]">
+                <param name="id">302</param>
+                <param name="ondown">340</param>
+                <param name="hidden_button">List_ButtonMenu_Row_HiddenButton_Home</param>
+                <param name="hidden_button_prefix">Item.$PYTHON[int(mainmenuid) * 1000 + 302].</param>
+                <param name="window_id">home</param>
+                <content>
+                    <include>skinshortcuts-group-$SKINSHORTCUTS[submenuVisibility]</include>
+                </content>
+                <visible>String.IsEqual(Container(300).ListItem.Property(submenuVisibility),$SKINSHORTCUTS[submenuVisibility])</visible>
+            </include>
+
+            <include content="Hub_Submenu_List" condition="$SKINSHORTCUTS[isWidget]">
+                <param name="id">302</param>
+                <param name="ondown">340</param>
+                <param name="hidden_button">List_ButtonMenu_Row_HiddenButton_Home</param>
+                <param name="hidden_button_prefix">Item.$PYTHON[int(mainmenuid) * 1000 + 302].</param>
+                <param name="window_id">home</param>
+                <content target="$SKINSHORTCUTS[widgetTarget]" sortby="$SKINSHORTCUTS[widgetSortby]" sortorder="$SKINSHORTCUTS[widgetSortorder]" limit="$SKINSHORTCUTS[widgetLimit]">$SKINSHORTCUTS[widgetPath]</content>
+                <visible>String.IsEqual(Container(300).ListItem.Property(submenuVisibility),$SKINSHORTCUTS[submenuVisibility])</visible>
+            </include>
         </controls>
     </other>
 
@@ -61,16 +97,20 @@
                 <skinshortcuts insert="infopanels">items</skinshortcuts>
             </include>
             <include content="Hub_Menu_Group">
-                <include content="Home_Widgets_Grouplist">
+                <include content="Hub_Widgets_Grouplist">
                     <param name="id">$PYTHON[int(mainmenuid) * 1000 + 400]</param>
                     <param name="topid">$PYTHON[int(mainmenuid) * 1000 + 401]</param>
                     <param name="mainmenuid">$SKINSHORTCUTS[mainmenuid]</param>
+                    <param name="widgets_only">Skin.HasSetting(Hub.Home.DisableSubmenu)</param>
                     <param name="visible">String.IsEqual(Container(300).ListItem.Property(submenuVisibility),$SKINSHORTCUTS[submenuVisibility])</param>
                     <control type="group" id="$PYTHON[int(mainmenuid) * 1000 + 401]">
                         <height>widget_tbump_h</height>
                     </control>
 
-                    {parts_adaptivewidgets}
+                    <include content="Widget_Adaptive_Rows">
+                        <param name="include_condition">!Skin.HasSetting(Hub.Home.DisableSubmenu)</param>
+                        {parts_adaptivewidgets}
+                    </include>
 
                     <skinshortcuts insert="widgets">items</skinshortcuts>
 

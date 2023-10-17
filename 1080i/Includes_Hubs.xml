@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
     <include name="Hub_Submenu_List">
-        <param name="ondown">5990</param>
+        <param name="ondown">340</param>
         <param name="hidden_button">List_ButtonMenu_Row_HiddenButton_View</param>
         <definition>
-            <include content="Home_Selector_Widget">
+            <include content="Categories_Selector">
                 <param name="id">$PARAM[id]</param>
                 <param name="window_id">$PARAM[window_id]</param>
                 <param name="font">font_mini</param>
                 <param name="color_fo">main_fg_30</param>
                 <param name="color_nf">main_fg_30</param>
                 <param name="hidden_button">$PARAM[hidden_button]</param>
+                <param name="hidden_button_prefix">$PARAM[hidden_button_prefix]</param>
                 <param name="slide">Skin.HasSetting(Slide.WidgetContainer)</param>
                 <param name="hitrect_x">40</param>
                 <param name="hitrect_y">20</param>
                 <param name="hitrect_w">1640</param>
                 <param name="hitrect_h">80</param>
                 <top>0</top>
-                <left>0</left>
+                <left>240</left>
                 <height>240</height>
                 <include content="Action_Menu_Movement_OnBack">
                     <param name="id">$PARAM[id]</param>
@@ -30,8 +31,13 @@
         </definition>
     </include>
 
-    <include name="Home_Submenu_Group">
+    <include name="Hub_Submenu_Group">
         <control type="group" id="3000">
+
+            <visible>!$EXP[Exp_InfoDialogs]</visible>
+            <include>Animation_Transition_InfoPanel_Hide</include>
+            <include>Transitions_Down_Visibility</include>
+
             <top>800</top>
             <height>240</height>
             <left>view_button_left</left>
@@ -39,11 +45,12 @@
             <animation effect="slide" time="400" end="0" start="0,30" tween="quadratic" easing="out" reversible="false" condition="String.IsEmpty(Window.Property(Slide.WidgetContainer))">Conditional</animation>
             <animation effect="slide" time="400" end="0,30" start="0" tween="quadratic" easing="out" reversible="false" condition="!String.IsEmpty(Window.Property(Slide.WidgetContainer))">Conditional</animation>
             <nested />
+
         </control>
     </include>
 
     <include name="Hub_Menu_List">
-        <include content="Home_Selector_Widget">
+        <include content="Categories_Selector">
             <param name="window_id">$PARAM[window_id]</param>
             <param name="hidden_button">List_ButtonMenu_Row_HiddenButton_Hubs</param>
             <param name="hitrect_x">-40</param>
@@ -65,100 +72,9 @@
             <include content="Animation_ConditionalFade">
                 <param name="condition">!String.IsEmpty(Window.Property(Slide.WidgetContainer))</param>
             </include>
+            <left>240</left>
             <nested />
         </include>
-    </include>
-
-    <include name="Hub_Menu_Grouplist">
-        <param name="widgets_only">false</param>
-        <definition>
-            <control type="group">
-                <onup>SetFocus($VAR[Action_Menu_ID],$VAR[Action_Menu_Position],absolute)</onup>
-                <onleft>SetFocus($VAR[Action_Menu_ID],$VAR[Action_Menu_Position],absolute)</onleft>
-                <onright>SetFocus($VAR[Action_Menu_ID],$VAR[Action_Menu_Position],absolute)</onright>
-                <ondown>5000</ondown>
-                <right>-160</right>
-                <visible>!$EXP[Exp_InfoDialogs]</visible>
-                <include>Animation_Transition_InfoPanel_Hide</include>
-                <include content="Home_Fullscreen_Widget_Group" condition="!$PARAM[widgets_only]">
-                    <param name="window_id">$PARAM[window_id]</param>
-                    <param name="visible">[!ControlGroup(5000).HasFocus()]</param>
-                    <param name="target">$PARAM[target]</param>
-                </include>
-                <nested />
-            </control>
-        </definition>
-    </include>
-
-    <include name="Hub_Widget_Grouplist">
-        <param name="widgets_only">false</param>
-        <definition>
-            <control type="grouplist" id="5000">
-
-                <top>940</top>
-                <bottom>-440</bottom>
-                <orientation>vertical</orientation>
-                <onleft>SetFocus($VAR[Action_Menu_ID],$VAR[Action_Menu_Position],absolute)</onleft>
-                <onright>SetFocus($INFO[Window.Property(TMDbHelper.WidgetContainer)],0,absolute)</onright>
-                <onright>SetFocus($VAR[Action_Menu_ID],$VAR[Action_Menu_Position],absolute)</onright>
-
-                <include condition="!$PARAM[widgets_only]">Home_Widgets_Grouplist_Standard</include>
-                <include condition="$PARAM[widgets_only]" content="Home_Widgets_Grouplist_Widgets">
-                    <param name="id">5000</param>
-                </include>
-
-
-                <include content="Action_Widget_End" condition="!$PARAM[widgets_only]">
-                    <param name="topid">5001</param>
-                    <param name="id">5000</param>
-                </include>
-                <include content="Action_Widget_End" condition="$PARAM[widgets_only]">
-                    <param name="topid">5004</param>
-                    <param name="id">5000</param>
-                </include>
-
-                <control type="group" id="5990">
-                    <height>widget_tbump_h</height>
-                </control>
-
-                <include content="Widget_Adaptive_Rows">
-                    <param name="include_condition">!$PARAM[widgets_only]</param>
-
-                    <param name="label">$VAR[Label_Hub_Background]</param>
-                    <param name="sort_label">$VAR[Label_Special_SortMethod]</param>
-
-                    <param name="prefix" />
-                    <param name="enabled">[!String.IsEmpty(Window.Property(SpecialFolderPath)) + String.IsEmpty(container(300).listitem.property(useWidgetList))]</param>
-                    <param name="altvisible">!ControlGroup(5000).HasFocus()</param>
-
-                    <param name="topid">5004</param>
-                    <param name="grouplistid">5000</param>
-
-                    <param name="toplandscapeid">5002</param>
-                    <param name="landscapeid">5002</param>
-                    <param name="landscapegroupid">5102</param>
-                    <param name="content_landscape">$VAR[Path_Hub_Content_Landscape]</param>
-
-                    <param name="topsquareid">5001</param>
-                    <param name="squareid">5001</param>
-                    <param name="squaregroupid">5101</param>
-                    <param name="content_square">$VAR[Path_Hub_Content_Square]</param>
-
-                    <param name="topposterid">5003</param>
-                    <param name="posterid">5003</param>
-                    <param name="postergroupid">5103</param>
-                    <param name="content_poster">$VAR[Path_Hub_Content_Poster]</param>
-                </include>
-
-
-
-                <nested />
-
-
-                <control type="group" id="5999">
-                </control>
-            </control>
-        </definition>
     </include>
 
     <include name="Hub_Menu_Group">
@@ -170,8 +86,7 @@
         </control>
     </include>
 
-
-    <include name="Hub_Main_Group">
+    <include name="Hub_Controls">
         <param name="fullscreen_content">$VAR[Path_Hub_WidgetOnly_Content]</param>
         <param name="fullscreen_target">$VAR[Path_Hub_WidgetOnly_Target]</param>
         <param name="fullscreen_label">$VAR[Label_Hub_Spotlight]</param>
@@ -181,115 +96,190 @@
         <param name="widgets_only">false</param>
         <definition>
 
-            <include content="Object_Hidden_Button" condition="$PARAM[widgets_only]">
-                <param name="id">300</param>
-                <onfocus>SetFocus(5004)</onfocus>
-                <onup>SetFocus(5004)</onup>
-                <ondown>SetFocus(5004)</ondown>
-                <onleft>SetFocus(5004)</onleft>
-                <onright>SetFocus(5004)</onright>
-                <onclick>SetFocus(5004)</onclick>
-            </include>
-
-            <include content="Object_Hidden_Button">
-                <param name="id">393</param>
-                <onfocus condition="$PARAM[widgets_only]">SetFocus($VAR[Action_Menu_ID],$VAR[Action_Menu_Position],absolute)</onfocus>
-                <onfocus condition="![$PARAM[widgets_only]]">SetFocus(300)</onfocus>
-            </include>
-
-
+            <!-- Background -->
+            <include>View_Bumper</include>
             <include>Defs_TMDbHelper_Loader</include>
             <include>Background_Main</include>
             <include>Background_Transition</include>
 
-            <include content="Home_Fullscreen_Widget_List" condition="!$PARAM[widgets_only]">
-                <param name="content">$PARAM[fullscreen_content]</param>
-                <param name="target">$PARAM[fullscreen_target]</param>
-                <param name="sortby">$PARAM[fullscreen_sortby]</param>
-                <param name="sortorder">$PARAM[fullscreen_sortorder]</param>
-                <param name="limit">$PARAM[fullscreen_limit]</param>
-                <param name="window_id">$PARAM[window_id]</param>
-                <visible>String.IsEmpty(Container(300).ListItem.Property(widgetPath.Spotlight))</visible>
+            <include content="Hub_Main_Group">
+                <param name="widgets_only">$PARAM[widgets_only]</param>
+
+                <include content="Hub_Menu_Group">
+                    <include content="Hub_Categories">
+                        <param name="categories_include">$PARAM[categories_include]</param>
+                        <param name="widgets_only">$PARAM[widgets_only]</param>
+                        <param name="window_id">$PARAM[window_id]</param>
+                    </include>
+                </include>
+
+                <!-- Spotlight: Individual -->
+                <include condition="![$PARAM[widgets_only]]" content="Spotlight_List">
+                    <param name="window_id">$PARAM[window_id]</param>
+                    <visible>String.IsEmpty(Container(300).ListItem.Property(widgetPath.Spotlight))</visible>
+                </include>
+
+                <include>$PARAM[include]</include>
+
             </include>
 
-            <control type="group" id="320">
+            <include>Widget_Transitions</include>
 
-                <include>Animation_View_WindowChange</include>
-                <include>Animation_Group_Bumper</include>
+            <!-- Side Fade -->
+            <include>Home_Fade</include>
 
-                <include content="Home_Widgets_Infopanel" condition="!$PARAM[widgets_only]">
-                    <param name="visible">true</param>
-                    <include content="Info_Panel">
-                        <param name="titlelabel">$VAR[Label_Title_C301]</param>
-                        <param name="plotlabel">$VAR[Label_Plot_C301]</param>
-                        <param name="container">Container(301).</param>
-                        <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)</visible>
-                    </include>
-                    <include content="Info_Viewline">
-                        <param name="label">$PARAM[fullscreen_label]</param>
-                        <param name="secondary_label">$PARAM[fullscreen_sort]</param>
-                        <param name="sort_condition">True</param>
-                        <param name="sort_descending">$PARAM[fullscreen_descending]</param>
-                        <param name="item_condition">true</param>
-                        <param name="item_count">$INFO[Container(301).NumItems]</param>
-                        <param name="item_updating">Container(301).IsUpdating</param>
-                        <left>0</left>
-                        <top>320</top>
-                        <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)</visible>
-                        <include content="Animation_Fade_In">
-                            <param name="condition">String.IsEmpty(Window.Property(Slide.WidgetContainer))</param>
-                            <param name="delay">200</param>
-                        </include>
-                        <include content="Animation_ConditionalFade">
-                            <param name="condition">!String.IsEmpty(Window.Property(Slide.WidgetContainer))</param>
-                        </include>
-                    </include>
-                </include>
-
-                <include content="Info_Panel" condition="!$PARAM[widgets_only]">
-                    <param name="titlelabel">$VAR[Label_Title_Container]</param>
-                    <param name="container">Container(5001).</param>
-                    <param name="plotlabel">$VAR[Label_Plot_Container]</param>
-                    <width>info_panel_w</width>
-                    <left>view_side</left>
-                    <top>view_top</top>
-                    <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),5001)</visible>
-                    <include>Animation_Transition_InfoPanel_Cond</include>
-                </include>
-                <include content="Info_Panel" condition="!$PARAM[widgets_only]">
-                    <param name="titlelabel">$VAR[Label_Title_Container]</param>
-                    <param name="container">Container(5002).</param>
-                    <param name="plotlabel">$VAR[Label_Plot_Container]</param>
-                    <width>info_panel_w</width>
-                    <left>view_side</left>
-                    <top>view_top</top>
-                    <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),5002)</visible>
-                    <include>Animation_Transition_InfoPanel_Cond</include>
-                </include>
-                <include content="Info_Panel" condition="!$PARAM[widgets_only]">
-                    <param name="titlelabel">$VAR[Label_Title_Container]</param>
-                    <param name="container">Container(5003).</param>
-                    <param name="plotlabel">$VAR[Label_Plot_Container]</param>
-                    <width>info_panel_w</width>
-                    <left>view_side</left>
-                    <top>view_top</top>
-                    <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),5003)</visible>
-                    <include>Animation_Transition_InfoPanel_Cond</include>
-                </include>
-
-
-                <nested />
+            <!-- Furniture -->
+            <control type="group">
+                <visible>!$EXP[Exp_InfoDialogs]</visible>
+                <include>Furniture_Top</include>
             </control>
 
-            <include>Home_Transitions</include>
-            <include>Home_Fade</include>
-            <include>Home_Header</include>
-            <include>Home_Bumper</include>
-            <include content="Home_FloatingClock">
-                <param name="minify">Container(5000).HasNext</param>
-            </include>
+            <nested />
+
+            <!-- SideMenu -->
             <include>Home_Menu</include>
+
+            <!-- Plot Dialog Overlay -->
             <include>View_Dialog_Plot</include>
         </definition>
+    </include>
+
+    <include name="Hub_Home">
+        <include condition="!Skin.HasSetting(Hub.Home.DisableSubmenu)">skinshortcuts-template-home-spotlight</include>
+
+        <include content="Hub_Menu_Group">
+            <include content="Hub_Submenu_Group" condition="!Skin.HasSetting(Hub.Home.DisableSubmenu)">
+                <include>skinshortcuts-template-home-submenulist</include>
+            </include>
+        </include>
+
+        <include content="Hub_Widgets_Group">
+            <include>skinshortcuts-template-widgets</include>
+        </include>
+
+        <include>skinshortcuts-template-home_floatingclock</include>
+    </include>
+
+    <include name="Hub_Main_Group">
+        <control type="group" id="320">
+            <include>Animation_View_WindowChange</include>
+            <include>Animation_Group_Bumper</include>
+
+            <include condition="![$PARAM[widgets_only]]">Spotlight_Info</include>
+
+            <nested />
+        </control>
+    </include>
+
+    <include name="Hub_Widgets_Group">
+        <control type="group" id="340">
+            <nested />
+        </control>
+    </include>
+
+
+    <include name="Hub_Categories">
+
+        <!-- Hidden List Menu -->
+        <include content="Object_Hidden_List" condition="$PARAM[widgets_only]">
+            <param name="id">300</param>
+            <onfocus>SetFocus(340)</onfocus>
+            <content>
+                <include>$PARAM[categories_include]</include>
+            </content>
+        </include>
+
+        <include content="Object_Control" condition="![$PARAM[widgets_only]]">
+            <param name="control">group</param>
+            <visible>!$EXP[Exp_InfoDialogs]</visible>
+            <include>Animation_Transition_InfoPanel_Hide</include>
+            <include>Spotlight_Main</include>
+            <include>Transitions_Down_Visibility</include>
+            <include content="Categories_Selector">
+                <param name="window_id">$PARAM[window_id]</param>
+                <param name="slide">[$PARAM[widgets_only]]</param>
+                <param name="hitrect_x">-40</param>
+                <param name="hitrect_y">740</param>
+                <param name="hitrect_w">1640</param>
+                <param name="hitrect_h">80</param>
+                <param name="shorten">True</param>
+
+                <onup>311</onup>
+                <include content="Action_Menu_Movement_OnBack">
+                    <param name="id">300</param>
+                </include>
+                <ondown condition="![$PARAM[widgets_only]]">302</ondown>
+                <ondown condition="[$PARAM[widgets_only]]">340</ondown>
+                <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,$PARAM[window_id])</onfocus>
+
+                <animation effect="slide" time="400" end="0" start="0,110" tween="quadratic" easing="out" reversible="false" condition="String.IsEmpty(Window.Property(Slide.WidgetContainer)) + [$PARAM[widgets_only]]">Conditional</animation>
+                <animation effect="slide" time="400" end="0,110" start="0" tween="quadratic" easing="out" reversible="false" condition="!String.IsEmpty(Window.Property(Slide.WidgetContainer)) + [$PARAM[widgets_only]]">Conditional</animation>
+
+                <include content="Animation_Fade_In">
+                    <param name="condition">![!String.IsEmpty(Window.Property(Slide.WidgetContainer)) + ![$PARAM[widgets_only]]]</param>
+                    <param name="delay">200</param>
+                </include>
+                <include content="Animation_ConditionalFade">
+                    <param name="condition">[!String.IsEmpty(Window.Property(Slide.WidgetContainer)) + ![$PARAM[widgets_only]]]</param>
+                </include>
+                <content>
+                    <include>$PARAM[categories_include]</include>
+                </content>
+            </include>
+        </include>
+    </include>
+
+    <include name="Hub_Widgets_Grouplist">
+        <control type="grouplist" id="$PARAM[id]">
+
+            <top>940</top>
+            <bottom>-440</bottom>
+
+            <include condition="![$PARAM[widgets_only]]">Hub_Widgets_Grouplist__Def_Layout_Expanded</include>
+            <include condition="[$PARAM[widgets_only]]" content="Hub_Widgets_Grouplist__Def_Layout_Basic">
+                <param name="id">$PARAM[id]</param>
+            </include>
+
+            <include content="Action_Widget_End" condition="[$PARAM[widgets_only]] | !Skin.String(Movement.Content.OnDown,Loop)">
+                <param name="topid">$PARAM[topid]</param>
+                <param name="id">$PARAM[id]</param>
+            </include>
+
+            <visible>$PARAM[visible]</visible>
+
+            <nested />
+        </control>
+    </include>
+
+    <include name="Home_Widgets_Infopanel">
+        <param name="visible">True</param>
+        <definition>
+            <control type="group">
+                <width>info_panel_w</width>
+                <height>300</height>
+                <left>view_side</left>
+                <top>view_top</top>
+                <visible>$PARAM[visible]</visible>
+                <include>Animation_Transition_InfoPanel_Cond</include>
+                <nested />
+            </control>
+        </definition>
+    </include>
+
+    <include name="Hub_Widgets_Grouplist__Def_Layout_Expanded">
+        <onup>302</onup>
+
+        <animation effect="slide" time="400" start="0,widget_sbump_h" end="0" tween="quadratic" easing="out" reversible="false" condition="Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)">Conditional</animation>
+        <animation effect="slide" time="400" start="0" end="0,widget_sbump_h" tween="quadratic" easing="out" reversible="false" condition="!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)">Conditional</animation>
+
+        <animation effect="slide" time="400" start="0,-80" end="0" tween="quadratic" easing="out" reversible="false" condition="![Integer.IsEqual(Container(302).NumItems,0) + Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)]">Conditional</animation>
+        <animation effect="slide" time="400" start="0" end="0,-80" tween="quadratic" easing="out" reversible="false" condition="Integer.IsEqual(Container(302).NumItems,0) + Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)">Conditional</animation>
+    </include>
+
+    <include name="Hub_Widgets_Grouplist__Def_Layout_Basic">
+        <include content="Action_Widget_Top">
+            <param name="id">$PARAM[id]</param>
+        </include>
+        <animation effect="slide" end="0,widget_sbump_h" condition="true">Conditional</animation>
     </include>
 </includes>

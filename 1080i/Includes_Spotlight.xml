@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<includes>
+
+    <include name="Spotlight_Info">
+        <include content="Home_Widgets_Infopanel">
+            <include content="Info_Panel">
+                <param name="titlelabel">$VAR[Label_Title_C301]</param>
+                <param name="plotlabel">$VAR[Label_Plot_C301]</param>
+                <param name="container">Container(301).</param>
+                <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)</visible>
+            </include>
+            <include content="Info_Viewline">
+                <param name="label">$VAR[Label_Hub_Spotlight]</param>
+                <param name="secondary_label">$LOCALIZE[31371] $LOCALIZE[13278]</param>
+                <param name="sort_condition">True</param>
+                <param name="sort_descending">False</param>
+                <param name="item_condition">true</param>
+                <param name="item_count">$INFO[Container(301).NumItems]</param>
+                <param name="item_updating">Container(301).IsUpdating</param>
+                <left>0</left>
+                <top>320</top>
+                <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)</visible>
+                <include content="Animation_Fade_In">
+                    <param name="condition">String.IsEmpty(Window.Property(Slide.WidgetContainer))</param>
+                    <param name="delay">200</param>
+                </include>
+                <include content="Animation_ConditionalFade">
+                    <param name="condition">!String.IsEmpty(Window.Property(Slide.WidgetContainer))</param>
+                </include>
+            </include>
+        </include>
+    </include>
+
+    <include name="Spotlight_List">
+        <param name="window_id">Home</param>
+        <param name="content">$INFO[Skin.String(skinshortcuts-mainmenu-widgetPath)]</param>
+        <param name="target">$INFO[Skin.String(skinshortcuts-mainmenu-widgetTarget)]</param>
+        <definition>
+            <control type="wraplist" id="301">
+                <preloaditems>2</preloaditems>
+                <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,$PARAM[window_id])</onfocus>
+                <onup>SetFocus(300)</onup>
+                <ondown>SetFocus(300)</ondown>
+                <onback>300</onback>
+                <orientation>horizontal</orientation>
+                <scrolltime tween="quadratic">400</scrolltime>
+                <hitrect x="0" y="0" w="0" h="0" />
+
+                <include content="Defs_AutoScroll">
+                    <param name="condition">[!ControlGroup(310).HasFocus() + !System.HasAlarm(playtrailer)]</param>
+                </include>
+
+                <itemlayout width="1920" height="1080" />
+                <focusedlayout width="1920" height="1080" />
+
+                <include content="Object_ContentDynamic">
+                    <param name="sortby">$PARAM[sortby]</param>
+                    <param name="sortorder">$PARAM[sortorder]</param>
+                    <param name="target">$PARAM[target]</param>
+                    <param name="limit">$PARAM[limit]</param>
+                    <param name="content">$PARAM[content]</param>
+                </include>
+
+                <nested />
+
+            </control>
+        </definition>
+    </include>
+
+    <include name="Spotlight_Main">
+        <param name="window_id">Home</param>
+        <param name="visible">True</param>
+        <param name="target">$INFO[Skin.String(skinshortcuts-mainmenu-widgetTarget)]</param>
+        <definition>
+            <control type="group" id="304">
+                <top>fullscreenwidget_buttongroup_t</top>
+                <height>fullscreenwidget_buttongroup_h</height>
+
+                <include content="Animation_Fade_In">
+                    <param name="condition">[Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + String.IsEmpty(Window.Property(Slide.WidgetContainer)) + $PARAM[visible]]</param>
+                    <param name="delay">200</param>
+                </include>
+                <include content="Animation_ConditionalFade">
+                    <param name="condition">![Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + String.IsEmpty(Window.Property(Slide.WidgetContainer)) + $PARAM[visible]]</param>
+                </include>
+
+                <animation effect="slide" tween="quadratic" easing="out" reversible="false" start="0" end="0,fullscreenwidget_buttongroup_s" time="200" condition="!ControlGroup(310).HasFocus()">Conditional</animation>
+                <animation effect="slide" tween="quadratic" easing="out" reversible="false" start="0,fullscreenwidget_buttongroup_s" end="0" time="200" condition="ControlGroup(310).HasFocus()">Conditional</animation>
+
+                <control type="grouplist" id="310">
+                    <orientation>horizontal</orientation>
+
+                    <include content="Action_Widget_Top">
+                        <param name="id">311</param>
+                    </include>
+
+                    <include content="Action_View_Movement_OnLeft">
+                        <param name="id">311</param>
+                        <param name="string">Movement.Spotlight.OnLeft</param>
+                    </include>
+                    <onleft condition="Skin.String(Movement.Spotlight.OnLeft,Move)">Control.Move(301,-1)</onleft>
+
+                    <include content="Action_View_Movement_OnRight">
+                        <param name="id">311</param>
+                        <param name="string">Movement.Spotlight.OnRight</param>
+                        <param name="refocus">False</param>
+                    </include>
+                    <onright condition="Skin.String(Movement.Spotlight.OnRight,Move)">Control.Move(301,1)</onright>
+
+                    <include content="Action_Menu_Movement_OnBack">
+                        <param name="id">311</param>
+                    </include>
+
+                    <ondown>300</ondown>
+                    <centertop>180</centertop>
+                    <left>140</left>
+                    <height>256</height>
+                    <itemgap>-60</itemgap>
+                    <onfocus>ClearProperty(Slide.WidgetContainer,$PARAM[window_id])</onfocus>
+
+                    <control type="group" id="321">
+                        <left>60</left>
+                        <height>100</height>
+                        <width>100</width>
+                        <centertop>50%</centertop>
+                        <control type="group">
+                            <visible>!Control.HasFocus(311)</visible>
+                            <control type="image">
+                                <texture colordiffuse="main_fg_100">common/circle.png</texture>
+                            </control>
+                            <control type="image">
+                                <bordersize>20</bordersize>
+                                <texture colordiffuse="main_bg_100">$VAR[Image_FullscreenWidget_PlayButton]</texture>
+                            </control>
+                        </control>
+                        <control type="group">
+                            <visible>Control.HasFocus(311)</visible>
+                            <control type="image">
+                                <include>Texture_Circle_Highlight_H</include>
+                            </control>
+                            <control type="image">
+                                <bordersize>20</bordersize>
+                                <texture colordiffuse="$VAR[ColorSelected]">$VAR[Image_FullscreenWidget_PlayButton]</texture>
+                            </control>
+                        </control>
+                    </control>
+
+                    <control type="button" id="311">
+                        <font>font_mini_black</font>
+                        <textcolor>main_fg_70</textcolor>
+                        <focusedcolor>main_fg_100</focusedcolor>
+                        <label>$VAR[Label_FullscreenWidget_PlayButton]</label>
+                        <width>auto</width>
+                        <textoffsetx>80</textoffsetx>
+                        <texturenofocus />
+                        <texturefocus />
+                        <onclick>SetFocus(301)</onclick>
+                        <onclick condition="Container(301).ListItem.IsFolder">SetProperty(RefocusHub,311,Home)</onclick>
+                        <onclick condition="!String.IsEqual(Window(Home).Property(TMDbHelper.KodiSetting.DefaultSelectAction),$NUMBER[3])">Action(Select)</onclick>
+                        <onclick condition="!Container(301).ListItem.IsFolder">SetFocus(311)</onclick>
+                        <onclick condition="String.IsEqual(Window(Home).Property(TMDbHelper.KodiSetting.DefaultSelectAction),$NUMBER[3]) + Container(301).ListItem.IsFolder">ActivateWindow($PARAM[target],$INFO[Container(301).ListItem.FolderPath],return)</onclick>
+                        <onclick condition="String.IsEqual(Window(Home).Property(TMDbHelper.KodiSetting.DefaultSelectAction),$NUMBER[3]) + !Container(301).ListItem.IsFolder + !String.IsEmpty(Container(301).ListItem.FileNameAndPath)">PlayMedia($ESCINFO[Container(301).ListItem.FileNameAndPath])</onclick>
+                        <onclick condition="String.IsEqual(Window(Home).Property(TMDbHelper.KodiSetting.DefaultSelectAction),$NUMBER[3]) + !Container(301).ListItem.IsFolder + String.IsEmpty(Container(301).ListItem.FileNameAndPath) + !String.IsEmpty(Container(301).ListItem.FolderPath)">PlayMedia($ESCINFO[Container(301).ListItem.FolderPath])</onclick>
+                        <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,$PARAM[window_id])</onfocus>
+                        <onfocus>ClearProperty(Slide.WidgetContainer,$PARAM[window_id])</onfocus>
+                    </control>
+
+                    <include content="Object_Info_Button">
+                        <param name="id">312</param>
+                        <param name="groupid">322</param>
+                        <param name="sliceid">323</param>
+                        <param name="itempad">-20</param>
+                        <param name="label">$VAR[Label_FullscreenWidget_InfoButton]</param>
+                        <param name="icon">$VAR[Image_FullscreenWidget_InfoButton]</param>
+                        <onclick>SetFocus(301)</onclick>
+                        <onclick>Action(Info)</onclick>
+                        <onclick>SetFocus(312)</onclick>
+                        <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,$PARAM[window_id])</onfocus>
+                        <onfocus>ClearProperty(Slide.WidgetContainer,$PARAM[window_id])</onfocus>
+                    </include>
+                </control>
+            </control>
+
+            <control type="group" id="305">
+                <top>fullscreenwidget_buttongroup_b</top>
+                <height>0</height>
+            </control>
+        </definition>
+    </include>
+
+</includes>

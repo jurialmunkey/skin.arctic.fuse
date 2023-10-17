@@ -4,15 +4,19 @@
     <!-- ============== -->
     <!-- Skin Shortcuts -->
     <!-- ============== -->
+    <expression name="Exp_SkinShortcuts_IsHomeMenu">[String.IsEqual(Window.Property(groupname),mainmenu)]</expression>
     <expression name="Exp_SkinShortcuts_IsHubMenu">[String.IsEqual(Window.Property(groupname),moviemenu) | String.IsEqual(Window.Property(groupname),tvshowmenu) | String.IsEqual(Window.Property(groupname),musicmenu) | String.IsEqual(Window.Property(groupname),pvrmenu) | String.IsEqual(Window.Property(groupname),custom01menu) | String.IsEqual(Window.Property(groupname),custom02menu) | String.IsEqual(Window.Property(groupname),custom03menu) | String.IsEqual(Window.Property(groupname),custom04menu)]</expression>
+
     <expression name="Exp_SkinShortcuts_IsHubWidgets">[String.IsEqual(Window.Property(groupname),moviewidgets) | String.IsEqual(Window.Property(groupname),tvshowwidgets) | String.IsEqual(Window.Property(groupname),musicwidgets) | String.IsEqual(Window.Property(groupname),pvrwidgets) | String.IsEqual(Window.Property(groupname),custom01widgets) | String.IsEqual(Window.Property(groupname),custom02widgets) | String.IsEqual(Window.Property(groupname),custom03widgets) | String.IsEqual(Window.Property(groupname),custom04widgets)]</expression>
+
     <expression name="Exp_SkinShortcuts_IsSearchWidgets">[String.IsEqual(Window.Property(groupname),searchmenu)]</expression>
-    <expression name="Exp_SkinShortcuts_IsHomeWidgets">[String.EndsWith(Window.Property(groupname),.1) | String.EndsWith(Window.Property(groupname),.2) | String.EndsWith(Window.Property(groupname),-1) | String.EndsWith(Window.Property(groupname),-2)]</expression>
+    <expression name="Exp_SkinShortcuts_IsHomeWidgets">[String.EndsWith(Window.Property(groupname),.1) | String.EndsWith(Window.Property(groupname),-1)]</expression>
     <expression name="Exp_SkinShortcuts_IsExploreMenu">[String.IsEqual(Window.Property(groupname),exploremenu)]</expression>
     <expression name="Exp_SkinShortcuts_IsPowerMenu">[String.IsEqual(Window.Property(groupname),powermenu) | String.IsEqual(Window.Property(groupname),powersubmenu)]</expression>
-    <expression name="Exp_SkinShortcuts_IsHomeMenu">[String.IsEqual(Window.Property(groupname),mainmenu)]</expression>
-    <expression name="Exp_SkinShortcuts_IsSubmenu">[!String.IsEmpty(Window.Property(groupdisplayname)) + !$EXP[Exp_SkinShortcuts_IsHomeWidgets]]</expression>
-    <expression name="Exp_SkinShortcuts_IsAdaptiveWidget">[[!String.IsEmpty(Container(211).ListItem.Property(useWidgetList)) + $EXP[Exp_SkinShortcuts_IsSubmenu]] | [String.IsEmpty(Container(211).ListItem.Property(useWidgetList)) + !$EXP[Exp_SkinShortcuts_IsSubmenu] + $EXP[Exp_SkinShortcuts_IsHubMenu]]]</expression>
+    <expression name="Exp_SkinShortcuts_IsSubmenuList">[[$EXP[Exp_SkinShortcuts_IsHomeMenu] | $EXP[Exp_SkinShortcuts_IsHubMenu]] + !String.IsEmpty(Container(211).ListItem.Property(widgetPath))]</expression>
+    <expression name="Exp_SkinShortcuts_IsSubmenuItem">[[!String.IsEmpty(Window.Property(groupdisplayname)) + !$EXP[Exp_SkinShortcuts_IsHomeWidgets]] | [String.Contains(Window.Property(groupname),-submenu-)]]</expression>
+
+    <expression name="Exp_SkinShortcuts_IsAdaptiveWidget">[[$EXP[Exp_SkinShortcuts_IsSubmenuItem] + !String.IsEmpty(Container(211).ListItem.Property(useWidgetList))] | [$EXP[Exp_SkinShortcuts_IsSubmenuList] + String.IsEmpty(Container(211).ListItem.Property(useWidgetList))]]</expression>
 
     <expression name="Exp_WideSettings_IsWidgets">[[Skin.HasSetting(Hub.Home.DisableSubmenu) + String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_HomeMenu)] | String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SearchMenu) | [String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SideMenu_1) + [!$EXP[Exp_WideSettings_Item01_IsHub] | !$EXP[Exp_WideSettings_Item01_IsExpanded]]] | [String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SideMenu_2) + [!$EXP[Exp_WideSettings_Item02_IsHub] | !$EXP[Exp_WideSettings_Item02_IsExpanded]]] | [String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SideMenu_3) + [!$EXP[Exp_WideSettings_Item03_IsHub] | !$EXP[Exp_WideSettings_Item03_IsExpanded]]] | [String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SideMenu_4) + [!$EXP[Exp_WideSettings_Item04_IsHub] | !$EXP[Exp_WideSettings_Item04_IsExpanded]]]]</expression>
     <expression name="Exp_WideSettings_IsExpanded">[!$EXP[Exp_WideSettings_IsWidgets]]</expression>

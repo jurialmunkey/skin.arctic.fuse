@@ -78,8 +78,7 @@
 
     <include name="Action_Hub_Refocus_Onload">
         <include>Action_BuildSkinShortcuts_OnLoad</include>
-        <onload condition="!String.IsEmpty(Window(Home).Property(RefocusHub)) + Window.IsVisible(Home)">RunScript(script.skinvariables,"run_executebuiltin=SetFocus(1604)||SetFocus(1603)||SetFocus(1602)||SetFocus(1601)||SetFocus(300,0,absolute)||SetFocus($INFO[Window(Home).Property(RefocusHub)])")</onload>
-        <onload condition="!String.IsEmpty(Window(Home).Property(RefocusHub)) + !Window.IsVisible(Home)">RunScript(script.skinvariables,"run_executebuiltin=SetFocus(5004)||SetFocus(5003)||SetFocus(5002)||SetFocus(5001)||SetFocus(300,0,absolute)||SetFocus($INFO[Window(Home).Property(RefocusHub)])")</onload>
+        <onload condition="!String.IsEmpty(Window(Home).Property(RefocusHub))">RunScript(script.skinvariables,"run_executebuiltin=SetFocus(1604)||SetFocus(1603)||SetFocus(1602)||SetFocus(1601)||SetFocus(300,0,absolute)||SetFocus($INFO[Window(Home).Property(RefocusHub)])")</onload>
         <onload>ClearProperty(RefocusHub,Home)</onload>
     </include>
 
@@ -224,12 +223,15 @@
     </include>
 
     <include name="Action_BuildSkinShortcuts_OnLoad">
-        <onload>RunScript(script.skinshortcuts,type=buildxml&amp;mainmenuID=300&amp;levels=2&amp;group=mainmenu|powermenu|powersubmenu|searchmenu|exploremenu|moviemenu|tvshowmenu|musicmenu|pvrmenu|custom01menu|custom02menu|custom03menu|custom04menu|moviesubmenu|tvshowsubmenu|musicsubmenu|pvrsubmenu|custom01submenu|custom02submenu|custom03submenu|custom04submenu|moviewidgets|tvshowwidgets|musicwidgets|pvrwidgets|custom01widgets|custom02widgets|custom03widgets|custom04widgets)</onload>
+        <onload>runscript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/skinvariables-buildtemplate.json",use_rules)</onload>
+
+        <!-- <onload>RunScript(script.skinshortcuts,type=buildxml&amp;mainmenuID=300&amp;levels=2&amp;group=mainmenu|powermenu|powersubmenu|searchmenu|exploremenu|moviemenu|tvshowmenu|musicmenu|pvrmenu|custom01menu|custom02menu|custom03menu|custom04menu|moviewidgets|tvshowwidgets|musicwidgets|pvrwidgets|custom01widgets|custom02widgets|custom03widgets|custom04widgets|$INFO[Skin.String(SkinShortcuts.SubmenuIDs)])</onload> -->
     </include>
     <include name="Action_BuildSkinShortcuts_OnUnload">
         <param name="condition">true</param>
         <definition>
-            <onunload condition="$PARAM[condition]">RunScript(script.skinshortcuts,type=buildxml&amp;mainmenuID=300&amp;levels=2&amp;group=mainmenu|powermenu|powersubmenu|searchmenu|exploremenu|moviemenu|tvshowmenu|musicmenu|pvrmenu|custom01menu|custom02menu|custom03menu|custom04menu|moviesubmenu|tvshowsubmenu|musicsubmenu|pvrsubmenu|custom01submenu|custom02submenu|custom03submenu|custom04submenu|moviewidgets|tvshowwidgets|musicwidgets|pvrwidgets|custom01widgets|custom02widgets|custom03widgets|custom04widgets)</onunload>
+            <onunload condition="$PARAM[condition]">runscript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/skinvariables-buildtemplate.json",use_rules)</onunload>
+            <!-- <onunload condition="$PARAM[condition]">RunScript(script.skinshortcuts,type=buildxml&amp;mainmenuID=300&amp;levels=2&amp;group=mainmenu|powermenu|powersubmenu|searchmenu|exploremenu|moviemenu|tvshowmenu|musicmenu|pvrmenu|custom01menu|custom02menu|custom03menu|custom04menu|moviewidgets|tvshowwidgets|musicwidgets|pvrwidgets|custom01widgets|custom02widgets|custom03widgets|custom04widgets|$INFO[Skin.String(SkinShortcuts.SubmenuIDs)])</onunload> -->
         </definition>
     </include>
 

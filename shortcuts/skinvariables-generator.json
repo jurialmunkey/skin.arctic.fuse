@@ -2,25 +2,52 @@
     "output": "template.xml",
     "header": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<template>",
     "footer": "</template>",
+    "buildv": "0.0.1",
+    "getnfo": {
+        "system_profile": "System.ProfileName"
+    },
     "global": {
-        "parts_stackedwidgets": {
-            "template": "template_generator/parts_stackedwidgets.xmltemplate",
-            "prev_id": "$PYTHON[5003 + int(id) - 1]"
-        },
         "parts_standardwidgets": {
             "template": "template_generator/parts_standardwidgets.xmltemplate"
         },
+        "parts_stackedwidgets": {
+            "template": "template_generator/parts_stackedwidgets.xmltemplate",
+            "prev_id": "$PARAM[base_id]$PYTHON[603 + int(id) - 1]"
+        },
+        "parts_adaptivewidgets": {
+            "template": "template_generator/parts_adaptivewidgets.xmltemplate",
+            "landscapeid": "$SKINSHORTCUTS[id]601",
+            "landscapegroupid": "$SKINSHORTCUTS[id]701",
+            "squareid": "$SKINSHORTCUTS[id]602",
+            "squaregroupid": "$SKINSHORTCUTS[id]702",
+            "posterid": "$SKINSHORTCUTS[id]603",
+            "postergroupid": "$SKINSHORTCUTS[id]703",
+            "grouplistid": "$SKINSHORTCUTS[id]400",
+            "topid": "$SKINSHORTCUTS[id]604",
+            "toplandscapeid": "$SKINSHORTCUTS[id]601",
+            "topsquareid": "$SKINSHORTCUTS[id]602",
+            "topposterid": "$SKINSHORTCUTS[id]603",
+            "submenuid": "302",
+            "altvisible": "Control.HasFocus(300) | Control.HasFocus(302)",
+            "content_landscape": "$INFO[Window.Property(Item.$SKINSHORTCUTS[id]302.SpecialFolderPath)]",
+            "content_square": "$INFO[Window.Property(Item.$SKINSHORTCUTS[id]302.SpecialFolderPath)]",
+            "content_poster": "$INFO[Window.Property(Item.$SKINSHORTCUTS[id]302.SpecialFolderPath)]",
+            "label": "$INFO[Window.Property(Item.$SKINSHORTCUTS[id]302.SpecialFolderLabel)]",
+            "sort_label" :"$LOCALIZE[571]",
+            "enabled": "!String.IsEmpty(Window.Property(Item.$SKINSHORTCUTS[id]302.SpecialFolderPath))",
+            "prefix": "Item.$SKINSHORTCUTS[id]302."
+        },
         "parts_widgets": {
             "template": "template_generator/parts_widgets.xmltemplate",
-            "id": "$PYTHON[5003 + int(id)]",
-            "groupid": "$PYTHON[5103 + int(id)]",
-            "grouplistid": "5000",
-            "squareid": "5001",
-            "landscapeid": "5002",
-            "posterid": "5003",
-            "topid": "5004",
+            "id": "$PARAM[base_id]$PYTHON[603 + int(id)]",
+            "groupid": "$PARAM[base_id]$PYTHON[703 + int(id)]",
+            "grouplistid": "$PARAM[base_id]400",
+            "landscapeid": "$PARAM[base_id]601",
+            "squareid": "$PARAM[base_id]602",
+            "posterid": "$PARAM[base_id]603",
+            "topid": "$PARAM[base_id]604",
             "refocus": "SetFocus(393)",
-            "visible": "[!Skin.HasSetting(Hubs.WidgetSelector) | [Integer.IsEqual(Container(5099).ListItem.Property(id),$SKINSHORTCUTS[id]) + String.IsEmpty(Window.Property(SpecialFolderLabel))]]",
+            "visible": "[[!Skin.HasSetting(Hubs.WidgetSelector) | [Integer.IsEqual(Container($PARAM[base_id]419).ListItem.Property(id),$SKINSHORTCUTS[id]) + String.IsEmpty(Window.Property(Item.$PARAM[base_id]302.SpecialFolderLabel))]] + String.IsEqual(Container(300).ListItem.Property(submenuVisibility),$SKINSHORTCUTS[submenuVisibility])]",
             "altvisible": "[$SKINSHORTCUTS[widgetAltVisible]]",
             "include_condition": "$SKINSHORTCUTS[isVisible]"
         }
@@ -47,13 +74,12 @@
                 "topposterid": "$PYTHON[int(mainmenuid) * 1000 + 603]",
                 "submenuid": "302",
                 "altvisible": "Control.HasFocus(300) | Control.HasFocus(302)",
-                "include_condition": "!Skin.HasSetting(Hub.Home.DisableSubmenu)",
                 "content_landscape": "$INFO[Window.Property(Item.$PYTHON[int(mainmenuid) * 1000 + 302].SpecialFolderPath)]",
                 "content_square": "$INFO[Window.Property(Item.$PYTHON[int(mainmenuid) * 1000 + 302].SpecialFolderPath)]",
                 "content_poster": "$INFO[Window.Property(Item.$PYTHON[int(mainmenuid) * 1000 + 302].SpecialFolderPath)]",
                 "label": "$INFO[Window.Property(Item.$PYTHON[int(mainmenuid) * 1000 + 302].SpecialFolderLabel)]",
                 "sort_label" :"$LOCALIZE[571]",
-                "enabled": "!String.IsEmpty(Window.Property(Item.$PYTHON[int(mainmenuid) * 1000 + 302].SpecialFolderPath)) + !String.IsEmpty(Container(302).ListItem.Property(useWidgetList))",
+                "enabled": "!String.IsEmpty(Window.Property(Item.$PYTHON[int(mainmenuid) * 1000 + 302].SpecialFolderPath))",
                 "prefix": "Item.$PYTHON[int(mainmenuid) * 1000 + 302]."
             },
             "parts_widgets": {
@@ -77,104 +103,48 @@
         {
             "template": "template_generator/build_menu.xmltemplate",
             "include_name": "moviemenu",
-            "submenu_name": "moviesubmenu",
             "window_id": "1101",
             "hub_type": "Movies"
         },
         {
             "template": "template_generator/build_menu.xmltemplate",
             "include_name": "tvshowmenu",
-            "submenu_name": "tvshowsubmenu",
             "window_id": "1102",
             "hub_type": "TVShows"
         },
         {
             "template": "template_generator/build_menu.xmltemplate",
             "include_name": "musicmenu",
-            "submenu_name": "musicsubmenu",
             "window_id": "1103",
             "hub_type": "Music"
         },
         {
             "template": "template_generator/build_menu.xmltemplate",
             "include_name": "pvrmenu",
-            "submenu_name": "pvrsubmenu",
             "window_id": "1104",
             "hub_type": "PVR"
         },
         {
             "template": "template_generator/build_menu.xmltemplate",
             "include_name": "custom01menu",
-            "submenu_name": "custom01submenu",
             "window_id": "1106",
             "hub_type": "Custom01"
         },
         {
             "template": "template_generator/build_menu.xmltemplate",
             "include_name": "custom02menu",
-            "submenu_name": "custom02submenu",
             "window_id": "1107",
             "hub_type": "Custom02"
         },
         {
             "template": "template_generator/build_menu.xmltemplate",
             "include_name": "custom03menu",
-            "submenu_name": "custom03submenu",
             "window_id": "1108",
             "hub_type": "Custom03"
         },
         {
             "template": "template_generator/build_menu.xmltemplate",
             "include_name": "custom04menu",
-            "submenu_name": "custom04submenu",
-            "window_id": "1109",
-            "hub_type": "Custom04"
-        },
-        {
-            "template": "template_generator/build_widgets.xmltemplate",
-            "include_name": "moviewidgets",
-            "window_id": "1101",
-            "hub_type": "Movies"
-        },
-        {
-            "template": "template_generator/build_widgets.xmltemplate",
-            "include_name": "tvshowwidgets",
-            "window_id": "1102",
-            "hub_type": "TVShows"
-        },
-        {
-            "template": "template_generator/build_widgets.xmltemplate",
-            "include_name": "musicwidgets",
-            "window_id": "1103",
-            "hub_type": "Music"
-        },
-        {
-            "template": "template_generator/build_widgets.xmltemplate",
-            "include_name": "pvrwidgets",
-            "window_id": "1104",
-            "hub_type": "PVR"
-        },
-        {
-            "template": "template_generator/build_widgets.xmltemplate",
-            "include_name": "custom01widgets",
-            "window_id": "1106",
-            "hub_type": "Custom01"
-        },
-        {
-            "template": "template_generator/build_widgets.xmltemplate",
-            "include_name": "custom02widgets",
-            "window_id": "1107",
-            "hub_type": "Custom02"
-        },
-        {
-            "template": "template_generator/build_widgets.xmltemplate",
-            "include_name": "custom03widgets",
-            "window_id": "1108",
-            "hub_type": "Custom03"
-        },
-        {
-            "template": "template_generator/build_widgets.xmltemplate",
-            "include_name": "custom04widgets",
             "window_id": "1109",
             "hub_type": "Custom04"
         }

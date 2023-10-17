@@ -1,21 +1,31 @@
+
     <submenu include="{include_name}" name="{include_name}">
         <controls>
+            <skinshortcuts insert="spotlight">items</skinshortcuts>
+
             <include content="Hub_Menu_Group">
-                <skinshortcuts insert="spotlight">items</skinshortcuts>
-                <include content="Hub_Menu_Grouplist">
-                    <param name="window_id">{window_id}</param>
-                    <param name="target">$INFO[Skin.String(skinshortcuts-{include_name}-widgetTarget)]</param>
-                    <param name="widgets_only">Skin.HasSetting(Hub.{hub_type}.DisableSubmenu)</param>
-                    <include content="Hub_Menu_List" condition="!Skin.HasSetting(Hub.{hub_type}.DisableSubmenu)">
-                        <param name="window_id">{window_id}</param>
-                        <content><include>skinshortcuts-group-{include_name}</include></content>
-                    </include>
-                    <include content="Home_Submenu_Group" condition="!Skin.HasSetting(Hub.{hub_type}.DisableSubmenu)">
-                        <skinshortcuts insert="submenulist">items</skinshortcuts>
-                    </include>
+                <include content="Hub_Submenu_Group" condition="!Skin.HasSetting(Hub.{hub_type}.DisableSubmenu)">
+                    <skinshortcuts insert="submenulist">items</skinshortcuts>
                 </include>
             </include>
+
+            <include content="Hub_Widgets_Group">
+                <skinshortcuts insert="widgetlist">items</skinshortcuts>
+            </include>
+
+            <skinshortcuts insert="floatingclock">items</skinshortcuts>
         </controls>
+
+        <items insert="floatingclock">
+            <property name="id" tag="mainmenuid" />
+            <controls>
+                <include content="Home_FloatingClock">
+                    <param name="minify">Container($PYTHON[int(id) * 1000 + 400]).HasNext</param>
+                    <visible>Integer.IsEqual(Container(300).ListItem.Property(id),$SKINSHORTCUTS[id])</visible>
+                </include>
+            </controls>
+        </items>
+
         <items insert="spotlight">
             <property name="isWidget" tag="property" attribute="name|widgetPath.Spotlight">True</property>
             <property name="isWidget">False</property>
@@ -27,8 +37,8 @@
 
             <controls>
 
-                <include content="Home_Fullscreen_Widget_List" condition="$SKINSHORTCUTS[isWidget] + !Skin.HasSetting(Hub.{hub_type}.DisableSubmenu)">
-                    <param name="window_id">{window_id}</param>
+                <include content="Spotlight_List" condition="$SKINSHORTCUTS[isWidget] + !Skin.HasSetting(Hub.{hub_type}.DisableSubmenu)">
+                    <param name="window_id">Home</param>
                     <param name="content">$SKINSHORTCUTS[widgetPath]</param>
                     <param name="target">$SKINSHORTCUTS[widgetTarget]</param>
                     <visible>Integer.IsEqual(Container(300).ListItem.Property(id),$SKINSHORTCUTS[id])</visible>
@@ -36,7 +46,10 @@
 
             </controls>
         </items>
+
         <items insert="submenulist">
+            <property name="submenuID" tag="property" attribute="name|submenuID"/>
+
             <property name="widgetPath" tag="property" attribute="name|widgetPath"/>
             <property name="widgetTarget" tag="property" attribute="name|widgetTarget" />
             <property name="widgetTarget">videos</property>
@@ -45,26 +58,91 @@
             <property name="widgetSortby" tag="property" attribute="name|widgetSortby" />
             <property name="widgetSortby">label</property>
 
+            <property name="widgetLimit" tag="property" attribute="name|widgetLimit" />
+
             <!-- Menu ID -->
             <property name="id" tag="mainmenuid" />
 
             <!-- isVisible -->
             <property name="isWidget" tag="property" attribute="name|widgetPath">True</property>
             <property name="isWidget">False</property>
+
+
             <controls>
+
                 <include content="Hub_Submenu_List" condition="![$SKINSHORTCUTS[isWidget]]">
-                    <param name="window_id">{window_id}</param>
                     <param name="id">302</param>
+                    <param name="ondown">340</param>
+                    <param name="hidden_button">List_ButtonMenu_Row_HiddenButton_Home</param>
+                    <param name="hidden_button_prefix">Item.$PYTHON[int(id) * 1000 + 302].</param>
+                    <param name="window_id">{window_id}</param>
                     <content>
-                        <include>skinshortcuts-group-{submenu_name}</include>
+                        <include>skinshortcuts-group-$SKINSHORTCUTS[submenuID]</include>
                     </content>
                     <visible>Integer.IsEqual(Container(300).ListItem.Property(id),$SKINSHORTCUTS[id])</visible>
                 </include>
+
                 <include content="Hub_Submenu_List" condition="$SKINSHORTCUTS[isWidget]">
-                    <param name="window_id">{window_id}</param>
                     <param name="id">302</param>
-                    <content target="$SKINSHORTCUTS[widgetTarget]" sortby="$SKINSHORTCUTS[widgetSortby]" sortorder="$SKINSHORTCUTS[widgetSortorder]">$SKINSHORTCUTS[widgetPath]</content>
+                    <param name="ondown">340</param>
+                    <param name="hidden_button">List_ButtonMenu_Row_HiddenButton_Home</param>
+                    <param name="hidden_button_prefix">Item.$PYTHON[int(id) * 1000 + 302].</param>
+                    <param name="window_id">{window_id}</param>
+                    <content target="$SKINSHORTCUTS[widgetTarget]" sortby="$SKINSHORTCUTS[widgetSortby]" sortorder="$SKINSHORTCUTS[widgetSortorder]" limit="$SKINSHORTCUTS[widgetLimit]">$SKINSHORTCUTS[widgetPath]</content>
                     <visible>Integer.IsEqual(Container(300).ListItem.Property(id),$SKINSHORTCUTS[id])</visible>
+                </include>
+            </controls>
+        </items>
+
+        <items insert="widgetlist">
+            <property name="id" tag="mainmenuid" />
+            <property name="widgetmenuID" tag="property" attribute="name|widgetmenuID"/>
+            <controls>
+                <include content="Home_Widgets_Infopanel">
+                    <visible>!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)</visible>
+                    <visible>Integer.IsEqual(Container(300).ListItem.Property(id),$SKINSHORTCUTS[id])</visible>
+                    <include content="Info_Panel" condition="!Skin.HasSetting(Hub.{hub_type}.DisableSubmenu)">
+                        <param name="container">Container($SKINSHORTCUTS[id]601).</param>
+                        <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),$SKINSHORTCUTS[id]601)</visible>
+                    </include>
+                    <include content="Info_Panel" condition="!Skin.HasSetting(Hub.{hub_type}.DisableSubmenu)">
+                        <param name="container">Container($SKINSHORTCUTS[id]602).</param>
+                        <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),$SKINSHORTCUTS[id]602)</visible>
+                    </include>
+                    <include content="Info_Panel" condition="!Skin.HasSetting(Hub.{hub_type}.DisableSubmenu)">
+                        <param name="container">Container($SKINSHORTCUTS[id]603).</param>
+                        <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),$SKINSHORTCUTS[id]603)</visible>
+                    </include>
+                    <include content="Info_Panel">
+                        <param name="container">Container.</param>
+                        <visible>!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),$SKINSHORTCUTS[id]601)</visible>
+                        <visible>!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),$SKINSHORTCUTS[id]602)</visible>
+                        <visible>!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),$SKINSHORTCUTS[id]603)</visible>
+                    </include>
+                </include>
+                <include content="Hub_Menu_Group">
+                    <include content="Hub_Widgets_Grouplist">
+                        <param name="id">$SKINSHORTCUTS[id]400</param>
+                        <param name="topid">$SKINSHORTCUTS[id]401</param>
+                        <param name="mainmenuid">$SKINSHORTCUTS[id]</param>
+                        <param name="widgets_only">Skin.HasSetting(Hub.{hub_type}.DisableSubmenu)</param>
+                        <param name="visible">Integer.IsEqual(Container(300).ListItem.Property(id),$SKINSHORTCUTS[id])</param>
+                        <control type="group" id="$SKINSHORTCUTS[id]401">
+                            <height>widget_tbump_h</height>
+                        </control>
+
+                        <include content="Widget_Adaptive_Rows" condition="!Skin.HasSetting(Hub.{hub_type}.DisableSubmenu)">
+                            <param name="include_condition">!Skin.HasSetting(Hub.{hub_type}.DisableSubmenu)</param>
+                            {parts_adaptivewidgets}
+                        </include>
+
+                        <include content="skinshortcuts-template-$SKINSHORTCUTS[widgetmenuID]-{system_profile}">
+                            <param name="base_id">$SKINSHORTCUTS[id]</param>
+                        </include>
+
+                        <control type="group" id="$SKINSHORTCUTS[id]499">
+                        </control>
+                    </include>
                 </include>
             </controls>
         </items>
