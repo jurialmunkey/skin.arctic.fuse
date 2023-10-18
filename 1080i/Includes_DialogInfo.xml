@@ -668,6 +668,32 @@
         </definition>
     </include>
 
+    <include name="DialogInfo_Button_GroupBuiltin">
+        <visible>Control.IsVisible($PARAM[id])</visible>
+        <animation effect="fade" start="100" end="43" condition="!Control.IsEnabled($PARAM[id])">Conditional</animation>
+    </include>
+
+    <include name="DialogInfo_Button_RadioCross">
+        <textureradiooffdisabled colordiffuse="$PARAM[textcolor]_30">buttons/cross.png</textureradiooffdisabled>
+        <textureradioofffocus colordiffuse="$VAR[ColorSelected]">buttons/cross.png</textureradioofffocus>
+        <textureradiooffnofocus colordiffuse="$PARAM[textcolor]_70">buttons/cross.png</textureradiooffnofocus>
+    </include>
+
+    <include name="DialogInfo_Button_RadioRound">
+        <textureradiooffdisabled colordiffuse="$PARAM[textcolor]_30">buttons/check-off.png</textureradiooffdisabled>
+        <textureradioofffocus colordiffuse="$VAR[ColorSelected]">buttons/check-off.png</textureradioofffocus>
+        <textureradiooffnofocus colordiffuse="$PARAM[textcolor]_70">buttons/check-off.png</textureradiooffnofocus>
+        <textureradioondisabled colordiffuse="$PARAM[textcolor]_30">buttons/check-off.png</textureradioondisabled>
+        <textureradioonfocus colordiffuse="$VAR[ColorSelected]">buttons/check-off.png</textureradioonfocus>
+        <textureradioonnofocus colordiffuse="$PARAM[textcolor]_70">buttons/check-off.png</textureradioonnofocus>
+    </include>
+
+    <include name="DialogInfo_Button_RadioCheck">
+        <textureradioondisabled colordiffuse="$PARAM[textcolor]_30">buttons/check-on.png</textureradioondisabled>
+        <textureradioonfocus colordiffuse="$VAR[ColorSelected]">buttons/check-on.png</textureradioonfocus>
+        <textureradioonnofocus colordiffuse="$PARAM[textcolor]_70">buttons/check-on.png</textureradioonnofocus>
+    </include>
+
     <include name="DialogInfo_Button">
         <param name="back_size">160</param>
         <param name="icon_size">40</param>
@@ -677,6 +703,10 @@
         <param name="vertical">true</param>
         <param name="textcolor">main_fg</param>
         <param name="control">button</param>
+        <param name="builtin">false</param>
+        <param name="radioround">false</param>
+        <param name="radiocross">false</param>
+        <param name="radiocheck">true</param>
         <definition>
             <control type="$PARAM[control]" id="$PARAM[id]">
                 <include content="Object_Top" condition="$PARAM[vertical]">
@@ -695,9 +725,27 @@
                 <radiowidth>100</radiowidth>
                 <radioheight>14</radioheight>
                 <radioposy>56</radioposy>
+
+                <include content="DialogInfo_Button_RadioCheck" condition="$PARAM[radiocheck]">
+                    <param name="textcolor">$PARAM[textcolor]</param>
+                </include>
+
+                <include content="DialogInfo_Button_RadioCross" condition="$PARAM[radiocross]">
+                    <param name="textcolor">$PARAM[textcolor]</param>
+                </include>
+
+                <include content="DialogInfo_Button_RadioRound" condition="$PARAM[radioround]">
+                    <param name="textcolor">$PARAM[textcolor]</param>
+                </include>
+
+                <textureradioondisabled colordiffuse="00ffffff">buttons/check-on.png</textureradioondisabled>
+                <textureradioonfocus colordiffuse="00ffffff">buttons/check-on.png</textureradioonfocus>
+                <textureradioonnofocus colordiffuse="00ffffff">buttons/check-on.png</textureradioonnofocus>
+
                 <textureradiooffdisabled colordiffuse="00ffffff">buttons/check-off.png</textureradiooffdisabled>
                 <textureradioofffocus colordiffuse="00ffffff">buttons/check-off.png</textureradioofffocus>
                 <textureradiooffnofocus colordiffuse="00ffffff">buttons/check-off.png</textureradiooffnofocus>
+
                 <nested />
             </control>
             <control type="group" id="$PARAM[groupid]">
@@ -720,7 +768,10 @@
                 <width>$PARAM[icon_size]</width>
                 <height>$PARAM[icon_size]</height>
                 <visible>$PARAM[visible]</visible>
-                <visible>Control.IsVisible($PARAM[id])</visible>
+
+                <include content="DialogInfo_Button_GroupBuiltin" condition="$PARAM[builtin]">
+                    <param name="id">$PARAM[id]</param>
+                </include>
 
                 <control type="image">
                     <texture colordiffuse="$PARAM[textcolor]_70">$PARAM[icon]</texture>
@@ -743,13 +794,14 @@
     <include name="DialogInfo_Button_HintLabel">
         <param name="textcolor">dialog_fg</param>
         <definition>
-            <label>[CR][CR][CR][CR]$PARAM[label]</label>
+            <label>$PARAM[label]</label>
             <textcolor>$PARAM[textcolor]_90</textcolor>
             <focusedcolor>$VAR[ColorSelected]</focusedcolor>
-            <font>font_hint_button</font>
+            <font>font_hint</font>
             <align>center</align>
             <aligny>top</aligny>
             <textoffsetx>0</textoffsetx>
+            <textoffsety>85</textoffsety>
         </definition>
     </include>
 
