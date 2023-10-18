@@ -60,6 +60,11 @@
         <onclick condition="String.IsEqual(Window(1105).Property(SearchDiscover.FilterLabel),$PARAM[type]) + String.IsEqual(Container(8000).ListItem.Property(clearfilter),True)">ClearProperty(SearchDiscover.$PARAM[type]Label,1105)</onclick>
     </include>
 
+    <include name="Action_BlurImage_SimpleBackground_Onload">
+        <onload>RunScript(plugin.video.themoviedb.helper,blur_image=$VAR[Image_SimpleBackground],prefix=SimpleBackground)</onload>
+        <onload>SetProperty(TMDbHelper.SimpleBackground.Enabled,1)</onload>
+    </include>
+
     <include name="Action_SettingsCategories_Onload">
         <include content="Object_DefaultControl" condition="!String.IsEmpty(Window(Home).Property(SettingsChanger.Switch))">
             <param name="defaultcontrol">30030</param>
@@ -72,7 +77,7 @@
         <onload condition="String.IsEmpty(Window(Home).Property(SettingsChanger.Switch))">SetFocus($PARAM[defaultcontrol])</onload>
         <onload condition="!String.IsEmpty(Window(Home).Property(SettingsChanger.Switch))">SetFocus($INFO[Window(Home).Property(SettingsChanger.Switch)])</onload>
         <onload>ClearProperty(SettingsChanger.Switch,Home)</onload>
-        <onload>RunScript(plugin.video.themoviedb.helper,blur_image=$VAR[Image_SimpleBackground])</onload>
+        <include>Action_BlurImage_SimpleBackground_Onload</include>
         <menucontrol>30000</menucontrol>
     </include>
 
