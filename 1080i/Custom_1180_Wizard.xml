@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window type="window" id="1180">
     <defaultcontrol always="true">50</defaultcontrol>
+    <include>Action_BlurImage_SimpleBackground_Onload</include>
     <controls>
 
         <include content="Object_Hidden_Button">
             <param name="id">8001</param>
-            <onfocus condition="String.IsEqual(Window.Property(WizardStep),Dialog)">ClearProperty(WizardStep)</onfocus>
-            <onfocus condition="String.IsEqual(Window.Property(WizardStep),Widget)">SetProperty(WizardStep,Dialog)</onfocus>
-            <onfocus condition="!String.IsEmpty(Window.Property(WizardStep))">SetFocus(50)</onfocus>
-            <onfocus condition="String.IsEmpty(Window.Property(WizardStep))">PreviousMenu</onfocus>
+            <onfocus condition="String.IsEqual(Window(Home).Property(WizardStep),Themes)">ClearProperty(WizardStep,Home)</onfocus>
+            <onfocus condition="String.IsEqual(Window(Home).Property(WizardStep),Dialog)">SetProperty(WizardStep,Themes,Home)</onfocus>
+            <onfocus condition="!String.IsEmpty(Window(Home).Property(WizardStep))">SetFocus(50)</onfocus>
+            <onfocus condition="String.IsEmpty(Window(Home).Property(WizardStep))">PreviousMenu</onfocus>
         </include>
 
         <include>Background_Main</include>
 
-
         <include content="Dialog_Overlay_Side">
             <include>Animation_Right_Delay</include>
             <include content="Dialog_Head">
-                <param name="label">$LOCALIZE[31449]$VAR[Label_Header_Wizard,: [CAPITALIZE],[/CAPITALIZE]]</param>
+                <param name="label">[CAPITALIZE]$LOCALIZE[31449]$VAR[Label_Header_Wizard,: ,][/CAPITALIZE]</param>
             </include>
             <include content="Dialog_Body">
                 <include content="Dialog_Body_Group">
@@ -42,7 +42,10 @@
                                         <height>270</height>
                                         <include content="Dialog_Outline_Box">
                                             <control type="image">
-                                                <aspectratio>scale</aspectratio>
+                                                <texture background="true" border="20" colordiffuse="panel_bg">common/box.png</texture>
+                                            </control>
+                                            <control type="image">
+                                                <aspectratio scalediffuse="false">scale</aspectratio>
                                                 <texture background="true" diffuse="diffuse/landscape_w480_h270.png">$INFO[ListItem.Icon]</texture>
                                             </control>
                                             <control type="label">
@@ -54,12 +57,26 @@
                                                 <label>$INFO[ListItem.Property(special_label)]</label>
                                                 <align>center</align>
                                             </control>
-                                            <control type="image">
+                                            <control type="group">
                                                 <width>24</width>
                                                 <height>24</height>
-                                                <right>20</right>
-                                                <bottom>20</bottom>
-                                                <texture colordiffuse="panel_fg_90">buttons/check-on.png</texture>
+                                                <right>30</right>
+                                                <bottom>30</bottom>
+                                                <control type="image">
+                                                    <bordersize>-12</bordersize>
+                                                    <texture colordiffuse="panel_bg">common/circle.png</texture>
+                                                </control>
+                                                <control type="image">
+                                                    <bordersize>-8</bordersize>
+                                                    <texture colordiffuse="$VAR[ColorWatchedProgress]">common/circle.png</texture>
+                                                </control>
+                                                <control type="image">
+                                                    <bordersize>-4</bordersize>
+                                                    <texture colordiffuse="panel_bg">common/circle.png</texture>
+                                                </control>
+                                                <control type="image">
+                                                    <texture colordiffuse="panel_fg_90">buttons/check-on.png</texture>
+                                                </control>
                                                 <visible>!String.IsEmpty(ListItem.Property(selected))</visible>
                                             </control>
                                         </include>
@@ -86,7 +103,10 @@
                                         <height>270</height>
                                         <include content="Dialog_Outline_Box">
                                             <control type="image">
-                                                <aspectratio>scale</aspectratio>
+                                                <texture background="true" border="20" colordiffuse="panel_bg">common/box.png</texture>
+                                            </control>
+                                            <control type="image">
+                                                <aspectratio scalediffuse="false">scale</aspectratio>
                                                 <texture background="true" diffuse="diffuse/landscape_w480_h270.png">$INFO[ListItem.Icon]</texture>
                                             </control>
                                             <control type="label">
@@ -98,12 +118,26 @@
                                                 <label>$INFO[ListItem.Property(special_label)]</label>
                                                 <align>center</align>
                                             </control>
-                                            <control type="image">
+                                            <control type="group">
                                                 <width>24</width>
                                                 <height>24</height>
-                                                <right>20</right>
-                                                <bottom>20</bottom>
-                                                <texture colordiffuse="panel_fg_90">buttons/check-on.png</texture>
+                                                <right>30</right>
+                                                <bottom>30</bottom>
+                                                <control type="image">
+                                                    <bordersize>-12</bordersize>
+                                                    <texture colordiffuse="panel_bg">common/circle.png</texture>
+                                                </control>
+                                                <control type="image">
+                                                    <bordersize>-8</bordersize>
+                                                    <texture colordiffuse="$VAR[ColorWatchedProgress]">common/circle.png</texture>
+                                                </control>
+                                                <control type="image">
+                                                    <bordersize>-4</bordersize>
+                                                    <texture colordiffuse="panel_bg">common/circle.png</texture>
+                                                </control>
+                                                <control type="image">
+                                                    <texture colordiffuse="panel_fg_90">buttons/check-on.png</texture>
+                                                </control>
                                                 <visible>!String.IsEmpty(ListItem.Property(selected))</visible>
                                             </control>
                                         </include>
@@ -128,7 +162,51 @@
 
                             <content>
 
-                                <!-- Step 01: Themes -->
+                                <!-- Step 01: Widgets -->
+                                <item>
+                                    <label>$LOCALIZE[31150]</label>
+                                    <icon>special://skin/extras/screenshots/widgets/Categories.jpg</icon>
+                                    <visible>String.IsEmpty(Window(Home).Property(WizardStep))</visible>
+                                    <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/skinvariables-wizardcategories.json",use_rules,category=Reset,combined=Reset,sidemenu=Reset,compound=Reset,shortcut=default_home)</onclick>
+                                    <property name="selected">$VAR[Exp_Var_Layout_IsStandard]</property>
+                                </item>
+                                <item>
+                                    <label>$LOCALIZE[31083]</label>
+                                    <icon>special://skin/extras/screenshots/widgets/Combined.jpg</icon>
+                                    <visible>String.IsEmpty(Window(Home).Property(WizardStep))</visible>
+                                    <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/skinvariables-wizardcategories.json",use_rules,category=SetBool,combined=SetBool,sidemenu=Reset,compound=Reset,shortcut=default_home)</onclick>
+                                    <property name="selected">$VAR[Exp_Var_Layout_IsCombined]</property>
+                                </item>
+                                <item>
+                                    <label>$LOCALIZE[31451]</label>
+                                    <icon>special://skin/extras/screenshots/widgets/Compound.jpg</icon>
+                                    <visible>String.IsEmpty(Window(Home).Property(WizardStep))</visible>
+                                    <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/skinvariables-wizardcategories.json",use_rules,category=Reset,combined=Reset,sidemenu=SetBool,compound=Reset,shortcut=basic_library)</onclick>
+                                    <property name="selected">$VAR[Exp_Var_Layout_IsCompound]</property>
+                                </item>
+                                <item>
+                                    <label>$LOCALIZE[31143]</label>
+                                    <icon>special://skin/extras/screenshots/widgets/Widgets.jpg</icon>
+                                    <visible>String.IsEmpty(Window(Home).Property(WizardStep))</visible>
+                                    <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/skinvariables-wizardcategories.json",use_rules,category=SetBool,combined=Reset,sidemenu=Reset,compound=Reset,shortcut=default_home)</onclick>
+                                    <property name="selected">$VAR[Exp_Var_Layout_IsWidgets]</property>
+                                </item>
+                                <item>
+                                    <label>$LOCALIZE[31452]</label>
+                                    <icon>special://skin/extras/screenshots/widgets/Composite.jpg</icon>
+                                    <visible>String.IsEmpty(Window(Home).Property(WizardStep))</visible>
+                                    <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/skinvariables-wizardcategories.json",use_rules,category=Reset,combined=Reset,sidemenu=SetBool,compound=SetBool,shortcut=basic_library)</onclick>
+                                    <property name="selected">$VAR[Exp_Var_Layout_IsComposite]</property>
+                                </item>
+                                <item>
+                                    <label>$LOCALIZE[209]...</label>
+                                    <property name="special_label">[COLOR=panel_fg_100]$LOCALIZE[209][/COLOR] [COLOR=ff00b1e3]$LOCALIZE[31450][/COLOR]</property>
+                                    <icon>fallback/next-items-wide.png</icon>
+                                    <onclick>SetProperty(WizardStep,Themes,Home)</onclick>
+                                    <visible>String.IsEmpty(Window(Home).Property(WizardStep))</visible>
+                                </item>
+
+                                <!-- Step 02: Themes -->
                                 <item>
                                     <label>$LOCALIZE[31140]</label>
                                     <icon>special://skin/extras/screenshots/themes/Miami.jpg</icon>
@@ -136,7 +214,8 @@
                                     <include content="Action_Scheme_Onclick_Miami">
                                         <param name="window_id">1180</param>
                                     </include>
-                                    <visible>String.IsEmpty(Window.Property(WizardStep))</visible>
+                                    <onclick>AlarmClock(reset,SetProperty(WizardStep,Themes,Home),00:00,silent)</onclick>
+                                    <visible>String.IsEqual(Window(Home).Property(WizardStep),Themes)</visible>
                                 </item>
                                 <item>
                                     <label>$LOCALIZE[31243]</label>
@@ -145,7 +224,8 @@
                                     <include content="Action_Scheme_Onclick_Midnight">
                                         <param name="window_id">1180</param>
                                     </include>
-                                    <visible>String.IsEmpty(Window.Property(WizardStep))</visible>
+                                    <onclick>AlarmClock(reset,SetProperty(WizardStep,Themes,Home),00:00,silent)</onclick>
+                                    <visible>String.IsEqual(Window(Home).Property(WizardStep),Themes)</visible>
                                 </item>
                                 <item>
                                     <label>$LOCALIZE[31138]</label>
@@ -154,7 +234,8 @@
                                     <include content="Action_Scheme_Onclick_Aqua">
                                         <param name="window_id">1180</param>
                                     </include>
-                                    <visible>String.IsEmpty(Window.Property(WizardStep))</visible>
+                                    <onclick>AlarmClock(reset,SetProperty(WizardStep,Themes,Home),00:00,silent)</onclick>
+                                    <visible>String.IsEqual(Window(Home).Property(WizardStep),Themes)</visible>
                                 </item>
                                 <item>
                                     <label>$LOCALIZE[31242]</label>
@@ -163,7 +244,8 @@
                                     <include content="Action_Scheme_Onclick_Slate">
                                         <param name="window_id">1180</param>
                                     </include>
-                                    <visible>String.IsEmpty(Window.Property(WizardStep))</visible>
+                                    <onclick>AlarmClock(reset,SetProperty(WizardStep,Themes,Home),00:00,silent)</onclick>
+                                    <visible>String.IsEqual(Window(Home).Property(WizardStep),Themes)</visible>
                                 </item>
                                 <item>
                                     <label>$LOCALIZE[31139]</label>
@@ -172,18 +254,19 @@
                                     <include content="Action_Scheme_Onclick_Sunset">
                                         <param name="window_id">1180</param>
                                     </include>
-                                    <visible>String.IsEmpty(Window.Property(WizardStep))</visible>
+                                    <onclick>AlarmClock(reset,SetProperty(WizardStep,Themes,Home),00:00,silent)</onclick>
+                                    <visible>String.IsEqual(Window(Home).Property(WizardStep),Themes)</visible>
                                 </item>
                                 <item>
                                     <label>$LOCALIZE[209]...</label>
-                                    <property name="special_label">$LOCALIZE[209] [COLOR=ff00b1e3]$LOCALIZE[31450][/COLOR]</property>
+                                    <property name="special_label">[COLOR=panel_fg_100]$LOCALIZE[209][/COLOR] [COLOR=ff00b1e3]$LOCALIZE[31450][/COLOR]</property>
                                     <icon>fallback/next-items-wide.png</icon>
-                                    <onclick>SetProperty(WizardStep,Dialog)</onclick>
-                                    <visible>String.IsEmpty(Window.Property(WizardStep))</visible>
+                                    <onclick>SetProperty(WizardStep,Dialog,Home)</onclick>
+                                    <visible>String.IsEqual(Window(Home).Property(WizardStep),Themes)</visible>
                                 </item>
 
 
-                                <!-- Step 02: Dialogs -->
+                                <!-- Step 03: Dialogs -->
                                 <item>
                                     <label>$LOCALIZE[602]</label>
                                     <icon>special://skin/extras/screenshots/dialogs/Standard.jpg</icon>
@@ -195,8 +278,8 @@
                                     <onclick condition="Skin.String(Background.DialogImage,Adaptive) + $EXP[Exp_ColourPreset_MidnightPurple]">Skin.SetString(Background.DialogImage,Coal)</onclick>
                                     <onclick>RunScript(script.skinvariables,get_jsonrpc=Settings.SetSettingValue,setting=lookandfeel.skincolors,value=SKINDEFAULT)</onclick>
                                     <onclick>ReloadSkin()</onclick>
-                                    <onclick>AlarmClock(reset,SetProperty(WizardStep,Dialog),00:00,silent)</onclick>
-                                    <visible>String.IsEqual(Window.Property(WizardStep),Dialog)</visible>
+                                    <onclick>AlarmClock(reset,SetProperty(WizardStep,Dialog,Home),00:00,silent)</onclick>
+                                    <visible>String.IsEqual(Window(Home).Property(WizardStep),Dialog)</visible>
                                 </item>
                                 <item>
                                     <label>$LOCALIZE[31195]</label>
@@ -204,8 +287,8 @@
                                     <property name="selected">$VAR[Exp_Var_DialogTheme_IsLight]</property>
                                     <onclick>RunScript(script.skinvariables,get_jsonrpc=Settings.SetSettingValue,setting=lookandfeel.skincolors,value=Skin default - Light dialogs)</onclick>
                                     <onclick>ReloadSkin()</onclick>
-                                    <onclick>AlarmClock(reset,SetProperty(WizardStep,Dialog),00:00,silent)</onclick>
-                                    <visible>String.IsEqual(Window.Property(WizardStep),Dialog)</visible>
+                                    <onclick>AlarmClock(reset,SetProperty(WizardStep,Dialog,Home),00:00,silent)</onclick>
+                                    <visible>String.IsEqual(Window(Home).Property(WizardStep),Dialog)</visible>
                                 </item>
                                 <item>
                                     <label>$LOCALIZE[31432]</label>
@@ -214,80 +297,21 @@
                                     <onclick>RunScript(script.skinvariables,get_jsonrpc=Settings.SetSettingValue,setting=lookandfeel.skincolors,value=SKINDEFAULT)</onclick>
                                     <onclick>Skin.SetString(Background.DialogImage,Adaptive)</onclick>
                                     <onclick>ReloadSkin()</onclick>
-                                    <onclick>AlarmClock(reset,SetProperty(WizardStep,Dialog),00:00,silent)</onclick>
-                                    <visible>String.IsEqual(Window.Property(WizardStep),Dialog)</visible>
+                                    <onclick>AlarmClock(reset,SetProperty(WizardStep,Dialog,Home),00:00,silent)</onclick>
+                                    <visible>String.IsEqual(Window(Home).Property(WizardStep),Dialog)</visible>
                                 </item>
                                 <item>
                                     <label>$LOCALIZE[209]...</label>
-                                    <property name="special_label">$LOCALIZE[209] [COLOR=ff00b1e3]$LOCALIZE[31450][/COLOR]</property>
+                                    <property name="special_label">[COLOR=panel_fg_100]$LOCALIZE[209][/COLOR] [COLOR=ff00b1e3]$LOCALIZE[31450][/COLOR]</property>
                                     <icon>fallback/next-items-wide.png</icon>
-                                    <onclick>SetProperty(WizardStep,Widget)</onclick>
-                                    <visible>String.IsEqual(Window.Property(WizardStep),Dialog)</visible>
+                                    <onclick>PreviousMenu</onclick>
+                                    <onclick>ClearProperty(WizardStep,Home)</onclick>
+                                    <visible>String.IsEqual(Window(Home).Property(WizardStep),Dialog)</visible>
                                 </item>
 
 
-                                <!-- Step 03: Widgets -->
-                                <item>
-                                    <label>$LOCALIZE[31150]</label>
-                                    <icon>special://skin/extras/screenshots/widgets/Categories.jpg</icon>
-                                    <visible>String.IsEqual(Window.Property(WizardStep),Widget)</visible>
-                                    <onclick>Skin.Reset(Hub.Home.DisableSubmenu)</onclick>
-                                    <onclick>Skin.Reset(Hub.Movies.DisableSubmenu)</onclick>
-                                    <onclick>Skin.Reset(Hub.TVShows.DisableSubmenu)</onclick>
-                                    <onclick>Skin.Reset(Hub.Music.DisableSubmenu)</onclick>
-                                    <onclick>Skin.Reset(Hub.PVR.DisableSubmenu)</onclick>
-                                    <onclick>Skin.Reset(Hub.Custom01.DisableSubmenu)</onclick>
-                                    <onclick>Skin.Reset(Hub.Custom02.DisableSubmenu)</onclick>
-                                    <onclick>Skin.Reset(Hub.Custom03.DisableSubmenu)</onclick>
-                                    <onclick>Skin.Reset(Hub.Custom04.DisableSubmenu)</onclick>
-                                    <onclick>Skin.Reset(Hubs.WidgetSelector)</onclick>
-                                    <onclick>ReloadSkin()</onclick>
-                                    <onclick>AlarmClock(reset,SetProperty(WizardStep,Widget),00:00,silent)</onclick>
-                                    <property name="selected">$VAR[Exp_Var_Layout_IsStandard]</property>
-                                </item>
-                                <item>
-                                    <label>$LOCALIZE[31083]</label>
-                                    <icon>special://skin/extras/screenshots/widgets/Combined.jpg</icon>
-                                    <visible>String.IsEqual(Window.Property(WizardStep),Widget)</visible>
-                                    <onclick>Skin.SetBool(Hub.Home.DisableSubmenu)</onclick>
-                                    <onclick>Skin.SetBool(Hub.Movies.DisableSubmenu)</onclick>
-                                    <onclick>Skin.SetBool(Hub.TVShows.DisableSubmenu)</onclick>
-                                    <onclick>Skin.SetBool(Hub.Music.DisableSubmenu)</onclick>
-                                    <onclick>Skin.SetBool(Hub.PVR.DisableSubmenu)</onclick>
-                                    <onclick>Skin.SetBool(Hub.Custom01.DisableSubmenu)</onclick>
-                                    <onclick>Skin.SetBool(Hub.Custom02.DisableSubmenu)</onclick>
-                                    <onclick>Skin.SetBool(Hub.Custom03.DisableSubmenu)</onclick>
-                                    <onclick>Skin.SetBool(Hub.Custom04.DisableSubmenu)</onclick>
-                                    <onclick>Skin.SetBool(Hubs.WidgetSelector)</onclick>
-                                    <onclick>ReloadSkin()</onclick>
-                                    <onclick>AlarmClock(reset,SetProperty(WizardStep,Widget),00:00,silent)</onclick>
-                                    <property name="selected">$VAR[Exp_Var_Layout_IsCombined]</property>
-                                </item>
-                                <item>
-                                    <label>$LOCALIZE[31143]</label>
-                                    <icon>special://skin/extras/screenshots/widgets/Widgets.jpg</icon>
-                                    <visible>String.IsEqual(Window.Property(WizardStep),Widget)</visible>
-                                    <onclick>Skin.SetBool(Hub.Home.DisableSubmenu)</onclick>
-                                    <onclick>Skin.SetBool(Hub.Movies.DisableSubmenu)</onclick>
-                                    <onclick>Skin.SetBool(Hub.TVShows.DisableSubmenu)</onclick>
-                                    <onclick>Skin.SetBool(Hub.Music.DisableSubmenu)</onclick>
-                                    <onclick>Skin.SetBool(Hub.PVR.DisableSubmenu)</onclick>
-                                    <onclick>Skin.SetBool(Hub.Custom01.DisableSubmenu)</onclick>
-                                    <onclick>Skin.SetBool(Hub.Custom02.DisableSubmenu)</onclick>
-                                    <onclick>Skin.SetBool(Hub.Custom03.DisableSubmenu)</onclick>
-                                    <onclick>Skin.SetBool(Hub.Custom04.DisableSubmenu)</onclick>
-                                    <onclick>Skin.Reset(Hubs.WidgetSelector)</onclick>
-                                    <onclick>ReloadSkin()</onclick>
-                                    <onclick>AlarmClock(reset,SetProperty(WizardStep,Widget),00:00,silent)</onclick>
-                                    <property name="selected">$VAR[Exp_Var_Layout_IsWidgets]</property>
-                                </item>
-                                <item>
-                                    <label>$LOCALIZE[209]...</label>
-                                    <property name="special_label">$LOCALIZE[209] [COLOR=ff00b1e3]$LOCALIZE[31450][/COLOR]</property>
-                                    <icon>fallback/next-items-wide.png</icon>
-                                    <onclick>SetProperty(WizardStep,)</onclick>
-                                    <visible>String.IsEqual(Window.Property(WizardStep),Widget)</visible>
-                                </item>
+
+
                             </content>
 
                         </control>
@@ -305,6 +329,7 @@
                         <param name="label">$LOCALIZE[15067]</param>
                         <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
                         <param name="visible">true</param>
+                        <onclick>ClearProperty(WizardStep,Home)</onclick>
                         <onclick>PreviousMenu</onclick>
                     </include>
                 </include>

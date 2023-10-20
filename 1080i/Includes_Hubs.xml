@@ -11,7 +11,7 @@
         <param name="ondown">340</param>
         <param name="hidden_button">List_ButtonMenu_Row_HiddenButton_View</param>
         <definition>
-            <include content="Categories_Selector">
+            <include content="Categories_Selector" condition="!Skin.HasSetting(Hubs.HideSubmenus)">
                 <param name="id">$PARAM[id]</param>
                 <param name="window_id">$PARAM[window_id]</param>
                 <param name="font">font_mini</param>
@@ -54,34 +54,6 @@
             <nested />
 
         </control>
-    </include>
-
-    <include name="Hub_Menu_List">
-        <include content="Categories_Selector">
-            <param name="window_id">$PARAM[window_id]</param>
-            <param name="hidden_button">List_ButtonMenu_Row_HiddenButton_Hubs</param>
-            <param name="hitrect_x">-40</param>
-            <param name="hitrect_y">740</param>
-            <param name="hitrect_w">1640</param>
-            <param name="hitrect_h">80</param>
-            <param name="shorten">True</param>
-            <onup>311</onup>
-            <include content="Action_Menu_Movement_OnBack">
-                <param name="id">300</param>
-            </include>
-            <ondown condition="!Integer.IsEqual(Container(302).NumItems,0)">302</ondown>
-            <ondown condition="Integer.IsEqual(Container(302).NumItems,0)">5000</ondown>
-            <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,$PARAM[window_id])</onfocus>
-            <include content="Animation_Fade_In">
-                <param name="condition">String.IsEmpty(Window.Property(Slide.WidgetContainer))</param>
-                <param name="delay">200</param>
-            </include>
-            <include content="Animation_ConditionalFade">
-                <param name="condition">!String.IsEmpty(Window.Property(Slide.WidgetContainer))</param>
-            </include>
-            <left>240</left>
-            <nested />
-        </include>
     </include>
 
     <include name="Hub_Menu_Group">
@@ -245,7 +217,8 @@
                 <include content="Action_Menu_Movement_OnBack">
                     <param name="id">300</param>
                 </include>
-                <ondown>302</ondown>
+                <ondown condition="!Skin.HasSetting(Hubs.HideSubmenus)">302</ondown>
+                <ondown condition="Skin.HasSetting(Hubs.HideSubmenus)">340</ondown>
                 <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,$PARAM[window_id])</onfocus>
 
                 <include content="Animation_Fade_In">
@@ -300,7 +273,8 @@
     </include>
 
     <include name="Hub_Widgets_Grouplist__Def_Layout_Expanded">
-        <onup>302</onup>
+        <onup condition="!Skin.HasSetting(Hubs.HideSubmenus)">302</onup>
+        <onup condition="Skin.HasSetting(Hubs.HideSubmenus)">300</onup>
 
         <animation effect="slide" time="400" start="0,widget_sbump_h" end="0" tween="quadratic" easing="out" reversible="false" condition="Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)">Conditional</animation>
         <animation effect="slide" time="400" start="0" end="0,widget_sbump_h" tween="quadratic" easing="out" reversible="false" condition="!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)">Conditional</animation>
