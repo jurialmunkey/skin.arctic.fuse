@@ -44,6 +44,16 @@
     <expression name="Exp_DialogTheme_Adaptive_IsEnabled">[Skin.HasSetting(TMDbHelper.EnableBlur) + !Skin.String(Background.ArtworkStyle,Fanart)]</expression>
     <expression name="Exp_DialogTheme_IsAdaptive">[Skin.String(Background.DialogImage,Adaptive) + $EXP[Exp_DialogTheme_Adaptive_IsEnabled] + !$EXP[Exp_DialogTheme_IsLight]]</expression>
 
+    <variable name="Exp_Var_DialogTheme_IsLight">
+        <value condition="$EXP[Exp_DialogTheme_IsLight]">True</value>
+    </variable>
+    <variable name="Exp_Var_DialogTheme_IsAdaptive">
+        <value condition="$EXP[Exp_DialogTheme_IsAdaptive]">True</value>
+    </variable>
+    <variable name="Exp_Var_DialogTheme_IsStandard">
+        <value condition="!$EXP[Exp_DialogTheme_IsAdaptive] + !$EXP[Exp_DialogTheme_IsLight]">True</value>
+    </variable>
+
     <expression name="Exp_ColourTheme_IsLight">[String.IsEqual(Skin.CurrentColourTheme,Light)]</expression>
     <expression name="Exp_ColourTheme_IsGrey">[String.IsEqual(Skin.CurrentColourTheme,Dark Grey) | String.IsEqual(Skin.CurrentColourTheme,Dark Grey - Light dialogs)]</expression>
     <expression name="Exp_ColourTheme_IsBlack">[String.IsEqual(Skin.CurrentColourTheme,SKINDEFAULT) | String.IsEqual(Skin.CurrentColourTheme,Skin default - Light dialogs)]</expression>
@@ -58,11 +68,28 @@
     <expression name="Exp_ColourHighlight_IsPurple">[String.IsEqual(Skin.String(focuscolor.name),ff5528a8) + String.IsEqual(Skin.String(gradientcolor.name),ff5528a8) + Skin.HasSetting(EnableMonochromeHighlight) + !Skin.HasSetting(InvertSelectedText)]</expression>
     <expression name="Exp_ColourHighlight_IsCustom">[![$EXP[Exp_ColourHighlight_IsAqua] | $EXP[Exp_ColourHighlight_IsTropical] | $EXP[Exp_ColourHighlight_IsMiami] | $EXP[Exp_ColourHighlight_IsWhite] | $EXP[Exp_ColourHighlight_IsBlue] | $EXP[Exp_ColourHighlight_IsCoral] | $EXP[Exp_ColourHighlight_IsOrange] | $EXP[Exp_ColourHighlight_IsPurple]]]</expression>
 
-    <expression name="Exp_ColourPreset_MiamiVaporwave">[$EXP[Exp_ColourHighlight_IsMiami] + String.IsEmpty(Skin.String(Background.DialogImage)) + [Skin.String(Background.Image,special://skin/extras/backgrounds/blur/purple_blur.jpg) | String.IsEmpty(Skin.String(Background.Image))]]</expression>
-    <expression name="Exp_ColourPreset_AquaClassic">[$EXP[Exp_ColourHighlight_IsAqua] + Skin.String(Background.DialogImage,Green) + Skin.String(Background.Image,special://skin/extras/backgrounds/blur/green_blur.jpg)]</expression>
-    <expression name="Exp_ColourPreset_TropicalSunset">[$EXP[Exp_ColourHighlight_IsTropical] + Skin.String(Background.DialogImage,Blush) + Skin.String(Background.Image,special://skin/extras/backgrounds/blur/pink_blur.jpg)]</expression>
-    <expression name="Exp_ColourPreset_BlueSlate">[$EXP[Exp_ColourHighlight_IsBlue] + Skin.String(Background.DialogImage,Slate) + Skin.String(Background.Image,special://skin/extras/backgrounds/blur/slate_blur.jpg)]</expression>
-    <expression name="Exp_ColourPreset_MidnightPurple">[$EXP[Exp_ColourHighlight_IsPurple] + Skin.String(Background.DialogImage,Coal) + Skin.String(Background.Image,special://skin/extras/backgrounds/blur/coal_blur.jpg)]</expression>
+    <expression name="Exp_ColourPreset_MiamiVaporwave">[$EXP[Exp_ColourHighlight_IsMiami] + [String.IsEmpty(Skin.String(Background.DialogImage)) | Skin.String(Background.DialogImage,Adaptive)] + [Skin.String(Background.Image,special://skin/extras/backgrounds/blur/purple_blur.jpg) | String.IsEmpty(Skin.String(Background.Image))]]</expression>
+    <expression name="Exp_ColourPreset_AquaClassic">[$EXP[Exp_ColourHighlight_IsAqua] + [Skin.String(Background.DialogImage,Green) | Skin.String(Background.DialogImage,Adaptive)] + Skin.String(Background.Image,special://skin/extras/backgrounds/blur/green_blur.jpg)]</expression>
+    <expression name="Exp_ColourPreset_TropicalSunset">[$EXP[Exp_ColourHighlight_IsTropical] + [Skin.String(Background.DialogImage,Blush) | Skin.String(Background.DialogImage,Adaptive)] + Skin.String(Background.Image,special://skin/extras/backgrounds/blur/pink_blur.jpg)]</expression>
+    <expression name="Exp_ColourPreset_BlueSlate">[$EXP[Exp_ColourHighlight_IsBlue] + [Skin.String(Background.DialogImage,Slate) | Skin.String(Background.DialogImage,Adaptive)] + Skin.String(Background.Image,special://skin/extras/backgrounds/blur/slate_blur.jpg)]</expression>
+    <expression name="Exp_ColourPreset_MidnightPurple">[$EXP[Exp_ColourHighlight_IsPurple] + [Skin.String(Background.DialogImage,Coal) | Skin.String(Background.DialogImage,Adaptive)] + Skin.String(Background.Image,special://skin/extras/backgrounds/blur/coal_blur.jpg)]</expression>
+
+
+    <variable name="Exp_Var_ColourPreset_MiamiVaporwave">
+        <value condition="$EXP[Exp_ColourPreset_MiamiVaporwave]">True</value>
+    </variable>
+    <variable name="Exp_Var_ColourPreset_AquaClassic">
+        <value condition="$EXP[Exp_ColourPreset_AquaClassic]">True</value>
+    </variable>
+    <variable name="Exp_Var_ColourPreset_TropicalSunset">
+        <value condition="$EXP[Exp_ColourPreset_TropicalSunset]">True</value>
+    </variable>
+    <variable name="Exp_Var_ColourPreset_BlueSlate">
+        <value condition="$EXP[Exp_ColourPreset_BlueSlate]">True</value>
+    </variable>
+    <variable name="Exp_Var_ColourPreset_MidnightPurple">
+        <value condition="$EXP[Exp_ColourPreset_MidnightPurple]">True</value>
+    </variable>
 
     <!-- ============== -->
     <!-- Home Side Menu -->
@@ -174,5 +201,18 @@
     <expression name="Exp_Furniture_PVR">[[Window.IsVisible(MyPVRGuide.xml) | Window.IsVisible(MyPVRChannels.xml)] + !Window.IsVisible(DialogPVRInfo.xml)]</expression>
 
     <expression name="Exp_Group_Bumper_HasFocus">[Control.HasFocus(330) | Control.HasFocus(332) | Control.HasFocus(333)]</expression>
+
+
+    <variable name="Exp_Var_Layout_IsStandard">
+        <value condition="!Skin.HasSetting(Hub.Home.DisableSubmenu) + !Skin.HasSetting(Hub.Movies.DisableSubmenu) + !Skin.HasSetting(Hub.TVShows.DisableSubmenu) + !Skin.HasSetting(Hub.Music.DisableSubmenu) + !Skin.HasSetting(Hub.PVR.DisableSubmenu) + !Skin.HasSetting(Hub.Custom01.DisableSubmenu) + !Skin.HasSetting(Hub.Custom02.DisableSubmenu) + !Skin.HasSetting(Hub.Custom03.DisableSubmenu) + !Skin.HasSetting(Hub.Custom04.DisableSubmenu) + !Skin.HasSetting(Hubs.WidgetSelector)">True</value>
+    </variable>
+
+    <variable name="Exp_Var_Layout_IsWidgets">
+        <value condition="Skin.HasSetting(Hub.Home.DisableSubmenu) + Skin.HasSetting(Hub.Movies.DisableSubmenu) + Skin.HasSetting(Hub.TVShows.DisableSubmenu) + Skin.HasSetting(Hub.Music.DisableSubmenu) + Skin.HasSetting(Hub.PVR.DisableSubmenu) + Skin.HasSetting(Hub.Custom01.DisableSubmenu) + Skin.HasSetting(Hub.Custom02.DisableSubmenu) + Skin.HasSetting(Hub.Custom03.DisableSubmenu) + Skin.HasSetting(Hub.Custom04.DisableSubmenu) + !Skin.HasSetting(Hubs.WidgetSelector)">True</value>
+    </variable>
+
+    <variable name="Exp_Var_Layout_IsCombined">
+        <value condition="Skin.HasSetting(Hub.Home.DisableSubmenu) + Skin.HasSetting(Hub.Movies.DisableSubmenu) + Skin.HasSetting(Hub.TVShows.DisableSubmenu) + Skin.HasSetting(Hub.Music.DisableSubmenu) + Skin.HasSetting(Hub.PVR.DisableSubmenu) + Skin.HasSetting(Hub.Custom01.DisableSubmenu) + Skin.HasSetting(Hub.Custom02.DisableSubmenu) + Skin.HasSetting(Hub.Custom03.DisableSubmenu) + Skin.HasSetting(Hub.Custom04.DisableSubmenu) + Skin.HasSetting(Hubs.WidgetSelector)">True</value>
+    </variable>
 
 </includes>
