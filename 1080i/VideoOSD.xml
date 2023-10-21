@@ -80,7 +80,7 @@
                     <height>120</height>
                     <left>-20</left>
                     <orientation>horizontal</orientation>
-                    <itemgap>40</itemgap>
+                    <itemgap>37</itemgap>
                     <onleft>6020</onleft>
                     <onright>6005</onright>
                     <ondown>ActivateWindow($VAR[Action_OSD_Main_OnDown])</ondown>
@@ -91,6 +91,7 @@
                         <param name="icon">osd/jump-back.png</param>
                         <param name="id">6001</param>
                         <param name="groupid">6101</param>
+                        <param name="itemgap">37</param>
                         <onclick>Seek(-10)</onclick>
                         <onup>8200</onup>
                     </include>
@@ -100,6 +101,7 @@
                         <param name="icon">special://skin/extras/icons/list-ol.png</param>
                         <param name="id">6001</param>
                         <param name="groupid">6101</param>
+                        <param name="itemgap">37</param>
                         <!-- <onclick>Close</onclick> -->
                         <!-- <onclick>ActivateWindow(pvrosdchannels)</onclick> -->
                         <onclick>Close</onclick>
@@ -123,6 +125,7 @@
                         <param name="icon">special://skin/extras/icons/list.png</param>
                         <param name="id">6002</param>
                         <param name="groupid">6102</param>
+                        <param name="itemgap">37</param>
                         <onclick>Close</onclick>
                         <onclick>ActivateWindow(TVGuide)</onclick>
                         <onup>8200</onup>
@@ -135,6 +138,7 @@
                         <param name="icon">special://skin/extras/icons/forward-step.png</param>
                         <param name="id">6003</param>
                         <param name="groupid">6103</param>
+                        <param name="itemgap">37</param>
                         <onclick condition="Integer.IsLess(VideoPlayer.PlaylistPosition,VideoPlayer.PlaylistLength)">PlayerControl(Next)</onclick>
                         <onclick condition="!Integer.IsLess(VideoPlayer.PlaylistPosition,VideoPlayer.PlaylistLength)">SetFocus(513)</onclick>
                         <onclick condition="!Integer.IsLess(VideoPlayer.PlaylistPosition,VideoPlayer.PlaylistLength)">Action(Select)</onclick>
@@ -149,14 +153,16 @@
                         <param name="icon">special://skin/extras/icons/record-vinyl.png</param>
                         <param name="id">6003</param>
                         <param name="groupid">6103</param>
+                        <param name="itemgap">37</param>
+                        <param name="iconoffset_condition">[PVR.IsRecordingPlayingChannel + PVR.CanRecordPlayingChannel]</param>
                         <enable>PVR.CanRecordPlayingChannel</enable>
-                        <label>[CR][CR][CR]$VAR[Label_OSD_PVR_Recording]</label>
-                        <textcolor>panel_fg_100</textcolor>
-                        <focusedcolor>panel_fg_100</focusedcolor>
-                        <shadowcolor>shadow_hard</shadowcolor>
+                        <label>$VAR[Label_OSD_PVR_Recording]</label>
+                        <textcolor>panel_fg_70</textcolor>
+                        <focusedcolor>$VAR[ColorSelected]</focusedcolor>
                         <font>font_hint</font>
                         <align>center</align>
                         <aligny>top</aligny>
+                        <textoffsety>45</textoffsety>
                         <textoffsetx>0</textoffsetx>
                         <onclick>PVR.ToggleRecordPlayingChannel</onclick>
                     </include>
@@ -168,6 +174,7 @@
                         <param name="icon">special://skin/extras/icons/stop.png</param>
                         <param name="id">6004</param>
                         <param name="groupid">6104</param>
+                        <param name="itemgap">37</param>
                         <onclick>PlayerControl(Stop)</onclick>
                         <onup>8200</onup>
                     </include>
@@ -179,7 +186,7 @@
                     <height>120</height>
                     <right>-20</right>
                     <orientation>horizontal</orientation>
-                    <itemgap>40</itemgap>
+                    <itemgap>37</itemgap>
                     <align>right</align>
                     <onleft>6004</onleft>
                     <onright>6020</onright>
@@ -192,6 +199,7 @@
                         <param name="visible">true</param>
                         <param name="id">6005</param>
                         <param name="groupid">6105</param>
+                        <param name="itemgap">37</param>
                         <onclick>ActivateWindow(fullscreeninfo)</onclick>
                     </include>
                     <include content="OSD_Button">
@@ -201,14 +209,16 @@
                         <param name="visible">true</param>
                         <param name="id">6006</param>
                         <param name="groupid">6106</param>
-                        <label>[CR][CR][CR]$INFO[VideoPlayer.AudioLanguage,[UPPERCASE],[/UPPERCASE]]</label>
-                        <textcolor>panel_fg_100</textcolor>
-                        <focusedcolor>panel_fg_100</focusedcolor>
-                        <shadowcolor>shadow_hard</shadowcolor>
+                        <param name="itemgap">37</param>
+                        <param name="iconoffset_condition">!String.IsEmpty(VideoPlayer.AudioLanguage)</param>
+                        <label>$INFO[VideoPlayer.AudioLanguage,[UPPERCASE],[/UPPERCASE]]</label>
+                        <textcolor>panel_fg_70</textcolor>
+                        <focusedcolor>$VAR[ColorSelected]</focusedcolor>
                         <font>font_hint</font>
                         <align>center</align>
                         <aligny>top</aligny>
                         <textoffsetx>0</textoffsetx>
+                        <textoffsety>45</textoffsety>
                         <onclick>ActivateWindow(osdaudiosettings)</onclick>
                         <onup>SetFocus(6206)</onup>
                     </include>
@@ -218,14 +228,16 @@
                         <param name="icon">special://skin/extras/icons/quote.png</param>
                         <param name="id">6007</param>
                         <param name="groupid">6107</param>
-                        <label>[CR][CR][CR]$VAR[Label_OSD_SubtitlesLanguage]</label>
-                        <textcolor>panel_fg_100</textcolor>
-                        <focusedcolor>panel_fg_100</focusedcolor>
-                        <shadowcolor>shadow_hard</shadowcolor>
+                        <param name="itemgap">37</param>
+                        <param name="iconoffset_condition">[VideoPlayer.SubtitlesEnabled + !String.IsEmpty(VideoPlayer.SubtitlesLanguage)]</param>
+                        <label>$VAR[Label_OSD_SubtitlesLanguage]</label>
+                        <textcolor>panel_fg_70</textcolor>
+                        <focusedcolor>$VAR[ColorSelected]</focusedcolor>
                         <font>font_hint</font>
                         <align>center</align>
                         <aligny>top</aligny>
                         <textoffsetx>0</textoffsetx>
+                        <textoffsety>45</textoffsety>
                         <onclick>ActivateWindow(osdsubtitlesettings)</onclick>
                         <onup>SetFocus(6207)</onup>
                     </include>
@@ -236,6 +248,7 @@
                         <param name="visible">true</param>
                         <param name="id">6008</param>
                         <param name="groupid">6108</param>
+                        <param name="itemgap">37</param>
                         <onclick>ActivateWindow(osdvideosettings)</onclick>
                         <onup>SetFocus(7800)</onup>
                     </include>

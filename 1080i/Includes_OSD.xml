@@ -395,6 +395,7 @@
         <param name="vertical">false</param>
         <param name="autoclose">false</param>
         <param name="grouplist">true</param>
+        <param name="iconoffset_condition">false</param>
         <definition>
             <control type="button" id="$PARAM[id]">
                 <height>$PARAM[size]</height>
@@ -420,6 +421,7 @@
                     <param name="height">0</param>
                 </include>
                 <control type="group">
+                    <animation effect="slide" start="0" end="0,-8" condition="$PARAM[iconoffset_condition]">Conditional</animation>
                     <include content="Object_Left" condition="!$PARAM[vertical] + $PARAM[grouplist]">
                         <param name="left">-$PARAM[size]</param>
                     </include>
@@ -454,8 +456,14 @@
             <right>view_pad</right>
             <bottom>-280</bottom>
             <height>400</height>
+            <include content="OSD_Landscape_Info" condition="VideoPlayer.Content(livetv)">
+                <param name="top_label">$INFO[VideoPlayer.StartTime]$INFO[VideoPlayer.EndTime,  -  ,]</param>
+                <bottom>120</bottom>
+                <left>0</left>
+            </include>
             <!-- Left Details -->
             <control type="grouplist">
+                <visible>!VideoPlayer.Content(livetv)</visible>
                 <left>-40</left>
                 <top>-50</top>
                 <orientation>vertical</orientation>
@@ -558,6 +566,7 @@
             </control>
 
             <control type="group">
+                <visible>!VideoPlayer.Content(livetv)</visible>
                 <bottom>120</bottom>
                 <right>0</right>
                 <width>view_poster_item_w</width>
@@ -570,6 +579,7 @@
 
             <!-- Codecs -->
             <include content="OSD_Codecs">
+                <param name="include_fps">false</param>
                 <centerbottom>20</centerbottom>
             </include>
             <control type="image">
@@ -878,6 +888,7 @@
         <param name="align">left</param>
         <param name="anchor">true</param>
         <param name="color">panel_fg</param>
+        <param name="include_fps">true</param>
         <definition>
             <control type="grouplist">
                 <nested />
@@ -913,7 +924,7 @@
                 </include>
 
                 <!-- FPS -->
-                <include content="OSD_Codecs_FPS">
+                <include content="OSD_Codecs_FPS" condition="$PARAM[include_fps]">
                     <param name="topcolor">$PARAM[color]_100</param>
                     <param name="bottomcolor">$PARAM[color]_70</param>
                     <param name="directory">monochrome</param>
@@ -1146,17 +1157,23 @@
         </definition>
     </include>
 
-    <include name="OSD_PVRChannelSwitch">
-        <control type="group">
-            <visible>Player.ShowInfo</visible>
-            <visible>!Window.IsVisible(videoosd)</visible>
-            <animation type="Visible" reversible="false">
-                <effect type="fade" start="0" end="100" time="300" delay="300"/>
-            </animation>
-            <control type="image">
-                <texture colordiffuse="panel_bg">background/combined_flixart.png</texture>
-            </control>
+    <include name="OSD_Landscape_Info_SubLine_Item">
+        <control type="label">
+            <label>$PARAM[label]</label>
+            <visible>$PARAM[visible]</visible>
+            <textcolor>panel_fg_70</textcolor>
+            <selectedcolor>panel_fg_70</selectedcolor>
+            <font>font_mini</font>
+            <align>left</align>
+            <width>auto</width>
+        </control>
+    </include>
+
+    <include name="OSD_Landscape_Info">
+        <param name="top_label">$VAR[Label_OSD_Title]</param>
+        <definition>
             <control type="group">
+                <nested />
                 <bottom>view_top</bottom>
                 <left>view_side</left>
                 <width>view_landscape_itemlayout_w</width>
@@ -1164,58 +1181,111 @@
                 <control type="group">
                     <top>-40</top>
                     <height>view_landscape_item_h</height>
-                    <include content="Layout_Landscape">
-                        <param name="selected">false</param>
-                        <param name="icon">$VAR[Image_OSD_PVR_Icon]</param>
-                        <param name="textcolor">panel_fg</param>
-                        <param name="listitem">PVR</param>
-                        <param name="affix">null</param>
-                        <param name="progress">EpgEventProgress</param>
-                        <param name="item_w">view_landscape_item_w</param>
-                        <param name="item_h">view_landscape_item_h</param>
-                        <param name="itemlayout_w">view_landscape_itemlayout_w</param>
-                        <param name="itemlayout_h">view_landscape_itemlayout_h</param>
+                    <width>view_landscape_item_w</width>
+                    <include>Object_ItemBack</include>
+                    <control type="image">
+                        <texture background="true" diffuse="diffuse/landscape_w380_h214.png">$VAR[Image_OSD_PVR_Icon]</texture>
+                        <aspectratio scalediffuse="false">keep</aspectratio>
+                    </control>
+                    <include content="Object_ProgressLine">
+                        <param name="progress">PVR.EpgEventProgress</param>
                     </include>
                     <control type="group">
-                        <width>view_landscape_item_w</width>
                         <top>view_landscape_item_h</top>
                         <control type="group">
                             <top>27</top>
+                            <height>20</height>
                             <control type="label">
-                                <label>$INFO[VideoPlayer.ChannelName]</label>
+                                <label>$PARAM[top_label]</label>
                                 <textcolor>panel_fg_90</textcolor>
                                 <selectedcolor>panel_fg_90</selectedcolor>
                                 <font>font_mini_bold</font>
                                 <align>left</align>
-                                <height>20</height>
                             </control>
+                            <!-- <control type="image">
+                                <aspectratio align="right">keep</aspectratio>
+                                <texture colordiffuse="panel_fg_90">$VAR[Image_OSD_VideoQuality]</texture>
+                                <centertop>52%</centertop>
+                                <width>37</width>
+                                <height>24</height>
+                                <right>0</right>
+                            </control> -->
                         </control>
                         <control type="group">
                             <top>56</top>
-                            <control type="label">
-                                <label>$INFO[VideoPlayer.StartTime]$INFO[VideoPlayer.EndTime, - ,]</label>
-                                <textcolor>panel_fg_70</textcolor>
-                                <selectedcolor>panel_fg_70</selectedcolor>
-                                <font>font_mini</font>
-                                <align>left</align>
-                                <height>20</height>
-                            </control>
-                        </control>
-                    </control>
-                    <control type="group">
-                        <top>100%</top>
-                        <control type="textbox">
+                            <height>20</height>
                             <width>1080</width>
-                            <top>140</top>
-                            <label>[COLOR=panel_fg_100][B]$INFO[VideoPlayer.Title,, ~ ][/B][/COLOR]$INFO[VideoPlayer.Season,S,]$INFO[VideoPlayer.Episode,E, ]$INFO[VideoPlayer.Plot]</label>
-                            <font>font_mini_plot</font>
-                            <textcolor>panel_fg_70</textcolor>
-                            <height>80</height>
+                            <control type="grouplist">
+                                <height>40</height>
+                                <centertop>50%</centertop>
+                                <orientation>horizontal</orientation>
+                                <itemgap>10</itemgap>
+
+                                <!-- PVR Channel Name -->
+                                <include content="OSD_Landscape_Info_SubLine_Item">
+                                    <param name="label">$INFO[VideoPlayer.ChannelName]</param>
+                                    <param name="visible">!String.IsEmpty(VideoPlayer.ChannelName)</param>
+                                </include>
+
+                                <!-- Season / Episode -->
+                                <include content="OSD_Landscape_Info_SubLine_Item">
+                                    <param name="label">$INFO[VideoPlayer.Season,,x]$INFO[VideoPlayer.Episode,0,]</param>
+                                    <param name="visible">VideoPlayer.Content(episodes) + !String.IsEmpty(VideoPlayer.Episode) + Integer.IsLess(VideoPlayer.Episode,10)</param>
+                                </include>
+                                <include content="OSD_Landscape_Info_SubLine_Item">
+                                    <param name="label">$INFO[VideoPlayer.Season,,x]$INFO[VideoPlayer.Episode,,]</param>
+                                    <param name="visible">VideoPlayer.Content(episodes) + !String.IsEmpty(VideoPlayer.Episode) + !Integer.IsLess(VideoPlayer.Episode,10)</param>
+                                </include>
+
+                                <!-- Year / Premiered -->
+                                <include content="OSD_Landscape_Info_SubLine_Item">
+                                    <param name="label">$INFO[VideoPlayer.Year]</param>
+                                    <param name="visible">!String.IsEmpty(VideoPlayer.Year) + [String.IsEmpty(VideoPlayer.Premiered) | VideoPlayer.Content(movies)]</param>
+                                </include>
+                                <include content="OSD_Landscape_Info_SubLine_Item" condition="!Skin.HasSetting(InfoLine.EndTime)">
+                                    <param name="label">$INFO[VideoPlayer.Premiered]</param>
+                                    <param name="visible">!String.IsEmpty(VideoPlayer.Premiered) + !VideoPlayer.Content(movies)</param>
+                                </include>
+
+                                <!-- MPAA -->
+                                <include content="OSD_Landscape_Info_SubLine_Item">
+                                    <param name="label">$INFO[VideoPlayer.MPAA]</param>
+                                    <param name="visible">!String.IsEmpty(VideoPlayer.MPAA)</param>
+                                </include>
+
+                                <!-- Genres -->
+                                <include content="OSD_Landscape_Info_SubLine_Item" condition="!Skin.HasSetting(InfoLine.EndTime)">
+                                    <param name="label">$INFO[Window(Home).Property(TMDbHelper.Player.Genre.1.Name)]</param>
+                                    <param name="visible">String.IsEmpty(VideoPlayer.Property(Genre.1.Name)) + !String.IsEmpty(Window(Home).Property(TMDbHelper.Player.Genre.1.Name))</param>
+                                </include>
+
+                                <!-- Ends -->
+                                <include content="OSD_Landscape_Info_SubLine_Item" condition="Skin.HasSetting(InfoLine.EndTime)">
+                                    <param name="label">$INFO[Player.FinishTime,$LOCALIZE[31184] ,]</param>
+                                    <param name="visible">!String.IsEmpty(Player.FinishTime)</param>
+                                </include>
+                            </control>
                         </control>
                     </control>
                 </control>
             </control>
-        </control>
+        </definition>
+    </include>
+
+    <include name="OSD_PVRChannelSwitch">
+        <include content="OSD_Landscape_Info">
+            <visible>Player.ShowInfo</visible>
+            <visible>!Window.IsVisible(videoosd)</visible>
+            <include>Animation_FadeIn_Delay</include>
+            <control type="textbox">
+                <width>1080</width>
+                <label>[COLOR=panel_fg_100][B]$INFO[VideoPlayer.StartTime,,  ]$INFO[VideoPlayer.EndTime,-  ,  ][/B][/COLOR]$INFO[VideoPlayer.Season,S,]$INFO[VideoPlayer.Episode,E,: ]$INFO[VideoPlayer.Plot]</label>
+                <font>font_mini_plot</font>
+                <textcolor>panel_fg_70</textcolor>
+                <height>80</height>
+                <bottom>-140</bottom>
+            </control>
+        </include>
     </include>
 
     <include name="OSD_Panel">
@@ -1232,7 +1302,15 @@
             <control type="group">
                 <include>OSD_Progress_Bar</include>
                 <include>OSD_Progress_Labels</include>
-                <include>OSD_Progress_Details</include>
+                <control type="group">
+                    <!-- <include content="Animation_Fade_In">
+                        <param name="condition">$EXP[Exp_OSD_ExpandInfo]</param>
+                    </include>
+                    <include content="Animation_ConditionalFade">
+                        <param name="condition">!$EXP[Exp_OSD_ExpandInfo]</param>
+                    </include> -->
+                    <include>OSD_Progress_Details</include>
+                </control>
                 <include>OSD_Progress_Information</include>
                 <control type="group">
                     <width>40</width>
