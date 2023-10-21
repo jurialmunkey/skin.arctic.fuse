@@ -148,7 +148,6 @@
     </include>
 
     <variable name="Action_Menu_ID">
-        <value condition="Skin.HasSetting(Home.HideSideMenu)">30001</value>
         <value>303</value>
     </variable>
 
@@ -367,13 +366,23 @@
     </include>
 
     <include name="Action_View_Movement_OnUp">
-        <onup condition="$EXP[Exp_FilterWall_IsEnabled] + $EXP[Exp_FilterWall_IsViewtype]">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=67,clear_prop=Null)</onup>
-        <onup condition="![$EXP[Exp_FilterWall_IsEnabled] + $EXP[Exp_FilterWall_IsViewtype]]">ActivateWindow(1113)</onup>
+        <onup condition="Skin.String(Movement.Library.OnUp,Wall)">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=67,clear_prop=Null)</onup>
+        <onup condition="Skin.String(Movement.Library.OnUp,Plot)">ActivateWindow(1113)</onup>
+        <onup condition="Skin.String(Movement.Library.OnUp,Menu)">SetFocus($VAR[Action_Menu_ID],$VAR[Action_Menu_Position],absolute)</onup>
+        <onup condition="Skin.String(Movement.Library.OnUp,Bump)">SetFocus(330)</onup>
+        <onup condition="Skin.String(Movement.Library.OnUp,View)">$VAR[Action_Var_ToMediaFilter]</onup>
+    </include>
+
+    <include name="Action_View_Movement_OnDown">
+        <ondown condition="Skin.String(Movement.Library.OnDown,Wall)">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=67,clear_prop=Null)</ondown>
+        <ondown condition="Skin.String(Movement.Library.OnDown,Plot)">ActivateWindow(1113)</ondown>
+        <ondown condition="Skin.String(Movement.Library.OnDown,Menu)">SetFocus($VAR[Action_Menu_ID],$VAR[Action_Menu_Position],absolute)</ondown>
+        <ondown condition="Skin.String(Movement.Library.OnDown,Bump)">SetFocus(330)</ondown>
+        <ondown condition="Skin.String(Movement.Library.OnDown,View)">$VAR[Action_Var_ToMediaFilter]</ondown>
     </include>
 
     <include name="Action_Menu_Movement_OnBack">
-        <onback condition="Skin.HasSetting(Home.HideSideMenu)">30001</onback>
-        <onback condition="!Skin.HasSetting(Home.HideSideMenu)">303</onback>
+        <onback>303</onback>
         <onback>SetProperty(List.ViewContainer.Reset,$NUMBER[$PARAM[id]])</onback>
         <onback>SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onback>
         <onback>SetFocus($VAR[Action_Menu_ID],$VAR[Action_Menu_Position],absolute)</onback>
@@ -385,8 +394,7 @@
         <definition>
 
             <!-- Menu -->
-            <onleft condition="Skin.String($PARAM[string],Menu) + Skin.HasSetting(Home.HideSideMenu)">30001</onleft>
-            <onleft condition="Skin.String($PARAM[string],Menu) + !Skin.HasSetting(Home.HideSideMenu)">303</onleft>
+            <onleft condition="Skin.String($PARAM[string],Menu)">303</onleft>
             <onleft condition="Skin.String($PARAM[string],Menu)">SetProperty(List.ViewContainer,$PARAM[id])</onleft>
             <onleft condition="Skin.String($PARAM[string],Menu)">$PARAM[onmenu]</onleft>
 
@@ -407,8 +415,7 @@
         <definition>
 
             <!-- Menu -->
-            <onright condition="Skin.String($PARAM[string],Menu) + Skin.HasSetting(Home.HideSideMenu)">30001</onright>
-            <onright condition="Skin.String($PARAM[string],Menu) + !Skin.HasSetting(Home.HideSideMenu)">303</onright>
+            <onright condition="Skin.String($PARAM[string],Menu)">303</onright>
             <onright condition="Skin.String($PARAM[string],Menu)">SetProperty(List.ViewContainer,$PARAM[id])</onright>
             <onright condition="Skin.String($PARAM[string],Menu) + $PARAM[refocus]">SetFocus($PARAM[id],0,absolute)</onright>
             <onright condition="Skin.String($PARAM[string],Menu)">$PARAM[onmenu]</onright>
@@ -481,68 +488,14 @@
         <onup condition="$EXP[Exp_FilterWall_IsMedia]">SetProperty(View.WallSwitchRow,1)</onup>
         <onup condition="$EXP[Exp_FilterWall_IsMedia]">SetFocus(67)</onup>
         <onup condition="!$EXP[Exp_FilterWall_IsMedia]">SetFocus($VAR[Action_View_ContentID])</onup>
-
         <onback>68</onback>
         <onclick>SetFocus(68)</onclick>
-
-        <include>Action_ToMediaFilter_OnDown</include>
-
+        <ondown>$VAR[Action_Var_ToMediaFilter]</ondown>
     </include>
 
-    <include name="Action_ToScrollbar_OnUp">
-        <param name="condition">true</param>
-        <definition>
-            <onup condition="$PARAM[condition] + $EXP[Exp_AlphabetTypes_Only] + !Skin.HasSetting(DisableAlphabetScrollbar)">65</onup>
-            <onup condition="$PARAM[condition] + [!$EXP[Exp_AlphabetTypes_Only] | Skin.HasSetting(DisableAlphabetScrollbar)]">64</onup>
-        </definition>
-    </include>
-
-    <include name="Action_ToScrollbar_OnDown">
-        <param name="condition">true</param>
-        <definition>
-            <ondown condition="$PARAM[condition] + $EXP[Exp_AlphabetTypes_Only] + !Skin.HasSetting(DisableAlphabetScrollbar)">65</ondown>
-            <ondown condition="$PARAM[condition] + [!$EXP[Exp_AlphabetTypes_Only] | Skin.HasSetting(DisableAlphabetScrollbar)]">64</ondown>
-        </definition>
-    </include>
-
-    <include name="Action_Row_OnDown">
-        <include>Action_ToMediaFilter_OnDown</include>
-    </include>
-
-    <include name="Action_ToMediaFilter_OnDown">
-        <ondown>Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=9001,clear_prop=Null)</ondown>
-    </include>
-
-    <include name="Action_ToMediaWall_OnClick">
-        <param name="condition">true</param>
-        <definition>
-            <onclick condition="$PARAM[condition]">$PARAM[onclick]</onclick>
-            <onclick condition="$PARAM[condition]">$PARAM[onclick2]</onclick>
-        </definition>
-    </include>
-
-    <include name="Action_Row_WallView_OnDown">
-        <ondown condition="[Container.HasNext | Container.HasPrevious] + [Control.IsVisible(50) | Control.IsVisible(51) | Control.IsVisible(52) | Control.IsVisible(57)]">SetProperty(WallMode,$INFO[Container.FolderPath])</ondown>
-        <ondown condition="[Container.HasNext | Container.HasPrevious] + Control.IsVisible(50)">SetFocus(506)</ondown>
-        <ondown condition="[Container.HasNext | Container.HasPrevious] + Control.IsVisible(51)">SetFocus(516)</ondown>
-        <ondown condition="[Container.HasNext | Container.HasPrevious] + Control.IsVisible(52)">SetFocus(526)</ondown>
-        <ondown condition="[Container.HasNext | Container.HasPrevious] + Control.IsVisible(57)">SetFocus(576)</ondown>
-    </include>
-
-    <include name="Action_Widget_Refocus_Click">
-        <onclick>SetFocus(5004)</onclick>
-        <onclick>SetFocus(5003)</onclick>
-        <onclick>SetFocus(5002)</onclick>
-        <onclick>SetFocus(5001)</onclick>
-        <onclick>SetFocus(5000)</onclick>
-    </include>
-
-    <include name="Action_Widget_Play_Click">
-        <include>Action_Widget_Refocus_Click</include>
-        <onclick>Close</onclick>
-        <onclick condition="!Window.IsVisible(MyVideoNav.xml)">AlarmClock(callinfo,RunScript(plugin.video.themoviedb.helper,close_dialog=1190,call_path=$INFO[Container($PARAM[id]).ListItem.FolderPath]),00:01,silent)</onclick>
-        <onclick condition="Window.IsVisible(MyVideoNav.xml)">AlarmClock(callinfo,RunScript(plugin.video.themoviedb.helper,close_dialog=1190,call_update=$INFO[Container($PARAM[id]).ListItem.FolderPath]),00:01,silent)</onclick>
-    </include>
+    <variable name="Action_Var_ToMediaFilter">
+        <value>Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=9001,clear_prop=Null)</value>
+    </variable>
 
     <include name="_Action_Blur_Onload">
         <param name="sourceimage">Art(fanart)</param>
@@ -570,18 +523,22 @@
         </include>
     </include>
 
-
+    <variable name="Action_Var_BuildTextures">
+        <value>script.texturemaker,bg=$VAR[ColorHighlight],fg=$VAR[ColorGradient],alpha=1.0,folder=ArcticFuse,selectbox_thin=special://skin/extras/textures/selectbox_thin.png,scrollv=special://skin/extras/textures/scrollv.png,scrollh=special://skin/extras/textures/scrollh.png,box=special://skin/extras/textures/box.png,circle=special://skin/extras/textures/circle.png,menu=special://skin/extras/textures/menu.png,menumain+overlay+slicing{240|80}=special://skin/extras/textures/menumain.png,buttonmain+slicing{240|80}=special://skin/extras/textures/menumain.png,main=special://skin/extras/textures/main.png,circlebuttondialog=special://skin/extras/textures/circlebutton.png</value>
+    </variable>
 
     <include name="Action_BuildTextures_Onload">
-        <onload>RunScript(script.texturemaker,bg=$VAR[ColorHighlight],fg=$VAR[ColorGradient],alpha=1.0,folder=ArcticFuse,selectbox_thin=special://skin/extras/textures/selectbox_thin.png,scrollv=special://skin/extras/textures/scrollv.png,scrollh=special://skin/extras/textures/scrollh.png,box=special://skin/extras/textures/box.png,circle=special://skin/extras/textures/circle.png,menu=special://skin/extras/textures/menu.png,menumain+overlay+slicing{240|80}=special://skin/extras/textures/menumain.png,buttonmain+slicing{240|80}=special://skin/extras/textures/menumain.png,main=special://skin/extras/textures/main.png,circlebuttondialog=special://skin/extras/textures/circlebutton.png,no_reload)</onload>
+        <onload>RunScript($VAR[Action_Var_BuildTextures],no_reload)</onload>
     </include>
+
     <include name="Action_BuildTextures_Onclick">
-        <onclick condition="!String.IsEqual(Window(Home).Property(ColorPicker_Type),Indicator)">runscript(script.texturemaker,bg=$VAR[ColorHighlight],fg=$VAR[ColorGradient],alpha=1.0,folder=ArcticFuse,selectbox_thin=special://skin/extras/textures/selectbox_thin.png,scrollv=special://skin/extras/textures/scrollv.png,scrollh=special://skin/extras/textures/scrollh.png,box=special://skin/extras/textures/box.png,circle=special://skin/extras/textures/circle.png,menu=special://skin/extras/textures/menu.png,menumain+overlay+slicing{240|80}=special://skin/extras/textures/menumain.png,buttonmain+slicing{240|80}=special://skin/extras/textures/menumain.png,main=special://skin/extras/textures/main.png,circlebuttondialog=special://skin/extras/textures/circlebutton.png,reload=1111)</onclick>
+        <onclick condition="!String.IsEqual(Window(Home).Property(ColorPicker_Type),Indicator)">runscript($VAR[Action_Var_BuildTextures],reload=1111)</onclick>
     </include>
+
     <include name="Action_BuildTextures_Onclick_Preset">
         <param name="window_id">1118</param>
         <definition>
-            <onclick>runscript(script.texturemaker,bg=$VAR[ColorHighlight],fg=$VAR[ColorGradient],alpha=1.0,folder=ArcticFuse,selectbox_thin=special://skin/extras/textures/selectbox_thin.png,scrollv=special://skin/extras/textures/scrollv.png,scrollh=special://skin/extras/textures/scrollh.png,box=special://skin/extras/textures/box.png,circle=special://skin/extras/textures/circle.png,menu=special://skin/extras/textures/menu.png,menumain+overlay+slicing{240|80}=special://skin/extras/textures/menumain.png,buttonmain+slicing{240|80}=special://skin/extras/textures/menumain.png,main=special://skin/extras/textures/main.png,circlebuttondialog=special://skin/extras/textures/circlebutton.png,reload=$PARAM[window_id])</onclick>
+            <onclick>runscript($VAR[Action_Var_BuildTextures],reload=$PARAM[window_id])</onclick>
         </definition>
     </include>
 

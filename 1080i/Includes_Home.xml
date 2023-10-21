@@ -64,37 +64,32 @@
     </include>
 
     <include name="Home_Menu_Content">
+        <include condition="!Skin.HasSetting(Home.HideSideMenu)">Home_Menu_Items</include>
         <content>
-            <include condition="Window.IsVisible(Home)">skinshortcuts-mainmenu</include>
-
-            <item>
-                <label>$LOCALIZE[10000]</label>
-                <icon>special://skin/extras/icons/home.png</icon>
-                <property name="showlabel">True</property>
-                <visible>!Window.IsVisible(Home)</visible>
-                <onclick>ActivateWindow(Home)</onclick>
-            </item>
-
             <item>
                 <label>$LOCALIZE[33061]</label>
                 <icon>special://skin/extras/icons/list-check.png</icon>
                 <property name="showlabel">True</property>
-                <visible>!Window.IsVisible(Home)</visible>
                 <onclick>ActivateWindow(1170)</onclick>
+                <visible>Skin.HasSetting(Home.HideSideMenu)</visible>
             </item>
         </content>
     </include>
 
     <include name="Home_Menu_List">
-        <param name="items_include">Home_Menu_Items</param>
+        <param name="items_include">Home_Menu_Content</param>
         <param name="onlist">320</param>
         <param name="id">303</param>
         <definition>
             <control type="list" id="$PARAM[id]">
                 <nested />
 
-                <onup>308</onup>
-                <ondown>309</ondown>
+                <onup condition="!Skin.HasSetting(Home.HideSideMenu)">308</onup>
+                <ondown condition="!Skin.HasSetting(Home.HideSideMenu)">309</ondown>
+
+                <onup condition="Skin.HasSetting(Home.HideSideMenu)">ActivateWindow(1105)</onup>
+                <ondown condition="Skin.HasSetting(Home.HideSideMenu)">ActivateWindow(1170)</ondown>
+
                 <onback>$PARAM[onlist]</onback>
                 <onback>SetFocus($PARAM[onlist])</onback>
                 <onback condition="!Window.IsVisible(Home)">PreviousMenu</onback>
@@ -441,38 +436,13 @@
     </include>
 
     <include name="Home_Menu">
-
-        <include content="Object_Control" condition="Skin.HasSetting(Home.HideSideMenu)">
-            <param name="control">group</param>
-            <visible>!$EXP[Exp_HomeMenu_HasFocus]</visible>
-            <include content="DialogInfo_ButtonGroup_Basic">
-                <param name="id">30000</param>
-                <param name="dim_visible">false</param>
-                <visible>!$EXP[Exp_InfoDialogs]</visible>
-                <onup>SetFocus(303,0,absolute)</onup>
-                <ondown>SetFocus(303,0,absolute)</ondown>
-                <include content="Action_HomeMenu_OnRightLeft">
-                    <param name="onlist">$PARAM[onlist]</param>
-                </include>
-                <include content="Settings_Side_Button">
-                    <param name="baseid">30</param>
-                    <param name="id">01</param>
-                    <param name="label">$LOCALIZE[33061]</param>
-                    <param name="icon">special://skin/extras/icons/list-check.png</param>
-                    <onclick>ActivateWindow(1170)</onclick>
-                </include>
-            </include>
-
-        </include>
-
         <include content="Object_Control">
             <param name="control">group</param>
             <visible>!$EXP[Exp_InfoDialogs]</visible>
-            <visible>!Skin.HasSetting(Home.HideSideMenu) | $EXP[Exp_HomeMenu_HasFocus]</visible>
             <include condition="Skin.HasSetting(Home.SideLabels)">Home_Menu_Fade_Labels</include>
             <control type="group">
                 <!-- Search -->
-                <include content="Home_Menu_Button_Icon">
+                <include content="Home_Menu_Button_Icon" condition="!Skin.HasSetting(Home.HideSideMenu)">
                     <param name="id">308</param>
                     <param name="icon">special://skin/extras/icons/search.png</param>
                     <param name="label">$LOCALIZE[137]</param>
@@ -494,7 +464,7 @@
                 </include>
 
                 <!-- Settings -->
-                <include content="Home_Menu_Button_Icon">
+                <include content="Home_Menu_Button_Icon" condition="!Skin.HasSetting(Home.HideSideMenu)">
                     <param name="id">309</param>
                     <param name="icon">special://skin/extras/icons/bars.png</param>
                     <param name="label">$LOCALIZE[33063]</param>
