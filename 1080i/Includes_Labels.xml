@@ -68,6 +68,11 @@
         <value>$LOCALIZE[31330] ($LOCALIZE[31267])</value>
     </variable>
 
+    <variable name="Label_Setting_RatingsStyle">
+        <value condition="Skin.HasSetting(Furniture.EnableColourRatings)">$LOCALIZE[737]</value>
+        <value>$LOCALIZE[31458]</value>
+    </variable>
+
     <variable name="Label_Setting_ColourPreset">
         <value condition="$EXP[Exp_ColourPreset_MiamiVaporwave]">$LOCALIZE[31140]</value>
         <value condition="$EXP[Exp_ColourPreset_AquaClassic]">$LOCALIZE[31138]</value>
@@ -238,7 +243,7 @@
     </variable>
 
     <variable name="Label_Setting_LeftFooter">
-        <value condition="Skin.HasSetting(Furniture.EnableCount)">$LOCALIZE[31206]</value>
+        <value condition="!Skin.HasSetting(Furniture.DisableCount)">$LOCALIZE[31206]</value>
         <value>$LOCALIZE[31205]</value>
     </variable>
 
@@ -358,13 +363,17 @@
     </variable>
 
     <variable name="Label_Scrollbar_NumItems">
-        <value condition="$EXP[Exp_View_512]">$INFO[Container(513).NumItems,[B],[/B] [CAPITALIZE]$LOCALIZE[31022][/CAPITALIZE]  ]</value>
-        <value>$INFO[Container.NumItems,[B],[/B] [CAPITALIZE]$LOCALIZE[31022][/CAPITALIZE]  ]</value>
-    </variable>
+        <value condition="!String.IsEmpty(Container.TotalWatched) + [Container.Content(movies) | Container.Content(episodes) | Container.Content(videos)] + ![Control.HasFocus(503) | Control.HasFocus(513) | Control.HasFocus(523)]">$LOCALIZE[16102] $INFO[Container.TotalWatched,[B],[/B]]$INFO[Container.NumNonFolderItems, $LOCALIZE[1443] [B],[/B]] $INFO[Container.Content]</value>
+        <value condition="!String.IsEmpty(Container.TotalWatched) + [Container.Content(tvshows) | Container.Content(seasons) | Container.Content(sets)] + ![Control.HasFocus(503) | Control.HasFocus(513) | Control.HasFocus(523)]">$LOCALIZE[16102] $INFO[Container.TotalWatched,[B],[/B]]$INFO[Container.NumItems, $LOCALIZE[1443] [B],[/B]] $INFO[Container.Content]</value>
 
-    <variable name="Label_Scrollbar_NumPages">
-        <value condition="$EXP[Exp_View_512]">$INFO[Container(513).CurrentPage,[B],[/B] $LOCALIZE[1443] ]$INFO[Container(513).NumPages,[B],[/B] [CAPITALIZE]$LOCALIZE[31110][/CAPITALIZE]  ]</value>
-        <value>$INFO[Container.CurrentPage,[B],[/B] $LOCALIZE[1443] ]$INFO[Container.NumPages,[B],[/B] [CAPITALIZE]$LOCALIZE[31110][/CAPITALIZE]  ]</value>
+        <value condition="Container.Content(seasons) + Control.HasFocus(503) + !String.IsEmpty(Container(502).ListItem.Property(watchedepisodes))">$LOCALIZE[16102] $INFO[Container(502).ListItem.Property(watchedepisodes),[B],[/B]]$INFO[Container(502).ListItem.Property(totalepisodes), $LOCALIZE[1443] [B],[/B]] $LOCALIZE[20453]</value>
+        <value condition="Container.Content(seasons) + Control.HasFocus(513) + !String.IsEmpty(Container(512).ListItem.Property(watchedepisodes))">$LOCALIZE[16102] $INFO[Container(512).ListItem.Property(watchedepisodes),[B],[/B]]$INFO[Container(512).ListItem.Property(totalepisodes), $LOCALIZE[1443] [B],[/B]] $LOCALIZE[20453]</value>
+        <value condition="Container.Content(seasons) + Control.HasFocus(523) + !String.IsEmpty(Container(522).ListItem.Property(watchedepisodes))">$LOCALIZE[16102] $INFO[Container(522).ListItem.Property(watchedepisodes),[B],[/B]]$INFO[Container(522).ListItem.Property(totalepisodes), $LOCALIZE[1443] [B],[/B]] $LOCALIZE[20453]</value>
+
+        <value condition="$EXP[Exp_View_502]">$INFO[Container(503).NumItems,[B],[/B] [CAPITALIZE]$LOCALIZE[31022][/CAPITALIZE]  ]</value>
+        <value condition="$EXP[Exp_View_512]">$INFO[Container(513).NumItems,[B],[/B] [CAPITALIZE]$LOCALIZE[31022][/CAPITALIZE]  ]</value>
+        <value condition="$EXP[Exp_View_522]">$INFO[Container(523).NumItems,[B],[/B] [CAPITALIZE]$LOCALIZE[31022][/CAPITALIZE]  ]</value>
+        <value>$INFO[Container.NumItems,[B],[/B] [CAPITALIZE]$LOCALIZE[31022][/CAPITALIZE]  ]</value>
     </variable>
 
     <variable name="Label_Birthdate">
