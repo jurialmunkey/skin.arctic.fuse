@@ -619,11 +619,10 @@
         <definition>
             <control type="group">
                 <height>$PARAM[item_h]</height>
-                <left>40</left>
-                <right>60</right>
+                <width>$PARAM[item_w]</width>
                 <control type="group">
-                    <right>0</right>
-                    <include content="Dimension_Padding"><param name="pad">10</param></include>
+                    <left>-10</left>
+                    <right>-10</right>
                     <include content="Object_Control" condition="$PARAM[selected]">
                         <param name="control">image</param>
                         <include>Texture_Shadow_40</include>
@@ -633,13 +632,13 @@
                 </control>
 
                 <control type="group">
-                    <right>20</right>
-
                     <control type="group">
                         <width>$PARAM[item_h]</width>
                         <height>$PARAM[item_h]</height>
                         <control type="group">
-                            <include content="Dimension_Padding"><param name="pad">20</param></include>
+                            <left>0</left>
+                            <right>20</right>
+                            <include content="Dimension_Padding"><param name="pad">10</param></include>
                             <include content="Object_Control" condition="$PARAM[selected]">
                                 <param name="control">image</param>
                                 <texture colordiffuse="main_bg_30" border="12">common/box.png</texture>
@@ -678,50 +677,55 @@
 
                     <control type="group">
                         <left>$PARAM[item_h]</left>
-                        <right>120</right>
-                        <control type="label">
-                            <include condition="$PARAM[selected]">Color_SelectedText</include>
-                            <textcolor>main_fg_90</textcolor>
-                            <selectedcolor>main_fg_90</selectedcolor>
-                            <label>$VAR[Label_Playlist_Title]</label>
-                            <font>font_main_bold</font>
-                            <height>40</height>
-                            <centertop>35%</centertop>
+                        <control type="group">
+                            <height>30</height>
+                            <top>10</top>
+                            <control type="label">
+                                <include condition="$PARAM[selected]">Color_SelectedText</include>
+                                <textcolor>main_fg_90</textcolor>
+                                <selectedcolor>main_fg_90</selectedcolor>
+                                <label>$VAR[Label_Playlist_Title]</label>
+                                <font>font_main_bold</font>
+                                <right>80</right>
+                            </control>
+                             <control type="image">
+                                <visible>String.IsEqual(ListItem.DBType,song)</visible>
+                                <visible>!String.IsEmpty(ListItem.FileExtension)</visible>
+                                <right>0</right>
+                                <width>60</width>
+                                <height>40</height>
+                                <centertop>60%</centertop>
+                                <aspectratio align="right">keep</aspectratio>
+                                <include content="Object_Texture" condition="$PARAM[selected]">
+                                    <param name="colordiffuse">$VAR[ColorSelected]</param>
+                                    <param name="texture">$INFO[ListItem.FileExtension,flags/monochrome/audio/,.png]</param>
+                                </include>
+                                <texture colordiffuse="main_fg_70">$INFO[ListItem.FileExtension,flags/monochrome/audio/,.png]</texture>
+                            </control>
                         </control>
 
-                        <control type="label">
-                            <include condition="$PARAM[selected]">Color_SelectedText</include>
-                            <textcolor>main_fg_70</textcolor>
-                            <selectedcolor>main_fg_70</selectedcolor>
-                            <label>$VAR[Label_Playlist_Sublabel]</label>
-                            <font>font_tiny</font>
-                            <align>left</align>
-                            <height>40</height>
-                            <centerbottom>35%</centerbottom>
+                        <control type="group">
+                            <height>25</height>
+                            <bottom>10</bottom>
+                            <control type="label">
+                                <include condition="$PARAM[selected]">Color_SelectedText</include>
+                                <textcolor>main_fg_70</textcolor>
+                                <selectedcolor>main_fg_70</selectedcolor>
+                                <label>$VAR[Label_Playlist_Sublabel]</label>
+                                <font>font_tiny</font>
+                                <align>left</align>
+                                <right>80</right>
+                            </control>
+                            <control type="label">
+                                <include condition="$PARAM[selected]">Color_SelectedText</include>
+                                <textcolor>main_fg_70</textcolor>
+                                <selectedcolor>main_fg_70</selectedcolor>
+                                <label>$INFO[ListItem.Duration]</label>
+                                <font>font_tiny</font>
+                                <align>right</align>
+                            </control>
                         </control>
 
-                    </control>
-                    <control type="label">
-                        <include condition="$PARAM[selected]">Color_SelectedText</include>
-                        <textcolor>main_fg_70</textcolor>
-                        <selectedcolor>main_fg_70</selectedcolor>
-                        <label>$INFO[ListItem.Duration]</label>
-                        <font>font_main</font>
-                        <align>right</align>
-                        <bottom>3</bottom>
-                    </control>
-                    <control type="image">
-                        <visible>String.IsEqual(ListItem.DBType,song)</visible>
-                        <visible>!String.IsEmpty(ListItem.FileExtension)</visible>
-                        <right>100</right>
-                        <height>40</height>
-                        <centertop>50%</centertop>
-                        <aspectratio align="right">keep</aspectratio>
-                        <include content="Object_Texture" condition="$PARAM[selected]">
-                            <param name="colordiffuse">$VAR[ColorSelected]</param>
-                            <param name="texture">$INFO[ListItem.FileExtension,flags/monochrome/audio/,.png]</param>
-                        </include>
-                        <texture colordiffuse="main_fg_70">$INFO[ListItem.FileExtension,flags/monochrome/audio/,.png]</texture>
                     </control>
                 </control>
             </control>
