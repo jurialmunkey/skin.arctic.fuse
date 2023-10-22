@@ -6,8 +6,6 @@
     <visible>Window.IsActive(VideoFullScreen.xml) | Window.IsActive(MusicVisualisation.xml)</visible>
     <visible>Window.IsActive(videoosd) | Window.IsActive(musicosd) | Player.Caching | Player.ShowInfo | Player.Seeking | Player.DisplayAfterSeek | [Player.Paused + [!System.IdleTime(3) | !Skin.HasSetting(OSD.AutoHideOnPause)]] | Player.Forwarding | Player.Rewinding | Window.IsActive(DialogFullScreenInfo.xml) | !String.IsEmpty(Player.SeekNumeric) | !String.IsEmpty(PVR.ChannelNumberInput) | Window.IsVisible(script-cu-lrclyrics-main.xml) | $EXP[Exp_OSD_ExpandInfo]</visible>
     <visible>!Window.IsVisible(DialogSlider.xml)</visible>
-    <include>Animation_OSD_Fullscreen_Change</include>
-
     <onload condition="Player.Paused + !String.IsEmpty(Window(Home).Property(OSDExtendedInfo))">PlayerControl(Play)</onload>
     <onload condition="Player.Paused + !String.IsEmpty(Window(Home).Property(OSDExtendedInfo))">ClearProperty(OSDExtendedInfo,Home)</onload>
     <controls>
@@ -15,24 +13,18 @@
         <control type="image">
             <texture colordiffuse="7f000000">common/white.png</texture>
             <visible>[!String.IsEmpty(Window(Home).Property(OSDArtistDetails)) + !Window.IsVisible(1142)] | Window.IsVisible(script-cu-lrclyrics-main.xml)</visible>
-            <include>Animation_FadeIn</include>
-            <include>Animation_FadeOut</include>
+            <include>Animation_OSD_Fullscreen_Change</include>
         </control>
 
         <control type="image">
             <texture colordiffuse="panel_bg">background/combined_flixart.png</texture>
-            <include>Animation_FadeIn</include>
-            <include>Animation_FadeOut</include>
+            <include>Animation_OSD_Fullscreen_Change</include>
         </control>
 
         <control type="group">
             <visible>!$EXP[Exp_InfoDialogs]</visible>
-            <include condition="VideoPlayer.Content(livetv)">OSD_PVRChannelSwitch</include>
-
-            <!-- Video Seekbar -->
+            <include>Animation_OSD_Fullscreen_Change</include>
             <include condition="VideoPlayer.IsFullscreen">OSD_VideoSeekBar</include>
-
-            <!-- Music Seekbar -->
             <include condition="!VideoPlayer.IsFullscreen">OSD_MusicSeekBar</include>
         </control>
 

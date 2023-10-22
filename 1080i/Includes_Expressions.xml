@@ -190,11 +190,15 @@
     <!-- === -->
     <expression name="Exp_OSD_HasPlaylist">[VideoPlayer.Content(episodes) | VideoPlayer.Content(livetv) | [VideoPlayer.Content(movies) + !Integer.IsEqual(VideoPlayer.PlaylistLength,1) + !Integer.IsEqual(VideoPlayer.PlaylistLength,0)]]</expression>
 
-    <expression name="Exp_OSD_PVRChannelSwitch">[[VideoPlayer.Content(livetv) + !Window.Isvisible(videoosd)] + [!String.IsEmpty(PVR.ChannelNumberInput) | Player.ShowInfo]]</expression>
+    <expression name="Exp_OSD_PVRChannelSwitch">[VideoPlayer.Content(livetv) + [!String.IsEmpty(PVR.ChannelNumberInput) | Player.ShowInfo]]</expression>
+
+    <expression name="Exp_OSD_DelayInfo">[System.IdleTime(3) + Skin.HasSetting(OSD.AutoInfoOnPause) + Player.Paused]</expression>
+
+    <expression name="Exp_OSD_QuickInfo">[[$EXP[Exp_OSD_PVRChannelSwitch] | Window.IsVisible(fullscreeninfo) | $EXP[Exp_OSD_DelayInfo]] + !Window.IsActive(videoosd)]</expression>
 
     <expression name="Exp_OSD_ExpandInfo">[Window.IsVisible(videobookmarks) | Window.IsVisible(pvrchannelguide) | Window.IsVisible(1140) | Window.IsVisible(1141) | Window.IsVisible(1142) | $EXP[Exp_OSD_FullScreenInfo] | Window.IsVisible(DialogPVRChannelsOSD.xml)]</expression>
 
-    <expression name="Exp_OSD_FullScreenInfo">[Window.IsVisible(DialogFullScreenInfo.xml) | !String.IsEmpty(Window(Home).Property(OSD.FullScreenInfo)) | [System.IdleTime(3) + Skin.HasSetting(OSD.AutoInfoOnPause) + Player.Paused + !Window.IsActivate(videoosd)]]</expression>
+    <expression name="Exp_OSD_FullScreenInfo">[Window.IsVisible(1143)]</expression>
 
 
     <!-- ==== -->
