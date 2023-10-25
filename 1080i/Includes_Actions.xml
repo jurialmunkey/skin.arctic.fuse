@@ -203,7 +203,7 @@
         <onclick>SetFocus(4001)</onclick>
     </include>
 
-    <include name="Action_HomeMenu_OnRightLeft">
+    <include name="_Action_HomeMenu_OnRightLeft">
         <param name="onlist">320</param>
         <param name="onmenu">ActivateWindow(1170)</param>
         <definition>
@@ -225,6 +225,17 @@
             <onright condition="String.IsEmpty(Window.Property(List.ViewContainer))">$PARAM[onlist]</onright>
 
         </definition>
+    </include>
+
+    <include name="Action_HomeMenu_OnRightLeft">
+        <include content="_Action_HomeMenu_OnRightLeft" condition="Skin.HasSetting(Home.HideSideMenu)">
+            <param name="onlist">$PARAM[onlist]</param>
+            <param name="onmenu">ActivateWindow(1170)</param>
+        </include>
+        <include content="_Action_HomeMenu_OnRightLeft" condition="!Skin.HasSetting(Home.HideSideMenu)">
+            <param name="onlist">$PARAM[onlist]</param>
+            <param name="onmenu">ActivateWindow(shutdownmenu)</param>
+        </include>
     </include>
 
     <include name="Action_BuildSkinShortcuts_OnLoad">
