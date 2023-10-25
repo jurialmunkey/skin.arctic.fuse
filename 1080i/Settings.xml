@@ -1,8 +1,221 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
-    <onload>ReplaceWindow(InterfaceSettings)</onload>
+    <include>Action_BlurImage_SimpleBackground_Onload</include>
+    <defaultcontrol>5</defaultcontrol>
     <controls>
-        <include>Background_Main</include>
-    </controls>
+        <include content="Background_Main">
+            <param name="plain_background">true</param>
+        </include>
+        <include content="Background_Transition">
+            <param name="windowopen_condition">!$EXP[Exp_SettingsDialogs_Prev]</param>
+            <param name="windowclose_condition">!$EXP[Exp_SettingsDialogs_Next]</param>
+        </include>
 
+        <include content="Settings_Dialog">
+            <include content="DialogInfo_ButtonGroup_Basic">
+                <param name="id">30000</param>
+                <param name="dim_visible">false</param>
+                <onright>50</onright>
+                <onleft>SetFocus(30040)</onleft>
+                <include content="Settings_Side_Button">
+                    <param name="id">01</param>
+                    <param name="label">$LOCALIZE[15067]</param>
+                    <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
+                    <onclick>SetFocus(50)</onclick>
+                    <onclick>PreviousMenu</onclick>
+                </include>
+                <include content="Settings_Side_Button">
+                    <param name="id">02</param>
+                    <param name="label">$LOCALIZE[33061]</param>
+                    <param name="icon">special://skin/extras/icons/list-check.png</param>
+                    <onclick>SetFocus(30040)</onclick>
+                </include>
+            </include>
+            <include content="Settings_Main_Group">
+
+                <control type="image">
+                    <texture colordiffuse="main_fg_12">common/white.png</texture>
+                    <height>1</height>
+                    <top>-40</top>
+                </control>
+
+                <control type="image">
+                    <texture colordiffuse="main_fg_12">common/white.png</texture>
+                    <height>1</height>
+                    <bottom>560</bottom>
+                </control>
+
+                <control type="label">
+                    <font>font_hint_black</font>
+                    <label>$LOCALIZE[5]</label>
+                    <height>40</height>
+                    <bottom>560</bottom>
+                    <align>center</align>
+                </control>
+
+                <control type="image">
+                    <texture colordiffuse="main_fg_12">common/white.png</texture>
+                    <height>1</height>
+                    <bottom>80</bottom>
+                </control>
+
+                <control type="group" id="50">
+                    <top>-80</top>
+                    <left>-40</left>
+                    <right>-40</right>
+                    <bottom>-80</bottom>
+                    <include content="List_Core">
+                        <param name="orientation">horizontal</param>
+                        <param name="control">panel</param>
+                        <param name="id">3</param>
+                        <param name="item_w">view_landscape_item_w</param>
+                        <param name="item_h">180</param>
+                        <param name="itemlayout_w">view_landscape_itemlayout_w</param>
+                        <param name="itemlayout_h">220</param>
+                        <param name="itemlayout_include">Layout_Landscape_Settings</param>
+                        <param name="offset_x">40</param>
+                        <param name="offset_y">40</param>
+                        <param name="icon">$PARAM[icon]</param>
+                        <param name="textcolor">$PARAM[textcolor]</param>
+                        <param name="hidden_button_enabled">false</param>
+                        <param name="hidden_button">$PARAM[hidden_button]</param>
+                        <top>40</top>
+                        <height>260</height>
+
+                        <onleft>30000</onleft>
+                        <onright>ActivateWindow(shutdownmenu)</onright>
+
+                        <onup condition="Container(3).Position(0)">SetFocus(5,4)</onup>
+                        <onup condition="Container(3).Position(1)">SetFocus(5,5)</onup>
+                        <onup condition="Container(3).Position(2)">SetFocus(5,6)</onup>
+                        <onup condition="Container(3).Position(3)">SetFocus(5,7)</onup>
+
+                        <ondown condition="Container(3).Position(0)">SetFocus(5,0)</ondown>
+                        <ondown condition="Container(3).Position(1)">SetFocus(5,1)</ondown>
+                        <ondown condition="Container(3).Position(2)">SetFocus(5,2)</ondown>
+                        <ondown condition="Container(3).Position(3)">SetFocus(5,3)</ondown>
+                        <content>
+                            <item>
+                                <label>$LOCALIZE[10003]</label>
+                                <label2>$LOCALIZE[13000]</label2>
+                                <icon>special://skin/extras/icons/filebox.png</icon>
+                                <onclick>ActivateWindow(filemanager)</onclick>
+                            </item>
+                            <item>
+                                <label>$LOCALIZE[24001]</label>
+                                <label2>$LOCALIZE[13000]</label2>
+                                <icon>special://skin/extras/icons/addon.png</icon>
+                                <onclick>ActivateWindow(addonbrowser)</onclick>
+                            </item>
+                            <item>
+                                <label>$LOCALIZE[138]</label>
+                                <label2>$LOCALIZE[13000]</label2>
+                                <icon>special://skin/extras/icons/sysinfo.png</icon>
+                                <onclick>ActivateWindow(systeminfo)</onclick>
+                            </item>
+                            <item>
+                                <label>$LOCALIZE[10050]</label>
+                                <label2>$LOCALIZE[13000]</label2>
+                                <icon>special://skin/extras/icons/list-check.png</icon>
+                                <onclick>ActivateWindow(eventlog)</onclick>
+                            </item>
+                        </content>
+                    </include>
+
+                    <include content="List_Core">
+                        <param name="orientation">vertical</param>
+                        <param name="control">panel</param>
+                        <param name="id">5</param>
+                        <param name="item_w">view_landscape_item_w</param>
+                        <param name="item_h">180</param>
+                        <param name="itemlayout_w">view_landscape_itemlayout_w</param>
+                        <param name="itemlayout_h">220</param>
+                        <param name="itemlayout_include">Layout_Landscape_Settings</param>
+                        <param name="offset_x">40</param>
+                        <param name="offset_y">40</param>
+                        <param name="icon">$PARAM[icon]</param>
+                        <param name="textcolor">$PARAM[textcolor]</param>
+                        <param name="hidden_button_enabled">false</param>
+                        <param name="hidden_button">$PARAM[hidden_button]</param>
+                        <top>320</top>
+                        <bottom>160</bottom>
+
+                        <onleft>30000</onleft>
+                        <onright>ActivateWindow(shutdownmenu)</onright>
+
+                        <onup condition="Container(5).Position(0)">SetFocus(3,0)</onup>
+                        <onup condition="Container(5).Position(1)">SetFocus(3,1)</onup>
+                        <onup condition="Container(5).Position(2)">SetFocus(3,2)</onup>
+                        <onup condition="Container(5).Position(3)">SetFocus(3,3)</onup>
+
+                        <ondown condition="Container(5).Position(4)">SetFocus(3,0)</ondown>
+                        <ondown condition="Container(5).Position(5)">SetFocus(3,1)</ondown>
+                        <ondown condition="Container(5).Position(6)">SetFocus(3,2)</ondown>
+                        <ondown condition="Container(5).Position(7)">SetFocus(3,3)</ondown>
+
+                        <content>
+                            <item>
+                                <label>$LOCALIZE[166]</label>
+                                <label2>$LOCALIZE[5]</label2>
+                                <icon>special://skin/extras/icons/paintbrush.png</icon>
+                                <onclick>ActivateWindow(SkinSettings)</onclick>
+                            </item>
+                            <item>
+                                <label>$LOCALIZE[14206]</label>
+                                <label2>$LOCALIZE[5]</label2>
+                                <icon>special://skin/extras/icons/skinsettings.png</icon>
+                                <onclick>ActivateWindow(InterfaceSettings)</onclick>
+                            </item>
+                            <item>
+                                <label>$LOCALIZE[14211]</label>
+                                <label2>$LOCALIZE[5]</label2>
+                                <icon>special://skin/extras/icons/tags.png</icon>
+                                <onclick>ActivateWindow(MediaSettings)</onclick>
+                            </item>
+                            <item>
+                                <label>$LOCALIZE[14200]</label>
+                                <label2>$LOCALIZE[5]</label2>
+                                <icon>special://skin/extras/icons/equalizer.png</icon>
+                                <onclick>ActivateWindow(PlayerSettings)</onclick>
+                            </item>
+                            <item>
+                                <label>$LOCALIZE[13000]</label>
+                                <label2>$LOCALIZE[5]</label2>
+                                <icon>special://skin/extras/icons/configure.png</icon>
+                                <onclick>ActivateWindow(SystemSettings)</onclick>
+                            </item>
+                            <item>
+                                <label>$LOCALIZE[19099]</label>
+                                <label2>$LOCALIZE[5]</label2>
+                                <icon>special://skin/extras/icons/network.png</icon>
+                                <onclick>ActivateWindow(servicesettings)</onclick>
+                            </item>
+                            <item>
+                                <label>PVR</label>
+                                <label2>$LOCALIZE[5]</label2>
+                                <icon>special://skin/extras/icons/livetv.png</icon>
+                                <onclick>ActivateWindow(pvrsettings)</onclick>
+                            </item>
+                            <item>
+                                <label>$LOCALIZE[13200]</label>
+                                <label2>$LOCALIZE[5]</label2>
+                                <icon>special://skin/extras/icons/actor.png</icon>
+                                <onclick>ActivateWindow(Profiles)</onclick>
+                            </item>
+                        </content>
+                    </include>
+                </control>
+
+                <include>Settings_KodiVersion</include>
+            </include>
+
+
+        </include>
+
+        <include>Settings_Side_Switcher</include>
+
+        <include content="Furniture_Top">
+            <param name="label">$LOCALIZE[5]</param>
+        </include>
+    </controls>
 </window>
