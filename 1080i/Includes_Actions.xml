@@ -379,19 +379,21 @@
     </include>
 
     <include name="Action_View_Movement_OnUp">
-        <onup condition="Skin.String(Movement.Library.OnUp,Wall)">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=67,clear_prop=Null)</onup>
+        <onup condition="Skin.String(Movement.Library.OnUp,Wall)">$VAR[Action_Var_ToWallView]</onup>
         <onup condition="Skin.String(Movement.Library.OnUp,Plot)">ActivateWindow(1113)</onup>
         <onup condition="Skin.String(Movement.Library.OnUp,Menu)">SetFocus($VAR[Action_Menu_ID],$VAR[Action_Menu_Position],absolute)</onup>
         <onup condition="Skin.String(Movement.Library.OnUp,Bump)">SetFocus(333)</onup>
         <onup condition="Skin.String(Movement.Library.OnUp,View)">$VAR[Action_Var_ToMediaFilter]</onup>
+        <onup condition="Skin.String(Movement.Library.OnUp,Jump)">$VAR[Action_Var_ToScrollBar]</onup>
     </include>
 
     <include name="Action_View_Movement_OnDown">
-        <ondown condition="Skin.String(Movement.Library.OnDown,Wall)">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=67,clear_prop=Null)</ondown>
+        <ondown condition="Skin.String(Movement.Library.OnDown,Wall)">$VAR[Action_Var_ToWallView]</ondown>
         <ondown condition="Skin.String(Movement.Library.OnDown,Plot)">ActivateWindow(1113)</ondown>
         <ondown condition="Skin.String(Movement.Library.OnDown,Menu)">SetFocus($VAR[Action_Menu_ID],$VAR[Action_Menu_Position],absolute)</ondown>
         <ondown condition="Skin.String(Movement.Library.OnDown,Bump)">SetFocus(330)</ondown>
         <ondown condition="Skin.String(Movement.Library.OnDown,View)">$VAR[Action_Var_ToMediaFilter]</ondown>
+        <ondown condition="Skin.String(Movement.Library.OnDown,Jump)">$VAR[Action_Var_ToScrollBar]</ondown>
     </include>
 
     <include name="Action_Menu_Movement_OnBack">
@@ -501,13 +503,25 @@
         <onup condition="$EXP[Exp_FilterWall_IsMedia]">SetProperty(View.WallSwitchRow,1)</onup>
         <onup condition="$EXP[Exp_FilterWall_IsMedia]">SetFocus(67)</onup>
         <onup condition="!$EXP[Exp_FilterWall_IsMedia]">SetFocus($VAR[Action_View_ContentID])</onup>
+        <!-- <onup>SetFocus(68)</onup> -->
         <onback>68</onback>
+
         <onclick>SetFocus(68)</onclick>
-        <ondown>$VAR[Action_Var_ToMediaFilter]</ondown>
+        <ondown>SetFocus(68)</ondown>
+        <!-- <ondown>$VAR[Action_Var_ToMediaFilter]</ondown> -->
     </include>
 
     <variable name="Action_Var_ToMediaFilter">
         <value>Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=9001,clear_prop=Null)</value>
+    </variable>
+
+    <variable name="Action_Var_ToWallView">
+        <value>Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=67,clear_prop=Null)</value>
+    </variable>
+
+    <variable name="Action_Var_ToScrollBar">
+        <value condition="$EXP[Exp_AlphabetTypes_Only] + !Skin.HasSetting(DisableAlphabetScrollbar)">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=65,clear_prop=Null)</value>
+        <value>Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=64,clear_prop=Null)</value>
     </variable>
 
     <include name="_Action_Blur_Onload">
