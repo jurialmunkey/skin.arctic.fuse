@@ -191,8 +191,8 @@
 
     <include name="Items_Dialog_WideSettings_Menu">
         <item>
-            <label>$LOCALIZE[10000]</label>
-            <icon>special://skin/extras/icons/home.png</icon>
+            <label>$VAR[Label_Home]</label>
+            <icon>$VAR[Image_Home]</icon>
             <property name="head">[CAPITALIZE]$LOCALIZE[31276][/CAPITALIZE]</property>
             <property name="item">Items_Settings_HomeMenu</property>
             <property name="highlight">MenuHome</property>
@@ -1385,7 +1385,31 @@
     </include>
 
     <include name="Items_Settings_HomeMenu">
-
+        <include content="Settings_Button" description="Label">
+            <param name="id">8821</param>
+            <param name="dialog">true</param>
+            <param name="control">button</param>
+            <label>$LOCALIZE[21899]</label>
+            <label2>$INFO[Skin.String(Home.Label)]</label2>
+            <onfocus>ClearProperty(Highlight)</onfocus>
+            <onfocus>SetProperty(MenuHighlight,MenuItem0$PARAM[item])</onfocus>
+            <onfocus>SetProperty(CustomDialogSettingsLabel,[B]$LOCALIZE[21899][/B][CR]$LOCALIZE[31284],Home)</onfocus>
+            <onclick condition="!String.IsEmpty(Skin.String(Home.Label))">Skin.Reset(Home.Label)</onclick>
+            <onclick condition="String.IsEmpty(Skin.String(Home.Label))">Skin.SetString(Home.Label)</onclick>
+            <visible>String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_HomeMenu)</visible>
+        </include>
+        <include content="Settings_Button" description="Icon">
+            <param name="id">8822</param>
+            <param name="dialog">true</param>
+            <param name="control">button</param>
+            <label>$LOCALIZE[31274]</label>
+            <onfocus>ClearProperty(Highlight)</onfocus>
+            <onfocus>SetProperty(MenuHighlight,MenuItem0$PARAM[item])</onfocus>
+            <onfocus>SetProperty(CustomDialogSettingsLabel,[B]$LOCALIZE[31274][/B][CR]$LOCALIZE[31288],Home)</onfocus>
+            <onclick condition="!String.IsEmpty(Skin.String(Home.Icon))">Skin.Reset(Home.Icon)</onclick>
+            <onclick condition="String.IsEmpty(Skin.String(Home.Icon))">Skin.SetImage(Home.Icon,special://skin/extras/icons/)</onclick>
+            <visible>String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_HomeMenu)</visible>
+        </include>
         <include content="Settings_Button" description="Spotlight">
             <param name="id">8803</param>
             <param name="dialog">true</param>
