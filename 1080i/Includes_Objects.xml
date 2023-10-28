@@ -888,23 +888,27 @@
     </include>
 
     <include name="Object_Info_Button_Icon">
-        <control type="group">
-            <nested />
-            <height>50</height>
-            <width>50</width>
-            <control type="image">
-                <include content="Dimension_Padding"><param name="pad">-30</param></include>
-                <bordersize>30</bordersize>
-                <bordertexture colordiffuse="shadow_hard">shadows/circle_50-shadow-30.png</bordertexture>
-                <texture colordiffuse="main_fg_100">diffuse/circle_50.png</texture>
+        <param name="back_colordiffuse">main_fg_100</param>
+        <param name="shadow_colordiffuse">shadow_hard</param>
+        <definition>
+            <control type="group">
+                <nested />
+                <height>50</height>
+                <width>50</width>
+                <control type="image">
+                    <include content="Dimension_Padding"><param name="pad">-30</param></include>
+                    <bordersize>30</bordersize>
+                    <bordertexture colordiffuse="$PARAM[shadow_colordiffuse]">shadows/circle_50-shadow-30.png</bordertexture>
+                    <texture colordiffuse="$PARAM[back_colordiffuse]">diffuse/circle_50.png</texture>
+                </control>
+                <include content="Object_InfoCircle_Image">
+                    <param name="bordersize">1</param>
+                    <param name="aspectratio">keep</param>
+                    <param name="colordiffuse">$PARAM[colordiffuse]</param>
+                    <param name="icon">$PARAM[icon]</param>
+                </include>
             </control>
-            <include content="Object_InfoCircle_Image">
-                <param name="bordersize">1</param>
-                <param name="aspectratio">keep</param>
-                <param name="colordiffuse">$PARAM[colordiffuse]</param>
-                <param name="icon">$PARAM[icon]</param>
-            </include>
-        </control>
+        </definition>
     </include>
 
     <include name="Object_Info_Button_Left">
@@ -912,8 +916,10 @@
             <visible>$PARAM[visible]</visible>
             <nested />
             <include content="Object_Info_Button_Icon">
-                <param name="colordiffuse">$PARAM[colordiffuse]</param>
+                <param name="back_colordiffuse">$PARAM[back_colordiffuse]</param>
+                <param name="colordiffuse">$PARAM[icon_colordiffuse]</param>
                 <param name="icon">$PARAM[icon]</param>
+                <param name="shadow_colordiffuse">shadow_soft</param>
                 <left>60</left>
                 <centertop>50%</centertop>
             </include>
@@ -936,6 +942,8 @@
                 <include content="Object_Info_Button_Left">
                     <param name="visible">Control.HasFocus($PARAM[id])</param>
                     <param name="icon">$PARAM[icon]</param>
+                    <param name="back_colordiffuse">$PARAM[flip_colordiffuse]</param>
+                    <param name="icon_colordiffuse">$PARAM[icon_colordiffuse]</param>
                     <control type="image">
                         <include>Texture_MainMenu_Highlight_H_X</include>
                     </control>
@@ -943,6 +951,8 @@
                 <include content="Object_Info_Button_Left">
                     <param name="visible">![Control.HasFocus($PARAM[id])]</param>
                     <param name="icon">$PARAM[icon]</param>
+                    <param name="back_colordiffuse">$PARAM[back_colordiffuse]</param>
+                    <param name="icon_colordiffuse">$PARAM[icon_colordiffuse]</param>
                 </include>
             </control>
             <control type="$PARAM[control]" id="$PARAM[id]">
