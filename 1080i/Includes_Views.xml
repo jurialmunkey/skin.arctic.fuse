@@ -91,14 +91,8 @@
 
                 <onfocus condition="![$EXP[Exp_FilterWall_IsMedia]]">SetFocus(50)</onfocus>
 
-                <!-- <onfocus condition="$EXP[Exp_FilterWall_IsMedia] + ![String.IsEmpty(Window.Property(View.WallSwitchRow)) | String.IsEmpty(Window.Property(View.WallSwitchRow.Action))]">Runscript(script.skinvariables,"run_executebuiltin=Control.Move($VAR[Action_View_ContentID],1)||SetFocus($VAR[Action_View_ContentID])||sleep=0.4||$INFO[Window.Property(View.WallSwitchRow.Action)]")</onfocus>
-
-                <onfocus condition="$EXP[Exp_FilterWall_IsMedia] + [String.IsEmpty(Window.Property(View.WallSwitchRow)) | String.IsEmpty(Window.Property(View.WallSwitchRow.Action))]">Runscript(script.skinvariables,"run_executebuiltin=SetFocus($VAR[Action_View_ContentID])||sleep=0.4||$INFO[Window.Property(View.WallSwitchRow.Action)]")</onfocus> -->
-
+                <onfocus condition="$EXP[Exp_FilterWall_IsMedia] + !String.IsEmpty(Window.Property(View.WallSwitchRow))">Control.Move($VAR[Action_View_ContentID],1)</onfocus>
                 <onfocus condition="$EXP[Exp_FilterWall_IsMedia]">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideOut,focus_id=63,clear_prop=MediaFilterBase)</onfocus>
-
-                <onfocus>ClearProperty(View.WallSwitchRow.Action)</onfocus>
-                <onfocus>ClearProperty(View.WallSwitchRow)</onfocus>
             </include>
 
             <!-- Wall Control -->
@@ -114,14 +108,14 @@
 
                 <onback>68</onback>
 
-                <onclick>SetProperty(View.WallSwitchRow.Action,Action(Select))</onclick>
+                <onclick>SetProperty(View.WallSwitchRow.Action,Action(Select),Home)</onclick>
                 <onclick>SetFocus(68)</onclick>
 
-                <oninfo>SetProperty(View.WallSwitchRow.Action,Action(Info))</oninfo>
+                <oninfo>SetProperty(View.WallSwitchRow.Action,Action(Info),Home)</oninfo>
                 <oninfo>SetFocus(68)</oninfo>
 
-                <onleft>Control.Move($VAR[Action_View_ContentID],-2)</onleft>
-                <onright>Control.Move($VAR[Action_View_ContentID],2)</onright>
+                <onleft condition="!String.IsEmpty(ListItemNoWrap(-2).CurrentItem)">Control.Move($VAR[Action_View_ContentID],-2)</onleft>
+                <onright condition="!String.IsEmpty(ListItemNoWrap(2).CurrentItem)">Control.Move($VAR[Action_View_ContentID],2)</onright>
             </include>
 
             <!-- Dummy for bouncing focus back to view on back -->
@@ -133,6 +127,9 @@
                 <param name="id">63</param>
                 <animation effect="fade" start="0" end="0" time="600" reversible="false">Focus</animation>
                 <onfocus>SetFocus($VAR[Action_View_ContentID])</onfocus>
+                <onfocus>ClearProperty(View.WallSwitchRow)</onfocus>
+                <onfocus>$INFO[Window(Home).Property(View.WallSwitchRow.Action)]</onfocus>
+                <onfocus>ClearProperty(View.WallSwitchRow.Action,Home)</onfocus>
             </include>
 
             <!-- Dummy for moving scrollbar -->
