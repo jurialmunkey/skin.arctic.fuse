@@ -58,10 +58,70 @@
             <visible>String.IsEmpty(Window.Property(Highlight))</visible>
             <include>Animation_FadeIn</include>
             <include>Animation_FadeOut</include>
+            <visible>!Skin.HasSetting(Home.HideSideMenu)</visible>
+        </control>
+
+        <!-- Side Menu Focus (Pull) -->
+        <control type="image">
+            <left>40</left>
+            <top>280</top>
+            <height>120</height>
+            <width>120</width>
+            <texture colordiffuse="3300ddff" border="20">common/box.png</texture>
+            <include>Animation_FadeIn</include>
+            <include>Animation_FadeOut</include>
+            <visible>String.IsEmpty(Window.Property(Highlight))</visible>
+            <visible>Skin.HasSetting(Home.HideSideMenu)</visible>
+        </control>
+
+        <!-- Side Menu Button (Pull) -->
+        <control type="group">
+            <visible>Skin.HasSetting(Home.HideSideMenu)</visible>
+            <centerleft>100</centerleft>
+            <top>300</top>
+            <height>80</height>
+            <width>80</width>
+            <control type="image">
+                <texture colordiffuse="3300ddff" border="20">common/box.png</texture>
+            </control>
+            <control type="group">
+                <width>40</width>
+                <height>40</height>
+                <centerleft>50%</centerleft>
+                <centertop>50%</centertop>
+                <control type="group">
+                    <control type="image">
+                        <include>Texture_Circle_Highlight_V</include>
+                        <aspectratio>keep</aspectratio>
+                        <width>10</width>
+                        <height>10</height>
+                        <centertop>50%</centertop>
+                        <left>-16</left>
+                        <visible>String.IsEmpty(Window.Property(Highlight))</visible>
+                    </control>
+                    <control type="image">
+                        <top>-10</top>
+                        <bottom>10</bottom>
+                        <aspectratio>keep</aspectratio>
+                        <bordersize>icon_home_bordersize</bordersize>
+                        <texture colordiffuse="main_fg_100">special://skin/extras/icons/list-check.png</texture>
+                    </control>
+                    <control type="label">
+                        <top>25</top>
+                        <height>10</height>
+                        <label>$LOCALIZE[33061]</label>
+                        <textcolor>main_fg_100</textcolor>
+                        <font>font_hint_button</font>
+                        <align>center</align>
+                        <aligny>top</aligny>
+                    </control>
+                </control>
+            </control>
         </control>
 
         <!-- Side Menu Search -->
         <control type="group">
+            <visible>!Skin.HasSetting(Home.HideSideMenu)</visible>
             <centerleft>100</centerleft>
             <centertop>100</centertop>
             <height>80</height>
@@ -102,8 +162,52 @@
             </control>
         </control>
 
+        <!-- Side Menu Options -->
+        <control type="group">
+            <visible>!Skin.HasSetting(Home.HideSideMenu)</visible>
+            <centerleft>100</centerleft>
+            <centerbottom>100</centerbottom>
+            <height>80</height>
+            <width>80</width>
+            <control type="image">
+                <visible>String.IsEqual(Window.Property(MenuHighlight),MenuOptions)</visible>
+                <texture colordiffuse="3300ddff" border="20">common/box.png</texture>
+            </control>
+            <control type="group">
+                <width>40</width>
+                <height>40</height>
+                <centerleft>50%</centerleft>
+                <centertop>50%</centertop>
+                <control type="group">
+                    <visible>!String.IsEqual(Window.Property(MenuHighlight),MenuOptions)</visible>
+                    <control type="image">
+                        <aspectratio>keep</aspectratio>
+                        <bordersize>icon_home_bordersize</bordersize>
+                        <texture colordiffuse="main_fg_30">special://skin/extras/icons/bars.png</texture>
+                    </control>
+                </control>
+                <control type="group">
+                    <visible>String.IsEqual(Window.Property(MenuHighlight),MenuOptions)</visible>
+                    <control type="image">
+                        <include>Texture_Circle_Highlight_V</include>
+                        <aspectratio>keep</aspectratio>
+                        <width>10</width>
+                        <height>10</height>
+                        <centertop>50%</centertop>
+                        <left>-16</left>
+                    </control>
+                    <control type="image">
+                        <aspectratio>keep</aspectratio>
+                        <bordersize>icon_home_bordersize</bordersize>
+                        <texture colordiffuse="main_fg_100">special://skin/extras/icons/bars.png</texture>
+                    </control>
+                </control>
+            </control>
+        </control>
+
         <!-- Side Menu Mockup -->
         <control type="panel">
+            <visible>!Skin.HasSetting(Home.HideSideMenu)</visible>
             <width>100</width>
             <centerleft>100</centerleft>
             <height>500</height>
@@ -128,12 +232,6 @@
         </control>
 
         <!-- Spotlight Info Panel -->
-        <!-- <include content="Info_Panel">
-            <param name="titlelabel">[CAPITALIZE]$INFO[Container(6000).ListItem.Label][/CAPITALIZE][CR]Customisation</param>
-            <param name="plotlabel">$INFO[Window(Home).Property(CustomDialogSettingsLabel)]</param>
-            <param name="plotwidth">800</param>
-            <include>Dimension_Info</include>
-        </include> -->
         <control type="group">
             <include>Dimension_Info</include>
             <control type="grouplist">
@@ -417,6 +515,12 @@
                             <include>Items_Dialog_WideSettings_Menu</include>
                         </content>
                     </control>
+                    <include content="Settings_Label" description="Style">
+                        <param name="dialog">true</param>
+                        <label>$INFO[Window(Home).Property(CustomDialogSettingsTitle)]</label>
+                        <top>140</top>
+                        <left>20</left>
+                    </include>
                     <include content="Dialog_Body_Grouplist">
                         <param name="id">8000</param>
                         <right>20</right>
@@ -424,27 +528,35 @@
                         <onright>9001</onright>
                         <onup>6000</onup>
                         <ondown>-</ondown>
-                        <top>100</top>
-                        <include content="Settings_Label" description="Style">
-                            <param name="id">8701</param>
-                            <param name="dialog">true</param>
-                            <label>$INFO[Window(Home).Property(CustomDialogSettingsTitle)]</label>
-                        </include>
+                        <top>180</top>
+
+                        <!-- 81XX -->
                         <include content="Items_Settings_SideButtonConfigure">
                             <param name="item">1</param>
                         </include>
+
+                        <!-- 82XX -->
                         <include content="Items_Settings_SideButtonConfigure">
                             <param name="item">2</param>
                         </include>
+
+                        <!-- 83XX -->
                         <include content="Items_Settings_SideButtonConfigure">
                             <param name="item">3</param>
                         </include>
+
+                        <!-- 84XX -->
                         <include content="Items_Settings_SideButtonConfigure">
                             <param name="item">4</param>
                         </include>
-                        <include>Items_Settings_HomeMenu</include>
+
+                        <!-- 85XX -->
                         <include>Items_Settings_SearchMenu</include>
 
+                        <!-- 86XX -->
+                        <include>Items_Settings_HomeMenu</include>
+
+                        <!-- 89XX -->
                         <include content="Settings_Button" description="Combine widget stack">
                             <param name="id">8909</param>
                             <param name="dialog">true</param>
