@@ -60,6 +60,8 @@
         <param name="widgettop">widget_items_t</param>
         <param name="widgetheight">widget_items_h</param>
         <param name="transition_include">false</param>
+        <param name="shortstack_enabled">false</param>
+        <param name="shortstack_visible">true</param>
         <definition>
             <include content="Widget_Label">
                 <param name="groupid">$PARAM[groupid]</param>
@@ -111,6 +113,15 @@
 
                 <onfocus>SetProperty(Slide.WidgetContainer,True)</onfocus>
             </include>
+
+            <include content="Object_Control" condition="$PARAM[shortstack_enabled]">
+                <param name="id">$PARAM[shortstack_id]</param>
+                <param name="control">group</param>
+                <height>-120</height>
+                <visible>$PARAM[shortstack_visible]</visible>
+                <visible>Control.IsVisible($PARAM[id])</visible>
+            </include>
+
         </definition>
     </include>
 
@@ -469,6 +480,9 @@
                 <param name="widgetheight">$PARAM[widgetheight]</param>
                 <param name="transition_include">$PARAM[transition_include]</param>
                 <param name="transition_hidden">$PARAM[transition_hidden]</param>
+                <param name="shortstack_id">$PARAM[shortstack_id]</param>
+                <param name="shortstack_visible">$PARAM[shortstack_visible]</param>
+                <param name="shortstack_enabled">$PARAM[shortstack_enabled]</param>
                 <nested />
             </include>
         </definition>
@@ -497,6 +511,9 @@
                 <param name="busy_visible">[Integer.IsEqual(Container($PARAM[id]).NumItems,0) | Integer.IsEqual(Container($PARAM[id]).NumItems,1)]</param>
                 <param name="transition_include">$PARAM[transition_include]</param>
                 <param name="transition_hidden">$PARAM[transition_hidden]</param>
+                <param name="shortstack_id">$PARAM[shortstack_id]</param>
+                <param name="shortstack_visible">$PARAM[shortstack_visible]</param>
+                <param name="shortstack_enabled">$PARAM[shortstack_enabled]</param>
 
                 <include content="Action_Widget_OnBack">
                     <param name="id">$PARAM[id]</param>
@@ -549,6 +566,9 @@
                 <param name="labelheight">$PARAM[labelheight]</param>
                 <param name="widgettop">$PARAM[widgettop]</param>
                 <param name="widgetheight">$PARAM[widgetheight]</param>
+                <param name="shortstack_id">$PARAM[shortstack_id]</param>
+                <param name="shortstack_visible">$PARAM[shortstack_visible]</param>
+                <param name="shortstack_enabled">$PARAM[shortstack_enabled]</param>
 
                 <include content="$PARAM[include_action]">
                     <param name="id">$PARAM[baseid]$PARAM[id]</param>
