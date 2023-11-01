@@ -56,13 +56,22 @@
         </control>
     </include>
 
+    <include name="Hub_Menu_Group_Spotlight_Slide">
+        <animation effect="slide" time="400" end="0" start="0,-120" tween="quadratic" easing="out" reversible="false" condition="![Integer.IsEqual(Container(301).NumItems,0) + !Container(301).IsUpdating + Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + String.IsEmpty(Window.Property(Slide.WidgetContainer))]">Conditional</animation>
+        <animation effect="slide" time="400" end="0,-120" start="0" tween="quadratic" easing="out" reversible="false" condition="Integer.IsEqual(Container(301).NumItems,0) + !Container(301).IsUpdating + Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + String.IsEmpty(Window.Property(Slide.WidgetContainer))">Conditional</animation>
+    </include>
+
     <include name="Hub_Menu_Group">
-        <control type="group">
-            <include>Animation_Half_WindowChange</include>
-            <animation effect="slide" time="400" end="0" start="0,-320" tween="quadratic" easing="out" reversible="false" condition="String.IsEmpty(Window.Property(Slide.WidgetContainer))">Conditional</animation>
-            <animation effect="slide" time="400" end="0,-320" start="0" tween="quadratic" easing="out" reversible="false" condition="!String.IsEmpty(Window.Property(Slide.WidgetContainer))">Conditional</animation>
-            <nested />
-        </control>
+        <param name="widgets_only">false</param>
+        <definition>
+            <control type="group">
+                <include>Animation_Half_WindowChange</include>
+                <include condition="![$PARAM[widgets_only]]">Hub_Menu_Group_Spotlight_Slide</include>
+                <animation effect="slide" time="400" end="0" start="0,-320" tween="quadratic" easing="out" reversible="false" condition="String.IsEmpty(Window.Property(Slide.WidgetContainer))">Conditional</animation>
+                <animation effect="slide" time="400" end="0,-320" start="0" tween="quadratic" easing="out" reversible="false" condition="!String.IsEmpty(Window.Property(Slide.WidgetContainer))">Conditional</animation>
+                <nested />
+            </control>
+        </definition>
     </include>
 
     <include name="Hub_Controls">
@@ -208,7 +217,9 @@
         <control type="group">
             <visible>!$EXP[Exp_InfoDialogs]</visible>
             <include>Animation_Transition_InfoPanel_Hide</include>
-            <include>Spotlight_Main</include>
+            <include content="Spotlight_Main">
+                <param name="visible">[!Integer.IsEqual(Container(301).NumItems,0) | Container(301).IsUpdating]</param>
+            </include>
             <include>Transitions_Down_Visibility</include>
             <include content="Categories_Selector">
                 <param name="window_id">$PARAM[window_id]</param>
@@ -219,7 +230,12 @@
                 <param name="shorten">True</param>
                 <param name="hidden_button_prefix">Item.$INFO[Container(300).ListItem.Property(id)]302.</param>
 
-                <onup>311</onup>
+                <onup condition="[!Integer.IsEqual(Container(301).NumItems,0) | Container(301).IsUpdating]">311</onup>
+                <include content="Action_Widget_Top">
+                    <param name="id">300</param>
+                    <param name="condition">[![!Integer.IsEqual(Container(301).NumItems,0) | Container(301).IsUpdating]]</param>
+                </include>
+
                 <include content="Action_Menu_Movement_OnBack">
                     <param name="id">300</param>
                 </include>

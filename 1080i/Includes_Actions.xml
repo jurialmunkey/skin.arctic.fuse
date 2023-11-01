@@ -110,39 +110,42 @@
     </include>
 
     <include name="Action_Widget_Top_HomeLoop">
-        <onup condition="Integer.IsEqual(Container(300).ListItem.Property(id),1)">1499</onup>
-        <onup condition="Integer.IsEqual(Container(300).ListItem.Property(id),2)">2499</onup>
-        <onup condition="Integer.IsEqual(Container(300).ListItem.Property(id),3)">3499</onup>
-        <onup condition="Integer.IsEqual(Container(300).ListItem.Property(id),4)">4499</onup>
-        <onup condition="Integer.IsEqual(Container(300).ListItem.Property(id),5)">5499</onup>
-        <onup condition="Integer.IsEqual(Container(300).ListItem.Property(id),6)">6499</onup>
-        <onup condition="Integer.IsEqual(Container(300).ListItem.Property(id),7)">7499</onup>
-        <onup condition="Integer.IsEqual(Container(300).ListItem.Property(id),8)">8499</onup>
-        <onup condition="Integer.IsEqual(Container(300).ListItem.Property(id),9)">9499</onup>
-        <onup condition="Integer.IsEqual(Container(300).ListItem.Property(id),10)">10499</onup>
-        <onup condition="Integer.IsEqual(Container(300).ListItem.Property(id),11)">11499</onup>
-        <onup condition="Integer.IsEqual(Container(300).ListItem.Property(id),12)">12499</onup>
-        <onup condition="Integer.IsEqual(Container(300).ListItem.Property(id),13)">13499</onup>
-        <onup condition="Integer.IsEqual(Container(300).ListItem.Property(id),14)">14499</onup>
-        <onup condition="Integer.IsEqual(Container(300).ListItem.Property(id),15)">15499</onup>
-        <onup condition="Integer.IsEqual(Container(300).ListItem.Property(id),16)">16499</onup>
-        <onup condition="Integer.IsEqual(Container(300).ListItem.Property(id),17)">17499</onup>
-        <onup condition="Integer.IsEqual(Container(300).ListItem.Property(id),18)">18499</onup>
-        <onup condition="Integer.IsEqual(Container(300).ListItem.Property(id),19)">19499</onup>
-        <onup condition="Integer.IsEqual(Container(300).ListItem.Property(id),20)">20499</onup>
-    </include>
-
-    <include name="Action_Widget_Top_HubsLoop">
-        <onup>5999</onup>
+        <param name="condition">true</param>
+        <definition>
+            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),1)">1499</onup>
+            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),2)">2499</onup>
+            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),3)">3499</onup>
+            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),4)">4499</onup>
+            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),5)">5499</onup>
+            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),6)">6499</onup>
+            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),7)">7499</onup>
+            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),8)">8499</onup>
+            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),9)">9499</onup>
+            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),10)">10499</onup>
+            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),11)">11499</onup>
+            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),12)">12499</onup>
+            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),13)">13499</onup>
+            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),14)">14499</onup>
+            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),15)">15499</onup>
+            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),16)">16499</onup>
+            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),17)">17499</onup>
+            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),18)">18499</onup>
+            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),19)">19499</onup>
+            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),20)">20499</onup>
+        </definition>
     </include>
 
     <include name="Action_Widget_Top">
-        <onup>SetProperty(List.ViewContainer.Reset,$NUMBER[$PARAM[id]])</onup>
-        <onup>SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onup>
-        <include condition="Skin.String(Movement.Content.OnUp,Loop) + !Window.IsVisible(Home)">Action_Widget_Top_HubsLoop</include>
-        <include condition="Skin.String(Movement.Content.OnUp,Loop) + Window.IsVisible(Home)">Action_Widget_Top_HomeLoop</include>
-        <onup condition="Skin.String(Movement.Content.OnUp,Menu)">SetFocus($VAR[Action_Menu_ID],$VAR[Action_Menu_Position],absolute)</onup>
-        <onup condition="!Skin.String(Movement.Content.OnUp,Loop) + !Skin.String(Movement.Content.OnUp,Menu)">333</onup>
+        <param name="condition">true</param>
+        <definition>
+            <onup condition="$PARAM[condition]">SetProperty(List.ViewContainer.Reset,$NUMBER[$PARAM[id]])</onup>
+            <onup condition="$PARAM[condition]">SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onup>
+            <include content="Action_Widget_Top_HomeLoop" condition="Skin.String(Movement.Content.OnUp,Loop)">
+                <param name="condition">$PARAM[condition]</param>
+            </include>
+            <onup condition="$PARAM[condition] + Skin.String(Movement.Content.OnUp,Menu)">SetFocus($VAR[Action_Menu_ID],$VAR[Action_Menu_Position],absolute)</onup>
+            <onup condition="$PARAM[condition] + !Skin.String(Movement.Content.OnUp,Loop) + !Skin.String(Movement.Content.OnUp,Menu)">333</onup>
+        </definition>
     </include>
 
     <include name="Action_Widget_End">
