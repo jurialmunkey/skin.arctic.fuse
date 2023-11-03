@@ -192,6 +192,7 @@
                         <include content="Dialog_Outline_Box">
 
                             <control type="group">
+                                <visible>!Control.HasFocus(9004)</visible>
                                 <include content="Dimension_Padding">
                                     <param name="pad">40</param>
                                 </include>
@@ -442,12 +443,95 @@
 
                             </control>
 
+                            <control type="group">
+                                <visible>Control.HasFocus(9004)</visible>
+                                <include content="Dimension_Padding">
+                                    <param name="pad">40</param>
+                                </include>
+                                <control type="image">
+                                    <aspectratio scalediffuse="false" align="left" aligny="top">keep</aspectratio>
+                                    <texture background="true">special://profile/addon_data/weather.ozweather/radarbackgrounds/$INFO[Window(weather).Property(Radar)]/legend.png</texture>
+                                </control>
+                                <control type="image">
+                                    <aspectratio scalediffuse="false" align="left" aligny="top">keep</aspectratio>
+                                    <texture background="true">special://profile/addon_data/weather.ozweather/radarbackgrounds/$INFO[Window(weather).Property(Radar)]/background.png</texture>
+                                </control>
+                                <control type="image">
+                                    <aspectratio scalediffuse="false" align="left" aligny="top">keep</aspectratio>
+                                    <texture background="true">special://profile/addon_data/weather.ozweather/radarbackgrounds/$INFO[Window(weather).Property(Radar)]/topography.png</texture>
+                                </control>
+                                <control type="image">
+                                    <aspectratio scalediffuse="false" align="left" aligny="top">keep</aspectratio>
+                                    <texture background="true">special://profile/addon_data/weather.ozweather/radarbackgrounds/$INFO[Window(weather).Property(Radar)]/catchments.png</texture>
+                                </control>
+                                <control type="image">
+                                    <aspectratio scalediffuse="false" align="left" aligny="top">keep</aspectratio>
+                                    <texture background="true">special://profile/addon_data/weather.ozweather/radarbackgrounds/$INFO[Window(weather).Property(Radar)]/range.png</texture>
+                                </control>
+                                <control type="image">
+                                    <aspectratio scalediffuse="false" align="left" aligny="top">keep</aspectratio>
+                                    <texture background="true">special://profile/addon_data/weather.ozweather/radarbackgrounds/$INFO[Window(weather).Property(Radar)]/locations.png</texture>
+                                </control>
+                                <control type="multiimage">
+                                    <description>Radar Loop</description>
+                                    <aspectratio scalediffuse="false" align="left" aligny="top">keep</aspectratio>
+                                    <imagepath>special://profile/addon_data/weather.ozweather/currentloop/$INFO[Window(weather).Property(Radar)]/</imagepath>
+                                    <timeperimage>300</timeperimage>
+                                    <pauseatend>800</pauseatend>
+                                    <fadetime>0</fadetime>
+                                    <randomize>false</randomize>
+                                    <loop>yes</loop>
+                                </control>
+
+                                <control type="grouplist">
+                                    <orientation>vertical</orientation>
+                                    <align>bottom</align>
+                                    <width>49%</width>
+                                    <control type="textbox">
+                                        <height>auto</height>
+                                        <font>font_tiny</font>
+                                        <label>$INFO[Window(weather).Property(Current.LaterLabel),,: ]$INFO[Window(weather).Property(Current.LaterValue),,&#176;]</label>
+                                    </control>
+                                    <control type="textbox">
+                                        <height>auto</height>
+                                        <font>font_tiny</font>
+                                        <label>$INFO[Window(weather).Property(Current.NowLabel),,: ]$INFO[Window(weather).Property(Current.NowValue),,&#176;]</label>
+                                    </control>
+                                    <control type="textbox">
+                                        <height>auto</height>
+                                        <font>font_tiny</font>
+                                        <label>$INFO[Window(weather).Property(Daily.1.RainChance),$LOCALIZE[31465]: , ]$INFO[Window(weather).Property(Daily.1.RainAmount)]</label>
+                                    </control>
+                                </control>
+                                <control type="grouplist">
+                                    <orientation>vertical</orientation>
+                                    <align>bottom</align>
+                                    <width>49%</width>
+                                    <right>0</right>
+                                    <control type="textbox">
+                                        <align>right</align>
+                                        <height>auto</height>
+                                        <font>font_tiny</font>
+                                        <label>$INFO[Window(weather).Property(Current.WindGust),$LOCALIZE[31470]: ,km/h]</label>
+                                    </control>
+                                    <control type="textbox">
+                                        <align>right</align>
+                                        <height>auto</height>
+                                        <font>font_tiny</font>
+                                        <label>$INFO[Window(weather).Property(Current.FireDanger),$LOCALIZE[31471]: ,]</label>
+                                    </control>
+                                    <control type="textbox">
+                                        <align>right</align>
+                                        <height>auto</height>
+                                        <font>font_tiny</font>
+                                        <label>$INFO[Window(weather).Property(Current.RainSince9),$LOCALIZE[31472]: ,mm]</label>
+                                    </control>
+                                </control>
+                            </control>
+
 
 
                         </include>
-                        <!-- <control type="image">
-                            <texture border="20" colordiffuse="dialog_fg_12">common/dialog.png</texture>
-                        </control> -->
                     </control>
                 </include>
                 <include content="Dialog_Side_Grouplist">
@@ -466,7 +550,13 @@
                         <onclick>Weather.LocationNext</onclick>
                     </include>
                     <include content="Dialog_Side_Button">
-                        <param name="id">03</param>
+                        <param name="id">04</param>
+                        <param name="label">$LOCALIZE[31473]</param>
+                        <param name="icon">special://skin/extras/icons/radar.png</param>
+                        <param name="visible">!String.IsEmpty(Window(weather).Property(Radar))</param>
+                    </include>
+                    <include content="Dialog_Side_Button">
+                        <param name="id">09</param>
                         <param name="label">$LOCALIZE[5]</param>
                         <param name="icon">special://skin/extras/icons/settings.png</param>
                         <onclick>Close</onclick>
