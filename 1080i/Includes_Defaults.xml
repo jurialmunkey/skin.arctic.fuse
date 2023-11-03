@@ -485,11 +485,13 @@
     <variable name="Defs_AddonDetails_Loader_Description">
         <value condition="$EXP[Exp_HomeMenu_tvshows]">$LOCALIZE[31172]</value>
         <value condition="$EXP[Exp_HomeMenu_movies]">$LOCALIZE[31175]</value>
-        <value>$LOCALIZE[31176]</value>
+        <!-- MISC003: remove "$LOCALIZE[31176]" -->
+        <!-- value>$LOCALIZE[31176]</value -->
     </variable>
 
     <variable name="Defs_AddonDetails_Loader_Path">
-        <value condition="Window.IsMedia + !String.IsEmpty(Container.PluginName)">$INFO[Container.PluginName,plugin://script.skinvariables/?info=get_dbitem_addon_details&amp;dbid=,]</value>
+        <!-- MISC003: "+ !Window.IsVisible(10001) + !String.Contains(Container.FolderPath,autowidget)" added -->
+        <value condition="Window.IsMedia + !String.IsEmpty(Container.PluginName) + !Window.IsVisible(10001) + !String.Contains(Container.FolderPath,autowidget)">$INFO[Container.PluginName,plugin://script.skinvariables/?info=get_dbitem_addon_details&amp;dbid=,]</value>
         <value condition="Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + String.StartsWith(Container(301).ListItem.Path,plugin://)">$INFO[Container(301).ListItem.Path,plugin://script.skinvariables/?info=get_dbitem_addon_details&amp;dbid=,&amp;convert_path=True]</value>
         <value condition="!String.IsEmpty(Container.ListItem.Path) + String.StartsWith(Container.ListItem.Path,plugin://)">$INFO[Container.ListItem.Path,plugin://script.skinvariables/?info=get_dbitem_addon_details&amp;dbid=,&amp;convert_path=True]</value>
         <value condition="!String.IsEmpty(ListItem.Path) + String.StartsWith(ListItem.Path,plugin://)">$INFO[ListItem.Path,plugin://script.skinvariables/?info=get_dbitem_addon_details&amp;dbid=,&amp;convert_path=True]</value>
@@ -506,6 +508,8 @@
                     <property name="description">$VAR[Defs_AddonDetails_Loader_Description]</property>
                     <property name="type">xbmc.core</property>
                     <property name="version">$INFO[System.BuildVersionCode]</property>
+					<!-- MISC003: additional visible tag added -->
+					<visible>![String.IsEqual(System.CurrentControlID,"50") + String.Contains(Container.FolderPath,"plugin.program.autowidget")]</visible>
                     <visible>Integer.IsEqual(Container(99956).NumItems,0) | [Integer.IsEqual(Container(99956).NumItems,1) + String.IsEqual(Container(99956).ListItemAbsolute(0).Label,null)]</visible>
                 </item>
             </content>
