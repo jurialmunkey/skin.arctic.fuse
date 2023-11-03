@@ -2,6 +2,11 @@
 <window type="dialog" id="1170">
     <defaultcontrol always="true">8000</defaultcontrol>
     <onload>SetFocus(8000,0,absolute)</onload>
+    <onload condition="String.IsEmpty(Skin.String(OptionsTiles.Layout))">Skin.SetString(OptionsTiles.Layout,$NUMBER[3])</onload>
+    <onload condition="String.IsEmpty(Skin.String(OptionsTiles.01.Include))">Skin.SetString(OptionsTiles.01.Include,Profile)</onload>
+    <onload condition="String.IsEmpty(Skin.String(OptionsTiles.02.Include))">Skin.SetString(OptionsTiles.02.Include,Settings)</onload>
+    <onload condition="String.IsEmpty(Skin.String(OptionsTiles.03.Include))">Skin.SetString(OptionsTiles.03.Include,Weather)</onload>
+    <onload condition="String.IsEmpty(Skin.String(OptionsTiles.04.Include))">Skin.SetString(OptionsTiles.04.Include,SystemInfo)</onload>
     <controls>
 
         <include content="Dialog_Overlay_Side">
@@ -15,68 +20,15 @@
                 <include content="Dialog_Body_Group">
                     <param name="id">7000</param>
 
-                    <include content="Dialog_Special_Button">
-                        <param name="id">7001</param>
-                        <param name="sublabel">$INFO[System.Date]</param>
-                        <param name="toplabel">$INFO[System.Time]</param>
-                        <param name="icon">$VAR[Image_ProfileThumb]</param>
-                        <param name="icon_bordersize">10</param>
-                        <control type="button" id="7001">
-                            <ondown>7002</ondown>
-                            <onright>9000</onright>
-                            <onleft>Close</onleft>
-                            <onclick>Close</onclick>
-                            <onclick>System.LogOff</onclick>
-                            <include>defs_dialog_button</include>
-                        </control>
+                    <include content="ButtonMenu_Layout" condition="Skin.String(OptionsTiles.Layout,$NUMBER[2])">
+                        <param name="layout_include">ButtonMenu_Layout_Two</param>
                     </include>
-
-                    <control type="group">
-                        <top>150</top>
-                        <control type="group">
-                            <width>50%</width>
-                            <left>0</left>
-                            <include content="Dialog_Special_Button">
-                                <param name="id">7002</param>
-                                <param name="sublabel">$LOCALIZE[5]</param>
-                                <param name="icon">special://skin/extras/icons/settings.png</param>
-                                <param name="icon_bordersize">4</param>
-                                <param name="icon_withtext">true</param>
-                                <right>10</right>
-                                <control type="button" id="7002">
-                                    <ondown>8000</ondown>
-                                    <onup>7001</onup>
-                                    <onright>7003</onright>
-                                    <onleft>Close</onleft>
-                                    <onclick>Close</onclick>
-                                    <onclick>ActivateWindow(settings)</onclick>
-                                    <include>defs_dialog_button</include>
-                                </control>
-                            </include>
-                        </control>
-                        <control type="group">
-                            <width>50%</width>
-                            <right>0</right>
-                            <include content="Dialog_Special_Button">
-                                <param name="id">7003</param>
-                                <param name="toplabel">$INFO[Weather.Temperature]</param>
-                                <param name="sublabel">$INFO[Weather.Conditions]</param>
-                                <param name="icon">$INFO[Weather.FanartCode,resource://resource.images.weathericons.white/,.png]</param>
-                                <param name="icon_bordersize">12</param>
-                                <param name="icon_withtext">true</param>
-                                <left>10</left>
-                                <control type="button" id="7003">
-                                    <ondown>8000</ondown>
-                                    <onup>7001</onup>
-                                    <onright>9000</onright>
-                                    <onleft>7002</onleft>
-                                    <onclick>Close</onclick>
-                                    <onclick>ActivateWindow(weather)</onclick>
-                                    <include>defs_dialog_button</include>
-                                </control>
-                            </include>
-                        </control>
-                    </control>
+                    <include content="ButtonMenu_Layout" condition="Skin.String(OptionsTiles.Layout,$NUMBER[3])">
+                        <param name="layout_include">ButtonMenu_Layout_Three</param>
+                    </include>
+                    <include content="ButtonMenu_Layout" condition="Skin.String(OptionsTiles.Layout,$NUMBER[4])">
+                        <param name="layout_include">ButtonMenu_Layout_Four</param>
+                    </include>
 
                     <control type="image">
                         <top>300</top>
@@ -93,7 +45,7 @@
                         <top>320</top>
                         <bottom>0</bottom>
                         <orientation>vertical</orientation>
-                        <onup>7002</onup>
+                        <onup>7020</onup>
                         <ondown>noop</ondown>
                         <onright>9000</onright>
                         <onleft>Close</onleft>
