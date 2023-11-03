@@ -192,6 +192,7 @@
                         <include content="Dialog_Outline_Box">
 
                             <control type="group">
+                                <visible>!Control.HasFocus(9003)</visible>
                                 <visible>!Control.HasFocus(9004)</visible>
                                 <include content="Dimension_Padding">
                                     <param name="pad">40</param>
@@ -444,6 +445,98 @@
                             </control>
 
                             <control type="group">
+                                <visible>Control.HasFocus(9003)</visible>
+                                <include content="Dimension_Padding">
+                                    <param name="pad">40</param>
+                                </include>
+
+                                <control type="panel">
+                                    <orientation>vertical</orientation>
+                                    <left>-20</left>
+                                    <top>-20</top>
+                                    <right>-20</right>
+
+                                    <focusedlayout height="133.33" />
+                                    <itemlayout height="133.33">
+                                        <control type="group">
+                                            <include content="Dimension_Padding">
+                                                <param name="pad">20</param>
+                                            </include>
+                                            <include content="Dialog_Outline_Box">
+                                                <control type="label">
+                                                    <left>100</left>
+                                                    <right>100</right>
+                                                    <label>$INFO[ListItem.Property(HighTemp),[B],[/B]°]</label>
+                                                    <align>right</align>
+                                                    <aligny>center</aligny>
+                                                    <font>font_head_black</font>
+                                                    <textcolor>dialog_fg_90</textcolor>
+                                                </control>
+                                                <control type="label">
+                                                    <top>10</top>
+                                                    <left>30</left>
+                                                    <right>30</right>
+                                                    <height>45</height>
+                                                    <label>$INFO[ListItem.Property(DayName)]</label>
+                                                    <!-- <label>$INFO[ListItem.Property(DayName),,:  ]$INFO[ListItem.Property(LowTemp),,°]$INFO[ListItem.Property(HighTemp), - ,°]</label> -->
+                                                    <textcolor>dialog_fg_90</textcolor>
+                                                    <font>font_mini_bold</font>
+                                                    <aligny>center</aligny>
+                                                    <align>left</align>
+                                                </control>
+                                                <control type="label">
+                                                    <top>10</top>
+                                                    <left>190</left>
+                                                    <right>30</right>
+                                                    <height>45</height>
+                                                    <label>$INFO[ListItem.Property(Outlook)]</label>
+                                                    <textcolor>dialog_fg_90</textcolor>
+                                                    <font>font_mini</font>
+                                                    <aligny>center</aligny>
+                                                    <align>left</align>
+                                                </control>
+                                                <control type="image">
+                                                    <texture background="true" colordiffuse="dialog_fg_90">$INFO[ListItem.Icon]</texture>
+                                                    <left>30</left>
+                                                    <right>30</right>
+                                                    <top>30</top>
+                                                    <bottom>30</bottom>
+                                                    <bordersize>-15</bordersize>
+                                                    <aspectratio align="right">keep</aspectratio>
+                                                </control>
+                                                <control type="label">
+                                                    <bottom>10</bottom>
+                                                    <height>45</height>
+                                                    <left>30</left>
+                                                    <right>30</right>
+                                                    <label>$INFO[ListItem.Property(LowTemp),Low: ,°]</label>
+                                                    <textcolor>dialog_fg_90</textcolor>
+                                                    <font>font_mini</font>
+                                                    <aligny>center</aligny>
+                                                    <align>left</align>
+                                                </control>
+                                                <control type="label">
+                                                    <bottom>10</bottom>
+                                                    <height>45</height>
+                                                    <left>190</left>
+                                                    <right>30</right>
+                                                    <label>$INFO[ListItem.Property(RainChance),$LOCALIZE[31465]: ,]</label>
+                                                    <textcolor>dialog_fg_90</textcolor>
+                                                    <font>font_mini</font>
+                                                    <aligny>center</aligny>
+                                                    <align>left</align>
+                                                </control>
+                                            </include>
+                                        </control>
+                                    </itemlayout>
+
+                                    <content>
+                                        <include>Weather_Forecast_Items</include>
+                                    </content>
+                                </control>
+                            </control>
+
+                            <control type="group">
                                 <visible>Control.HasFocus(9004)</visible>
                                 <include content="Dimension_Padding">
                                     <param name="pad">40</param>
@@ -551,6 +644,12 @@
                         <param name="label">$LOCALIZE[31006]</param>
                         <param name="icon">special://skin/extras/icons/map-location-dot.png</param>
                         <onclick>Weather.LocationNext</onclick>
+                    </include>
+                    <include content="Dialog_Side_Button">
+                        <param name="id">03</param>
+                        <param name="label">Weekly</param>
+                        <param name="icon">special://skin/extras/icons/calendar-day.png</param>
+                        <param name="visible">!String.IsEmpty(Window(weather).Property(Radar))</param>
                     </include>
                     <include content="Dialog_Side_Button">
                         <param name="id">04</param>
