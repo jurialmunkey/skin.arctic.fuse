@@ -389,6 +389,11 @@
         <definition>
             <include content="Info_Line_Rating" condition="![$PARAM[is_player]]">
                 <param name="icon">flags/$VAR[Info_Line_Rating_Style]/ratings/kodi.png</param>
+                <param name="label">$INFO[Container(99950).ListItem.Property(base_rating)]</param>
+                <param name="visible">[$PARAM[visible]] + !String.IsEmpty(Container(99950).ListItem.Property(base_rating)) + String.IsEmpty($PARAM[container]ListItem.Rating) + String.IsEmpty($PARAM[container]ListItem.UserRating) + !String.IsEmpty(Window.Property(TMDBHelper.WidgetContainer))</param>
+            </include>
+            <include content="Info_Line_Rating" condition="![$PARAM[is_player]]">
+                <param name="icon">flags/$VAR[Info_Line_Rating_Style]/ratings/kodi.png</param>
                 <param name="label">$INFO[$PARAM[container]ListItem.Rating]</param>
                 <param name="visible">[$PARAM[visible]] + !String.IsEmpty($PARAM[container]ListItem.Rating) + String.IsEmpty($PARAM[container]ListItem.UserRating)</param>
             </include>
@@ -923,22 +928,20 @@
                 </include>
 
                 <!-- Season / Episode -->
-                <include content="Info_Line_Item">
+                <include content="Info_Line_Items">
                     <include content="Info_Line_Visible_01">
                         <param name="container">$PARAM[container]</param>
                         <param name="dbtype_01">episode</param>
                     </include>
-                    <param name="label">$INFO[$PARAM[container]ListItem.Season,,x]$INFO[$PARAM[container]ListItem.Episode,0,]</param>
-                    <param name="visible">!String.IsEmpty($PARAM[container]ListItem.Episode) + Integer.IsLess($PARAM[container]ListItem.Episode,10)</param>
-                    <param name="textcolor">$PARAM[colordiffuse]_90</param>
-                </include>
-                <include content="Info_Line_Item">
-                    <include content="Info_Line_Visible_01">
-                        <param name="container">$PARAM[container]</param>
-                        <param name="dbtype_01">episode</param>
-                    </include>
-                    <param name="label">$INFO[$PARAM[container]ListItem.Season,,x]$INFO[$PARAM[container]ListItem.Episode,,]</param>
-                    <param name="visible">!String.IsEmpty($PARAM[container]ListItem.Episode) + !Integer.IsLess($PARAM[container]ListItem.Episode,10)</param>
+                    <param name="items_04">true</param>
+                    <param name="label_01">$INFO[$PARAM[container]ListItem.Season,,x]$INFO[$PARAM[container]ListItem.Episode,0,]</param>
+                    <param name="label_02">$INFO[$PARAM[container]ListItem.Season,,x]$INFO[$PARAM[container]ListItem.Episode,,]</param>
+                    <param name="label_03">$INFO[Container(99950).ListItem.Season,,x]$INFO[Container(99950).ListItem.Episode,0,]</param>
+                    <param name="label_04">$INFO[Container(99950).ListItem.Season,,x]$INFO[Container(99950).ListItem.Episode,,]</param>
+                    <param name="visible_01">!String.IsEmpty($PARAM[container]ListItem.Episode) + Integer.IsLess($PARAM[container]ListItem.Episode,10)</param>
+                    <param name="visible_02">!String.IsEmpty($PARAM[container]ListItem.Episode)</param>
+                    <param name="visible_03">!String.IsEmpty(Container(99950).ListItem.Episode) + Integer.IsLess(Container(99950).ListItem.Episode,10)</param>
+                    <param name="visible_04">!String.IsEmpty(Container(99950).ListItem.Episode)</param>
                     <param name="textcolor">$PARAM[colordiffuse]_90</param>
                 </include>
 
@@ -1709,6 +1712,10 @@
         </control>
     </include>
 
+    <include name="Info_Panel_Rating_Visible">
+        <visible>$PARAM[mod][[String.IsEqual($PARAM[container]ListItem.DBType,movie) | String.IsEqual($PARAM[container]ListItem.DBType,tvshow) | String.IsEqual($PARAM[container]ListItem.DBType,season) | String.IsEqual($PARAM[container]ListItem.DBType,episode) | !String.IsEmpty($PARAM[container]ListItem.ChannelNumberLabel) | String.IsEqual($PARAM[container]ListItem.Path,pvr://channels/tv/)] | [!String.ISEmpty(Window.Property(TMDBHelper.WidgetContainer)) + [String.IsEqual(Container(99950).ListItem.DBType,movie) | String.IsEqual(Container(99950).ListItem.DBType,tvshow) | String.IsEqual(Container(99950).ListItem.DBType,season) | String.IsEqual(Container(99950).ListItem.DBType,episode)]]]</visible>
+    </include>
+
     <include name="Info_Panel">
         <param name="container" />
         <param name="plotheight">info_plot_h</param>
@@ -1758,7 +1765,9 @@
                             <aligny>top</aligny>
                             <textcolor>$PARAM[colordiffuse]_70</textcolor>
                             <font>font_main_plot</font>
-                            <visible>[String.IsEqual($PARAM[container]ListItem.DBType,movie) | String.IsEqual($PARAM[container]ListItem.DBType,tvshow) | String.IsEqual($PARAM[container]ListItem.DBType,season) | String.IsEqual($PARAM[container]ListItem.DBType,episode) | !String.IsEmpty($PARAM[container]ListItem.ChannelNumberLabel) | String.IsEqual($PARAM[container]ListItem.Path,pvr://channels/tv/)]</visible>
+                            <include content="Info_Panel_Rating_Visible">
+                                <param name="container">$PARAM[container]</param>
+                            </include>
                         </control>
                         <control type="textbox">
                             <width>$PARAM[plotwidth]</width>
@@ -1767,7 +1776,10 @@
                             <textcolor>$PARAM[colordiffuse]_70</textcolor>
                             <font>font_main_plot</font>
                             <bottom>-40</bottom>
-                            <visible>![String.IsEqual($PARAM[container]ListItem.DBType,movie) | String.IsEqual($PARAM[container]ListItem.DBType,tvshow) | String.IsEqual($PARAM[container]ListItem.DBType,season) | String.IsEqual($PARAM[container]ListItem.DBType,episode) | !String.IsEmpty($PARAM[container]ListItem.ChannelNumberLabel) | String.IsEqual($PARAM[container]ListItem.Path,pvr://channels/tv/)]</visible>
+                            <include content="Info_Panel_Rating_Visible">
+                                <param name="mod">!</param>
+                                <param name="container">$PARAM[container]</param>
+                            </include>
                         </control>
                     </control>
 
@@ -1776,7 +1788,9 @@
                         <top>2</top>
                         <left>0</left>
                         <visible>$PARAM[details]</visible>
-                        <visible>[String.IsEqual($PARAM[container]ListItem.DBType,movie) | String.IsEqual($PARAM[container]ListItem.DBType,tvshow) | String.IsEqual($PARAM[container]ListItem.DBType,season) | String.IsEqual($PARAM[container]ListItem.DBType,episode) | !String.IsEmpty($PARAM[container]ListItem.ChannelNumberLabel) | String.IsEqual($PARAM[container]ListItem.Path,pvr://channels/tv/)]</visible>
+                        <include content="Info_Panel_Rating_Visible">
+                            <param name="container">$PARAM[container]</param>
+                        </include>
                     </include>
                 </control>
             </control>
