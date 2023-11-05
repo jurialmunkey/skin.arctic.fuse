@@ -46,12 +46,14 @@
 
     <include name="Background_Fanart">
         <param name="fadetime">background_fadetime</param>
+        <param name="texture">$VAR[Image_Foreground_Cheater_Parent_Divert]</param>
         <definition>
             <control type="image">
                 <fadetime>$PARAM[fadetime]</fadetime>
                 <aspectratio scalediffuse="false">scale</aspectratio>
-                <texture background="true">$VAR[Image_Foreground_Cheater_Parent_Divert]</texture>
+                <texture background="true">$PARAM[texture]</texture>
                 <include>Background_NotVideo</include>
+                <nested />
             </control>
         </definition>
     </include>
@@ -249,8 +251,8 @@
                 <animation effect="fade" start="0" end="100" time="150" tween="sine" easing="out" condition="$PARAM[windowclose_condition]">WindowClose</animation>
                 <animation effect="fade" start="100" end="0" time="150" tween="sine" easing="out" condition="$PARAM[windowopen_condition]">WindowOpen</animation>
 
-                <animation effect="fade" start="0" end="100" time="0" tween="sine" easing="out" condition="![$PARAM[windowclose_condition]]">WindowClose</animation>
-                <animation effect="fade" start="100" end="0" time="0" tween="sine" easing="out" condition="![$PARAM[windowopen_condition]]">WindowOpen</animation>
+                <animation effect="fade" start="0" end="100" time="0" condition="![$PARAM[windowclose_condition]]">WindowClose</animation>
+                <animation effect="fade" start="100" end="0" time="0" condition="![$PARAM[windowopen_condition]]">WindowOpen</animation>
             </control>
         </definition>
     </include>
@@ -279,36 +281,38 @@
         </control>
     </include>
 
+    <include name="Background_Main_Overlay">
+        <include condition="System.HasAddon(resource.images.arctic.waves)">Background_BusyLoader</include>
+        <include content="Object_Control" condition="!$EXP[Exp_ColourTheme_IsLight]">
+            <param name="control">image</param>
+            <texture colordiffuse="$VAR[ColorBackground]">background/combined_flixart.png</texture>
+        </include>
+        <include content="Object_Control" condition="!$EXP[Exp_ColourTheme_IsLight]">
+            <param name="control">image</param>
+            <texture colordiffuse="$VAR[ColorBackground]">background/combined_overlay.png</texture>
+            <visible>$EXP[Exp_FilterWall_IsMedia] | $EXP[Exp_FilterWall_IsDiscover]</visible>
+            <include content="Animation_Fade_In">
+                <param name="type">Visible</param>
+            </include>
+            <include content="Animation_Fade_Out">
+                <param name="type">Hidden</param>
+            </include>
+        </include>
+        <include content="Object_Control" condition="$EXP[Exp_ColourTheme_IsLight]">
+            <param name="control">image</param>
+            <texture colordiffuse="$VAR[ColorBackground]">background/combined_fanart.png</texture>
+        </include>
+    </include>
+
     <include name="Background_Main">
         <param name="plain_background">false</param>
         <param name="video_background">!Skin.HasSetting(Background.VideoDisabled)</param>
+        <param name="faded_background">true</param>
         <definition>
             <include condition="$PARAM[video_background]">Background_Video</include>
             <include condition="$PARAM[plain_background]">Background_Main_Plain</include>
             <include condition="!$PARAM[plain_background]">Background_Main_Standard</include>
-            <include condition="System.HasAddon(resource.images.arctic.waves)">Background_BusyLoader</include>
-
-            <include content="Object_Control" condition="!$EXP[Exp_ColourTheme_IsLight]">
-                <param name="control">image</param>
-                <texture colordiffuse="$VAR[ColorBackground]">background/combined_flixart.png</texture>
-            </include>
-            <include content="Object_Control" condition="!$EXP[Exp_ColourTheme_IsLight]">
-                <param name="control">image</param>
-                <texture colordiffuse="$VAR[ColorBackground]">background/combined_overlay.png</texture>
-                <visible>$EXP[Exp_FilterWall_IsMedia] | $EXP[Exp_FilterWall_IsDiscover]</visible>
-                <include content="Animation_Fade_In">
-                    <param name="type">Visible</param>
-                </include>
-                <include content="Animation_Fade_Out">
-                    <param name="type">Hidden</param>
-                </include>
-            </include>
-
-            <include content="Object_Control" condition="$EXP[Exp_ColourTheme_IsLight]">
-                <param name="control">image</param>
-                <texture colordiffuse="$VAR[ColorBackground]">background/combined_fanart.png</texture>
-            </include>
-
+            <include condition="$PARAM[faded_background]">Background_Main_Overlay</include>
         </definition>
     </include>
 

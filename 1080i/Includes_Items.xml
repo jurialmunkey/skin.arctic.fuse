@@ -523,6 +523,14 @@
         </include>
     </include>
 
+    <include name="Items_Settings_SideButtonConfigure_Visible_IsHub">
+        <visible>$PARAM[mod][[Skin.String(CustomShortcut.Item0$PARAM[item],movies) + String.IsEmpty(Skin.String(CustomShortcut.Movies))] | [Skin.String(CustomShortcut.Item0$PARAM[item],tvshows) + String.IsEmpty(Skin.String(CustomShortcut.TVShows))] | [Skin.String(CustomShortcut.Item0$PARAM[item],music)  + String.IsEmpty(Skin.String(CustomShortcut.Music))] | [Skin.String(CustomShortcut.Item0$PARAM[item],livetv) + String.IsEmpty(Skin.String(CustomShortcut.PVR))] | [Skin.String(CustomShortcut.Item0$PARAM[item],custom) + [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1106))] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1107))] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1108))] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1109))]]]</visible>
+    </include>
+
+    <include name="Items_Settings_SideButtonConfigure_Visible_HasWidgets">
+        <visible>$PARAM[mod][[Skin.String(CustomShortcut.Item0$PARAM[item],movies) + !Skin.HasSetting(Hub.Movies.DisableSubmenu)] | [Skin.String(CustomShortcut.Item0$PARAM[item],tvshows) + !Skin.HasSetting(Hub.TVShows.DisableSubmenu)] | [Skin.String(CustomShortcut.Item0$PARAM[item],music) + !Skin.HasSetting(Hub.Music.DisableSubmenu)] | [Skin.String(CustomShortcut.Item0$PARAM[item],livetv) + !Skin.HasSetting(Hub.PVR.DisableSubmenu)] | [Skin.String(CustomShortcut.Item0$PARAM[item],custom) + [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1106)) + !Skin.HasSetting(Hub.Custom01.DisableSubmenu)] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1107)) + !Skin.HasSetting(Hub.Custom02.DisableSubmenu)] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1108)) + !Skin.HasSetting(Hub.Custom03.DisableSubmenu)] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1109)) + !Skin.HasSetting(Hub.Custom04.DisableSubmenu)]]]</visible>
+    </include>
+
     <include name="Items_Settings_SideButtonConfigure">
         <include content="Settings_Button" description="Type">
             <param name="id">8$PARAM[item]01</param>
@@ -594,13 +602,16 @@
             <onclick condition="Skin.String(CustomShortcut.Item0$PARAM[item],custom) + !Skin.HasSetting(Hub.Custom0$PARAM[item].DisableSubmenu) + Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1109))">SetProperty(groupname,custom04menu,1116)</onclick>
             <onclick>ActivateWindow(1116)</onclick>
 
-            <visible>[Skin.String(CustomShortcut.Item0$PARAM[item],movies) + !Skin.HasSetting(Hub.Movies.DisableSubmenu)] | [Skin.String(CustomShortcut.Item0$PARAM[item],tvshows) + !Skin.HasSetting(Hub.TVShows.DisableSubmenu)] | [Skin.String(CustomShortcut.Item0$PARAM[item],music) + !Skin.HasSetting(Hub.Music.DisableSubmenu)] | [Skin.String(CustomShortcut.Item0$PARAM[item],livetv) + !Skin.HasSetting(Hub.PVR.DisableSubmenu)] | [Skin.String(CustomShortcut.Item0$PARAM[item],custom) + [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1106)) + !Skin.HasSetting(Hub.Custom01.DisableSubmenu)] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1107)) + !Skin.HasSetting(Hub.Custom02.DisableSubmenu)] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1108)) + !Skin.HasSetting(Hub.Custom03.DisableSubmenu)] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1109)) + !Skin.HasSetting(Hub.Custom04.DisableSubmenu)]]</visible>
-
-            <visible>[Skin.String(CustomShortcut.Item0$PARAM[item],movies) + String.IsEmpty(Skin.String(CustomShortcut.Movies))] | [Skin.String(CustomShortcut.Item0$PARAM[item],tvshows) + String.IsEmpty(Skin.String(CustomShortcut.TVShows))] | [Skin.String(CustomShortcut.Item0$PARAM[item],music)  + String.IsEmpty(Skin.String(CustomShortcut.Music))] | [Skin.String(CustomShortcut.Item0$PARAM[item],livetv) + String.IsEmpty(Skin.String(CustomShortcut.PVR))] | [Skin.String(CustomShortcut.Item0$PARAM[item],custom) + [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1106))] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1107))] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1108))] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1109))]]</visible>
+            <include content="Items_Settings_SideButtonConfigure_Visible_IsHub">
+                <param name="item">$PARAM[item]</param>
+            </include>
+            <include content="Items_Settings_SideButtonConfigure_Visible_HasWidgets">
+                <param name="item">$PARAM[item]</param>
+            </include>
 
             <onfocus>SetProperty(Highlight,Spotlight)</onfocus>
-
             <onfocus>SetProperty(CustomDialogSettingsLabel,[B]$LOCALIZE[31105][/B][CR]$LOCALIZE[31289],Home)</onfocus>
+
             <visible>String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SideMenu_$PARAM[item])</visible>
         </include>
         <include content="Settings_Button" description="Categories">
@@ -617,9 +628,12 @@
             <onclick condition="Skin.String(CustomShortcut.Item0$PARAM[item],custom) + Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1108))">RunScript(script.skinshortcuts,type=manage&amp;group=custom03menu)</onclick>
             <onclick condition="Skin.String(CustomShortcut.Item0$PARAM[item],custom) + Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1109))">RunScript(script.skinshortcuts,type=manage&amp;group=custom04menu)</onclick>
 
-            <visible>[Skin.String(CustomShortcut.Item0$PARAM[item],movies) + !Skin.HasSetting(Hub.Movies.DisableSubmenu)] | [Skin.String(CustomShortcut.Item0$PARAM[item],tvshows) + !Skin.HasSetting(Hub.TVShows.DisableSubmenu)] | [Skin.String(CustomShortcut.Item0$PARAM[item],music) + !Skin.HasSetting(Hub.Music.DisableSubmenu)] | [Skin.String(CustomShortcut.Item0$PARAM[item],livetv) + !Skin.HasSetting(Hub.PVR.DisableSubmenu)] | [Skin.String(CustomShortcut.Item0$PARAM[item],custom) + [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1106)) + !Skin.HasSetting(Hub.Custom01.DisableSubmenu)] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1107)) + !Skin.HasSetting(Hub.Custom02.DisableSubmenu)] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1108)) + !Skin.HasSetting(Hub.Custom03.DisableSubmenu)] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1109)) + !Skin.HasSetting(Hub.Custom04.DisableSubmenu)]]</visible>
-
-            <visible>[Skin.String(CustomShortcut.Item0$PARAM[item],movies) + String.IsEmpty(Skin.String(CustomShortcut.Movies))] | [Skin.String(CustomShortcut.Item0$PARAM[item],tvshows) + String.IsEmpty(Skin.String(CustomShortcut.TVShows))] | [Skin.String(CustomShortcut.Item0$PARAM[item],music)  + String.IsEmpty(Skin.String(CustomShortcut.Music))] | [Skin.String(CustomShortcut.Item0$PARAM[item],livetv) + String.IsEmpty(Skin.String(CustomShortcut.PVR))] | [Skin.String(CustomShortcut.Item0$PARAM[item],custom) + [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1106))] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1107))] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1108))] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1109))]]</visible>
+            <include content="Items_Settings_SideButtonConfigure_Visible_IsHub">
+                <param name="item">$PARAM[item]</param>
+            </include>
+            <include content="Items_Settings_SideButtonConfigure_Visible_HasWidgets">
+                <param name="item">$PARAM[item]</param>
+            </include>
 
             <onfocus>SetProperty(Highlight,Layout)</onfocus>
 
@@ -641,9 +655,13 @@
             <onclick condition="Skin.String(CustomShortcut.Item0$PARAM[item],custom) + Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1108))">RunScript(script.skinshortcuts,type=manage&amp;group=custom03widgets)</onclick>
             <onclick condition="Skin.String(CustomShortcut.Item0$PARAM[item],custom) + Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1109))">RunScript(script.skinshortcuts,type=manage&amp;group=custom04widgets)</onclick>
 
-            <visible>[Skin.String(CustomShortcut.Item0$PARAM[item],movies) + String.IsEmpty(Skin.String(CustomShortcut.Movies))] | [Skin.String(CustomShortcut.Item0$PARAM[item],tvshows) + String.IsEmpty(Skin.String(CustomShortcut.TVShows))] | [Skin.String(CustomShortcut.Item0$PARAM[item],music)  + String.IsEmpty(Skin.String(CustomShortcut.Music))] | [Skin.String(CustomShortcut.Item0$PARAM[item],livetv) + String.IsEmpty(Skin.String(CustomShortcut.PVR))] | [Skin.String(CustomShortcut.Item0$PARAM[item],custom) + [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1106))] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1107))] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1108))] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1109))]]</visible>
-
-            <visible>[[Skin.String(CustomShortcut.Item0$PARAM[item],movies) + Skin.HasSetting(Hub.Movies.DisableSubmenu)] | [Skin.String(CustomShortcut.Item0$PARAM[item],tvshows) + Skin.HasSetting(Hub.TVShows.DisableSubmenu)] | [Skin.String(CustomShortcut.Item0$PARAM[item],music) + Skin.HasSetting(Hub.Music.DisableSubmenu)] | [Skin.String(CustomShortcut.Item0$PARAM[item],livetv) + Skin.HasSetting(Hub.PVR.DisableSubmenu)] | [Skin.String(CustomShortcut.Item0$PARAM[item],custom) + [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1106)) + Skin.HasSetting(Hub.Custom01.DisableSubmenu)] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1107)) + Skin.HasSetting(Hub.Custom02.DisableSubmenu)] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1108)) + Skin.HasSetting(Hub.Custom03.DisableSubmenu)] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1109)) + Skin.HasSetting(Hub.Custom04.DisableSubmenu)]]]</visible>
+            <include content="Items_Settings_SideButtonConfigure_Visible_IsHub">
+                <param name="item">$PARAM[item]</param>
+            </include>
+            <include content="Items_Settings_SideButtonConfigure_Visible_HasWidgets">
+                <param name="mod">!</param>
+                <param name="item">$PARAM[item]</param>
+            </include>
 
             <onfocus>SetProperty(Highlight,Layout)</onfocus>
 
@@ -660,7 +678,7 @@
             <visible>String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SideMenu_$PARAM[item])</visible>
         </include>
 
-        <include content="Settings_Button" description="HubSubmenus">
+        <include content="Settings_Button" description="WidgetsOnly">
             <param name="id">8$PARAM[item]10</param>
             <param name="dialog">True</param>
             <param name="control">radiobutton</param>
@@ -673,13 +691,15 @@
 
             <selected>[Skin.String(CustomShortcut.Item0$PARAM[item],movies) + Skin.HasSetting(Hub.Movies.DisableSubmenu)] | [Skin.String(CustomShortcut.Item0$PARAM[item],tvshows) + Skin.HasSetting(Hub.TVShows.DisableSubmenu)] | [Skin.String(CustomShortcut.Item0$PARAM[item],music) + Skin.HasSetting(Hub.Music.DisableSubmenu)] | [Skin.String(CustomShortcut.Item0$PARAM[item],livetv) + Skin.HasSetting(Hub.PVR.DisableSubmenu)]</selected>
 
-            <enable>[String.IsEmpty(Skin.String(CustomShortcut.Movies)) | !Skin.String(CustomShortcut.Item0$PARAM[item],movies)] + [String.IsEmpty(Skin.String(CustomShortcut.TVShows)) | !Skin.String(CustomShortcut.Item0$PARAM[item],tvshows)] + [String.IsEmpty(Skin.String(CustomShortcut.Music)) | !Skin.String(CustomShortcut.Item0$PARAM[item],music)] + [String.IsEmpty(Skin.String(CustomShortcut.PVR)) | !Skin.String(CustomShortcut.Item0$PARAM[item],livetv)] + !Skin.String(CustomShortcut.Item0$PARAM[item],weather) + !Skin.String(CustomShortcut.Item0$PARAM[item],pictures) + !Skin.String(CustomShortcut.Item0$PARAM[item],addons) + !Skin.String(CustomShortcut.Item0$PARAM[item],videos)</enable>
             <visible>!Skin.String(CustomShortcut.Item0$PARAM[item],custom)</visible>
-            <visible>[Skin.String(CustomShortcut.Item0$PARAM[item],movies) + String.IsEmpty(Skin.String(CustomShortcut.Movies))] | [Skin.String(CustomShortcut.Item0$PARAM[item],tvshows) + String.IsEmpty(Skin.String(CustomShortcut.TVShows))] | [Skin.String(CustomShortcut.Item0$PARAM[item],music)  + String.IsEmpty(Skin.String(CustomShortcut.Music))] | [Skin.String(CustomShortcut.Item0$PARAM[item],livetv) + String.IsEmpty(Skin.String(CustomShortcut.PVR))] | [Skin.String(CustomShortcut.Item0$PARAM[item],custom) + [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1106))] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1107))] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1108))] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1109))]]</visible>
+
+            <include content="Items_Settings_SideButtonConfigure_Visible_IsHub">
+                <param name="item">$PARAM[item]</param>
+            </include>
 
             <onfocus>SetProperty(Highlight,Layout)</onfocus>
-
             <onfocus>SetProperty(CustomDialogSettingsLabel,[B]$LOCALIZE[31120][/B][CR]$LOCALIZE[31303],Home)</onfocus>
+
             <visible>String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SideMenu_$PARAM[item])</visible>
         </include>
         <include content="Settings_Button" description="CustomHubSubmenus">
@@ -695,11 +715,12 @@
 
             <selected>[Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1106)) + Skin.HasSetting(Hub.Custom01.DisableSubmenu)] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1107)) + Skin.HasSetting(Hub.Custom02.DisableSubmenu)] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1108)) + Skin.HasSetting(Hub.Custom03.DisableSubmenu)] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1109)) + Skin.HasSetting(Hub.Custom04.DisableSubmenu)]</selected>
 
-            <visible>Skin.String(CustomShortcut.Item0$PARAM[item],custom) + [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1106)) | Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1107)) | Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1108)) | Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1109))]</visible>
-            <visible>[Skin.String(CustomShortcut.Item0$PARAM[item],movies) + String.IsEmpty(Skin.String(CustomShortcut.Movies))] | [Skin.String(CustomShortcut.Item0$PARAM[item],tvshows) + String.IsEmpty(Skin.String(CustomShortcut.TVShows))] | [Skin.String(CustomShortcut.Item0$PARAM[item],music)  + String.IsEmpty(Skin.String(CustomShortcut.Music))] | [Skin.String(CustomShortcut.Item0$PARAM[item],livetv) + String.IsEmpty(Skin.String(CustomShortcut.PVR))] | [Skin.String(CustomShortcut.Item0$PARAM[item],custom) + [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1106))] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1107))] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1108))] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1109))]]</visible>
+            <visible>Skin.String(CustomShortcut.Item0$PARAM[item],custom)</visible>
+            <include content="Items_Settings_SideButtonConfigure_Visible_IsHub">
+                <param name="item">$PARAM[item]</param>
+            </include>
 
             <onfocus>SetProperty(Highlight,Layout)</onfocus>
-
             <onfocus>SetProperty(CustomDialogSettingsLabel,[B]$LOCALIZE[31120][/B][CR]$LOCALIZE[31303],Home)</onfocus>
 
             <visible>String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_SideMenu_$PARAM[item])</visible>
@@ -715,9 +736,12 @@
             <onclick>Skin.ToggleSetting(Slide.WidgetContainer)</onclick>
             <selected>Skin.HasSetting(Slide.WidgetContainer)</selected>
 
-            <visible>[Skin.String(CustomShortcut.Item0$PARAM[item],movies) + !Skin.HasSetting(Hub.Movies.DisableSubmenu)] | [Skin.String(CustomShortcut.Item0$PARAM[item],tvshows) + !Skin.HasSetting(Hub.TVShows.DisableSubmenu)] | [Skin.String(CustomShortcut.Item0$PARAM[item],music) + !Skin.HasSetting(Hub.Music.DisableSubmenu)] | [Skin.String(CustomShortcut.Item0$PARAM[item],livetv) + !Skin.HasSetting(Hub.PVR.DisableSubmenu)] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1106)) + !Skin.HasSetting(Hub.Custom01.DisableSubmenu)] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1107)) + !Skin.HasSetting(Hub.Custom02.DisableSubmenu)] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1108)) + !Skin.HasSetting(Hub.Custom03.DisableSubmenu)] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1109)) + !Skin.HasSetting(Hub.Custom04.DisableSubmenu)]</visible>
-
-            <visible>[Skin.String(CustomShortcut.Item0$PARAM[item],movies) + String.IsEmpty(Skin.String(CustomShortcut.Movies))] | [Skin.String(CustomShortcut.Item0$PARAM[item],tvshows) + String.IsEmpty(Skin.String(CustomShortcut.TVShows))] | [Skin.String(CustomShortcut.Item0$PARAM[item],music)  + String.IsEmpty(Skin.String(CustomShortcut.Music))] | [Skin.String(CustomShortcut.Item0$PARAM[item],livetv) + String.IsEmpty(Skin.String(CustomShortcut.PVR))] | [Skin.String(CustomShortcut.Item0$PARAM[item],custom) + [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1106))] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1107))] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1108))] | [Skin.String(CustomShortcut.Custom0$PARAM[item],ActivateWindow(1109))]]</visible>
+            <include content="Items_Settings_SideButtonConfigure_Visible_IsHub">
+                <param name="item">$PARAM[item]</param>
+            </include>
+            <include content="Items_Settings_SideButtonConfigure_Visible_HasWidgets">
+                <param name="item">$PARAM[item]</param>
+            </include>
 
             <onfocus>SetProperty(Highlight,Layout)</onfocus>
             <onfocus>SetProperty(CustomDialogSettingsLabel,[B]$LOCALIZE[31444][/B][CR]$LOCALIZE[31433][CR][CR]$LOCALIZE[31344],Home)</onfocus>
