@@ -88,18 +88,12 @@
             <include>View_Bumper</include>
             <include condition="![[$PARAM[widgets_only]]]">Spotlight_Fallback_Slideshow</include>
             <include>Defs_TMDbHelper_Loader</include>
-            <include>Background_Main</include>
-            <include>Background_Transition</include>
+            <include content="Background_Main">
+                <param name="faded_background">false</param>
+            </include>
 
             <include content="Hub_Main_Group">
                 <param name="widgets_only">[$PARAM[widgets_only]]</param>
-
-                <include content="Hub_Menu_Group" condition="![[$PARAM[widgets_only]]]">
-                    <include content="Hub_Categories">
-                        <param name="categories_include">$PARAM[categories_include]</param>
-                        <param name="window_id">$PARAM[window_id]</param>
-                    </include>
-                </include>
 
                 <!-- Spotlight: Individual -->
                 <include content="Spotlight_List" condition="![[$PARAM[widgets_only]]]">
@@ -114,8 +108,16 @@
                 </include>
 
                 <include condition="![[$PARAM[widgets_only]]]">$PARAM[include]</include>
+
                 <include content="Hub_Widgets_Only" condition="[$PARAM[widgets_only]]">
                     <param name="widgets_include">$PARAM[widgets_include]</param>
+                </include>
+
+                <include content="Hub_Menu_Group" condition="![[$PARAM[widgets_only]]]">
+                    <include content="Hub_Categories">
+                        <param name="categories_include">$PARAM[categories_include]</param>
+                        <param name="window_id">$PARAM[window_id]</param>
+                    </include>
                 </include>
 
             </include>
@@ -184,6 +186,9 @@
     <include name="Hub_Home">
         <include condition="!Skin.HasSetting(Hub.Home.DisableSubmenu)">skinshortcuts-template-home-spotlight</include>
 
+        <include>Background_Main_Overlay</include>
+        <include>Background_Transition</include>
+
         <include content="Hub_Menu_Group">
             <include content="Hub_Submenu_Group" condition="!Skin.HasSetting(Hub.Home.DisableSubmenu)">
                 <include>skinshortcuts-template-home-submenulist</include>
@@ -200,10 +205,8 @@
         <control type="group" id="320">
             <include>Animation_View_WindowChange</include>
             <include>Animation_Group_Bumper</include>
-
-            <include condition="![[$PARAM[widgets_only]]]">Spotlight_Info</include>
-
             <nested />
+            <include condition="![[$PARAM[widgets_only]]]">Spotlight_Info</include>
         </control>
     </include>
 
