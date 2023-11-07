@@ -349,21 +349,9 @@
                     <animation effect="fade" start="0" end="100" time="200" delay="1200" reversible="true">Visible</animation>
                     <animation effect="fade" start="100" end="0" time="200" delay="400" reversible="true">Hidden</animation>
                 </control>
-                <include content="Object_Control" condition="$PARAM[hasspinner]">
-                    <param name="control">group</param>
-                    <description>Busy animation</description>
-                    <animation effect="rotate" condition="$PARAM[spinspinner]" start="0" end="360" loop="true" time="1000" center="auto">Conditional</animation>
-                    <control type="image">
-                        <texture colordiffuse="$VAR[ColorHighlight]">dialog/loading-spinner.png</texture>
-                        <aspectratio>keep</aspectratio>
-                    </control>
-                    <control type="image">
-                        <texture colordiffuse="$VAR[ColorGradient]">dialog/loading-spinner.png</texture>
-                        <aspectratio>keep</aspectratio>
-                        <animation effect="fade" condition="$PARAM[spinspinner]" start="0" end="100" pulse="true" time="1000">Conditional</animation>
-                    </control>
+                <include content="Generator_Object_BusySpinner" condition="$PARAM[hasspinner]">
+                    <param name="spinspinner">$PARAM[spinspinner]</param>
                 </include>
-
                 <include content="Object_Control" condition="$PARAM[hasprogress]">
                     <param name="control">group</param>
                     <description>Busy animation</description>
@@ -430,11 +418,13 @@
                 <texture background="true" diffuse="$PARAM[diffuse]">$PARAM[icon]</texture>
                 <aspectratio scalediffuse="false">$PARAM[aspectratio]</aspectratio>
                 <visible>![String.IsEqual($PARAM[listitem].Icon,DefaultFolder.png) + String.IsEqual($PARAM[listitem].Label,$LOCALIZE[22082])]</visible>
+                <nested />
             </control>
             <control type="image">
                 <texture background="true" diffuse="$PARAM[diffuse]">fallback/more-items-wide.png</texture>
                 <aspectratio scalediffuse="false">scale</aspectratio>
                 <visible>String.IsEqual($PARAM[listitem].Icon,DefaultFolder.png) + String.IsEqual($PARAM[listitem].Label,$LOCALIZE[22082])</visible>
+                <nested />
             </control>
         </definition>
     </include>
