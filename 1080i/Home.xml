@@ -4,16 +4,15 @@
     <menucontrol>303</menucontrol>
     <include>Action_Blur_Onload</include>
     <onload>Skin.SetString(TMDbHelper.MonitorContainer,99950)</onload>
+    <onload condition="Skin.HasSetting(Startup.WaitForLoad)">AlarmClock(SplashTimeOut,noop,00:59,silent)</onload>
 
-    <include>Action_Hub_Refocus_Onload</include>
+    <include>Action_Hub_Onload</include>
 
     <onload>ClearProperty(BlurImage,Home)</onload>
     <onload>ClearProperty(BlurImage.Original,Home)</onload>
 
     <onload condition="!String.IsEmpty(Window(Home).Property(TMDbHelper.TraktIsAuth))">RunScript(plugin.video.themoviedb.helper,get_trakt_stats)</onload>
     <onload condition="!Skin.HasSetting(Wizard.FirstRun)">ActivateWindow(1180)</onload>
-
-    <onload condition="Skin.HasSetting(Startup.WaitForLoad)">AlarmClock(SplashTimeOut,,00:59,silent)</onload>
 
     <controls>
 
@@ -25,29 +24,8 @@
             <param name="widgets_include">skinshortcuts-template-mainwidgets</param>
         </include>
 
-        <include content="Object_Control" condition="Skin.HasSetting(Startup.WaitForLoad)">
-            <param name="control">group</param>
-            <visible>Integer.IsEqual(Container(301).NumItems,0)</visible>
-            <visible>Container(301).IsUpdating</visible>
-            <visible>System.HasAlarm(SplashTimeOut)</visible>
-            <include>Background_StartUp</include>
-            <include>Object_StartUp_Logo</include>
-            <control type="label">
-                <centertop>610</centertop>
-                <height>40</height>
-                <aligny>center</aligny>
-                <align>center</align>
-                <textcolor>main_logo</textcolor>
-                <label>$LOCALIZE[31427] [LOWERCASE]$LOCALIZE[31103][/LOWERCASE]...</label>
-            </control>
-            <control type="group">
-                <centertop>700</centertop>
-                <height>80</height>
-                <include content="Object_BusySpinner">
-                    <param name="colordiffuse">main_fg</param>
-                    <param name="haslabel">false</param>
-                </include>
-            </control>
-        </include>
+        <!-- Widget Splash -->
+        <include condition="Skin.HasSetting(Startup.WaitForLoad)">Hub_Widget_Splash</include>
+
     </controls>
 </window>
