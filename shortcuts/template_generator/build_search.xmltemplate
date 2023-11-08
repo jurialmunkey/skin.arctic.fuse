@@ -40,7 +40,6 @@
             <include>Search_View_Side</include>
         </controls>
         <items insert="searchlist">
-            <condition tag="property" attribute="name|list" />
 
             <property name="widgetPath" tag="property" attribute="name|list" value="DefaultSearch-MovieActors">plugin://script.skinvariables/?info=get_filter_dir&amp;filter_key=title&amp;filter_value=</property>
             <property name="widgetPath2" tag="property" attribute="name|list" value="DefaultSearch-MovieActors">&amp;&amp;videodb://movies/actors</property>
@@ -231,7 +230,6 @@
             </controls>
         </items>
         <items insert="searchfooter">
-            <condition tag="property" attribute="name|list" />
 
             <property name="id" tag="mainmenuid" />
 
@@ -239,8 +237,11 @@
             <property name="widgetIcon" tag="icon" />
             <property name="widgetIcon" tag="thumb" />
 
+            <property name="isVisible" tag="visible" />
+            <property name="isVisible">True</property>
+
             <controls>
-                <include content="Search_View_Footer_Item">
+                <include content="Search_View_Footer_Item" condition="$SKINSHORTCUTS[isVisible]">
                     <visible>!Skin.HasSetting(Search.EnableDiscover)</visible>
                     <param name="id">$PYTHON[5000 + int(id)]</param>
                     <param name="icon">$SKINSHORTCUTS[widgetIcon]</param>
@@ -248,13 +249,15 @@
             </controls>
         </items>
         <items insert="searchinfopanels">
-            <condition tag="property" attribute="name|list" />
 
             <property name="id" tag="mainmenuid" />
 
+            <property name="isVisible" tag="visible" />
+            <property name="isVisible">True</property>
+
             <controls>
 
-                <include content="Info_Panel">
+                <include content="Info_Panel" condition="$SKINSHORTCUTS[isVisible]">
                     <param name="line_id">0</param>
                     <param name="container">Container($PYTHON[5000 + int(id)]).</param>
                     <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),$PYTHON[5000 + int(id)])</visible>

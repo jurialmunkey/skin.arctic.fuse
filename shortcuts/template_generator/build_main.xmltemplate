@@ -8,9 +8,12 @@
 
         <property name="submenuVisibility" tag="property" attribute="name|submenuVisibility"/>
 
+        <property name="isVisible" tag="visible" />
+        <property name="isVisible">True</property>
+
         <controls>
 
-            <include content="Spotlight_List" condition="$SKINSHORTCUTS[isWidget] + !Skin.HasSetting(Hub.Home.DisableSubmenu)">
+            <include content="Spotlight_List" condition="$SKINSHORTCUTS[isWidget] + !Skin.HasSetting(Hub.Home.DisableSubmenu) + $SKINSHORTCUTS[isVisible]">
                 <param name="window_id">Home</param>
                 <param name="content">$SKINSHORTCUTS[widgetPath]</param>
                 <param name="target">$SKINSHORTCUTS[widgetTarget]</param>
@@ -37,9 +40,12 @@
         <property name="isWidget" tag="property" attribute="name|widgetPath">True</property>
         <property name="isWidget">False</property>
 
+        <property name="isVisible" tag="visible" />
+        <property name="isVisible">True</property>
+
         <controls>
 
-            <include content="Hub_Submenu_List" condition="![$SKINSHORTCUTS[isWidget]]">
+            <include content="Hub_Submenu_List" condition="![$SKINSHORTCUTS[isWidget]] + $SKINSHORTCUTS[isVisible]">
                 <param name="id">302</param>
                 <param name="ondown">340</param>
                 <param name="hidden_button">List_ButtonMenu_Row_HiddenButton_Home</param>
@@ -51,7 +57,7 @@
                 <visible>String.IsEqual(Container(300).ListItem.Property(submenuVisibility),$SKINSHORTCUTS[submenuVisibility])</visible>
             </include>
 
-            <include content="Hub_Submenu_List" condition="$SKINSHORTCUTS[isWidget]">
+            <include content="Hub_Submenu_List" condition="$SKINSHORTCUTS[isWidget] + $SKINSHORTCUTS[isVisible]">
                 <param name="id">302</param>
                 <param name="ondown">340</param>
                 <param name="hidden_button">List_ButtonMenu_Row_HiddenButton_Home</param>
@@ -64,14 +70,15 @@
     </other>
 
     <submenu include="widgets" level="1">
-        <condition tag="mainmenuid" />
-        <condition tag="property" attribute="name|submenuVisibility"/>
 
         <property name="mainmenuid" tag="mainmenuid" />
         <property name="submenuVisibility" tag="property" attribute="name|submenuVisibility"/>
 
+        <property name="isVisible" tag="visible" />
+        <property name="isVisible">True</property>
+
         <controls>
-            <include content="Home_Widgets_Infopanel">
+            <include content="Home_Widgets_Infopanel" condition="$SKINSHORTCUTS[isVisible]">
                 <include content="Info_Panel" condition="!Skin.HasSetting(Hub.Home.DisableSubmenu)">
                     <param name="container">Container($PYTHON[int(mainmenuid) * 1000 + 601]).</param>
                     <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),$PYTHON[int(mainmenuid) * 1000 + 601])</visible>
@@ -86,7 +93,7 @@
                 </include>
                 <skinshortcuts insert="infopanels">items</skinshortcuts>
             </include>
-            <include content="Hub_Menu_Group">
+            <include content="Hub_Menu_Group" condition="$SKINSHORTCUTS[isVisible]">
                 <include content="Hub_Widgets_Grouplist">
                     <param name="id">$PYTHON[int(mainmenuid) * 1000 + 400]</param>
                     <param name="topid">$PYTHON[int(mainmenuid) * 1000 + 401]</param>
@@ -125,8 +132,6 @@
             </include>
         </controls>
         <items insert="widgets">
-            <condition tag="property" attribute="name|list" />
-
             <property name="id" tag="mainmenuid" />
             <property name="isVisible" tag="visible" />
             <property name="isVisible">True</property>
@@ -139,7 +144,6 @@
             </controls>
         </items>
         <items insert="infopanels">
-            <condition tag="property" attribute="name|list" />
             <property name="id" tag="mainmenuid" />
             <property name="isVisible" tag="visible" />
             <property name="isVisible">True</property>
@@ -160,13 +164,12 @@
             <property name="widgetName">$LOCALIZE[31105]</property>
             <property name="widgetPath" tag="property" attribute="name|path"/>
             <controls>
-                <item>
+                <include content="Object_Item" condition="$SKINSHORTCUTS[isVisible]">
                     <label>$SKINSHORTCUTS[widgetName]</label>
                     <onclick>$SKINSHORTCUTS[widgetPath]</onclick>
                     <property name="id">$NUMBER[$SKINSHORTCUTS[id]]</property>
                     <property name="list_id">$NUMBER[$PYTHON[int(mainmenuid) * 1000 + 603 + int(id)]]</property>
-                    <visible>$SKINSHORTCUTS[isVisible]</visible>
-                </item>
+                </include>
             </controls>
         </items>
     </submenu>
@@ -196,7 +199,7 @@
             <property name="isVisible" tag="visible" />
             <property name="isVisible">True</property>
             <controls>
-                <include content="Dialog_Menu_Button">
+                <include content="Dialog_Menu_Button" condition="$SKINSHORTCUTS[isVisible]">
                     <param name="id">$PYTHON[int(id) + 8000]</param>
                     <param name="groupid">$PYTHON[int(id) + 8100]</param>
                     <param name="control">button</param>
@@ -228,7 +231,7 @@
             <property name="isVisible" tag="visible" />
             <property name="isVisible">True</property>
             <controls>
-                <include content="Dialog_Side_Button">
+                <include content="Dialog_Side_Button" condition="$SKINSHORTCUTS[isVisible]">
                     <param name="id">0$PYTHON[int(id) + 1]</param>
                     <param name="label">$SKINSHORTCUTS[widgetLabel]</param>
                     <param name="icon">$SKINSHORTCUTS[widgetIcon]</param>
@@ -253,7 +256,7 @@
             <property name="isVisible" tag="visible" />
             <property name="isVisible">True</property>
             <controls>
-                <item>
+                <include content="Object_Item" condition="$SKINSHORTCUTS[isVisible]">
                     <label>$SKINSHORTCUTS[widgetName]</label>
                     <property name="special_icon">$SKINSHORTCUTS[widgetIcon]</property>
                     <property name="isSpecial">True</property>
@@ -264,7 +267,7 @@
                     <onclick>$SKINSHORTCUTS[widgetPath]</onclick>
                     <visible>$SKINSHORTCUTS[isVisible]</visible>
                     <visible>![Container.Content(movies) | Container.Content(tvshows)] | Skin.HasSetting(DisableDefaultExploreMenu)</visible>
-                </item>
+                </include>
             </controls>
         </items>
     </submenu>

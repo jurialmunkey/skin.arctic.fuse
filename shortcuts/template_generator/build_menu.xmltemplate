@@ -15,6 +15,9 @@
         </controls>
 
         <items insert="spotlight">
+            <property name="isVisible" tag="visible" />
+            <property name="isVisible">True</property>
+
             <property name="isWidget" tag="property" attribute="name|widgetPath.Spotlight">True</property>
             <property name="isWidget">False</property>
 
@@ -25,7 +28,7 @@
 
             <controls>
 
-                <include content="Spotlight_List" condition="$SKINSHORTCUTS[isWidget] + !Skin.HasSetting(Hub.{hub_type}.DisableSubmenu)">
+                <include content="Spotlight_List" condition="$SKINSHORTCUTS[isWidget] + !Skin.HasSetting(Hub.{hub_type}.DisableSubmenu) + $SKINSHORTCUTS[isVisible]">
                     <param name="window_id">Home</param>
                     <param name="content">$SKINSHORTCUTS[widgetPath]</param>
                     <param name="target">$SKINSHORTCUTS[widgetTarget]</param>
@@ -36,6 +39,9 @@
         </items>
 
         <items insert="submenulist">
+            <property name="isVisible" tag="visible" />
+            <property name="isVisible">True</property>
+
             <property name="submenuID" tag="property" attribute="name|submenuID"/>
 
             <property name="widgetPath" tag="property" attribute="name|widgetPath"/>
@@ -58,7 +64,7 @@
 
             <controls>
 
-                <include content="Hub_Submenu_List" condition="![$SKINSHORTCUTS[isWidget]]">
+                <include content="Hub_Submenu_List" condition="![$SKINSHORTCUTS[isWidget]] + $SKINSHORTCUTS[isVisible]">
                     <param name="id">302</param>
                     <param name="ondown">340</param>
                     <param name="hidden_button">List_ButtonMenu_Row_HiddenButton_Home</param>
@@ -70,7 +76,7 @@
                     <visible>Integer.IsEqual(Container(300).ListItem.Property(id),$SKINSHORTCUTS[id])</visible>
                 </include>
 
-                <include content="Hub_Submenu_List" condition="$SKINSHORTCUTS[isWidget]">
+                <include content="Hub_Submenu_List" condition="$SKINSHORTCUTS[isWidget] + $SKINSHORTCUTS[isVisible]">
                     <param name="id">302</param>
                     <param name="ondown">340</param>
                     <param name="hidden_button">List_ButtonMenu_Row_HiddenButton_Home</param>
@@ -85,8 +91,10 @@
         <items insert="widgetlist">
             <property name="id" tag="mainmenuid" />
             <property name="widgetmenuID" tag="property" attribute="name|widgetmenuID"/>
+            <property name="isVisible" tag="visible" />
+            <property name="isVisible">True</property>
             <controls>
-                <include content="Home_Widgets_Infopanel">
+                <include content="Home_Widgets_Infopanel" condition="$SKINSHORTCUTS[isVisible]">
                     <visible>!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)</visible>
                     <visible>Integer.IsEqual(Container(300).ListItem.Property(id),$SKINSHORTCUTS[id])</visible>
                     <include content="Info_Panel" condition="!Skin.HasSetting(Hub.{hub_type}.DisableSubmenu)">
@@ -108,7 +116,7 @@
                         <visible>!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),$SKINSHORTCUTS[id]603)</visible>
                     </include>
                 </include>
-                <include content="Hub_Menu_Group">
+                <include content="Hub_Menu_Group" condition="$SKINSHORTCUTS[isVisible]">
                     <include content="Hub_Widgets_Grouplist">
                         <param name="id">$SKINSHORTCUTS[id]400</param>
                         <param name="topid">$SKINSHORTCUTS[id]401</param>
