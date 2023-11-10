@@ -528,6 +528,52 @@
         </definition>
     </include>
 
+    <include name="Object_InfoCircle_TopLabel">
+        <param name="font">font_mini_bold</param>
+        <param name="textcolor">main_fg_90</param>
+        <definition>
+            <control type="label">
+                <nested />
+                <left>80</left>
+                <font>$PARAM[font]</font>
+                <label>$PARAM[label]</label>
+                <textcolor>$PARAM[textcolor]</textcolor>
+                <selectedcolor>$PARAM[textcolor]</selectedcolor>
+                <height>40%</height>
+            </control>
+        </definition>
+    </include>
+
+    <include name="Object_InfoCircle_SubLabel">
+        <param name="font">font_mini</param>
+        <param name="textcolor">main_fg_70</param>
+        <definition>
+            <control type="label">
+                <nested />
+                <left>80</left>
+                <font>$PARAM[font]</font>
+                <textcolor>$PARAM[textcolor]</textcolor>
+                <selectedcolor>$PARAM[textcolor]</selectedcolor>
+                <height>45%</height>
+                <bottom>0</bottom>
+            </control>
+        </definition>
+    </include>
+
+    <include name="Object_InfoCircle_MidLabel">
+        <param name="font">font_mini</param>
+        <param name="textcolor">main_fg_70</param>
+        <definition>
+            <control type="label">
+                <nested />
+                <left>80</left>
+                <font>$PARAM[font]</font>
+                <textcolor>$PARAM[textcolor]</textcolor>
+                <selectedcolor>$PARAM[textcolor]</selectedcolor>
+            </control>
+        </definition>
+    </include>
+
     <include name="Object_InfoCircle">
         <param name="bordersize">1</param>
         <param name="aspectratio">scale</param>
@@ -558,23 +604,16 @@
                 </control>
                 <nested />
                 <left>40</left>
-                <control type="label">
-                    <left>80</left>
-                    <font>$PARAM[font_top]</font>
+                <include content="Object_InfoCircle_TopLabel">
+                    <param name="font">$PARAM[font_top]</param>
+                    <param name="textcolor">$PARAM[textcolor_top]</param>
                     <label>$PARAM[role]</label>
-                    <textcolor>$PARAM[textcolor_top]</textcolor>
-                    <selectedcolor>$PARAM[textcolor_top]</selectedcolor>
-                    <height>30%</height>
-                </control>
-                <control type="label">
-                    <left>80</left>
-                    <font>$PARAM[font_sub]</font>
+                </include>
+                <include content="Object_InfoCircle_SubLabel">
+                    <param name="font">$PARAM[font_sub]</param>
+                    <param name="textcolor">$PARAM[textcolor_sub]</param>
                     <label>$PARAM[name]</label>
-                    <textcolor>$PARAM[textcolor_sub]</textcolor>
-                    <selectedcolor>$PARAM[textcolor_top]</selectedcolor>
-                    <height>30%</height>
-                    <bottom>10%</bottom>
-                </control>
+                </include>
             </control>
         </definition>
     </include>
@@ -704,6 +743,7 @@
         <param name="listitem">ListItem</param>
         <param name="selected">false</param>
         <param name="shadow">true</param>
+        <param name="backing">true</param>
         <definition>
             <control type="group">
                 <nested />
@@ -717,9 +757,10 @@
                     <param name="affix">$PARAM[affix]</param>
                 </include>
 
-                <control type="image">
+                <include content="Object_Control" condition="$PARAM[backing]">
+                    <param name="control">image</param>
                     <texture colordiffuse="ff333333">$VAR[Image_Overlay_Backing$PARAM[affix],,-colordiffuse.png]</texture>
-                </control>
+                </include>
 
                 <include content="Object_Control" condition="!Skin.HasSetting(Indicator.DisableProgress)">
                     <param name="control">image</param>
