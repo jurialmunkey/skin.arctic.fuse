@@ -577,6 +577,20 @@
         </definition>
     </include>
 
+    <include name="Action_AutoTrailer_OnFocus">
+        <onfocus>AlarmClock(autotrailer,SetProperty(AutoTrailer,$ESCINFO[Container($PARAM[id]).ListItem.Trailer]),00:05,silent)</onfocus>
+        <onfocus>AlarmClock(playtrailer,PlayMedia($ESCINFO[Container($PARAM[id]).ListItem.Trailer],1),00:05,silent)</onfocus>
+        <onunfocus>CancelAlarm(playtrailer,silent)</onunfocus>
+        <onunfocus>CancelAlarm(autotrailer,silent)</onunfocus>
+        <onunfocus condition="Player.HasVideo + String.IsEqual(Window.Property(AutoTrailer),Player.FileNameAndPath)">Action(Stop)</onunfocus>
+    </include>
+
+    <include name="Action_AutoTrailer_OnRight">
+        <onright condition="Player.HasVideo + String.IsEqual(Window.Property(AutoTrailer),Player.FileNameAndPath)">Action(Stop)</onright>
+        <onright>AlarmClock(autotrailer,SetProperty(AutoTrailer,$ESCINFO[Container($PARAM[id]).ListItem.Trailer]),00:05,silent)</onright>
+        <onright>AlarmClock(playtrailer,PlayMedia($ESCINFO[Container($PARAM[id]).ListItem.Trailer],1),00:05,silent)</onright>
+    </include>
+
 
     <include name="Action_Scheme_Onclick_Miami">
         <onclick>Skin.Reset(focuscolor.name)</onclick>
