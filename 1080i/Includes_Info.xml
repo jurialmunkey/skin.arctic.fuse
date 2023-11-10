@@ -584,14 +584,14 @@
         <param name="is_player">false</param>
         <definition>
             <include content="Info_Ratings_Items" condition="![$PARAM[is_player]]">
-                <param name="visible">[String.IsEqual(Container(99950).ListItem.DBType,movie) | String.IsEqual(Container(99950).ListItem.DBType,set)]</param>
+                <param name="visible">[String.IsEqual(Container(99950).ListItem.DBType,movie) | String.IsEqual(Container(99950).ListItem.DBType,set) | String.IsEqual($PARAM[container]ListItem.DBType,movie) | String.IsEqual($PARAM[container]ListItem.DBType,set)]</param>
                 <param name="content">Movies</param>
                 <param name="item">$PARAM[item]</param>
                 <param name="$PARAM[container]">$PARAM[container]</param>
                 <param name="is_player">$PARAM[is_player]</param>
             </include>
             <include content="Info_Ratings_Items" condition="![$PARAM[is_player]]">
-                <param name="visible">[String.IsEqual(Container(99950).ListItem.DBType,tvshow) | String.IsEqual(Container(99950).ListItem.DBType,season) | String.IsEqual(Container(99950).ListItem.DBType,episode)]</param>
+                <param name="visible">[String.IsEqual(Container(99950).ListItem.DBType,tvshow) | String.IsEqual(Container(99950).ListItem.DBType,season) | String.IsEqual(Container(99950).ListItem.DBType,episode) | String.IsEqual($PARAM[container]ListItem.DBType,tvshow) | String.IsEqual($PARAM[container]ListItem.DBType,season) | String.IsEqual($PARAM[container]ListItem.DBType,episode)]</param>
                 <param name="content">TVShows</param>
                 <param name="item">$PARAM[item]</param>
                 <param name="$PARAM[container]">$PARAM[container]</param>
@@ -1004,11 +1004,13 @@
                         <param name="dbtype_01">movie</param>
                         <param name="dbtype_02">tvshow</param>
                     </include>
-                    <param name="items_02">true</param>
+                    <param name="items_03">true</param>
                     <param name="label_01">$INFO[$PARAM[container]ListItem.Property(Genre.1.Name)]</param>
-                    <param name="label_02">$INFO[Container(99950).ListItem.Property(Genre.1.Name)]</param>
+                    <param name="label_02">$INFO[Container(99950).ListItem.Property(base_genre)]</param>
+                    <param name="label_03">$INFO[Container(99950).ListItem.Property(Genre.1.Name)]</param>
                     <param name="visible_01">!String.IsEmpty($PARAM[container]ListItem.Property(Genre.1.Name))</param>
-                    <param name="visible_02">!String.IsEmpty(Container(99950).ListItem.Property(Genre.1.Name))</param>
+                    <param name="visible_02">!String.IsEmpty(Container(99950).ListItem.Property(base_genre))</param>
+                    <param name="visible_03">!String.IsEmpty(Container(99950).ListItem.Property(Genre.1.Name))</param>
                     <param name="textcolor">$PARAM[colordiffuse]_90</param>
                 </include>
 
@@ -1691,15 +1693,13 @@
             <itemgap>30</itemgap>
             <height>80</height>
             <nested />
-            <include content="Object_Control" condition="!Skin.HasSetting(Furniture.DisableRightFooter)">
-                <param name="control">image</param>
+            <control type="image">
                 <width>studio_logo_w</width>
                 <height>80</height>
                 <aspectratio align="right">keep</aspectratio>
                 <texture>$VAR[Image_CombinedStudio]</texture>
-                <visible>!String.IsEmpty(Container(99950).ListItem.Property(Network.1.Name)) | !String.IsEmpty(Container(99950).ListItem.Property(Studio.1.Name))</visible>
                 <centertop>50%</centertop>
-            </include>
+            </control>
             <include content="Object_Control" condition="!String.IsEmpty(Skin.String(MPAA_Country))">
                 <param name="control">image</param>
                 <width>40</width>
