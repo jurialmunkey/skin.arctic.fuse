@@ -471,6 +471,103 @@
         </definition>
     </include>
 
+    <include name="Layout_MediaList">
+        <param name="detailed">false</param>
+        <param name="selected">false</param>
+        <param name="misc">0</param>
+        <definition>
+            <include content="Object_Control" condition="$PARAM[selected]">
+                <param name="control">image</param>
+                <include>Texture_Menu_Highlight_H</include>
+            </include>
+
+            <control type="group">
+                <height>50</height>
+                <centertop>50%</centertop>
+                <left>-20</left>
+                <right>40</right>
+                <include content="Object_InfoCircle" condition="!$PARAM[selected]">
+                    <param name="role">$VAR[Label_MediaList_Title]</param>
+                    <param name="icon">$VAR[Image_Layout_CombinedIcon]</param>
+                    <include content="Object_InfoCircle_Image">
+                        <param name="colordiffuse">white</param>
+                        <param name="icon">$VAR[Image_Layout_CombinedThumb]</param>
+                    </include>
+                    <control type="label">
+                        <left>80</left>
+                        <font>font_mini</font>
+                        <label>$VAR[Label_MediaList_Sub]</label>
+                        <textcolor>main_fg_70</textcolor>
+                        <height>30</height>
+                        <bottom>0</bottom>
+                        <right>70</right>
+                        <aligny>top</aligny>
+                    </control>
+                    <control type="label">
+                        <left>80</left>
+                        <right>120</right>
+                        <font>font_mini</font>
+                        <label>$VAR[Label_MediaList_Year]</label>
+                        <textcolor>main_fg_70</textcolor>
+                        <align>right</align>
+                    </control>
+                    <control type="label">
+                        <left>80</left>
+                        <font>font_mini</font>
+                        <label>$VAR[Label_MediaList_Rating,            ,]</label>
+                        <textcolor>main_fg_70</textcolor>
+                        <align>right</align>
+                    </control>
+                </include>
+                <include content="Object_InfoCircle" condition="$PARAM[selected]">
+                    <param name="role">$VAR[Label_MediaList_Title]</param>
+                    <param name="icon">$VAR[Image_Layout_CombinedIcon]</param>
+                    <param name="textcolor_top">$VAR[ColorSelected]</param>
+                    <param name="textcolor_sub">$VAR[ColorSelected]</param>
+                    <include content="Object_InfoCircle_Image">
+                        <param name="colordiffuse">white</param>
+                        <param name="icon">$VAR[Image_Layout_CombinedThumb]</param>
+                    </include>
+                    <control type="label">
+                        <left>80</left>
+                        <font>font_mini</font>
+                        <label>$VAR[Label_MediaList_Sub]</label>
+                        <textcolor>$VAR[ColorSelected]</textcolor>
+                        <selectedcolor>$VAR[ColorSelected]</selectedcolor>
+                        <height>30</height>
+                        <bottom>0</bottom>
+                        <aligny>top</aligny>
+                        <align>left</align>
+                    </control>
+                    <control type="label">
+                        <left>80</left>
+                        <right>120</right>
+                        <font>font_mini</font>
+                        <label>$VAR[Label_MediaList_Year]</label>
+                        <textcolor>$VAR[ColorSelected]</textcolor>
+                        <selectedcolor>$VAR[ColorSelected]</selectedcolor>
+                        <align>right</align>
+                    </control>
+                    <control type="label">
+                        <left>80</left>
+                        <font>font_mini</font>
+                        <label>$VAR[Label_MediaList_Rating,            ,]</label>
+                        <textcolor>$VAR[ColorSelected]</textcolor>
+                        <selectedcolor>$VAR[ColorSelected]</selectedcolor>
+                        <align>right</align>
+                    </control>
+                </include>
+                <include condition="$PARAM[indicator]" content="Object_Indicator_List">
+                    <param name="affix">$PARAM[affix]</param>
+                    <param name="listitem">$PARAM[listitem]</param>
+                    <param name="selected">$PARAM[selected]</param>
+                    <centertop>50%</centertop>
+                    <centerright>80</centerright>
+                </include>
+            </control>
+        </definition>
+    </include>
+
     <include name="Layout_DialogSimple">
         <param name="detailed">false</param>
         <param name="selected">false</param>
@@ -731,196 +828,6 @@
             </control>
         </definition>
     </include>
-
-    <include name="Layout_MediaList_SongList">
-        <param name="selected">false</param>
-        <param name="detailed">false</param>
-        <definition>
-            <control type="label">
-                <include condition="$PARAM[selected]">Color_SelectedText</include>
-                <textcolor>main_fg_70</textcolor>
-                <selectedcolor>main_fg_70</selectedcolor>
-                <label>$VAR[Label_ListTrackNumber]</label>
-                <align>left</align>
-                <font>font_main</font>
-                <bottom>3</bottom>
-                <width>120</width>
-            </control>
-            <control type="label">
-                <left>120</left>
-                <include condition="$PARAM[selected]">Color_SelectedText</include>
-                <textcolor>main_fg_70</textcolor>
-                <selectedcolor>main_fg_70</selectedcolor>
-                <label>$INFO[ListItem.Title]</label>
-                <font>font_main_bold</font>
-                <bottom>3</bottom>
-                <width>520</width>
-            </control>
-            <control type="label">
-                <include condition="$PARAM[selected]">Color_SelectedText</include>
-                <textcolor>main_fg_70</textcolor>
-                <selectedcolor>main_fg_70</selectedcolor>
-                <label>$VAR[Label_ListArtist]</label>
-                <font>font_main</font>
-                <bottom>3</bottom>
-                <left>680</left>
-                <right>160</right>
-                <visible>$PARAM[detailed]</visible>
-            </control>
-            <control type="image">
-                <visible>String.IsEqual(ListItem.DBType,song)</visible>
-                <visible>!String.IsEmpty(ListItem.FileExtension)</visible>
-                <right>100</right>
-                <height>40</height>
-                <centertop>50%</centertop>
-                <aspectratio align="right">keep</aspectratio>
-                <include content="Object_Texture" condition="$PARAM[selected]">
-                    <param name="colordiffuse">$VAR[ColorSelected]</param>
-                    <param name="texture">$INFO[ListItem.FileExtension,flags/monochrome/audio/,.png]</param>
-                </include>
-                <texture colordiffuse="main_fg_70">$INFO[ListItem.FileExtension,flags/monochrome/audio/,.png]</texture>
-            </control>
-            <control type="label">
-                <include condition="$PARAM[selected]">Color_SelectedText</include>
-                <textcolor>main_fg_70</textcolor>
-                <selectedcolor>main_fg_70</selectedcolor>
-                <label>$INFO[ListItem.Duration]</label>
-                <font>font_main</font>
-                <align>right</align>
-                <bottom>3</bottom>
-            </control>
-        </definition>
-    </include>
-
-    <include name="Layout_MediaList">
-        <param name="detailed">false</param>
-        <param name="selected">false</param>
-        <param name="misc">5</param>
-        <definition>
-            <control type="group">
-                <height>$PARAM[item_h]</height>
-                <left>40</left>
-                <right>40</right>
-                <include content="Object_Control" condition="$PARAM[selected]">
-                    <param name="control">image</param>
-                    <include>Texture_Menu_Highlight_H</include>
-                    <include>Animation_FocusBounce</include>
-                </include>
-
-                <!-- Detailed Info -->
-                <control type="group">
-                    <visible>[String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow) | [String.IsEqual(ListItem.DBType,episode) + !String.IsEmpty(ListItem.Episode)] | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,set) | String.IsEqual(ListItem.DBType,song) | String.IsEqual(ListItem.DBType,album)]</visible>
-                    <left>40</left>
-                    <right>40</right>
-                    <control type="group">
-                        <visible>![String.IsEqual(ListItem.DBType,song) | String.IsEqual(ListItem.DBType,album)]</visible>
-                        <include content="Object_Control">
-                            <param name="control">label</param>
-                            <include condition="$PARAM[selected]">Color_SelectedText</include>
-                            <textcolor>main_fg_70</textcolor>
-                            <selectedcolor>main_fg_70</selectedcolor>
-                            <label>$VAR[Label_MediaList_Year]</label>
-                            <align>left</align>
-                            <font>font_main</font>
-                            <bottom>3</bottom>
-                            <width>80</width>
-                        </include>
-                        <include content="Object_Control">
-                            <param name="control">label</param>
-                            <left>120</left>
-                            <right>140</right>
-                            <include condition="$PARAM[selected]">Color_SelectedText</include>
-                            <textcolor>main_fg_70</textcolor>
-                            <selectedcolor>main_fg_70</selectedcolor>
-                            <label>$VAR[Label_TitleLabel]</label>
-                            <font>font_main_bold</font>
-                            <bottom>3</bottom>
-                        </include>
-                        <include content="Object_Indicator_List">
-                            <param name="selected">$PARAM[selected]</param>
-                            <centertop>50%</centertop>
-                            <centerright>100</centerright>
-                        </include>
-                        <include content="Object_Control">
-                            <param name="control">label</param>
-                            <include condition="$PARAM[selected]">Color_SelectedText</include>
-                            <textcolor>main_fg_70</textcolor>
-                            <selectedcolor>main_fg_70</selectedcolor>
-                            <label>$INFO[ListItem.Rating]</label>
-                            <font>font_main</font>
-                            <align>right</align>
-                            <bottom>3</bottom>
-                        </include>
-                    </control>
-                    <control type="group">
-                        <visible>[String.IsEqual(ListItem.DBType,song) | String.IsEqual(ListItem.DBType,album)]</visible>
-                        <include content="Layout_MediaList_SongList">
-                            <param name="selected">$PARAM[selected]</param>
-                            <param name="detailed">$PARAM[detailed]</param>
-                        </include>
-                    </control>
-                </control>
-
-                <!-- Basic Info -->
-                <control type="group">
-                    <visible>![String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow) | [String.IsEqual(ListItem.DBType,episode) + !String.IsEmpty(ListItem.Episode)] | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,set) | String.IsEqual(ListItem.DBType,song) | String.IsEqual(ListItem.DBType,album)]</visible>
-                    <left>40</left>
-                    <right>40</right>
-
-                    <!-- Indicator for items that are playable -->
-                    <control type="group">
-                        <visible>!String.IsEmpty(ListItem.FileExtension) | String.IsEqual(ListItem.Property(IsPlayable),true)</visible>
-                        <include content="Object_Indicator_List">
-                            <centertop>50%</centertop>
-                            <centerleft>10</centerleft>
-                        </include>
-                        <include content="Object_Control">
-                            <param name="control">label</param>
-                            <include condition="$PARAM[selected]">Color_SelectedText</include>
-                            <textcolor>main_fg_70</textcolor>
-                            <selectedcolor>main_fg_70</selectedcolor>
-                            <label>$INFO[ListItem.Label]</label>
-                            <font>font_main_bold</font>
-                            <left>60</left>
-                        </include>
-                        <include content="Object_Control">
-                            <param name="control">label</param>
-                            <include condition="$PARAM[selected]">Color_SelectedText</include>
-                            <textcolor>main_fg_70</textcolor>
-                            <selectedcolor>main_fg_70</selectedcolor>
-                            <label>$INFO[ListItem.Label2]</label>
-                            <font>font_main</font>
-                            <align>right</align>
-                        </include>
-                    </control>
-
-                    <!-- Other content -->
-                    <control type="group">
-                        <visible>![!String.IsEmpty(ListItem.FileExtension) | String.IsEqual(ListItem.Property(IsPlayable),true)]</visible>
-                        <include content="Object_Control">
-                            <param name="control">label</param>
-                            <include condition="$PARAM[selected]">Color_SelectedText</include>
-                            <textcolor>main_fg_70</textcolor>
-                            <selectedcolor>main_fg_70</selectedcolor>
-                            <label>$INFO[ListItem.Label]</label>
-                            <font>font_main_bold</font>
-                            <visible>![!String.IsEmpty(ListItem.FileExtension) | String.IsEqual(ListItem.Property(IsPlayable),true)]</visible>
-                        </include>
-                        <include content="Object_Control">
-                            <param name="control">label</param>
-                            <include condition="$PARAM[selected]">Color_SelectedText</include>
-                            <textcolor>main_fg_70</textcolor>
-                            <selectedcolor>main_fg_70</selectedcolor>
-                            <label>$INFO[ListItem.Label2]</label>
-                            <font>font_main</font>
-                            <align>right</align>
-                        </include>
-                    </control>
-                </control>
-            </control>
-        </definition>
-    </include>
-
 
     <include name="Layout_DialogSelect">
         <param name="detailed">false</param>
@@ -1489,10 +1396,10 @@
                     </control>
                 </control>
                 <control type="group">
-                    <include content="Object_RatingCircle" condition="Skin.HasSetting(Indicator.RatingsCircle)">
+                    <include content="Object_RatingCircle" condition="$PARAM[indicator] + Skin.HasSetting(Indicator.RatingsCircle)">
                         <param name="rating">$PARAM[listitem].Rating</param>
                     </include>
-                    <include content="Object_ProgressPercent" condition="Skin.HasSetting(Indicator.ProgressPercent)">
+                    <include content="Object_ProgressPercent" condition="$PARAM[indicator] + Skin.HasSetting(Indicator.ProgressPercent)">
                         <param name="affix">$PARAM[affix]</param>
                         <param name="listitem">$PARAM[listitem]</param>
                     </include>
