@@ -439,7 +439,6 @@
 
     <include name="Defs_TMDbHelper_Loader">
         <definition>
-            <include>Defs_AddonDetails_Loader</include>
             <include content="Object_Hidden_List">
                 <param name="id">99950</param>
             </include>
@@ -482,46 +481,19 @@
         </include>
     </include>
 
-    <variable name="Defs_AddonDetails_Loader_Description">
+    <variable name="Def_PlotDetails_Fallback">
 		<!-- MISC003: remove "You Have Watched ..." text from Home Page -->
-		<value condition="String.IsEqual(System.CurrentControlID,419)"></value> <!-- from Widget selector -->
-		<value condition="String.IsEqual(System.CurrentControlID,607)"></value> <!-- from Widget #3: VOD Apps -->
-		<value condition="String.IsEqual(System.CurrentControlID,608)"></value> <!-- from Widget #4: Started Movies -->
-		<value condition="String.IsEqual(System.CurrentControlID,609)"></value> <!-- from Widget #5: Music Playlists -->
-		<value condition="String.IsEqual(System.CurrentControlID,610)"></value> <!-- from Widget #6: Video Lists -->
-        <value condition="!String.IsEmpty(Window(Home).Property(TMDbHelper.TraktStats.Movies.Watched)) + !String.IsEmpty(Window(Home).Property(TMDbHelper.TraktStats.Shows.Watched))">$LOCALIZE[31476]</value>
-        <value condition="!String.IsEmpty(Window(Home).Property(TMDbHelper.TraktStats.Total.Minutes))">$LOCALIZE[31475]</value>
-        <value condition="$EXP[Exp_HomeMenu_tvshows]">$LOCALIZE[31172]</value>
-        <value condition="$EXP[Exp_HomeMenu_movies]">$LOCALIZE[31175]</value>
-        <value>$LOCALIZE[31176]</value>
+		  <value condition="String.IsEqual(System.CurrentControlID,419)"></value> <!-- from Widget selector -->
+		  <value condition="String.IsEqual(System.CurrentControlID,607)"></value> <!-- from Widget #3: VOD Apps -->
+		  <value condition="String.IsEqual(System.CurrentControlID,608)"></value> <!-- from Widget #4: Started Movies -->
+		  <value condition="String.IsEqual(System.CurrentControlID,609)"></value> <!-- from Widget #5: Music Playlists -->
+		  <value condition="String.IsEqual(System.CurrentControlID,610)"></value> <!-- from Widget #6: Video Lists -->
+      <value condition="!String.IsEmpty(Window(Home).Property(TMDbHelper.TraktStats.Movies.Watched)) + !String.IsEmpty(Window(Home).Property(TMDbHelper.TraktStats.Shows.Watched))">$LOCALIZE[31476]</value>
+      <value condition="!String.IsEmpty(Window(Home).Property(TMDbHelper.TraktStats.Total.Minutes))">$LOCALIZE[31475]</value>
+      <value condition="$EXP[Exp_HomeMenu_tvshows]">$LOCALIZE[31172]</value>
+       <value condition="$EXP[Exp_HomeMenu_movies]">$LOCALIZE[31175]</value>
+       <value>$LOCALIZE[31176]</value>
     </variable>
-
-    <variable name="Defs_AddonDetails_Loader_Path">
-        <!-- MISC003: "+ !Window.IsVisible(10001) + !String.Contains(Container.FolderPath,autowidget)" added -->
-        <value condition="Window.IsMedia + !String.IsEmpty(Container.PluginName) + !Window.IsVisible(10001) + !String.Contains(Container.FolderPath,autowidget)">$INFO[Container.PluginName,plugin://script.skinvariables/?info=get_dbitem_addon_details&amp;dbid=,]</value>
-        <value condition="Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + String.StartsWith(Container(301).ListItem.Path,plugin://)">$INFO[Container(301).ListItem.Path,plugin://script.skinvariables/?info=get_dbitem_addon_details&amp;dbid=,&amp;convert_path=True]</value>
-        <value condition="!String.IsEmpty(Container.ListItem.Path) + String.StartsWith(Container.ListItem.Path,plugin://)">$INFO[Container.ListItem.Path,plugin://script.skinvariables/?info=get_dbitem_addon_details&amp;dbid=,&amp;convert_path=True]</value>
-        <value condition="!String.IsEmpty(ListItem.Path) + String.StartsWith(ListItem.Path,plugin://)">$INFO[ListItem.Path,plugin://script.skinvariables/?info=get_dbitem_addon_details&amp;dbid=,&amp;convert_path=True]</value>
-        <value>-</value>
-    </variable>
-
-    <include name="Defs_AddonDetails_Loader">
-        <include content="Object_Hidden_List">
-            <param name="id">99956</param>
-            <content>$VAR[Defs_AddonDetails_Loader_Path]</content>
-            <content>
-                <item>
-                    <label>null</label>
-                    <property name="description">$VAR[Defs_AddonDetails_Loader_Description]</property>
-                    <property name="type">xbmc.core</property>
-                    <property name="version">$INFO[System.BuildVersionCode]</property>
-					<!-- MISC003: additional visible tag added -->
-					<visible>![String.IsEqual(System.CurrentControlID,"50") + String.Contains(Container.FolderPath,"plugin.program.autowidget")]</visible>
-                    <visible>Integer.IsEqual(Container(99956).NumItems,0) | [Integer.IsEqual(Container(99956).NumItems,1) + String.IsEqual(Container(99956).ListItemAbsolute(0).Label,null)]</visible>
-                </item>
-            </content>
-        </include>
-    </include>
 
     <variable name="Defs_BrowseLimitedLists">
         <value condition="Skin.HasSetting(Widgets.DisableShowMore)">never</value>
