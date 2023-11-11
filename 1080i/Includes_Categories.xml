@@ -66,12 +66,35 @@
         <animation effect="fade" start="100" end="0" delay="100" time="300" tween="quadratic" reversible="false" condition="!Container($PARAM[id]).OnNext">Conditional</animation>
     </include>
 
-    <include name="Categories_Selector_Movement_Submenu">
+    <include name="Categories_Selector_Movement_First">
+        <focusposition>0</focusposition>
         <movement>3</movement>
+    </include>
+    <include name="Categories_Selector_Movement_Second">
+        <focusposition>1</focusposition>
+        <movement>2</movement>
+        <animation effect="slide" end="-240" condition="Integer.IsLess(Container($PARAM[id]).NumItems,3) + ![$PARAM[wraplist]]">Conditional</animation>
+    </include>
+    <include name="Categories_Selector_Movement_Position">
+        <include condition="!Skin.HasSetting(Categories.UseSecondPositionFocus)">Categories_Selector_Movement_First</include>
+        <include condition="Skin.HasSetting(Categories.UseSecondPositionFocus)" content="Categories_Selector_Movement_Second">
+            <param name="id">$PARAM[id]</param>
+            <param name="wraplist">$PARAM[wraplist]</param>
+        </include>
+    </include>
+
+    <include name="Categories_Selector_Movement_Submenu">
+        <include content="Categories_Selector_Movement_Position">
+            <param name="id">$PARAM[id]</param>
+            <param name="wraplist">$PARAM[wraplist]</param>
+        </include>
         <width>1240</width>
     </include>
     <include name="Categories_Selector_Movement_Mainmenu">
-        <movement>3</movement>
+        <include content="Categories_Selector_Movement_Position">
+            <param name="id">$PARAM[id]</param>
+            <param name="wraplist">$PARAM[wraplist]</param>
+        </include>
         <width>1000</width>
     </include>
 
@@ -115,9 +138,6 @@
                 </include>
 
                 <preloaditems>0</preloaditems>
-                <focusposition>0</focusposition>
-
-                <!-- <animation effect="slide" end="-240" condition="Integer.IsLess(Container($PARAM[id]).NumItems,3) + ![$PARAM[wraplist]]">Conditional</animation> -->
 
                 <hitrect x="$PARAM[hitrect_x]" y="$PARAM[hitrect_y]" w="$PARAM[hitrect_w]" h="$PARAM[hitrect_h]" />
 
@@ -133,8 +153,14 @@
 
                 <nested />
 
-                <include condition="![$PARAM[shorten]]">Categories_Selector_Movement_Submenu</include>
-                <include condition="$PARAM[shorten]">Categories_Selector_Movement_Mainmenu</include>
+                <include condition="![$PARAM[shorten]]" content="Categories_Selector_Movement_Submenu">
+                    <param name="id">$PARAM[id]</param>
+                    <param name="wraplist">$PARAM[wraplist]</param>
+                </include>
+                <include condition="$PARAM[shorten]" content="Categories_Selector_Movement_Mainmenu">
+                    <param name="id">$PARAM[id]</param>
+                    <param name="wraplist">$PARAM[wraplist]</param>
+                </include>
 
                 <onfocus condition="$PARAM[slide]">SetProperty(Slide.WidgetContainer,True,$PARAM[window_id])</onfocus>
                 <onfocus condition="![$PARAM[slide]]">ClearProperty(Slide.WidgetContainer,$PARAM[window_id])</onfocus>
