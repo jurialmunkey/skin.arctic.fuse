@@ -1689,8 +1689,21 @@
         </control>
     </include>
 
-    <include name="Info_Panel_Rating_Visible">
+    <include name="_Info_Panel_Rating_Visible">
         <visible>$PARAM[mod][String.IsEqual(Container(99950).ListItem.DBType,movie) | String.IsEqual(Container(99950).ListItem.DBType,tvshow) | String.IsEqual(Container(99950).ListItem.DBType,season) | String.IsEqual(Container(99950).ListItem.DBType,episode)]</visible>
+    </include>
+
+    <include name="_Info_Panel_NoRating_Visible">
+        <visible>$PARAM[mod][False]</visible>
+    </include>
+
+    <include name="Info_Panel_Rating_Visible">
+        <include content="_Info_Panel_Rating_Visible" condition="!Skin.HasSetting(Info.DisableAllRatings)">
+            <param name="mod">$PARAM[mod]</param>
+        </include>
+        <include content="_Info_Panel_NoRating_Visible" condition="Skin.HasSetting(Info.DisableAllRatings)">
+            <param name="mod">$PARAM[mod]</param>
+        </include>
     </include>
 
     <include name="Info_Panel">
@@ -1699,7 +1712,7 @@
         <param name="plotwidth">info_plot_w</param>
         <param name="colordiffuse">main_fg</param>
         <param name="details">true</param>
-        <param name="ratings">true</param>
+        <param name="ratings">!Skin.HasSetting(Info.DisableAllRatings)</param>
         <param name="title">true</param>
         <param name="infoline">true</param>
         <param name="plotlabel">$VAR[Label_Plot_Container_Reroute]</param>
