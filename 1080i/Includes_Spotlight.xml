@@ -5,14 +5,24 @@
         <include content="Object_Hidden_List">
             <param name="id">99971</param>
             <include content="Defs_AutoScroll">
-                <param name="condition">[Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + Integer.IsEqual(Container(301).NumItems,0) + !Container(301).IsUpdating]</param>
+                <param name="condition">[Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + !$EXP[Exp_Hubs_Spotlight_HasItems] + !$EXP[Exp_InfoDialogs]]</param>
             </include>
             <content sortby="random">$VAR[Path_Hub_FallbackSlideShow_Content]</content>
-            <visible>[Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + Integer.IsEqual(Container(301).NumItems,0) + !Container(301).IsUpdating]</visible>
+            <visible>[Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + !$EXP[Exp_Hubs_Spotlight_HasItems]]</visible>
         </include>
         <include content="Object_Hidden_List" condition="Skin.HasSetting(TMDbHelper.EnableBlur)">
             <content>plugin://script.skinvariables/?info=run_executebuiltin&amp;blur_image=$ESCINFO[Container(99971).ListItem.PicturePath]&amp;&amp;special://skin/shortcuts/builtins/skinvariables-blurimage.json</content>
-            <visible>[Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + Integer.IsEqual(Container(301).NumItems,0) + !Container(301).IsUpdating]</visible>
+            <visible>[Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + !$EXP[Exp_Hubs_Spotlight_HasItems]]</visible>
+        </include>
+    </include>
+
+    <include name="Spotlight_Info_Animation">
+        <include content="Animation_Fade_In">
+            <param name="condition">$EXP[Exp_Hubs_Spotlight_HasItems] + $EXP[Exp_Hubs_Spotlight_IsVisible]</param>
+            <param name="delay">200</param>
+        </include>
+        <include content="Animation_ConditionalFade">
+            <param name="condition">![$EXP[Exp_Hubs_Spotlight_HasItems] + $EXP[Exp_Hubs_Spotlight_IsVisible]]</param>
         </include>
     </include>
 
@@ -22,9 +32,10 @@
                 <param name="titlelabel">$VAR[Label_Title_C301]</param>
                 <param name="plotlabel">$VAR[Label_Plot_C301]</param>
                 <param name="container">Container(301).</param>
+                <param name="details_include">Spotlight_Info_Animation</param>
                 <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)</visible>
             </include>
-            <include content="Info_Viewline">
+            <!-- <include content="Info_Viewline">
                 <param name="label">$VAR[Label_Hub_Spotlight]</param>
                 <param name="secondary_label">$LOCALIZE[31371] $LOCALIZE[13278]</param>
                 <param name="sort_condition">True</param>
@@ -35,14 +46,8 @@
                 <left>0</left>
                 <top>320</top>
                 <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)</visible>
-                <include content="Animation_Fade_In">
-                    <param name="condition">String.IsEmpty(Window.Property(Slide.WidgetContainer))</param>
-                    <param name="delay">200</param>
-                </include>
-                <include content="Animation_ConditionalFade">
-                    <param name="condition">!String.IsEmpty(Window.Property(Slide.WidgetContainer))</param>
-                </include>
-            </include>
+                <include>Spotlight_Info_Animation</include>
+            </include> -->
         </include>
     </include>
 
@@ -62,7 +67,7 @@
                 <hitrect x="0" y="0" w="0" h="0" />
 
                 <include content="Defs_AutoScroll">
-                    <param name="condition">[!ControlGroup(310).HasFocus() + !System.HasAlarm(playtrailer)]</param>
+                    <param name="condition">[!ControlGroup(310).HasFocus() + !System.HasAlarm(playtrailer) + !$EXP[Exp_InfoDialogs]]</param>
                 </include>
 
                 <itemlayout height="1080" />
@@ -102,19 +107,18 @@
         <param name="target">$INFO[Skin.String(skinshortcuts-mainmenu-widgetTarget)]</param>
         <definition>
             <control type="group" id="304">
-                <top>fullscreenwidget_buttongroup_t</top>
-                <height>fullscreenwidget_buttongroup_h</height>
+                <top>hub_spotlight_t</top>
+                <height>hub_spotlight_h</height>
 
                 <include content="Animation_Fade_In">
-                    <param name="condition">[Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + String.IsEmpty(Window.Property(Slide.WidgetContainer)) + $PARAM[visible]]</param>
+                    <param name="condition">[$EXP[Exp_Hubs_Spotlight_IsVisible] + $PARAM[visible]]</param>
                     <param name="delay">200</param>
                 </include>
                 <include content="Animation_ConditionalFade">
-                    <param name="condition">![Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + String.IsEmpty(Window.Property(Slide.WidgetContainer)) + $PARAM[visible]]</param>
+                    <param name="condition">![$EXP[Exp_Hubs_Spotlight_IsVisible] + $PARAM[visible]]</param>
                 </include>
 
-                <animation effect="slide" tween="quadratic" easing="out" reversible="false" start="0" end="0,fullscreenwidget_buttongroup_s" time="200" condition="!ControlGroup(310).HasFocus()">Conditional</animation>
-                <animation effect="slide" tween="quadratic" easing="out" reversible="false" start="0,fullscreenwidget_buttongroup_s" end="0" time="200" condition="ControlGroup(310).HasFocus()">Conditional</animation>
+                <include>Hub_Slide_Spotlight_NoFocus</include>
 
                 <control type="grouplist" id="310">
                     <orientation>horizontal</orientation>

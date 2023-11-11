@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
 
+    <include name="Action_SkinShortcuts_Prebuilt_OnClick">
+        <onclick>RunScript(script.skinvariables,run_dialog=select,heading=$LOCALIZE[31490],list=Home > Default Library / Home > Default TMDb / Home > Basic Library / Hub > Movies > Default Library / Hub > Movies > Default TMDb / Hub > TV Shows > Default Library / Hub > TV Shows > Default TMDb / Hub > Music > Default / Hub > Live TV > Default / Hub > Search > Default,preselect=-1,"executebuiltin_0=RunScript(script.skinvariables,mov_skinshortcut,folder=special://skin/shortcuts/default_home/,skin=skin.arctic.fuse)","executebuiltin_1=RunScript(script.skinvariables,mov_skinshortcut,folder=special://skin/shortcuts/default_home_tmdb/,skin=skin.arctic.fuse)","executebuiltin_2=RunScript(script.skinvariables,mov_skinshortcut,folder=special://skin/shortcuts/basic_library/,skin=skin.arctic.fuse)","executebuiltin_3=RunScript(script.skinvariables,mov_skinshortcut,folder=special://skin/shortcuts/default_hub_movies/,skin=skin.arctic.fuse)","executebuiltin_4=RunScript(script.skinvariables,mov_skinshortcut,folder=special://skin/shortcuts/default_hub_movies_tmdb/,skin=skin.arctic.fuse)","executebuiltin_5=RunScript(script.skinvariables,mov_skinshortcut,folder=special://skin/shortcuts/default_hub_tvshows/,skin=skin.arctic.fuse)","executebuiltin_6=RunScript(script.skinvariables,mov_skinshortcut,folder=special://skin/shortcuts/default_hub_tvshows_tmdb/,skin=skin.arctic.fuse)","executebuiltin_7=RunScript(script.skinvariables,mov_skinshortcut,folder=special://skin/shortcuts/default_hub_music/,skin=skin.arctic.fuse)","executebuiltin_8=RunScript(script.skinvariables,mov_skinshortcut,folder=special://skin/shortcuts/default_hub_livetv/,skin=skin.arctic.fuse)","executebuiltin_9=RunScript(script.skinvariables,mov_skinshortcut,folder=special://skin/shortcuts/default_hub_search/,skin=skin.arctic.fuse)")</onclick>
+    </include>
+
     <variable name="Action_SkinShortcuts_Modify">
         <value condition="Window.IsVisible(Home)">name=.*,label_regex=^Home</value>
         <value condition="Window.IsVisible(1101)">name=moviemenu||moviesubmenu||moviewidgets</value>
@@ -577,9 +581,23 @@
         </definition>
     </include>
 
+    <include name="Action_PlayTrailer_OnClick">
+        <onclick condition="!Skin.HasSetting(Trailers.PlayFullscreen) + String.IsEmpty($PARAM[trailer]) + !String.IsEmpty($PARAM[trailer_fallback])">SetProperty(Trailer,$ESCINFO[$PARAM[trailer_fallback]],1123)</onclick>
+        <onclick condition="!Skin.HasSetting(Trailers.PlayFullscreen) + !String.IsEmpty($PARAM[trailer])">SetProperty(Trailer,$ESCINFO[$PARAM[trailer]],1123)</onclick>
+        <onclick condition="!Skin.HasSetting(Trailers.PlayFullscreen) + String.IsEmpty($PARAM[trailer]) + !String.IsEmpty($PARAM[trailer_fallback])">PlayMedia($ESCINFO[$PARAM[trailer_fallback]],False,1)</onclick>
+        <onclick condition="!Skin.HasSetting(Trailers.PlayFullscreen) + !String.IsEmpty($PARAM[trailer])">PlayMedia($ESCINFO[$PARAM[trailer]],False,1)</onclick>
+        <onclick condition="!Skin.HasSetting(Trailers.PlayFullscreen) + Skin.HasSetting(Trailers.PlayInDialog) + [!String.IsEmpty($PARAM[trailer]) | !String.IsEmpty($PARAM[trailer_fallback])]">ActivateWindow(1123)</onclick>
+
+        <onclick condition="Skin.HasSetting(Trailers.PlayFullscreen) + [!String.IsEmpty($PARAM[trailer]) | !String.IsEmpty($PARAM[trailer_fallback])]">Dialog.Close(all,force)</onclick>
+        <onclick condition="Skin.HasSetting(Trailers.PlayFullscreen) + String.IsEmpty($PARAM[trailer]) + !String.IsEmpty($PARAM[trailer_fallback])">PlayMedia($ESCINFO[$PARAM[trailer_fallback]])</onclick>
+        <onclick condition="Skin.HasSetting(Trailers.PlayFullscreen) + !String.IsEmpty($PARAM[trailer])">PlayMedia($ESCINFO[$PARAM[trailer]])</onclick>
+    </include>
+
     <include name="Action_AutoTrailer_OnFocus">
-        <onfocus>AlarmClock(autotrailer,SetProperty(AutoTrailer,$ESCINFO[Container($PARAM[id]).ListItem.Trailer]),00:05,silent)</onfocus>
-        <onfocus>AlarmClock(playtrailer,PlayMedia($ESCINFO[Container($PARAM[id]).ListItem.Trailer],1),00:05,silent)</onfocus>
+        <onfocus condition="!String.IsEmpty(Container($PARAM[id]).ListItem.Trailer)">AlarmClock(autotrailer,SetProperty(AutoTrailer,$ESCINFO[Container($PARAM[id]).ListItem.Trailer]),00:05,silent)</onfocus>
+        <onfocus condition="!String.IsEmpty(Container($PARAM[id]).ListItem.Trailer)">AlarmClock(playtrailer,PlayMedia($ESCINFO[Container($PARAM[id]).ListItem.Trailer],1),00:05,silent)</onfocus>
+        <onfocus condition="String.IsEmpty(Container($PARAM[id]).ListItem.Trailer)">CancelAlarm(playtrailer,silent)</onfocus>
+        <onfocus condition="String.IsEmpty(Container($PARAM[id]).ListItem.Trailer)">CancelAlarm(autotrailer,silent)</onfocus>
         <onunfocus>CancelAlarm(playtrailer,silent)</onunfocus>
         <onunfocus>CancelAlarm(autotrailer,silent)</onunfocus>
         <onunfocus condition="Player.HasVideo + String.IsEqual(Window.Property(AutoTrailer),Player.FileNameAndPath)">Action(Stop)</onunfocus>
@@ -587,8 +605,10 @@
 
     <include name="Action_AutoTrailer_OnRight">
         <onright condition="Player.HasVideo + String.IsEqual(Window.Property(AutoTrailer),Player.FileNameAndPath)">Action(Stop)</onright>
-        <onright>AlarmClock(autotrailer,SetProperty(AutoTrailer,$ESCINFO[Container($PARAM[id]).ListItem.Trailer]),00:05,silent)</onright>
-        <onright>AlarmClock(playtrailer,PlayMedia($ESCINFO[Container($PARAM[id]).ListItem.Trailer],1),00:05,silent)</onright>
+        <onright condition="!String.IsEmpty(Container($PARAM[id]).ListItem.Trailer)">AlarmClock(autotrailer,SetProperty(AutoTrailer,$ESCINFO[Container($PARAM[id]).ListItem.Trailer]),00:05,silent)</onright>
+        <onright condition="!String.IsEmpty(Container($PARAM[id]).ListItem.Trailer)">AlarmClock(playtrailer,PlayMedia($ESCINFO[Container($PARAM[id]).ListItem.Trailer],1),00:05,silent)</onright>
+        <onright condition="String.IsEmpty(Container($PARAM[id]).ListItem.Trailer)">CancelAlarm(playtrailer,silent)</onright>
+        <onright condition="String.IsEmpty(Container($PARAM[id]).ListItem.Trailer)">CancelAlarm(autotrailer,silent)</onright>
     </include>
 
 
