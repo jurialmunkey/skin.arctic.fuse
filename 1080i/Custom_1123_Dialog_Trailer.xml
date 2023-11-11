@@ -2,6 +2,7 @@
 <window type="dialog" id="1123">
     <defaultcontrol always="true">9000</defaultcontrol>
     <onload condition="!Player.HasMedia">Close</onload>
+    <onunload>ClearProperty(TrailerFullscreen,1123)</onunload>
     <onunload>ClearProperty(Trailer,1123)</onunload>
     <onunload condition="Player.HasMedia">Action(Stop)</onunload>
     <controls>
@@ -84,8 +85,26 @@
                         <param name="visible">!String.IsEmpty(Window.Property(Trailer))</param>
                         <onclick>PlayMedia($ESCINFO[Window.Property(Trailer)],False,1)</onclick>
                     </include>
+                    <include content="Dialog_Side_Button">
+                        <param name="id">05</param>
+                        <param name="label">Fullscreen</param>
+                        <param name="icon">special://skin/extras/icons/fullscreen.png</param>
+                        <param name="visible">Player.HasMedia</param>
+                        <onclick condition="String.IsEmpty(Window.Property(TrailerFullscreen))">SetProperty(TrailerFullscreen,True,1123)</onclick>
+                        <onclick condition="!String.IsEmpty(Window.Property(TrailerFullscreen))">ClearProperty(TrailerFullscreen,1123)</onclick>
+                        <onunfocus>ClearProperty(TrailerFullscreen,1123)</onunfocus>
+                    </include>
                 </include>
             </include>
         </include>
+
+        <control type="group">
+            <visible>Player.HasMedia</visible>
+            <visible>!String.IsEmpty(Window.Property(TrailerFullscreen))</visible>
+            <control type="image">
+                <texture colordiffuse="black">common/white.png</texture>
+            </control>
+            <control type="videowindow" />
+        </control>
     </controls>
 </window>
