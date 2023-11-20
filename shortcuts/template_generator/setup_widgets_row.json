@@ -1,0 +1,205 @@
+{
+    "widget_id": "$MATH[{parent_item_x} * 1000 + 600 + {item_sum_x}]",
+    "widget_group_id": "$MATH[{parent_item_x} * 1000 + 700 + {item_sum_x}]",
+    "widget_selector_id": "$MATH[{parent_item_x} * 1000 + 419]",
+    "widget_shortstack_id": "$MATH[{parent_item_x} * 1000 + 800 + {item_sum_x}]",
+    "widget_prev_id": "$MATH[{parent_item_x} * 1000 + 600 + {item_sum_x} - 1]",
+    "widget_next_id": "$MATH[{parent_item_x} * 1000 + 600 + {item_sum_x} + 1]",
+    "widget_nextnext_id": "$MATH[{parent_item_x} * 1000 + 600 + {item_sum_x} + 2]",
+    "widget_nextnextnext_id": "$MATH[{parent_item_x} * 1000 + 600 + {item_sum_x} + 3]",
+    "widget_label": [
+        {
+            "condition":"{item_path}==Stacked_Folder",
+            "value" : "$INFO[Window.Property(WidgetMeta.{widget_prev_id}.Label)]"
+        },
+        {
+            "condition":"{item_path}==Stacked_Movie_Recommendations",
+            "value" : "$LOCALIZE[31018]$INFO[Window.Property(WidgetMeta.{widget_prev_id}.Title), (,)]"
+        },
+        {
+            "condition":"{item_path}==Stacked_TVShows_Recommendations",
+            "value" : "$LOCALIZE[31018]$INFO[Window.Property(WidgetMeta.{widget_prev_id}.TVShowTitle), (,)]"
+        },
+        {
+            "condition":"{item_path}==Stacked_Movie_Year",
+            "value" : "$LOCALIZE[345]$INFO[Window.Property(WidgetMeta.{widget_prev_id}.Year), (,)]"
+        },
+        {
+            "condition":"{item_path}==Stacked_TVShows_Year",
+            "value" : "$LOCALIZE[345]$INFO[Window.Property(WidgetMeta.{widget_prev_id}.Year), (,)]"
+        },
+        {
+            "condition":"{item_path}==Stacked_Movie_Genre",
+            "value" : "$LOCALIZE[515]$INFO[Window.Property(WidgetMeta.{widget_prev_id}.Genre), (,)]"
+        },
+        {
+            "condition":"{item_path}==Stacked_TVShows_Genre",
+            "value" : "$LOCALIZE[515]$INFO[Window.Property(WidgetMeta.{widget_prev_id}.Genre), (,)]"
+        },
+        "{item_label}"
+    ],
+    "widget_path": [
+        {
+            "condition":"{item_path}==Stacked_Folder",
+            "value" : "$INFO[Window.Property(WidgetMeta.{widget_prev_id}.FolderPath)]"
+        },
+        {
+            "condition":"{item_path}==Stacked_Movie_Recommendations",
+            "value" : "plugin://plugin.video.themoviedb.helper/?info=recommendations&amp;tmdb_type=movie&amp;query=$INFO[Window.Property(WidgetMeta.{widget_prev_id}.Title)]$VAR[Path_Param_Widget]"
+        },
+        {
+            "condition":"{item_path}==Stacked_TVShows_Recommendations",
+            "value" : "plugin://plugin.video.themoviedb.helper/?info=recommendations&amp;tmdb_type=tv&amp;query=$INFO[Window.Property(WidgetMeta.{widget_prev_id}.TvShowTitle)]$VAR[Path_Param_Widget]"
+        },
+        {
+            "condition":"{item_path}==Stacked_Movie_Year",
+            "value" : "plugin://plugin.video.themoviedb.helper/?info=discover&amp;tmdb_type=movie&amp;sort_by=vote_count.desc&amp;primary_release_year=$INFO[Window.Property(WidgetMeta.{widget_prev_id}.Year)]$VAR[Path_Param_Widget]"
+        },
+        {
+            "condition":"{item_path}==Stacked_TVShows_Year",
+            "value" : "plugin://plugin.video.themoviedb.helper/?info=discover&amp;tmdb_type=tv&amp;sort_by=vote_count.desc&amp;first_air_date_year=$INFO[Window.Property(WidgetMeta.{widget_prev_id}.Year)]$VAR[Path_Param_Widget]"
+        },
+        {
+            "condition":"{item_path}==Stacked_Movie_Genre",
+            "value" : "plugin://plugin.video.themoviedb.helper/?info=discover&amp;tmdb_type=movie&amp;sort_by=vote_count.desc&amp;with_genres=$INFO[Window.Property(WidgetMeta.{widget_prev_id}.Genre)]$VAR[Path_Param_Widget]"
+        },
+        {
+            "condition":"{item_path}==Stacked_TVShows_Genre",
+            "value" : "plugin://plugin.video.themoviedb.helper/?info=discover&amp;tmdb_type=tv&amp;sort_by=vote_count.desc&amp;with_genres=$INFO[Window.Property(WidgetMeta.{widget_prev_id}.Genre)]$VAR[Path_Param_Widget]"
+        },
+        "{item_path}"
+    ],
+    "widget_target": "{item_target}",
+    "widget_sortby": "{item_widget_sortby}",
+    "widget_limit": "{item_widget_limit}",
+    "widget_sortorder": [
+        {
+            "condition":"{item_widget_sortorder}==True",
+            "value" : "descending"
+        },
+        "ascending"
+    ],
+    "widget_sort_descending": [
+        {
+            "condition":"{item_widget_sortorder}==True",
+            "value" : "True"
+        },
+        "False"
+    ],
+    "widget_visible": [
+        {
+            "condition": "Skin.HasSetting(Hubs.WidgetSelector)",
+            "value": "String.IsEqual(Container({widget_selector_id}).ListItem.Property(guid),{item_guid})"
+        },
+        "True"
+    ],
+    "widget_altvisible": [
+        {
+            "condition": "Skin.HasSetting(Hubs.WidgetSelector)",
+            "value": "String.IsEqual(Container({widget_selector_id}).ListItem.Property(guid),{item_guid})"
+        },
+        {
+            "condition":"{item_path}<<Stacked_",
+            "value" : "Control.HasFocus({widget_prev_id})"
+        },
+        "False"
+    ],
+    "widget_isautoscroll": [
+        {
+            "condition":"{item_widget_autoscroll}==True",
+            "value" : "True"
+        },
+        "False"
+    ],
+    "widget_shortstack_visible": "[Control.IsVisible({widget_next_id}) | Control.IsVisible({widget_nextnext_id}) | Control.IsVisible({widget_nextnextnext_id})]",
+    "widget_shortstack": [
+        {
+            "condition":"{item_widget_style}==Apps",
+            "value" : "True"
+        },
+        {
+            "condition":"{item_widget_style}==Text",
+            "value" : "True"
+        },
+        {
+            "condition": ["{item_widget_style}==", "{parent_item_widget_style}==Apps"],
+            "value" : "True"
+        },
+        {
+            "condition": ["{item_widget_style}==", "{parent_item_widget_style}==Text"],
+            "value" : "True"
+        },
+        "False"
+    ],
+    "widget_include": [
+        {
+            "condition":"{item_widget_style}==Landscape",
+            "value" : "List_Landscape_Row"
+        },
+        {
+            "condition":"{item_widget_style}==Poster",
+            "value" : "List_Poster_Row"
+        },
+        {
+            "condition":"{item_widget_style}==Square",
+            "value" : "List_Square_Row"
+        },
+        {
+            "condition":"{item_widget_style}==Card",
+            "value" : "List_Card_Row"
+        },
+        {
+            "condition":"{item_widget_style}==Banner",
+            "value" : "List_Banner_Row"
+        },
+        {
+            "condition":"{item_widget_style}==Apps",
+            "value" : "List_Apps_Row"
+        },
+        {
+            "condition":"{item_widget_style}==Text",
+            "value" : "List_Apps_Row"
+        },
+        {
+            "condition":"{parent_item_widget_style}==Landscape",
+            "value" : "List_Landscape_Row"
+        },
+        {
+            "condition":"{parent_item_widget_style}==Poster",
+            "value" : "List_Poster_Row"
+        },
+        {
+            "condition":"{parent_item_widget_style}==Square",
+            "value" : "List_Square_Row"
+        },
+        {
+            "condition":"{parent_item_widget_style}==Card",
+            "value" : "List_Card_Row"
+        },
+        {
+            "condition":"{parent_item_widget_style}==Banner",
+            "value" : "List_Banner_Row"
+        },
+        {
+            "condition":"{parent_item_widget_style}==Apps",
+            "value" : "List_Apps_Row"
+        },
+        {
+            "condition":"{parent_item_widget_style}==Text",
+            "value" : "List_Apps_Row"
+        },
+        "List_Landscape_Row"
+    ],
+    "widget_detailed": [
+        {
+            "condition":"{item_widget_style}==Text",
+            "value" : "True"
+        },
+        {
+            "condition": ["{item_widget_style}==", "{parent_item_widget_style}==Text"],
+            "value" : "True"
+        },
+        "False"
+    ]
+
+}

@@ -53,12 +53,12 @@
                             </itemlayout>
                             <focusedlayout height="80">
                                 <control type="label">
-                                    <visible>[ControlGroup(30000).HasFocus() | ControlGroup(30030).HasFocus() | ControlGroup(30040).HasFocus() | ControlGroup(30700).HasFocus() | Window.IsVisible(script-skinshortcuts.xml)]</visible>
+                                    <visible>[ControlGroup(30000).HasFocus() | ControlGroup(30030).HasFocus() | ControlGroup(30040).HasFocus() | ControlGroup(30700).HasFocus()]</visible>
                                     <textoffsetx>40</textoffsetx>
                                     <label>$INFO[ListItem.Label]</label>
                                 </control>
                                 <control type="group">
-                                    <visible>![ControlGroup(30000).HasFocus() | ControlGroup(30030).HasFocus() | ControlGroup(30040).HasFocus() | ControlGroup(30700).HasFocus() | Window.IsVisible(script-skinshortcuts.xml)]</visible>
+                                    <visible>![ControlGroup(30000).HasFocus() | ControlGroup(30030).HasFocus() | ControlGroup(30040).HasFocus() | ControlGroup(30700).HasFocus()]</visible>
                                     <control type="image">
                                         <include>Texture_Menu_Highlight_H</include>
                                     </control>
@@ -110,7 +110,7 @@
 
                         <include content="Settings_Label" description="SideMenu Label">
                             <param name="id">1010</param>
-                            <label>Configure</label>
+                            <label>$LOCALIZE[24020]</label>
                             <visible>Container(3).HasFocus(1)</visible>
                         </include>
                         <include content="Settings_Button" description="Wizard">
@@ -139,14 +139,6 @@
                             <visible>Container(3).HasFocus(1)</visible>
                         </include>
 
-                        <include content="Settings_Button" description="Restore a prebuilt menu">
-                            <param name="id">1014</param>
-                            <param name="control">button</param>
-                            <label>Restore a prebuilt shortcut configuration</label>
-                            <include>Action_SkinShortcuts_Prebuilt_OnClick</include>
-                            <visible>Container(3).HasFocus(1)</visible>
-                        </include>
-
                         <include content="Settings_Label" description="SideMenu Label">
                             <param name="id">1000</param>
                             <label>$LOCALIZE[31416]</label>
@@ -155,9 +147,18 @@
                         <include content="Settings_Button" description="Menu Style">
                             <param name="id">1021</param>
                             <param name="control">button</param>
-                            <label>$LOCALIZE[31396]</label>
-                            <label2>$VAR[Label_Settings_MenuStyle]</label2>
-                            <onclick>RunScript(script.skinvariables,run_dialog=select,heading=$LOCALIZE[31396],separator=||,list=$LOCALIZE[602] ($LOCALIZE[31274])||$LOCALIZE[31118] ($LOCALIZE[31425])||$LOCALIZE[31423] ($LOCALIZE[31424]),preselect=$VAR[Label_Settings_MenuStyle_Preselect],"executebuiltin_0=Skin.Reset(Home.HideSideMenu)||Skin.Reset(Home.SideLabels)","executebuiltin_1=Skin.Reset(Home.HideSideMenu)||Skin.SetBool(Home.SideLabels)","executebuiltin_2=Skin.SetBool(Home.HideSideMenu)||Skin.Reset(Home.SideLabels)")</onclick>
+                            <label>$LOCALIZE[31497]</label>
+                            <label2>$INFO[Skin.String(Home.SideMenuCollapse)]</label2>
+                            <onclick>RunScript(script.skinvariables,run_dialog=select,heading=$LOCALIZE[31497],separator=||,list=Always||Library||Never,preselect=$VAR[Label_Settings_MenuStyle_Preselect],"executebuiltin=Skin.SetString(Home.SideMenuCollapse,{v})||sleep=0.2||ReloadSkin()||sleep=0.2||ActivateWindow(1118)")</onclick>
+                            <visible>Container(3).HasFocus(1)</visible>
+                        </include>
+                        <include content="Settings_ButtonImage" description="Home Menu">
+                            <param name="id">1002</param>
+                            <param name="groupid">1102</param>
+                            <param name="icon">special://skin/extras/icons/shapes.png</param>
+                            <label>$LOCALIZE[31496]</label>
+                            <onclick>SetProperty(Shortcuts.EditMenu,menu=sidemenu,Home)</onclick>
+                            <onclick>ActivateWindow(1115)</onclick>
                             <visible>Container(3).HasFocus(1)</visible>
                         </include>
                         <include content="Settings_ButtonImage" description="Search Menu">
@@ -165,58 +166,7 @@
                             <param name="groupid">1101</param>
                             <param name="icon">special://skin/extras/icons/search.png</param>
                             <label>$LOCALIZE[31275]</label>
-                            <onclick>SetProperty(CustomDialogSettingsTitle,[CAPITALIZE]$LOCALIZE[31275][/CAPITALIZE],Home)</onclick>
-                            <onclick>SetProperty(CustomDialogSettingsItems,Items_Settings_SearchMenu,Home)</onclick>
-                            <onclick>ActivateWindow(1115)</onclick>
-                            <visible>Container(3).HasFocus(1)</visible>
-                        </include>
-                        <include content="Settings_ButtonImage" description="Home Menu">
-                            <param name="id">1002</param>
-                            <param name="groupid">1102</param>
-                            <param name="icon">$VAR[Image_Home]</param>
-                            <label>$LOCALIZE[31276]</label>
-                            <onclick>SetProperty(CustomDialogSettingsTitle,[CAPITALIZE]$LOCALIZE[31276][/CAPITALIZE],Home)</onclick>
-                            <onclick>SetProperty(CustomDialogSettingsItems,Items_Settings_HomeMenu,Home)</onclick>
-                            <onclick>ActivateWindow(1115)</onclick>
-                            <visible>Container(3).HasFocus(1)</visible>
-                        </include>
-                        <include content="Settings_ButtonImage" description="Home Menu">
-                            <param name="id">1003</param>
-                            <param name="groupid">1103</param>
-                            <param name="icon">$VAR[Image_Setting_SideIcon_C1]</param>
-                            <label>$LOCALIZE[31277] 1 ($INFO[Skin.String(CustomShortcut.Item01)])</label>
-                            <onclick>SetProperty(CustomDialogSettingsTitle,[CAPITALIZE]$LOCALIZE[31277] 1[/CAPITALIZE],Home)</onclick>
-                            <onclick>SetProperty(CustomDialogSettingsItems,Items_Settings_SideMenu_1,Home)</onclick>
-                            <onclick>ActivateWindow(1115)</onclick>
-                            <visible>Container(3).HasFocus(1)</visible>
-                        </include>
-                        <include content="Settings_ButtonImage" description="Home Menu">
-                            <param name="id">1004</param>
-                            <param name="groupid">1104</param>
-                            <param name="icon">$VAR[Image_Setting_SideIcon_C2]</param>
-                            <label>$LOCALIZE[31277] 2 ($INFO[Skin.String(CustomShortcut.Item02)])</label>
-                            <onclick>SetProperty(CustomDialogSettingsTitle,[CAPITALIZE]$LOCALIZE[31277] 2[/CAPITALIZE],Home)</onclick>
-                            <onclick>SetProperty(CustomDialogSettingsItems,Items_Settings_SideMenu_2,Home)</onclick>
-                            <onclick>ActivateWindow(1115)</onclick>
-                            <visible>Container(3).HasFocus(1)</visible>
-                        </include>
-                        <include content="Settings_ButtonImage" description="Home Menu">
-                            <param name="id">1005</param>
-                            <param name="groupid">1105</param>
-                            <param name="icon">$VAR[Image_Setting_SideIcon_C3]</param>
-                            <label>$LOCALIZE[31277] 3 ($INFO[Skin.String(CustomShortcut.Item03)])</label>
-                            <onclick>SetProperty(CustomDialogSettingsTitle,[CAPITALIZE]$LOCALIZE[31277] 3[/CAPITALIZE],Home)</onclick>
-                            <onclick>SetProperty(CustomDialogSettingsItems,Items_Settings_SideMenu_3,Home)</onclick>
-                            <onclick>ActivateWindow(1115)</onclick>
-                            <visible>Container(3).HasFocus(1)</visible>
-                        </include>
-                        <include content="Settings_ButtonImage" description="Home Menu">
-                            <param name="id">1006</param>
-                            <param name="groupid">1106</param>
-                            <param name="icon">$VAR[Image_Setting_SideIcon_C4]</param>
-                            <label>$LOCALIZE[31277] 4 ($INFO[Skin.String(CustomShortcut.Item04)])</label>
-                            <onclick>SetProperty(CustomDialogSettingsTitle,[CAPITALIZE]$LOCALIZE[31277] 4[/CAPITALIZE],Home)</onclick>
-                            <onclick>SetProperty(CustomDialogSettingsItems,Items_Settings_SideMenu_4,Home)</onclick>
+                            <onclick>SetProperty(Shortcuts.EditMenu,menu=searchmenu,Home)</onclick>
                             <onclick>ActivateWindow(1115)</onclick>
                             <visible>Container(3).HasFocus(1)</visible>
                         </include>
@@ -431,13 +381,13 @@
                             <selected>!Skin.HasSetting(DisableDefaultExploreMenu)</selected>
                         </include>
 
-                        <include content="Settings_Button" description="Media Filter Items">
+                        <!-- <include content="Settings_Button" description="Media Filter Items">
                             <param name="id">3033</param>
                             <param name="control">button</param>
                             <label>$LOCALIZE[31447]</label>
                             <visible>Container(3).HasFocus(3)</visible>
-                            <onclick>RunScript(script.skinshortcuts,type=manage&amp;group=exploremenu)</onclick>
-                        </include>
+                            <onclick>RunScript(TODO_SKINVARIABLES,type=manage&amp;group=exploremenu)</onclick>
+                        </include> -->
 
                         <!-- Navigation -->
                         <include content="Settings_Label" description="Spotlight">
@@ -604,8 +554,8 @@
                             <param name="control">radiobutton</param>
                             <label>$LOCALIZE[536]</label>
                             <visible>Container(3).HasFocus(5)</visible>
-                            <onclick>Skin.ToggleSetting(Furniture.ViewLineDisableIcons)</onclick>
-                            <selected>!Skin.HasSetting(Furniture.ViewLineDisableIcons)</selected>
+                            <onclick>Skin.ToggleSetting(Furniture.EnableViewLineDisableIcons)</onclick>
+                            <selected>Skin.HasSetting(Furniture.EnableViewLineDisableIcons)</selected>
                         </include>
                         <include content="Settings_Button" description="Viewline Highlight">
                             <param name="id">5023</param>
@@ -959,7 +909,7 @@
                             <visible>Container(3).HasFocus(8)</visible>
                             <onclick>SetProperty(StartupReplaceWindow,skinsettings,Home)</onclick>
                             <onclick>Skin.ResetSettings</onclick>
-                            <onclick>RunScript(script.skinshortcuts,type=resetall)</onclick>
+                            <onclick>ActivateWindow(1198)</onclick>
                         </include>
                         <include content="Settings_Button" description="Startup Init Screen">
                             <param name="id">8082</param>
@@ -997,18 +947,6 @@
                             <onclick condition="!System.AddonIsEnabled(plugin.video.themoviedb.helper) + System.HasAddon(plugin.video.themoviedb.helper)">EnableAddon(plugin.video.themoviedb.helper)</onclick>
                             <onclick condition="System.AddonIsEnabled(plugin.video.themoviedb.helper) + System.HasAddon(plugin.video.themoviedb.helper)">Addon.OpenSettings(plugin.video.themoviedb.helper)</onclick>
                             <selected>System.AddonIsEnabled(plugin.video.themoviedb.helper) + System.HasAddon(plugin.video.themoviedb.helper)</selected>
-                        </include>
-
-                        <include content="Settings_Button">
-                            <param name="id">8002</param>
-                            <param name="control">radiobutton</param>
-                            <label>script.skinshortcuts</label>
-                            <label2>$INFO[System.AddonVersion(script.skinshortcuts),v,       ]</label2>
-                            <visible>Container(3).HasFocus(8)</visible>
-                            <onclick condition="!System.HasAddon(script.skinshortcuts)">InstallAddon(script.skinshortcuts)</onclick>
-                            <onclick condition="!System.AddonIsEnabled(script.skinshortcuts) + System.HasAddon(script.skinshortcuts)">EnableAddon(script.skinshortcuts)</onclick>
-                            <onclick condition="System.AddonIsEnabled(script.skinshortcuts) + System.HasAddon(script.skinshortcuts)">Addon.OpenSettings(script.skinshortcuts)</onclick>
-                            <selected>System.AddonIsEnabled(script.skinshortcuts) + System.HasAddon(script.skinshortcuts)</selected>
                         </include>
 
                         <include content="Settings_Button">
@@ -1165,7 +1103,7 @@
                             <top>20</top>
                             <height>600</height>
                             <autoscroll delay="6000" time="3000" repeat="10000">true</autoscroll>
-                            <label>To all my amazing supporters on Ko-fi, thank-you![CR][CR]A special thanks to this month's supporters[CR]jasongrey rien333 Tsweazy BigRedJim Adamosborne83 Blaire Qirat77 George Zeplumber Timmyrocks[CR][CR]And to all my supporters over the years[CR]Blurayx Anthrax DanielSanchez Leo meesterexx roidy manfeed PizzaPino dolbel Tobby Kagz DrFireStarterBilly Qirat77 Darkmantom TomH richieNZ99 Brambo onlytanmoy reddituser aemstel mash2k3 chopp8 Homeslixe Rimma JacopoV ray2301 stelcodes eengert alKODIque Tee77 Ch3dd4rGoblin silentscreamiong Jshn Ian JP RZ daviddia5 Jathlon77 SteveF George sito1961 devolute f39 nevermind Shone TechXXX c0ncr3t0 tim Tiago IG Spork lhimo DROIDsheild Blacky Bindou Velimir ronaldoA8ff Omar_alhajlh pferreira1906 Andrea1998 Mr-7mdan pakraider Nipius Nathan valleycake adamosborne83 AdamNo2 realcopacetic Mardup 666jones AliasAllison916 Rara Omars-Comin abaillargeon Caretaker[CR][CR]If I've forgotten anyone please let me know!</label>
+                            <label>To all my amazing supporters on Ko-fi, thank-you![CR][CR]A special thanks to this month's supporters[CR]Blaire booyakafoo DROIDshield Adamosborne83 ambulancepilot onlytanmoy ludovik35[CR][CR]And to all my supporters over the years[CR]Blurayx Anthrax DanielSanchez Leo meesterexx roidy manfeed PizzaPino dolbel Tobby Kagz DrFireStarterBilly Qirat77 Darkmantom TomH richieNZ99 Brambo onlytanmoy reddituser aemstel mash2k3 chopp8 Homeslixe Rimma JacopoV ray2301 stelcodes eengert alKODIque Tee77 Ch3dd4rGoblin silentscreamiong Jshn Ian JP RZ daviddia5 Jathlon77 SteveF George sito1961 devolute f39 nevermind Shone TechXXX c0ncr3t0 tim Tiago IG Spork lhimo DROIDsheild Blacky Bindou Velimir ronaldoA8ff Omar_alhajlh pferreira1906 Andrea1998 Mr-7mdan pakraider Nipius Nathan valleycake adamosborne83 AdamNo2 realcopacetic Mardup 666jones AliasAllison916 Rara Omars-Comin abaillargeon Caretaker BigRedJim Blaire Zeplumber Timmyrocks jasongrey rien333 Tsweazy[CR][CR]If I've forgotten anyone please let me know!</label>
                             <visible>Container(3).HasFocus(9)</visible>
                             <left>40</left>
                             <right>40</right>
