@@ -480,10 +480,7 @@
 
     <include name="Widget_Row">
         <param name="grouplistid">5000</param>
-        <param name="landscapeid">5002</param>
-        <param name="squareid">5001</param>
-        <param name="posterid">5003</param>
-        <param name="topid">5004</param>
+        <param name="topid">5001</param>
         <param name="refocus">SetFocus(393)</param>
         <definition>
             <include content="_Widget_Row">
@@ -508,9 +505,6 @@
                 <include content="Action_Widget_OnBack">
                     <param name="id">$PARAM[id]</param>
                     <param name="grouplistid">$PARAM[grouplistid]</param>
-                    <param name="landscapeid">$PARAM[landscapeid]</param>
-                    <param name="squareid">$PARAM[squareid]</param>
-                    <param name="posterid">$PARAM[posterid]</param>
                     <param name="topid">$PARAM[topid]</param>
                     <param name="refocus">$PARAM[refocus]</param>
                 </include>
@@ -596,130 +590,14 @@
         </control>
     </include>
 
-    <include name="Widget_Adaptive_Rows">
-        <include content="_Widget_Row" condition="$PARAM[include_condition]">
-            <param name="id">$PARAM[landscapeid]</param>
-            <param name="groupid">$PARAM[landscapegroupid]</param>
-            <param name="label">[CAPITALIZE]$PARAM[label][/CAPITALIZE]</param>
-            <param name="secondary_label">$LOCALIZE[31371] $PARAM[sort_label]</param>
-            <param name="sort_condition">True</param>
-            <param name="sort_descending">String.IsEqual(Window.Property($PARAM[prefix]SpecialFolderSortorder),descending)</param>
-            <param name="include">List_Landscape_Row</param>
-            <param name="transition_include">true</param>
-            <param name="transition_hidden">Control.HasFocus($PARAM[landscapeid])</param>
-            <param name="visible">[!String.IsEqual(Window.Property($PARAM[prefix]SpecialFolderStyle),Square) + !String.IsEqual(Window.Property($PARAM[prefix]SpecialFolderStyle),Poster) + $PARAM[enabled]]</param>
-            <param name="altvisible">[[[$PARAM[altvisible]]] + $PARAM[enabled]]</param>
-            <content target="$VAR[Path_Hub_Target]" sortby="$INFO[Window.Property($PARAM[prefix]SpecialFolderSortby)]" sortorder="$INFO[Window.Property($PARAM[prefix]SpecialFolderSortorder)]" limit="$INFO[Window.Property($PARAM[prefix]SpecialFolderLimit)]" browse="$VAR[Defs_BrowseLimitedLists]">$PARAM[content_landscape]</content>
-
-            <include content="Action_Widget_OnBack">
-                <param name="id">$PARAM[landscapeid]</param>
-                <param name="grouplistid">$PARAM[grouplistid]</param>
-                <param name="landscapeid">$PARAM[toplandscapeid]</param>
-                <param name="squareid">$PARAM[topsquareid]</param>
-                <param name="posterid">$PARAM[topposterid]</param>
-                <param name="topid">$PARAM[topid]</param>
-                <param name="refocus">SetFocus(393)</param>
-            </include>
-
-            <onfocus>SetProperty(TMDbHelper.WidgetContainer,$PARAM[landscapeid])</onfocus>
-            <onfocus>SetProperty(Transition.WidgetStyle,List_Landscape_Row,Home)</onfocus>
-            <onunfocus>ClearProperty(Transition.WidgetStyle,Home)</onunfocus>
-
-            <include content="Action_View_Movement_OnLeft">
-                <param name="id">$PARAM[landscapeid]</param>
-            </include>
-            <include content="Action_View_Movement_OnRight">
-                <param name="id">$PARAM[landscapeid]</param>
-            </include>
-        </include>
-
-        <include content="_Widget_Row" condition="$PARAM[include_condition]">
-            <param name="id">$PARAM[squareid]</param>
-            <param name="groupid">$PARAM[squaregroupid]</param>
-            <param name="label">[CAPITALIZE]$PARAM[label][/CAPITALIZE]</param>
-            <param name="secondary_label">$LOCALIZE[31371] $PARAM[sort_label]</param>
-            <param name="sort_condition">True</param>
-            <param name="sort_descending">String.IsEqual(Window.Property($PARAM[prefix]SpecialFolderSortorder),descending)</param>
-            <param name="include">List_Square_Row</param>
-            <param name="transition_include">true</param>
-            <param name="transition_hidden">Control.HasFocus($PARAM[squareid])</param>
-            <param name="visible">[String.IsEqual(Window.Property($PARAM[prefix]SpecialFolderStyle),Square) + $PARAM[enabled]]</param>
-            <param name="altvisible">[[[$PARAM[altvisible]]] + $PARAM[enabled]]</param>
-            <content target="$VAR[Path_Hub_Target]" sortby="$INFO[Window.Property($PARAM[prefix]SpecialFolderSortby)]" sortorder="$INFO[Window.Property($PARAM[prefix]SpecialFolderSortorder)]" limit="$INFO[Window.Property($PARAM[prefix]SpecialFolderLimit)]" browse="$VAR[Defs_BrowseLimitedLists]">$PARAM[content_square]</content>
-
-
-            <include content="Action_Widget_OnBack">
-                <param name="id">$PARAM[squareid]</param>
-                <param name="grouplistid">$PARAM[grouplistid]</param>
-                <param name="landscapeid">$PARAM[toplandscapeid]</param>
-                <param name="squareid">$PARAM[topsquareid]</param>
-                <param name="posterid">$PARAM[topposterid]</param>
-                <param name="topid">$PARAM[topid]</param>
-                <param name="refocus">SetFocus(393)</param>
-            </include>
-
-            <onfocus>SetProperty(TMDbHelper.WidgetContainer,$PARAM[squareid])</onfocus>
-            <onfocus>SetProperty(Transition.WidgetStyle,List_Square_Row,Home)</onfocus>
-            <onunfocus>ClearProperty(Transition.WidgetStyle,Home)</onunfocus>
-
-            <include content="Action_View_Movement_OnLeft">
-                <param name="id">$PARAM[squareid]</param>
-            </include>
-            <include content="Action_View_Movement_OnRight">
-                <param name="id">$PARAM[squareid]</param>
-            </include>
-        </include>
-
-        <include content="_Widget_Row" condition="$PARAM[include_condition]">
-            <param name="id">$PARAM[posterid]</param>
-            <param name="groupid">$PARAM[postergroupid]</param>
-            <param name="label">[CAPITALIZE]$PARAM[label][/CAPITALIZE]</param>
-            <param name="secondary_label">$LOCALIZE[31371] $PARAM[sort_label]</param>
-            <param name="sort_condition">True</param>
-            <param name="sort_descending">String.IsEqual(Window.Property($PARAM[prefix]SpecialFolderSortorder),descending)</param>
-            <param name="include">List_Poster_Row</param>
-            <param name="transition_include">true</param>
-            <param name="transition_hidden">Control.HasFocus($PARAM[posterid])</param>
-            <param name="visible">[String.IsEqual(Window.Property($PARAM[prefix]SpecialFolderStyle),Poster) + $PARAM[enabled]]</param>
-            <param name="altvisible">[[[$PARAM[altvisible]]] + $PARAM[enabled]]</param>
-            <content target="$VAR[Path_Hub_Target]" sortby="$INFO[Window.Property($PARAM[prefix]SpecialFolderSortby)]" sortorder="$INFO[Window.Property($PARAM[prefix]SpecialFolderSortorder)]" limit="$INFO[Window.Property($PARAM[prefix]SpecialFolderLimit)]" browse="$VAR[Defs_BrowseLimitedLists]">$PARAM[content_poster]</content>
-
-
-            <include content="Action_Widget_OnBack">
-                <param name="id">$PARAM[posterid]</param>
-                <param name="grouplistid">$PARAM[grouplistid]</param>
-                <param name="landscapeid">$PARAM[toplandscapeid]</param>
-                <param name="squareid">$PARAM[topsquareid]</param>
-                <param name="posterid">$PARAM[topposterid]</param>
-                <param name="topid">$PARAM[topid]</param>
-                <param name="refocus">SetFocus(393)</param>
-            </include>
-
-            <onfocus>SetProperty(TMDbHelper.WidgetContainer,$PARAM[posterid])</onfocus>
-            <onfocus>SetProperty(Transition.WidgetStyle,List_Poster_Row,Home)</onfocus>
-            <onunfocus>ClearProperty(Transition.WidgetStyle,Home)</onunfocus>
-
-            <include content="Action_View_Movement_OnLeft">
-                <param name="id">$PARAM[posterid]</param>
-            </include>
-            <include content="Action_View_Movement_OnRight">
-                <param name="id">$PARAM[posterid]</param>
-            </include>
-        </include>
-    </include>
-
-
     <include name="Widget_EndRow_Selector">
         <param name="id">5099</param>
         <param name="groupid">5199</param>
         <param name="grouplistid">5000</param>
-        <param name="topsquareid">5001</param>
-        <param name="toplandscapeid">5002</param>
-        <param name="topposterid">5003</param>
-        <param name="topid">5004</param>
+        <param name="topid">5001</param>
         <param name="include_condition">true</param>
         <definition>
-            <include content="Categories_Selector" condition="$PARAM[include_condition]">
+            <include content="Categories_Selector">
                 <param name="id">$PARAM[id]</param>
                 <param name="grouplistid">$PARAM[groupid]</param>
                 <param name="window_id">home</param>
@@ -742,9 +620,6 @@
                 <include content="Action_Widget_OnBack">
                     <param name="id">$PARAM[id]</param>
                     <param name="grouplistid">$PARAM[grouplistid]</param>
-                    <param name="landscapeid">$PARAM[toplandscapeid]</param>
-                    <param name="squareid">$PARAM[topsquareid]</param>
-                    <param name="posterid">$PARAM[topposterid]</param>
                     <param name="topid">$PARAM[topid]</param>
                     <param name="refocus">SetFocus(393)</param>
                 </include>
