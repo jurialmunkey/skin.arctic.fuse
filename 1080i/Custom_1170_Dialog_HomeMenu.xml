@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window type="dialog" id="1170">
-    <defaultcontrol always="true">8000</defaultcontrol>
-    <onload>SetFocus(8000,0,absolute)</onload>
-    <onload condition="String.IsEmpty(Skin.String(OptionsTiles.Layout))">Skin.SetString(OptionsTiles.Layout,$NUMBER[3])</onload>
-    <onload condition="String.IsEmpty(Skin.String(OptionsTiles.01.Include))">Skin.SetString(OptionsTiles.01.Include,Profile)</onload>
-    <onload condition="String.IsEmpty(Skin.String(OptionsTiles.02.Include))">Skin.SetString(OptionsTiles.02.Include,Settings)</onload>
-    <onload condition="String.IsEmpty(Skin.String(OptionsTiles.03.Include))">Skin.SetString(OptionsTiles.03.Include,Weather)</onload>
-    <onload condition="String.IsEmpty(Skin.String(OptionsTiles.04.Include))">Skin.SetString(OptionsTiles.04.Include,SystemInfo)</onload>
+    <defaultcontrol always="true">7021</defaultcontrol>
+    <onload>AlarmClock(Refocus,SetFocus(7021),00:00,silent)</onload>
+    <include>Action_ButtonMenu_Onload</include>
     <controls>
 
         <include content="Dialog_Overlay_Side">
@@ -50,25 +46,26 @@
                         <onright>9000</onright>
                         <onleft>Close</onleft>
 
-                        <onclick condition="!String.IsEmpty(Container(8000).ListItem.Property(path))">Close</onclick>
-                        <onclick condition="!String.IsEmpty(Container(8000).ListItem.Property(path))">$INFO[Container(8000).ListItem.Property(path)]</onclick>
+                        <onclick>Close</onclick>
+                        <include content="Action_SkinVariables_ShortcutList_Onclick">
+                            <param name="id">8000</param>
+                        </include>
                         <content>
                             <item>
                                 <label>$LOCALIZE[137]</label>
                                 <icon>special://skin/extras/icons/search.png</icon>
-                                <onclick>Close</onclick>
-                                <onclick>ActivateWindow(1105)</onclick>
+                                <property name="path">ActivateWindow(1105)</property>
                             </item>
                         </content>
 
-                        <include content="Home_Menu_Items">
-                            <param name="preaction">Close</param>
+                        <include content="Home_Menu_Content">
+                            <param name="condition">[True]</param>
                         </include>
 
-                        <visible>String.IsEmpty(Window.Property(ToggleMenu))</visible>
+                        <!-- <visible>String.IsEmpty(Window.Property(ToggleMenu))</visible> -->
                     </include>
 
-                    <control type="grouplist" id="8000">
+                    <!-- <control type="grouplist" id="8000">
                         <top>320</top>
                         <bottom>0</bottom>
                         <orientation>vertical</orientation>
@@ -76,9 +73,9 @@
                         <ondown>noop</ondown>
                         <onright>9000</onright>
                         <onleft>Close</onleft>
-                        <include>skinshortcuts-template-powermenu</include>
+                        <include>skinvariables-powermainmenu-staticitems</include>
                         <visible>!String.IsEmpty(Window.Property(ToggleMenu))</visible>
-                    </control>
+                    </control> -->
                 </include>
 
 
@@ -92,7 +89,7 @@
                         <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
                         <onclick>Close</onclick>
                     </include>
-                    <include>skinshortcuts-template-powersubmenu</include>
+                    <include>skinvariables-powersidemenu-staticitems</include>
                 </include>
             </include>
         </include>

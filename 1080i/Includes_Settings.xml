@@ -56,6 +56,33 @@
         </control>
     </include>
 
+    <include name="Settings_Arrows">
+        <param name="arrow_prev_visible">false</param>
+        <param name="arrow_next_visible">false</param>
+        <param name="colordiffuse">main_fg_70</param>
+        <definition>
+            <control type="group">
+                <nested />
+                <control type="image">
+                    <texture colordiffuse="$PARAM[colordiffuse]">special://skin/extras/icons/angle-up.png</texture>
+                    <height>40</height>
+                    <width>40</width>
+                    <top>-30</top>
+                    <centerleft>50%</centerleft>
+                    <visible>$PARAM[arrow_prev_visible]</visible>
+                </control>
+                <control type="image">
+                    <texture colordiffuse="$PARAM[colordiffuse]" flipy="true">special://skin/extras/icons/angle-up.png</texture>
+                    <height>40</height>
+                    <width>40</width>
+                    <bottom>-30</bottom>
+                    <centerleft>50%</centerleft>
+                    <visible>$PARAM[arrow_next_visible]</visible>
+                </control>
+            </control>
+        </definition>
+    </include>
+
     <include name="Settings_Right_Group">
         <param name="arrow_prev_visible">false</param>
         <param name="arrow_next_visible">false</param>
@@ -67,22 +94,12 @@
                     <top>-40</top>
                     <left>-20</left>
                 </control>
-                <control type="image">
-                    <texture colordiffuse="main_fg_70">arrows/arrow-small-up.png</texture>
-                    <height>16</height>
-                    <width>16</width>
-                    <centertop>-50</centertop>
-                    <centerleft>50%</centerleft>
-                    <visible>$PARAM[arrow_prev_visible]</visible>
-                </control>
-                <control type="image">
-                    <texture colordiffuse="main_fg_70" flipy="true">arrows/arrow-small-up.png</texture>
-                    <height>16</height>
-                    <width>16</width>
-                    <centerbottom>70</centerbottom>
-                    <centerleft>50%</centerleft>
-                    <visible>$PARAM[arrow_next_visible]</visible>
-                </control>
+                <include content="Settings_Arrows">
+                    <param name="arrow_prev_visible">$PARAM[arrow_prev_visible]</param>
+                    <param name="arrow_next_visible">$PARAM[arrow_next_visible]</param>
+                    <top>-40</top>
+                    <bottom>80</bottom>
+                </include>
                 <nested />
                 <left>settings_category_w</left>
             </control>
@@ -322,6 +339,68 @@
                 <texturenofocus />
                 <alttexturenofocus />
                 <include condition="$PARAM[dialog]">defs_dialog_$PARAM[control]</include>
+            </control>
+        </definition>
+    </include>
+
+    <include name="Settings_Stacked_Button">
+        <param name="control">button</param>
+        <param name="dialog">false</param>
+        <param name="enable">true</param>
+        <definition>
+            <control type="$PARAM[control]" id="$PARAM[id]">
+                <nested />
+                <align>left</align>
+                <font />
+                <height>80</height>
+                <textoffsetx>40</textoffsetx>
+                <texturenofocus />
+                <alttexturenofocus />
+                <include condition="$PARAM[dialog]">defs_dialog_$PARAM[control]</include>
+                <enable>$PARAM[enable]</enable>
+                <label>$PARAM[sublabel]</label>
+            </control>
+            <control type="group" id="$PARAM[groupid]">
+                <nested />
+                <height>80</height>
+                <top>-80</top>
+                <animation effect="fade" start="100" end="40" condition="![$PARAM[enable]]">Conditional</animation>
+                <control type="group">
+                    <visible>!Control.HasFocus($PARAM[id])</visible>
+                    <control type="label">
+                        <font>font_main</font>
+                        <label>$PARAM[toplabel]</label>
+                        <textoffsetx>40</textoffsetx>
+                        <textcolor>dialog_fg_70</textcolor>
+                        <animation effect="slide" start="0" end="0,-16" condition="$PARAM[sublabel_visible]">Conditional</animation>
+                    </control>
+                    <control type="label">
+                        <font>font_tiny</font>
+                        <top>24</top>
+                        <label>$PARAM[sublabel]</label>
+                        <textoffsetx>40</textoffsetx>
+                        <textcolor>dialog_fg_70</textcolor>
+                        <visible>$PARAM[sublabel_visible]</visible>
+                    </control>
+                </control>
+                <control type="group">
+                    <visible>Control.HasFocus($PARAM[id])</visible>
+                    <control type="label">
+                        <font>font_main</font>
+                        <label>$PARAM[toplabel]</label>
+                        <textcolor>$VAR[ColorSelected]</textcolor>
+                        <textoffsetx>40</textoffsetx>
+                        <animation effect="slide" start="0" end="0,-16" condition="$PARAM[sublabel_visible]">Conditional</animation>
+                    </control>
+                    <control type="label">
+                        <font>font_tiny</font>
+                        <top>24</top>
+                        <label>$PARAM[sublabel]</label>
+                        <textcolor>$VAR[ColorSelected]</textcolor>
+                        <textoffsetx>40</textoffsetx>
+                        <visible>$PARAM[sublabel_visible]</visible>
+                    </control>
+                </control>
             </control>
         </definition>
     </include>

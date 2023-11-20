@@ -25,55 +25,19 @@
         </definition>
     </include>
 
-    <include name="Home_Menu_List_Labels">
-        <control type="grouplist">
-            <nested />
-            <left>view_menu</left>
-            <top>260</top>
-            <bottom>300</bottom>
-            <width>400</width>
-            <orientation>vertical</orientation>
-            <include>Animation_Home_Menu</include>
-            <visible>$EXP[Exp_HomeMenu_HasFocus]</visible>
-            <include content="Layout_Home_Menu_Label">
-                <param name="detailed">Control.HasFocus(303)</param>
-                <param name="selected">String.IsEqual(Container(303).ListItemAbsolute(0).Label,Container(303).ListItem.Label)</param>
-                <param name="label">$INFO[Container(303).ListItemAbsolute(0).Label]</param>
-            </include>
-            <include content="Layout_Home_Menu_Label">
-                <param name="detailed">Control.HasFocus(303)</param>
-                <param name="selected">String.IsEqual(Container(303).ListItemAbsolute(1).Label,Container(303).ListItem.Label)</param>
-                <param name="label">$INFO[Container(303).ListItemAbsolute(1).Label]</param>
-            </include>
-            <include content="Layout_Home_Menu_Label">
-                <param name="detailed">Control.HasFocus(303)</param>
-                <param name="selected">String.IsEqual(Container(303).ListItemAbsolute(2).Label,Container(303).ListItem.Label)</param>
-                <param name="label">$INFO[Container(303).ListItemAbsolute(2).Label]</param>
-            </include>
-            <include content="Layout_Home_Menu_Label">
-                <param name="detailed">Control.HasFocus(303)</param>
-                <param name="selected">String.IsEqual(Container(303).ListItemAbsolute(3).Label,Container(303).ListItem.Label)</param>
-                <param name="label">$INFO[Container(303).ListItemAbsolute(3).Label]</param>
-            </include>
-            <include content="Layout_Home_Menu_Label">
-                <param name="detailed">Control.HasFocus(303)</param>
-                <param name="selected">String.IsEqual(Container(303).ListItemAbsolute(4).Label,Container(303).ListItem.Label)</param>
-                <param name="label">$INFO[Container(303).ListItemAbsolute(4).Label]</param>
-            </include>
-        </control>
-    </include>
-
     <include name="Home_Menu_Content">
-        <include condition="!Skin.HasSetting(Home.HideSideMenu)">Home_Menu_Items</include>
-        <content>
-            <item>
-                <label>$LOCALIZE[33061]</label>
-                <icon>special://skin/extras/icons/list-check.png</icon>
-                <property name="showlabel">True</property>
-                <onclick>ActivateWindow(1170)</onclick>
-                <visible>Skin.HasSetting(Home.HideSideMenu)</visible>
-            </item>
-        </content>
+        <param name="condition">$EXP[Exp_HomeMenu_DontHide]</param>
+        <definition>
+            <include content="Object_ContentDynamic" condition="$PARAM[condition] + Skin.HasSetting(KioskMode.HubConfigurationUnlocked)">
+                <param name="content">plugin://script.skinvariables/?info=get_shortcuts_node&amp;menu=sidemenu&amp;skin=skin.arctic.fuse&amp;reload=$INFO[Window(Home).Property(SkinVariables.ShortcutsNode.Reload)]</param>
+            </include>
+            <include content="Object_ContentNested" condition="$PARAM[condition] + !Skin.HasSetting(KioskMode.HubConfigurationUnlocked)">
+                <include>skinvariables-sidemenu-staticitems</include>
+            </include>
+            <include content="Object_ContentNested" condition="![$PARAM[condition]]">
+                <include>skinvariables-sidemenu-staticbutton</include>
+            </include>
+        </definition>
     </include>
 
     <include name="Home_Menu_List">
@@ -81,36 +45,60 @@
         <param name="onlist">320</param>
         <param name="id">303</param>
         <definition>
-            <control type="list" id="$PARAM[id]">
-                <nested />
-
-                <onup condition="!Skin.HasSetting(Home.HideSideMenu) + !Skin.HasSetting(Home.DisableSearchAndOptions)">308</onup>
-                <ondown condition="!Skin.HasSetting(Home.HideSideMenu) + !Skin.HasSetting(Home.DisableSearchAndOptions)">309</ondown>
-
-                <onback>$PARAM[onlist]</onback>
-                <onback>SetFocus($PARAM[onlist])</onback>
-                <onback condition="!Window.IsVisible(Home)">PreviousMenu</onback>
-
-                <onfocus condition="Skin.HasSetting(Startup.WaitForLoad)">CancelAlarm(SplashTimeOut,silent)</onfocus>
-
-                <include content="Action_HomeMenu_OnRightLeft">
-                    <param name="onlist">$PARAM[onlist]</param>
-                </include>
-
+            <control type="group">
                 <left>0</left>
                 <top>260</top>
-                <bottom>300</bottom>
+                <bottom>260</bottom>
                 <width>view_side</width>
-                <orientation>vertical</orientation>
-                <scrolltime tween="quadratic">400</scrolltime>
-                <include content="Home_Menu_List_ItemLayout">
-                    <param name="id">$PARAM[id]</param>
+
+                <include content="Settings_Arrows">
+                    <param name="arrow_prev_visible">Container($PARAM[id]).HasPrevious</param>
+                    <param name="arrow_next_visible">Container($PARAM[id]).HasNext</param>
+                    <param name="colordiffuse">main_fg_30</param>
                 </include>
-                <include>$PARAM[items_include]</include>
+
+                <control type="list" id="$PARAM[id]">
+                    <focusposition>2</focusposition>
+                    <movement>2</movement>
+
+                    <!-- <include content="Animation_Reposition">
+                        <param name="id">$PARAM[id]</param>
+                        <param name="slide_y">-100</param>
+                        <param name="numitems">5</param>
+                    </include>
+
+                    <include content="Animation_Reposition">
+                        <param name="id">$PARAM[id]</param>
+                        <param name="slide_y">-100</param>
+                        <param name="numitems">3</param>
+                    </include> -->
+
+                    <onup condition="$EXP[Exp_HomeMenu_DontHide] + !Skin.HasSetting(Home.DisableSearchAndOptions)">308</onup>
+                    <ondown condition="$EXP[Exp_HomeMenu_DontHide] + !Skin.HasSetting(Home.DisableSearchAndOptions)">309</ondown>
+
+                    <onback>$PARAM[onlist]</onback>
+                    <onback>SetFocus($PARAM[onlist])</onback>
+                    <onback condition="!Window.IsVisible(Home)">PreviousMenu</onback>
+
+                    <onfocus>CancelAlarm(SplashTimeOut,silent)</onfocus>
+                    <onfocus condition="Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)">SetProperty(TMDbHelper.WidgetContainer,301)</onfocus>
+
+                    <include content="Action_HomeMenu_OnRightLeft">
+                        <param name="onlist">$PARAM[onlist]</param>
+                    </include>
+
+                    <onclick>SetFocus(300)</onclick>
+                    <include content="Action_SkinVariables_ShortcutList_Onclick">
+                        <param name="id">$PARAM[id]</param>
+                    </include>
+                    <orientation>vertical</orientation>
+                    <scrolltime tween="quadratic">400</scrolltime>
+                    <include content="Home_Menu_List_ItemLayout">
+                        <param name="id">$PARAM[id]</param>
+                    </include>
+                    <include>$PARAM[items_include]</include>
+                </control>
             </control>
-            <include content="Home_Menu_List_Labels" condition="Skin.HasSetting(Home.SideLabels)">
-                <nested />
-            </include>
         </definition>
     </include>
 
@@ -149,206 +137,6 @@
         </focusedlayout>
     </include>
 
-    <include name="Home_Menu_Item_Onclick">
-        <onclick>SetFocus(300)</onclick>
-        <onclick condition="String.IsEmpty(Skin.String(CustomShortcut.$PARAM[type])) + !Window.IsVisible($PARAM[window_id])">SetProperty(RefocusHub,300,$PARAM[window_id])</onclick>
-        <onclick condition="Skin.String(CustomShortcut.$PARAM[type],ActivateWindow(1106))">SetProperty(RefocusHub,300,1106)</onclick>
-        <onclick condition="Skin.String(CustomShortcut.$PARAM[type],ActivateWindow(1107))">SetProperty(RefocusHub,300,1107)</onclick>
-        <onclick condition="Skin.String(CustomShortcut.$PARAM[type],ActivateWindow(1108))">SetProperty(RefocusHub,300,1108)</onclick>
-        <onclick condition="Skin.String(CustomShortcut.$PARAM[type],ActivateWindow(1109))">SetProperty(RefocusHub,300,1109)</onclick>
-        <onclick condition="String.IsEmpty(Skin.String(CustomShortcut.$PARAM[type]))">ActivateWindow($PARAM[window_id])</onclick>
-        <onclick condition="!String.IsEmpty(Skin.String(CustomShortcut.$PARAM[type]))">$INFO[Skin.String(CustomShortcut.$PARAM[type])]</onclick>
-    </include>
-
-    <include name="Home_Menu_Item_Movies">
-        <item>
-            <label>$LOCALIZE[342]</label>
-            <icon>special://skin/extras/icons/film.png</icon>
-            <property name="expression">movies</property>
-            <onclick>$PARAM[preaction]</onclick>
-            <include content="Home_Menu_Item_Onclick">
-                <param name="window_id">1101</param>
-                <param name="type">Movies</param>
-            </include>
-        </item>
-    </include>
-
-    <include name="Home_Menu_Item_TVShows">
-        <item>
-            <label>$LOCALIZE[20343]</label>
-            <icon>special://skin/extras/icons/tv.png</icon>
-            <property name="expression">tvshows</property>
-            <onclick>$PARAM[preaction]</onclick>
-            <include content="Home_Menu_Item_Onclick">
-                <param name="window_id">1102</param>
-                <param name="type">TVShows</param>
-            </include>
-        </item>
-    </include>
-
-    <include name="Home_Menu_Item_Music">
-        <item>
-            <label>$LOCALIZE[2]</label>
-            <icon>special://skin/extras/icons/songs.png</icon>
-            <property name="expression">music</property>
-            <onclick>$PARAM[preaction]</onclick>
-            <include content="Home_Menu_Item_Onclick">
-                <param name="window_id">1103</param>
-                <param name="type">Music</param>
-            </include>
-        </item>
-    </include>
-
-    <include name="Home_Menu_Item_LiveTV">
-        <item>
-            <label>$LOCALIZE[31085]</label>
-            <icon>special://skin/extras/icons/livetv.png</icon>
-            <property name="expression">livetv</property>
-            <onclick>$PARAM[preaction]</onclick>
-            <include content="Home_Menu_Item_Onclick">
-                <param name="window_id">1104</param>
-                <param name="type">PVR</param>
-            </include>
-        </item>
-    </include>
-
-    <include name="Home_Menu_Item_Addons">
-        <item>
-            <label>$LOCALIZE[24001]</label>
-            <icon>special://skin/extras/icons/addons.png</icon>
-            <property name="expression">addons</property>
-            <onclick>$PARAM[preaction]</onclick>
-            <include content="Home_Menu_Item_Onclick">
-                <param name="window_id">1132</param>
-                <param name="type">Addons</param>
-            </include>
-        </item>
-    </include>
-
-    <include name="Home_Menu_Item_Videos">
-        <item>
-            <label>$LOCALIZE[10025]</label>
-            <icon>special://skin/extras/icons/video.png</icon>
-            <property name="expression">videos</property>
-            <onclick>$PARAM[preaction]</onclick>
-            <onclick>SetFocus(300)</onclick>
-            <onclick condition="String.IsEmpty(Skin.String(CustomShortcut.Videos))">ActivateWindow(videos,-,return)</onclick>
-            <onclick condition="!String.IsEmpty(Skin.String(CustomShortcut.Videos))">$INFO[Skin.String(CustomShortcut.Videos)]</onclick>
-        </item>
-    </include>
-
-    <include name="Home_Menu_Item_Pictures">
-        <item>
-            <label>$LOCALIZE[10002]</label>
-            <icon>special://skin/extras/icons/image.png</icon>
-            <property name="expression">pictures</property>
-            <onclick>$PARAM[preaction]</onclick>
-            <onclick>SetFocus(300)</onclick>
-            <onclick condition="String.IsEmpty(Skin.String(CustomShortcut.Pictures))">ActivateWindow(pictures,-,return)</onclick>
-            <onclick condition="!String.IsEmpty(Skin.String(CustomShortcut.Pictures))">$INFO[Skin.String(CustomShortcut.Pictures)]</onclick>
-        </item>
-    </include>
-
-    <include name="Home_Menu_Item_Weather">
-        <item>
-            <label>$LOCALIZE[8]</label>
-            <icon>special://skin/extras/icons/sun.png</icon>
-            <property name="expression">weather</property>
-            <onclick>$PARAM[preaction]</onclick>
-            <onclick>SetFocus(300)</onclick>
-            <onclick>ActivateWindow(weather)</onclick>
-        </item>
-    </include>
-
-    <include name="Home_Menu_Item_Custom">
-        <item>
-            <label>$INFO[Skin.String(CustomShortcut.Custom$PARAM[id].Label)]</label>
-            <icon>$INFO[Skin.String(CustomShortcut.Custom$PARAM[id].Icon)]</icon>
-            <property name="expression">custom$PARAM[id]</property>
-            <onclick>$PARAM[preaction]</onclick>
-            <include content="Home_Menu_Item_Onclick">
-                <param name="window_id">Home</param>
-                <param name="type">Custom$PARAM[id]</param>
-            </include>
-            <visible>!String.IsEmpty(Skin.String(CustomShortcut.Custom$PARAM[id]))</visible>
-        </item>
-    </include>
-
-    <include name="Home_Menu_Item_Configure">
-        <item>
-            <label>Add item</label>
-            <icon>special://skin/extras/icons/circle-plus.png</icon>
-            <property name="expression">custom$PARAM[id]</property>
-            <onclick>RunScript(script.skinshortcuts,type=shortcuts&amp;custom=True&amp;showNone=True&amp;skinAction=CustomShortcut.Custom$PARAM[id]&amp;skinLabel=CustomShortcut.Custom$PARAM[id].Label&amp;skinThumbnail=CustomShortcut.Custom$PARAM[id].Icon)</onclick>
-            <visible>String.IsEmpty(Skin.String(CustomShortcut.Custom$PARAM[id]))</visible>
-        </item>
-    </include>
-
-    <include name="Home_Menu_Item">
-        <include condition="Skin.String(CustomShortcut.Item$PARAM[id],movies)" content="Home_Menu_Item_Movies">
-            <param name="preaction">$PARAM[preaction]</param>
-        </include>
-        <include condition="Skin.String(CustomShortcut.Item$PARAM[id],tvshows)" content="Home_Menu_Item_TVShows">
-            <param name="preaction">$PARAM[preaction]</param>
-        </include>
-        <include condition="Skin.String(CustomShortcut.Item$PARAM[id],music)" content="Home_Menu_Item_Music">
-            <param name="preaction">$PARAM[preaction]</param>
-        </include>
-        <include condition="Skin.String(CustomShortcut.Item$PARAM[id],livetv)" content="Home_Menu_Item_LiveTV">
-            <param name="preaction">$PARAM[preaction]</param>
-        </include>
-        <include condition="Skin.String(CustomShortcut.Item$PARAM[id],addons)" content="Home_Menu_Item_Addons">
-            <param name="preaction">$PARAM[preaction]</param>
-        </include>
-        <include condition="Skin.String(CustomShortcut.Item$PARAM[id],pictures)" content="Home_Menu_Item_Pictures">
-            <param name="preaction">$PARAM[preaction]</param>
-        </include>
-        <include condition="Skin.String(CustomShortcut.Item$PARAM[id],weather)" content="Home_Menu_Item_Weather">
-            <param name="preaction">$PARAM[preaction]</param>
-        </include>
-        <include condition="Skin.String(CustomShortcut.Item$PARAM[id],custom)" content="Home_Menu_Item_Custom">
-            <param name="preaction">$PARAM[preaction]</param>
-            <param name="id">$PARAM[id]</param>
-        </include>
-        <include condition="Skin.String(CustomShortcut.Item$PARAM[id],custom) + String.IsEmpty(Skin.String(CustomShortcut.Custom$PARAM[id]))" content="Home_Menu_Item_Configure">
-            <param name="preaction">$PARAM[preaction]</param>
-            <param name="id">$PARAM[id]</param>
-        </include>
-    </include>
-
-    <include name="Home_Menu_Items">
-        <param name="preaction">noop</param>
-        <definition>
-            <content>
-                <item>
-                    <label>$VAR[Label_Home]</label>
-                    <icon>$VAR[Image_Home]</icon>
-                    <property name="expression">home</property>
-                    <onclick>$PARAM[preaction]</onclick>
-                    <onclick>SetFocus(300)</onclick>
-                    <onclick condition="!Window.IsVisible(Home)">SetProperty(RefocusHub,300,Home)</onclick>
-                    <onclick>ActivateWindow(home)</onclick>
-                </item>
-                <include content="Home_Menu_Item">
-                    <param name="id">01</param>
-                    <param name="preaction">$PARAM[preaction]</param>
-                </include>
-                <include content="Home_Menu_Item">
-                    <param name="id">02</param>
-                    <param name="preaction">$PARAM[preaction]</param>
-                </include>
-                <include content="Home_Menu_Item">
-                    <param name="id">03</param>
-                    <param name="preaction">$PARAM[preaction]</param>
-                </include>
-                <include content="Home_Menu_Item">
-                    <param name="id">04</param>
-                    <param name="preaction">$PARAM[preaction]</param>
-                </include>
-            </content>
-        </definition>
-    </include>
-
     <include name="Home_Menu_Button_Back">
         <control type="button" id="$PARAM[id]">
             <texturenofocus />
@@ -362,7 +150,6 @@
 
     <include name="Home_Menu_Button_Icon">
         <param name="focused">$EXP[Exp_HomeMenu_HasFocus]</param>
-        <param name="side_labels">False</param>
         <definition>
             <control type="group">
                 <nested />
@@ -380,27 +167,6 @@
                     <texture colordiffuse="$VAR[ColorSelected]">$PARAM[icon]</texture>
                     <visible>Control.HasFocus($PARAM[id])</visible>
                 </control>
-                <include content="Object_Control" condition="$PARAM[side_labels]">
-                    <param name="control">group</param>
-                    <include>Animation_Home_Menu</include>
-                    <visible>$PARAM[focused]</visible>
-                    <control type="label">
-                        <width>200</width>
-                        <left>120</left>
-                        <font>font_main_black</font>
-                        <textcolor>main_fg_30</textcolor>
-                        <label>$PARAM[label]</label>
-                        <visible>!Control.HasFocus($PARAM[id])</visible>
-                    </control>
-                    <control type="label">
-                        <width>200</width>
-                        <left>120</left>
-                        <font>font_main_black</font>
-                        <textcolor>main_fg_100</textcolor>
-                        <label>$PARAM[label]</label>
-                        <visible>Control.HasFocus($PARAM[id])</visible>
-                    </control>
-                </include>
             </control>
         </definition>
     </include>
@@ -417,35 +183,16 @@
         </definition>
     </include>
 
-    <include name="Home_Menu_Fade_Labels">
-        <control type="group">
-            <visible>$EXP[Exp_HomeMenu_HasFocus]</visible>
-            <include>Animation_Home_Menu</include>
-            <control type="image">
-                <left>0</left>
-                <width>960</width>
-                <texture border="0,0,400,0" colordiffuse="$VAR[ColorBackgroundFade]">common/dim-side.png</texture>
-            </control>
-            <control type="image">
-                <left>0</left>
-                <width>720</width>
-                <texture border="0,0,400,0" colordiffuse="$VAR[ColorBackgroundFade]">common/dim-side.png</texture>
-            </control>
-        </control>
-    </include>
-
     <include name="Home_Menu">
         <include content="Object_Control">
             <param name="control">group</param>
             <visible>!$EXP[Exp_InfoDialogs]</visible>
-            <include condition="Skin.HasSetting(Home.SideLabels)">Home_Menu_Fade_Labels</include>
             <control type="group">
                 <!-- Search -->
-                <include content="Home_Menu_Button_Icon" condition="!Skin.HasSetting(Home.HideSideMenu) + !Skin.HasSetting(Home.DisableSearchAndOptions)">
+                <include content="Home_Menu_Button_Icon" condition="$EXP[Exp_HomeMenu_DontHide] + !Skin.HasSetting(Home.DisableSearchAndOptions)">
                     <param name="id">308</param>
                     <param name="icon">special://skin/extras/icons/search.png</param>
                     <param name="label">$LOCALIZE[137]</param>
-                    <param name="side_labels">Skin.HasSetting(Home.SideLabels)</param>
                     <include content="Home_Menu_Button_Back">
                         <param name="id">308</param>
                         <ondown>SetFocus(303,0,absolute)</ondown>
@@ -463,11 +210,10 @@
                 </include>
 
                 <!-- Settings -->
-                <include content="Home_Menu_Button_Icon" condition="!Skin.HasSetting(Home.HideSideMenu) + !Skin.HasSetting(Home.DisableSearchAndOptions)">
+                <include content="Home_Menu_Button_Icon" condition="$EXP[Exp_HomeMenu_DontHide] + !Skin.HasSetting(Home.DisableSearchAndOptions)">
                     <param name="id">309</param>
                     <param name="icon">special://skin/extras/icons/bars.png</param>
                     <param name="label">$LOCALIZE[33063]</param>
-                    <param name="side_labels">Skin.HasSetting(Home.SideLabels)</param>
                     <include content="Home_Menu_Button_Back">
                         <param name="id">309</param>
                         <onup>SetFocus(303,9999,absolute)</onup>

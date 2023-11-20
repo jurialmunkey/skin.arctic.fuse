@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window type="window" id="1105">
-    <defaultcontrol>9099</defaultcontrol>
+    <defaultcontrol>8011</defaultcontrol>
     <menucontrol>303</menucontrol>
 
     <!-- TESTER -->
     <!-- Normal -->
     <onload condition="!String.IsEmpty(Window(Home).Property(CustomSearchTerm))">RunScript(script.skinvariables,set_editcontrol=9099,window_id=1105,setfocus=6000,text=$INFO[Window(Home).Property(CustomSearchTerm)])</onload>
     <onload condition="!String.IsEmpty(Window(Home).Property(CustomSearchTerm))">ClearProperty(CustomSearchTerm,Home)</onload>
-    <onload condition="String.IsEmpty(Window(Home).Property(CustomSearchTerm)) + !Skin.HasSetting(Search.FocusEditControl)">SetFocus(9097)</onload>
-
     <onunload condition="!String.IsEmpty(Control.GetLabel(9099).index(1))">RunScript(script.skinvariables,add_skinstring_history=SearchHistory,value=$INFO[Control.GetLabel(9099).index(1)])</onunload>
 
     <controls>
@@ -22,15 +20,36 @@
         <include>Background_Main</include>
 
         <control type="group">
-            <include>skinshortcuts-template-searchmenu</include>
+            <include>Animation_Group_Bumper</include>
+            <include content="Home_Widgets_Infopanel">
+                <param name="visible">[ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus] | $EXP[Exp_HomeMenu_HasFocus]]</param>
+                <include content="Info_Panel">
+                    <param name="details">false</param>
+                    <param name="container">Container.</param>
+                </include>
+                <include content="Animation_Fade_In">
+                    <param name="type">Visible</param>
+                    <param name="delay">200</param>
+                </include>
+                <animation effect="fade" start="100" end="0" time="150" tween="sine" easing="in" reversible="false">Hidden</animation>
+            </include>
+            <include content="Search_View_Slide">
+                <include content="Search_View_Widgets">
+                    <include>skinvariables-searchmenu-widgets</include>
+                    <include>Search_View_DiscoverWidgets</include>
+                </include>
+            </include>
         </control>
 
         <include>Background_Transition</include>
+        <include>Home_Fade</include>
+        <include>Search_View_Panel</include>
 
         <control type="group">
             <left>view_menu</left>
             <width>40</width>
-            <visible>!Skin.HasSetting(Home.HideSideMenu)</visible>
+            <visible>!Skin.String(Home.SideMenuCollapse,Always)</visible>
+            <visible>!Skin.String(Home.SideMenuCollapse,Library)</visible>
             <visible>!$EXP[Exp_InfoDialogs]</visible>
             <control type="group">
                 <top>view_pad</top>
@@ -49,16 +68,9 @@
                     <texture colordiffuse="main_fg_90">special://skin/extras/icons/search.png</texture>
                 </control>
             </control>
-            <control type="group">
-                <bottom>view_pad</bottom>
-                <height>40</height>
-                <control type="image">
-                    <aspectratio>keep</aspectratio>
-                    <bordersize>icon_home_bordersize</bordersize>
-                    <texture colordiffuse="main_fg_30">special://skin/extras/icons/bars.png</texture>
-                </control>
-            </control>
         </control>
+
+        <include>Home_Menu</include>
 
         <include content="View_Bumper">
             <param name="groupid">6000</param>
