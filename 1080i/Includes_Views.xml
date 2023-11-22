@@ -175,29 +175,8 @@
                 </control>
             </control>
 
-            <!-- Number of items and pages -->
-            <include content="Object_Control">
-                <param name="control">grouplist</param>
-                <visible>$EXP[Exp_ItemCountVisible]</visible>
-                <hitrect x="0" y="0" w="0" h="0" />
-                <orientation>horizontal</orientation>
-                <itemgap>30</itemgap>
-                <height>80</height>
-                <centertop>50%</centertop>
-                <usecontrolcoords>true</usecontrolcoords>
-                <left>-80</left>
-                <control type="group">
-                    <width>50</width>
-                </control>
-                <include content="Info_Codec_Label">
-                    <param name="icon">$VAR[Image_Scrollbar_NumItems]</param>
-                    <param name="icon">special://skin/extras/icons/grip.png</param>
-                    <param name="label">$VAR[Label_Scrollbar_NumItems]</param>
-                </include>
-            </include>
-
             <!-- Alphabet -->
-            <include content="Object_Control" condition="!Skin.HasSetting(DisableAlphabetScrollbar)">
+            <include content="Object_Control" condition="Skin.HasSetting(DisableMediaFilterWall)">
                 <param name="control">grouplist</param>
                 <visible>$EXP[Exp_AlphabetVisible]</visible>
                 <orientation>horizontal</orientation>
@@ -255,13 +234,7 @@
             </control>
 
             <control type="group">
-                <animation type="Conditional" reversible="false" condition="[$EXP[Exp_FilterWall_IsMedia] | $EXP[Exp_FilterWall_IsDiscover]]">
-                    <effect type="slide" end="0,-334" start="0" time="400" delay="0" tween="cubic" easing="out" />
-                </animation>
-                <animation type="Conditional" reversible="false" condition="![$EXP[Exp_FilterWall_IsMedia] | $EXP[Exp_FilterWall_IsDiscover]]">
-                    <effect type="slide" start="0,-334" end="0" time="400" delay="0" tween="cubic" easing="out" />
-                </animation>
-
+                <visible>![$EXP[Exp_FilterWall_IsMedia] | $EXP[Exp_FilterWall_IsDiscover]]</visible>
                 <include content="Info_Viewline">
                     <param name="sort_condition">true</param>
                     <param name="library_condition">true</param>
@@ -306,35 +279,58 @@
                 <include>View_Scrollbars</include>
             </control>
             <control type="group">
-                <visible>!$EXP[Exp_AlphabetVisible]</visible>
+                <visible>!Control.HasFocus(65)</visible>
+                <visible>$EXP[Exp_ItemCountVisible]</visible>
+
+                <visible>![$EXP[Exp_MediaFilterVisible] + [$EXP[Exp_FilterWall_IsMedia] | $EXP[Exp_FilterWall_IsDiscover]]]</visible>
+
+                <include content="Animation_Fade_In">
+                    <param name="delay">200</param>
+                    <param name="type">Visible</param>
+                </include>
+
                 <control type="group">
-                    <visible>!$EXP[Exp_ItemCountVisible]</visible>
-                    <control type="group">
-                        <visible>String.IsEmpty(Window.Property(MediaFilterBase))</visible>
-                        <include content="Animation_Fade_In">
-                            <param name="delay">400</param>
-                            <param name="type">Visible</param>
+                    <visible>!Skin.HasSetting(Furniture.DisableCount)</visible>
+                    <include content="Object_Control">
+                        <param name="control">grouplist</param>
+                        <hitrect x="0" y="0" w="0" h="0" />
+                        <orientation>horizontal</orientation>
+                        <itemgap>30</itemgap>
+                        <height>80</height>
+                        <centerbottom>100</centerbottom>
+                        <usecontrolcoords>true</usecontrolcoords>
+                        <left>120</left>
+                        <control type="group">
+                            <width>50</width>
+                        </control>
+                        <include content="Info_Codec_Label">
+                            <param name="icon">$VAR[Image_Scrollbar_NumItems]</param>
+                            <param name="icon">special://skin/extras/icons/grip.png</param>
+                            <param name="label">$VAR[Label_Scrollbar_NumItems]</param>
                         </include>
-                        <include content="Furniture_Bottom_Left">
-                            <visible>![$EXP[Exp_View_502] | $EXP[Exp_View_512] | $EXP[Exp_View_522]]</visible>
-                        </include>
-                        <include content="Furniture_Bottom_Left">
-                            <param name="container">Container(503).</param>
-                            <visible>$EXP[Exp_View_502] + Skin.HasSetting(Views.UseAltCombined)</visible>
-                        </include>
-                        <include content="Furniture_Bottom_Left">
-                            <param name="container">Container(513).</param>
-                            <visible>$EXP[Exp_View_512] + Skin.HasSetting(Views.UseAltCombined)</visible>
-                        </include>
-                        <include content="Furniture_Bottom_Left">
-                            <param name="container">Container(523).</param>
-                            <visible>$EXP[Exp_View_522] + Skin.HasSetting(Views.UseAltCombined)</visible>
-                        </include>
-                    </control>
+                    </include>
                 </control>
+                <control type="group">
+                    <visible>Skin.HasSetting(Furniture.DisableCount)</visible>
+                    <include content="Furniture_Bottom_Left">
+                        <visible>![$EXP[Exp_View_502] | $EXP[Exp_View_512] | $EXP[Exp_View_522]]</visible>
+                    </include>
+                    <include content="Furniture_Bottom_Left">
+                        <param name="container">Container(503).</param>
+                        <visible>$EXP[Exp_View_502] + Skin.HasSetting(Views.UseAltCombined)</visible>
+                    </include>
+                    <include content="Furniture_Bottom_Left">
+                        <param name="container">Container(513).</param>
+                        <visible>$EXP[Exp_View_512] + Skin.HasSetting(Views.UseAltCombined)</visible>
+                    </include>
+                    <include content="Furniture_Bottom_Left">
+                        <param name="container">Container(523).</param>
+                        <visible>$EXP[Exp_View_522] + Skin.HasSetting(Views.UseAltCombined)</visible>
+                    </include>
+                </control>
+                <include>Furniture_Bottom_Right</include>
             </control>
         </control>
-        <include>Furniture_Bottom_Right</include>
     </include>
 
     <include name="View_Bumper">
@@ -391,7 +387,6 @@
     <include name="View_Furniture_Edges">
         <include>Home_Fade</include>
         <control type="group">
-            <!-- <include>MediaWall_Info_Transition</include> -->
             <include>View_Row_Header</include>
             <include>View_Row_Gutter</include>
         </control>
@@ -401,12 +396,198 @@
     </include>
 
     <include name="View_MediaWall">
-        <include condition="Window.IsVisible(MyVideoNav.xml)">MediaWall_Discover</include>
-        <include condition="$EXP[Exp_FilterWall_IsEnabled]">MediaWall_All</include>
+        <control type="group">
+            <animation effect="slide" start="0,334" end="0" time="400" tween="cubic" easing="out" reversible="false" condition="![$EXP[Exp_FilterWall_IsMedia] | $EXP[Exp_FilterWall_IsDiscover]] + String.IsEmpty(Window.Property(View.WallTogglePosition))">Conditional</animation>
+            <animation effect="slide" start="0" end="0,334" time="400" tween="cubic" easing="out" reversible="false" condition="[$EXP[Exp_FilterWall_IsMedia] | $EXP[Exp_FilterWall_IsDiscover]] + String.IsEmpty(Window.Property(View.WallTogglePosition))">Conditional</animation>
+
+            <!-- <animation effect="slide" start="0,-334" end="0" time="400" tween="cubic" easing="out" reversible="false" condition="![Control.HasFocus(64) | Control.HasFocus(65) | Control.HasFocus(67)]">Conditional</animation>
+            <animation effect="slide" start="0" end="0,-334" time="400" tween="cubic" easing="out" reversible="false" condition="Control.HasFocus(64) | Control.HasFocus(65) | Control.HasFocus(67)">Conditional</animation> -->
+
+            <control type="group">
+                <visible>$EXP[Exp_FilterWall_IsMedia] | $EXP[Exp_FilterWall_IsDiscover]</visible>
+                <animation type="Conditional" reversible="false" condition="[$EXP[Exp_FilterWall_IsMedia] | $EXP[Exp_FilterWall_IsDiscover]]">
+                    <effect type="slide" end="0,-334" start="0" time="400" delay="0" tween="cubic" easing="out" />
+                </animation>
+                <animation type="Conditional" reversible="false" condition="![$EXP[Exp_FilterWall_IsMedia] | $EXP[Exp_FilterWall_IsDiscover]]">
+                    <effect type="slide" start="0,-334" end="0" time="400" delay="0" tween="cubic" easing="out" />
+                </animation>
+                <include content="Info_Viewline">
+                    <param name="sort_condition">true</param>
+                    <param name="library_condition">true</param>
+                </include>
+            </control>
+            <include condition="Window.IsVisible(MyVideoNav.xml)">MediaWall_Discover</include>
+            <include condition="$EXP[Exp_FilterWall_IsEnabled]">MediaWall_All</include>
+        </control>
     </include>
 
     <include name="View_MediaFilter_Node">
-        <include>MediaFilter_Node</include>
+        <control type="group">
+            <visible>!$EXP[Exp_InfoDialogs]</visible>
+            <visible>$EXP[Exp_MediaFilterVisible]</visible>
+            <include content="Animation_Fade_In">
+                <param name="delay">200</param>
+                <param name="type">Visible</param>
+            </include>
+            <include content="Animation_Fade_Out">
+                <param name="delay">0</param>
+                <param name="type">Hidden</param>
+            </include>
+
+            <control type="group">
+                <left>160</left>
+                <width>720</width>
+                <!-- Top Row -->
+                <control type="group" id="9001">
+                    <centertop>100</centertop>
+                    <height>view_pad</height>
+                    <!-- Edit Control -->
+                    <control type="edit" id="19">
+                        <description>Filter</description>
+                        <font>font_midi_black</font>
+                        <textcolor>00ffffff</textcolor>
+                        <selectedcolor>00ffffff</selectedcolor>
+                        <disabledcolor>00ffffff</disabledcolor>
+                        <focusedcolor>$VAR[ColorSelected]</focusedcolor>
+                        <height>view_pad</height>
+                        <textoffsetx>40</textoffsetx>
+                        <align>left</align>
+                        <onup>68</onup>
+                        <ondown>9002</ondown>
+                        <onright>9004</onright>
+                        <onleft>68</onleft>
+                    </control>
+                </control>
+                <!-- Alphabet and Autocomplete -->
+                <control type="group">
+                    <top>140</top>
+                    <left>0</left>
+                    <include>Search_Visible_OnEdit</include>
+                    <include content="Search_Alphabet">
+                        <param name="rowone">9002</param>
+                        <param name="rowtwo">9003</param>
+                        <param name="editid">19</param>
+                        <param name="ondown">68</param>
+                    </include>
+                </control>
+            </control>
+            <control type="grouplist" id="9000">
+                <left>870</left>
+                <centertop>100</centertop>
+                <itemgap>0</itemgap>
+                <orientation>horizontal</orientation>
+                <height>160</height>
+                <right>-20</right>
+                <onleft>19</onleft>
+                <onback>68</onback>
+                <onup>SetFocus(68)</onup>
+                <ondown>SetFocus(68)</ondown>
+
+                <!-- <visible>ControlGroup(9000).HasFocus()</visible> -->
+                <include content="Dialog_Side_Button">
+                    <param name="vertical">false</param>
+                    <param name="id">04</param>
+                    <param name="label">$LOCALIZE[587]</param>
+                    <param name="icon">$VAR[Image_Filtered]</param>
+                    <param name="textcolor">main_fg</param>
+                    <param name="nf_opacity">30</param>
+                    <param name="db_opacity">12</param>
+                    <onclick condition="!String.IsEmpty(Control.GetLabel(19).index(1))">RunScript(script.skinvariables,set_editcontrol=19,window_id=1105,setfocus=9001)</onclick>
+                    <onclick condition="String.IsEmpty(Control.GetLabel(19).index(1)) + Container.CanFilterAdvanced">SetProperty(DialogSettings.Style,mediafilter,Home)</onclick>
+                    <onclick condition="String.IsEmpty(Control.GetLabel(19).index(1)) + Container.CanFilterAdvanced">Filter</onclick>
+                    <onclick condition="String.IsEmpty(Control.GetLabel(19).index(1)) + !Container.CanFilterAdvanced">SetFocus(19)</onclick>
+                    <onclick condition="String.IsEmpty(Control.GetLabel(19).index(1)) + !Container.CanFilterAdvanced">Action(Select)</onclick>
+                </include>
+                <!-- <include content="Dialog_Side_Button">
+                    <param name="vertical">false</param>
+                    <param name="id">05</param>
+                    <param name="label">$LOCALIZE[31370]</param>
+                    <param name="icon">special://skin/extras/icons/gem.png</param>
+                    <param name="textcolor">main_fg</param>
+                    <param name="nf_opacity">30</param>
+                    <param name="db_opacity">12</param>
+                    <onclick>SetFocus(20000)</onclick>
+                </include> -->
+                <include content="Dialog_Side_Button">
+                    <param name="vertical">false</param>
+                    <param name="id">06</param>
+                    <param name="label">$VAR[Label_Watched]</param>
+                    <param name="icon">$VAR[Image_Watched]</param>
+                    <param name="visible">Window.IsVisible(videos)</param>
+                    <param name="textcolor">main_fg</param>
+                    <param name="nf_opacity">30</param>
+                    <param name="db_opacity">12</param>
+                    <onclick>SendClick(videos,14)</onclick>
+                </include>
+                <include content="Dialog_Side_Button">
+                    <param name="vertical">false</param>
+                    <param name="id">07</param>
+                    <param name="label">$INFO[Container.SortMethod]</param>
+                    <param name="icon">special://skin/extras/icons/sort.png</param>
+                    <param name="visible">Window.IsMedia</param>
+                    <param name="textcolor">main_fg</param>
+                    <param name="nf_opacity">30</param>
+                    <param name="db_opacity">12</param>
+                    <onclick>SetProperty(DialogSelectType,Menu,Home)</onclick>
+                    <onclick>SendClick(videos,3)</onclick>
+                </include>
+                <include content="Dialog_Side_Button">
+                    <param name="vertical">false</param>
+                    <param name="id">08</param>
+                    <param name="label">$VAR[Label_SortDirection]</param>
+                    <param name="icon">$VAR[Image_SortDirection]</param>
+                    <param name="visible">Window.IsMedia</param>
+                    <param name="textcolor">main_fg</param>
+                    <param name="nf_opacity">30</param>
+                    <param name="db_opacity">12</param>
+                    <onclick>SetProperty(DialogSelectType,Menu,Home)</onclick>
+                    <onclick>SendClick(videos,4)</onclick>
+                </include>
+                <include content="Dialog_Side_Button">
+                    <param name="vertical">false</param>
+                    <param name="id">22</param>
+                    <param name="label">$LOCALIZE[31319]</param>
+                    <param name="icon">special://skin/extras/icons/object-group.png</param>
+                    <param name="textcolor">main_fg</param>
+                    <param name="nf_opacity">30</param>
+                    <param name="db_opacity">12</param>
+                    <onclick>Runscript(script.skinvariables,action=buildviews,contentid=$VAR[Items_ViewMode_Switch],pluginname=$INFO[Container.PluginName])</onclick>
+                </include>
+            </control>
+
+            <control type="group">
+                <top>200</top>
+                <left>view_side</left>
+                <control type="label">
+                    <top>80</top>
+                    <height>35</height>
+                    <aligny>center</aligny>
+                    <label>$INFO[System.Time]</label>
+                    <textcolor>main_fg_100</textcolor>
+                    <font>font_info_black_doublerow</font>
+                    <autoscroll>false</autoscroll>
+                </control>
+                <control type="label">
+                    <top>120</top>
+                    <height>40</height>
+                    <label>$INFO[System.Date]</label>
+                    <aligny>top</aligny>
+                    <textcolor>main_fg_70</textcolor>
+                    <font>font_main</font>
+                    <width>info_plot_w</width>
+                </control>
+                <control type="textbox">
+                    <top>177</top>
+                    <label>$VAR[Def_PlotDetails_Fallback]</label>
+                    <aligny>top</aligny>
+                    <textcolor>main_fg_70</textcolor>
+                    <font>font_main_plot</font>
+                    <height>info_plot_large_h</height>
+                    <width>info_plot_w</width>
+                </control>
+            </control>
+        </control>
+        <!-- <include>MediaFilter_Node</include> -->
         <include>MediaFilter_Discover_Node</include>
     </include>
 
