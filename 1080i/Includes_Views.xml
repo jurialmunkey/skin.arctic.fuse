@@ -99,7 +99,9 @@
             <include content="Object_Hidden_Button">
                 <param name="id">67</param>
 
-                <onup condition="String.IsEmpty(Window.Property(View.WallSwitchRow))">SetFocus(68)</onup>
+                <!-- <onup condition="String.IsEmpty(Window.Property(View.WallSwitchRow))">SetFocus(68)</onup> -->
+                <onup condition="String.IsEmpty(Window.Property(View.WallSwitchRow))">ClearProperty(View.WallTogglePosition)</onup>
+                <onup condition="String.IsEmpty(Window.Property(View.WallSwitchRow))">SetFocus(19)</onup>
                 <onup condition="!String.IsEmpty(Window.Property(View.WallSwitchRow))">ClearProperty(View.WallSwitchRow)</onup>
 
                 <ondown condition="!String.IsEmpty(Window.Property(View.WallSwitchRow))">$VAR[Action_Var_ToScrollBar]</ondown>
@@ -132,6 +134,7 @@
             <include content="Object_Hidden_Button">
                 <param name="id">64</param>
                 <include>Action_Scrollbar</include>
+                <onfocus>ClearProperty(View.WallSwitchRow)</onfocus>
                 <onleft>SetFocus($VAR[Action_View_ContentID])</onleft>
                 <onleft>Action(PageUp)</onleft>
                 <onleft condition="$EXP[Exp_FilterWall_IsMedia]">Action(PageUp)</onleft>
@@ -145,6 +148,7 @@
             <!-- Dummy for jumping to alphabet letter -->
             <include content="Object_Hidden_Button">
                 <param name="id">65</param>
+                <onfocus>ClearProperty(View.WallSwitchRow)</onfocus>
                 <onleft>SetFocus($VAR[Action_View_ContentID])</onleft>
                 <onleft>Action(prevletter)</onleft>
                 <onleft>SetFocus(65)</onleft>
@@ -176,7 +180,7 @@
             </control>
 
             <!-- Alphabet -->
-            <include content="Object_Control" condition="Skin.HasSetting(DisableMediaFilterWall)">
+            <include content="Object_Control" condition="!Skin.HasSetting(DisableAlphabetStrip)">
                 <param name="control">grouplist</param>
                 <visible>$EXP[Exp_AlphabetVisible]</visible>
                 <orientation>horizontal</orientation>
