@@ -92,6 +92,8 @@
 
     <include name="Action_Hubs_Onload">
         <include>Action_BuildShortcuts_OnLoad</include>
+        <onload condition="!String.IsEmpty(Window.Property(Refocus))">$INFO[Window.Property(Refocus)]</onload>
+        <onload condition="!String.IsEmpty(Window.Property(Refocus))">ClearProperty(Refocus)</onload>
         <onunload>CancelAlarm(playtrailer,silent)</onunload>
     </include>
 
@@ -307,8 +309,7 @@
     </include>
 
     <include name="Action_View_Movement_OnUp">
-        <!-- <onup>SetFocus(19)</onup> -->
-        <onup>ClearProperty(View.WallTogglePosition)</onup>
+        <!-- <onup>SetFocus(9001)</onup> -->
         <onup>$VAR[Action_Var_ToMediaFilter]</onup>
         <!-- <onup condition="Skin.String(Movement.Library.OnUp,Wall)">$VAR[Action_Var_ToWallView]</onup>
         <onup condition="Skin.String(Movement.Library.OnUp,Plot)">ActivateWindow(1113)</onup>
@@ -319,10 +320,11 @@
     </include>
 
     <include name="Action_View_Movement_OnDown">
+        <!-- <ondown>$VAR[Action_Var_ToMediaFilter]</ondown> -->
+
         <!-- <ondown>SetProperty(View.WallSwitchRow,1)</ondown>
         <ondown>$VAR[Action_Var_ToWallView]</ondown> -->
         <!-- <ondown>64</ondown> -->
-        <ondown>SetProperty(View.WallTogglePosition,1)</ondown>
         <ondown>$VAR[Action_Var_ToScrollBar]</ondown>
         <!-- <ondown condition="Skin.String(Movement.Library.OnDown,Wall)">$VAR[Action_Var_ToWallView]</ondown>
         <ondown condition="Skin.String(Movement.Library.OnDown,Plot)">ActivateWindow(1113)</ondown>
@@ -424,16 +426,16 @@
     </include>
 
     <variable name="Action_Var_ToMediaFilter">
-        <value>Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=9001,clear_prop=Null)</value>
+        <value>Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=9001,clear_prop_one=Null,clear_prop_two=Null,preaction=SetProperty(View.WallSwitchPosition,1))</value>
     </variable>
 
     <variable name="Action_Var_ToWallView">
-        <value>Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=67,clear_prop=Null)</value>
+        <value>Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=67,clear_prop_one=Null,clear_prop_two=Null,preaction=ClearProperty(View.WallSwitchPosition))</value>
     </variable>
 
     <variable name="Action_Var_ToScrollBar">
-        <value condition="$EXP[Exp_AlphabetTypes_Only] + !Skin.HasSetting(DisableAlphabetStrip)">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=65,clear_prop=Null)</value>
-        <value>Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=64,clear_prop=Null)</value>
+        <value condition="$EXP[Exp_AlphabetTypes_Only] + !Skin.HasSetting(DisableAlphabetStrip)">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=65,clear_prop_one=Null,clear_prop_two=Null,preaction=ClearProperty(View.WallSwitchPosition))</value>
+        <value>Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=64,clear_prop_one=Null,clear_prop_two=Null,preaction=ClearProperty(View.WallSwitchPosition))</value>
     </variable>
 
     <include name="_Action_Blur_Onload">

@@ -92,21 +92,22 @@
 
                 <onfocus>ClearProperty(View.WallSwitchRow)</onfocus>
                 <onfocus condition="$EXP[Exp_FilterWall_IsMedia] + !String.IsEmpty(Window.Property(View.WallSwitchRow))">Control.Move($VAR[Action_View_ContentID],1)</onfocus>
-                <onfocus condition="$EXP[Exp_FilterWall_IsMedia]">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideOut,focus_id=63,clear_prop=MediaFilterBase)</onfocus>
+                <onfocus condition="$EXP[Exp_FilterWall_IsMedia]">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideOut,focus_id=63,clear_prop_one=MediaFilterBase,clear_prop_two=View.WallSwitchPosition)</onfocus>
             </include>
 
             <!-- Wall Control -->
             <include content="Object_Hidden_Button">
                 <param name="id">67</param>
+                <onfocus>ClearProperty(View.WallSwitchPosition)</onfocus>
+                <onfocus condition="Skin.HasSetting(DisableMediaFilterWall)">SetFocus(50)</onfocus>
 
-                <!-- <onup condition="String.IsEmpty(Window.Property(View.WallSwitchRow))">SetFocus(68)</onup> -->
-                <onup condition="String.IsEmpty(Window.Property(View.WallSwitchRow))">ClearProperty(View.WallTogglePosition)</onup>
-                <onup condition="String.IsEmpty(Window.Property(View.WallSwitchRow))">SetFocus(19)</onup>
+                <onup condition="String.IsEmpty(Window.Property(View.WallSwitchRow))">SetFocus(9001)</onup>
                 <onup condition="!String.IsEmpty(Window.Property(View.WallSwitchRow))">ClearProperty(View.WallSwitchRow)</onup>
 
                 <ondown condition="!String.IsEmpty(Window.Property(View.WallSwitchRow))">$VAR[Action_Var_ToScrollBar]</ondown>
                 <ondown condition="String.IsEmpty(Window.Property(View.WallSwitchRow))">SetProperty(View.WallSwitchRow,1)</ondown>
 
+                <onback>ClearPRoperty(View.WallSwitchRow)</onback>
                 <onback>68</onback>
 
                 <onclick>SetProperty(View.WallSwitchRow.Action,Action(Select),Home)</onclick>
@@ -401,11 +402,8 @@
 
     <include name="View_MediaWall">
         <control type="group">
-            <animation effect="slide" start="0,334" end="0" time="400" tween="cubic" easing="out" reversible="false" condition="![$EXP[Exp_FilterWall_IsMedia] | $EXP[Exp_FilterWall_IsDiscover]] + String.IsEmpty(Window.Property(View.WallTogglePosition))">Conditional</animation>
-            <animation effect="slide" start="0" end="0,334" time="400" tween="cubic" easing="out" reversible="false" condition="[$EXP[Exp_FilterWall_IsMedia] | $EXP[Exp_FilterWall_IsDiscover]] + String.IsEmpty(Window.Property(View.WallTogglePosition))">Conditional</animation>
-
-            <!-- <animation effect="slide" start="0,-334" end="0" time="400" tween="cubic" easing="out" reversible="false" condition="![Control.HasFocus(64) | Control.HasFocus(65) | Control.HasFocus(67)]">Conditional</animation>
-            <animation effect="slide" start="0" end="0,-334" time="400" tween="cubic" easing="out" reversible="false" condition="Control.HasFocus(64) | Control.HasFocus(65) | Control.HasFocus(67)">Conditional</animation> -->
+            <animation effect="slide" start="0" end="0,334" time="400" tween="cubic" easing="out" reversible="false" condition="!String.IsEmpty(Window.Property(View.WallSwitchPosition))">Conditional</animation>
+            <animation effect="slide" start="0,334" end="0" time="400" tween="cubic" easing="out" reversible="false" condition="String.IsEmpty(Window.Property(View.WallSwitchPosition))">Conditional</animation>
 
             <control type="group">
                 <visible>$EXP[Exp_FilterWall_IsMedia] | $EXP[Exp_FilterWall_IsDiscover]</visible>
@@ -430,21 +428,22 @@
             <visible>!$EXP[Exp_InfoDialogs]</visible>
             <visible>$EXP[Exp_MediaFilterVisible]</visible>
             <include content="Animation_Fade_In">
-                <param name="delay">200</param>
-                <param name="type">Visible</param>
-            </include>
-            <include content="Animation_Fade_Out">
                 <param name="delay">0</param>
-                <param name="type">Hidden</param>
+                <param name="type">Visible</param>
             </include>
 
             <control type="group">
                 <left>160</left>
                 <width>720</width>
                 <!-- Top Row -->
-                <control type="group" id="9001">
+                <control type="group">
                     <centertop>100</centertop>
                     <height>view_pad</height>
+                    <include content="Object_Hidden_Button">
+                        <param name="id">9001</param>
+                        <onfocus>SetProperty(View.WallSwitchPosition,1)</onfocus>
+                        <onfocus>SetFocus(19)</onfocus>
+                    </include>
                     <!-- Edit Control -->
                     <control type="edit" id="19">
                         <description>Filter</description>
@@ -459,7 +458,11 @@
                         <onup>68</onup>
                         <ondown>9002</ondown>
                         <onright>9004</onright>
-                        <onleft>68</onleft>
+                        <onleft>308</onleft>
+                        <onleft>ClearProperty(View.WallSwitchPosition)</onleft>
+                        <onleft>SetProperty(List.ViewContainer,9001)</onleft>
+                        <!-- <onleft>ClearProperty(MediaFilterBase)</onleft>
+                        <onleft>ActivateWindow(1105)</onleft> -->
                     </control>
                 </control>
                 <!-- Alphabet and Autocomplete -->
@@ -471,7 +474,7 @@
                         <param name="rowone">9002</param>
                         <param name="rowtwo">9003</param>
                         <param name="editid">19</param>
-                        <param name="ondown">68</param>
+                        <param name="ondown">67</param>
                     </include>
                 </control>
             </control>
@@ -482,12 +485,11 @@
                 <orientation>horizontal</orientation>
                 <height>160</height>
                 <right>-20</right>
-                <onleft>19</onleft>
+                <onleft>SetFocus(9001)</onleft>
                 <onback>68</onback>
                 <onup>SetFocus(68)</onup>
                 <ondown>SetFocus(68)</ondown>
 
-                <!-- <visible>ControlGroup(9000).HasFocus()</visible> -->
                 <include content="Dialog_Side_Button">
                     <param name="vertical">false</param>
                     <param name="id">04</param>
@@ -496,11 +498,20 @@
                     <param name="textcolor">main_fg</param>
                     <param name="nf_opacity">30</param>
                     <param name="db_opacity">12</param>
-                    <onclick condition="!String.IsEmpty(Control.GetLabel(19).index(1))">RunScript(script.skinvariables,set_editcontrol=19,window_id=1105,setfocus=9001)</onclick>
-                    <onclick condition="String.IsEmpty(Control.GetLabel(19).index(1)) + Container.CanFilterAdvanced">SetProperty(DialogSettings.Style,mediafilter,Home)</onclick>
-                    <onclick condition="String.IsEmpty(Control.GetLabel(19).index(1)) + Container.CanFilterAdvanced">Filter</onclick>
-                    <onclick condition="String.IsEmpty(Control.GetLabel(19).index(1)) + !Container.CanFilterAdvanced">SetFocus(19)</onclick>
-                    <onclick condition="String.IsEmpty(Control.GetLabel(19).index(1)) + !Container.CanFilterAdvanced">Action(Select)</onclick>
+                    <param name="visible">Container.CanFilterAdvanced</param>
+                    <onclick>SetProperty(DialogSettings.Style,mediafilter,Home)</onclick>
+                    <onclick>Filter</onclick>
+                </include>
+                <include content="Dialog_Side_Button">
+                    <param name="vertical">false</param>
+                    <param name="id">09</param>
+                    <param name="label">$LOCALIZE[192]</param>
+                    <param name="icon">special://skin/extras/icons/triangle-exclamation.png</param>
+                    <param name="textcolor">main_fg</param>
+                    <param name="nf_opacity">30</param>
+                    <param name="db_opacity">12</param>
+                    <param name="visible">!Container.CanFilterAdvanced</param>
+                    <onclick>RunScript(script.skinvariables,set_editcontrol=19,window_id=1105,setfocus=9001)</onclick>
                 </include>
                 <!-- <include content="Dialog_Side_Button">
                     <param name="vertical">false</param>

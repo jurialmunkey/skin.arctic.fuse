@@ -18,7 +18,11 @@
                 ["1101menu", {"window_id": "1101"}],
                 ["1102menu", {"window_id": "1102"}],
                 ["1103menu", {"window_id": "1103"}],
-                ["1104menu", {"window_id": "1104"}]
+                ["1104menu", {"window_id": "1104"}],
+                ["1106menu", {"window_id": "1106"}],
+                ["1107menu", {"window_id": "1107"}],
+                ["1108menu", {"window_id": "1108"}],
+                ["1109menu", {"window_id": "1109"}]
             ],
             "for_each": [
                 {
@@ -28,23 +32,9 @@
                     "includes_part": {"menu": "{item}", "for_each": [
                         {
                             "template": "template_generator/parts_menu_item.xmltemplate",
-                            "jsonfile": "template_generator/setup_onclick_path.json"
-                        }
-                    ]}
-                },
-                {
-                    "comments": "Static Submenus",
-                    "template": "template_generator/parts_basic_include.xmltemplate",
-                    "includes_name": "skinvariables-{item}-submenu-staticitems",
-                    "includes_part": {"menu": "{item}", "for_each": [
-                        {
-                            "menu": "{item_menu}", "item": "{item_x}", "mode": "submenu", "for_each": [
-                                {
-                                    "template": "template_generator/parts_menu_item.xmltemplate",
-                                    "jsonfile": "template_generator/setup_onclick_path.json",
-                                    "parts_visible": "String.IsEqual(Container(300).ListItem.Property(guid),{item_guid})"
-                                }
-                            ]
+                            "jsonfile": "template_generator/setup_onclick_path.json",
+                            "condition": "{item_disabled}!=True",
+                            "parts_additional": {"template": "template_generator/parts_additional_mainmenu.xmltemplate"}
                         }
                     ]}
                 },
@@ -106,7 +96,7 @@
                                 "grouplist_visible": "String.IsEqual(Container(300).ListItem.Property(guid),{item_guid})",
                                 "widget_top_id": "$MATH[{item_x} * 1000 + 601]",
                                 "widget_grouplist_id": "$MATH[{item_x} * 1000 + 400]",
-                                "widget_refocus": "SetFocus(303)",
+                                "widget_refocus": "SetFocus(300)",
                                 "all_content_adapative_widgets":
                                 {
                                     "template": "template_generator/parts_widgets_row.xmltemplate",
@@ -131,6 +121,17 @@
                                         "jsonfile": "template_generator/setup_widgets_row.json",
                                         "widget_visible": "String.IsEqual(Container(302).ListItem.Property(guid),{item_guid})",
                                         "widget_altvisible": "False",
+                                        "widget_isautoscroll": [
+                                            {
+                                                "condition":"{item_widget_autoscroll}==True",
+                                                "value" : "True"
+                                            },
+                                            {
+                                                "condition":"{parent_item_widget_autoscroll}==True",
+                                                "value" : "True"
+                                            },
+                                            "False"
+                                        ],
                                         "condition": "{item_path}!="
                                     }
                                 ]},
@@ -207,7 +208,9 @@
             "includes_part": {"menu": "sidemenu", "for_each": [
                 {
                     "template": "template_generator/parts_menu_item.xmltemplate",
-                    "jsonfile": "template_generator/setup_onclick_path.json"
+                    "jsonfile": "template_generator/setup_onclick_path.json",
+                    "condition": "{item_disabled}!=True",
+                    "parts_additional": {"template": "template_generator/parts_additional_sidemenu.xmltemplate"}
                 }
             ]}
         },
@@ -218,7 +221,6 @@
             "includes_part": {"menu": "sidemenu", "for_each": [
                 {
                     "template": "template_generator/parts_menu_buttonitem.xmltemplate",
-                    "jsonfile": "template_generator/setup_onclick_path.json",
                     "condition": "{item_x}==0"
                 }
             ]}
