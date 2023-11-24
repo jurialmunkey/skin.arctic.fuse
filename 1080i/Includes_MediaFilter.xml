@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
 
+    <include name="MediaFilter_Node_ClearAll">
+        <onfocus condition="!String.StartsWith(Container.FolderPath,plugin://script.skinvariables/?info=get_filter_dir)">ClearProperty(MediaFilter.BaseDir)</onfocus>
+        <onfocus condition="!String.StartsWith(Container.FolderPath,plugin://script.skinvariables/?info=get_filter_dir)">ClearProperty(MediaFilter.Genre)</onfocus>
+        <onfocus condition="!String.StartsWith(Container.FolderPath,plugin://script.skinvariables/?info=get_filter_dir)">ClearProperty(MediaFilter.Studio)</onfocus>
+        <onfocus condition="!String.StartsWith(Container.FolderPath,plugin://script.skinvariables/?info=get_filter_dir)">ClearProperty(MediaFilter.Country)</onfocus>
+        <onfocus condition="!String.StartsWith(Container.FolderPath,plugin://script.skinvariables/?info=get_filter_dir)">ClearProperty(MediaFilter.MPAA)</onfocus>
+        <onfocus condition="!String.StartsWith(Container.FolderPath,plugin://script.skinvariables/?info=get_filter_dir)">ClearProperty(MediaFilter.Director)</onfocus>
+        <onfocus condition="!String.StartsWith(Container.FolderPath,plugin://script.skinvariables/?info=get_filter_dir)">ClearProperty(MediaFilter.Writer)</onfocus>
+    </include>
+
     <include name="MediaFilter_Node_Filters">
         <control type="grouplist" id="9500">
             <top>300</top>
@@ -8,90 +18,243 @@
             <orientation>horizontal</orientation>
             <onup>9003</onup>
             <ondown>9600</ondown>
-            <itemgap>20</itemgap>
+            <itemgap>-20</itemgap>
+            <control type="button" id="9507">
+                <texturenofocus />
+                <font>font_main_bold</font>
+                <label>Type$INFO[Window.Property(MediaFilter.BaseDir.Name),: ,]</label>
+                <height>80</height>
+                <width>auto</width>
+                <textoffsetx>40</textoffsetx>
+                <textcolor>main_fg_30</textcolor>
+                <include>MediaFilter_Node_ClearAll</include>
+                <onfocus>SetProperty(MediaFilter.InfoLabel,BaseDir)</onfocus>
+                <onclick condition="!String.IsEqual(Window.Property(MediaFilter.BaseDir.Name),Container(9701).ListItemAbsolute(0).Label)">SetProperty(MediaFilter.BaseDir.Name,$INFO[Container(9701).ListItemAbsolute(0).Label])</onclick>
+                <onclick condition="String.IsEqual(Window.Property(MediaFilter.BaseDir.Name),Container(9701).ListItemAbsolute(0).Label)">SetProperty(MediaFilter.BaseDir.Name,$INFO[Container(9701).ListItemAbsolute(1).Label])</onclick>
+                <onclick condition="!String.IsEqual(Window.Property(MediaFilter.BaseDir.Name),Container(9701).ListItemAbsolute(0).Label)">SetProperty(MediaFilter.BaseDir,$INFO[Container(9701).ListItemAbsolute(0).Property(path)])</onclick>
+                <onclick condition="String.IsEqual(Window.Property(MediaFilter.BaseDir.Name),Container(9701).ListItemAbsolute(0).Label)">SetProperty(MediaFilter.BaseDir,$INFO[Container(9701).ListItemAbsolute(1).Property(path)])</onclick>
+                <onclick>ClearProperty(MediaFilter.Genre)</onclick>
+                <onclick>ClearProperty(MediaFilter.Studio)</onclick>
+                <onclick>ClearProperty(MediaFilter.Country)</onclick>
+                <onclick>ClearProperty(MediaFilter.MPAA)</onclick>
+                <onclick>ClearProperty(MediaFilter.Director)</onclick>
+                <onclick>ClearProperty(MediaFilter.Writer)</onclick>
+                <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
+            </control>
             <control type="button" id="9501">
+                <visible>!String.IsEmpty(Window.Property(MediaFilter.BaseDir))</visible>
+                <texturenofocus />
+                <font>font_main_bold</font>
                 <label>Genre$INFO[Window.Property(MediaFilter.Genre),: ,]</label>
                 <height>80</height>
                 <width>auto</width>
                 <textoffsetx>40</textoffsetx>
-                <font>font_mini_bold</font>
-                <textcolor>main_fg_90</textcolor>
+                <textcolor>main_fg_30</textcolor>
+                <include>MediaFilter_Node_ClearAll</include>
                 <onfocus>SetProperty(MediaFilter.InfoLabel,Genre)</onfocus>
                 <onclick>ClearProperty(MediaFilter.Genre)</onclick>
+                <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
             </control>
             <control type="button" id="9502">
+                <visible>!String.IsEmpty(Window.Property(MediaFilter.BaseDir))</visible>
+                <texturenofocus />
+                <font>font_main_bold</font>
                 <label>Studio$INFO[Window.Property(MediaFilter.Studio),: ,]</label>
                 <height>80</height>
                 <width>auto</width>
                 <textoffsetx>40</textoffsetx>
-                <font>font_mini_bold</font>
-                <textcolor>main_fg_90</textcolor>
+                <textcolor>main_fg_30</textcolor>
+                <include>MediaFilter_Node_ClearAll</include>
                 <onfocus>SetProperty(MediaFilter.InfoLabel,Studio)</onfocus>
                 <onclick>ClearProperty(MediaFilter.Studio)</onclick>
+                <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
             </control>
-            <control type="button" id="9503">
+            <!-- <control type="button" id="9503">
+                <visible>!String.IsEmpty(Window.Property(MediaFilter.BaseDir))</visible>
+                <texturenofocus />
+                <font>font_main_bold</font>
                 <label>Country$INFO[Window.Property(MediaFilter.Country),: ,]</label>
                 <height>80</height>
                 <width>auto</width>
                 <textoffsetx>40</textoffsetx>
-                <font>font_mini_bold</font>
-                <textcolor>main_fg_90</textcolor>
+                <textcolor>main_fg_30</textcolor>
+                <include>MediaFilter_Node_ClearAll</include>
                 <onfocus>SetProperty(MediaFilter.InfoLabel,Country)</onfocus>
                 <onclick>ClearProperty(MediaFilter.Country)</onclick>
+                <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
+            </control> -->
+            <control type="button" id="9504">
+                <visible>!String.IsEmpty(Window.Property(MediaFilter.BaseDir))</visible>
+                <texturenofocus />
+                <font>font_main_bold</font>
+                <label>MPAA$INFO[Window.Property(MediaFilter.MPAA),: ,]</label>
+                <height>80</height>
+                <width>auto</width>
+                <textoffsetx>40</textoffsetx>
+                <textcolor>main_fg_30</textcolor>
+                <include>MediaFilter_Node_ClearAll</include>
+                <onfocus>SetProperty(MediaFilter.InfoLabel,MPAA)</onfocus>
+                <onclick>ClearProperty(MediaFilter.MPAA)</onclick>
+                <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
             </control>
+            <!-- <control type="button" id="9505">
+                <visible>!String.IsEmpty(Window.Property(MediaFilter.BaseDir))</visible>
+                <texturenofocus />
+                <font>font_main_bold</font>
+                <label>Director$INFO[Window.Property(MediaFilter.Director),: ,]</label>
+                <height>80</height>
+                <width>auto</width>
+                <textoffsetx>40</textoffsetx>
+                <textcolor>main_fg_30</textcolor>
+                <include>MediaFilter_Node_ClearAll</include>
+                <onfocus>SetProperty(MediaFilter.InfoLabel,Director)</onfocus>
+                <onclick>ClearProperty(MediaFilter.Director)</onclick>
+                <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
+            </control>
+            <control type="button" id="9506">
+                <visible>!String.IsEmpty(Window.Property(MediaFilter.BaseDir))</visible>
+                <texturenofocus />
+                <font>font_main_bold</font>
+                <label>Writer$INFO[Window.Property(MediaFilter.Writer),: ,]</label>
+                <height>80</height>
+                <width>auto</width>
+                <textoffsetx>40</textoffsetx>
+                <textcolor>main_fg_30</textcolor>
+                <include>MediaFilter_Node_ClearAll</include>
+                <onfocus>SetProperty(MediaFilter.InfoLabel,Writer)</onfocus>
+                <onclick>ClearProperty(MediaFilter.Writer)</onclick>
+                <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
+            </control> -->
         </control>
         <control type="grouplist" id="9600">
-            <top>400</top>
+            <top>360</top>
             <left>160</left>
+            <width>1080</width>
             <orientation>horizontal</orientation>
             <onup>9500</onup>
+            <!-- <ondown>68</ondown> -->
             <ondown>67</ondown>
-            <itemgap>20</itemgap>
+            <itemgap>-20</itemgap>
             <onleft>Control.Move(9701,-1)</onleft>
             <onright>Control.Move(9701,1)</onright>
             <animation effect="slide" end="-80" time="400" tween="quadratic" reversible="false" condition="!Container(9701).OnNext">Conditional</animation>
             <animation effect="slide" end="80" time="400" tween="quadratic" reversible="false" condition="!Container(9701).OnPrevious">Conditional</animation>
             <control type="button" id="9601">
+                <texturenofocus />
+                <font>font_mini</font>
                 <label>$INFO[Container(9701).ListItem.Label]</label>
                 <height>80</height>
                 <width>auto</width>
                 <textoffsetx>40</textoffsetx>
-                <font>font_mini_bold</font>
-                <textcolor>main_fg_90</textcolor>
-                <onclick>SetProperty(MediaFilter.$INFO[Window.Property(MediaFilter.InfoLabel)],$INFO[Container(9701).ListItem.Label])</onclick>
+                <textcolor>main_fg_30</textcolor>
+                <onclick condition="Integer.IsGreater(Container(9701).NumItems,1) + !String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)">SetProperty(MediaFilter.$INFO[Window.Property(MediaFilter.InfoLabel)],$INFO[Container(9701).ListItem.Label])</onclick>
+                <onclick condition="!Integer.IsGreater(Container(9701).NumItems,1) + !String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)">ClearProperty(MediaFilter.$INFO[Window.Property(MediaFilter.InfoLabel)])</onclick>
+
+                <onclick condition="String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)">SetProperty(MediaFilter.BaseDir.Name,$INFO[Container(9701).ListItem.Label])</onclick>
+                <onclick condition="String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)">SetProperty(MediaFilter.BaseDir,$INFO[Container(9701).ListItem.Property(path)])</onclick>
+                <onclick condition="String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)">ClearProperty(MediaFilter.Genre)</onclick>
+                <onclick condition="String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)">ClearProperty(MediaFilter.Studio)</onclick>
+                <onclick condition="String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)">ClearProperty(MediaFilter.Country)</onclick>
+                <onclick condition="String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)">ClearProperty(MediaFilter.MPAA)</onclick>
+                <onclick condition="String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)">ClearProperty(MediaFilter.Director)</onclick>
+                <onclick condition="String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)">ClearProperty(MediaFilter.Writer)</onclick>
+
+
+                <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
             </control>
             <control type="button" id="9602">
-                <left>-20</left>
-                <width>0</width>
+                <texturenofocus />
+                <font>font_mini</font>
+                <left>0</left>
+                <width>20</width>
                 <texturefocus />
                 <texturenofocus />
                 <onfocus>SetFocus(9601)</onfocus>
                 <onfocus>Control.Move(9701,1)</onfocus>
             </control>
             <control type="button" id="9603">
+                <texturenofocus />
+                <font>font_mini</font>
                 <label>$INFO[Container(9701).ListItem(1).Label]</label>
+                <visible>Integer.IsGreater(Container(9701).NumItems,1)</visible>
                 <height>80</height>
                 <width>auto</width>
                 <textoffsetx>40</textoffsetx>
-                <font>font_mini_bold</font>
-                <textcolor>main_fg_90</textcolor>
+                <textcolor>main_fg_30</textcolor>
             </control>
             <control type="button" id="9604">
+                <texturenofocus />
+                <font>font_mini</font>
                 <label>$INFO[Container(9701).ListItem(2).Label]</label>
+                <visible>Integer.IsGreater(Container(9701).NumItems,2)</visible>
                 <height>80</height>
                 <width>auto</width>
                 <textoffsetx>40</textoffsetx>
-                <font>font_mini_bold</font>
-                <textcolor>main_fg_90</textcolor>
+                <textcolor>main_fg_30</textcolor>
+            </control>
+            <control type="button" id="9605">
+                <texturenofocus />
+                <font>font_mini</font>
+                <label>$INFO[Container(9701).ListItem(3).Label]</label>
+                <visible>Integer.IsGreater(Container(9701).NumItems,3)</visible>
+                <height>80</height>
+                <width>auto</width>
+                <textoffsetx>40</textoffsetx>
+                <textcolor>main_fg_30</textcolor>
+            </control>
+            <control type="button" id="9606">
+                <texturenofocus />
+                <font>font_mini</font>
+                <label>$INFO[Container(9701).ListItem(4).Label]</label>
+                <visible>Integer.IsGreater(Container(9701).NumItems,4)</visible>
+                <height>80</height>
+                <width>auto</width>
+                <textoffsetx>40</textoffsetx>
+                <textcolor>main_fg_30</textcolor>
+            </control>
+            <control type="button" id="9607">
+                <texturenofocus />
+                <font>font_mini</font>
+                <label>$INFO[Container(9701).ListItem(5).Label]</label>
+                <visible>Integer.IsGreater(Container(9701).NumItems,5)</visible>
+                <height>80</height>
+                <width>auto</width>
+                <textoffsetx>40</textoffsetx>
+                <textcolor>main_fg_30</textcolor>
+            </control>
+            <control type="button" id="9608">
+                <texturenofocus />
+                <font>font_mini</font>
+                <label>$INFO[Container(9701).ListItem(6).Label]</label>
+                <visible>Integer.IsGreater(Container(9701).NumItems,6)</visible>
+                <height>80</height>
+                <width>auto</width>
+                <textoffsetx>40</textoffsetx>
+                <textcolor>main_fg_30</textcolor>
+            </control>
+            <control type="button" id="9609">
+                <texturenofocus />
+                <font>font_mini</font>
+                <label>$INFO[Container(9701).ListItem(7).Label]</label>
+                <visible>Integer.IsGreater(Container(9701).NumItems,7)</visible>
+                <height>80</height>
+                <width>auto</width>
+                <textoffsetx>40</textoffsetx>
+                <textcolor>main_fg_30</textcolor>
             </control>
         </control>
     </include>
+
+    <variable name="MediaFilter_Node_Content">
+        <value condition="!String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)">plugin://script.skinvariables/?info=get_container_labels&amp;containers=$VAR[Action_View_ContentID]&amp;infolabel=$INFO[Window.Property(MediaFilter.InfoLabel)]&amp;reload=$INFO[Window.Property(MediaFilter.InfoLabel)]</value>
+        <value>-</value>
+    </variable>
 
     <include name="MediaFilter_Node_Dialog">
         <include content="Dialog_Overlay_Side">
             <param name="dialog_size">Dimension_DialogSideMenu</param>
             <include>Animation_Right_Delay</include>
-            <right>-800</right>
+            <right>-1920</right>
             <include content="Dialog_Head">
                 <param name="label"> </param>
             </include>
@@ -101,12 +264,109 @@
                         <param name="id">9701</param>
                         <param name="textcolor">dialog_fg</param>
 
-                        <content sortby="label">plugin://script.skinvariables/?info=get_container_labels&amp;containers=51&amp;infolabel=$INFO[Window.Property(MediaFilter.InfoLabel)]&amp;numitems=$INFO[Container.NumItems]</content>
+                        <content>
+                            <item>
+                                <label>Movie Library</label>
+                                <property name="path">videodb://movies/titles</property>
+                                <visible>String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)</visible>
+                            </item>
+                            <item>
+                                <label>TV Library</label>
+                                <property name="path">videodb://tvshows/titles</property>
+                                <visible>String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)</visible>
+                            </item>
+                            <item>
+                                <label>Movie Watchlist</label>
+                                <property name="path">plugin://plugin.video.themoviedb.helper/?info=trakt_watchlist&amp;tmdb_type=movie</property>
+                                <visible>String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)</visible>
+                            </item>
+                            <item>
+                                <label>TV Watchlist</label>
+                                <property name="path">plugin://plugin.video.themoviedb.helper/?info=trakt_watchlist&amp;tmdb_type=tv</property>
+                                <visible>String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)</visible>
+                            </item>
+                            <item>
+                                <label>Movie On Deck</label>
+                                <property name="path">plugin://plugin.video.themoviedb.helper/?info=trakt_towatch&amp;tmdb_type=movie</property>
+                                <visible>String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)</visible>
+                            </item>
+                            <item>
+                                <label>TV On Deck</label>
+                                <property name="path">plugin://plugin.video.themoviedb.helper/?info=trakt_towatch&amp;tmdb_type=tv</property>
+                                <visible>String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)</visible>
+                            </item>
+                            <item>
+                                <label>Movie Recommendations</label>
+                                <property name="path">plugin://plugin.video.themoviedb.helper/?info=trakt_recommendations&amp;tmdb_type=movie</property>
+                                <visible>String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)</visible>
+                            </item>
+                            <item>
+                                <label>TV Recommendations</label>
+                                <property name="path">plugin://plugin.video.themoviedb.helper/?info=trakt_recommendations&amp;tmdb_type=tv</property>
+                                <visible>String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)</visible>
+                            </item>
+                            <item>
+                                <label>Movie Trending</label>
+                                <property name="path">plugin://plugin.video.themoviedb.helper/?info=trakt_trending&amp;tmdb_type=movie</property>
+                                <visible>String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)</visible>
+                            </item>
+                            <item>
+                                <label>TV Trending</label>
+                                <property name="path">plugin://plugin.video.themoviedb.helper/?info=trakt_trending&amp;tmdb_type=tv</property>
+                                <visible>String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)</visible>
+                            </item>
+                            <item>
+                                <label>Movie History</label>
+                                <property name="path">plugin://plugin.video.themoviedb.helper/?info=trakt_history&amp;tmdb_type=movie</property>
+                                <visible>String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)</visible>
+                            </item>
+                            <item>
+                                <label>TV History</label>
+                                <property name="path">plugin://plugin.video.themoviedb.helper/?info=trakt_history&amp;tmdb_type=tv</property>
+                                <visible>String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)</visible>
+                            </item>
+                        </content>
 
+
+                        <content sortby="label">$VAR[MediaFilter_Node_Content]</content>
                     </include>
                 </include>
             </include>
         </include>
+    </include>
+
+    <include name="MediaFilter_Node_PlaceHolderText">
+        <control type="group">
+            <top>200</top>
+            <left>view_side</left>
+            <control type="label">
+                <top>80</top>
+                <height>35</height>
+                <aligny>center</aligny>
+                <label>$INFO[System.Time]</label>
+                <textcolor>main_fg_100</textcolor>
+                <font>font_info_black_doublerow</font>
+                <autoscroll>false</autoscroll>
+            </control>
+            <control type="label">
+                <top>120</top>
+                <height>40</height>
+                <label>$INFO[System.Date]</label>
+                <aligny>top</aligny>
+                <textcolor>main_fg_70</textcolor>
+                <font>font_main</font>
+                <width>info_plot_w</width>
+            </control>
+            <control type="textbox">
+                <top>177</top>
+                <label>$VAR[Def_PlotDetails_Fallback]</label>
+                <aligny>top</aligny>
+                <textcolor>main_fg_70</textcolor>
+                <font>font_main_plot</font>
+                <height>info_plot_large_h</height>
+                <width>info_plot_w</width>
+            </control>
+        </control>
     </include>
 
 
@@ -129,6 +389,7 @@
                     <height>view_pad</height>
                     <include content="Object_Hidden_Button">
                         <param name="id">9001</param>
+                        <include>MediaFilter_Node_ClearAll</include>
                         <onfocus>SetProperty(View.WallSwitchPosition,1)</onfocus>
                         <onfocus>SetFocus(19)</onfocus>
                     </include>
@@ -248,43 +509,14 @@
                 </include>
             </control>
 
-            <control type="group">
-                <top>200</top>
-                <left>view_side</left>
-                <control type="label">
-                    <top>80</top>
-                    <height>35</height>
-                    <aligny>center</aligny>
-                    <label>$INFO[System.Time]</label>
-                    <textcolor>main_fg_100</textcolor>
-                    <font>font_info_black_doublerow</font>
-                    <autoscroll>false</autoscroll>
-                </control>
-                <control type="label">
-                    <top>120</top>
-                    <height>40</height>
-                    <label>$INFO[System.Date]</label>
-                    <aligny>top</aligny>
-                    <textcolor>main_fg_70</textcolor>
-                    <font>font_main</font>
-                    <width>info_plot_w</width>
-                </control>
-                <control type="textbox">
-                    <top>177</top>
-                    <label>$VAR[Def_PlotDetails_Fallback]</label>
-                    <aligny>top</aligny>
-                    <textcolor>main_fg_70</textcolor>
-                    <font>font_main_plot</font>
-                    <height>info_plot_large_h</height>
-                    <width>info_plot_w</width>
-                </control>
-            </control>
+            <!-- <include>MediaFilter_Node_PlaceHolderText</include> -->
 
-            <!-- <include>MediaFilter_Node_Filters</include> -->
+
+            <include>MediaFilter_Node_Filters</include>
 
         </control>
 
-        <!-- <include>MediaFilter_Node_Dialog</include> -->
+        <include>MediaFilter_Node_Dialog</include>
 
     </include>
 
