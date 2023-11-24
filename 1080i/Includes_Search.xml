@@ -3,8 +3,8 @@
 
     <include name="Search_View_Slide">
         <control type="group" id="$PARAM[id]">
-            <animation effect="slide" start="0" end="0,-100" time="400" tween="quadratic" easing="out" reversible="false" condition="![$EXP[Exp_InfoDialogs]]">Conditional</animation>
-            <animation effect="slide" end="0" start="0,-100" time="400" tween="quadratic" easing="out" reversible="false" condition="[$EXP[Exp_InfoDialogs]]">Conditional</animation>
+            <animation effect="slide" start="0" end="0,-100" time="400" tween="quadratic" easing="out" reversible="false" condition="![[ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus] | $EXP[Exp_HomeMenu_HasFocus]]]">Conditional</animation>
+            <animation effect="slide" end="0" start="0,-100" time="400" tween="quadratic" easing="out" reversible="false" condition="[[ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus] | $EXP[Exp_HomeMenu_HasFocus]]]">Conditional</animation>
             <include>Animation_View_WindowChange</include>
             <nested />
             <include>Widget_Transitions</include>
@@ -16,7 +16,7 @@
 
             <top>500</top>
             <bottom>-440</bottom>
-            <onup>8202</onup>
+            <onup>9003</onup>
             <ondown>SetProperty(List.ViewContainer,$INFO[System.CurrentControlID])</ondown>
             <ondown>333</ondown>
 
@@ -491,7 +491,7 @@
         <param name="textcolor_nf">main_fg_30</param>
         <param name="editid">9099</param>
         <definition>
-            <control type="button" id="80$PARAM[groupid]$PARAM[id]">
+            <control type="button" id="90$PARAM[groupid]$PARAM[id]">
                 <width>100</width>
                 <height>40</height>
                 <centertop>50%</centertop>
@@ -504,12 +504,12 @@
                 <label>[UPPERCASE]$PARAM[letter][/UPPERCASE]</label>
                 <onclick>SetFocus($PARAM[editid])</onclick>
                 <include>Object_SearchLetter_Click_$PARAM[letter]</include>
-                <onclick>SetFocus(80$PARAM[groupid]$PARAM[id])</onclick>
+                <onclick>SetFocus(90$PARAM[groupid]$PARAM[id])</onclick>
                 <include>Action_UpdateSearchTerm</include>
                 <onup>$PARAM[onup]</onup>
-                <onup>80$PARAM[grouponup]$PARAM[id]</onup>
+                <onup>90$PARAM[grouponup]$PARAM[id]</onup>
                 <ondown>$PARAM[ondown]</ondown>
-                <ondown>80$PARAM[groupondown]$PARAM[id]</ondown>
+                <ondown>90$PARAM[groupondown]$PARAM[id]</ondown>
                 <nested />
             </control>
             <control type="group" id="81$PARAM[groupid]$PARAM[id]">
@@ -522,7 +522,7 @@
                     <include>Texture_Highlight_Scrollbar_H</include>
                     <height>scrollbar_w</height>
                     <bottom>14</bottom>
-                    <visible>Control.HasFocus(80$PARAM[groupid]$PARAM[id])</visible>
+                    <visible>Control.HasFocus(90$PARAM[groupid]$PARAM[id])</visible>
                 </control>
             </control>
         </definition>
@@ -691,8 +691,8 @@
     <include name="Search_Alphabet">
         <param name="editid">9099</param>
         <param name="ondown">9098</param>
-        <param name="rowone">8201</param>
-        <param name="rowtwo">8202</param>
+        <param name="rowone">9002</param>
+        <param name="rowtwo">9003</param>
         <definition>
             <!-- First Row -->
             <control type="grouplist" id="$PARAM[rowone]">
@@ -992,7 +992,7 @@
                     <textoffsetx>40</textoffsetx>
                     <align>left</align>
                     <ondown>SetProperty(SearchTerm,$INFO[Control.GetLabel(9099).index(1)])</ondown>
-                    <ondown>8201</ondown>  <!-- TO Keyboard -->
+                    <ondown>9002</ondown>  <!-- TO Keyboard -->
                     <onleft>SetProperty(SearchTerm,$INFO[Control.GetLabel(9099).index(1)])</onleft>
                     <onleft>308</onleft>  <!-- TO SEARCH ICON -->
                     <onright>9000</onright>
@@ -1034,7 +1034,7 @@
                     <height>160</height>
                     <onleft>9099</onleft>
                     <include>Search_Visible_OnEdit</include>
-                    <include content="Dialog_Side_Button">
+                    <!-- <include content="Dialog_Side_Button">
                         <param name="vertical">false</param>
                         <param name="id">02</param>
                         <param name="label">$LOCALIZE[587]</param>
@@ -1074,7 +1074,7 @@
                         <onclick>ClearProperty(SearchDiscover.SortOrder)</onclick>
                         <onclick>Skin.Reset(SearchDiscover.VoteLow)</onclick>
                         <onclick>Skin.Reset(SearchDiscover.ItemLimit)</onclick>
-                    </include>
+                    </include> -->
                     <include content="Dialog_Side_Button">
                         <param name="vertical">false</param>
                         <param name="id">04</param>
@@ -1083,19 +1083,35 @@
                         <param name="db_opacity">12</param>
                         <param name="icon">special://skin/extras/icons/binoculars.png</param>
                         <param name="control">radiobutton</param>
-                        <selected>Skin.HasSetting(Search.EnableDiscover)</selected>
-                        <onclick>Skin.ToggleSetting(Search.EnableDiscover)</onclick>
+                        <selected>Skin.HasSetting(Search.EnableDiscover) + !Skin.HasSetting(Search.LibraryDiscover)</selected>
+                        <onclick>Skin.SetBool(Search.EnableDiscover)</onclick>
+                        <onclick>Skin.Reset(Search.LibraryDiscover)</onclick>
+                        <onclick>SetFocus(8500)</onclick>
                     </include>
                     <include content="Dialog_Side_Button">
                         <param name="vertical">false</param>
                         <param name="id">05</param>
+                        <param name="label">Library</param>
+                        <param name="nf_opacity">30</param>
+                        <param name="db_opacity">12</param>
+                        <param name="icon">special://skin/extras/icons/book.png</param>
+                        <param name="control">radiobutton</param>
+                        <selected>Skin.HasSetting(Search.EnableDiscover) + Skin.HasSetting(Search.LibraryDiscover)</selected>
+                        <onclick>Skin.SetBool(Search.EnableDiscover)</onclick>
+                        <onclick>Skin.SetBool(Search.LibraryDiscover)</onclick>
+                        <onclick>SetFocus(8500)</onclick>
+                    </include>
+                    <include content="Dialog_Side_Button">
+                        <param name="vertical">false</param>
+                        <param name="id">06</param>
                         <param name="label">$LOCALIZE[137]</param>
                         <param name="nf_opacity">30</param>
                         <param name="db_opacity">12</param>
                         <param name="icon">special://skin/extras/icons/search.png</param>
                         <param name="control">radiobutton</param>
                         <selected>!Skin.HasSetting(Search.EnableDiscover)</selected>
-                        <onclick>Skin.ToggleSetting(Search.EnableDiscover)</onclick>
+                        <onclick>Skin.Reset(Search.EnableDiscover)</onclick>
+                        <onclick>Skin.Reset(Search.LibraryDiscover)</onclick>
                     </include>
                     <control type="group">
                         <width>100</width>
@@ -1220,7 +1236,7 @@
                         <width>600</width>
                         <left>0</left>
                         <orientation>horizontal</orientation>
-                        <onup>8202</onup>
+                        <onup>9003</onup>
                         <onback>PreviousMenu</onback>
                         <ondown>6000</ondown>
 
