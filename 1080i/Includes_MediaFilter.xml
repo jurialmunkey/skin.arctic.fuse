@@ -4,10 +4,10 @@
     <include name="MediaFilter_Node_ClearAll">
         <!-- <onfocus condition="!String.StartsWith(Container.FolderPath,plugin://script.skinvariables/?info=get_filter_dir)">ClearProperty(MediaFilter.BaseDir)</onfocus> -->
 
-        <onfocus condition="!String.StartsWith(Container.FolderPath,plugin://script.skinvariables/?info=get_filter_dir) + [Container.Content(movies) | Container.Content(tvshows)]">SetProperty(MediaFilter.BaseDir.Name,$VAR[Label_Section_Main])</onfocus>
-        <onfocus condition="!String.StartsWith(Container.FolderPath,plugin://script.skinvariables/?info=get_filter_dir) + [Container.Content(movies) | Container.Content(tvshows)]">SetProperty(MediaFilter.BaseDir,$INFO[Container.FolderPath])</onfocus>
-        <onfocus condition="!String.StartsWith(Container.FolderPath,plugin://script.skinvariables/?info=get_filter_dir) + ![Container.Content(movies) | Container.Content(tvshows)]">ClearProperty(MediaFilter.BaseDir.Name)</onfocus>
-        <onfocus condition="!String.StartsWith(Container.FolderPath,plugin://script.skinvariables/?info=get_filter_dir) + ![Container.Content(movies) | Container.Content(tvshows)]">ClearProperty(MediaFilter.BaseDir)</onfocus>
+        <onfocus condition="!String.StartsWith(Container.FolderPath,plugin://script.skinvariables/?info=get_filter_dir) + [Container.Content(movies) | Container.Content(tvshows) | Container.Content(albums) | Container.Content(artists)]">SetProperty(MediaFilter.BaseDir.Name,$VAR[Label_Section_Main])</onfocus>
+        <onfocus condition="!String.StartsWith(Container.FolderPath,plugin://script.skinvariables/?info=get_filter_dir) + [Container.Content(movies) | Container.Content(tvshows) | Container.Content(albums) | Container.Content(artists)]">SetProperty(MediaFilter.BaseDir,$INFO[Container.FolderPath])</onfocus>
+        <onfocus condition="!String.StartsWith(Container.FolderPath,plugin://script.skinvariables/?info=get_filter_dir) + ![Container.Content(movies) | Container.Content(tvshows) | Container.Content(albums) | Container.Content(artists)]">ClearProperty(MediaFilter.BaseDir.Name)</onfocus>
+        <onfocus condition="!String.StartsWith(Container.FolderPath,plugin://script.skinvariables/?info=get_filter_dir) + ![Container.Content(movies) | Container.Content(tvshows) | Container.Content(albums) | Container.Content(artists)]">ClearProperty(MediaFilter.BaseDir)</onfocus>
 
         <onfocus condition="!String.StartsWith(Container.FolderPath,plugin://script.skinvariables/?info=get_filter_dir)">ClearProperty(MediaFilter.Genre)</onfocus>
         <onfocus condition="!String.StartsWith(Container.FolderPath,plugin://script.skinvariables/?info=get_filter_dir)">ClearProperty(MediaFilter.Studio)</onfocus>
@@ -15,6 +15,7 @@
         <onfocus condition="!String.StartsWith(Container.FolderPath,plugin://script.skinvariables/?info=get_filter_dir)">ClearProperty(MediaFilter.MPAA)</onfocus>
         <onfocus condition="!String.StartsWith(Container.FolderPath,plugin://script.skinvariables/?info=get_filter_dir)">ClearProperty(MediaFilter.Director)</onfocus>
         <onfocus condition="!String.StartsWith(Container.FolderPath,plugin://script.skinvariables/?info=get_filter_dir)">ClearProperty(MediaFilter.Writer)</onfocus>
+        <onfocus condition="!String.StartsWith(Container.FolderPath,plugin://script.skinvariables/?info=get_filter_dir)">ClearProperty(MediaFilter.Artist)</onfocus>
     </include>
 
     <include name="MediaFilter_Node_Filters">
@@ -26,7 +27,34 @@
             <ondown>9600</ondown>
             <onback>68</onback>
             <itemgap>-20</itemgap>
+            <control type="button" id="9508">
+                <visible>Window.IsVisible(MyMusicNav.xml)</visible>
+                <texturenofocus />
+                <font>font_main_bold</font>
+                <label>Content$INFO[Window.Property(MediaFilter.ContentType),: ,]$INFO[Window.Property(MediaFilter.BaseDir.Name), (,)]</label>
+                <height>80</height>
+                <width>auto</width>
+                <textoffsetx>40</textoffsetx>
+                <textcolor>main_fg_30</textcolor>
+                <include>MediaFilter_Node_ClearAll</include>
+                <onfocus>SetProperty(MediaFilter.InfoLabel,BaseDir)</onfocus>
+                <onclick>SetProperty(MediaFilter.ContentType,Music)</onclick>
+                <onclick condition="!String.IsEqual(Window.Property(MediaFilter.BaseDir.Name),Artists)">SetProperty(MediaFilter.BaseDir,musicdb://artists/)</onclick>
+                <onclick condition="!String.IsEqual(Window.Property(MediaFilter.BaseDir.Name),Artists)">SetProperty(MediaFilter.BaseDir.Name,Artists)</onclick>
+                <onclick condition="String.IsEqual(Window.Property(MediaFilter.BaseDir.Name),Artists)">SetProperty(MediaFilter.BaseDir,musicdb://albums/)</onclick>
+                <onclick condition="String.IsEqual(Window.Property(MediaFilter.BaseDir.Name),Artists)">SetProperty(MediaFilter.BaseDir.Name,Albums)</onclick>
+
+                <onclick>ClearProperty(MediaFilter.Genre)</onclick>
+                <onclick>ClearProperty(MediaFilter.Studio)</onclick>
+                <onclick>ClearProperty(MediaFilter.Country)</onclick>
+                <onclick>ClearProperty(MediaFilter.MPAA)</onclick>
+                <onclick>ClearProperty(MediaFilter.Director)</onclick>
+                <onclick>ClearProperty(MediaFilter.Writer)</onclick>
+                <onclick>ClearProperty(MediaFilter.Artist)</onclick>
+                <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
+            </control>
             <control type="button" id="9507">
+                <visible>Window.IsVisible(MyVideoNav.xml)</visible>
                 <texturenofocus />
                 <font>font_main_bold</font>
                 <label>Content$INFO[Window.Property(MediaFilter.ContentType),: ,]$INFO[Window.Property(MediaFilter.BaseDir.Name), (,)]</label>
@@ -54,6 +82,8 @@
                 <onclick>ClearProperty(MediaFilter.MPAA)</onclick>
                 <onclick>ClearProperty(MediaFilter.Director)</onclick>
                 <onclick>ClearProperty(MediaFilter.Writer)</onclick>
+                <onclick>ClearProperty(MediaFilter.Artist)</onclick>
+
                 <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
             </control>
             <control type="button" id="9501">
@@ -71,6 +101,7 @@
                 <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
             </control>
             <control type="button" id="9502">
+                <visible>Window.IsVisible(MyVideoNav.xml)</visible>
                 <visible>!String.IsEmpty(Window.Property(MediaFilter.BaseDir))</visible>
                 <texturenofocus />
                 <font>font_main_bold</font>
@@ -85,6 +116,7 @@
                 <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
             </control>
             <control type="button" id="9504">
+                <visible>Window.IsVisible(MyVideoNav.xml)</visible>
                 <visible>!String.IsEmpty(Window.Property(MediaFilter.BaseDir))</visible>
                 <texturenofocus />
                 <font>font_main_bold</font>
@@ -249,6 +281,20 @@
                                 <visible>Library.HasContent(TVShows)</visible>
                             </item>
                             <item>
+                                <label>Artists</label>
+                                <property name="path">musicdb://artists</property>
+                                <visible>String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)</visible>
+                                <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),Music)</visible>
+                                <visible>Library.HasContent(Music)</visible>
+                            </item>
+                            <item>
+                                <label>Albums</label>
+                                <property name="path">musicdb://albums</property>
+                                <visible>String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)</visible>
+                                <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),Music)</visible>
+                                <visible>Library.HasContent(Music)</visible>
+                            </item>
+                            <item>
                                 <label>Watchlist</label>
                                 <property name="path">plugin://plugin.video.themoviedb.helper/?info=trakt_watchlist&amp;tmdb_type=movie</property>
                                 <visible>String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)</visible>
@@ -346,8 +392,9 @@
                     <include content="Object_Hidden_Button">
                         <param name="id">9001</param>
                         <include>MediaFilter_Node_ClearAll</include>
-                        <onfocus condition="Container.Content(movies) | Container.Content(sets)">SetProperty(MediaFilter.ContentType,Movies)</onfocus>
-                        <onfocus condition="Container.Content(tvshows) | Container.Content(seasons) | Container.Content(episodes)">SetProperty(MediaFilter.ContentType,TV)</onfocus>
+                        <onfocus condition="Window.IsVisible(MyVideoNav.xml) + [Container.Content(movies) | Container.Content(sets)]">SetProperty(MediaFilter.ContentType,Movies)</onfocus>
+                        <onfocus condition="Window.IsVisible(MyVideoNav.xml) + [Container.Content(tvshows) | Container.Content(seasons) | Container.Content(episodes)]">SetProperty(MediaFilter.ContentType,TV)</onfocus>
+                        <onfocus condition="Window.IsVisible(MyMusicNav.xml)">SetProperty(MediaFilter.ContentType,Music)</onfocus>
                         <onfocus>SetProperty(View.WallSwitchPosition,1)</onfocus>
                         <onfocus>SetFocus(19)</onfocus>
                     </include>
