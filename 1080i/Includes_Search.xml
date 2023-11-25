@@ -3,8 +3,8 @@
 
     <include name="Search_View_Slide">
         <control type="group" id="$PARAM[id]">
-            <animation effect="slide" start="0" end="0,-100" time="400" tween="quadratic" easing="out" reversible="false" condition="![[ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus] | $EXP[Exp_HomeMenu_HasFocus]]]">Conditional</animation>
-            <animation effect="slide" end="0" start="0,-100" time="400" tween="quadratic" easing="out" reversible="false" condition="[[ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus] | $EXP[Exp_HomeMenu_HasFocus]]]">Conditional</animation>
+            <animation effect="slide" start="0" end="0,-100" time="400" tween="quadratic" easing="out" reversible="false" condition="!$EXP[Exp_Search_WidgetGroup_HasFocus]">Conditional</animation>
+            <animation effect="slide" end="0" start="0,-100" time="400" tween="quadratic" easing="out" reversible="false" condition="$EXP[Exp_Search_WidgetGroup_HasFocus]">Conditional</animation>
             <include>Animation_View_WindowChange</include>
             <nested />
             <include>Widget_Transitions</include>
@@ -38,9 +38,57 @@
         </control>
     </include>
 
+    <include name="Search_View_WidgetGroup">
+        <control type="group">
+            <include>Animation_Group_Bumper</include>
+            <include content="Home_Widgets_Infopanel">
+                <param name="visible">$EXP[Exp_Search_WidgetGroup_HasFocus]</param>
+                <include content="Info_Panel">
+                    <param name="container">Container.</param>
+                </include>
+                <include content="Animation_Fade_In">
+                    <param name="type">Visible</param>
+                    <param name="delay">200</param>
+                </include>
+                <animation effect="fade" start="100" end="0" time="150" tween="sine" easing="in" reversible="false">Hidden</animation>
+            </include>
+            <include content="Search_View_Slide">
+                <include content="Search_View_Widgets">
+                    <include>skinvariables-searchmenu-widgets</include>
+                    <include>Search_View_DiscoverWidgets</include>
+                </include>
+            </include>
+        </control>
+    </include>
 
+    <include name="Search_View_SearchIcon">
+        <control type="group">
+            <left>view_menu</left>
+            <width>40</width>
+            <visible>!Skin.String(Home.SideMenuCollapse,Always)</visible>
+            <visible>!Skin.String(Home.SideMenuCollapse,Library)</visible>
+            <visible>!$EXP[Exp_InfoDialogs]</visible>
+            <control type="group">
+                <top>view_pad</top>
+                <height>40</height>
+                <control type="image">
+                    <include>Texture_Circle_Highlight_V</include>
+                    <aspectratio>keep</aspectratio>
+                    <width>10</width>
+                    <height>10</height>
+                    <centertop>50%</centertop>
+                    <left>-20</left>
+                </control>
+                <control type="image">
+                    <aspectratio>keep</aspectratio>
+                    <bordersize>icon_home_bordersize</bordersize>
+                    <texture colordiffuse="main_fg_90">special://skin/extras/icons/search.png</texture>
+                </control>
+            </control>
+        </control>
+    </include>
 
-    <include name="_Search_View_Footer_Item">
+    <include name="Search_View_Footer_Item_Layout">
         <control type="group">
             <nested />
             <control type="image">
@@ -69,13 +117,13 @@
                 <centertop>50%</centertop>
                 <width>40</width>
                 <height>40</height>
-                <include content="_Search_View_Footer_Item">
+                <include content="Search_View_Footer_Item_Layout">
                     <param name="icon">$PARAM[icon]</param>
                     <param name="colordiffuse">dialog_fg_30</param>
                     <param name="label">$INFO[Container($PARAM[id]).NumItems]</param>
                     <visible>![Integer.IsEqual(Container($PARAM[id]).NumItems,0) | $PARAM[altnofocus]]</visible>
                 </include>
-                <include content="_Search_View_Footer_Item">
+                <include content="Search_View_Footer_Item_Layout">
                     <param name="icon">$PARAM[icon]</param>
                     <param name="colordiffuse">dialog_fg_12</param>
                     <param name="label">$NUMBER[0]</param>
@@ -532,7 +580,7 @@
 
     <include name="Search_Visible_OnEdit">
         <include>Animation_FadeIn</include>
-        <visible allowhiddenfocus="true">![ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus] | $EXP[Exp_HomeMenu_HasFocus]]</visible>
+        <visible allowhiddenfocus="true">!$EXP[Exp_Search_WidgetGroup_HasFocus]</visible>
     </include>
 
     <include name="Search_View_Panel_DiscoverFilters">
@@ -1000,7 +1048,7 @@
                     <onleft>SetProperty(SearchTerm,$INFO[Control.GetLabel(9099).index(1)])</onleft>
                     <onleft>308</onleft>  <!-- TO SEARCH ICON -->
                     <onright>9000</onright>
-                    <visible allowhiddenfocus="true">![ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus] | $EXP[Exp_HomeMenu_HasFocus]]</visible>
+                    <visible allowhiddenfocus="true">!$EXP[Exp_Search_WidgetGroup_HasFocus]</visible>
                 </control>
                 <!-- Edit Label -->
                 <control type="group">
