@@ -193,6 +193,23 @@
                                     <onback>13999</onback>
                                 </include>
 
+                                <!-- Target -->
+                                <include content="Settings_Stacked_Button">
+                                    <param name="dialog">true</param>
+                                    <param name="id">23016</param>
+                                    <param name="groupid">23116</param>
+                                    <param name="control">button</param>
+                                    <param name="toplabel">Media window</param>
+                                    <param name="sublabel">$INFO[Container(22001).ListItem.Property(target)]</param>
+                                    <param name="sublabel_visible">!String.IsEmpty(Control.GetLabel(23016))</param>
+
+                                    <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;target&amp;&amp;videos&amp;music&amp;programs&amp;pictures&amp;tvchannels&amp;tvguide&amp;tvrecordings&amp;radiochannels&amp;radioguide&amp;radiorecordings&amp;&amp;Media window target&amp;&amp;True])</onclick>
+
+                                    <visible>String.IsEmpty(Container(22001).ListItem.Property(forced))</visible>
+                                    <visible>String.Contains(Container(22001).ListItem.Property(path),://)</visible>
+                                    <onback>13999</onback>
+                                </include>
+
                                 <!-- Rename -->
                                 <include content="Settings_Button">
                                     <param name="dialog">true</param>
@@ -234,8 +251,9 @@
                                     <param name="control">button</param>
                                     <label> -- Style</label>
                                     <label2>$INFO[Container(22001).ListItem.Property(widget_style)]</label2>
-                                    <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;widget_style&amp;&amp;Poster&amp;Landscape&amp;Square&amp;Banner&amp;Card&amp;Apps&amp;Text&amp;&amp;Style&amp;&amp;True])</onclick>
-                                    <visible>String.IsEqual(Window(Home).Property(Shortcuts.EditMode),mode=widgets)</visible>
+                                    <onclick condition="!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)">RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;widget_style&amp;&amp;Poster&amp;Landscape&amp;Square&amp;Banner&amp;Card&amp;Apps&amp;Text&amp;&amp;Style&amp;&amp;True])</onclick>
+                                    <onclick condition="String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)">RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;widget_style&amp;&amp;Poster&amp;Landscape&amp;Square&amp;Banner&amp;Card&amp;&amp;Style&amp;&amp;True])</onclick>
+                                    <visible>String.IsEqual(Window(Home).Property(Shortcuts.EditMode),mode=widgets) | String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)</visible>
                                     <onback>13999</onback>
                                 </include>
                                 <!-- Widgets: Sort by -->
@@ -246,7 +264,7 @@
                                     <label> -- Sort by</label>
                                     <label2>[CAPITALIZE]$INFO[Container(22001).ListItem.Property(widget_sortby)][/CAPITALIZE]</label2>
                                     <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;widget_sortby&amp;&amp;default&amp;label&amp;random&amp;dateadded&amp;lastplayed&amp;playcount&amp;year&amp;rating&amp;userrating&amp;votes&amp;genre&amp;country&amp;studio&amp;playlist&amp;episodenumber&amp;season&amp;totalepisodes&amp;watchedepisodes&amp;tvshowstatus&amp;tvshowtitle&amp;file&amp;title&amp;track&amp;time&amp;artist&amp;album&amp;lastupdated&amp;lastused&amp;date&amp;&amp;Sort by&amp;&amp;True])</onclick>
-                                    <visible>String.IsEqual(Window(Home).Property(Shortcuts.EditMode),mode=widgets)</visible>
+                                    <visible>String.IsEqual(Window(Home).Property(Shortcuts.EditMode),mode=widgets) | String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)</visible>
                                     <onback>13999</onback>
                                 </include>
                                 <!-- Widgets: Sort order -->
@@ -259,7 +277,7 @@
                                     <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;widget_sortorder])</onclick>
                                     <visible>!String.IsEmpty(Container(22001).ListItem.Property(widget_sortby))</visible>
                                     <visible>!String.IsEqual(Container(22001).ListItem.Property(widget_sortby),random)</visible>
-                                    <visible>String.IsEqual(Window(Home).Property(Shortcuts.EditMode),mode=widgets)</visible>
+                                    <visible>String.IsEqual(Window(Home).Property(Shortcuts.EditMode),mode=widgets) | String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)</visible>
                                     <onback>13999</onback>
                                 </include>
                                 <!-- Widgets: Limit -->
@@ -270,7 +288,7 @@
                                     <label> -- Limit</label>
                                     <label2>$INFO[Container(22001).ListItem.Property(widget_limit)]</label2>
                                     <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_numeric&amp;&amp;widget_limit&amp;&amp;&amp;&amp;Limit])</onclick>
-                                    <visible>String.IsEqual(Window(Home).Property(Shortcuts.EditMode),mode=widgets)</visible>
+                                    <visible>String.IsEqual(Window(Home).Property(Shortcuts.EditMode),mode=widgets) | String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)</visible>
                                     <onback>13999</onback>
                                 </include>
                                 <!-- Widgets: Autoscroll -->
@@ -281,7 +299,7 @@
                                     <label> -- Autoscroll</label>
                                     <selected>!String.IsEmpty(Container(22001).ListItem.Property(widget_autoscroll))</selected>
                                     <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;widget_autoscroll])</onclick>
-                                    <visible>String.IsEqual(Window(Home).Property(Shortcuts.EditMode),mode=widgets)</visible>
+                                    <visible>String.IsEqual(Window(Home).Property(Shortcuts.EditMode),mode=widgets) | String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)</visible>
                                     <onback>13999</onback>
                                 </include>
 
@@ -380,28 +398,6 @@
                                     <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=powersidemenu)</visible>
                                     <onback>13999</onback>
                                 </include>
-                                <!-- MODES: Edit submenu (static items) -->
-                                <!-- <include content="Settings_Stacked_Button">
-                                    <param name="dialog">true</param>
-                                    <param name="id">23016</param>
-                                    <param name="groupid">23116</param>
-                                    <param name="control">button</param>
-                                    <param name="toplabel">Edit submenu items</param>
-                                    <param name="sublabel">Clear submenu list first</param>
-                                    <param name="sublabel_visible">!String.ISEmpty(Container(22001).ListItem.Property(submenulist_path))</param>
-                                    <param name="enable">String.IsEmpty(Container(22001).ListItem.Property(submenulist_path))</param>
-
-                                    <onclick>SetProperty(Shortcuts.EditMode,mode=submenu,Home)</onclick>
-                                    <onclick>SetProperty(Shortcuts.EditGUID,guid=$INFO[Container(22001).ListItem.Property(guid)],Home)</onclick>
-                                    <onclick>SetFocus(23004)</onclick>
-
-                                    <visible>String.IsEmpty(Window(Home).Property(Shortcuts.EditMode))</visible>
-                                    <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)</visible>
-                                    <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=sidemenu)</visible>
-                                    <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=powermainmenu)</visible>
-                                    <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=powersidemenu)</visible>
-                                    <onback>13999</onback>
-                                </include> -->
                             </control>
                         </include>
                     </control>
@@ -621,6 +617,46 @@
                             <visible>String.IsEqual(Window.Property(Options.Mode),Categories.Submenu)</visible>
                             <onback>23999</onback>
                         </include>
+
+                        <!-- Submenu: SubmenuList sort by -->
+                        <include content="Settings_Button">
+                            <param name="dialog">true</param>
+                            <param name="id">33030</param>
+                            <param name="control">button</param>
+                            <label> -- Sort by</label>
+                            <label2>[CAPITALIZE]$INFO[Container(22001).ListItem.Property(submenulist_sortby)][/CAPITALIZE]</label2>
+                            <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;submenulist_sortby&amp;&amp;default&amp;label&amp;random&amp;dateadded&amp;lastplayed&amp;playcount&amp;year&amp;rating&amp;userrating&amp;votes&amp;genre&amp;country&amp;studio&amp;playlist&amp;episodenumber&amp;season&amp;totalepisodes&amp;watchedepisodes&amp;tvshowstatus&amp;tvshowtitle&amp;file&amp;title&amp;track&amp;time&amp;artist&amp;album&amp;lastupdated&amp;lastused&amp;date&amp;&amp;Sort by&amp;&amp;True])</onclick>
+                            <visible>String.IsEqual(Window.Property(Options.Mode),Categories.Submenu) + String.IsEqual(Container(22001).ListItem.Property(use_as_widget),True)</visible>
+                            <visible>!String.IsEmpty(Container(22001).ListItem.Property(submenulist_path))</visible>
+                            <onback>23999</onback>
+                        </include>
+                        <!-- Submenu: SubmenuList sort order -->
+                        <include content="Settings_Button">
+                            <param name="dialog">true</param>
+                            <param name="id">33031</param>
+                            <param name="control">radiobutton</param>
+                            <label> -- Reverse order</label>
+                            <selected>!String.IsEmpty(Container(22001).ListItem.Property(submenulist_sortorder))</selected>
+                            <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;submenulist_sortorder])</onclick>
+                            <visible>!String.IsEmpty(Container(22001).ListItem.Property(submenulist_sortby))</visible>
+                            <visible>!String.IsEqual(Container(22001).ListItem.Property(submenulist_sortby),random)</visible>
+                            <visible>String.IsEqual(Window.Property(Options.Mode),Categories.Submenu) + String.IsEqual(Container(22001).ListItem.Property(use_as_widget),True)</visible>
+                            <visible>!String.IsEmpty(Container(22001).ListItem.Property(submenulist_path))</visible>
+                            <onback>23999</onback>
+                        </include>
+                        <!-- Submenu: SubmenuList limit -->
+                        <include content="Settings_Button">
+                            <param name="dialog">true</param>
+                            <param name="id">33032</param>
+                            <param name="control">button</param>
+                            <label> -- Limit</label>
+                            <label2>$INFO[Container(22001).ListItem.Property(submenulist_limit)]</label2>
+                            <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_numeric&amp;&amp;submenulist_limit&amp;&amp;&amp;&amp;Limit])</onclick>
+                            <visible>String.IsEqual(Window.Property(Options.Mode),Categories.Submenu) + String.IsEqual(Container(22001).ListItem.Property(use_as_widget),True)</visible>
+                            <visible>!String.IsEmpty(Container(22001).ListItem.Property(submenulist_path))</visible>
+                            <onback>23999</onback>
+                        </include>
+
                         <include content="Settings_Stacked_Button">
                             <param name="dialog">true</param>
                             <param name="id">33022</param>

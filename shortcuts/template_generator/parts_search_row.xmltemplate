@@ -23,15 +23,18 @@
         <param name="content">$VAR[Path_SearchTerm,{widget_path},{widget_path_end}]</param>
     </include>
 
-    <onback condition="![![!Skin.HasSetting(Rows.EnableWrapList)] | Integer.IsEqual(Container({widget_id}).ListItem.CurrentItem,1)]">6000</onback>
-    <onback condition="![![!Skin.HasSetting(Rows.EnableWrapList)] | Integer.IsEqual(Container({widget_id}).ListItem.CurrentItem,1)]">SetFocus({widget_id},0,absolute)</onback>
+    <include content="Defs_AutoScroll" condition="{widget_isautoscroll}">
+        <param name="condition">!Control.HasFocus({widget_id})</param>
+    </include>
 
-    <onback condition="[![!Skin.HasSetting(Rows.EnableWrapList)] | Integer.IsEqual(Container({widget_id}).ListItem.CurrentItem,1)]">SetFocus(5001)</onback>
-    <onback condition="[![!Skin.HasSetting(Rows.EnableWrapList)] | Integer.IsEqual(Container({widget_id}).ListItem.CurrentItem,1)]">9097</onback>
-    <onback condition="[![!Skin.HasSetting(Rows.EnableWrapList)] | Integer.IsEqual(Container({widget_id}).ListItem.CurrentItem,1)]">AlarmClock(clear_twc,ClearProperty(TMDbHelper.WidgetContainer),00:00,silent)</onback>
+    <onback condition="!Integer.IsEqual(Container({widget_id}).ListItem.CurrentItem,1)">6000</onback>
+    <onback condition="!Integer.IsEqual(Container({widget_id}).ListItem.CurrentItem,1)">SetFocus({widget_id},0,absolute)</onback>
+
+    <onback condition="Integer.IsEqual(Container({widget_id}).ListItem.CurrentItem,1)">SetFocus(5001)</onback>
+    <onback condition="Integer.IsEqual(Container({widget_id}).ListItem.CurrentItem,1)">9097</onback>
+    <onback condition="Integer.IsEqual(Container({widget_id}).ListItem.CurrentItem,1)">AlarmClock(clear_twc,ClearProperty(TMDbHelper.WidgetContainer),00:00,silent)</onback>
 
     <onfocus>SetProperty(TMDbHelper.WidgetContainer,{widget_id})</onfocus>
-    <content><item><label>-</label><visible>[[!Control.HasFocus(9099) + String.IsEmpty(Window.Property(SearchTerm))] | [Control.HasFocus(9099) + String.IsEmpty(Control.GetLabel(9099).index(1))]]</visible></item></content>
 
     <onfocus>SetProperty(Transition.WidgetStyle,{widget_include},Home)</onfocus>
     <onunfocus>ClearProperty(Transition.WidgetStyle,Home)</onunfocus>

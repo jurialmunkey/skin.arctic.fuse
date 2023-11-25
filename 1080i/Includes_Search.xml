@@ -3,8 +3,8 @@
 
     <include name="Search_View_Slide">
         <control type="group" id="$PARAM[id]">
-            <animation effect="slide" start="0" end="0,-100" time="400" tween="quadratic" easing="out" reversible="false" condition="![[ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus] | $EXP[Exp_HomeMenu_HasFocus]]]">Conditional</animation>
-            <animation effect="slide" end="0" start="0,-100" time="400" tween="quadratic" easing="out" reversible="false" condition="[[ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus] | $EXP[Exp_HomeMenu_HasFocus]]]">Conditional</animation>
+            <animation effect="slide" start="0" end="0,-100" time="400" tween="quadratic" easing="out" reversible="false" condition="!$EXP[Exp_Search_WidgetGroup_HasFocus]">Conditional</animation>
+            <animation effect="slide" end="0" start="0,-100" time="400" tween="quadratic" easing="out" reversible="false" condition="$EXP[Exp_Search_WidgetGroup_HasFocus]">Conditional</animation>
             <include>Animation_View_WindowChange</include>
             <nested />
             <include>Widget_Transitions</include>
@@ -17,7 +17,7 @@
             <top>500</top>
             <bottom>-440</bottom>
             <onup>9003</onup>
-            <ondown>SetProperty(List.ViewContainer,$INFO[System.CurrentControlID])</ondown>
+            <!-- <ondown>SetProperty(List.ViewContainer,$INFO[System.CurrentControlID])</ondown> -->
             <ondown>333</ondown>
 
             <include content="Action_View_Movement_OnLeft">
@@ -38,9 +38,82 @@
         </control>
     </include>
 
+    <include name="Search_View_WidgetGroup">
+        <control type="group">
+            <include>Animation_Group_Bumper</include>
+            <include content="Home_Widgets_Infopanel">
+                <param name="visible">$EXP[Exp_Search_WidgetGroup_HasFocus]</param>
+                <include content="Info_Panel">
+                    <param name="container">Container.</param>
+                </include>
+                <include content="Animation_Fade_In">
+                    <param name="type">Visible</param>
+                    <param name="delay">200</param>
+                </include>
+                <animation effect="fade" start="100" end="0" time="150" tween="sine" easing="in" reversible="false">Hidden</animation>
+            </include>
+            <include content="Search_View_Slide">
+                <include content="Search_View_Widgets">
+                    <include>skinvariables-searchmenu-widgets</include>
+                    <include>Search_View_DiscoverWidgets</include>
+                </include>
+            </include>
 
+            <control type="grouplist">
+                <visible>Integer.IsEqual(Container(6000).NumItems,0)</visible>
+                <left>view_side</left>
+                <right>view_side</right>
+                <top>160</top>
+                <bottom>view_pad</bottom>
+                <orientation>vertical</orientation>
+                <align>center</align>
+                <control type="label">
+                    <font>font_midi_black</font>
+                    <label>$LOCALIZE[31046]</label>
+                    <align>center</align>
+                    <height>40</height>
+                    <textcolor>main_fg_100</textcolor>
+                </control>
+                <control type="textbox">
+                    <font>font_main_plot</font>
+                    <label>$LOCALIZE[31500] "[CAPITALIZE]$VAR[Label_Search_HeadingFilter][/CAPITALIZE]".[CR]$LOCALIZE[31501].</label>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <height>90</height>
+                    <textcolor>main_fg_30</textcolor>
+                </control>
+            </control>
+        </control>
+    </include>
 
-    <include name="_Search_View_Footer_Item">
+    <include name="Search_View_SearchIcon">
+        <control type="group">
+            <left>view_menu</left>
+            <width>40</width>
+            <visible>!Skin.String(Home.SideMenuCollapse,Always)</visible>
+            <visible>!Skin.String(Home.SideMenuCollapse,Library)</visible>
+            <visible>!$EXP[Exp_InfoDialogs]</visible>
+            <control type="group">
+                <top>view_pad</top>
+                <height>40</height>
+                <control type="image">
+                    <include>Texture_Circle_Highlight_V</include>
+                    <aspectratio>keep</aspectratio>
+                    <width>10</width>
+                    <height>10</height>
+                    <centertop>50%</centertop>
+                    <left>-20</left>
+                </control>
+                <control type="image">
+                    <aspectratio>keep</aspectratio>
+                    <bordersize>icon_home_bordersize</bordersize>
+                    <texture colordiffuse="main_fg_90">special://skin/extras/icons/search.png</texture>
+                </control>
+            </control>
+        </control>
+    </include>
+
+    <include name="Search_View_Footer_Item_Layout">
         <control type="group">
             <nested />
             <control type="image">
@@ -69,13 +142,13 @@
                 <centertop>50%</centertop>
                 <width>40</width>
                 <height>40</height>
-                <include content="_Search_View_Footer_Item">
+                <include content="Search_View_Footer_Item_Layout">
                     <param name="icon">$PARAM[icon]</param>
                     <param name="colordiffuse">dialog_fg_30</param>
                     <param name="label">$INFO[Container($PARAM[id]).NumItems]</param>
                     <visible>![Integer.IsEqual(Container($PARAM[id]).NumItems,0) | $PARAM[altnofocus]]</visible>
                 </include>
-                <include content="_Search_View_Footer_Item">
+                <include content="Search_View_Footer_Item_Layout">
                     <param name="icon">$PARAM[icon]</param>
                     <param name="colordiffuse">dialog_fg_12</param>
                     <param name="label">$NUMBER[0]</param>
@@ -532,7 +605,7 @@
 
     <include name="Search_Visible_OnEdit">
         <include>Animation_FadeIn</include>
-        <visible allowhiddenfocus="true">![ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus] | $EXP[Exp_HomeMenu_HasFocus]]</visible>
+        <visible allowhiddenfocus="true">!$EXP[Exp_Search_WidgetGroup_HasFocus]</visible>
     </include>
 
     <include name="Search_View_Panel_DiscoverFilters">
@@ -693,12 +766,14 @@
         <param name="ondown">9098</param>
         <param name="rowone">9002</param>
         <param name="rowtwo">9003</param>
+        <param name="onback">PreviousMenu</param>
         <definition>
             <!-- First Row -->
             <control type="grouplist" id="$PARAM[rowone]">
                 <orientation>horizontal</orientation>
                 <itemgap>0</itemgap>
                 <height>view_pad</height>
+                <onback>$PARAM[onback]</onback>
                 <include content="Search_Alphabet_Letter">
                     <param name="letter">a</param>
                     <param name="id">1</param>
@@ -835,7 +910,7 @@
                 <height>view_pad</height>
                 <orientation>horizontal</orientation>
                 <itemgap>0</itemgap>
-
+                <onback>$PARAM[onback]</onback>
                 <include content="Search_Alphabet_Letter">
                     <param name="letter">q</param>
                     <param name="id">1</param>
@@ -987,40 +1062,37 @@
                 <!-- Edit Control -->
                 <control type="edit" id="9099">
                     <description>Search</description>
-                    <font />
+                    <font>font_main_black</font>
+                    <textcolor>00ffffff</textcolor>
+                    <selectedcolor>00ffffff</selectedcolor>
+                    <disabledcolor>00ffffff</disabledcolor>
+                    <focusedcolor>$VAR[ColorSelected]</focusedcolor>
                     <height>view_pad</height>
                     <textoffsetx>40</textoffsetx>
                     <align>left</align>
+                    <!-- TO PREVIOUS MENU -->
+                    <onup>PreviousMenu</onup>
+                    <!-- TO KEYBOARD -->
                     <ondown>SetProperty(SearchTerm,$INFO[Control.GetLabel(9099).index(1)])</ondown>
-                    <ondown>9002</ondown>  <!-- TO Keyboard -->
+                    <ondown>9002</ondown>
+                    <!-- TO SEARCH ICON -->
+                    <onleft>ClearProperty(List.ViewContainer)</onleft>
                     <onleft>SetProperty(SearchTerm,$INFO[Control.GetLabel(9099).index(1)])</onleft>
-                    <onleft>308</onleft>  <!-- TO SEARCH ICON -->
+                    <onleft>308</onleft>
+                    <!-- TO OPTIONS -->
+                    <onright>SetProperty(SearchTerm,$INFO[Control.GetLabel(9099).index(1)])</onright>
                     <onright>9000</onright>
-                    <visible allowhiddenfocus="true">![ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus] | $EXP[Exp_HomeMenu_HasFocus]]</visible>
+                    <visible allowhiddenfocus="true">!$EXP[Exp_Search_WidgetGroup_HasFocus] | Control.HasFocus(9099)</visible>
                 </control>
                 <!-- Edit Label -->
                 <control type="group">
                     <left>40</left>
                     <right>40</right>
                     <control type="label">
-                        <font>font_main_bold</font>
-                        <label>$VAR[Label_Setting_SearchStyle][CAPITALIZE]$VAR[Label_Search_HeadingFilter,: ,][/CAPITALIZE]</label>
-                        <visible>Control.HasFocus(9099)</visible>
-                        <textcolor>$VAR[ColorSelected]</textcolor>
-                        <visible>![ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus] | $EXP[Exp_HomeMenu_HasFocus]]</visible>
-                    </control>
-                    <control type="label">
-                        <font>font_main_bold</font>
-                        <label>$VAR[Label_Setting_SearchStyle][CAPITALIZE]$VAR[Label_Search_HeadingFilter,: ,][/CAPITALIZE]</label>
-                        <visible>!Control.HasFocus(9099)</visible>
-                        <textcolor>main_fg_90</textcolor>
-                        <visible>![ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus] | $EXP[Exp_HomeMenu_HasFocus]]</visible>
-                    </control>
-                    <control type="label">
                         <font>font_midi_black</font>
                         <label>$VAR[Label_Setting_SearchStyle][CAPITALIZE]$VAR[Label_Search_HeadingFilter,: ,][/CAPITALIZE]</label>
                         <textcolor>main_fg_100</textcolor>
-                        <visible>[ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus] | $EXP[Exp_HomeMenu_HasFocus]]</visible>
+                        <visible>!Control.HasFocus(9099)</visible>
                     </control>
                 </control>
 
@@ -1086,7 +1158,7 @@
                         <selected>Skin.HasSetting(Search.EnableDiscover) + !Skin.HasSetting(Search.LibraryDiscover)</selected>
                         <onclick>Skin.SetBool(Search.EnableDiscover)</onclick>
                         <onclick>Skin.Reset(Search.LibraryDiscover)</onclick>
-                        <onclick>SetFocus(8500)</onclick>
+                        <onclick>SetFocus(85001)</onclick>
                     </include>
                     <include content="Dialog_Side_Button">
                         <param name="vertical">false</param>
@@ -1099,7 +1171,7 @@
                         <selected>Skin.HasSetting(Search.EnableDiscover) + Skin.HasSetting(Search.LibraryDiscover)</selected>
                         <onclick>Skin.SetBool(Search.EnableDiscover)</onclick>
                         <onclick>Skin.SetBool(Search.LibraryDiscover)</onclick>
-                        <onclick>SetFocus(8500)</onclick>
+                        <onclick>SetFocus(85001)</onclick>
                     </include>
                     <include content="Dialog_Side_Button">
                         <param name="vertical">false</param>
@@ -1340,7 +1412,7 @@
             <param name="sort_condition">True</param>
             <param name="sort_descending">True</param>
             <param name="visible">[Skin.HasSetting(Search.EnableDiscover)]</param>
-            <param name="altvisible">[Skin.HasSetting(Search.EnableDiscover) + !ControlGroup(6000).HasFocus()]</param>
+            <param name="altvisible">[Skin.HasSetting(Search.EnableDiscover) + !ControlGroup(6000).HasFocus() + System.IdleTime(1) + !System.IdleTime(2)]</param>
             <param name="include">List_Poster_Row</param>
             <param name="transition_include">true</param>
             <param name="transition_hidden">Control.HasFocus(5081)</param>
@@ -1351,21 +1423,14 @@
             <param name="labeltop">widgetsearch_label_t</param>
             <param name="labelheight">widgetsearch_label_h</param>
 
-            <content>
-                <item>
-                    <label>$LOCALIZE[31046]</label>
-                    <visible>[[Integer.IsEqual(Container(5081).NumItems,1) + String.IsEqual(Container(5081).ListItem(1).Label,$LOCALIZE[31046])] | Integer.IsEqual(Container(5081).NumItems,0)]</visible>
-                </item>
-            </content>
-
             <content target="videos" limit="$VAR[Path_DiscoverWidgets_ItemLimit]" sortby="$VAR[Path_DiscoverWidgets_SortBy]" sortorder="$VAR[Path_DiscoverWidgets_SortOrder]" browse="$VAR[Defs_BrowseLimitedLists]">$VAR[Path_DiscoverWidgets_Film]</content>
 
-            <onback condition="![![!Skin.HasSetting(Rows.EnableWrapList)] | Integer.IsEqual(Container(5081).ListItem.CurrentItem,1)]">6000</onback>
-            <onback condition="![![!Skin.HasSetting(Rows.EnableWrapList)] | Integer.IsEqual(Container(5081).ListItem.CurrentItem,1)]">SetFocus(5081,0,absolute)</onback>
+            <onback condition="!Integer.IsEqual(Container(5081).ListItem.CurrentItem,1)">6000</onback>
+            <onback condition="!Integer.IsEqual(Container(5081).ListItem.CurrentItem,1)">SetFocus(5081,0,absolute)</onback>
 
-            <onback condition="[![!Skin.HasSetting(Rows.EnableWrapList)] | Integer.IsEqual(Container(5081).ListItem.CurrentItem,1)]">SetFocus(5081)</onback>
-            <onback condition="[![!Skin.HasSetting(Rows.EnableWrapList)] | Integer.IsEqual(Container(5081).ListItem.CurrentItem,1)]">9097</onback>
-            <onback condition="[![!Skin.HasSetting(Rows.EnableWrapList)] | Integer.IsEqual(Container(5081).ListItem.CurrentItem,1)]">AlarmClock(clear_twc,ClearProperty(TMDbHelper.WidgetContainer),00:00,silent)</onback>
+            <onback condition="Integer.IsEqual(Container(5081).ListItem.CurrentItem,1)">SetFocus(5081)</onback>
+            <onback condition="Integer.IsEqual(Container(5081).ListItem.CurrentItem,1)">9097</onback>
+            <onback condition="Integer.IsEqual(Container(5081).ListItem.CurrentItem,1)">AlarmClock(clear_twc,ClearProperty(TMDbHelper.WidgetContainer),00:00,silent)</onback>
 
             <onfocus>SetProperty(TMDbHelper.WidgetContainer,5081)</onfocus>
 
@@ -1381,7 +1446,7 @@
             <param name="sort_condition">True</param>
             <param name="sort_descending">True</param>
             <param name="visible">[Skin.HasSetting(Search.EnableDiscover)]</param>
-            <param name="altvisible">[Skin.HasSetting(Search.EnableDiscover) + !ControlGroup(6000).HasFocus()]</param>
+            <param name="altvisible">[Skin.HasSetting(Search.EnableDiscover) + !ControlGroup(6000).HasFocus() + System.IdleTime(1) + !System.IdleTime(2)]</param>
             <param name="include">List_Poster_Row</param>
             <param name="transition_include">true</param>
             <param name="transition_hidden">Control.HasFocus(5082)</param>
@@ -1392,21 +1457,14 @@
             <param name="labeltop">widgetsearch_label_t</param>
             <param name="labelheight">widgetsearch_label_h</param>
 
-            <content>
-                <item>
-                    <label>$LOCALIZE[31046]</label>
-                    <visible>[[Integer.IsEqual(Container(5082).NumItems,1) + String.IsEqual(Container(5082).ListItem(1).Label,$LOCALIZE[31046])] | Integer.IsEqual(Container(5082).NumItems,0)]</visible>
-                </item>
-            </content>
-
             <content target="videos" limit="$VAR[Path_DiscoverWidgets_ItemLimit]" sortby="$VAR[Path_DiscoverWidgets_SortBy]" sortorder="$VAR[Path_DiscoverWidgets_SortOrder]" browse="$VAR[Defs_BrowseLimitedLists]">$VAR[Path_DiscoverWidgets_Show]</content>
 
-            <onback condition="![![!Skin.HasSetting(Rows.EnableWrapList)] | Integer.IsEqual(Container(5082).ListItem.CurrentItem,1)]">6000</onback>
-            <onback condition="![![!Skin.HasSetting(Rows.EnableWrapList)] | Integer.IsEqual(Container(5082).ListItem.CurrentItem,1)]">SetFocus(5082,0,absolute)</onback>
+            <onback condition="!Integer.IsEqual(Container(5082).ListItem.CurrentItem,1)">6000</onback>
+            <onback condition="!Integer.IsEqual(Container(5082).ListItem.CurrentItem,1)">SetFocus(5082,0,absolute)</onback>
 
-            <onback condition="[![!Skin.HasSetting(Rows.EnableWrapList)] | Integer.IsEqual(Container(5082).ListItem.CurrentItem,1)]">SetFocus(5081)</onback>
-            <onback condition="[![!Skin.HasSetting(Rows.EnableWrapList)] | Integer.IsEqual(Container(5081).ListItem.CurrentItem,1)]">9097</onback>
-            <onback condition="[![!Skin.HasSetting(Rows.EnableWrapList)] | Integer.IsEqual(Container(5082).ListItem.CurrentItem,1)]">AlarmClock(clear_twc,ClearProperty(TMDbHelper.WidgetContainer),00:00,silent)</onback>
+            <onback condition="Integer.IsEqual(Container(5082).ListItem.CurrentItem,1)">SetFocus(5081)</onback>
+            <onback condition="Integer.IsEqual(Container(5081).ListItem.CurrentItem,1)">9097</onback>
+            <onback condition="Integer.IsEqual(Container(5082).ListItem.CurrentItem,1)">AlarmClock(clear_twc,ClearProperty(TMDbHelper.WidgetContainer),00:00,silent)</onback>
 
             <onfocus>SetProperty(TMDbHelper.WidgetContainer,5082)</onfocus>
 

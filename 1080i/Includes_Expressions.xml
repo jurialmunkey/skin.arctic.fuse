@@ -110,7 +110,7 @@
     <expression name="Exp_View_523">$EXP[Exp_View_522]</expression>
 
     <!-- Alphabet -->
-    <expression name="Exp_AlphabetTypes_Only">[![$EXP[Exp_View_502] | $EXP[Exp_View_512] | $EXP[Exp_View_522]] + !Skin.HasSetting(Rows.EnableWrapList) + !Skin.HasSetting(DisableAlphabetStrip) + Integer.IsGreater(Container.NumPages,2) + [String.IsEqual(Container.SortMethod,$LOCALIZE[551]) | String.IsEqual(Container.SortMethod,$LOCALIZE[556]) | String.IsEqual(Container.SortMethod,$LOCALIZE[561]) | [String.IsEqual(Container.SortMethod,$LOCALIZE[557]) + Container.Content(artists)] | [String.IsEqual(Container.SortMethod,$LOCALIZE[558]) + Container.Content(albums)]]]</expression>
+    <expression name="Exp_AlphabetTypes_Only">[![$EXP[Exp_View_502] | $EXP[Exp_View_512] | $EXP[Exp_View_522]] + Skin.HasSetting(EnableAlphabetStrip) + Integer.IsGreater(Container.NumPages,2) + [String.IsEqual(Container.SortMethod,$LOCALIZE[551]) | String.IsEqual(Container.SortMethod,$LOCALIZE[556]) | String.IsEqual(Container.SortMethod,$LOCALIZE[561]) | [String.IsEqual(Container.SortMethod,$LOCALIZE[557]) + Container.Content(artists)] | [String.IsEqual(Container.SortMethod,$LOCALIZE[558]) + Container.Content(albums)]]]</expression>
 
     <!-- Scrollbar -->
     <expression name="Exp_AlphabetVisible">[Control.HasFocus(65) + $EXP[Exp_AlphabetTypes_Only]]</expression>
@@ -131,7 +131,7 @@
 
     <expression name="Exp_MediaFilterVisible">[ControlGroup(9000).HasFocus() | ControlGroup(9002).HasFocus() | ControlGroup(9003).HasFocus() | Control.HasFocus(19) | Control.HasFocus(9001) | Control.HasFocus(9099) | Control.HasFocus(9098) | ControlGroup(9500).HasFocus() | ControlGroup(9600).HasFocus()]</expression>
 
-    <expression name="Exp_Hide_BackgroundArt">[$EXP[Exp_FilterWall_IsMedia] | $EXP[Exp_FilterWall_IsDiscover] | $EXP[Exp_MediaFilterVisible]]</expression>
+    <expression name="Exp_Hide_BackgroundArt">[$EXP[Exp_FilterWall_IsMedia] | $EXP[Exp_FilterWall_IsDiscover] | $EXP[Exp_MediaFilterVisible] | [Window.IsVisible(1105) + !$EXP[Exp_Search_WidgetGroup_HasFocus]]]</expression>
 
 
     <!-- ================= -->
@@ -191,19 +191,21 @@
 
     <expression name="Exp_Group_Bumper_HasFocus">[Control.HasFocus(330) | Control.HasFocus(332) | Control.HasFocus(333)]</expression>
 
+    <expression name="Exp_Search_WidgetGroup_HasFocus">[ControlGroup(6000).HasFocus() | [Control.HasFocus(333) + !Integer.ISEqual(Container(6000).NumItems,0)] | [$EXP[Exp_HomeMenu_HasFocus] + !String.IsEmpty(Window.Property(List.ViewContainer))]]</expression>
 
+
+    <!-- ====== -->
+    <!-- Wizard -->
+    <!-- ====== -->
     <variable name="Exp_Var_Layout_IsCategories">
         <value condition="!Skin.HasSetting(Hub.Home.DisableSubmenu) + !Skin.HasSetting(Hubs.WidgetSelector) + Skin.String(Home.SideMenuCollapse,Never)">True</value>
     </variable>
-
     <variable name="Exp_Var_Layout_IsClassic">
         <value condition="Skin.HasSetting(Hub.Home.DisableSubmenu) + !Skin.HasSetting(Hubs.WidgetSelector) + Skin.String(Home.SideMenuCollapse,Never)">True</value>
     </variable>
-
     <variable name="Exp_Var_Layout_IsCombined">
         <value condition="Skin.HasSetting(Hub.Home.DisableSubmenu) + Skin.HasSetting(Hubs.WidgetSelector) + Skin.String(Home.SideMenuCollapse,Always)">True</value>
     </variable>
-
     <variable name="Exp_Var_Layout_IsCompound">
         <value condition="!Skin.HasSetting(Hub.Home.DisableSubmenu) + !Skin.HasSetting(Hubs.WidgetSelector) + Skin.String(Home.SideMenuCollapse,Always)">True</value>
     </variable>

@@ -1,74 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window type="window" id="1105">
-    <defaultcontrol>9011</defaultcontrol>
+    <defaultcontrol always="true">9011</defaultcontrol>
     <menucontrol>303</menucontrol>
 
-    <!-- TESTER -->
-    <!-- Normal -->
-    <onload condition="!String.IsEmpty(Window(Home).Property(CustomSearchTerm))">RunScript(script.skinvariables,set_editcontrol=9099,window_id=1105,setfocus=6000,text=$INFO[Window(Home).Property(CustomSearchTerm)])</onload>
+    <include>Action_Blur_Onload</include>
+
+    <onload condition="!String.IsEmpty(Window(Home).Property(CustomSearchTerm))">RunScript(script.skinvariables,set_editcontrol=9099,window_id=1105,setfocus=9011,text=$INFO[Window(Home).Property(CustomSearchTerm)])</onload>
     <onload condition="!String.IsEmpty(Window(Home).Property(CustomSearchTerm))">ClearProperty(CustomSearchTerm,Home)</onload>
+
     <onunload condition="!String.IsEmpty(Control.GetLabel(9099).index(1))">RunScript(script.skinvariables,add_skinstring_history=SearchHistory,value=$INFO[Control.GetLabel(9099).index(1)])</onunload>
 
     <controls>
-        <include content="Object_Hidden_List">
-            <param name="id">9008</param>
-            <content>$VAR[Path_Search_ItemCountSum]</content>
-        </include>
-
         <include>Defs_TMDbHelper_Loader</include>
-
         <include>Background_Main</include>
-
-        <control type="group">
-            <include>Animation_Group_Bumper</include>
-            <include content="Home_Widgets_Infopanel">
-                <param name="visible">[ControlGroup(6000).HasFocus() | $EXP[Exp_Group_Bumper_HasFocus] | $EXP[Exp_HomeMenu_HasFocus]]</param>
-                <include content="Info_Panel">
-                    <!-- <param name="details">false</param> -->
-                    <param name="container">Container.</param>
-                </include>
-                <include content="Animation_Fade_In">
-                    <param name="type">Visible</param>
-                    <param name="delay">200</param>
-                </include>
-                <animation effect="fade" start="100" end="0" time="150" tween="sine" easing="in" reversible="false">Hidden</animation>
-            </include>
-            <include content="Search_View_Slide">
-                <include content="Search_View_Widgets">
-                    <include>skinvariables-searchmenu-widgets</include>
-                    <include>Search_View_DiscoverWidgets</include>
-                </include>
-            </include>
-        </control>
-
         <include>Background_Transition</include>
+        <include>Search_View_WidgetGroup</include>
         <include>Home_Fade</include>
         <include>Search_View_Panel</include>
-
-        <control type="group">
-            <left>view_menu</left>
-            <width>40</width>
-            <visible>!Skin.String(Home.SideMenuCollapse,Always)</visible>
-            <visible>!Skin.String(Home.SideMenuCollapse,Library)</visible>
-            <visible>!$EXP[Exp_InfoDialogs]</visible>
-            <control type="group">
-                <top>view_pad</top>
-                <height>40</height>
-                <control type="image">
-                    <include>Texture_Circle_Highlight_V</include>
-                    <aspectratio>keep</aspectratio>
-                    <width>10</width>
-                    <height>10</height>
-                    <centertop>50%</centertop>
-                    <left>-20</left>
-                </control>
-                <control type="image">
-                    <aspectratio>keep</aspectratio>
-                    <bordersize>icon_home_bordersize</bordersize>
-                    <texture colordiffuse="main_fg_90">special://skin/extras/icons/search.png</texture>
-                </control>
-            </control>
-        </control>
+        <include>Search_View_SearchIcon</include>
 
         <include content="Home_Menu">
             <param name="onlist">9099</param>

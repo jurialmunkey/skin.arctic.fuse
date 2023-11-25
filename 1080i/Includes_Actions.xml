@@ -103,11 +103,11 @@
     </include>
 
     <include name="Action_Widget_OnBack">
-        <onback condition="![![!Skin.HasSetting(Rows.EnableWrapList)] | Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)]">$PARAM[grouplistid]</onback>
-        <onback condition="![![!Skin.HasSetting(Rows.EnableWrapList)] | Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)]">SetFocus($PARAM[id],0,absolute)</onback>
-        <onback condition="[![!Skin.HasSetting(Rows.EnableWrapList)] | Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)] + !Control.HasFocus($PARAM[topid])">$PARAM[topid]</onback>
-        <onback condition="[![!Skin.HasSetting(Rows.EnableWrapList)] | Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)] + Control.HasFocus($PARAM[topid])">$PARAM[grouplistid]</onback>
-        <onback condition="[![!Skin.HasSetting(Rows.EnableWrapList)] | Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)]">AlarmClock(refocus,$PARAM[refocus],00:00,silent)</onback>
+        <onback condition="!Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)">$PARAM[grouplistid]</onback>
+        <onback condition="!Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)">SetFocus($PARAM[id],0,absolute)</onback>
+        <onback condition="Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1) + !Control.HasFocus($PARAM[topid])">$PARAM[topid]</onback>
+        <onback condition="Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1) + Control.HasFocus($PARAM[topid])">$PARAM[grouplistid]</onback>
+        <onback condition="Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)">AlarmClock(refocus,$PARAM[refocus],00:00,silent)</onback>
     </include>
 
     <include name="Action_Widget_Top_HomeLoop">
@@ -141,21 +141,16 @@
         <definition>
             <onup condition="$PARAM[condition]">SetProperty(List.ViewContainer.Reset,$NUMBER[$PARAM[id]])</onup>
             <onup condition="$PARAM[condition]">SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onup>
-            <include content="Action_Widget_Top_HomeLoop" condition="Skin.String(Movement.Content.OnUp,Loop)">
-                <param name="condition">$PARAM[condition]</param>
-            </include>
             <onup condition="$PARAM[condition] + Skin.String(Movement.Content.OnUp,Menu)">$VAR[Action_Menu_Position]</onup>
-            <onup condition="$PARAM[condition] + !Skin.String(Movement.Content.OnUp,Loop) + !Skin.String(Movement.Content.OnUp,Menu)">333</onup>
+            <onup condition="$PARAM[condition] + !Skin.String(Movement.Content.OnUp,Menu)">333</onup>
         </definition>
     </include>
 
     <include name="Action_Widget_End">
         <ondown>SetProperty(List.ViewContainer.Reset,$NUMBER[$PARAM[id]])</ondown>
         <ondown>SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</ondown>
-        <ondown condition="Skin.String(Movement.Content.OnDown,Loop)">$PARAM[topid]</ondown>
-        <ondown condition="Skin.String(Movement.Content.OnDown,Loop)">AlarmClock(refocus,SetFocus(311),00:00,silent)</ondown>
         <ondown condition="Skin.String(Movement.Content.OnDown,Menu)">$VAR[Action_Menu_Position]</ondown>
-        <ondown condition="!Skin.String(Movement.Content.OnDown,Loop) + !Skin.String(Movement.Content.OnDown,Menu)">330</ondown>
+        <ondown condition="!Skin.String(Movement.Content.OnDown,Menu)">330</ondown>
     </include>
 
     <!-- TODO_SKINVARIABLES :: Positioned based upon widget stack positions -->
@@ -384,8 +379,8 @@
     </include>
 
     <include name="Action_View_Movement_OnBack">
-        <onback condition="!Integer.IsEqual(Container($PARAM[id]).CurrentItem,1) + !Integer.IsEqual(Container($PARAM[id]).CurrentItem,0) + [!Skin.HasSetting(Rows.EnableWrapList)]">62</onback>
-        <onback condition="!Integer.IsEqual(Container($PARAM[id]).CurrentItem,1) + !Integer.IsEqual(Container($PARAM[id]).CurrentItem,0) + [!Skin.HasSetting(Rows.EnableWrapList)]">AlarmClock(refocus,SetFocus($PARAM[id],0,absolute),00:00,silent)</onback>
+        <onback condition="!Integer.IsEqual(Container($PARAM[id]).CurrentItem,1) + !Integer.IsEqual(Container($PARAM[id]).CurrentItem,0)">62</onback>
+        <onback condition="!Integer.IsEqual(Container($PARAM[id]).CurrentItem,1) + !Integer.IsEqual(Container($PARAM[id]).CurrentItem,0)">AlarmClock(refocus,SetFocus($PARAM[id],0,absolute),00:00,silent)</onback>
     </include>
 
     <include name="Action_OSD_Button_OnFocus">
@@ -434,7 +429,7 @@
     </variable>
 
     <variable name="Action_Var_ToScrollBar">
-        <value condition="$EXP[Exp_AlphabetTypes_Only] + !Skin.HasSetting(DisableAlphabetStrip)">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=65,clear_prop_one=Null,clear_prop_two=Null,preaction=ClearProperty(View.WallSwitchPosition))</value>
+        <value condition="$EXP[Exp_AlphabetTypes_Only] + Skin.HasSetting(EnableAlphabetStrip)">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=65,clear_prop_one=Null,clear_prop_two=Null,preaction=ClearProperty(View.WallSwitchPosition))</value>
         <value>Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=64,clear_prop_one=Null,clear_prop_two=Null,preaction=ClearProperty(View.WallSwitchPosition))</value>
     </variable>
 
