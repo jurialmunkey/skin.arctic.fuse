@@ -17,7 +17,7 @@
             <top>500</top>
             <bottom>-440</bottom>
             <onup>9003</onup>
-            <ondown>SetProperty(List.ViewContainer,$INFO[System.CurrentControlID])</ondown>
+            <!-- <ondown>SetProperty(List.ViewContainer,$INFO[System.CurrentControlID])</ondown> -->
             <ondown>333</ondown>
 
             <include content="Action_View_Movement_OnLeft">
@@ -58,6 +58,31 @@
                     <include>Search_View_DiscoverWidgets</include>
                 </include>
             </include>
+
+            <control type="grouplist">
+                <visible>Integer.IsEqual(Container(6000).NumItems,0)</visible>
+                <left>view_side</left>
+                <right>view_side</right>
+                <top>160</top>
+                <bottom>view_pad</bottom>
+                <orientation>vertical</orientation>
+                <align>center</align>
+                <control type="label">
+                    <font>font_midi_black</font>
+                    <label>$LOCALIZE[31046]</label>
+                    <align>center</align>
+                    <height>40</height>
+                    <textcolor>main_fg_100</textcolor>
+                </control>
+                <control type="textbox">
+                    <font>font_main_plot</font>
+                    <label>$LOCALIZE[31500] "[CAPITALIZE]$VAR[Label_Search_HeadingFilter][/CAPITALIZE]".[CR]$LOCALIZE[31501].</label>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <height>90</height>
+                    <textcolor>main_fg_30</textcolor>
+                </control>
+            </control>
         </control>
     </include>
 
@@ -1043,16 +1068,19 @@
                     <height>view_pad</height>
                     <textoffsetx>40</textoffsetx>
                     <align>left</align>
+                    <!-- TO PREVIOUS MENU -->
+                    <onup>PreviousMenu</onup>
                     <!-- TO KEYBOARD -->
                     <ondown>SetProperty(SearchTerm,$INFO[Control.GetLabel(9099).index(1)])</ondown>
                     <ondown>9002</ondown>
                     <!-- TO SEARCH ICON -->
+                    <onleft>ClearProperty(List.ViewContainer)</onleft>
                     <onleft>SetProperty(SearchTerm,$INFO[Control.GetLabel(9099).index(1)])</onleft>
                     <onleft>308</onleft>
                     <!-- TO OPTIONS -->
                     <onright>SetProperty(SearchTerm,$INFO[Control.GetLabel(9099).index(1)])</onright>
                     <onright>9000</onright>
-                    <visible allowhiddenfocus="true">!$EXP[Exp_Search_WidgetGroup_HasFocus]</visible>
+                    <visible allowhiddenfocus="true">!$EXP[Exp_Search_WidgetGroup_HasFocus] | Control.HasFocus(9099)</visible>
                 </control>
                 <!-- Edit Label -->
                 <control type="group">
@@ -1128,7 +1156,7 @@
                         <selected>Skin.HasSetting(Search.EnableDiscover) + !Skin.HasSetting(Search.LibraryDiscover)</selected>
                         <onclick>Skin.SetBool(Search.EnableDiscover)</onclick>
                         <onclick>Skin.Reset(Search.LibraryDiscover)</onclick>
-                        <onclick>SetFocus(8500)</onclick>
+                        <onclick>SetFocus(85001)</onclick>
                     </include>
                     <include content="Dialog_Side_Button">
                         <param name="vertical">false</param>
@@ -1141,7 +1169,7 @@
                         <selected>Skin.HasSetting(Search.EnableDiscover) + Skin.HasSetting(Search.LibraryDiscover)</selected>
                         <onclick>Skin.SetBool(Search.EnableDiscover)</onclick>
                         <onclick>Skin.SetBool(Search.LibraryDiscover)</onclick>
-                        <onclick>SetFocus(8500)</onclick>
+                        <onclick>SetFocus(85001)</onclick>
                     </include>
                     <include content="Dialog_Side_Button">
                         <param name="vertical">false</param>
@@ -1382,7 +1410,7 @@
             <param name="sort_condition">True</param>
             <param name="sort_descending">True</param>
             <param name="visible">[Skin.HasSetting(Search.EnableDiscover)]</param>
-            <param name="altvisible">[Skin.HasSetting(Search.EnableDiscover) + !ControlGroup(6000).HasFocus()]</param>
+            <param name="altvisible">[Skin.HasSetting(Search.EnableDiscover) + !ControlGroup(6000).HasFocus() + System.IdleTime(1) + !System.IdleTime(2)]</param>
             <param name="include">List_Poster_Row</param>
             <param name="transition_include">true</param>
             <param name="transition_hidden">Control.HasFocus(5081)</param>
@@ -1392,13 +1420,6 @@
             <param name="widgetheight">widgetsearch_items_h</param>
             <param name="labeltop">widgetsearch_label_t</param>
             <param name="labelheight">widgetsearch_label_h</param>
-
-            <content>
-                <item>
-                    <label>$LOCALIZE[31046]</label>
-                    <visible>[[Integer.IsEqual(Container(5081).NumItems,1) + String.IsEqual(Container(5081).ListItem(1).Label,$LOCALIZE[31046])] | Integer.IsEqual(Container(5081).NumItems,0)]</visible>
-                </item>
-            </content>
 
             <content target="videos" limit="$VAR[Path_DiscoverWidgets_ItemLimit]" sortby="$VAR[Path_DiscoverWidgets_SortBy]" sortorder="$VAR[Path_DiscoverWidgets_SortOrder]" browse="$VAR[Defs_BrowseLimitedLists]">$VAR[Path_DiscoverWidgets_Film]</content>
 
@@ -1423,7 +1444,7 @@
             <param name="sort_condition">True</param>
             <param name="sort_descending">True</param>
             <param name="visible">[Skin.HasSetting(Search.EnableDiscover)]</param>
-            <param name="altvisible">[Skin.HasSetting(Search.EnableDiscover) + !ControlGroup(6000).HasFocus()]</param>
+            <param name="altvisible">[Skin.HasSetting(Search.EnableDiscover) + !ControlGroup(6000).HasFocus() + System.IdleTime(1) + !System.IdleTime(2)]</param>
             <param name="include">List_Poster_Row</param>
             <param name="transition_include">true</param>
             <param name="transition_hidden">Control.HasFocus(5082)</param>
@@ -1433,13 +1454,6 @@
             <param name="widgetheight">widgetsearch_items_h</param>
             <param name="labeltop">widgetsearch_label_t</param>
             <param name="labelheight">widgetsearch_label_h</param>
-
-            <content>
-                <item>
-                    <label>$LOCALIZE[31046]</label>
-                    <visible>[[Integer.IsEqual(Container(5082).NumItems,1) + String.IsEqual(Container(5082).ListItem(1).Label,$LOCALIZE[31046])] | Integer.IsEqual(Container(5082).NumItems,0)]</visible>
-                </item>
-            </content>
 
             <content target="videos" limit="$VAR[Path_DiscoverWidgets_ItemLimit]" sortby="$VAR[Path_DiscoverWidgets_SortBy]" sortorder="$VAR[Path_DiscoverWidgets_SortOrder]" browse="$VAR[Defs_BrowseLimitedLists]">$VAR[Path_DiscoverWidgets_Show]</content>
 
