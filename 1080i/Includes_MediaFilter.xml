@@ -482,19 +482,20 @@
                     <param name="textcolor">main_fg</param>
                     <param name="nf_opacity">30</param>
                     <param name="db_opacity">12</param>
-                    <onclick>SendClick(videos,14)</onclick>
+                    <onclick>SendClick(14)</onclick>
                 </include>
                 <include content="Dialog_Side_Button">
                     <param name="vertical">false</param>
                     <param name="id">07</param>
-                    <param name="label">$INFO[Container.SortMethod]</param>
+                    <param name="label">$VAR[Label_SortMethod]</param>
                     <param name="icon">special://skin/extras/icons/sort.png</param>
                     <param name="visible">Window.IsMedia</param>
                     <param name="textcolor">main_fg</param>
                     <param name="nf_opacity">30</param>
                     <param name="db_opacity">12</param>
                     <onclick>SetProperty(DialogSelectType,Menu,Home)</onclick>
-                    <onclick>SendClick(videos,3)</onclick>
+                    <onclick condition="![Window.IsMedia + String.IsEqual(Container.FolderName,Skin Variables) + !String.IsEmpty(Window.Property(MediaFilter.BaseDir.Name))]">SendClick(3)</onclick>
+                    <onclick condition="Window.IsMedia + String.IsEqual(Container.FolderName,Skin Variables) + !String.IsEmpty(Window.Property(MediaFilter.BaseDir.Name))">RunScript(script.skinvariables,run_dialog=select,heading=$LOCALIZE[581],separator=||,list=title||genre||year||rating||playcount||director||originaltitle||lastplayed||writer||studio||mpaa||country||premiered||top250||votes,"executebuiltin=SetProperty(MediaFilter.SortBy,{v})||route=run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json&amp;use_rules=True")</onclick>
                 </include>
                 <include content="Dialog_Side_Button">
                     <param name="vertical">false</param>
@@ -506,7 +507,12 @@
                     <param name="nf_opacity">30</param>
                     <param name="db_opacity">12</param>
                     <onclick>SetProperty(DialogSelectType,Menu,Home)</onclick>
-                    <onclick>SendClick(videos,4)</onclick>
+                    <onclick condition="![Window.IsMedia + String.IsEqual(Container.FolderName,Skin Variables) + !String.IsEmpty(Window.Property(MediaFilter.BaseDir.Name))]">SendClick(4)</onclick>
+
+                    <onclick condition="!String.IsEqual(Window.Property(MediaFilter.SortHow),desc) + Window.IsMedia + String.IsEqual(Container.FolderName,Skin Variables) + !String.IsEmpty(Window.Property(MediaFilter.BaseDir.Name))">SetProperty(MediaFilter.SortHow,desc)</onclick>
+                    <onclick condition="String.IsEqual(Window.Property(MediaFilter.SortHow),desc) + Window.IsMedia + String.IsEqual(Container.FolderName,Skin Variables) + !String.IsEmpty(Window.Property(MediaFilter.BaseDir.Name))">ClearProperty(MediaFilter.SortHow)</onclick>
+
+                    <onclick condition="Window.IsMedia + String.IsEqual(Container.FolderName,Skin Variables) + !String.IsEmpty(Window.Property(MediaFilter.BaseDir.Name))">RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
                 </include>
                 <include content="Dialog_Side_Button">
                     <param name="vertical">false</param>
