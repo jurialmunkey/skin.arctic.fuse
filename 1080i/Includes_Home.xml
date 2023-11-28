@@ -68,8 +68,13 @@
                     <onback>SetFocus($PARAM[onlist])</onback>
                     <onback condition="!Window.IsVisible(Home)">PreviousMenu</onback>
 
+
                     <onfocus>CancelAlarm(SplashTimeOut,silent)</onfocus>
-                    <onfocus condition="Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)">SetProperty(TMDbHelper.WidgetContainer,301)</onfocus>
+                    <!-- <onfocus condition="Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)">SetProperty(TMDbHelper.WidgetContainer,301)</onfocus> -->
+
+
+                    <onfocus condition="Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)">SetProperty($INFO[Container(303).ListItem.Property(widgets_only_raw_id)],$INFO[Window.Property(TMDbHelper.WidgetContainer)],1198)</onfocus>
+                    <onfocus condition="Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)">SetProperty(TMDbHelper.WidgetContainer.UpdateLock,True,1198)</onfocus>
 
                     <include content="Action_HomeMenu_OnRightLeft">
                         <param name="onlist">$PARAM[onlist]</param>
@@ -83,11 +88,22 @@
                     <scrolltime tween="quadratic">400</scrolltime>
                     <include content="Home_Menu_List_ItemLayout">
                         <param name="id">$PARAM[id]</param>
+                        <param name="hidden_button">Home_Menu_List_HiddenButton</param>
                     </include>
                     <include>$PARAM[items_include]</include>
                 </control>
             </control>
         </definition>
+    </include>
+
+    <include name="Home_Menu_List_HiddenButton">
+        <control type="button">
+            <visible allowhiddenfocus="true">false</visible>
+            <animation effect="fade" start="0" end="0" time="100" reversible="false">Focus</animation>
+            <onfocus condition="!String.IsEmpty(Window(1198).Property(TMDbHelper.WidgetContainer.UpdateLock))">ClearProperty(TMDbHelper.WidgetContainer.UpdateLock,1198)</onfocus>
+            <onfocus condition="!String.IsEmpty(ListItem.Property(widgets_only_old_id)) + String.IsEmpty(Window(1198).Property(TMDbHelper.WidgetContainer.UpdateLock))">SetProperty(TMDbHelper.WidgetContainer,$INFO[ListItem.Property(widgets_only_old_id)])</onfocus>
+            <onfocus condition="String.IsEmpty(ListItem.Property(widgets_only_old_id)) + String.IsEmpty(Window(1198).Property(TMDbHelper.WidgetContainer.UpdateLock))">SetProperty(TMDbHelper.WidgetContainer,$INFO[ListItem.Property(widgets_only_top_id)])</onfocus>
+        </control>
     </include>
 
     <include name="Home_Menu_List_ItemLayout">
@@ -103,6 +119,7 @@
             </control>
         </itemlayout>
         <focusedlayout height="100" width="view_side">
+            <include>$PARAM[hidden_button]</include>
             <control type="group">
                 <left>view_menu</left>
                 <top>40</top>

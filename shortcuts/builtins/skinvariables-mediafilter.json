@@ -8,7 +8,9 @@
                 "p_country": "Window.Property(MediaFilter.Country)",
                 "p_mpaa": "Window.Property(MediaFilter.MPAA)",
                 "p_director": "Window.Property(MediaFilter.Director)",
-                "p_writer": "Window.Property(MediaFilter.Writer)"
+                "p_writer": "Window.Property(MediaFilter.Writer)",
+                "p_sortby": "Window.Property(MediaFilter.SortBy)",
+                "p_sorthow": "Window.Property(MediaFilter.SortHow)"
             }
         },
         {
@@ -19,7 +21,9 @@
                 "p_country": "{p_country}",
                 "p_mpaa": "{p_mpaa}",
                 "p_director": "{p_director}",
-                "p_writer": "{p_writer}"
+                "p_writer": "{p_writer}",
+                "p_sortby": "{p_sortby}",
+                "p_sorthow": "{p_sorthow}"
             }
         },
         {
@@ -66,6 +70,20 @@
                     },
                     ""
                 ],
+                "f_sortby": [
+                    {
+                        "rules": ["!String.IsEmpty(Window.Property(MediaFilter.SortBy)) + !String.IsEqual(Window.Property(MediaFilter.SortBy),none)"],
+                        "value": "&sort_by={p_sortby}"
+                    },
+                    ""
+                ],
+                "f_sorthow": [
+                    {
+                        "rules": ["String.IsEqual(Window.Property(MediaFilter.SortHow),desc)"],
+                        "value": "&sort_how={p_sorthow}"
+                    },
+                    ""
+                ],
                 "f_library": [
                     {
                         "rules": ["Window.IsVisible(MyMusicNav.xml)"],
@@ -81,7 +99,7 @@
         },
         {
             "values": {
-                "c_update": "plugin://script.skinvariables/?info=get_filter_dir{f_library}{f_genre}{f_studio}{f_country}{f_mpaa}{f_director}{f_writer}&&{p_basedir}",
+                "c_update": "plugin://script.skinvariables/?info=get_filter_dir{f_library}{f_genre}{f_studio}{f_country}{f_mpaa}{f_director}{f_writer}{f_sortby}{f_sorthow}&&{p_basedir}",
                 "c_replace": [
                     {
                         "rules": ["String.Contains(Container.FolderPath,script.skinvariables)"],
