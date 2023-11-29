@@ -712,23 +712,6 @@
         </include>
     </include>
 
-
-    <include name="Items_DialogVideoInfo_MenuBar_PlayButton_Action_1190">
-        <!-- Play Item -->
-        <onclick condition="!ListItem.IsFolder + !String.IsEmpty(ListItem.FileNameAndPath)">RunScript(plugin.video.themoviedb.helper,close_dialog=1190,playmedia='$ESCINFO[ListItem.FileNameAndPath]')</onclick>
-        <onclick condition="!ListItem.IsFolder + String.IsEmpty(ListItem.FileNameAndPath)">RunScript(plugin.video.themoviedb.helper,close_dialog=1190,playmedia='$ESCINFO[ListItem.FolderPath]')</onclick>
-
-        <!-- Browse by updating Media Window -->
-        <onclick condition="ListItem.IsFolder + Window.IsVisible(MyVideoNav.xml) + String.IsEmpty(ListItem.DBID)">RunScript(plugin.video.themoviedb.helper,close_dialog=1190,call_update=$INFO[ListItem.FolderPath])</onclick>
-        <onclick condition="ListItem.IsFolder + Window.IsVisible(MyVideoNav.xml) + !String.IsEmpty(ListItem.DBID) + String.IsEqual(ListItem.DBType,tvshow)">RunScript(plugin.video.themoviedb.helper,close_dialog=1190,call_update=$INFO[ListItem.DBID,videodb://tvshows/titles/,/])</onclick>
-        <onclick condition="ListItem.IsFolder + Window.IsVisible(MyVideoNav.xml) + !String.IsEmpty(ListItem.DBID) + ListItem.IsCollection">RunScript(plugin.video.themoviedb.helper,close_dialog=1190,call_update=$INFO[ListItem.DBID,videodb://movies/sets/,/])</onclick>
-
-        <!-- Browse by activating Media Window -->
-        <onclick condition="ListItem.IsFolder + !Window.IsVisible(MyVideoNav.xml) + String.IsEmpty(ListItem.DBID)">RunScript(plugin.video.themoviedb.helper,close_dialog=1190,call_path=$INFO[ListItem.FolderPath])</onclick>
-        <onclick condition="ListItem.IsFolder + !Window.IsVisible(MyVideoNav.xml) + !String.IsEmpty(ListItem.DBID) + String.IsEqual(ListItem.DBType,tvshow)">RunScript(plugin.video.themoviedb.helper,close_dialog=1190,call_path=$INFO[ListItem.DBID,videodb://tvshows/titles/,/])</onclick>
-        <onclick condition="ListItem.IsFolder + Window.IsVisible(MyVideoNav.xml) + !String.IsEmpty(ListItem.DBID) + ListItem.IsCollection">RunScript(plugin.video.themoviedb.helper,close_dialog=1190,call_path=$INFO[ListItem.DBID,videodb://movies/sets/,/])</onclick>
-    </include>
-
     <include name="Items_Wikipedia_MenuBar">
         <include content="Dialog_Side_Button">
             <param name="id">01</param>
@@ -748,7 +731,10 @@
             <param name="sliceid">4201</param>
             <param name="label">$VAR[Label_VideoInfo_PlayButton]</param>
             <param name="icon">$VAR[Image_VideoInfo_PlayButton]</param>
-            <include>Items_DialogVideoInfo_MenuBar_PlayButton_Action_1190</include>
+
+            <onclick condition="!ListItem.HasVideoVersions">SendClick(8)</onclick>
+            <onclick condition="ListItem.HasVideoVersions">SendClick(14)</onclick>
+
             <onfocus>ClearProperty(DetailsView)</onfocus>
             <include content="DialogInfo_Button_HintLabel">
                 <param name="label">$VAR[Label_VideoInfo_PlayButton]</param>
