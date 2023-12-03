@@ -97,6 +97,7 @@
                                 "widget_top_id": "$MATH[{item_x} * 1000 + 601]",
                                 "widget_grouplist_id": "$MATH[{item_x} * 1000 + 400]",
                                 "widget_refocus": "SetFocus(300)",
+                                "widget_parent_item_x": "{item_x}",
                                 "all_content_adapative_widgets":
                                 {
                                     "template": "template_generator/parts_widgets_row.xmltemplate",
@@ -152,6 +153,7 @@
                                             "template": "template_generator/parts_endrow_item.xmltemplate",
                                             "jsonfile": "template_generator/setup_onclick_path.json",
                                             "condition": "{item_path}!=",
+                                            "endrow_widget_id": "$MATH[{parent_item_x} * 1000 + 600 + {item_sum_x} - {item_length_x} + {add_x}]",
                                             "parts_visible": "!Integer.IsEqual(Container($MATH[{parent_item_x} * 1000 + 600 + {item_sum_x} - {item_length_x} + {add_x}]).NumItems,0) | Container($MATH[{parent_item_x} * 1000 + 600 + {item_sum_x} - {item_length_x} + {add_x}]).IsUpdating"
                                         }
                                     ]}
@@ -226,6 +228,62 @@
             ]}
         },
         {
+            "list": [
+                ["1101menu", {"window_id": "1101"}],
+                ["1102menu", {"window_id": "1102"}],
+                ["1103menu", {"window_id": "1103"}],
+                ["1104menu", {"window_id": "1104"}],
+                ["1106menu", {"window_id": "1106"}],
+                ["1107menu", {"window_id": "1107"}],
+                ["1108menu", {"window_id": "1108"}],
+                ["1109menu", {"window_id": "1109"}]
+            ],
+            "for_each": [
+                {
+                    "comments": "Hubs Widgets Only",
+                    "template": "template_generator/parts_basic_include.xmltemplate",
+                    "includes_name": "skinvariables-{item}-widgetsonly",
+                    "includes_part": {
+                        "comments": "Widget Group",
+                        "template": "template_generator/parts_basic_content.xmltemplate",
+                        "condition": "Skin.HasSetting(Hub.{window_id}.DisableSubmenu)",
+                        "includes_name": "Hub_Menu_Group",
+                        "includes_part": {
+                            "template": "template_generator/parts_widgets_grouplist.xmltemplate",
+                            "widget_top_id": "601",
+                            "widget_grouplist_id": "400",
+                            "widget_refocus": "SetFocus(303)",
+                            "grouplist_widgets_only": "True",
+                            "grouplist_visible": "True",
+                            "widget_parent_item_x": "0",
+                            "all_standard_widgets": {"menu": "{item}-widgetsonly", "for_each": [
+                                {
+                                    "template": "template_generator/parts_widgets_row.xmltemplate",
+                                    "jsonfile": "template_generator/setup_widgets_row.json",
+                                    "condition": "{item_path}!="
+                                }
+                            ]},
+                            "all_endrow_selector": {
+                                "comments": "Widget Selector",
+                                "template": "template_generator/parts_endrow_selector.xmltemplate",
+                                "condition": "Skin.HasSetting(Hubs.WidgetSelector)",
+                                "endrow_visible": "True",
+                                "all_standard_widgets": {"menu": "{item}-widgetsonly", "for_each": [
+                                    {
+                                        "template": "template_generator/parts_endrow_item.xmltemplate",
+                                        "jsonfile": "template_generator/setup_onclick_path.json",
+                                        "condition": "{item_path}!=",
+                                        "endrow_widget_id": "$MATH[600 + {item_sum_x} - {item_length_x} + {add_x}]",
+                                        "parts_visible": "!Integer.IsEqual(Container($MATH[600 + {item_x} + 1]).NumItems,0) | Container($MATH[600 + {item_x} + 1]).IsUpdating"
+                                    }
+                                ]}
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
             "comments": "Home Widgets Only",
             "template": "template_generator/parts_basic_include.xmltemplate",
             "includes_name": "skinvariables-homemenu-widgetsonly",
@@ -241,6 +299,7 @@
                         "widget_top_id": "$MATH[{item_x} * 1000 + 601]",
                         "widget_grouplist_id": "$MATH[{item_x} * 1000 + 400]",
                         "widget_refocus": "SetFocus(303)",
+                        "widget_parent_item_x": "{item_x}",
                         "grouplist_widgets_only": "True",
                         "grouplist_visible": "String.IsEqual(Container(303).ListItem.Property(guid),{item_guid})",
                         "all_standard_widgets": {"menu": "{item_menu}", "item": "{item_x}", "mode": "widgets", "for_each": [
@@ -260,6 +319,7 @@
                                     "template": "template_generator/parts_endrow_item.xmltemplate",
                                     "jsonfile": "template_generator/setup_onclick_path.json",
                                     "condition": "{item_path}!=",
+                                    "endrow_widget_id": "$MATH[{parent_item_x} * 1000 + 600 + {item_sum_x} - {item_length_x} + {add_x}]",
                                     "parts_visible": "!Integer.IsEqual(Container($MATH[{parent_item_x} * 1000 + 600 + {item_x} + 1]).NumItems,0) | Container($MATH[{parent_item_x} * 1000 + 600 + {item_x} + 1]).IsUpdating"
                                 }
                             ]}
