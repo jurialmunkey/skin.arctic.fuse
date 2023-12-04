@@ -4,7 +4,7 @@
     <!-- ============== -->
     <!-- Colour Schemes -->
     <!-- ============== -->
-    <expression name="Exp_DialogTheme_IsLight">[$EXP[Exp_ColourTheme_IsLight] | String.IsEqual(Skin.CurrentColourTheme,Skin default - Light dialogs) | String.IsEqual(Skin.CurrentColourTheme,Dark Grey - Light dialogs)]</expression>
+    <expression name="Exp_DialogTheme_IsLight">[String.IsEqual(Skin.CurrentColourTheme,Skin default - Light dialogs) | String.IsEqual(Skin.CurrentColourTheme,Dark Grey - Light dialogs)]</expression>
     <expression name="Exp_DialogTheme_Adaptive_IsEnabled">[Skin.HasSetting(TMDbHelper.EnableBlur) + !Skin.String(Background.ArtworkStyle,Fanart)]</expression>
     <expression name="Exp_DialogTheme_IsAdaptive">[Skin.String(Background.DialogImage,Adaptive) + $EXP[Exp_DialogTheme_Adaptive_IsEnabled] + !$EXP[Exp_DialogTheme_IsLight]]</expression>
 
@@ -24,7 +24,6 @@
         <value condition="!$EXP[Exp_DialogTheme_IsAdaptive] + !$EXP[Exp_DialogTheme_IsLight] + Skin.String(Background.DialogImage,Coal)">True</value>
     </variable>
 
-    <expression name="Exp_ColourTheme_IsLight">[String.IsEqual(Skin.CurrentColourTheme,Light)]</expression>
     <expression name="Exp_ColourTheme_IsGrey">[String.IsEqual(Skin.CurrentColourTheme,Dark Grey) | String.IsEqual(Skin.CurrentColourTheme,Dark Grey - Light dialogs)]</expression>
     <expression name="Exp_ColourTheme_IsBlack">[String.IsEqual(Skin.CurrentColourTheme,SKINDEFAULT) | String.IsEqual(Skin.CurrentColourTheme,Skin default - Light dialogs)]</expression>
 
@@ -133,7 +132,7 @@
     <expression name="Exp_FilterWall_IsViewtype">[Control.IsVisible(50) | Control.IsVisible(51) | Control.IsVisible(52) | Control.IsVisible(503) | Control.IsVisible(513) | Control.IsVisible(523)]</expression>
 
 
-    <expression name="Exp_MediaFilterVisible">[ControlGroup(9000).HasFocus() | ControlGroup(9002).HasFocus() | ControlGroup(9003).HasFocus() | Control.HasFocus(19) | Control.HasFocus(9001) | Control.HasFocus(9099) | Control.HasFocus(9098) | ControlGroup(9500).HasFocus() | ControlGroup(9600).HasFocus()]</expression>
+    <expression name="Exp_MediaFilterVisible">[!String.IsEmpty(Window.Property(MediaFilterBase)) + !String.IsEmpty(Window.Property(View.WallSwitchPosition))]</expression>
 
     <expression name="Exp_Hide_BackgroundArt">[$EXP[Exp_FilterWall_IsMedia] | $EXP[Exp_FilterWall_IsDiscover] | $EXP[Exp_MediaFilterVisible] | [Window.IsVisible(1105) + !$EXP[Exp_Search_WidgetGroup_HasFocus]]]</expression>
 
