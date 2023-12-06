@@ -1690,29 +1690,38 @@
     <include name="Layout_Home_Menu_Label">
         <param name="selected">false</param>
         <param name="detailed">false</param>
+        <param name="label">$INFO[ListItem.Label]</param>
         <definition>
             <control type="group">
                 <nested />
+                <left>120</left>
                 <width>400</width>
-                <height>100</height>
+                <height>35</height>
+                <visible>$EXP[Exp_HomeMenu_HasFocus]</visible>
+                <include content="Animation_Slide_In">
+                    <param name="type">Visible</param>
+                    <param name="posx">-40</param>
+                </include>
+                <include content="Animation_Slide_Out">
+                    <param name="type">Hidden</param>
+                    <param name="posx">-40</param>
+                </include>
                 <control type="label">
+                    <aligny>center</aligny>
                     <font>font_main_black</font>
+                    <include condition="$PARAM[selected] + !$PARAM[detailed]">Color_SelectedText</include>
                     <textcolor>main_fg_30</textcolor>
                     <label>$PARAM[label]</label>
                     <visible>!$PARAM[selected] | !$PARAM[detailed]</visible>
-                    <top>60</top>
-                    <height>35</height>
-                    <left>120</left>
                 </control>
-                <control type="label">
+                <include content="Object_Control" condition="$PARAM[detailed]">
+                    <param name="control">label</param>
+                    <aligny>center</aligny>
                     <font>font_main_black</font>
-                    <textcolor>main_fg_100</textcolor>
+                    <include>Color_SelectedText</include>
                     <label>$PARAM[label]</label>
-                    <visible>$PARAM[selected] + $PARAM[detailed]</visible>
-                    <top>60</top>
-                    <height>35</height>
-                    <left>120</left>
-                </control>
+                    <visible>$PARAM[selected]</visible>
+                </include>
             </control>
         </definition>
     </include>
