@@ -976,16 +976,19 @@
         <value condition="Window.IsVisible(1132)">$LOCALIZE[24001]</value>
         <value condition="$EXP[Exp_Window_IsHub] + !String.IsEmpty(Window.Property(Hub.Header))">$INFO[Window.Property(Hub.Header)]</value>
         
-		<!-- TEST001: If Focus is on Side Menu AND Set up is Classic or Combined (Widgets Only) display Side Menu label -->
+		<!-- TEST001: If Set up is Classic or Combined (Widgets Only) display Side Menu label -->
+		<value condition="Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + String.IsEqual(System.CurrentControlID,308)">SEARCH</value>
+		<value condition="Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + String.IsEqual(System.CurrentControlID,309)">SETTINGS</value>
 		<value condition="Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)">$INFO[Container(303).ListItem(0).Label]</value>
-		<value condition="Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)">SEARCH</value>
-		<value condition="Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)">SETTINGS</value>
-		
-		<!-- TEST001: If Set up is Categories AND Focus is Category Menu display specific Spotlight label -->
-		<value condition="[String.IsEqual(System.CurrentControlID,300) | String.IsEqual(System.CurrentControlID,311) | String.IsEqual(System.CurrentControlID,312)] + Integer.IsEqual(Container(300).Position,0)">$VAR[Label_Home] (Spotlight: On Air Now)</value>
-		<value condition="[String.IsEqual(System.CurrentControlID,300) | String.IsEqual(System.CurrentControlID,311) | String.IsEqual(System.CurrentControlID,312)] + Integer.IsEqual(Container(300).Position,1)">$VAR[Label_Home] (Spotlight: TV Series To Watch)</value>
-		<value condition="[String.IsEqual(System.CurrentControlID,300) | String.IsEqual(System.CurrentControlID,311) | String.IsEqual(System.CurrentControlID,312)] + Integer.IsEqual(Container(300).Position,2)">$VAR[Label_Home] (Spotlight: Most Played Albums)</value>
+				
+		<!-- TEST001: If Set Up is Categories AND Focus is on Category Menu OR Spotlight display Category and Spotlight labels -->		
+		<value condition="[String.IsEqual(System.CurrentControlID,300) | String.IsEqual(System.CurrentControlID,311) | String.IsEqual(System.CurrentControlID,312)] + Integer.IsEqual(Container(300).Position,0)">$INFO[Container(300).ListItem(0).Label] (Spotlight: Favourite Channels)</value>
+		<value condition="[String.IsEqual(System.CurrentControlID,300) | String.IsEqual(System.CurrentControlID,311) | String.IsEqual(System.CurrentControlID,312)] + Integer.IsEqual(Container(300).Position,1)">$INFO[Container(300).ListItem(0).Label] (Spotlight: TV Recommendations)</value>
+		<value condition="[String.IsEqual(System.CurrentControlID,300) | String.IsEqual(System.CurrentControlID,311) | String.IsEqual(System.CurrentControlID,312)] + Integer.IsEqual(Container(300).Position,2)">$INFO[Container(300).ListItem(0).Label] (Spotlight: Most Played Albums)</value>
 
+		<!-- TEST001: If Set Up is Categories AND Focus is on "widgets" display Category label -->				
+		<value condition="Window.IsVisible(Home) + !Skin.HasSetting(Hub.Home.DisableSubmenu)">$INFO[Container(300).ListItem(0).Label]</value>
+		
 		<value>$VAR[Label_Home]</value>
     </variable>
 
