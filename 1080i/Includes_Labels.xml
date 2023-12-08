@@ -725,6 +725,13 @@
     </variable>
 
     <variable name="Label_PVRPrograms">
+		<!-- PVR002: START Custom PVR Program Information -->
+		<value condition="$EXP[247_Channel]">$INFO[ListItem.ChannelName] ... All Day, Every Day</value>
+		<value condition="$EXP[Live_Football_NoMatch]">$INFO[ListItem.ChannelName] No Match Scheduled</value>
+		<value condition="$EXP[Live_NoMatch_SPFL_FHNatho]">$INFO[ListItem.ChannelName] No Match Scheduled</value>
+		<value condition="$EXP[Live_Football_Anova]">$INFO[ListItem.ChannelName]</value>
+		<value condition="$EXP[Live_Football_FHNatho]">$INFO[ListItem.ChannelName]</value>
+		<!-- PVR002: END Custom PVR Program Information -->
         <value condition="!String.IsEmpty(ListItem.Title)">$INFO[ListItem.Title]</value>
         <value condition="!String.IsEmpty(ListItem.Label)">$INFO[ListItem.Label]</value>
         <value condition="!String.IsEmpty(ListItem.ChannelName)">$INFO[ListItem.ChannelName]</value>
@@ -980,6 +987,8 @@
 
     <variable name="Label_Header_Main">
         <!-- <value>$INFO[System.Time]</value> -->
+		<!-- MISC005: Include Spotlight widget name in Home Header (DISABLED since v0.4) -->
+		<!-- value condition="String.IsEqual(System.CurrentControlID,300)">Home - Spotlight: $VAR[Label_Hub_Spotlight]</value -->
         <value condition="$EXP[Exp_InfoDialogs] | [Window.IsVisible(1190) | Window.IsVisible(1191)]">$LOCALIZE[19033]</value>
         <value condition="$EXP[Exp_SettingsDialogs]">$VAR[Label_Header_Mini]</value>
         <value condition="Window.IsVisible(weather)">$LOCALIZE[8]</value>
@@ -997,7 +1006,21 @@
         <value condition="Window.IsVisible(1131)">$LOCALIZE[31020]</value>
         <value condition="Window.IsVisible(1132)">$LOCALIZE[24001]</value>
         <value condition="$EXP[Exp_Window_IsHub] + !String.IsEmpty(Window.Property(Hub.Header))">$INFO[Window.Property(Hub.Header)]</value>
-        <value>$VAR[Label_Home]</value>
+        
+		<!-- TEST001: If Set up is Classic or Combined (Widgets Only) display Side Menu label -->
+		<value condition="Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + String.IsEqual(System.CurrentControlID,308)">SEARCH</value>
+		<value condition="Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + String.IsEqual(System.CurrentControlID,309)">SETTINGS</value>
+		<value condition="Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)">$INFO[Container(303).ListItem(0).Label]</value>
+				
+		<!-- TEST001: If Set Up is Categories AND Focus is on Category Menu OR Spotlight display Category and Spotlight labels -->		
+		<value condition="[String.IsEqual(System.CurrentControlID,300) | String.IsEqual(System.CurrentControlID,311) | String.IsEqual(System.CurrentControlID,312)] + Integer.IsEqual(Container(300).Position,0)">$INFO[Container(300).ListItem(0).Label] (Spotlight: Favourite Channels)</value>
+		<value condition="[String.IsEqual(System.CurrentControlID,300) | String.IsEqual(System.CurrentControlID,311) | String.IsEqual(System.CurrentControlID,312)] + Integer.IsEqual(Container(300).Position,1)">$INFO[Container(300).ListItem(0).Label] (Spotlight: TV Recommendations)</value>
+		<value condition="[String.IsEqual(System.CurrentControlID,300) | String.IsEqual(System.CurrentControlID,311) | String.IsEqual(System.CurrentControlID,312)] + Integer.IsEqual(Container(300).Position,2)">$INFO[Container(300).ListItem(0).Label] (Spotlight: Most Played Albums)</value>
+
+		<!-- TEST001: If Set Up is Categories AND Focus is on "widgets" display Category label -->				
+		<value condition="Window.IsVisible(Home) + !Skin.HasSetting(Hub.Home.DisableSubmenu)">$INFO[Container(300).ListItem(0).Label]</value>
+		
+		<value>$VAR[Label_Home]</value>
     </variable>
 
     <variable name="Label_Section_Main">
@@ -1115,13 +1138,14 @@
     <variable name="Label_WidgetTitle">
         <value condition="!String.IsEmpty(Container(99950).ListItem.Property(base_tvshowtitle))">$INFO[Container(99950).ListItem.Property(base_tvshowtitle)]</value>
         <value condition="!String.IsEmpty(Container(99950).ListItem.Property(base_title))">$INFO[Container(99950).ListItem.Property(base_title)]</value>
-        <!-- <value condition="!String.IsEmpty(Container(99950).ListItem.Property(base_label))">$INFO[Container(99950).ListItem.Property(base_label)]</value> -->
+		<!-- MISC006: value condition "uncommented out" --> 
+		<value condition="!String.IsEmpty(Container(99950).ListItem.Property(base_label))">$INFO[Container(99950).ListItem.Property(base_label)]</value>
         <value>$VAR[Label_TitleFallback]</value>
     </variable>
 
     <variable name="Label_TitleFallback">
         <value condition="!String.IsEmpty(Weather.Conditions) + Weather.IsFetched + Skin.HasSetting(Furniture.EnableClock.TopLeft)">$INFO[Weather.Conditions,, ]$INFO[Weather.Temperature][CR]$INFO[Window(Weather).Property(Location)]</value>
-        <value>$INFO[System.Time][CR]$INFO[System.Date]</value>
+     	<value>$INFO[System.Time][CR]$INFO[System.Date]</value>
     </variable>
 
 </includes>
