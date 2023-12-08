@@ -33,7 +33,17 @@
                     <control type="label">
                         <font>font_tiny</font>
                         <textcolor>dialog_fg_70</textcolor>
-                        <label>[CAPITALIZE]$INFO[Window(Home).Property(Shortcuts.EditMenu)]$INFO[Window(Home).Property(Shortcuts.EditMode), — ,][/CAPITALIZE][UPPERCASE]$INFO[Window(Home).Property(Shortcuts.EditGUID), — ,][/UPPERCASE]</label>
+                        <label>$VAR[Label_Shortcut_SubHeader_GroupName]$INFO[Container(22001).ListItem.Property(name), > ,]$VAR[Label_Shortcut_SubHeader_EditMode, > ,]</label>
+                        <top>40</top>
+                    </control>
+
+                    <control type="label">
+                        <font>font_tiny</font>
+                        <align>right</align>
+                        <!-- <right>640</right> -->
+                        <!-- <width>600</width> -->
+                        <textcolor>dialog_fg_30</textcolor>
+                        <label>$INFO[Window(Home).Property(Shortcuts.EditMenu)]$INFO[Window(Home).Property(Shortcuts.EditMode), — ,]$INFO[Window(Home).Property(Shortcuts.EditGUID), — ,]</label>
                         <top>40</top>
                     </control>
 
@@ -311,33 +321,76 @@
                                     <onclick>SetProperty(Shortcuts.EditGUID,guid=$INFO[Container(22001).ListItem.Property(guid)],Home)</onclick>
                                     <onclick>SetFocus(23004)</onclick>
                                     <visible>String.IsEmpty(Window(Home).Property(Shortcuts.EditMode))</visible>
-                                    <visible>!String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-widgetsonly)</visible>
+                                    <visible>![String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-widgetsonly) | String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-globalwidgets)]</visible>
                                     <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)</visible>
                                     <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=sidemenu)</visible>
                                     <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=powermainmenu)</visible>
                                     <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=powersidemenu)</visible>
                                     <onback>13999</onback>
                                 </include>
-                                 <!-- MODES: Edit Widgets -->
-                                <include content="Settings_Button">
+                                <!-- MODES: Edit sidemenu Widgets classic -->
+                                <include content="Settings_Stacked_Button">
                                     <param name="dialog">true</param>
                                     <param name="id">23021</param>
+                                    <param name="groupid">23121</param>
                                     <param name="control">button</param>
-                                    <label>Edit widgets</label>
+                                    <param name="toplabel">Edit $INFO[Container(22001).ListItem.Label,[LOWERCASE],[/LOWERCASE]] widgets</param>
+                                    <param name="sublabel">Widgets for $INFO[Container(22001).ListItem.Label,[LOWERCASE],[/LOWERCASE]] icon on home screen</param>
+                                    <param name="sublabel_visible">True</param>
                                     <onclick>SetProperty(Shortcuts.EditMode,mode=widgets,Home)</onclick>
                                     <onclick>SetProperty(Shortcuts.EditGUID,guid=$INFO[Container(22001).ListItem.Property(guid)],Home)</onclick>
                                     <onclick>SetFocus(23004)</onclick>
                                     <visible>String.IsEmpty(Window(Home).Property(Shortcuts.EditMode))</visible>
                                     <visible>String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=sidemenu)</visible>
-                                    <visible>!String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-widgetsonly)</visible>
+                                    <visible>String.IsEmpty(Container(22001).ListItem.Property(global_widgets))</visible>
+                                    <visible>![String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-widgetsonly) | String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-globalwidgets)]</visible>
                                     <visible>Skin.HasSetting(Hub.Home.DisableSubmenu)</visible>
                                     <onback>13999</onback>
                                 </include>
+                                <!-- MODES: Edit sidemenu global widgets -->
+                                <include content="Settings_Stacked_Button">
+                                    <param name="dialog">true</param>
+                                    <param name="id">23027</param>
+                                    <param name="groupid">23127</param>
+                                    <param name="control">button</param>
+                                    <param name="toplabel">Edit global widgets</param>
+                                    <param name="sublabel">Widgets for $INFO[Container(22001).ListItem.Label,[LOWERCASE],[/LOWERCASE]] icon on home screen</param>
+                                    <param name="sublabel_visible">True</param>
+                                    <onclick>SetProperty(Shortcuts.PrevMenu,$INFO[Window(Home).Property(Shortcuts.EditMenu)],Home)</onclick>
+                                    <onclick>SetProperty(Shortcuts.EditMenu,menu=homemenu-globalwidgets,Home)</onclick>
+                                    <onclick>SetFocus(23004)</onclick>
+                                    <visible>String.IsEmpty(Window(Home).Property(Shortcuts.EditMode))</visible>
+                                    <visible>String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=sidemenu)</visible>
+                                    <visible>!String.IsEmpty(Container(22001).ListItem.Property(global_widgets))</visible>
+                                    <visible>![String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-widgetsonly) | String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-globalwidgets)]</visible>
+                                    <visible>Skin.HasSetting(Hub.Home.DisableSubmenu)</visible>
+                                    <onback>13999</onback>
+                                </include>
+
+
+                                <!-- Widgets: Global -->
+                                <include content="Settings_Stacked_Button">
+                                    <param name="dialog">true</param>
+                                    <param name="id">23026</param>
+                                    <param name="groupid">23126</param>
+                                    <param name="control">radiobutton</param>
+                                    <param name="toplabel">Global widgets</param>
+                                    <param name="sublabel">A single reusable group of widgets</param>
+                                    <param name="sublabel_visible">True</param>
+                                    <selected>!String.IsEmpty(Container(22001).ListItem.Property(global_widgets))</selected>
+                                    <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;global_widgets])</onclick>
+                                    <visible>String.IsEmpty(Window(Home).Property(Shortcuts.EditMode))</visible>
+                                    <visible>String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=sidemenu)</visible>
+                                    <visible>![String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-widgetsonly) | String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-globalwidgets)]</visible>
+                                    <visible>Skin.HasSetting(Hub.Home.DisableSubmenu)</visible>
+                                    <onback>13999</onback>
+                                </include>
+
                                 <include content="Settings_Label">
                                     <param name="dialog">true</param>
                                     <param name="id">23023</param>
                                     <param name="control">label</param>
-                                    <label>Hub Options</label>
+                                    <label>$INFO[Container(22001).ListItem.Label,, ]Hub Options</label>
                                     <visible>$EXP[Exp_Hubs_Shortcuts_IsItemMenu]</visible>
                                 </include>
                                 <!-- MODES: Edit spotlight (category) -->
@@ -356,7 +409,7 @@
                                     <onclick>SetFocus(33999)</onclick>
 
                                     <visible>String.IsEmpty(Window(Home).Property(Shortcuts.EditMode))</visible>
-                                    <visible>!String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-widgetsonly)</visible>
+                                    <visible>![String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-widgetsonly) | String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-globalwidgets)]</visible>
                                     <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)</visible>
                                     <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=sidemenu)</visible>
                                     <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=powermainmenu)</visible>
@@ -379,7 +432,7 @@
                                     <onclick>SetFocus(33999)</onclick>
 
                                     <visible>String.IsEmpty(Window(Home).Property(Shortcuts.EditMode))</visible>
-                                    <visible>!String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-widgetsonly)</visible>
+                                    <visible>![String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-widgetsonly) | String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-globalwidgets)]</visible>
                                     <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)</visible>
                                     <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=sidemenu)</visible>
                                     <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=powermainmenu)</visible>
@@ -392,8 +445,8 @@
                                     <param name="id">23012</param>
                                     <param name="groupid">23112</param>
                                     <param name="control">button</param>
-                                    <param name="toplabel">Edit categories</param>
-                                    <param name="sublabel">Hub > $INFO[Container(22001).ListItem.Label] > Categories</param>
+                                    <param name="toplabel">Edit hub categories</param>
+                                    <param name="sublabel">Categories inside the $INFO[Container(22001).ListItem.Label,[LOWERCASE],[/LOWERCASE]] hub</param>
                                     <param name="sublabel_visible">True</param>
                                     <onclick>SetProperty(Shortcuts.PrevMenu,$INFO[Window(Home).Property(Shortcuts.EditMenu)],Home)</onclick>
                                     <onclick condition="$EXP[Exp_Hubs_Shortcuts_IsItemMenu]">SetProperty(Shortcuts.EditMenu,menu=$VAR[Path_Shortcut_Hub_Prefix]menu,Home)</onclick>
@@ -408,8 +461,8 @@
                                     <param name="id">23013</param>
                                     <param name="groupid">23113</param>
                                     <param name="control">button</param>
-                                    <param name="toplabel">Edit spotlight</param>
-                                    <param name="sublabel">Hub > $INFO[Container(22001).ListItem.Label] > Spotlight</param>
+                                    <param name="toplabel">Edit hub spotlight</param>
+                                    <param name="sublabel">Spotlight inside the $INFO[Container(22001).ListItem.Label,[LOWERCASE],[/LOWERCASE]] hub</param>
                                     <param name="sublabel_visible">True</param>
                                     <onclick>SetProperty(Options.Mode.Heading,Spotlight)</onclick>
                                     <onclick>SetProperty(Options.Mode.Heading.Sublabel,$INFO[Container(22001).ListItem.Label])</onclick>
@@ -426,8 +479,8 @@
                                     <param name="id">23024</param>
                                     <param name="groupid">23124</param>
                                     <param name="control">button</param>
-                                    <param name="toplabel">Edit widgets</param>
-                                    <param name="sublabel">Hub > $INFO[Container(22001).ListItem.Label] > Widgets</param>
+                                    <param name="toplabel">Edit hub widgets</param>
+                                    <param name="sublabel">Widgets inside the $INFO[Container(22001).ListItem.Label,[LOWERCASE],[/LOWERCASE]] hub</param>
                                     <param name="sublabel_visible">True</param>
                                     <onclick>SetProperty(Shortcuts.PrevMenu,$INFO[Window(Home).Property(Shortcuts.EditMenu)],Home)</onclick>
                                     <onclick>SetProperty(Shortcuts.EditMenu,$VAR[Path_Shortcut_Hub_Prefix,menu=,menu-widgetsonly],Home)</onclick>

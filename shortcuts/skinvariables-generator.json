@@ -213,6 +213,13 @@
                     "template": "template_generator/parts_menu_item.xmltemplate",
                     "jsonfile": "template_generator/setup_onclick_path.json",
                     "condition": "{item_disabled}!=True",
+                    "widget_group_id": [
+                        {
+                            "condition": "{item_global_widgets}!=",
+                            "value": "99"
+                        },
+                        "{item_x}"
+                    ],
                     "parts_additional": {"template": "template_generator/parts_additional_sidemenu.xmltemplate"}
                 }
             ]}
@@ -275,7 +282,7 @@
                                         "template": "template_generator/parts_endrow_item.xmltemplate",
                                         "jsonfile": "template_generator/setup_onclick_path.json",
                                         "condition": "{item_path}!=",
-                                        "endrow_widget_id": "$MATH[600 + {item_sum_x} - {item_length_x} + {add_x}]",
+                                        "endrow_widget_id": "$MATH[600 + {item_x} + 1]",
                                         "parts_visible": "!Integer.IsEqual(Container($MATH[600 + {item_x} + 1]).NumItems,0) | Container($MATH[600 + {item_x} + 1]).IsUpdating"
                                     }
                                 ]}
@@ -293,7 +300,7 @@
                 {
                     "comments": "Widget Group",
                     "template": "template_generator/parts_basic_content.xmltemplate",
-                    "condition": "Skin.HasSetting(Hub.Home.DisableSubmenu)",
+                    "condition": ["Skin.HasSetting(Hub.Home.DisableSubmenu)", "{item_global_widgets}=="],
                     "includes_name": "Hub_Menu_Group",
                     "includes_part": {
                         "template": "template_generator/parts_widgets_grouplist.xmltemplate",
@@ -322,14 +329,53 @@
                                     "template": "template_generator/parts_endrow_item.xmltemplate",
                                     "jsonfile": "template_generator/setup_onclick_path.json",
                                     "condition": "{item_path}!=",
-                                    "endrow_widget_id": "$MATH[{parent_item_x} * 1000 + 600 + {item_sum_x} - {item_length_x} + {add_x}]",
+                                    "endrow_widget_id": "$MATH[{parent_item_x} * 1000 + 600 + {item_x} + 1]",
                                     "parts_visible": "!Integer.IsEqual(Container($MATH[{parent_item_x} * 1000 + 600 + {item_x} + 1]).NumItems,0) | Container($MATH[{parent_item_x} * 1000 + 600 + {item_x} + 1]).IsUpdating"
                                 }
                             ]}
                         }
                     }
                 }
-            ]}
+            ]},
+            "includes_misc": {
+                "comments": "Widget Global Group",
+                "template": "template_generator/parts_basic_content.xmltemplate",
+                "condition": "Skin.HasSetting(Hub.Home.DisableSubmenu)",
+                "includes_name": "Hub_Menu_Group",
+                "includes_part": {
+                    "template": "template_generator/parts_widgets_grouplist.xmltemplate",
+                    "window_id": "Home",
+                    "widget_top_id": "$MATH[99000 + 601]",
+                    "widget_grouplist_id": "$MATH[99000 + 400]",
+                    "widget_refocus": "SetFocus(303)",
+                    "widget_parent_item_x": "99",
+                    "grouplist_widgets_only": "True",
+                    "grouplist_visible": "!String.IsEmpty(Container(303).ListItem.Property(global_widgets))",
+                    "all_standard_widgets": {"menu": "homemenu-globalwidgets", "for_each": [
+                        {
+                            "template": "template_generator/parts_widgets_row.xmltemplate",
+                            "jsonfile": "template_generator/setup_widgets_row.json",
+                            "condition": "{item_path}!="
+                        }
+                    ]},
+                    "all_endrow_selector": {
+                        "comments": "Widget Global Selector",
+                        "template": "template_generator/parts_endrow_selector.xmltemplate",
+                        "condition": "Skin.HasSetting(Hubs.WidgetSelector)",
+                        "endrow_item_x": "99",
+                        "endrow_visible": "!String.IsEmpty(Container(303).ListItem.Property(global_widgets))",
+                        "all_endrow_items": {"menu": "homemenu-globalwidgets", "for_each": [
+                            {
+                                "template": "template_generator/parts_endrow_item.xmltemplate",
+                                "jsonfile": "template_generator/setup_onclick_path.json",
+                                "condition": "{item_path}!=",
+                                "endrow_widget_id": "$MATH[99000 + 600 + {item_x} + 1]",
+                                "parts_visible": "!Integer.IsEqual(Container($MATH[99000 + 600 + {item_x} + 1]).NumItems,0) | Container($MATH[99000 + 600 + {item_x} + 1]).IsUpdating"
+                            }
+                        ]}
+                    }
+                }
+            }
         },
         {
             "comments": "Search Menu Widgets",
