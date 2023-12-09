@@ -3,7 +3,108 @@
 
     <!-- Group Switcher -->
     <include name="View_PVR_GroupSwitcher">
-        <include content="Categories_Selector">
+        <include content="Object_Hidden_List">
+            <param name="id">11</param>
+            <orientation>horizontal</orientation>
+            <onfocus>SetFocus(2800)</onfocus>
+        </include>
+        <control type="group">
+            <height>80</height>
+            <left>160</left>
+            <centerbottom>100</centerbottom>
+            <width>settings_category_w</width>
+            <control type="group">
+                <left>20</left>
+                <visible>ControlGroup(2800).HasFocus()</visible>
+                <control type="image">
+                    <include>Texture_Menu_Highlight_H</include>
+                </control>
+                <control type="label" id="28">
+                    <textoffsetx>30</textoffsetx>
+                    <font>font_main</font>
+                    <textcolor>$VAR[ColorSelected]</textcolor>
+                </control>
+            </control>
+            <control type="group">
+                <left>20</left>
+                <visible>!ControlGroup(2800).HasFocus()</visible>
+                <control type="label">
+                    <textoffsetx>30</textoffsetx>
+                    <font>font_main</font>
+                    <textcolor>main_fg_30</textcolor>
+                    <label>$INFO[Control.GetLAbel(28)]</label>
+                </control>
+            </control>
+            <control type="grouplist" id="2800">
+                <height>80</height>
+                <centertop>50%</centertop>
+                <align>right</align>
+                <orientation>horizontal</orientation>
+                <onleft>2801</onleft>
+                <onleft>Action(Select)</onleft>
+                <onright>2802</onright>
+                <onright>Action(Select)</onright>
+
+                <ondown condition="!Window.IsVisible(MyPVRGuide.xml)">SetFocus(50,0,absolute)</ondown>
+                <onup condition="!Window.IsVisible(MyPVRGuide.xml)">SetFocus(50,99999,absolute)</onup>
+                <ondown condition="Window.IsVisible(MyPVRGuide.xml)">50</ondown>
+                <onup condition="Window.IsVisible(MyPVRGuide.xml)">50</onup>
+
+                <right>-10</right>
+                <control type="button" id="2801">
+                    <width>30</width>
+                    <height>30</height>
+                    <centertop>50%</centertop>
+                    <onclick>SetFocus(11)</onclick>
+                    <onclick>Action(Left)</onclick>
+                    <onclick>SetFocus(2801)</onclick>
+                    <texturenofocus colordiffuse="main_fg_30" flipx="false">buttons/triangle-left.png</texturenofocus>
+                    <texturefocus colordiffuse="$VAR[ColorSelected]" flipx="false">buttons/triangle-left.png</texturefocus>
+                </control>
+                <control type="button" id="2802">
+                    <width>30</width>
+                    <height>30</height>
+                    <centertop>50%</centertop>
+                    <onclick>SetFocus(11)</onclick>
+                    <onclick>Action(Right)</onclick>
+                    <onclick>SetFocus(2802)</onclick>
+                    <texturenofocus colordiffuse="main_fg_30" flipx="true">buttons/triangle-left.png</texturenofocus>
+                    <texturefocus colordiffuse="$VAR[ColorSelected]" flipx="true">buttons/triangle-left.png</texturefocus>
+                </control>
+                <control type="group" id="2803">
+                    <width>40</width>
+                </control>
+            </control>
+        </control>
+
+        <control type="group">
+            <height>80</height>
+            <left>160</left>
+            <centerbottom>100</centerbottom>
+            <control type="group">
+                <left>settings_category_w</left>
+                <right>view_pad</right>
+                <control type="image">
+                    <left>20</left>
+                    <bordersize>8</bordersize>
+                    <aspectratio align="left">keep</aspectratio>
+                    <colordiffuse>dialog_fg_70</colordiffuse>
+                    <texture>special://skin/extras/icons/info2.png</texture>
+                </control>
+                <control type="textbox">
+                    <left>100</left>
+                    <height>80</height>
+                    <centertop>50%</centertop>
+                    <textcolor>main_fg_70</textcolor>
+                    <font>font_mini_plot</font>
+                    <aligny>center</aligny>
+                    <label>$INFO[Container.NumItems,, [LOWERCASE]$LOCALIZE[19019][/LOWERCASE]]</label>
+                </control>
+            </control>
+        </control>
+
+
+        <!-- <include content="Categories_Selector">
             <param name="id">11</param>
             <param name="visible">True</param>
             <param name="font">font_mini_bold</param>
@@ -14,7 +115,7 @@
             <onup condition="!Window.IsVisible(MyPVRGuide.xml)">SetFocus(50,99999,absolute)</onup>
             <ondown condition="Window.IsVisible(MyPVRGuide.xml)">50</ondown>
             <onup condition="Window.IsVisible(MyPVRGuide.xml)">50</onup>
-        </include>
+        </include> -->
     </include>
 
     <!-- EPG -->
@@ -222,7 +323,7 @@
                 </itemlayout>
                 <focusedlayout height="$PARAM[channelheight]">
                     <control type="group">
-                        <visible>[Control.HasFocus(11) | ControlGroup(9000).HasFocus() | $EXP[Exp_HomeMenu_HasFocus] | Control.HasFocus(331)]</visible>
+                        <visible>[Control.HasFocus(11) | ControlGroup(9000).HasFocus() | $EXP[Exp_HomeMenu_HasFocus] | Control.HasFocus(331) | ControlGroup(2800).HasFocus()]</visible>
                         <include content="Layout_PVRChannel">
                             <param name="channelwidth">$PARAM[channelwidth]</param>
                             <param name="detailed">$PARAM[detailed]</param>
@@ -230,7 +331,7 @@
                         </include>
                     </control>
                     <control type="group">
-                        <visible>![Control.HasFocus(11) | ControlGroup(9000).HasFocus() | $EXP[Exp_HomeMenu_HasFocus] | Control.HasFocus(331)]</visible>
+                        <visible>![Control.HasFocus(11) | ControlGroup(9000).HasFocus() | $EXP[Exp_HomeMenu_HasFocus] | Control.HasFocus(331) | ControlGroup(2800).HasFocus()]</visible>
                         <include content="Layout_PVRChannel">
                             <param name="channelwidth">$PARAM[channelwidth]</param>
                             <param name="detailed">$PARAM[detailed]</param>
