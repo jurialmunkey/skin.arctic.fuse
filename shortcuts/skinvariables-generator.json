@@ -380,24 +380,30 @@
         {
             "comments": "Search Menu Widgets",
             "template": "template_generator/parts_basic_include.xmltemplate",
+            "widget_selector_id": "5099",
             "includes_name": "skinvariables-searchmenu-widgets",
             "includes_part": {"menu": "searchmenu", "for_each": [
                 {
                     "template": "template_generator/parts_search_row.xmltemplate",
-                    "jsonfile": "template_generator/setup_search_row.json",
+                    "jsonfile": ["template_generator/setup_search_row.json", "template_generator/setup_search_path.json"],
                     "condition": "{item_path}!="
                 }]
             }
         },
         {
-            "comments": "Search Menu Footers",
+            "comments": "Search Menu End Row",
             "template": "template_generator/parts_basic_include.xmltemplate",
-            "includes_name": "skinvariables-searchmenu-footers",
+            "includes_name": "skinvariables-searchmenu-rowitems",
             "includes_part": {"menu": "searchmenu", "for_each": [
                 {
-                    "template": "template_generator/parts_search_footer_item.xmltemplate",
-                    "widget_id": "$MATH[5000 + {item_x} + 1]",
-                    "widget_icon": "{item_icon}",
+                    "template": "template_generator/parts_endrow_item.xmltemplate",
+                    "jsonfile": "template_generator/setup_search_path.json",
+                    "item_path": "$VAR[Path_SearchTerm,{widget_path},{widget_path_end}]",
+                    "parts_onclick": {
+                        "template": "<onclick>ActivateWindow({item_target},$VAR[Path_SearchTerm,{widget_path},{widget_path_end}],return)</onclick>"
+                    },
+                    "endrow_widget_id": "$MATH[5000 + {item_x} + 1]",
+                    "parts_visible": "!Skin.HasSetting(Search.EnableDiscover) + [!Integer.IsEqual(Container($MATH[5000 + {item_x} + 1]).NumItems,0) | Container($MATH[5000 + {item_x} + 1]).IsUpdating]",
                     "condition": "{item_path}!="
                 }]
             }
