@@ -40,8 +40,8 @@
     </variable>
 
     <variable name="Path_SearchFilter_Node">
-        <value condition="[String.IsEqual(Window.Property(SearchDiscover.FilterLabel),Genre) + String.IsEmpty(Window.Property(SearchDiscover.GenreLabel))] | [String.IsEqual(Window.Property(SearchDiscover.FilterLabel),Studio) + String.IsEmpty(Window.Property(SearchDiscover.StudioLabel))] | [String.IsEqual(Window.Property(SearchDiscover.FilterLabel),Director) + String.IsEmpty(Window.Property(SearchDiscover.DirectorLabel))]">plugin://script.skinvariables/?info=get_container_labels&amp;containers=5081+5082&amp;infolabel=$INFO[Window.Property(SearchDiscover.FilterLabel)]&amp;numitems=$INFO[Container(5081).NumItems]_$INFO[Container(5082).NumItems]</value>
-        <value>plugin://script.skinvariables/?info=get_container_labels&amp;containers=5081+5082&amp;infolabel=$INFO[Window.Property(SearchDiscover.FilterLabel)]&amp;numitems=0_0</value>
+        <value condition="[String.IsEqual(Window.Property(SearchDiscover.FilterLabel),Genre) + String.IsEmpty(Window.Property(SearchDiscover.GenreLabel))] | [String.IsEqual(Window.Property(SearchDiscover.FilterLabel),Studio) + String.IsEmpty(Window.Property(SearchDiscover.StudioLabel))] | [String.IsEqual(Window.Property(SearchDiscover.FilterLabel),Director) + String.IsEmpty(Window.Property(SearchDiscover.DirectorLabel))]">plugin://script.skinvariables/?info=get_container_labels&amp;containers=5081&amp;infolabel=$INFO[Window.Property(SearchDiscover.FilterLabel)]&amp;numitems=$INFO[Container(5081).NumItems]</value>
+        <value>plugin://script.skinvariables/?info=get_container_labels&amp;containers=5081&amp;infolabel=$INFO[Window.Property(SearchDiscover.FilterLabel)]&amp;numitems=0</value>
     </variable>
 
     <variable name="Path_MediaFilter_Node">
@@ -125,6 +125,13 @@
         <value>popularity.desc</value>
     </variable>
 
+    <variable name="Path_DiscoverWidgets_JoinSort">
+        <value condition="String.IsEqual(Window.Property(SearchDiscover.FilmSort),revenue.desc)">revenue</value>
+        <value condition="String.IsEqual(Window.Property(SearchDiscover.FilmSort),vote_average.desc)">rating</value>
+        <value condition="String.IsEqual(Window.Property(SearchDiscover.FilmSort),vote_count.desc)">votes</value>
+        <value>popularity</value>
+    </variable>
+
     <variable name="Path_DiscoverWidgets_SortBy">
         <value condition="Skin.HasSetting(Search.LibraryDiscover) + !String.IsEmpty(Window.Property(SearchDiscover.SortBy))">$INFO[Window.Property(SearchDiscover.SortBy)]</value>
         <value condition="Skin.HasSetting(Search.LibraryDiscover)">title</value>
@@ -136,18 +143,19 @@
         <value condition="Skin.HasSetting(Search.LibraryDiscover)">$INFO[Skin.String(SearchDiscover.ItemLimit)]</value>
     </variable>
 
-    <variable name="Path_DiscoverWidgets_Film">
-        <value condition="Skin.HasSetting(Search.LibraryDiscover)">plugin://script.skinvariables/?info=get_filter_dir&amp;library=video$INFO[Control.GetLabel(9099).index(1),&amp;filter_key__title=title&amp;filter_value__title=,]$INFO[Window.Property(SearchDiscover.GenreLabel),&amp;filter_key__genre=genre&amp;filter_value__genre=,]$INFO[Window.Property(SearchDiscover.StudioLabel),&amp;filter_key__studio=studio&amp;filter_value__studio=,]$INFO[Window.Property(SearchDiscover.DirectorLabel),&amp;filter_key__director=director&amp;filter_value__director=,]$INFO[Window.Property(SearchDiscover.WriterLabel),&amp;filter_key__writer=writer&amp;filter_value__writer=,]$INFO[Window.Property(SearchDiscover.CountryLabel),&amp;filter_key__country=country&amp;filter_value__country=,]$INFO[Window.Property(SearchDiscover.YearLow),&amp;filter_key__yearlow=year&amp;filter_operator__yearlow=ge&amp;filter_value__yearlow=,]$INFO[Window.Property(SearchDiscover.YearHigh),&amp;filter_key__yearhigh=year&amp;filter_operator__yearhigh=le&amp;filter_value__yearhigh=,]$INFO[Window.Property(SearchDiscover.RatingLow),&amp;filter_key__ratinglow=rating&amp;filter_operator__ratinglow=ge&amp;filter_value__ratinglow=,]$INFO[Window.Property(SearchDiscover.RatingHigh),&amp;filter_key__ratinghigh=rating&amp;filter_operator__ratinghigh=le&amp;filter_value__ratinghigh=,]&amp;&amp;videodb://movies/titles</value>
+    <variable name="Path_DiscoverWidgets_Join">
+        <value condition="!Skin.HasSetting(Search.LibraryDiscover)">plugin://script.skinvariables/?info=get_filter_dir&amp;library=video$VAR[Path_DiscoverWidgets_JoinSort,&amp;sort_by=,&amp;sort_how=desc]</value>
+        <value>plugin://script.skinvariables/?info=get_filter_dir&amp;library=video$INFO[Control.GetLabel(9099).index(1),&amp;filter_key__title=title&amp;filter_value__title=,]$INFO[Window.Property(SearchDiscover.GenreLabel),&amp;filter_key__genre=genre&amp;filter_value__genre=,]$INFO[Window.Property(SearchDiscover.StudioLabel),&amp;filter_key__studio=studio&amp;filter_value__studio=,]$INFO[Window.Property(SearchDiscover.DirectorLabel),&amp;filter_key__director=director&amp;filter_value__director=,]$INFO[Window.Property(SearchDiscover.WriterLabel),&amp;filter_key__writer=writer&amp;filter_value__writer=,]$INFO[Window.Property(SearchDiscover.CountryLabel),&amp;filter_key__country=country&amp;filter_value__country=,]$INFO[Window.Property(SearchDiscover.YearLow),&amp;filter_key__yearlow=year&amp;filter_operator__yearlow=ge&amp;filter_value__yearlow=,]$INFO[Window.Property(SearchDiscover.YearHigh),&amp;filter_key__yearhigh=year&amp;filter_operator__yearhigh=le&amp;filter_value__yearhigh=,]$INFO[Window.Property(SearchDiscover.RatingLow),&amp;filter_key__ratinglow=rating&amp;filter_operator__ratinglow=ge&amp;filter_value__ratinglow=,]$INFO[Window.Property(SearchDiscover.RatingHigh),&amp;filter_key__ratinghigh=rating&amp;filter_operator__ratinghigh=le&amp;filter_value__ratinghigh=,]</value>
+    </variable>
 
+    <variable name="Path_DiscoverWidgets_Film">
         <value condition="!Skin.HasSetting(Search.LibraryDiscover)">$VAR[Path_DiscoverWidgets_Base,,&amp;tmdb_type=movie&amp;length=2]$VAR[Path_DiscoverWidgets_FilmSort,&amp;sort_by=,]$VAR[Path_DiscoverWidgets_YearLow,&amp;primary_release_date.gte=,]$VAR[Path_DiscoverWidgets_YearHigh,&amp;primary_release_date.lte=,]$INFO[Window.Property(SearchDiscover.FilmGenreID),&amp;with_genres=,]</value>
-        <value>-</value>
+        <value>videodb://movies/titles</value>
     </variable>
 
     <variable name="Path_DiscoverWidgets_Show">
-        <value condition="Skin.HasSetting(Search.LibraryDiscover) + String.IsEmpty(Window.Property(SearchDiscover.DirectorLabel))">plugin://script.skinvariables/?info=get_filter_dir&amp;library=video$INFO[Control.GetLabel(9099).index(1),&amp;filter_key__title=title&amp;filter_value__title=,]$INFO[Window.Property(SearchDiscover.GenreLabel),&amp;filter_key__genre=genre&amp;filter_value__genre=,]$INFO[Window.Property(SearchDiscover.StudioLabel),&amp;filter_key__studio=studio&amp;filter_value__studio=,]$INFO[Window.Property(SearchDiscover.CountryLabel),&amp;filter_key__country=country&amp;filter_value__country=,]$INFO[Window.Property(SearchDiscover.YearLow),&amp;filter_key__yearlow=year&amp;filter_operator__yearlow=ge&amp;filter_value__yearlow=,]$INFO[Window.Property(SearchDiscover.YearHigh),&amp;filter_key__yearhigh=year&amp;filter_operator__yearhigh=le&amp;filter_value__yearhigh=,]$INFO[Window.Property(SearchDiscover.RatingLow),&amp;filter_key__ratinglow=rating&amp;filter_operator__ratinglow=ge&amp;filter_value__ratinglow=,]$INFO[Window.Property(SearchDiscover.RatingHigh),&amp;filter_key__ratinghigh=rating&amp;filter_operator__ratinghigh=le&amp;filter_value__ratinghigh=,]&amp;&amp;videodb://tvshows/titles</value>
-
         <value condition="!Skin.HasSetting(Search.LibraryDiscover) + String.IsEmpty(Window.Property(SearchDiscover.CastID)) + String.IsEmpty(Window.Property(SearchDiscover.CrewID))">$VAR[Path_DiscoverWidgets_Base,,&amp;tmdb_type=tv&amp;length=2]$VAR[Path_DiscoverWidgets_ShowSort,&amp;sort_by=,]$VAR[Path_DiscoverWidgets_YearLow,&amp;first_air_date.gte=,]$VAR[Path_DiscoverWidgets_YearHigh,&amp;first_air_date.lte=,]$INFO[Window.Property(SearchDiscover.ShowGenreID),&amp;with_genres=,]</value>
-        <value>-</value>
+        <value>videodb://tvshows/titles</value>
     </variable>
 
     <variable name="Path_PersonSearch">

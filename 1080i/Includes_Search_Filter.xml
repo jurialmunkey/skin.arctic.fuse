@@ -1,0 +1,1063 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<includes>
+
+    <include name="Search_Filter_Panel">
+        <control type="group">
+            <left>160</left>
+            <width>720</width>
+            <visible>!$EXP[Exp_InfoDialogs]</visible>
+
+            <!-- Top Row -->
+            <control type="group">
+                <centertop>100</centertop>
+                <height>view_pad</height>
+                <include>Search_Filter_Edit</include>
+                <include>Search_Filter_Mode</include>
+            </control>
+
+            <!-- Alphabet and Autocomplete -->
+            <control type="group">
+                <top>140</top>
+                <left>0</left>
+                <include>Search_View_Visible_OnEdit</include>
+                <include content="Search_Filter_Alphabet">
+                    <param name="editid">9099</param>
+                    <param name="ondown">9098</param>
+                </include>
+                <include>Search_Filter_Autocomplete_Fake</include>
+                <include>Search_Filter_Autocomplete_Real</include>
+            </control>
+
+            <include>Search_Filter_Categories</include>
+            <include content="Search_Filter_Submenu">
+                <param name="id">5099</param>
+            </include>
+            <include>Search_Filter_Selector</include>
+        </control>
+
+        <include>Search_Filter_Panel_Discover</include>
+    </include>
+
+    <include name="Search_Filter_Edit">
+        <control type="edit" id="9099">
+            <description>Search</description>
+            <font>font_main_black</font>
+            <textcolor>00ffffff</textcolor>
+            <selectedcolor>00ffffff</selectedcolor>
+            <disabledcolor>00ffffff</disabledcolor>
+            <focusedcolor>$VAR[ColorSelected]</focusedcolor>
+            <height>view_pad</height>
+            <textoffsetx>40</textoffsetx>
+            <align>left</align>
+            <!-- TO PREVIOUS MENU -->
+            <onup>PreviousMenu</onup>
+            <!-- TO KEYBOARD -->
+            <ondown>SetProperty(SearchTerm,$INFO[Control.GetLabel(9099).index(1)])</ondown>
+            <ondown>9002</ondown>
+            <!-- TO SEARCH ICON -->
+            <onleft>ClearProperty(List.ViewContainer)</onleft>
+            <onleft>SetProperty(SearchTerm,$INFO[Control.GetLabel(9099).index(1)])</onleft>
+            <onleft>308</onleft>
+            <!-- TO OPTIONS -->
+            <onright>SetProperty(SearchTerm,$INFO[Control.GetLabel(9099).index(1)])</onright>
+            <onright>9000</onright>
+            <visible allowhiddenfocus="true">!$EXP[Exp_Search_WidgetGroup_HasFocus] | Control.HasFocus(9099)</visible>
+        </control>
+        <!-- Edit Label -->
+        <control type="label">
+            <left>40</left>
+            <right>40</right>
+            <font>font_midi_black</font>
+            <label>$VAR[Label_Setting_SearchStyle][CAPITALIZE]$INFO[Control.GetLabel(9099).index(1),: ,][/CAPITALIZE]</label>
+            <textcolor>main_fg_100</textcolor>
+            <visible>!Control.HasFocus(9099)</visible>
+        </control>
+    </include>
+
+    <include name="Search_Filter_Mode">
+        <control type="grouplist" id="9000">
+            <itemgap>0</itemgap>
+            <align>right</align>
+            <right>-520</right>
+            <centertop>50%</centertop>
+            <orientation>horizontal</orientation>
+            <height>160</height>
+            <onleft>9099</onleft>
+            <ondown>9500</ondown>
+            <include>Search_View_Visible_OnEdit</include>
+            <include content="Dialog_Side_Button">
+                <param name="vertical">false</param>
+                <param name="id">07</param>
+                <param name="label">$LOCALIZE[192]</param>
+                <param name="nf_opacity">30</param>
+                <param name="db_opacity">12</param>
+                <param name="icon">special://skin/extras/icons/triangle-exclamation.png</param>
+                <onclick>SetFocus(9099)</onclick>
+                <onclick>RunScript(script.skinvariables,set_editcontrol=9099,window_id=1105,setfocus=9099)</onclick>
+                <onclick>ClearProperty(SearchTerm)</onclick>
+                <onclick>ClearProperty(SearchDiscover.SortLabel)</onclick>
+                <onclick>ClearProperty(SearchDiscover.FilmSort)</onclick>
+                <onclick>ClearProperty(SearchDiscover.ShowSort)</onclick>
+                <onclick>ClearProperty(SearchDiscover.GenreLabel)</onclick>
+                <onclick>ClearProperty(SearchDiscover.GenreID)</onclick>
+                <onclick>ClearProperty(SearchDiscover.ProviderLabel)</onclick>
+                <onclick>ClearProperty(SearchDiscover.ProviderID)</onclick>
+                <onclick>ClearProperty(SearchDiscover.PeopleLabel)</onclick>
+                <onclick>ClearProperty(SearchDiscover.PeopleID)</onclick>
+                <onclick>ClearProperty(SearchDiscover.YearHigh)</onclick>
+                <onclick>ClearProperty(SearchDiscover.YearLow)</onclick>
+                <onclick>ClearProperty(SearchDiscover.RatingLow)</onclick>
+                <onclick>ClearProperty(SearchDiscover.StudioLabel)</onclick>
+                <onclick>ClearProperty(SearchDiscover.DirectorLabel)</onclick>
+                <onclick>ClearProperty(SearchDiscover.SortBy)</onclick>
+                <onclick>ClearProperty(SearchDiscover.SortOrder)</onclick>
+                <onclick>Skin.Reset(SearchDiscover.VoteLow)</onclick>
+                <onclick>Skin.Reset(SearchDiscover.ItemLimit)</onclick>
+            </include>
+            <include content="Dialog_Side_Button">
+                <param name="vertical">false</param>
+                <param name="id">04</param>
+                <param name="label">$LOCALIZE[31066]</param>
+                <param name="nf_opacity">30</param>
+                <param name="db_opacity">12</param>
+                <param name="icon">special://skin/extras/icons/binoculars.png</param>
+                <param name="control">radiobutton</param>
+                <selected>Skin.HasSetting(Search.EnableDiscover) + !Skin.HasSetting(Search.LibraryDiscover)</selected>
+                <onclick>Skin.SetBool(Search.EnableDiscover)</onclick>
+                <onclick>Skin.Reset(Search.LibraryDiscover)</onclick>
+                <!-- <onclick>SetFocus(85001)</onclick> -->
+            </include>
+            <include content="Dialog_Side_Button">
+                <param name="vertical">false</param>
+                <param name="id">05</param>
+                <param name="label">Library</param>
+                <param name="nf_opacity">30</param>
+                <param name="db_opacity">12</param>
+                <param name="icon">special://skin/extras/icons/book.png</param>
+                <param name="control">radiobutton</param>
+                <selected>Skin.HasSetting(Search.EnableDiscover) + Skin.HasSetting(Search.LibraryDiscover)</selected>
+                <onclick>Skin.SetBool(Search.EnableDiscover)</onclick>
+                <onclick>Skin.SetBool(Search.LibraryDiscover)</onclick>
+                <!-- <onclick>SetFocus(85001)</onclick> -->
+            </include>
+            <include content="Dialog_Side_Button">
+                <param name="vertical">false</param>
+                <param name="id">06</param>
+                <param name="label">$LOCALIZE[137]</param>
+                <param name="nf_opacity">30</param>
+                <param name="db_opacity">12</param>
+                <param name="icon">special://skin/extras/icons/search.png</param>
+                <param name="control">radiobutton</param>
+                <selected>!Skin.HasSetting(Search.EnableDiscover)</selected>
+                <onclick>Skin.Reset(Search.EnableDiscover)</onclick>
+                <onclick>Skin.Reset(Search.LibraryDiscover)</onclick>
+            </include>
+            <control type="group">
+                <width>100</width>
+            </control>
+        </control>
+    </include>
+
+    <include name="Search_Filter_Autocomplete_Real">
+        <control type="group">
+            <top>100</top>
+            <height>view_pad</height>
+            <control type="fixedlist" id="9098">
+                <top>-40</top>
+                <height>160</height>
+                <width>600</width>
+                <left>0</left>
+                <orientation>horizontal</orientation>
+                <onup>9003</onup>
+                <onback>PreviousMenu</onback>
+                <ondown>9500</ondown>
+                <focusposition>0</focusposition>
+                <movement>0</movement>
+                <visible allowhiddenfocus="true">false</visible>
+                <onclick>SetFocus(9099)</onclick>
+                <onclick>SetProperty(SearchTerm,$INFO[Container(9098).ListItem.Label])</onclick>
+                <onclick>RunScript(script.skinvariables,set_editcontrol=9099,window_id=1105,setfocus=9099,text=$INFO[Container(9098).ListItem.Label])</onclick>
+                <include>Action_UpdateSearchTerm</include>
+                <orientation>vertical</orientation>
+                <itemlayout width="200" height="160">
+                    <control type="label">
+                        <left>40</left>
+                        <right>0</right>
+                        <font>font_mini_black</font>
+                        <align>left</align>
+                        <textcolor>main_fg_30</textcolor>
+                        <label>$INFO[ListItem.Label]</label>
+                        <scroll>false</scroll>
+                    </control>
+                </itemlayout>
+                <focusedlayout width="200" height="160" condition="!Control.HasFocus(9098)">
+                    <control type="label">
+                        <left>40</left>
+                        <right>0</right>
+                        <font>font_mini_black</font>
+                        <align>left</align>
+                        <textcolor>main_fg_30</textcolor>
+                        <label>$INFO[ListItem.Label]</label>
+                        <scroll>false</scroll>
+                    </control>
+                </focusedlayout>
+                <focusedlayout width="200" height="160" condition="Control.HasFocus(9098)">
+                    <control type="image">
+                        <include>Texture_Highlight_Scrollbar_H</include>
+                        <height>scrollbar_w</height>
+                        <bottom>50</bottom>
+                        <left>30</left>
+                        <right>40</right>
+                        <centerleft>50%</centerleft>
+                    </control>
+                    <control type="label">
+                        <left>40</left>
+                        <right>0</right>
+                        <align>left</align>
+                        <font>font_mini_black</font>
+                        <textcolor>main_fg_90</textcolor>
+                        <label>$INFO[ListItem.Label]</label>
+                        <scroll>false</scroll>
+                    </control>
+                </focusedlayout>
+                <content>plugin://plugin.program.autocompletion?info=autocomplete&amp;&amp;id=$VAR[Path_SearchTerm]&amp;&amp;limit=9</content>
+                <content>plugin://script.skinvariables/?info=get_split_string&amp;infolabel=Skin.String(SearchHistory)&amp;reload=$INFO[Skin.String(SearchHistory)]</content>
+            </control>
+        </control>
+    </include>
+
+    <include name="Search_Filter_Autocomplete_Fake">
+        <param name="id">9098</param>
+        <definition>
+            <control type="group">
+                <top>100</top>
+                <height>view_pad</height>
+                <left>30</left>
+                <visible>!Integer.IsEqual(Container($PARAM[id]).NumItems,0)</visible>
+                <animation effect="slide" end="-40" time="400" tween="quadratic" reversible="false" condition="!Container($PARAM[id]).OnNext">Conditional</animation>
+                <animation effect="slide" end="40" time="400" tween="quadratic" reversible="false" condition="!Container($PARAM[id]).OnPrevious">Conditional</animation>
+                <control type="grouplist">
+                    <itemgap>0</itemgap>
+                    <orientation>horizontal</orientation>
+                    <control type="togglebutton">
+                        <textoffsetx>10</textoffsetx>
+                        <width>auto</width>
+                        <height>40</height>
+                        <centertop>50%</centertop>
+                        <texturefocus />
+                        <texturenofocus />
+                        <alttexturefocus />
+                        <alttexturenofocus />
+                        <align>center</align>
+                        <font>font_main_black</font>
+                        <textcolor>main_fg_30</textcolor>
+                        <focusedcolor>main_fg_30</focusedcolor>
+                        <label>$INFO[Container($PARAM[id]).ListItem.Label]</label>
+                        <altlabel>[COLOR=main_fg_90]$INFO[Container($PARAM[id]).ListItem.Label][/COLOR]</altlabel>
+                        <usealttexture>Control.HasFocus($PARAM[id])</usealttexture>
+                    </control>
+                    <control type="button">
+                        <textoffsetx>10</textoffsetx>
+                        <width>auto</width>
+                        <height>40</height>
+                        <centertop>50%</centertop>
+                        <texturefocus />
+                        <texturenofocus />
+                        <align>center</align>
+                        <font>font_main_black</font>
+                        <textcolor>main_fg_30</textcolor>
+                        <focusedcolor>main_fg_90</focusedcolor>
+                        <label>$INFO[Container($PARAM[id]).ListItem(1).Label]</label>
+                    </control>
+                    <control type="button">
+                        <textoffsetx>10</textoffsetx>
+                        <width>auto</width>
+                        <height>40</height>
+                        <centertop>50%</centertop>
+                        <texturefocus />
+                        <texturenofocus />
+                        <align>center</align>
+                        <font>font_main_black</font>
+                        <textcolor>main_fg_30</textcolor>
+                        <focusedcolor>main_fg_90</focusedcolor>
+                        <label>$INFO[Container($PARAM[id]).ListItem(2).Label]</label>
+                    </control>
+                    <control type="button">
+                        <textoffsetx>10</textoffsetx>
+                        <width>auto</width>
+                        <height>40</height>
+                        <centertop>50%</centertop>
+                        <texturefocus />
+                        <texturenofocus />
+                        <align>center</align>
+                        <font>font_main_black</font>
+                        <textcolor>main_fg_30</textcolor>
+                        <focusedcolor>main_fg_90</focusedcolor>
+                        <label>$INFO[Container($PARAM[id]).ListItem(3).Label]</label>
+                    </control>
+                    <control type="button">
+                        <textoffsetx>10</textoffsetx>
+                        <width>auto</width>
+                        <height>40</height>
+                        <centertop>50%</centertop>
+                        <texturefocus />
+                        <texturenofocus />
+                        <align>center</align>
+                        <font>font_main_black</font>
+                        <textcolor>main_fg_30</textcolor>
+                        <focusedcolor>main_fg_90</focusedcolor>
+                        <label>$INFO[Container($PARAM[id]).ListItem(4).Label]</label>
+                    </control>
+                </control>
+                <control type="button">
+                    <textoffsetx>10</textoffsetx>
+                    <width>auto</width>
+                    <height>scrollbar_w</height>
+                    <bottom>10</bottom>
+                    <align>center</align>
+                    <font>font_main_black</font>
+                    <textcolor>00ffffff</textcolor>
+                    <focusedcolor>00ffffff</focusedcolor>
+                    <label>$INFO[Container($PARAM[id]).ListItem.Label]</label>
+                    <include>Texture_Highlight_Underline_H</include>
+                    <visible>Control.HasFocus($PARAM[id])</visible>
+                </control>
+            </control>
+        </definition>
+    </include>
+
+    <include name="Search_Filter_Categories">
+        <control type="grouplist" id="9500">
+            <include>Search_View_Visible_OnEdit</include>
+            <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+            <top>340</top>
+            <width>1280</width>
+            <orientation>horizontal</orientation>
+            <itemgap>-20</itemgap>
+            <onup>9098</onup>
+            <ondown>5099</ondown>
+            <!-- <include content="Search_Filter_Button">
+                <param name="id">9501</param>
+                <label>$LOCALIZE[31324]</label>
+                <font>font_main_bold</font>
+                <visible>Integer.IsGreater(Container(5099).NumItems,0)</visible>
+                <onfocus>ClearProperty(SearchDiscover.FilterLabel)</onfocus>
+                <onclick>SetFocus(5099,0,absolute)</onclick>
+                <onclick>SetFocus(9501)</onclick>
+                <ondown>5099</ondown>
+            </include> -->
+
+            <!-- Library Discover -->
+            <include content="Search_Filter_Button">
+                <param name="id">9511</param>
+                <label>$LOCALIZE[515]$INFO[Window.Property(SearchDiscover.GenreLabel),: ,]</label>
+                <font>font_main_bold</font>
+                <onfocus>SetProperty(SearchDiscover.FilterLabel,Genre)</onfocus>
+                <onclick>SetFocus(8900)</onclick>
+                <visible>Skin.HasSetting(Search.LibraryDiscover)</visible>
+                <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9512</param>
+                <label>$LOCALIZE[572]$INFO[Window.Property(SearchDiscover.StudioLabel),: ,]</label>
+                <font>font_main_bold</font>
+                <onfocus>SetProperty(SearchDiscover.FilterLabel,Studio)</onfocus>
+                <onclick>SetFocus(8900)</onclick>
+                <visible>Skin.HasSetting(Search.LibraryDiscover)</visible>
+                <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9513</param>
+                <label>$LOCALIZE[20339]$INFO[Window.Property(SearchDiscover.DirectorLabel),: ,]</label>
+                <font>font_main_bold</font>
+                <onfocus>SetProperty(SearchDiscover.FilterLabel,Director)</onfocus>
+                <onclick>SetFocus(8900)</onclick>
+                <visible>Skin.HasSetting(Search.LibraryDiscover)</visible>
+                <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9514</param>
+                <label>$LOCALIZE[345]$INFO[Window.Property(SearchDiscover.YearLow), &gt; ,]$INFO[Window.Property(SearchDiscover.YearHigh), &lt; ,]</label>
+                <font>font_main_bold</font>
+                <onclick>SetProperty(SearchDiscover.YearLow.Dialog,1)</onclick>
+                <onclick>ClearProperty(SearchDiscover.YearLow)</onclick>
+                <onclick>ClearProperty(SearchDiscover.YearHigh)</onclick>
+                <onclick>ActivateWindow(1155)</onclick>
+                <visible>Skin.HasSetting(Search.LibraryDiscover)</visible>
+                <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9515</param>
+                <label>$LOCALIZE[563]$INFO[Window.Property(SearchDiscover.RatingLow), &gt; ,]</label>
+                <font>font_main_bold</font>
+                <onclick>ClearProperty(SearchDiscover.RatingLow,1105)</onclick>
+                <onclick>ActivateWindow(1156)</onclick>
+                <visible>Skin.HasSetting(Search.LibraryDiscover)</visible>
+                <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+            </include>
+
+            <!-- TMDb Discover -->
+            <include content="Search_Filter_Button">
+                <param name="id">9521</param>
+                <label>$LOCALIZE[515]$INFO[Window.Property(SearchDiscover.GenreLabel),: ,]</label>
+                <font>font_main_bold</font>
+                <onclick>ActivateWindow(1151)</onclick>
+                <visible>!Skin.HasSetting(Search.LibraryDiscover)</visible>
+                <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9522</param>
+                <label>$LOCALIZE[15225]$INFO[Window.Property(SearchDiscover.ProviderLabel),: ,]</label>
+                <font>font_main_bold</font>
+                <onclick>ActivateWindow(1152)</onclick>
+                <visible>!Skin.HasSetting(Search.LibraryDiscover)</visible>
+                <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9523</param>
+                <label>$LOCALIZE[31051]$INFO[Window.Property(SearchDiscover.PeopleLabel),: ,]</label>
+                <font>font_main_bold</font>
+                <onclick>SetProperty(SearchDiscover.PersonSearch,People)</onclick>
+                <onclick>ActivateWindow(1153)</onclick>
+                <visible>!Skin.HasSetting(Search.LibraryDiscover)</visible>
+                <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9524</param>
+                <label>$LOCALIZE[31179]$INFO[Window.Property(SearchDiscover.KeywordLabel),: ,]</label>
+                <font>font_main_bold</font>
+                <onclick>ActivateWindow(1157)</onclick>
+                <visible>!Skin.HasSetting(Search.LibraryDiscover)</visible>
+                <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9525</param>
+                <label>$LOCALIZE[345]$INFO[Window.Property(SearchDiscover.YearLow), &gt; ,]$INFO[Window.Property(SearchDiscover.YearHigh), &lt; ,]</label>
+                <font>font_main_bold</font>
+                <onclick>SetProperty(SearchDiscover.YearLow.Dialog,1)</onclick>
+                <onclick>ClearProperty(SearchDiscover.YearLow)</onclick>
+                <onclick>ClearProperty(SearchDiscover.YearHigh)</onclick>
+                <onclick>ActivateWindow(1155)</onclick>
+                <visible>!Skin.HasSetting(Search.LibraryDiscover)</visible>
+                <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9526</param>
+                <label>$LOCALIZE[563]$INFO[Window.Property(SearchDiscover.RatingLow), &gt; ,]</label>
+                <font>font_main_bold</font>
+                <onclick>ClearProperty(SearchDiscover.RatingLow,1105)</onclick>
+                <onclick>ActivateWindow(1156)</onclick>
+                <visible>!Skin.HasSetting(Search.LibraryDiscover)</visible>
+                <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+            </include>
+        </control>
+    </include>
+
+    <include name="Search_Filter_Submenu">
+        <control type="grouplist">
+            <include>Search_View_Visible_OnEdit</include>
+            <visible>!Integer.IsEqual(Container($PARAM[id]).NumItems,0)</visible>
+            <visible>!String.IsEmpty(Control.GetLabel(9099).index(1)) | Skin.HasSetting(Search.EnableDiscover)</visible>
+            <top>400</top>
+            <width>1280</width>
+            <orientation>horizontal</orientation>
+            <itemgap>-20</itemgap>
+            <animation effect="slide" end="-40" time="400" tween="quadratic" reversible="false" condition="!Container($PARAM[id]).OnNext">Conditional</animation>
+            <animation effect="slide" end="40" time="400" tween="quadratic" reversible="false" condition="!Container($PARAM[id]).OnPrevious">Conditional</animation>
+            <control type="togglebutton">
+                <include>Texture_Highlight_ToggleButton_FakeFocus</include>
+                <usealttexture>Control.HasFocus($PARAM[id])</usealttexture>
+                <label>$INFO[Container($PARAM[id]).ListItem.Label]$INFO[Container($PARAM[id]).ListItem.Property(numitems), (,)]</label>
+                <altlabel>[COLOR=$VAR[ColorSelected]]$INFO[Container($PARAM[id]).ListItem.Label]$INFO[Container($PARAM[id]).ListItem.Property(numitems), (,)][/COLOR]</altlabel>
+                <font>font_mini</font>
+                <height>80</height>
+                <width>auto</width>
+                <textoffsetx>40</textoffsetx>
+                <textcolor>main_fg_30</textcolor>
+                <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0)</visible>
+            </control>
+            <include content="Search_Filter_Button">
+                <label>$INFO[Container($PARAM[id]).ListItem(1).Label]$INFO[Container($PARAM[id]).ListItem(1).Property(numitems), (,)]</label>
+                <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,1)</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <label>$INFO[Container($PARAM[id]).ListItem(2).Label]$INFO[Container($PARAM[id]).ListItem(2).Property(numitems), (,)]</label>
+                <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,2)</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <label>$INFO[Container($PARAM[id]).ListItem(3).Label]$INFO[Container($PARAM[id]).ListItem(3).Property(numitems), (,)]</label>
+                <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,3)</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <label>$INFO[Container($PARAM[id]).ListItem(4).Label]$INFO[Container($PARAM[id]).ListItem(4).Property(numitems), (,)]</label>
+                <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,4)</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <label>$INFO[Container($PARAM[id]).ListItem(5).Label]$INFO[Container($PARAM[id]).ListItem(5).Property(numitems), (,)]</label>
+                <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,5)</visible>
+            </include>
+        </control>
+    </include>
+
+    <include name="Search_Filter_Button">
+        <control type="button" id="$PARAM[id]">
+            <nested />
+            <texturenofocus />
+            <font>font_mini</font>
+            <height>80</height>
+            <width>auto</width>
+            <textoffsetx>40</textoffsetx>
+            <textcolor>main_fg_30</textcolor>
+        </control>
+    </include>
+
+    <include name="Search_Filter_Panel_Discover">
+
+        <!-- Library Filtering -->
+        <include content="Dialog_Overlay_Side">
+            <param name="dialog_size">Dimension_DialogSideMenu</param>
+            <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+            <visible>!$EXP[Exp_InfoDialogs]</visible>
+            <visible allowhiddenfocus="true">[Control.HasFocus(8900) | ControlGroup(89000).HasFocus()]</visible>
+            <include>Animation_Right_Delay</include>
+            <include content="Dialog_Head">
+                <param name="id">0</param>
+                <param name="label">$INFO[Window.Property(SearchDiscover.FilterLabel)]</param>
+            </include>
+            <include content="Dialog_Body">
+                <include content="List_DialogSelect">
+                    <param name="id">8900</param>
+                    <param name="misc">[[String.IsEqual(Window.Property(SearchDiscover.FilterLabel),Genre) + !String.IsEmpty(Window.Property(SearchDiscover.GenreLabel)) + String.Contains(Window.Property(SearchDiscover.GenreLabel),ListItem.Label)] | [String.IsEqual(Window.Property(SearchDiscover.FilterLabel),Studio) + !String.IsEmpty(Window.Property(SearchDiscover.StudioLabel)) + String.Contains(Window.Property(SearchDiscover.StudioLabel),ListItem.Label)] | [String.IsEqual(Window.Property(SearchDiscover.FilterLabel),Director) + !String.IsEmpty(Window.Property(SearchDiscover.DirectorLabel)) + String.Contains(Window.Property(SearchDiscover.DirectorLabel),ListItem.Label)] | [String.IsEqual(Window.Property(SearchDiscover.FilterLabel),Country) + !String.IsEmpty(Window.Property(SearchDiscover.CountryLabel)) + String.Contains(Window.Property(SearchDiscover.CountryLabel),ListItem.Label)]]</param>
+                    <include>Dimension_Dialog_Body_Group</include>
+                    <onright>89000</onright>
+                    <onleft>9500</onleft>
+                    <onback>9500</onback>
+                    <!-- Genre -->
+                    <include content="Action_SearchLibrary_Filter_Onclick">
+                        <param name="type">Genre</param>
+                    </include>
+                    <!-- Studio -->
+                    <include content="Action_SearchLibrary_Filter_Onclick">
+                        <param name="type">Studio</param>
+                    </include>
+                    <!-- Director -->
+                    <include content="Action_SearchLibrary_Filter_Onclick">
+                        <param name="type">Director</param>
+                    </include>
+                    <!-- Country -->
+                    <include content="Action_SearchLibrary_Filter_Onclick">
+                        <param name="type">Country</param>
+                    </include>
+
+                    <content>
+                        <item>
+                            <label>$LOCALIZE[192]</label>
+                            <property name="clearfilter">True</property>
+                            <property name="special_icon">special://skin/extras/icons/_none.png</property>
+                            <!-- <property name="special_icon">special://skin/extras/icons/circle-minus.png</property> -->
+                        </item>
+                    </content>
+
+                    <content sortby="label">$VAR[Path_SearchFilter_Node]</content>
+                </include>
+                <include content="Dialog_Side_Grouplist">
+                    <param name="id">89000</param>
+                    <onright>9500</onright>
+                    <onleft>8900</onleft>
+                    <include content="Dialog_Side_Button">
+                        <param name="id">01</param>
+                        <param name="baseid">89</param>
+                        <param name="label">$LOCALIZE[186]</param>
+                        <param name="icon">special://skin/extras/icons/circle-check.png</param>
+                        <onclick>SetFocus(9500)</onclick>
+                    </include>
+                </include>
+            </include>
+        </include>
+
+    </include>
+
+    <include name="Search_Filter_Selector">
+        <control type="list" id="5099">
+            <visible>!String.IsEmpty(Control.GetLabel(9099).index(1)) | Skin.HasSetting(Search.EnableDiscover)</visible>
+            <onleft>5099</onleft>
+            <onright>5099</onright>
+            <orientation>horizontal</orientation>
+            <width>1</width>
+            <height>1</height>
+            <left>-3840</left>
+            <onup>9500</onup>
+            <ondown>6000</ondown>
+            <itemlayout width="1" height="1" />
+            <focusedlayout width="1" height="1">
+                <include content="List_ButtonMenu_Row_HiddenButton_ERow">
+                    <param name="id">5099</param>
+                </include>
+            </focusedlayout>
+            <content>
+                <item>
+                    <label>All items</label>
+                    <property name="target">videos</property>
+                    <property name="guid">guid-discoverall</property>
+                    <property name="numitems">$INFO[Container(5081).NumItems]</property>
+                    <property name="onfocus">SetProperty(TMDbHelper.WidgetContainer,5081)</property>
+                    <visible>Skin.HasSetting(Search.LibraryDiscover) + Skin.HasSetting(Search.EnableDiscover) + [!Integer.IsEqual(Container(5081).NumItems,0) | Container(5081).IsUpdating]</visible>
+                </item>
+                <item>
+                    <label>Movies</label>
+                    <property name="target">videos</property>
+                    <property name="guid">guid-discovermovies</property>
+                    <property name="numitems">$INFO[Container(5082).NumItems]</property>
+                    <property name="onfocus">SetProperty(TMDbHelper.WidgetContainer,5082)</property>
+                    <visible>Skin.HasSetting(Search.EnableDiscover) + [!Integer.IsEqual(Container(5082).NumItems,0) | Container(5082).IsUpdating]</visible>
+                </item>
+                <item>
+                    <label>TV Shows</label>
+                    <property name="target">videos</property>
+                    <property name="guid">guid-discovertvshows</property>
+                    <property name="numitems">$INFO[Container(5083).NumItems]</property>
+                    <property name="onfocus">SetProperty(TMDbHelper.WidgetContainer,5083)</property>
+                    <visible>Skin.HasSetting(Search.EnableDiscover) + [!Integer.IsEqual(Container(5083).NumItems,0) | Container(5083).IsUpdating]</visible>
+                </item>
+
+                <include>skinvariables-searchmenu-rowitems</include>
+            </content>
+        </control>
+    </include>
+
+    <include name="Search_Filter_Letter">
+        <param name="textcolor_fo">main_fg_100</param>
+        <param name="textcolor_nf">main_fg_30</param>
+        <param name="editid">9099</param>
+        <definition>
+            <control type="button" id="90$PARAM[groupid]$PARAM[id]">
+                <width>100</width>
+                <height>40</height>
+                <centertop>50%</centertop>
+                <texturefocus />
+                <texturenofocus />
+                <align>center</align>
+                <font>font_main_black</font>
+                <textcolor>$PARAM[textcolor_nf]</textcolor>
+                <focusedcolor>$PARAM[textcolor_fo]</focusedcolor>
+                <label>[UPPERCASE]$PARAM[letter][/UPPERCASE]</label>
+                <onclick>SetFocus($PARAM[editid])</onclick>
+                <include>Object_SearchLetter_Click_$PARAM[letter]</include>
+                <onclick>SetFocus(90$PARAM[groupid]$PARAM[id])</onclick>
+                <include>Action_UpdateSearchTerm</include>
+                <onup>$PARAM[onup]</onup>
+                <onup>90$PARAM[grouponup]$PARAM[id]</onup>
+                <ondown>$PARAM[ondown]</ondown>
+                <ondown>90$PARAM[groupondown]$PARAM[id]</ondown>
+                <nested />
+            </control>
+            <control type="group" id="81$PARAM[groupid]$PARAM[id]">
+                <nested />
+                <left>-80</left>
+                <width>20</width>
+                <control type="image">
+                    <left>10</left>
+                    <width>40</width>
+                    <include>Texture_Highlight_Scrollbar_H</include>
+                    <height>scrollbar_w</height>
+                    <bottom>14</bottom>
+                    <visible>Control.HasFocus(90$PARAM[groupid]$PARAM[id])</visible>
+                </control>
+            </control>
+        </definition>
+    </include>
+
+    <include name="Search_Filter_Alphabet">
+        <param name="editid">9099</param>
+        <param name="ondown">9098</param>
+        <param name="rowone">9002</param>
+        <param name="rowtwo">9003</param>
+        <param name="onback">303</param>
+        <definition>
+            <!-- First Row -->
+            <control type="grouplist" id="$PARAM[rowone]">
+                <orientation>horizontal</orientation>
+                <itemgap>0</itemgap>
+                <height>view_pad</height>
+                <onback>$PARAM[onback]</onback>
+                <include content="Search_Filter_Letter">
+                    <param name="letter">a</param>
+                    <param name="id">1</param>
+                    <param name="groupid">1</param>
+                    <param name="groupondown">3</param>
+                    <param name="onup">$PARAM[editid]</param>
+                    <param name="editid">$PARAM[editid]</param>
+                </include>
+                <include content="Search_Filter_Letter">
+                    <param name="letter">b</param>
+                    <param name="id">2</param>
+                    <param name="groupid">1</param>
+                    <param name="groupondown">3</param>
+                    <param name="onup">$PARAM[editid]</param>
+                    <param name="editid">$PARAM[editid]</param>
+                </include>
+                <include content="Search_Filter_Letter">
+                    <param name="letter">c</param>
+                    <param name="id">3</param>
+                    <param name="groupid">1</param>
+                    <param name="groupondown">3</param>
+                    <param name="onup">$PARAM[editid]</param>
+                    <param name="editid">$PARAM[editid]</param>
+                </include>
+                <include content="Search_Filter_Letter">
+                    <param name="letter">d</param>
+                    <param name="id">4</param>
+                    <param name="groupid">1</param>
+                    <param name="groupondown">3</param>
+                    <param name="onup">$PARAM[editid]</param>
+                    <param name="editid">$PARAM[editid]</param>
+                </include>
+                <include content="Search_Filter_Letter">
+                    <param name="letter">e</param>
+                    <param name="id">5</param>
+                    <param name="groupid">1</param>
+                    <param name="groupondown">3</param>
+                    <param name="onup">$PARAM[editid]</param>
+                    <param name="editid">$PARAM[editid]</param>
+                </include>
+                <include content="Search_Filter_Letter">
+                    <param name="letter">f</param>
+                    <param name="id">6</param>
+                    <param name="groupid">1</param>
+                    <param name="groupondown">3</param>
+                    <param name="onup">$PARAM[editid]</param>
+                    <param name="editid">$PARAM[editid]</param>
+                </include>
+                <include content="Search_Filter_Letter">
+                    <param name="letter">g</param>
+                    <param name="id">7</param>
+                    <param name="groupid">1</param>
+                    <param name="groupondown">3</param>
+                    <param name="onup">$PARAM[editid]</param>
+                    <param name="editid">$PARAM[editid]</param>
+                </include>
+                <include content="Search_Filter_Letter">
+                    <param name="letter">h</param>
+                    <param name="id">8</param>
+                    <param name="groupid">1</param>
+                    <param name="groupondown">3</param>
+                    <param name="onup">$PARAM[editid]</param>
+                    <param name="editid">$PARAM[editid]</param>
+                </include>
+                <include content="Search_Filter_Letter">
+                    <param name="letter">i</param>
+                    <param name="id">9</param>
+                    <param name="groupid">1</param>
+                    <param name="groupondown">3</param>
+                    <param name="onup">$PARAM[editid]</param>
+                    <param name="editid">$PARAM[editid]</param>
+                </include>
+                <include content="Search_Filter_Letter">
+                    <param name="letter">j</param>
+                    <param name="id">0</param>
+                    <param name="groupid">2</param>
+                    <param name="groupondown">4</param>
+                    <param name="onup">$PARAM[editid]</param>
+                    <param name="editid">$PARAM[editid]</param>
+                </include>
+                <include content="Search_Filter_Letter">
+                    <param name="letter">k</param>
+                    <param name="id">1</param>
+                    <param name="groupid">2</param>
+                    <param name="groupondown">4</param>
+                    <param name="onup">$PARAM[editid]</param>
+                    <param name="editid">$PARAM[editid]</param>
+                </include>
+                <include content="Search_Filter_Letter">
+                    <param name="letter">l</param>
+                    <param name="id">2</param>
+                    <param name="groupid">2</param>
+                    <param name="groupondown">4</param>
+                    <param name="onup">$PARAM[editid]</param>
+                    <param name="editid">$PARAM[editid]</param>
+                </include>
+                <include content="Search_Filter_Letter">
+                    <param name="letter">m</param>
+                    <param name="id">3</param>
+                    <param name="groupid">2</param>
+                    <param name="groupondown">4</param>
+                    <param name="onup">$PARAM[editid]</param>
+                    <param name="editid">$PARAM[editid]</param>
+                </include>
+                <include content="Search_Filter_Letter">
+                    <param name="letter">n</param>
+                    <param name="id">4</param>
+                    <param name="groupid">2</param>
+                    <param name="groupondown">4</param>
+                    <param name="onup">$PARAM[editid]</param>
+                    <param name="editid">$PARAM[editid]</param>
+                </include>
+                <include content="Search_Filter_Letter">
+                    <param name="letter">o</param>
+                    <param name="id">5</param>
+                    <param name="groupid">2</param>
+                    <param name="groupondown">4</param>
+                    <param name="onup">$PARAM[editid]</param>
+                    <param name="editid">$PARAM[editid]</param>
+                </include>
+                <include content="Search_Filter_Letter">
+                    <param name="letter">p</param>
+                    <param name="id">6</param>
+                    <param name="groupid">2</param>
+                    <param name="groupondown">4</param>
+                    <param name="onup">$PARAM[editid]</param>
+                    <param name="editid">$PARAM[editid]</param>
+                </include>
+            </control>
+
+            <!-- Second Row -->
+            <control type="grouplist" id="$PARAM[rowtwo]">
+                <top>50</top>
+                <height>view_pad</height>
+                <orientation>horizontal</orientation>
+                <itemgap>0</itemgap>
+                <onback>$PARAM[onback]</onback>
+                <include content="Search_Filter_Letter">
+                    <param name="letter">q</param>
+                    <param name="id">1</param>
+                    <param name="groupid">3</param>
+                    <param name="grouponup">1</param>
+                    <param name="ondown">$PARAM[ondown]</param>
+                    <param name="editid">$PARAM[editid]</param>
+                </include>
+                <include content="Search_Filter_Letter">
+                    <param name="letter">r</param>
+                    <param name="id">2</param>
+                    <param name="groupid">3</param>
+                    <param name="grouponup">1</param>
+                    <param name="ondown">$PARAM[ondown]</param>
+                    <param name="editid">$PARAM[editid]</param>
+                </include>
+                <include content="Search_Filter_Letter">
+                    <param name="letter">s</param>
+                    <param name="id">3</param>
+                    <param name="groupid">3</param>
+                    <param name="grouponup">1</param>
+                    <param name="ondown">$PARAM[ondown]</param>
+                    <param name="editid">$PARAM[editid]</param>
+                </include>
+                <include content="Search_Filter_Letter">
+                    <param name="letter">t</param>
+                    <param name="id">4</param>
+                    <param name="groupid">3</param>
+                    <param name="grouponup">1</param>
+                    <param name="ondown">$PARAM[ondown]</param>
+                    <param name="editid">$PARAM[editid]</param>
+                </include>
+                <include content="Search_Filter_Letter">
+                    <param name="letter">u</param>
+                    <param name="id">5</param>
+                    <param name="groupid">3</param>
+                    <param name="grouponup">1</param>
+                    <param name="ondown">$PARAM[ondown]</param>
+                    <param name="editid">$PARAM[editid]</param>
+                </include>
+                <include content="Search_Filter_Letter">
+                    <param name="letter">v</param>
+                    <param name="id">6</param>
+                    <param name="groupid">3</param>
+                    <param name="grouponup">1</param>
+                    <param name="ondown">$PARAM[ondown]</param>
+                    <param name="editid">$PARAM[editid]</param>
+                </include>
+                <include content="Search_Filter_Letter">
+                    <param name="letter">w</param>
+                    <param name="id">7</param>
+                    <param name="groupid">3</param>
+                    <param name="grouponup">1</param>
+                    <param name="ondown">$PARAM[ondown]</param>
+                    <param name="editid">$PARAM[editid]</param>
+                </include>
+                <include content="Search_Filter_Letter">
+                    <param name="letter">x</param>
+                    <param name="id">8</param>
+                    <param name="groupid">3</param>
+                    <param name="grouponup">1</param>
+                    <param name="ondown">$PARAM[ondown]</param>
+                    <param name="editid">$PARAM[editid]</param>
+                </include>
+                <include content="Search_Filter_Letter">
+                    <param name="letter">y</param>
+                    <param name="id">9</param>
+                    <param name="groupid">3</param>
+                    <param name="grouponup">1</param>
+                    <param name="ondown">$PARAM[ondown]</param>
+                    <param name="editid">$PARAM[editid]</param>
+                </include>
+                <include content="Search_Filter_Letter">
+                    <param name="letter">z</param>
+                    <param name="id">0</param>
+                    <param name="groupid">4</param>
+                    <param name="grouponup">2</param>
+                    <param name="ondown">$PARAM[ondown]</param>
+                    <param name="editid">$PARAM[editid]</param>
+                </include>
+                <include content="Search_Filter_Letter">
+                    <param name="letter">_</param>
+                    <param name="id">1</param>
+                    <param name="groupid">4</param>
+                    <param name="grouponup">2</param>
+                    <param name="ondown">$PARAM[ondown]</param>
+                    <param name="editid">$PARAM[editid]</param>
+                </include>
+                <include content="Search_Filter_Letter">
+                    <param name="letter">&lt;</param>
+                    <param name="id">2</param>
+                    <param name="groupid">4</param>
+                    <param name="grouponup">2</param>
+                    <param name="ondown">$PARAM[ondown]</param>
+                    <param name="editid">$PARAM[editid]</param>
+                </include>
+                <include content="Search_Filter_Letter">
+                    <visible>false</visible>
+                    <param name="letter">ac</param>
+                    <param name="id">3</param>
+                    <param name="groupid">4</param>
+                    <param name="grouponup">2</param>
+                    <param name="ondown">$PARAM[ondown]</param>
+                    <param name="editid">$PARAM[editid]</param>
+                </include>
+                <include content="Search_Filter_Letter">
+                    <visible>false</visible>
+                    <param name="letter">aa</param>
+                    <param name="id">4</param>
+                    <param name="groupid">4</param>
+                    <param name="grouponup">2</param>
+                    <param name="ondown">$PARAM[ondown]</param>
+                    <param name="editid">$PARAM[editid]</param>
+                </include>
+                <include content="Search_Filter_Letter">
+                    <visible>false</visible>
+                    <param name="letter">ab</param>
+                    <param name="id">5</param>
+                    <param name="groupid">4</param>
+                    <param name="grouponup">2</param>
+                    <param name="ondown">$PARAM[ondown]</param>
+                    <param name="editid">$PARAM[editid]</param>
+                </include>
+                <include content="Search_Filter_Letter">
+                    <visible>false</visible>
+                    <param name="letter">ac</param>
+                    <param name="id">6</param>
+                    <param name="groupid">4</param>
+                    <param name="grouponup">2</param>
+                    <param name="ondown">$PARAM[ondown]</param>
+                    <param name="editid">$PARAM[editid]</param>
+                </include>
+            </control>
+        </definition>
+    </include>
+
+    <include name="Search_Filter_YearItems">
+        <include content="$PARAM[include]">
+            <param name="prefix">203</param>
+        </include>
+        <include content="$PARAM[include]">
+            <param name="prefix">202</param>
+        </include>
+        <include content="$PARAM[include]">
+            <param name="prefix">201</param>
+        </include>
+        <include content="$PARAM[include]">
+            <param name="prefix">200</param>
+        </include>
+        <include content="$PARAM[include]">
+            <param name="prefix">199</param>
+        </include>
+        <include content="$PARAM[include]">
+            <param name="prefix">198</param>
+        </include>
+        <include content="$PARAM[include]">
+            <param name="prefix">197</param>
+        </include>
+        <include content="$PARAM[include]">
+            <param name="prefix">196</param>
+        </include>
+        <include content="$PARAM[include]">
+            <param name="prefix">195</param>
+        </include>
+        <include content="$PARAM[include]">
+            <param name="prefix">194</param>
+        </include>
+        <include content="$PARAM[include]">
+            <param name="prefix">193</param>
+        </include>
+        <include content="$PARAM[include]">
+            <param name="prefix">192</param>
+        </include>
+        <include content="$PARAM[include]">
+            <param name="prefix">191</param>
+        </include>
+        <include content="$PARAM[include]">
+            <param name="prefix">190</param>
+        </include>
+        <include content="$PARAM[include]">
+            <param name="prefix">189</param>
+        </include>
+    </include>
+
+    <include name="Search_Filter_DecadeItem">
+        <item>
+            <label>$NUMBER[$PARAM[prefix]0]</label>
+            <property name="prefix">$NUMBER[$PARAM[prefix]]</property>
+            <visible>[!String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog)) + [String.IsEmpty(Window(1105).Property(SearchDiscover.YearHigh)) | Integer.IsGreater(Window(1105).Property(SearchDiscover.YearHigh),$PARAM[prefix]0)]] | [String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog)) + [String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow)) | !Integer.IsGreater(Window(1105).Property(SearchDiscover.YearLow),$PARAM[prefix]0)]]</visible>
+        </item>
+    </include>
+
+    <include name="_Search_Filter_YearItem">
+        <item>
+            <label>$NUMBER[$PARAM[prefix]$PARAM[suffix]]</label>
+            <visible>[!String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog)) + [String.IsEmpty(Window(1105).Property(SearchDiscover.YearHigh)) | Integer.IsGreater(Window(1105).Property(SearchDiscover.YearHigh),$NUMBER[$PARAM[prefix]$PARAM[suffix]])]] | [String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog)) + [String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow)) | !Integer.IsGreater(Window(1105).Property(SearchDiscover.YearLow),$NUMBER[$PARAM[prefix]$PARAM[suffix]])]]</visible>
+            <visible>Integer.IsEqual(Container(8000).ListItem.Property(prefix),$PARAM[prefix])</visible>
+        </item>
+    </include>
+
+    <include name="Search_Filter_YearItem">
+        <include content="_Search_Filter_YearItem">
+            <param name="prefix">$PARAM[prefix]</param>
+            <param name="suffix">9</param>
+        </include>
+        <include content="_Search_Filter_YearItem">
+            <param name="prefix">$PARAM[prefix]</param>
+            <param name="suffix">8</param>
+        </include>
+        <include content="_Search_Filter_YearItem">
+            <param name="prefix">$PARAM[prefix]</param>
+            <param name="suffix">7</param>
+        </include>
+        <include content="_Search_Filter_YearItem">
+            <param name="prefix">$PARAM[prefix]</param>
+            <param name="suffix">6</param>
+        </include>
+        <include content="_Search_Filter_YearItem">
+            <param name="prefix">$PARAM[prefix]</param>
+            <param name="suffix">5</param>
+        </include>
+        <include content="_Search_Filter_YearItem">
+            <param name="prefix">$PARAM[prefix]</param>
+            <param name="suffix">4</param>
+        </include>
+        <include content="_Search_Filter_YearItem">
+            <param name="prefix">$PARAM[prefix]</param>
+            <param name="suffix">3</param>
+        </include>
+        <include content="_Search_Filter_YearItem">
+            <param name="prefix">$PARAM[prefix]</param>
+            <param name="suffix">2</param>
+        </include>
+        <include content="_Search_Filter_YearItem">
+            <param name="prefix">$PARAM[prefix]</param>
+            <param name="suffix">1</param>
+        </include>
+        <include content="_Search_Filter_YearItem">
+            <param name="prefix">$PARAM[prefix]</param>
+            <param name="suffix">0</param>
+        </include>
+    </include>
+
+</includes>

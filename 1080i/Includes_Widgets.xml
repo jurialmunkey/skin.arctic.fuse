@@ -65,6 +65,7 @@
         <param name="transition_include">false</param>
         <param name="shortstack_enabled">false</param>
         <param name="shortstack_visible">true</param>
+        <param name="conditional_fade">false</param>
         <definition>
             <include content="Widget_Label">
                 <param name="groupid">$PARAM[groupid]</param>
@@ -82,6 +83,9 @@
                 <include condition="$PARAM[transition_include]">Animation_Transition_InfoPanel_Cond</include>
                 <include content="Transitions_Down_Visibility" condition="$PARAM[transition_include]">
                     <param name="hidden">![$PARAM[transition_hidden]]</param>
+                </include>
+                <include content="Animation_ConditionalFade">
+                    <param name="condition">$PARAM[conditional_fade]</param>
                 </include>
             </include>
             <include content="$PARAM[include]">
@@ -113,6 +117,10 @@
                 <animation effect="fade" start="100" end="0" time="0" condition="[Container($PARAM[id]).IsUpdating | $PARAM[busy_isupdating]] + $PARAM[busy_visible]">Conditional</animation>
                 <visible>$PARAM[visible] + [Container($PARAM[id]).IsUpdating | !Integer.IsEqual(Container($PARAM[id]).NumItems,0) | $PARAM[altvisible]]</visible>
                 <onfocus>SetProperty(Slide.WidgetContainer,True)</onfocus>
+
+                <include content="Animation_ConditionalFade">
+                    <param name="condition">$PARAM[conditional_fade]</param>
+                </include>
             </include>
 
             <include content="Object_Control" condition="$PARAM[shortstack_enabled]">
@@ -530,6 +538,7 @@
                 <param name="shortstack_id">$PARAM[shortstack_id]</param>
                 <param name="shortstack_visible">$PARAM[shortstack_visible]</param>
                 <param name="shortstack_enabled">$PARAM[shortstack_enabled]</param>
+                <param name="conditional_fade">$PARAM[conditional_fade]</param>
                 <nested />
             </include>
         </definition>
@@ -654,6 +663,7 @@
         <param name="grouplistid">5000</param>
         <param name="topid">5001</param>
         <param name="include_condition">true</param>
+        <param name="widget_onback">true</param>
         <definition>
             <include content="Categories_Selector">
                 <param name="id">$PARAM[id]</param>
@@ -678,7 +688,7 @@
                 <param name="hitrect_w">1640</param>
                 <param name="hitrect_h">80</param>
 
-                <include content="Action_Widget_OnBack">
+                <include content="Action_Widget_OnBack" condition="$PARAM[widget_onback]">
                     <param name="id">$PARAM[id]</param>
                     <param name="grouplistid">$PARAM[grouplistid]</param>
                     <param name="topid">$PARAM[topid]</param>
