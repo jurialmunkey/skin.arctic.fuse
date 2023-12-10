@@ -19,6 +19,11 @@
         </control>
     </include>
 
+    <include name="Search_View_Visible_OnEdit">
+        <include>Animation_FadeIn</include>
+        <visible allowhiddenfocus="true">!$EXP[Exp_Search_WidgetGroup_HasFocus]</visible>
+    </include>
+
     <include name="Search_View_Widgets_Grouplist">
         <control type="grouplist" id="6000">
             <top>500</top>
@@ -142,8 +147,8 @@
             <param name="secondary_label">$LOCALIZE[31371] $VAR[Label_DiscoverWidgets_Sort]</param>
             <param name="sort_condition">True</param>
             <param name="sort_descending">True</param>
-            <param name="visible">[Skin.HasSetting(Search.EnableDiscover) + [String.IsEqual(Container(5099).ListItem.Property(guid),guid-discoverall) | [!ControlGroup(6000).HasFocus() + !Control.HasFocus(5099)]]]</param>
-            <param name="altvisible">[Skin.HasSetting(Search.EnableDiscover) + !ControlGroup(6000).HasFocus() + !Control.HasFocus(5099)]</param>
+            <param name="visible">[Skin.HasSetting(Search.LibraryDiscover) + Skin.HasSetting(Search.EnableDiscover) + [String.IsEqual(Container(5099).ListItem.Property(guid),guid-discoverall) | [!ControlGroup(6000).HasFocus() + !Control.HasFocus(5099)]]]</param>
+            <param name="altvisible">[Skin.HasSetting(Search.LibraryDiscover) + Skin.HasSetting(Search.EnableDiscover) + !ControlGroup(6000).HasFocus() + !Control.HasFocus(5099)]</param>
             <param name="include">List_Poster_Row</param>
             <param name="transition_include">true</param>
             <param name="transition_hidden">Control.HasFocus(5081)</param>
@@ -168,6 +173,7 @@
 
             <onfocus>SetProperty(Transition.WidgetStyle,List_Poster_Row,Home)</onfocus>
             <onunfocus>ClearProperty(Transition.WidgetStyle,Home)</onunfocus>
+
         </include>
 
         <include content="_Widget_Row">

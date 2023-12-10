@@ -19,7 +19,7 @@
             <control type="group">
                 <top>140</top>
                 <left>0</left>
-                <include>Search_Visible_OnEdit</include>
+                <include>Search_View_Visible_OnEdit</include>
                 <include content="Search_Filter_Alphabet">
                     <param name="editid">9099</param>
                     <param name="ondown">9098</param>
@@ -29,11 +29,13 @@
             </control>
 
             <include>Search_Filter_Categories</include>
-            <include>Search_Filter_Submenu</include>
+            <include content="Search_Filter_Submenu">
+                <param name="id">5099</param>
+            </include>
             <include>Search_Filter_Selector</include>
         </control>
 
-        <include>Search_Filter_Panel_DiscoverFilters</include>
+        <include>Search_Filter_Panel_Discover</include>
     </include>
 
     <include name="Search_Filter_Edit">
@@ -66,7 +68,7 @@
             <left>40</left>
             <right>40</right>
             <font>font_midi_black</font>
-            <label>$VAR[Label_Setting_SearchStyle][CAPITALIZE]$VAR[Label_Search_HeadingFilter,: ,][/CAPITALIZE]</label>
+            <label>$VAR[Label_Setting_SearchStyle][CAPITALIZE]$INFO[Control.GetLabel(9099).index(1),: ,][/CAPITALIZE]</label>
             <textcolor>main_fg_100</textcolor>
             <visible>!Control.HasFocus(9099)</visible>
         </control>
@@ -76,12 +78,42 @@
         <control type="grouplist" id="9000">
             <itemgap>0</itemgap>
             <align>right</align>
-            <right>-420</right>
+            <right>-520</right>
             <centertop>50%</centertop>
             <orientation>horizontal</orientation>
             <height>160</height>
             <onleft>9099</onleft>
-            <include>Search_Visible_OnEdit</include>
+            <ondown>9500</ondown>
+            <include>Search_View_Visible_OnEdit</include>
+            <include content="Dialog_Side_Button">
+                <param name="vertical">false</param>
+                <param name="id">07</param>
+                <param name="label">$LOCALIZE[192]</param>
+                <param name="nf_opacity">30</param>
+                <param name="db_opacity">12</param>
+                <param name="icon">special://skin/extras/icons/triangle-exclamation.png</param>
+                <onclick>SetFocus(9099)</onclick>
+                <onclick>RunScript(script.skinvariables,set_editcontrol=9099,window_id=1105,setfocus=9099)</onclick>
+                <onclick>ClearProperty(SearchTerm)</onclick>
+                <onclick>ClearProperty(SearchDiscover.SortLabel)</onclick>
+                <onclick>ClearProperty(SearchDiscover.FilmSort)</onclick>
+                <onclick>ClearProperty(SearchDiscover.ShowSort)</onclick>
+                <onclick>ClearProperty(SearchDiscover.GenreLabel)</onclick>
+                <onclick>ClearProperty(SearchDiscover.GenreID)</onclick>
+                <onclick>ClearProperty(SearchDiscover.ProviderLabel)</onclick>
+                <onclick>ClearProperty(SearchDiscover.ProviderID)</onclick>
+                <onclick>ClearProperty(SearchDiscover.PeopleLabel)</onclick>
+                <onclick>ClearProperty(SearchDiscover.PeopleID)</onclick>
+                <onclick>ClearProperty(SearchDiscover.YearHigh)</onclick>
+                <onclick>ClearProperty(SearchDiscover.YearLow)</onclick>
+                <onclick>ClearProperty(SearchDiscover.RatingLow)</onclick>
+                <onclick>ClearProperty(SearchDiscover.StudioLabel)</onclick>
+                <onclick>ClearProperty(SearchDiscover.DirectorLabel)</onclick>
+                <onclick>ClearProperty(SearchDiscover.SortBy)</onclick>
+                <onclick>ClearProperty(SearchDiscover.SortOrder)</onclick>
+                <onclick>Skin.Reset(SearchDiscover.VoteLow)</onclick>
+                <onclick>Skin.Reset(SearchDiscover.ItemLimit)</onclick>
+            </include>
             <include content="Dialog_Side_Button">
                 <param name="vertical">false</param>
                 <param name="id">04</param>
@@ -93,7 +125,7 @@
                 <selected>Skin.HasSetting(Search.EnableDiscover) + !Skin.HasSetting(Search.LibraryDiscover)</selected>
                 <onclick>Skin.SetBool(Search.EnableDiscover)</onclick>
                 <onclick>Skin.Reset(Search.LibraryDiscover)</onclick>
-                <onclick>SetFocus(85001)</onclick>
+                <!-- <onclick>SetFocus(85001)</onclick> -->
             </include>
             <include content="Dialog_Side_Button">
                 <param name="vertical">false</param>
@@ -106,7 +138,7 @@
                 <selected>Skin.HasSetting(Search.EnableDiscover) + Skin.HasSetting(Search.LibraryDiscover)</selected>
                 <onclick>Skin.SetBool(Search.EnableDiscover)</onclick>
                 <onclick>Skin.SetBool(Search.LibraryDiscover)</onclick>
-                <onclick>SetFocus(85001)</onclick>
+                <!-- <onclick>SetFocus(85001)</onclick> -->
             </include>
             <include content="Dialog_Side_Button">
                 <param name="vertical">false</param>
@@ -138,7 +170,7 @@
                 <orientation>horizontal</orientation>
                 <onup>9003</onup>
                 <onback>PreviousMenu</onback>
-                <ondown>5099</ondown>
+                <ondown>9500</ondown>
                 <focusposition>0</focusposition>
                 <movement>0</movement>
                 <visible allowhiddenfocus="true">false</visible>
@@ -296,85 +328,253 @@
 
     <include name="Search_Filter_Categories">
         <control type="grouplist" id="9500">
-            <include>Search_Visible_OnEdit</include>
+            <include>Search_View_Visible_OnEdit</include>
+            <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
             <top>340</top>
             <width>1280</width>
             <orientation>horizontal</orientation>
-            <onup>9003</onup>
-            <ondown>9600</ondown>
             <itemgap>-20</itemgap>
-            <visible>!Integer.IsEqual(Container(6000).NumItems,0)</visible>
-            <control type="togglebutton">
-                <include>Texture_Highlight_ToggleButton_FakeFocus</include>
-                <label>Content: $INFO[Container(5099).ListItem.Label]</label>
-                <altlabel>[COLOR=$VAR[ColorSelected]]Content: $INFO[Container(5099).ListItem.Label][/COLOR]</altlabel>
+            <onup>9098</onup>
+            <ondown>5099</ondown>
+            <!-- <include content="Search_Filter_Button">
+                <param name="id">9501</param>
+                <label>$LOCALIZE[31324]</label>
                 <font>font_main_bold</font>
-                <height>80</height>
-                <width>auto</width>
-                <textoffsetx>40</textoffsetx>
-                <textcolor>main_fg_30</textcolor>
                 <visible>Integer.IsGreater(Container(5099).NumItems,0)</visible>
-            </control>
+                <onfocus>ClearProperty(SearchDiscover.FilterLabel)</onfocus>
+                <onclick>SetFocus(5099,0,absolute)</onclick>
+                <onclick>SetFocus(9501)</onclick>
+                <ondown>5099</ondown>
+            </include> -->
+
+            <!-- Library Discover -->
+            <include content="Search_Filter_Button">
+                <param name="id">9511</param>
+                <label>$LOCALIZE[515]$INFO[Window.Property(SearchDiscover.GenreLabel),: ,]</label>
+                <font>font_main_bold</font>
+                <onfocus>SetProperty(SearchDiscover.FilterLabel,Genre)</onfocus>
+                <onclick>SetFocus(8900)</onclick>
+                <visible>Skin.HasSetting(Search.LibraryDiscover)</visible>
+                <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9512</param>
+                <label>$LOCALIZE[572]$INFO[Window.Property(SearchDiscover.StudioLabel),: ,]</label>
+                <font>font_main_bold</font>
+                <onfocus>SetProperty(SearchDiscover.FilterLabel,Studio)</onfocus>
+                <onclick>SetFocus(8900)</onclick>
+                <visible>Skin.HasSetting(Search.LibraryDiscover)</visible>
+                <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9513</param>
+                <label>$LOCALIZE[20339]$INFO[Window.Property(SearchDiscover.DirectorLabel),: ,]</label>
+                <font>font_main_bold</font>
+                <onfocus>SetProperty(SearchDiscover.FilterLabel,Director)</onfocus>
+                <onclick>SetFocus(8900)</onclick>
+                <visible>Skin.HasSetting(Search.LibraryDiscover)</visible>
+                <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9514</param>
+                <label>$LOCALIZE[345]$INFO[Window.Property(SearchDiscover.YearLow), &gt; ,]$INFO[Window.Property(SearchDiscover.YearHigh), &lt; ,]</label>
+                <font>font_main_bold</font>
+                <onclick>SetProperty(SearchDiscover.YearLow.Dialog,1)</onclick>
+                <onclick>ClearProperty(SearchDiscover.YearLow)</onclick>
+                <onclick>ClearProperty(SearchDiscover.YearHigh)</onclick>
+                <onclick>ActivateWindow(1155)</onclick>
+                <visible>Skin.HasSetting(Search.LibraryDiscover)</visible>
+                <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9515</param>
+                <label>$LOCALIZE[563]$INFO[Window.Property(SearchDiscover.RatingLow), &gt; ,]</label>
+                <font>font_main_bold</font>
+                <onclick>ClearProperty(SearchDiscover.RatingLow,1105)</onclick>
+                <onclick>ActivateWindow(1156)</onclick>
+                <visible>Skin.HasSetting(Search.LibraryDiscover)</visible>
+                <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+            </include>
+
+            <!-- TMDb Discover -->
+            <include content="Search_Filter_Button">
+                <param name="id">9521</param>
+                <label>$LOCALIZE[515]$INFO[Window.Property(SearchDiscover.GenreLabel),: ,]</label>
+                <font>font_main_bold</font>
+                <onclick>ActivateWindow(1151)</onclick>
+                <visible>!Skin.HasSetting(Search.LibraryDiscover)</visible>
+                <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9522</param>
+                <label>$LOCALIZE[15225]$INFO[Window.Property(SearchDiscover.ProviderLabel),: ,]</label>
+                <font>font_main_bold</font>
+                <onclick>ActivateWindow(1152)</onclick>
+                <visible>!Skin.HasSetting(Search.LibraryDiscover)</visible>
+                <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9523</param>
+                <label>$LOCALIZE[31051]$INFO[Window.Property(SearchDiscover.PeopleLabel),: ,]</label>
+                <font>font_main_bold</font>
+                <onclick>SetProperty(SearchDiscover.PersonSearch,People)</onclick>
+                <onclick>ActivateWindow(1153)</onclick>
+                <visible>!Skin.HasSetting(Search.LibraryDiscover)</visible>
+                <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9524</param>
+                <label>$LOCALIZE[31179]$INFO[Window.Property(SearchDiscover.KeywordLabel),: ,]</label>
+                <font>font_main_bold</font>
+                <onclick>ActivateWindow(1157)</onclick>
+                <visible>!Skin.HasSetting(Search.LibraryDiscover)</visible>
+                <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9525</param>
+                <label>$LOCALIZE[345]$INFO[Window.Property(SearchDiscover.YearLow), &gt; ,]$INFO[Window.Property(SearchDiscover.YearHigh), &lt; ,]</label>
+                <font>font_main_bold</font>
+                <onclick>SetProperty(SearchDiscover.YearLow.Dialog,1)</onclick>
+                <onclick>ClearProperty(SearchDiscover.YearLow)</onclick>
+                <onclick>ClearProperty(SearchDiscover.YearHigh)</onclick>
+                <onclick>ActivateWindow(1155)</onclick>
+                <visible>!Skin.HasSetting(Search.LibraryDiscover)</visible>
+                <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9526</param>
+                <label>$LOCALIZE[563]$INFO[Window.Property(SearchDiscover.RatingLow), &gt; ,]</label>
+                <font>font_main_bold</font>
+                <onclick>ClearProperty(SearchDiscover.RatingLow,1105)</onclick>
+                <onclick>ActivateWindow(1156)</onclick>
+                <visible>!Skin.HasSetting(Search.LibraryDiscover)</visible>
+                <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+            </include>
         </control>
     </include>
 
     <include name="Search_Filter_Submenu">
-        <control type="grouplist" id="9600">
-            <include>Search_Visible_OnEdit</include>
-            <visible>!Integer.IsEqual(Container(6000).NumItems,0)</visible>
+        <control type="grouplist">
+            <include>Search_View_Visible_OnEdit</include>
+            <visible>!Integer.IsEqual(Container($PARAM[id]).NumItems,0)</visible>
+            <visible>!String.IsEmpty(Control.GetLabel(9099).index(1)) | Skin.HasSetting(Search.EnableDiscover)</visible>
             <top>400</top>
             <width>1280</width>
             <orientation>horizontal</orientation>
-            <onup>9003</onup>
-            <ondown>9600</ondown>
             <itemgap>-20</itemgap>
-            <animation effect="slide" end="-40" time="400" tween="quadratic" reversible="false" condition="!Container(5099).OnNext">Conditional</animation>
-            <animation effect="slide" end="40" time="400" tween="quadratic" reversible="false" condition="!Container(5099).OnPrevious">Conditional</animation>
+            <animation effect="slide" end="-40" time="400" tween="quadratic" reversible="false" condition="!Container($PARAM[id]).OnNext">Conditional</animation>
+            <animation effect="slide" end="40" time="400" tween="quadratic" reversible="false" condition="!Container($PARAM[id]).OnPrevious">Conditional</animation>
             <control type="togglebutton">
                 <include>Texture_Highlight_ToggleButton_FakeFocus</include>
-                <usealttexture>Control.HasFocus(5099)</usealttexture>
-                <label>$INFO[Container(5099).ListItem.Label]$INFO[Container(5099).ListItem.Property(numitems), (,)]</label>
-                <altlabel>[COLOR=$VAR[ColorSelected]]$INFO[Container(5099).ListItem.Label]$INFO[Container(5099).ListItem.Property(numitems), (,)][/COLOR]</altlabel>
+                <usealttexture>Control.HasFocus($PARAM[id])</usealttexture>
+                <label>$INFO[Container($PARAM[id]).ListItem.Label]$INFO[Container($PARAM[id]).ListItem.Property(numitems), (,)]</label>
+                <altlabel>[COLOR=$VAR[ColorSelected]]$INFO[Container($PARAM[id]).ListItem.Label]$INFO[Container($PARAM[id]).ListItem.Property(numitems), (,)][/COLOR]</altlabel>
                 <font>font_mini</font>
                 <height>80</height>
                 <width>auto</width>
                 <textoffsetx>40</textoffsetx>
                 <textcolor>main_fg_30</textcolor>
-                <visible>Integer.IsGreater(Container(5099).NumItems,0)</visible>
+                <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0)</visible>
             </control>
             <include content="Search_Filter_Button">
-                <label>$INFO[Container(5099).ListItem(1).Label]$INFO[Container(5099).ListItem(1).Property(numitems), (,)]</label>
-                <visible>Integer.IsGreater(Container(5099).NumItems,1)</visible>
+                <label>$INFO[Container($PARAM[id]).ListItem(1).Label]$INFO[Container($PARAM[id]).ListItem(1).Property(numitems), (,)]</label>
+                <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,1)</visible>
             </include>
             <include content="Search_Filter_Button">
-                <label>$INFO[Container(5099).ListItem(2).Label]$INFO[Container(5099).ListItem(2).Property(numitems), (,)]</label>
-                <visible>Integer.IsGreater(Container(5099).NumItems,2)</visible>
+                <label>$INFO[Container($PARAM[id]).ListItem(2).Label]$INFO[Container($PARAM[id]).ListItem(2).Property(numitems), (,)]</label>
+                <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,2)</visible>
             </include>
             <include content="Search_Filter_Button">
-                <label>$INFO[Container(5099).ListItem(3).Label]$INFO[Container(5099).ListItem(3).Property(numitems), (,)]</label>
-                <visible>Integer.IsGreater(Container(5099).NumItems,3)</visible>
+                <label>$INFO[Container($PARAM[id]).ListItem(3).Label]$INFO[Container($PARAM[id]).ListItem(3).Property(numitems), (,)]</label>
+                <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,3)</visible>
             </include>
             <include content="Search_Filter_Button">
-                <label>$INFO[Container(5099).ListItem(4).Label]$INFO[Container(5099).ListItem(4).Property(numitems), (,)]</label>
-                <visible>Integer.IsGreater(Container(5099).NumItems,4)</visible>
+                <label>$INFO[Container($PARAM[id]).ListItem(4).Label]$INFO[Container($PARAM[id]).ListItem(4).Property(numitems), (,)]</label>
+                <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,4)</visible>
             </include>
             <include content="Search_Filter_Button">
-                <label>$INFO[Container(5099).ListItem(5).Label]$INFO[Container(5099).ListItem(5).Property(numitems), (,)]</label>
-                <visible>Integer.IsGreater(Container(5099).NumItems,5)</visible>
+                <label>$INFO[Container($PARAM[id]).ListItem(5).Label]$INFO[Container($PARAM[id]).ListItem(5).Property(numitems), (,)]</label>
+                <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,5)</visible>
             </include>
         </control>
     </include>
 
     <include name="Search_Filter_Button">
         <control type="button" id="$PARAM[id]">
+            <nested />
             <texturenofocus />
             <font>font_mini</font>
             <height>80</height>
             <width>auto</width>
             <textoffsetx>40</textoffsetx>
             <textcolor>main_fg_30</textcolor>
-            <nested />
         </control>
+    </include>
+
+    <include name="Search_Filter_Panel_Discover">
+
+        <!-- Library Filtering -->
+        <include content="Dialog_Overlay_Side">
+            <param name="dialog_size">Dimension_DialogSideMenu</param>
+            <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+            <visible>!$EXP[Exp_InfoDialogs]</visible>
+            <visible allowhiddenfocus="true">[Control.HasFocus(8900) | ControlGroup(89000).HasFocus()]</visible>
+            <include>Animation_Right_Delay</include>
+            <include content="Dialog_Head">
+                <param name="id">0</param>
+                <param name="label">$INFO[Window.Property(SearchDiscover.FilterLabel)]</param>
+            </include>
+            <include content="Dialog_Body">
+                <include content="List_DialogSelect">
+                    <param name="id">8900</param>
+                    <param name="misc">[[String.IsEqual(Window.Property(SearchDiscover.FilterLabel),Genre) + !String.IsEmpty(Window.Property(SearchDiscover.GenreLabel)) + String.Contains(Window.Property(SearchDiscover.GenreLabel),ListItem.Label)] | [String.IsEqual(Window.Property(SearchDiscover.FilterLabel),Studio) + !String.IsEmpty(Window.Property(SearchDiscover.StudioLabel)) + String.Contains(Window.Property(SearchDiscover.StudioLabel),ListItem.Label)] | [String.IsEqual(Window.Property(SearchDiscover.FilterLabel),Director) + !String.IsEmpty(Window.Property(SearchDiscover.DirectorLabel)) + String.Contains(Window.Property(SearchDiscover.DirectorLabel),ListItem.Label)] | [String.IsEqual(Window.Property(SearchDiscover.FilterLabel),Country) + !String.IsEmpty(Window.Property(SearchDiscover.CountryLabel)) + String.Contains(Window.Property(SearchDiscover.CountryLabel),ListItem.Label)]]</param>
+                    <include>Dimension_Dialog_Body_Group</include>
+                    <onright>89000</onright>
+                    <onleft>9500</onleft>
+                    <onback>9500</onback>
+                    <!-- Genre -->
+                    <include content="Action_SearchLibrary_Filter_Onclick">
+                        <param name="type">Genre</param>
+                    </include>
+                    <!-- Studio -->
+                    <include content="Action_SearchLibrary_Filter_Onclick">
+                        <param name="type">Studio</param>
+                    </include>
+                    <!-- Director -->
+                    <include content="Action_SearchLibrary_Filter_Onclick">
+                        <param name="type">Director</param>
+                    </include>
+                    <!-- Country -->
+                    <include content="Action_SearchLibrary_Filter_Onclick">
+                        <param name="type">Country</param>
+                    </include>
+
+                    <content>
+                        <item>
+                            <label>$LOCALIZE[192]</label>
+                            <property name="clearfilter">True</property>
+                            <property name="special_icon">special://skin/extras/icons/_none.png</property>
+                            <!-- <property name="special_icon">special://skin/extras/icons/circle-minus.png</property> -->
+                        </item>
+                    </content>
+
+                    <content sortby="label">$VAR[Path_SearchFilter_Node]</content>
+                </include>
+                <include content="Dialog_Side_Grouplist">
+                    <param name="id">89000</param>
+                    <onright>9500</onright>
+                    <onleft>8900</onleft>
+                    <include content="Dialog_Side_Button">
+                        <param name="id">01</param>
+                        <param name="baseid">89</param>
+                        <param name="label">$LOCALIZE[186]</param>
+                        <param name="icon">special://skin/extras/icons/circle-check.png</param>
+                        <onclick>SetFocus(9500)</onclick>
+                    </include>
+                </include>
+            </include>
+        </include>
+
     </include>
 
     <include name="Search_Filter_Selector">
@@ -386,7 +586,7 @@
             <width>1</width>
             <height>1</height>
             <left>-3840</left>
-            <onup>9098</onup>
+            <onup>9500</onup>
             <ondown>6000</ondown>
             <itemlayout width="1" height="1" />
             <focusedlayout width="1" height="1">
@@ -395,34 +595,13 @@
                 </include>
             </focusedlayout>
             <content>
-                <!-- <item>
-                    <label>All items</label>
-                    <property name="target">videos</property>
-                    <property name="guid">guid-discoverall</property>
-                    <property name="onfocus">SetProperty(TMDbHelper.WidgetContainer,5081)</property>
-                    <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
-                </item>
-                <item>
-                    <label>Movies</label>
-                    <property name="target">videos</property>
-                    <property name="guid">guid-discovermovies</property>
-                    <property name="onfocus">SetProperty(TMDbHelper.WidgetContainer,5081)</property>
-                    <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
-                </item>
-                <item>
-                    <label>TV Shows</label>
-                    <property name="target">videos</property>
-                    <property name="guid">guid-discovertvshows</property>
-                    <property name="onfocus">SetProperty(TMDbHelper.WidgetContainer,5081)</property>
-                    <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
-                </item> -->
                 <item>
                     <label>All items</label>
                     <property name="target">videos</property>
                     <property name="guid">guid-discoverall</property>
                     <property name="numitems">$INFO[Container(5081).NumItems]</property>
                     <property name="onfocus">SetProperty(TMDbHelper.WidgetContainer,5081)</property>
-                    <visible>Skin.HasSetting(Search.EnableDiscover) + [!Integer.IsEqual(Container(5081).NumItems,0) | Container(5081).IsUpdating]</visible>
+                    <visible>Skin.HasSetting(Search.LibraryDiscover) + Skin.HasSetting(Search.EnableDiscover) + [!Integer.IsEqual(Container(5081).NumItems,0) | Container(5081).IsUpdating]</visible>
                 </item>
                 <item>
                     <label>Movies</label>
@@ -772,6 +951,113 @@
                 </include>
             </control>
         </definition>
+    </include>
+
+    <include name="Search_Filter_YearItems">
+        <include content="$PARAM[include]">
+            <param name="prefix">203</param>
+        </include>
+        <include content="$PARAM[include]">
+            <param name="prefix">202</param>
+        </include>
+        <include content="$PARAM[include]">
+            <param name="prefix">201</param>
+        </include>
+        <include content="$PARAM[include]">
+            <param name="prefix">200</param>
+        </include>
+        <include content="$PARAM[include]">
+            <param name="prefix">199</param>
+        </include>
+        <include content="$PARAM[include]">
+            <param name="prefix">198</param>
+        </include>
+        <include content="$PARAM[include]">
+            <param name="prefix">197</param>
+        </include>
+        <include content="$PARAM[include]">
+            <param name="prefix">196</param>
+        </include>
+        <include content="$PARAM[include]">
+            <param name="prefix">195</param>
+        </include>
+        <include content="$PARAM[include]">
+            <param name="prefix">194</param>
+        </include>
+        <include content="$PARAM[include]">
+            <param name="prefix">193</param>
+        </include>
+        <include content="$PARAM[include]">
+            <param name="prefix">192</param>
+        </include>
+        <include content="$PARAM[include]">
+            <param name="prefix">191</param>
+        </include>
+        <include content="$PARAM[include]">
+            <param name="prefix">190</param>
+        </include>
+        <include content="$PARAM[include]">
+            <param name="prefix">189</param>
+        </include>
+    </include>
+
+    <include name="Search_Filter_DecadeItem">
+        <item>
+            <label>$NUMBER[$PARAM[prefix]0]</label>
+            <property name="prefix">$NUMBER[$PARAM[prefix]]</property>
+            <visible>[!String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog)) + [String.IsEmpty(Window(1105).Property(SearchDiscover.YearHigh)) | Integer.IsGreater(Window(1105).Property(SearchDiscover.YearHigh),$PARAM[prefix]0)]] | [String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog)) + [String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow)) | !Integer.IsGreater(Window(1105).Property(SearchDiscover.YearLow),$PARAM[prefix]0)]]</visible>
+        </item>
+    </include>
+
+    <include name="_Search_Filter_YearItem">
+        <item>
+            <label>$NUMBER[$PARAM[prefix]$PARAM[suffix]]</label>
+            <visible>[!String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog)) + [String.IsEmpty(Window(1105).Property(SearchDiscover.YearHigh)) | Integer.IsGreater(Window(1105).Property(SearchDiscover.YearHigh),$NUMBER[$PARAM[prefix]$PARAM[suffix]])]] | [String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog)) + [String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow)) | !Integer.IsGreater(Window(1105).Property(SearchDiscover.YearLow),$NUMBER[$PARAM[prefix]$PARAM[suffix]])]]</visible>
+            <visible>Integer.IsEqual(Container(8000).ListItem.Property(prefix),$PARAM[prefix])</visible>
+        </item>
+    </include>
+
+    <include name="Search_Filter_YearItem">
+        <include content="_Search_Filter_YearItem">
+            <param name="prefix">$PARAM[prefix]</param>
+            <param name="suffix">9</param>
+        </include>
+        <include content="_Search_Filter_YearItem">
+            <param name="prefix">$PARAM[prefix]</param>
+            <param name="suffix">8</param>
+        </include>
+        <include content="_Search_Filter_YearItem">
+            <param name="prefix">$PARAM[prefix]</param>
+            <param name="suffix">7</param>
+        </include>
+        <include content="_Search_Filter_YearItem">
+            <param name="prefix">$PARAM[prefix]</param>
+            <param name="suffix">6</param>
+        </include>
+        <include content="_Search_Filter_YearItem">
+            <param name="prefix">$PARAM[prefix]</param>
+            <param name="suffix">5</param>
+        </include>
+        <include content="_Search_Filter_YearItem">
+            <param name="prefix">$PARAM[prefix]</param>
+            <param name="suffix">4</param>
+        </include>
+        <include content="_Search_Filter_YearItem">
+            <param name="prefix">$PARAM[prefix]</param>
+            <param name="suffix">3</param>
+        </include>
+        <include content="_Search_Filter_YearItem">
+            <param name="prefix">$PARAM[prefix]</param>
+            <param name="suffix">2</param>
+        </include>
+        <include content="_Search_Filter_YearItem">
+            <param name="prefix">$PARAM[prefix]</param>
+            <param name="suffix">1</param>
+        </include>
+        <include content="_Search_Filter_YearItem">
+            <param name="prefix">$PARAM[prefix]</param>
+            <param name="suffix">0</param>
+        </include>
     </include>
 
 </includes>
