@@ -156,13 +156,82 @@
                             <control type="grouplist" id="23000">
                                 <onleft>22005</onleft>
                                 <onright>9000</onright>
+                                <onup>23022</onup>
                                 <orientation>vertical</orientation>
                                 <include content="Dimension_Padding">
                                     <param name="pad">20</param>
                                 </include>
 
+                                <control type="grouplist" id="23001">
+                                    <left>-50</left>
+                                    <right>20</right>
+                                    <align>center</align>
+                                    <top>-20</top>
+                                    <height>160</height>
+                                    <orientation>horizontal</orientation>
+                                    <itemgap>0</itemgap>
+                                    <onup>23022</onup>
+                                    <include content="Dialog_Side_Button">
+                                        <param name="id">11</param>
+                                        <param name="label">$VAR[Label_Shortcut_EnableDisable]</param>
+                                        <param name="vertical">false</param>
+                                        <param name="icon">$VAR[Image_Shortcut_EnableDisable]</param>
+                                        <param name="visible">String.IsEmpty(Window(Home).Property(Shortcuts.EditMode)) + !String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)</param>
+                                        <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle])</onclick>
+                                        <onback>13999</onback>
+                                        <ondown>23025</ondown>
+                                    </include>
+                                    <include content="Dialog_Side_Button">
+                                        <param name="id">12</param>
+                                        <param name="label">$LOCALIZE[31511]</param>
+                                        <param name="vertical">false</param>
+                                        <param name="icon">special://skin/extras/icons/share.png</param>
+                                        <param name="visible">String.IsEmpty(Container(22001).ListItem.Property(forced))</param>
+                                        <onclick condition="!$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
+                                        <onclick condition="$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
+                                        <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_choose]$VAR[Path_Shortcut_UseRawPath])</onclick>
+                                        <onback>13999</onback>
+                                        <ondown>23025</ondown>
+                                        <onup>23022</onup>
+                                    </include>
+                                    <include content="Dialog_Side_Button">
+                                        <param name="id">13</param>
+                                        <param name="label">$LOCALIZE[15217]</param>
+                                        <param name="vertical">false</param>
+                                        <param name="icon">special://skin/extras/icons/terminal.png</param>
+                                        <param name="visible">String.IsEmpty(Container(22001).ListItem.Property(forced))</param>
+                                        <onclick condition="!$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
+                                        <onclick condition="$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
+                                        <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_action]$VAR[Path_Shortcut_UseRawPath])</onclick>
+                                        <onback>13999</onback>
+                                        <ondown>23025</ondown>
+                                        <onup>23022</onup>
+                                    </include>
+                                    <include content="Dialog_Side_Button">
+                                        <param name="id">14</param>
+                                        <param name="label">$LOCALIZE[118]</param>
+                                        <param name="vertical">false</param>
+                                        <param name="icon">special://skin/extras/icons/pen-to-square.png</param>
+                                        <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit])</onclick>
+                                        <onback>13999</onback>
+                                        <ondown>23025</ondown>
+                                        <onup>23022</onup>
+                                    </include>
+                                    <include content="Dialog_Side_Button">
+                                        <param name="id">15</param>
+                                        <param name="label">$LOCALIZE[31274]</param>
+                                        <param name="vertical">false</param>
+                                        <param name="icon">special://skin/extras/icons/images.png</param>
+                                        <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_icon])</onclick>
+                                        <onback>13999</onback>
+                                        <ondown>23025</ondown>
+                                        <onup>23022</onup>
+                                    </include>
+
+                                </control>
+
                                 <!-- Disable / Enable -->
-                                <include content="Settings_Button">
+                                <!-- <include content="Settings_Button">
                                     <param name="dialog">true</param>
                                     <param name="id">23001</param>
                                     <param name="control">togglebutton</param>
@@ -175,10 +244,10 @@
                                     <visible>String.IsEmpty(Window(Home).Property(Shortcuts.EditMode))</visible>
                                     <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)</visible>
                                     <onback>13999</onback>
-                                </include>
+                                </include> -->
 
                                 <!-- Choose Shortcut -->
-                                <include content="Settings_Button">
+                                <!-- <include content="Settings_Button">
                                     <param name="dialog">true</param>
                                     <param name="id">23002</param>
                                     <param name="control">button</param>
@@ -188,10 +257,10 @@
                                     <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_choose]$VAR[Path_Shortcut_UseRawPath])</onclick>
                                     <visible>String.IsEmpty(Container(22001).ListItem.Property(forced))</visible>
                                     <onback>13999</onback>
-                                </include>
+                                </include> -->
 
                                 <!-- Action -->
-                                <include content="Settings_Button">
+                                <!-- <include content="Settings_Button">
                                     <param name="dialog">true</param>
                                     <param name="id">23003</param>
                                     <param name="control">button</param>
@@ -201,14 +270,14 @@
                                     <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_action]$VAR[Path_Shortcut_UseRawPath])</onclick>
                                     <visible>String.IsEmpty(Container(22001).ListItem.Property(forced))</visible>
                                     <onback>13999</onback>
-                                </include>
+                                </include> -->
 
                                 <!-- SPECIAL: Submenu Widget Items -->
                                 <include content="Settings_Button">
                                     <param name="dialog">true</param>
                                     <param name="id">23025</param>
                                     <param name="control">button</param>
-                                    <label> -- Edit items</label>
+                                    <label>Edit items</label>
                                     <onclick>SetProperty(Shortcuts.EditMode,mode=submenu,Home)</onclick>
                                     <onclick>SetProperty(Shortcuts.EditGUID,guid=$INFO[Container(22001).ListItem.Property(guid)],Home)</onclick>
                                     <onclick>SetFocus(23002)</onclick>
@@ -222,7 +291,7 @@
                                     <param name="dialog">true</param>
                                     <param name="id">23007</param>
                                     <param name="control">button</param>
-                                    <label> -- Style</label>
+                                    <label>Style</label>
                                     <label2>$INFO[Container(22001).ListItem.Property(widget_style)]</label2>
                                     <onclick condition="!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)">RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;widget_style&amp;&amp;Poster&amp;Landscape&amp;Square&amp;Banner&amp;Card&amp;Apps&amp;Icon&amp;Text&amp;&amp;Style&amp;&amp;True])</onclick>
                                     <onclick condition="String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)">RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;widget_style&amp;&amp;Poster&amp;Landscape&amp;Square&amp;Banner&amp;Card&amp;&amp;Style&amp;&amp;True])</onclick>
@@ -234,7 +303,7 @@
                                     <param name="dialog">true</param>
                                     <param name="id">23008</param>
                                     <param name="control">button</param>
-                                    <label> -- Sort by</label>
+                                    <label>Sort by</label>
                                     <label2>[CAPITALIZE]$INFO[Container(22001).ListItem.Property(widget_sortby)][/CAPITALIZE]</label2>
                                     <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;widget_sortby&amp;&amp;default&amp;label&amp;random&amp;dateadded&amp;lastplayed&amp;playcount&amp;year&amp;rating&amp;userrating&amp;votes&amp;genre&amp;country&amp;studio&amp;playlist&amp;episodenumber&amp;season&amp;totalepisodes&amp;watchedepisodes&amp;tvshowstatus&amp;tvshowtitle&amp;file&amp;title&amp;track&amp;time&amp;artist&amp;album&amp;lastupdated&amp;lastused&amp;date&amp;&amp;Sort by&amp;&amp;True])</onclick>
                                     <visible>$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</visible>
@@ -245,7 +314,7 @@
                                     <param name="dialog">true</param>
                                     <param name="id">23009</param>
                                     <param name="control">radiobutton</param>
-                                    <label> -- Reverse order</label>
+                                    <label>Reverse order</label>
                                     <selected>!String.IsEmpty(Container(22001).ListItem.Property(widget_sortorder))</selected>
                                     <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;widget_sortorder])</onclick>
                                     <visible>!String.IsEmpty(Container(22001).ListItem.Property(widget_sortby))</visible>
@@ -258,7 +327,7 @@
                                     <param name="dialog">true</param>
                                     <param name="id">23010</param>
                                     <param name="control">button</param>
-                                    <label> -- Limit</label>
+                                    <label>Limit</label>
                                     <label2>$INFO[Container(22001).ListItem.Property(widget_limit)]</label2>
                                     <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_numeric&amp;&amp;widget_limit&amp;&amp;heading::Limit])</onclick>
                                     <visible>$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</visible>
@@ -269,7 +338,7 @@
                                     <param name="dialog">true</param>
                                     <param name="id">23017</param>
                                     <param name="control">radiobutton</param>
-                                    <label> -- Autoscroll</label>
+                                    <label>Autoscroll</label>
                                     <selected>!String.IsEmpty(Container(22001).ListItem.Property(widget_autoscroll))</selected>
                                     <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;widget_autoscroll])</onclick>
                                     <visible>$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</visible>
@@ -277,24 +346,24 @@
                                 </include>
 
                                 <!-- Rename -->
-                                <include content="Settings_Button">
+                                <!-- <include content="Settings_Button">
                                     <param name="dialog">true</param>
                                     <param name="id">23004</param>
                                     <param name="control">button</param>
                                     <label>Rename</label>
                                     <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit])</onclick>
                                     <onback>13999</onback>
-                                </include>
+                                </include> -->
 
                                 <!-- Icon -->
-                                <include content="Settings_Button">
+                                <!-- <include content="Settings_Button">
                                     <param name="dialog">true</param>
                                     <param name="id">23005</param>
                                     <param name="control">button</param>
                                     <label>Icon</label>
                                     <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_icon])</onclick>
                                     <onback>13999</onback>
-                                </include>
+                                </include> -->
 
                                 <!-- Expression Setting -->
                                 <include content="Settings_Button">
