@@ -45,14 +45,15 @@
                     "includes_part": {"menu": "{item}", "for_each": [
                         {
                             "template": "template_generator/parts_submenu_standard.xmltemplate",
-                            "parts_visible": {"template": "String.IsEqual(Container(300).ListItem.Property(guid),{item_guid})"},
-                            "condition": "{item_submenulist_path}=="
+                            "jsonfile": "template_generator/setup_submenu_row.json",
+                            "condition": "{item_submenulist_path}==",
+                            "parts_visible": {"template": "String.IsEqual(Container(300).ListItem.Property(guid),{item_guid})"}
                         },
                         {
                             "template": "template_generator/parts_submenu_dynamic.xmltemplate",
                             "jsonfile": "template_generator/setup_submenu_row.json",
-                            "parts_visible": {"template": "String.IsEqual(Container(300).ListItem.Property(guid),{item_guid})"},
-                            "condition": "{item_submenulist_path}!="
+                            "condition": "{item_submenulist_path}!=",
+                            "parts_visible": {"template": "String.IsEqual(Container(300).ListItem.Property(guid),{item_guid})"}
                         }
                     ]}
                 },
@@ -82,6 +83,7 @@
                         {
                             "comments": "Widget Group",
                             "template": "template_generator/parts_basic_content.xmltemplate",
+                            "condition": "{item_global_widgets}==",
                             "includes_name": "Hub_Menu_Group",
                             "includes_part": {
                                 "template": "template_generator/parts_widgets_grouplist.xmltemplate",
@@ -96,6 +98,7 @@
                                 "grouplist_visible": "String.IsEqual(Container(300).ListItem.Property(guid),{item_guid})",
                                 "widget_top_id": "$MATH[{item_x} * 1000 + 601]",
                                 "widget_grouplist_id": "$MATH[{item_x} * 1000 + 400]",
+                                "widget_grouplist_bump_id": "$MATH[{item_x} * 1000 + 401]",
                                 "widget_refocus": "SetFocus(300)",
                                 "widget_parent_item_x": "{item_x}",
                                 "all_content_adapative_widgets":
@@ -161,7 +164,45 @@
                                 }
                             }
                         }
-                    ]}
+                    ]},
+                    "includes_misc": {
+                        "comments": "Widget Group",
+                        "template": "template_generator/parts_basic_content.xmltemplate",
+                        "includes_name": "Hub_Menu_Group",
+                        "includes_part": {
+                            "template": "template_generator/parts_widgets_grouplist.xmltemplate",
+                            "grouplist_widgets_only": "False",
+                            "grouplist_visible": "!String.IsEmpty(Container(300).ListItem.Property(global_widgets))",
+                            "widget_top_id": "$MATH[99000 + 601]",
+                            "widget_grouplist_id": "$MATH[99000 + 400]",
+                            "widget_grouplist_bump_id": "$MATH[99000 + 401]",
+                            "widget_refocus": "SetFocus(300)",
+                            "widget_parent_item_x": "99",
+                            "all_standard_widgets": {"menu": "{item}-globalwidgets", "for_each": [
+                                {
+                                    "template": "template_generator/parts_widgets_row.xmltemplate",
+                                    "jsonfile": "template_generator/setup_widgets_row.json",
+                                    "condition": "{item_path}!="
+                                }
+                            ]},
+                            "all_endrow_selector": {
+                                "comments": "Widget Selector",
+                                "template": "template_generator/parts_endrow_selector.xmltemplate",
+                                "condition": "Skin.HasSetting(Hubs.WidgetSelector)",
+                                "endrow_item_x": "{item_x}",
+                                "endrow_visible": "String.IsEqual(Container(300).ListItem.Property(guid),{item_guid})",
+                                "all_endrow_items": {"menu": "{item}-globalwidgets", "for_each": [
+                                    {
+                                        "template": "template_generator/parts_endrow_item.xmltemplate",
+                                        "jsonfile": "template_generator/setup_onclick_path.json",
+                                        "condition": "{item_path}!=",
+                                        "endrow_widget_id": "$MATH[{widget_parent_item_x} * 1000 + 600 + {item_sum_x} - {item_length_x} + {add_x}]",
+                                        "parts_visible": "!Integer.IsEqual(Container($MATH[{widget_parent_item_x} * 1000 + 600 + {item_sum_x} - {item_length_x} + {add_x}]).NumItems,0) | Container($MATH[{widget_parent_item_x} * 1000 + 600 + {item_sum_x} - {item_length_x} + {add_x}]).IsUpdating"
+                                    }
+                                ]}
+                            }
+                        }
+                    }
                 }
             ]
         },
@@ -260,6 +301,7 @@
                             "template": "template_generator/parts_widgets_grouplist.xmltemplate",
                             "widget_top_id": "601",
                             "widget_grouplist_id": "400",
+                            "widget_grouplist_bump_id": "401",
                             "widget_refocus": "SetFocus(303)",
                             "grouplist_widgets_only": "True",
                             "grouplist_visible": "True",
@@ -307,6 +349,7 @@
                         "window_id": "Home",
                         "widget_top_id": "$MATH[{item_x} * 1000 + 601]",
                         "widget_grouplist_id": "$MATH[{item_x} * 1000 + 400]",
+                        "widget_grouplist_bump_id": "$MATH[{item_x} * 1000 + 401]",
                         "widget_refocus": "SetFocus(303)",
                         "widget_parent_item_x": "{item_x}",
                         "grouplist_widgets_only": "True",
@@ -347,6 +390,7 @@
                     "window_id": "Home",
                     "widget_top_id": "$MATH[99000 + 601]",
                     "widget_grouplist_id": "$MATH[99000 + 400]",
+                    "widget_grouplist_bump_id": "$MATH[99000 + 401]",
                     "widget_refocus": "SetFocus(303)",
                     "widget_parent_item_x": "99",
                     "grouplist_widgets_only": "True",
