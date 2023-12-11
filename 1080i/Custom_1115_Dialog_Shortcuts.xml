@@ -33,7 +33,17 @@
                     <control type="label">
                         <font>font_tiny</font>
                         <textcolor>dialog_fg_70</textcolor>
-                        <label>[CAPITALIZE]$INFO[Window(Home).Property(Shortcuts.EditMenu)]$INFO[Window(Home).Property(Shortcuts.EditMode), — ,][/CAPITALIZE][UPPERCASE]$INFO[Window(Home).Property(Shortcuts.EditGUID), — ,][/UPPERCASE]</label>
+                        <label>$VAR[Label_Shortcut_SubHeader_GroupName]$INFO[Container(22001).ListItem.Property(name), > ,]$VAR[Label_Shortcut_SubHeader_EditMode, > ,]</label>
+                        <top>40</top>
+                    </control>
+
+                    <control type="label">
+                        <font>font_tiny</font>
+                        <align>right</align>
+                        <!-- <right>640</right> -->
+                        <!-- <width>600</width> -->
+                        <textcolor>dialog_fg_30</textcolor>
+                        <label>$INFO[Window(Home).Property(Shortcuts.EditMenu)]$INFO[Window(Home).Property(Shortcuts.EditMode), — ,]$INFO[Window(Home).Property(Shortcuts.EditGUID), — ,]</label>
                         <top>40</top>
                     </control>
 
@@ -146,59 +156,86 @@
                             <control type="grouplist" id="23000">
                                 <onleft>22005</onleft>
                                 <onright>9000</onright>
+                                <onup>23022</onup>
                                 <orientation>vertical</orientation>
                                 <include content="Dimension_Padding">
                                     <param name="pad">20</param>
                                 </include>
 
-                                <!-- Disable / Enable -->
-                                <include content="Settings_Button">
-                                    <param name="dialog">true</param>
-                                    <param name="id">23001</param>
-                                    <param name="control">togglebutton</param>
-                                    <description>EnableDisable</description>
-                                    <label>$LOCALIZE[24022]</label>
-                                    <altlabel>$LOCALIZE[24021]</altlabel>
-                                    <usealttexture>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</usealttexture>
-                                    <onclick>SetFocus(33001)</onclick>
-                                    <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle])</onclick>
-                                    <visible>String.IsEmpty(Window(Home).Property(Shortcuts.EditMode))</visible>
-                                    <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)</visible>
-                                    <onback>13999</onback>
-                                </include>
+                                <control type="grouplist" id="23001">
+                                    <left>-50</left>
+                                    <right>20</right>
+                                    <align>center</align>
+                                    <top>-20</top>
+                                    <height>160</height>
+                                    <orientation>horizontal</orientation>
+                                    <itemgap>0</itemgap>
+                                    <onup>23022</onup>
+                                    <include content="Dialog_Side_Button">
+                                        <param name="id">11</param>
+                                        <param name="label">$VAR[Label_Shortcut_EnableDisable]</param>
+                                        <param name="vertical">false</param>
+                                        <param name="icon">$VAR[Image_Shortcut_EnableDisable]</param>
+                                        <param name="visible">String.IsEmpty(Window(Home).Property(Shortcuts.EditMode)) + !String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)</param>
+                                        <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle])</onclick>
+                                        <onback>13999</onback>
+                                        <ondown>23025</ondown>
+                                    </include>
+                                    <include content="Dialog_Side_Button">
+                                        <param name="id">12</param>
+                                        <param name="label">$LOCALIZE[31511]</param>
+                                        <param name="vertical">false</param>
+                                        <param name="icon">special://skin/extras/icons/share.png</param>
+                                        <param name="visible">String.IsEmpty(Container(22001).ListItem.Property(forced))</param>
+                                        <onclick condition="!$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
+                                        <onclick condition="$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
+                                        <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_choose]$VAR[Path_Shortcut_UseRawPath])</onclick>
+                                        <onback>13999</onback>
+                                        <ondown>23025</ondown>
+                                        <onup>23022</onup>
+                                    </include>
+                                    <include content="Dialog_Side_Button">
+                                        <param name="id">13</param>
+                                        <param name="label">$LOCALIZE[15217]</param>
+                                        <param name="vertical">false</param>
+                                        <param name="icon">special://skin/extras/icons/terminal.png</param>
+                                        <param name="visible">String.IsEmpty(Container(22001).ListItem.Property(forced))</param>
+                                        <onclick condition="!$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
+                                        <onclick condition="$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
+                                        <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_action]$VAR[Path_Shortcut_UseRawPath])</onclick>
+                                        <onback>13999</onback>
+                                        <ondown>23025</ondown>
+                                        <onup>23022</onup>
+                                    </include>
+                                    <include content="Dialog_Side_Button">
+                                        <param name="id">14</param>
+                                        <param name="label">$LOCALIZE[118]</param>
+                                        <param name="vertical">false</param>
+                                        <param name="icon">special://skin/extras/icons/pen-to-square.png</param>
+                                        <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit])</onclick>
+                                        <onback>13999</onback>
+                                        <ondown>23025</ondown>
+                                        <onup>23022</onup>
+                                    </include>
+                                    <include content="Dialog_Side_Button">
+                                        <param name="id">15</param>
+                                        <param name="label">$LOCALIZE[31274]</param>
+                                        <param name="vertical">false</param>
+                                        <param name="icon">special://skin/extras/icons/images.png</param>
+                                        <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_icon])</onclick>
+                                        <onback>13999</onback>
+                                        <ondown>23025</ondown>
+                                        <onup>23022</onup>
+                                    </include>
 
-                                <!-- Choose Shortcut -->
-                                <include content="Settings_Button">
-                                    <param name="dialog">true</param>
-                                    <param name="id">23002</param>
-                                    <param name="control">button</param>
-                                    <label>Choose shortcut</label>
-                                    <onclick condition="!$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
-                                    <onclick condition="$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
-                                    <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_choose]$VAR[Path_Shortcut_UseRawPath])</onclick>
-                                    <visible>String.IsEmpty(Container(22001).ListItem.Property(forced))</visible>
-                                    <onback>13999</onback>
-                                </include>
-
-                                <!-- Action -->
-                                <include content="Settings_Button">
-                                    <param name="dialog">true</param>
-                                    <param name="id">23003</param>
-                                    <param name="control">button</param>
-                                    <label>Action</label>
-                                    <onclick condition="!$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
-                                    <onclick condition="$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
-                                    <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_action]$VAR[Path_Shortcut_UseRawPath])</onclick>
-                                    <visible>String.IsEmpty(Container(22001).ListItem.Property(forced))</visible>
-                                    <onback>13999</onback>
-                                </include>
+                                </control>
 
                                 <!-- SPECIAL: Submenu Widget Items -->
                                 <include content="Settings_Button">
                                     <param name="dialog">true</param>
                                     <param name="id">23025</param>
                                     <param name="control">button</param>
-                                    <label> -- Edit items</label>
+                                    <label>$LOCALIZE[31516]</label>
                                     <onclick>SetProperty(Shortcuts.EditMode,mode=submenu,Home)</onclick>
                                     <onclick>SetProperty(Shortcuts.EditGUID,guid=$INFO[Container(22001).ListItem.Property(guid)],Home)</onclick>
                                     <onclick>SetFocus(23002)</onclick>
@@ -212,7 +249,7 @@
                                     <param name="dialog">true</param>
                                     <param name="id">23007</param>
                                     <param name="control">button</param>
-                                    <label> -- Style</label>
+                                    <label>$LOCALIZE[736]</label>
                                     <label2>$INFO[Container(22001).ListItem.Property(widget_style)]</label2>
                                     <onclick condition="!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)">RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;widget_style&amp;&amp;Poster&amp;Landscape&amp;Square&amp;Banner&amp;Card&amp;Apps&amp;Icon&amp;Text&amp;&amp;Style&amp;&amp;True])</onclick>
                                     <onclick condition="String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)">RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;widget_style&amp;&amp;Poster&amp;Landscape&amp;Square&amp;Banner&amp;Card&amp;&amp;Style&amp;&amp;True])</onclick>
@@ -224,7 +261,7 @@
                                     <param name="dialog">true</param>
                                     <param name="id">23008</param>
                                     <param name="control">button</param>
-                                    <label> -- Sort by</label>
+                                    <label>$LOCALIZE[31016]</label>
                                     <label2>[CAPITALIZE]$INFO[Container(22001).ListItem.Property(widget_sortby)][/CAPITALIZE]</label2>
                                     <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;widget_sortby&amp;&amp;default&amp;label&amp;random&amp;dateadded&amp;lastplayed&amp;playcount&amp;year&amp;rating&amp;userrating&amp;votes&amp;genre&amp;country&amp;studio&amp;playlist&amp;episodenumber&amp;season&amp;totalepisodes&amp;watchedepisodes&amp;tvshowstatus&amp;tvshowtitle&amp;file&amp;title&amp;track&amp;time&amp;artist&amp;album&amp;lastupdated&amp;lastused&amp;date&amp;&amp;Sort by&amp;&amp;True])</onclick>
                                     <visible>$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</visible>
@@ -235,7 +272,7 @@
                                     <param name="dialog">true</param>
                                     <param name="id">23009</param>
                                     <param name="control">radiobutton</param>
-                                    <label> -- Reverse order</label>
+                                    <label>$LOCALIZE[31517]</label>
                                     <selected>!String.IsEmpty(Container(22001).ListItem.Property(widget_sortorder))</selected>
                                     <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;widget_sortorder])</onclick>
                                     <visible>!String.IsEmpty(Container(22001).ListItem.Property(widget_sortby))</visible>
@@ -248,7 +285,7 @@
                                     <param name="dialog">true</param>
                                     <param name="id">23010</param>
                                     <param name="control">button</param>
-                                    <label> -- Limit</label>
+                                    <label>$LOCALIZE[31188]</label>
                                     <label2>$INFO[Container(22001).ListItem.Property(widget_limit)]</label2>
                                     <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_numeric&amp;&amp;widget_limit&amp;&amp;heading::Limit])</onclick>
                                     <visible>$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</visible>
@@ -259,30 +296,10 @@
                                     <param name="dialog">true</param>
                                     <param name="id">23017</param>
                                     <param name="control">radiobutton</param>
-                                    <label> -- Autoscroll</label>
+                                    <label>$LOCALIZE[31185]</label>
                                     <selected>!String.IsEmpty(Container(22001).ListItem.Property(widget_autoscroll))</selected>
                                     <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;widget_autoscroll])</onclick>
                                     <visible>$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</visible>
-                                    <onback>13999</onback>
-                                </include>
-
-                                <!-- Rename -->
-                                <include content="Settings_Button">
-                                    <param name="dialog">true</param>
-                                    <param name="id">23004</param>
-                                    <param name="control">button</param>
-                                    <label>Rename</label>
-                                    <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit])</onclick>
-                                    <onback>13999</onback>
-                                </include>
-
-                                <!-- Icon -->
-                                <include content="Settings_Button">
-                                    <param name="dialog">true</param>
-                                    <param name="id">23005</param>
-                                    <param name="control">button</param>
-                                    <label>Icon</label>
-                                    <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_icon])</onclick>
                                     <onback>13999</onback>
                                 </include>
 
@@ -291,7 +308,7 @@
                                     <param name="dialog">true</param>
                                     <param name="id">23006</param>
                                     <param name="control">button</param>
-                                    <label>Highlight type</label>
+                                    <label>$LOCALIZE[31518]</label>
                                     <label2>[CAPITALIZE]$INFO[Container(22001).ListItem.Property(expression)][/CAPITALIZE]</label2>
                                     <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;expression&amp;&amp;home&amp;movies&amp;tvshows&amp;music&amp;livetv&amp;addons&amp;pictures&amp;weather&amp;videos&amp;search&amp;none&amp;&amp;Highlight type&amp;&amp;True])</onclick>
                                     <visible>String.IsEmpty(Window(Home).Property(Shortcuts.EditMode))</visible>
@@ -301,44 +318,12 @@
                                 </include>
 
                                 <!-- MODES -->
-                                <!-- MODES: Edit Widgets -->
-                                <include content="Settings_Button">
-                                    <param name="dialog">true</param>
-                                    <param name="id">23011</param>
-                                    <param name="control">button</param>
-                                    <label>Edit widgets</label>
-                                    <onclick>SetProperty(Shortcuts.EditMode,mode=widgets,Home)</onclick>
-                                    <onclick>SetProperty(Shortcuts.EditGUID,guid=$INFO[Container(22001).ListItem.Property(guid)],Home)</onclick>
-                                    <onclick>SetFocus(23004)</onclick>
-                                    <visible>String.IsEmpty(Window(Home).Property(Shortcuts.EditMode))</visible>
-                                    <visible>!String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-widgetsonly)</visible>
-                                    <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)</visible>
-                                    <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=sidemenu)</visible>
-                                    <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=powermainmenu)</visible>
-                                    <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=powersidemenu)</visible>
-                                    <onback>13999</onback>
-                                </include>
-                                 <!-- MODES: Edit Widgets -->
-                                <include content="Settings_Button">
-                                    <param name="dialog">true</param>
-                                    <param name="id">23021</param>
-                                    <param name="control">button</param>
-                                    <label>Edit widgets</label>
-                                    <onclick>SetProperty(Shortcuts.EditMode,mode=widgets,Home)</onclick>
-                                    <onclick>SetProperty(Shortcuts.EditGUID,guid=$INFO[Container(22001).ListItem.Property(guid)],Home)</onclick>
-                                    <onclick>SetFocus(23004)</onclick>
-                                    <visible>String.IsEmpty(Window(Home).Property(Shortcuts.EditMode))</visible>
-                                    <visible>String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=sidemenu)</visible>
-                                    <visible>!String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-widgetsonly)</visible>
-                                    <visible>Skin.HasSetting(Hub.Home.DisableSubmenu)</visible>
-                                    <onback>13999</onback>
-                                </include>
                                 <include content="Settings_Label">
                                     <param name="dialog">true</param>
                                     <param name="id">23023</param>
                                     <param name="control">label</param>
-                                    <label>Hub Options</label>
-                                    <visible>$EXP[Exp_Hubs_Shortcuts_IsItemMenu]</visible>
+                                    <label>$INFO[Container(22001).ListItem.Label,, ]$LOCALIZE[19141]</label>
+                                    <visible>Control.IsVisible(23014) | Control.IsVisible(23015) | Control.IsVisible(23011) | Control.IsVisible(23028) | Control.IsVisible(23021) | Control.IsVisible(23027) | Control.IsVisible(23026)</visible>
                                 </include>
                                 <!-- MODES: Edit spotlight (category) -->
                                 <include content="Settings_Stacked_Button">
@@ -346,7 +331,7 @@
                                     <param name="id">23014</param>
                                     <param name="groupid">23114</param>
                                     <param name="control">button</param>
-                                    <param name="toplabel">Edit spotlight</param>
+                                    <param name="toplabel">$LOCALIZE[31525]</param>
                                     <param name="sublabel">$INFO[Container(22001).ListItem.Property(spotlight_path)]</param>
                                     <param name="sublabel_visible">!String.ISEmpty(Container(22001).ListItem.Property(spotlight_path))</param>
 
@@ -356,7 +341,7 @@
                                     <onclick>SetFocus(33999)</onclick>
 
                                     <visible>String.IsEmpty(Window(Home).Property(Shortcuts.EditMode))</visible>
-                                    <visible>!String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-widgetsonly)</visible>
+                                    <visible>![String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-widgetsonly) | String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-globalwidgets)]</visible>
                                     <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)</visible>
                                     <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=sidemenu)</visible>
                                     <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=powermainmenu)</visible>
@@ -369,7 +354,7 @@
                                     <param name="id">23015</param>
                                     <param name="groupid">23115</param>
                                     <param name="control">button</param>
-                                    <param name="toplabel">Edit submenu</param>
+                                    <param name="toplabel">$LOCALIZE[31524]</param>
                                     <param name="sublabel">$INFO[Container(22001).ListItem.Property(submenulist_path)]</param>
                                     <param name="sublabel_visible">!String.ISEMpty(Container(22001).ListItem.Property(submenulist_path))</param>
 
@@ -379,28 +364,127 @@
                                     <onclick>SetFocus(33999)</onclick>
 
                                     <visible>String.IsEmpty(Window(Home).Property(Shortcuts.EditMode))</visible>
-                                    <visible>!String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-widgetsonly)</visible>
+                                    <visible>![String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-widgetsonly) | String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-globalwidgets)]</visible>
                                     <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)</visible>
                                     <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=sidemenu)</visible>
                                     <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=powermainmenu)</visible>
                                     <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=powersidemenu)</visible>
                                     <onback>13999</onback>
                                 </include>
-                                <!-- MODES: Edit Categories -->
+
+                                <!-- MODES: Edit Widgets -->
                                 <include content="Settings_Stacked_Button">
                                     <param name="dialog">true</param>
-                                    <param name="id">23012</param>
-                                    <param name="groupid">23112</param>
+                                    <param name="id">23011</param>
+                                    <param name="groupid">23111</param>
                                     <param name="control">button</param>
-                                    <param name="toplabel">Edit categories</param>
-                                    <param name="sublabel">Hub > $INFO[Container(22001).ListItem.Label] > Categories</param>
+                                    <param name="toplabel">$LOCALIZE[31523]</param>
+                                    <param name="sublabel">$LOCALIZE[31522]</param>
+                                    <param name="sublabel_visible">True</param>
+                                    <onclick>SetProperty(Shortcuts.EditMode,mode=widgets,Home)</onclick>
+                                    <onclick>SetProperty(Shortcuts.EditGUID,guid=$INFO[Container(22001).ListItem.Property(guid)],Home)</onclick>
+                                    <onclick>SetFocus(23004)</onclick>
+                                    <visible>String.IsEmpty(Window(Home).Property(Shortcuts.EditMode))</visible>
+                                    <visible>![String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-widgetsonly) | String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-globalwidgets)]</visible>
+                                    <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)</visible>
+                                    <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=sidemenu)</visible>
+                                    <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=powermainmenu)</visible>
+                                    <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=powersidemenu)</visible>
+                                    <visible>String.IsEmpty(Container(22001).ListItem.Property(global_widgets))</visible>
+                                    <onback>13999</onback>
+                                </include>
+
+                                <!-- MODES: Edit Global Widgets -->
+                                <include content="Settings_Stacked_Button">
+                                    <param name="dialog">true</param>
+                                    <param name="id">23028</param>
+                                    <param name="groupid">23128</param>
+                                    <param name="control">button</param>
+                                    <param name="toplabel">$LOCALIZE[31521]</param>
+                                    <param name="sublabel">$LOCALIZE[31522]</param>
                                     <param name="sublabel_visible">True</param>
                                     <onclick>SetProperty(Shortcuts.PrevMenu,$INFO[Window(Home).Property(Shortcuts.EditMenu)],Home)</onclick>
-                                    <onclick condition="$EXP[Exp_Hubs_Shortcuts_IsItemMenu]">SetProperty(Shortcuts.EditMenu,menu=$VAR[Path_Shortcut_Hub_Prefix]menu,Home)</onclick>
+                                    <onclick>SetProperty(Shortcuts.EditMenu,$INFO[Window(Home).Property(Shortcuts.EditMenu),,-globalwidgets],Home)</onclick>
                                     <onclick>SetFocus(23004)</onclick>
-                                    <visible>$EXP[Exp_Hubs_Shortcuts_IsItemMenu]</visible>
-                                    <visible>!$EXP[Exp_Hubs_Shortcuts_IsWidgetsOnly]</visible>
+                                    <visible>String.IsEmpty(Window(Home).Property(Shortcuts.EditMode))</visible>
+                                    <visible>![String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-widgetsonly) | String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-globalwidgets)]</visible>
+                                    <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)</visible>
+                                    <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=sidemenu)</visible>
+                                    <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=powermainmenu)</visible>
+                                    <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=powersidemenu)</visible>
+                                    <visible>!String.IsEmpty(Container(22001).ListItem.Property(global_widgets))</visible>
                                     <onback>13999</onback>
+                                </include>
+
+                                <!-- MODES: Edit sidemenu Widgets classic -->
+                                <include content="Settings_Stacked_Button">
+                                    <param name="dialog">true</param>
+                                    <param name="id">23021</param>
+                                    <param name="groupid">23121</param>
+                                    <param name="control">button</param>
+                                    <param name="toplabel">$LOCALIZE[31523]</param>
+                                    <param name="sublabel">$LOCALIZE[31520]</param>
+                                    <param name="sublabel_visible">True</param>
+                                    <onclick>SetProperty(Shortcuts.EditMode,mode=widgets,Home)</onclick>
+                                    <onclick>SetProperty(Shortcuts.EditGUID,guid=$INFO[Container(22001).ListItem.Property(guid)],Home)</onclick>
+                                    <onclick>SetFocus(23004)</onclick>
+                                    <visible>String.IsEmpty(Window(Home).Property(Shortcuts.EditMode))</visible>
+                                    <visible>String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=sidemenu)</visible>
+                                    <visible>String.IsEmpty(Container(22001).ListItem.Property(global_widgets))</visible>
+                                    <visible>![String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-widgetsonly) | String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-globalwidgets)]</visible>
+                                    <visible>Skin.HasSetting(Hub.Home.DisableSubmenu)</visible>
+                                    <onback>13999</onback>
+                                </include>
+
+                                <!-- MODES: Edit sidemenu global widgets -->
+                                <include content="Settings_Stacked_Button">
+                                    <param name="dialog">true</param>
+                                    <param name="id">23027</param>
+                                    <param name="groupid">23127</param>
+                                    <param name="control">button</param>
+                                    <param name="toplabel">$LOCALIZE[31521]</param>
+                                    <param name="sublabel">$LOCALIZE[31520]</param>
+                                    <param name="sublabel_visible">True</param>
+                                    <onclick>SetProperty(Shortcuts.PrevMenu,$INFO[Window(Home).Property(Shortcuts.EditMenu)],Home)</onclick>
+                                    <onclick>SetProperty(Shortcuts.EditMenu,menu=homemenu-globalwidgets,Home)</onclick>
+                                    <onclick>SetFocus(23004)</onclick>
+                                    <visible>String.IsEmpty(Window(Home).Property(Shortcuts.EditMode))</visible>
+                                    <visible>String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=sidemenu)</visible>
+                                    <visible>!String.IsEmpty(Container(22001).ListItem.Property(global_widgets))</visible>
+                                    <visible>![String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-widgetsonly) | String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-globalwidgets)]</visible>
+                                    <visible>Skin.HasSetting(Hub.Home.DisableSubmenu)</visible>
+                                    <onback>13999</onback>
+                                </include>
+
+
+                                <!-- Widgets: Global -->
+                                <include content="Settings_Stacked_Button">
+                                    <param name="dialog">true</param>
+                                    <param name="id">23026</param>
+                                    <param name="groupid">23126</param>
+                                    <param name="control">radiobutton</param>
+                                    <param name="toplabel">$LOCALIZE[31514]</param>
+                                    <param name="sublabel">$LOCALIZE[31519]</param>
+                                    <param name="sublabel_visible">True</param>
+                                    <selected>!String.IsEmpty(Container(22001).ListItem.Property(global_widgets))</selected>
+                                    <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;global_widgets])</onclick>
+                                    <visible>String.IsEmpty(Window(Home).Property(Shortcuts.EditMode))</visible>
+                                    <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)</visible>
+                                    <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=powermainmenu)</visible>
+                                    <visible>!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=powersidemenu)</visible>
+                                    <visible>![String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-widgetsonly) | String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-globalwidgets)]</visible>
+
+                                    <visible>Skin.HasSetting(Hub.Home.DisableSubmenu) | !String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=sidemenu)</visible>
+
+                                    <onback>13999</onback>
+                                </include>
+
+                                <include content="Settings_Label">
+                                    <param name="dialog">true</param>
+                                    <param name="id">23029</param>
+                                    <param name="control">label</param>
+                                    <label>$INFO[Container(22001).ListItem.Label,, ]Hub</label>
+                                    <visible>$EXP[Exp_Hubs_Shortcuts_IsItemMenu]</visible>
                                 </include>
                                 <!-- MODES: Edit spotlight (hub) -->
                                 <include content="Settings_Stacked_Button">
@@ -408,13 +492,30 @@
                                     <param name="id">23013</param>
                                     <param name="groupid">23113</param>
                                     <param name="control">button</param>
-                                    <param name="toplabel">Edit spotlight</param>
-                                    <param name="sublabel">Hub > $INFO[Container(22001).ListItem.Label] > Spotlight</param>
+                                    <param name="toplabel">$LOCALIZE[31526]</param>
+                                    <param name="sublabel">$LOCALIZE[31527]</param>
                                     <param name="sublabel_visible">True</param>
                                     <onclick>SetProperty(Options.Mode.Heading,Spotlight)</onclick>
                                     <onclick>SetProperty(Options.Mode.Heading.Sublabel,$INFO[Container(22001).ListItem.Label])</onclick>
                                     <onclick>SetProperty(Options.Mode,Spotlight.Hub)</onclick>
                                     <onclick>SetFocus(33999)</onclick>
+                                    <visible>$EXP[Exp_Hubs_Shortcuts_IsItemMenu]</visible>
+                                    <visible>!$EXP[Exp_Hubs_Shortcuts_IsWidgetsOnly]</visible>
+                                    <onback>13999</onback>
+                                </include>
+
+                                <!-- MODES: Edit Categories -->
+                                <include content="Settings_Stacked_Button">
+                                    <param name="dialog">true</param>
+                                    <param name="id">23012</param>
+                                    <param name="groupid">23112</param>
+                                    <param name="control">button</param>
+                                    <param name="toplabel">$LOCALIZE[31528]</param>
+                                    <param name="sublabel">$LOCALIZE[31529]</param>
+                                    <param name="sublabel_visible">True</param>
+                                    <onclick>SetProperty(Shortcuts.PrevMenu,$INFO[Window(Home).Property(Shortcuts.EditMenu)],Home)</onclick>
+                                    <onclick condition="$EXP[Exp_Hubs_Shortcuts_IsItemMenu]">SetProperty(Shortcuts.EditMenu,menu=$VAR[Path_Shortcut_Hub_Prefix]menu,Home)</onclick>
+                                    <onclick>SetFocus(23004)</onclick>
                                     <visible>$EXP[Exp_Hubs_Shortcuts_IsItemMenu]</visible>
                                     <visible>!$EXP[Exp_Hubs_Shortcuts_IsWidgetsOnly]</visible>
                                     <onback>13999</onback>
@@ -426,8 +527,8 @@
                                     <param name="id">23024</param>
                                     <param name="groupid">23124</param>
                                     <param name="control">button</param>
-                                    <param name="toplabel">Edit widgets</param>
-                                    <param name="sublabel">Hub > $INFO[Container(22001).ListItem.Label] > Widgets</param>
+                                    <param name="toplabel">$LOCALIZE[31530]</param>
+                                    <param name="sublabel">$LOCALIZE[31531]</param>
                                     <param name="sublabel_visible">True</param>
                                     <onclick>SetProperty(Shortcuts.PrevMenu,$INFO[Window(Home).Property(Shortcuts.EditMenu)],Home)</onclick>
                                     <onclick>SetProperty(Shortcuts.EditMenu,$VAR[Path_Shortcut_Hub_Prefix,menu=,menu-widgetsonly],Home)</onclick>
@@ -444,8 +545,8 @@
                                     <param name="id">23022</param>
                                     <param name="groupid">23122</param>
                                     <param name="control">radiobutton</param>
-                                    <param name="toplabel">Classic mode</param>
-                                    <param name="sublabel">Disables hub spotlight and categories</param>
+                                    <param name="toplabel">$VAR[Label_Shortcut_ClassicMode]</param>
+                                    <param name="sublabel">$LOCALIZE[31532]</param>
                                     <param name="sublabel_visible">True</param>
 
                                     <onclick condition="String.IsEqual(Container(22001).ListItem.Property(path),ActivateWindow(Home))">Skin.ToggleSetting(Hub.Home.DisableSubmenu)</onclick>
@@ -493,7 +594,7 @@
                     </include>
                     <include content="Dialog_Side_Button">
                         <param name="id">04</param>
-                        <param name="label">Prebuilt</param>
+                        <param name="label">$LOCALIZE[31456]</param>
                         <param name="icon">special://skin/extras/icons/download.png</param>
 
                         <onclick>RunScript(script.skinvariables,run_dialog=select,heading=Prebuilt,separator=||,list=library||tmdb,"executebuiltin=route=copy_menufile=special://skin/shortcuts/prebuilt/{v}/skinvariables-shortcut-sidemenu.json&amp;filename=sidemenu&amp;skin=$VAR[Path_SkinVariables_SkinFolder]||route=copy_menufile=special://skin/shortcuts/prebuilt/{v}/skinvariables-shortcut-homemenu.json&amp;filename=homemenu&amp;skin=$VAR[Path_SkinVariables_SkinFolder]")</onclick>
@@ -501,7 +602,7 @@
                     </include>
                     <include content="Dialog_Side_Button">
                         <param name="id">05</param>
-                        <param name="label">Add list</param>
+                        <param name="label">$LOCALIZE[31533]</param>
                         <param name="icon">special://skin/extras/icons/list-ol.png</param>
                         <param name="visible">!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)</param>
                         <onclick>ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
@@ -510,7 +611,7 @@
                     </include>
                     <include content="Dialog_Side_Button">
                         <param name="id">06</param>
-                        <param name="label">Del list</param>
+                        <param name="label">$LOCALIZE[31534]</param>
                         <param name="icon">special://skin/extras/icons/trash-can.png</param>
                         <param name="visible">!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)</param>
                         <onclick>ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
@@ -519,7 +620,7 @@
                     </include>
                     <include content="Dialog_Side_Button">
                         <param name="id">07</param>
-                        <param name="label">Restore</param>
+                        <param name="label">$LOCALIZE[31535]</param>
                         <param name="icon">special://skin/extras/icons/triangle-exclamation.png</param>
                         <onclick>SetProperty(Shortcuts.Restored,1,Home)</onclick>
                         <onclick>RunPlugin(plugin://script.skinvariables/?info=get_shortcuts_node&amp;skin=$VAR[Path_SkinVariables_SkinFolder]$INFO[Window(Home).Property(Shortcuts.EditMenu),&amp;,]&amp;func=do_refresh&amp;&amp;True&amp;&amp;ActivateWindow(1115))</onclick>
@@ -590,7 +691,7 @@
                             <param name="id">33001</param>
                             <param name="groupid">33101</param>
                             <param name="control">button</param>
-                            <param name="toplabel">Choose spotlight</param>
+                            <param name="toplabel">$LOCALIZE[31437]</param>
                             <param name="sublabel">$VAR[Label_Shortcut_HubSpotlight_Path]</param>
                             <param name="sublabel_visible">!String.IsEmpty(Control.GetLabel(33001))</param>
                             <onclick>ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
@@ -603,7 +704,7 @@
                             <param name="dialog">true</param>
                             <param name="id">33002</param>
                             <param name="control">button</param>
-                            <label> -- Sort by</label>
+                            <label> -- $LOCALIZE[31016]</label>
                             <label2>[CAPITALIZE]$VAR[Label_Shortcut_HubSpotlight_SortBy][/CAPITALIZE]</label2>
                             <onclick>RunScript(script.skinvariables,run_dialog=select,heading=Sort method,separator=||,list=default||label||random||dateadded||lastplayed||playcount||year||rating||userrating||votes||genre||country||studio||playlist||episodenumber||season||totalepisodes||watchedepisodes||tvshowstatus||tvshowtitle||file||title||track||time||artist||album||lastupdated||lastused||date,"executebuiltin=Skin.SetString(Hub.$VAR[Path_Shortcut_Hub_Prefix].Spotlight.SortBy,{v})")</onclick>
                             <visible>!String.IsEmpty(Control.GetLabel(33001))</visible>
@@ -616,7 +717,7 @@
                             <param name="id">33003</param>
                             <param name="groupid">33103</param>
                             <param name="control">button</param>
-                            <param name="toplabel">Choose fallback image folder</param>
+                            <param name="toplabel">$LOCALIZE[31536]</param>
                             <param name="sublabel">$VAR[Label_Shortcut_HubSpotlight_Fallback]</param>
                             <param name="sublabel_visible">!String.IsEmpty(Control.GetLabel(33003))</param>
                             <onclick condition="$EXP[Exp_Hubs_Shortcuts_IsItemMenu]">Skin.Reset(Hub.$VAR[Path_Shortcut_Hub_Prefix].Spotlight.Fallback)</onclick>
@@ -633,7 +734,7 @@
                             <param name="id">33011</param>
                             <param name="groupid">33111</param>
                             <param name="control">button</param>
-                            <param name="toplabel">Choose spotlight</param>
+                            <param name="toplabel">$LOCALIZE[31437]</param>
                             <param name="sublabel">$INFO[Container(22001).ListItem.Property(spotlight_path)]</param>
                             <param name="sublabel_visible">!String.ISEmpty(Container(22001).ListItem.Property(spotlight_path))</param>
                             <onclick>ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
@@ -647,7 +748,7 @@
                             <param name="dialog">true</param>
                             <param name="id">33012</param>
                             <param name="control">button</param>
-                            <label> -- Sort by</label>
+                            <label> -- $LOCALIZE[31016]</label>
                             <label2>[CAPITALIZE]$INFO[Container(22001).ListItem.Property(spotlight_sortby)][/CAPITALIZE]</label2>
                             <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;spotlight_sortby&amp;&amp;default&amp;label&amp;random&amp;dateadded&amp;lastplayed&amp;playcount&amp;year&amp;rating&amp;userrating&amp;votes&amp;genre&amp;country&amp;studio&amp;playlist&amp;episodenumber&amp;season&amp;totalepisodes&amp;watchedepisodes&amp;tvshowstatus&amp;tvshowtitle&amp;file&amp;title&amp;track&amp;time&amp;artist&amp;album&amp;lastupdated&amp;lastused&amp;date&amp;&amp;Sort by&amp;&amp;True])</onclick>
                             <visible>!String.IsEmpty(Container(22001).ListItem.Property(spotlight_path))</visible>
@@ -659,7 +760,7 @@
                             <param name="dialog">true</param>
                             <param name="id">33013</param>
                             <param name="control">radiobutton</param>
-                            <label> -- Reverse order</label>
+                            <label> -- $LOCALIZE[31517]</label>
                             <selected>!String.IsEmpty(Container(22001).ListItem.Property(spotlight_sortorder))</selected>
                             <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;spotlight_sortorder])</onclick>
                             <onback>13999</onback>
@@ -674,7 +775,7 @@
                             <param name="dialog">true</param>
                             <param name="id">33014</param>
                             <param name="control">button</param>
-                            <label> -- Limit</label>
+                            <label> -- $LOCALIZE[31188]</label>
                             <label2>$INFO[Container(22001).ListItem.Property(spotlight_limit)]</label2>
                             <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_numeric&amp;&amp;spotlight_limit&amp;&amp;heading::Limit])</onclick>
                             <visible>!String.IsEmpty(Container(22001).ListItem.Property(spotlight_path))</visible>
@@ -690,7 +791,7 @@
                             <param name="id">33021</param>
                             <param name="groupid">33121</param>
                             <param name="control">button</param>
-                            <param name="toplabel">Choose submenu list</param>
+                            <param name="toplabel">$LOCALIZE[31421]</param>
                             <param name="sublabel">$INFO[Container(22001).ListItem.Property(submenulist_path)]</param>
                             <param name="sublabel_visible">!String.ISEMpty(Container(22001).ListItem.Property(submenulist_path))</param>
                             <onclick>ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
@@ -705,7 +806,7 @@
                             <param name="dialog">true</param>
                             <param name="id">33030</param>
                             <param name="control">button</param>
-                            <label> -- Sort by</label>
+                            <label> -- $LOCALIZE[31016]</label>
                             <label2>[CAPITALIZE]$INFO[Container(22001).ListItem.Property(submenulist_sortby)][/CAPITALIZE]</label2>
                             <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;submenulist_sortby&amp;&amp;default&amp;label&amp;random&amp;dateadded&amp;lastplayed&amp;playcount&amp;year&amp;rating&amp;userrating&amp;votes&amp;genre&amp;country&amp;studio&amp;playlist&amp;episodenumber&amp;season&amp;totalepisodes&amp;watchedepisodes&amp;tvshowstatus&amp;tvshowtitle&amp;file&amp;title&amp;track&amp;time&amp;artist&amp;album&amp;lastupdated&amp;lastused&amp;date&amp;&amp;Sort by&amp;&amp;True])</onclick>
                             <visible>String.IsEqual(Window.Property(Options.Mode),Categories.Submenu)</visible>
@@ -717,7 +818,7 @@
                             <param name="dialog">true</param>
                             <param name="id">33031</param>
                             <param name="control">radiobutton</param>
-                            <label> -- Reverse order</label>
+                            <label> -- $LOCALIZE[31517]</label>
                             <selected>!String.IsEmpty(Container(22001).ListItem.Property(submenulist_sortorder))</selected>
                             <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;submenulist_sortorder])</onclick>
                             <visible>!String.IsEmpty(Container(22001).ListItem.Property(submenulist_sortby))</visible>
@@ -731,7 +832,7 @@
                             <param name="dialog">true</param>
                             <param name="id">33032</param>
                             <param name="control">button</param>
-                            <label> -- Limit</label>
+                            <label> -- $LOCALIZE[31188]</label>
                             <label2>$INFO[Container(22001).ListItem.Property(submenulist_limit)]</label2>
                             <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_numeric&amp;&amp;submenulist_limit&amp;&amp;heading::Limit])</onclick>
                             <visible>String.IsEqual(Window.Property(Options.Mode),Categories.Submenu)</visible>
@@ -744,8 +845,8 @@
                             <param name="id">33022</param>
                             <param name="groupid">33122</param>
                             <param name="control">button</param>
-                            <param name="toplabel">Edit submenu items</param>
-                            <param name="sublabel">Clear submenu list first</param>
+                            <param name="toplabel">$LOCALIZE[31537]</param>
+                            <param name="sublabel">$LOCALIZE[31538]</param>
                             <param name="sublabel_visible">!String.ISEmpty(Container(22001).ListItem.Property(submenulist_path))</param>
                             <param name="enable">String.IsEmpty(Container(22001).ListItem.Property(submenulist_path))</param>
                             <onclick>SetProperty(Shortcuts.EditMode,mode=submenu,Home)</onclick>
@@ -759,7 +860,7 @@
                             <param name="dialog">true</param>
                             <param name="id">33023</param>
                             <param name="control">radiobutton</param>
-                            <label>Use as widget</label>
+                            <label>$LOCALIZE[31040]</label>
                             <selected>String.IsEqual(Container(22001).ListItem.Property(use_as_widget),True)</selected>
                             <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;use_as_widget])</onclick>
                             <visible>String.IsEqual(Window.Property(Options.Mode),Categories.Submenu)</visible>
@@ -771,8 +872,8 @@
                             <param name="id">33028</param>
                             <param name="groupid">33128</param>
                             <param name="control">radiobutton</param>
-                            <param name="toplabel">Allow stacking</param>
-                            <param name="sublabel">Submenu lists always allow stacking</param>
+                            <param name="toplabel">$LOCALIZE[31539]</param>
+                            <param name="sublabel">$LOCALIZE[31540]</param>
                             <param name="sublabel_visible">!String.ISEmpty(Container(22001).ListItem.Property(submenulist_path))</param>
                             <param name="enable">String.IsEmpty(Container(22001).ListItem.Property(submenulist_path))</param>
                             <selected>String.IsEqual(Container(22001).ListItem.Property(use_as_list),True) | !String.IsEmpty(Container(22001).ListItem.Property(submenulist_path))</selected>
@@ -785,7 +886,7 @@
                             <param name="dialog">true</param>
                             <param name="id">33024</param>
                             <param name="control">button</param>
-                            <label> -- Style</label>
+                            <label> -- $LOCALIZE[736]</label>
                             <label2>$INFO[Container(22001).ListItem.Property(widget_style)]</label2>
                             <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;widget_style&amp;&amp;Poster&amp;Landscape&amp;Square&amp;Banner&amp;Card&amp;Apps&amp;Icon&amp;Text&amp;&amp;Style&amp;&amp;True])</onclick>
                             <visible>String.IsEqual(Window.Property(Options.Mode),Categories.Submenu) + String.IsEqual(Container(22001).ListItem.Property(use_as_widget),True)</visible>
@@ -799,7 +900,7 @@
                             <param name="dialog">true</param>
                             <param name="id">33025</param>
                             <param name="control">button</param>
-                            <label> -- Sort by</label>
+                            <label> -- $LOCALIZE[31016]</label>
                             <label2>[CAPITALIZE]$INFO[Container(22001).ListItem.Property(widget_sortby)][/CAPITALIZE]</label2>
                             <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;widget_sortby&amp;&amp;default&amp;label&amp;random&amp;dateadded&amp;lastplayed&amp;playcount&amp;year&amp;rating&amp;userrating&amp;votes&amp;genre&amp;country&amp;studio&amp;playlist&amp;episodenumber&amp;season&amp;totalepisodes&amp;watchedepisodes&amp;tvshowstatus&amp;tvshowtitle&amp;file&amp;title&amp;track&amp;time&amp;artist&amp;album&amp;lastupdated&amp;lastused&amp;date&amp;&amp;Sort by&amp;&amp;True])</onclick>
                             <visible>String.IsEqual(Window.Property(Options.Mode),Categories.Submenu) + String.IsEqual(Container(22001).ListItem.Property(use_as_widget),True)</visible>
@@ -810,7 +911,7 @@
                             <param name="dialog">true</param>
                             <param name="id">33026</param>
                             <param name="control">radiobutton</param>
-                            <label> -- Reverse order</label>
+                            <label> -- $LOCALIZE[31517]</label>
                             <selected>!String.IsEmpty(Container(22001).ListItem.Property(widget_sortorder))</selected>
                             <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;widget_sortorder])</onclick>
                             <visible>!String.IsEmpty(Container(22001).ListItem.Property(widget_sortby))</visible>
@@ -823,7 +924,7 @@
                             <param name="dialog">true</param>
                             <param name="id">33027</param>
                             <param name="control">button</param>
-                            <label> -- Limit</label>
+                            <label> -- $LOCALIZE[31188]</label>
                             <label2>$INFO[Container(22001).ListItem.Property(widget_limit)]</label2>
                             <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_numeric&amp;&amp;widget_limit&amp;&amp;heading::Limit])</onclick>
                             <visible>String.IsEqual(Window.Property(Options.Mode),Categories.Submenu) + String.IsEqual(Container(22001).ListItem.Property(use_as_widget),True)</visible>
@@ -834,7 +935,7 @@
                             <param name="dialog">true</param>
                             <param name="id">33029</param>
                             <param name="control">radiobutton</param>
-                            <label> -- Autoscroll</label>
+                            <label> -- $LOCALIZE[31185]</label>
                             <selected>!String.IsEmpty(Container(22001).ListItem.Property(widget_autoscroll))</selected>
                             <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;widget_autoscroll])</onclick>
                             <visible>String.IsEqual(Window.Property(Options.Mode),Categories.Submenu) + String.IsEqual(Container(22001).ListItem.Property(use_as_widget),True)</visible>

@@ -34,7 +34,9 @@
                             "template": "template_generator/parts_menu_item.xmltemplate",
                             "jsonfile": "template_generator/setup_onclick_path.json",
                             "condition": "{item_disabled}!=True",
-                            "parts_additional": {"template": "template_generator/parts_additional_mainmenu.xmltemplate"}
+                            "parts_additional": {
+                                "template": "template_generator/parts_additional_mainmenu.xmltemplate"
+                            }
                         }
                     ]}
                 },
@@ -45,14 +47,19 @@
                     "includes_part": {"menu": "{item}", "for_each": [
                         {
                             "template": "template_generator/parts_submenu_standard.xmltemplate",
-                            "parts_visible": {"template": "String.IsEqual(Container(300).ListItem.Property(guid),{item_guid})"},
-                            "condition": "{item_submenulist_path}=="
+                            "jsonfile": "template_generator/setup_submenu_row.json",
+                            "condition": "{item_submenulist_path}==",
+                            "parts_visible": {
+                                "template": "String.IsEqual(Container(300).ListItem.Property(guid),{item_guid})"
+                            }
                         },
                         {
                             "template": "template_generator/parts_submenu_dynamic.xmltemplate",
                             "jsonfile": "template_generator/setup_submenu_row.json",
-                            "parts_visible": {"template": "String.IsEqual(Container(300).ListItem.Property(guid),{item_guid})"},
-                            "condition": "{item_submenulist_path}!="
+                            "condition": "{item_submenulist_path}!=",
+                            "parts_visible": {
+                                "template": "String.IsEqual(Container(300).ListItem.Property(guid),{item_guid})"
+                            }
                         }
                     ]}
                 },
@@ -63,14 +70,8 @@
                     "includes_part": {"menu": "{item}", "for_each": [
                         {
                             "template": "template_generator/parts_widgets_spotlight.xmltemplate",
-                            "condition": ["{item_spotlight_path}!=", "!Skin.HasSetting(Hub.{window_id}.DisableSubmenu)"],
-                            "widget_sortorder": [
-                                {
-                                    "condition":"{item_spotlight_sortorder}==True",
-                                    "value" : "descending"
-                                },
-                                "ascending"
-                            ]
+                            "jsonfile": "template_generator/setup_widgets_spotlight.json",
+                            "condition": ["{item_spotlight_path}!=", "!Skin.HasSetting(Hub.{window_id}.DisableSubmenu)"]
                         }
                     ]}
                 },
@@ -82,56 +83,28 @@
                         {
                             "comments": "Widget Group",
                             "template": "template_generator/parts_basic_content.xmltemplate",
+                            "condition": "{item_global_widgets}==",
                             "includes_name": "Hub_Menu_Group",
                             "includes_part": {
                                 "template": "template_generator/parts_widgets_grouplist.xmltemplate",
-                                "add_x": [
-                                    {
-                                        "condition": ["{item_use_as_widget}==True", "{item_submenulist_path}!=||{item_use_as_list}==True"],
-                                        "value": "1"
-                                    },
-                                    "0"
-                                ],
-                                "grouplist_widgets_only": "False",
-                                "grouplist_visible": "String.IsEqual(Container(300).ListItem.Property(guid),{item_guid})",
-                                "widget_top_id": "$MATH[{item_x} * 1000 + 601]",
-                                "widget_grouplist_id": "$MATH[{item_x} * 1000 + 400]",
-                                "widget_refocus": "SetFocus(300)",
-                                "widget_parent_item_x": "{item_x}",
-                                "all_content_adapative_widgets":
-                                {
+                                "jsonfile": "template_generator/setup_widgets_grouplist.json",
+                                "all_content_adapative_widgets": {
                                     "template": "template_generator/parts_widgets_row.xmltemplate",
-                                    "jsonfile": "template_generator/setup_widgets_row.json",
-                                    "widget_id": "$MATH[{item_x} * 1000 + 600 + 1]",
-                                    "widget_group_id": "$MATH[{item_x} * 1000 + 700 + 1]",
-                                    "widget_selector_id": "$MATH[{item_x} * 1000 + 419]",
-                                    "widget_shortstack_id": "$MATH[{item_x} * 1000 + 800 + 1]",
-                                    "widget_prev_id": "$MATH[{item_x} * 1000 + 600 + 1 - 1]",
-                                    "widget_next_id": "$MATH[{item_x} * 1000 + 600 + 1 + 1]",
-                                    "widget_nextnext_id": "$MATH[{item_x} * 1000 + 600 + 1 + 2]",
-                                    "widget_nextnextnext_id": "$MATH[{item_x} * 1000 + 600 + 1 + 3]",
-                                    "widget_visible": "!String.IsEmpty(Window.Property(Item.{item_x}302.SpecialFolderPath))",
-                                    "widget_altvisible": "!String.IsEmpty(Window.Property(Item.{item_x}302.SpecialFolderPath))",
-                                    "widget_path": "$INFO[Window.Property(Item.{item_x}302.SpecialFolderPath)]",
-                                    "widget_label": "$INFO[Window.Property(Item.{item_x}302.SpecialFolderLabel)]",
-                                    "condition": ["{item_use_as_widget}==True", "{item_submenulist_path}!=||{item_use_as_list}==True"]
+                                    "jsonfile": [
+                                        "template_generator/setup_widgets_row.json",
+                                        "template_generator/setup_widgets_content_adaptive.json"
+                                    ],
+                                    "condition": [
+                                        "{item_use_as_widget}==True",
+                                        "{item_submenulist_path}!=||{item_use_as_list}==True"
+                                    ]
                                 },
                                 "all_adapative_widgets": {"menu": "{item_menu}", "item": "{item_x}", "mode": "submenu", "condition": ["{item_use_as_widget}==True", "{item_submenulist_path}==", "{item_use_as_list}=="], "for_each": [
                                     {
                                         "template": "template_generator/parts_widgets_row.xmltemplate",
-                                        "jsonfile": "template_generator/setup_widgets_row.json",
-                                        "widget_visible": "String.IsEqual(Container(302).ListItem.Property(guid),{item_guid})",
-                                        "widget_altvisible": "False",
-                                        "widget_isautoscroll": [
-                                            {
-                                                "condition":"{item_widget_autoscroll}==True",
-                                                "value" : "True"
-                                            },
-                                            {
-                                                "condition":"{parent_item_widget_autoscroll}==True",
-                                                "value" : "True"
-                                            },
-                                            "False"
+                                        "jsonfile": [
+                                            "template_generator/setup_widgets_row.json",
+                                            "template_generator/setup_widgets_adaptive.json"
                                         ],
                                         "condition": "{item_path}!="
                                     }
@@ -147,21 +120,56 @@
                                     "comments": "Widget Selector",
                                     "template": "template_generator/parts_endrow_selector.xmltemplate",
                                     "condition": "Skin.HasSetting(Hubs.WidgetSelector)",
-                                    "endrow_item_x": "{item_x}",
                                     "endrow_visible": "String.IsEqual(Container(300).ListItem.Property(guid),{item_guid})",
                                     "all_endrow_items": {"menu": "{item_menu}", "item": "{item_x}", "mode": "widgets", "for_each": [
                                         {
                                             "template": "template_generator/parts_endrow_item.xmltemplate",
-                                            "jsonfile": "template_generator/setup_onclick_path.json",
-                                            "condition": "{item_path}!=",
-                                            "endrow_widget_id": "$MATH[{parent_item_x} * 1000 + 600 + {item_sum_x} - {item_length_x} + {add_x}]",
-                                            "parts_visible": "!Integer.IsEqual(Container($MATH[{parent_item_x} * 1000 + 600 + {item_sum_x} - {item_length_x} + {add_x}]).NumItems,0) | Container($MATH[{parent_item_x} * 1000 + 600 + {item_sum_x} - {item_length_x} + {add_x}]).IsUpdating"
+                                            "jsonfile": [
+                                                "template_generator/setup_onclick_path.json",
+                                                "template_generator/setup_endrow_item.json"
+                                            ],
+                                            "condition": "{item_path}!="
                                         }
                                     ]}
                                 }
                             }
                         }
-                    ]}
+                    ]},
+                    "includes_misc": {
+                        "comments": "Widget Group",
+                        "template": "template_generator/parts_basic_content.xmltemplate",
+                        "includes_name": "Hub_Menu_Group",
+                        "includes_part": {
+                            "template": "template_generator/parts_widgets_grouplist.xmltemplate",
+                            "jsonfile": [
+                                "template_generator/setup_widgets_grouplist.json",
+                                "template_generator/setup_globalwidgets_grouplist.json"
+                            ],
+                            "all_standard_widgets": {"menu": "{item}-globalwidgets", "for_each": [
+                                {
+                                    "template": "template_generator/parts_widgets_row.xmltemplate",
+                                    "jsonfile": "template_generator/setup_widgets_row.json",
+                                    "condition": "{item_path}!="
+                                }
+                            ]},
+                            "all_endrow_selector": {
+                                "comments": "Widget Selector",
+                                "template": "template_generator/parts_endrow_selector.xmltemplate",
+                                "condition": "Skin.HasSetting(Hubs.WidgetSelector)",
+                                "endrow_visible": "!String.IsEmpty(Container(300).ListItem.Property(global_widgets))",
+                                "all_endrow_items": {"menu": "{item}-globalwidgets", "for_each": [
+                                    {
+                                        "template": "template_generator/parts_endrow_item.xmltemplate",
+                                        "jsonfile": [
+                                            "template_generator/setup_onclick_path.json",
+                                            "template_generator/setup_endrow_widgetsonly_item.json"
+                                        ],
+                                        "condition": "{item_path}!="
+                                    }
+                                ]}
+                            }
+                        }
+                    }
                 }
             ]
         },
@@ -172,23 +180,11 @@
             "includes_part": {"menu": "powermainmenu", "for_each": [
                 {
                     "template": "template_generator/parts_dialog_item.xmltemplate",
-                    "jsonfile": "template_generator/setup_onclick_path.json",
-                    "condition": ["{item_disabled}!=True", "{item_label}!="],
-                    "item_label": [
-                        {"condition": "{item_label}==$LOCALIZE[12600]", "value": "$INFO[Weather.Temperature, • ,]"},
-                        {"condition": "{item_label}==$LOCALIZE[8]", "value": "$INFO[Weather.Temperature, • ,]"},
-                        "{item_label}"
+                    "jsonfile": [
+                        "template_generator/setup_onclick_path.json",
+                        "template_generator/setup_powermainmenu_item.json"
                     ],
-                    "item_icon": [
-                        {"condition": "{item_label}==$LOCALIZE[12600]", "value": "$INFO[Weather.FanartCode,resource://resource.images.weathericons.white/,.png]"},
-                        {"condition": "{item_label}==$LOCALIZE[8]", "value": "$INFO[Weather.FanartCode,resource://resource.images.weathericons.white/,.png]"},
-                        "{item_icon}"
-                    ],
-                    "item_bordersize": [
-                        {"condition": "{item_label}==$LOCALIZE[12600]", "value": "21"},
-                        {"condition": "{item_label}==$LOCALIZE[8]", "value": "21"},
-                        "16"
-                    ]
+                    "condition": ["{item_disabled}!=True", "{item_label}!="]
                 }
             ]}
         },
@@ -213,6 +209,13 @@
                     "template": "template_generator/parts_menu_item.xmltemplate",
                     "jsonfile": "template_generator/setup_onclick_path.json",
                     "condition": "{item_disabled}!=True",
+                    "widget_group_id": [
+                        {
+                            "condition": "{item_global_widgets}==True",
+                            "value": "99"
+                        },
+                        "{item_x}"
+                    ],
                     "parts_additional": {"template": "template_generator/parts_additional_sidemenu.xmltemplate"}
                 }
             ]}
@@ -251,12 +254,10 @@
                         "includes_name": "Hub_Menu_Group",
                         "includes_part": {
                             "template": "template_generator/parts_widgets_grouplist.xmltemplate",
-                            "widget_top_id": "601",
-                            "widget_grouplist_id": "400",
-                            "widget_refocus": "SetFocus(303)",
-                            "grouplist_widgets_only": "True",
-                            "grouplist_visible": "True",
-                            "widget_parent_item_x": "0",
+                            "jsonfile": [
+                                "template_generator/setup_widgets_grouplist.json",
+                                "template_generator/setup_widgetsonly_grouplist.json"
+                            ],
                             "all_standard_widgets": {"menu": "{item}-widgetsonly", "for_each": [
                                 {
                                     "template": "template_generator/parts_widgets_row.xmltemplate",
@@ -268,15 +269,15 @@
                                 "comments": "Widget Selector",
                                 "template": "template_generator/parts_endrow_selector.xmltemplate",
                                 "condition": "Skin.HasSetting(Hubs.WidgetSelector)",
-                                "endrow_item_x": "0",
                                 "endrow_visible": "True",
                                 "all_endrow_items": {"menu": "{item}-widgetsonly", "for_each": [
                                     {
                                         "template": "template_generator/parts_endrow_item.xmltemplate",
-                                        "jsonfile": "template_generator/setup_onclick_path.json",
-                                        "condition": "{item_path}!=",
-                                        "endrow_widget_id": "$MATH[600 + {item_sum_x} - {item_length_x} + {add_x}]",
-                                        "parts_visible": "!Integer.IsEqual(Container($MATH[600 + {item_x} + 1]).NumItems,0) | Container($MATH[600 + {item_x} + 1]).IsUpdating"
+                                        "jsonfile": [
+                                            "template_generator/setup_onclick_path.json",
+                                            "template_generator/setup_endrow_widgetsonly_item.json"
+                                        ],
+                                        "condition": "{item_path}!="
                                     }
                                 ]}
                             }
@@ -293,17 +294,15 @@
                 {
                     "comments": "Widget Group",
                     "template": "template_generator/parts_basic_content.xmltemplate",
-                    "condition": "Skin.HasSetting(Hub.Home.DisableSubmenu)",
+                    "condition": ["Skin.HasSetting(Hub.Home.DisableSubmenu)", "{item_global_widgets}=="],
                     "includes_name": "Hub_Menu_Group",
                     "includes_part": {
                         "template": "template_generator/parts_widgets_grouplist.xmltemplate",
+                        "jsonfile": [
+                            "template_generator/setup_widgets_grouplist.json",
+                            "template_generator/setup_widgetsclassic_grouplist.json"
+                        ],
                         "window_id": "Home",
-                        "widget_top_id": "$MATH[{item_x} * 1000 + 601]",
-                        "widget_grouplist_id": "$MATH[{item_x} * 1000 + 400]",
-                        "widget_refocus": "SetFocus(303)",
-                        "widget_parent_item_x": "{item_x}",
-                        "grouplist_widgets_only": "True",
-                        "grouplist_visible": "String.IsEqual(Container(303).ListItem.Property(guid),{item_guid})",
                         "all_standard_widgets": {"menu": "{item_menu}", "item": "{item_x}", "mode": "widgets", "for_each": [
                             {
                                 "template": "template_generator/parts_widgets_row.xmltemplate",
@@ -315,43 +314,89 @@
                             "comments": "Widget Selector",
                             "template": "template_generator/parts_endrow_selector.xmltemplate",
                             "condition": "Skin.HasSetting(Hubs.WidgetSelector)",
-                            "endrow_item_x": "{item_x}",
                             "endrow_visible": "String.IsEqual(Container(303).ListItem.Property(guid),{item_guid})",
                             "all_endrow_items": {"menu": "{item_menu}", "item": "{item_x}", "mode": "widgets", "for_each": [
                                 {
                                     "template": "template_generator/parts_endrow_item.xmltemplate",
-                                    "jsonfile": "template_generator/setup_onclick_path.json",
-                                    "condition": "{item_path}!=",
-                                    "endrow_widget_id": "$MATH[{parent_item_x} * 1000 + 600 + {item_sum_x} - {item_length_x} + {add_x}]",
-                                    "parts_visible": "!Integer.IsEqual(Container($MATH[{parent_item_x} * 1000 + 600 + {item_x} + 1]).NumItems,0) | Container($MATH[{parent_item_x} * 1000 + 600 + {item_x} + 1]).IsUpdating"
+                                    "jsonfile": [
+                                        "template_generator/setup_onclick_path.json",
+                                        "template_generator/setup_endrow_item.json"
+                                    ],
+                                    "condition": "{item_path}!="
                                 }
                             ]}
                         }
                     }
                 }
-            ]}
+            ]},
+            "includes_misc": {
+                "comments": "Widget Global Group",
+                "template": "template_generator/parts_basic_content.xmltemplate",
+                "condition": "Skin.HasSetting(Hub.Home.DisableSubmenu)",
+                "includes_name": "Hub_Menu_Group",
+                "includes_part": {
+                    "template": "template_generator/parts_widgets_grouplist.xmltemplate",
+                    "jsonfile": [
+                            "template_generator/setup_widgets_grouplist.json",
+                            "template_generator/setup_globalhomewidgets_grouplist.json"
+                        ],
+                    "window_id": "Home",
+                    "all_standard_widgets": {"menu": "homemenu-globalwidgets", "for_each": [
+                        {
+                            "template": "template_generator/parts_widgets_row.xmltemplate",
+                            "jsonfile": "template_generator/setup_widgets_row.json",
+                            "condition": "{item_path}!="
+                        }
+                    ]},
+                    "all_endrow_selector": {
+                        "comments": "Widget Global Selector",
+                        "template": "template_generator/parts_endrow_selector.xmltemplate",
+                        "condition": "Skin.HasSetting(Hubs.WidgetSelector)",
+                        "endrow_visible": "!String.IsEmpty(Container(303).ListItem.Property(global_widgets))",
+                        "all_endrow_items": {"menu": "homemenu-globalwidgets", "for_each": [
+                            {
+                                "template": "template_generator/parts_endrow_item.xmltemplate",
+                                "jsonfile": [
+                                    "template_generator/setup_onclick_path.json",
+                                    "template_generator/setup_endrow_widgetsonly_item.json"
+                                ],
+                                "condition": "{item_path}!="
+                            }
+                        ]}
+                    }
+                }
+            }
         },
         {
             "comments": "Search Menu Widgets",
             "template": "template_generator/parts_basic_include.xmltemplate",
+            "widget_selector_id": "5099",
             "includes_name": "skinvariables-searchmenu-widgets",
             "includes_part": {"menu": "searchmenu", "for_each": [
                 {
                     "template": "template_generator/parts_search_row.xmltemplate",
-                    "jsonfile": "template_generator/setup_search_row.json",
+                    "jsonfile": [
+                        "template_generator/setup_search_row.json",
+                        "template_generator/setup_search_path.json"
+                    ],
                     "condition": "{item_path}!="
                 }]
             }
         },
         {
-            "comments": "Search Menu Footers",
+            "comments": "Search Menu End Row",
             "template": "template_generator/parts_basic_include.xmltemplate",
-            "includes_name": "skinvariables-searchmenu-footers",
+            "includes_name": "skinvariables-searchmenu-rowitems",
             "includes_part": {"menu": "searchmenu", "for_each": [
                 {
-                    "template": "template_generator/parts_search_footer_item.xmltemplate",
-                    "widget_id": "$MATH[5000 + {item_x} + 1]",
-                    "widget_icon": "{item_icon}",
+                    "template": "template_generator/parts_endrow_item.xmltemplate",
+                    "jsonfile": "template_generator/setup_search_path.json",
+                    "item_path": "$VAR[Path_SearchTerm,{widget_path},{widget_path_end}]",
+                    "parts_onclick": {
+                        "template": "<onclick>ActivateWindow({item_target},$VAR[Path_SearchTerm,{widget_path},{widget_path_end}],return)</onclick>"
+                    },
+                    "endrow_widget_id": "$MATH[5000 + {item_x} + 1]",
+                    "parts_visible": "!Skin.HasSetting(Search.EnableDiscover) + [!Integer.IsEqual(Container($MATH[5000 + {item_x} + 1]).NumItems,0) | Container($MATH[5000 + {item_x} + 1]).IsUpdating]",
                     "condition": "{item_path}!="
                 }]
             }

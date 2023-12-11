@@ -7,7 +7,7 @@
             <include content="Defs_AutoScroll">
                 <param name="condition">[Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + !$EXP[Exp_Hubs_Spotlight_HasItems] + !$EXP[Exp_InfoDialogs]]</param>
             </include>
-            <content sortby="random">$VAR[Path_Hub_FallbackSlideShow_Content]</content>
+            <content sortby="random">$VAR[Path_Spotlight_SlideShow_Content]</content>
             <visible>[Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + !$EXP[Exp_Hubs_Spotlight_HasItems]]</visible>
         </include>
         <include content="Object_Hidden_List" condition="Skin.HasSetting(TMDbHelper.EnableBlur)">
@@ -192,13 +192,9 @@
                         <textoffsetx>80</textoffsetx>
                         <texturenofocus />
                         <texturefocus />
-                        <onclick>SetFocus(301)</onclick>
-                        <onclick condition="Container(301).ListItem.IsFolder">SetProperty(RefocusHub,311,$PARAM[window_id])</onclick>
-                        <onclick condition="!String.IsEqual(Window(Home).Property(KodiSetting.DefaultSelectAction.Value),$NUMBER[3])">Action(Select)</onclick>
-                        <onclick condition="!Container(301).ListItem.IsFolder">SetFocus(311)</onclick>
-                        <onclick condition="String.IsEqual(Window(Home).Property(KodiSetting.DefaultSelectAction.Value),$NUMBER[3]) + Container(301).ListItem.IsFolder">ActivateWindow($PARAM[target],$INFO[Container(301).ListItem.FolderPath],return)</onclick>
-                        <onclick condition="String.IsEqual(Window(Home).Property(KodiSetting.DefaultSelectAction.Value),$NUMBER[3]) + !Container(301).ListItem.IsFolder + !String.IsEmpty(Container(301).ListItem.FileNameAndPath)">PlayMedia($ESCINFO[Container(301).ListItem.FileNameAndPath])</onclick>
-                        <onclick condition="String.IsEqual(Window(Home).Property(KodiSetting.DefaultSelectAction.Value),$NUMBER[3]) + !Container(301).ListItem.IsFolder + String.IsEmpty(Container(301).ListItem.FileNameAndPath) + !String.IsEmpty(Container(301).ListItem.FolderPath)">PlayMedia($ESCINFO[Container(301).ListItem.FolderPath])</onclick>
+                        <onclick condition="Container(301).ListItem.IsFolder">ActivateWindow($VAR[Path_Spotlight_Target],$INFO[Container(301).ListItem.FolderPath],return)</onclick>
+                        <onclick condition="!Container(301).ListItem.IsFolder + !String.IsEmpty(Container(301).ListItem.FileNameAndPath)">PlayMedia($ESCINFO[Container(301).ListItem.FileNameAndPath])</onclick>
+                        <onclick condition="!Container(301).ListItem.IsFolder + String.IsEmpty(Container(301).ListItem.FileNameAndPath) + !String.IsEmpty(Container(301).ListItem.FolderPath)">PlayMedia($ESCINFO[Container(301).ListItem.FolderPath])</onclick>
                         <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,$PARAM[window_id])</onfocus>
                         <onfocus>ClearProperty(Slide.WidgetContainer,$PARAM[window_id])</onfocus>
 
