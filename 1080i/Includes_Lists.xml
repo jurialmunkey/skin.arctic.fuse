@@ -585,6 +585,7 @@
         <param name="offset_x">40</param>
         <param name="hidden_button">List_ButtonMenu_Row_HiddenButton_View</param>
         <param name="backing">false</param>
+        <param name="label_fo">true</param>
         <definition>
             <control type="$PARAM[control]" id="$PARAM[id]">
                 <nested />
@@ -598,6 +599,7 @@
                 <scrolltime tween="quadratic">400</scrolltime>
                 <itemlayout height="120" width="$PARAM[itemlayout_w]">
                     <control type="group">
+                        <animation effect="fadediffuse" start="FFFFFFFF" end="FFFF0000" condition="String.IsEqual(ListItem.Property(disabled),True)">Conditional</animation>
                         <left>$PARAM[offset_x]</left>
                         <right>-$PARAM[offset_x]</right>
                         <control type="group">
@@ -618,6 +620,7 @@
                 </itemlayout>
                 <focusedlayout height="120" width="$PARAM[itemlayout_w]" condition="![Control.HasFocus($PARAM[id]) | $PARAM[altfocus]]">
                     <control type="group">
+                        <animation effect="fadediffuse" start="FFFFFFFF" end="FFFF0000" condition="String.IsEqual(ListItem.Property(disabled),True)">Conditional</animation>
                         <left>$PARAM[offset_x]</left>
                         <right>-$PARAM[offset_x]</right>
                         <control type="group">
@@ -632,6 +635,17 @@
                                 <font>$PARAM[font]</font>
                                 <textcolor>$PARAM[color_fo]</textcolor>
                                 <label>$INFO[ListItem.Label]</label>
+                                <visible>$PARAM[label_fo]</visible>
+                            </control>
+                            <control type="label">
+                                <height>35</height>
+                                <aligny>center</aligny>
+                                <textoffsetx>0</textoffsetx>
+                                <align>center</align>
+                                <font>$PARAM[font]</font>
+                                <textcolor>$PARAM[color_nf]</textcolor>
+                                <label>$INFO[ListItem.Label]</label>
+                                <visible>![$PARAM[label_fo]]</visible>
                             </control>
                         </control>
                     </control>
@@ -666,7 +680,28 @@
                                 <font>$PARAM[font]</font>
                                 <textcolor>$VAR[ColorSelected]</textcolor>
                                 <label>$INFO[ListItem.Label]</label>
+                                <animation effect="fadediffuse" start="FFFFFFFF" end="FFFF0000" condition="String.IsEqual(ListItem.Property(disabled),True)">Conditional</animation>
                             </control>
+
+                            <control type="group">
+                                <visible>Window.IsVisible(1115)</visible>
+                                <control type="image">
+                                    <centerleft>-30</centerleft>
+                                    <width>40</width>
+                                    <aspectratio>keep</aspectratio>
+                                    <texture colordiffuse="main_fg_30">special://skin/extras/icons/angle-left.png</texture>
+                                    <visible>[Container($PARAM[id]).Position(0) + Container($PARAM[id]).HasPrevious] | [Container($PARAM[id]).Position(1) + !Integer.IsEqual(Container($PARAM[id]).NumItems,1)] | [Container($PARAM[id]).Position(2) + True]</visible>
+                                </control>
+                                <control type="image">
+                                    <centerright>-30</centerright>
+                                    <width>40</width>
+                                    <aspectratio>keep</aspectratio>
+                                    <texture colordiffuse="main_fg_30">special://skin/extras/icons/angle-right.png</texture>
+
+                                    <visible>[Container($PARAM[id]).Position(0) + !Integer.IsEqual(Container($PARAM[id]).NumItems,1)] | [Container($PARAM[id]).Position(1) + Integer.IsGreater(Container($PARAM[id]).NumItems,2)] | [Container($PARAM[id]).Position(2) + False]</visible>
+                                </control>
+                            </control>
+
                         </control>
                     </control>
                 </focusedlayout>

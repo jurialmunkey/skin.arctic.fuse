@@ -109,50 +109,56 @@
     </include>
 
     <include name="Home_Menu_List_ItemLayout">
-        <itemlayout height="100" width="560">
-            <control type="group">
-                <left>view_menu</left>
-                <top>40</top>
-                <bottom>-40</bottom>
-                <include content="Layout_Home_Menu">
-                    <param name="selected">false</param>
-                    <param name="detailed">Control.HasFocus($PARAM[id])</param>
-                </include>
-                <include content="Layout_Home_Menu_Label" condition="Skin.String(Home.SideMenuCollapse,Expand)">
-                    <param name="selected">false</param>
-                    <top>20</top>
-                </include>
-            </control>
-        </itemlayout>
-        <focusedlayout height="100" width="560">
-            <include condition="$PARAM[hidden_button_enabled]">$PARAM[hidden_button]</include>
-            <control type="group">
-                <left>view_menu</left>
-                <top>40</top>
-                <bottom>-40</bottom>
+        <param name="use_labels">Skin.String(Home.SideMenuCollapse,Expand)</param>
+        <param name="layoutnf">[![Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)] + $EXP[Exp_HomeMenu_IsSelected]]</param>
+        <param name="layoutfo">[[![Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)] + $EXP[Exp_HomeMenu_IsSelected]] | [Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)]]</param>
+        <definition>
+            <itemlayout height="100" width="560">
                 <control type="group">
-                    <visible>!Control.HasFocus($PARAM[id])</visible>
+                    <left>view_menu</left>
+                    <top>40</top>
+                    <bottom>-40</bottom>
                     <include content="Layout_Home_Menu">
                         <param name="selected">false</param>
                         <param name="detailed">Control.HasFocus($PARAM[id])</param>
-                        <param name="layoutfo">true</param>
+                        <param name="layoutfo">$PARAM[layoutnf]</param>
+                    </include>
+                    <include content="Layout_Home_Menu_Label" condition="$PARAM[use_labels]">
+                        <param name="selected">false</param>
+                        <top>20</top>
                     </include>
                 </control>
+            </itemlayout>
+            <focusedlayout height="100" width="560">
+                <include condition="$PARAM[hidden_button_enabled]">$PARAM[hidden_button]</include>
                 <control type="group">
-                    <visible>Control.HasFocus($PARAM[id])</visible>
-                    <include content="Layout_Home_Menu">
-                        <param name="selected">true</param>
-                        <param name="detailed">Control.HasFocus($PARAM[id])</param>
-                        <param name="layoutfo">true</param>
+                    <left>view_menu</left>
+                    <top>40</top>
+                    <bottom>-40</bottom>
+                    <control type="group">
+                        <visible>!Control.HasFocus($PARAM[id])</visible>
+                        <include content="Layout_Home_Menu">
+                            <param name="selected">false</param>
+                            <param name="detailed">Control.HasFocus($PARAM[id])</param>
+                            <param name="layoutfo">$PARAM[layoutfo]</param>
+                        </include>
+                    </control>
+                    <control type="group">
+                        <visible>Control.HasFocus($PARAM[id])</visible>
+                        <include content="Layout_Home_Menu">
+                            <param name="selected">true</param>
+                            <param name="detailed">Control.HasFocus($PARAM[id])</param>
+                            <param name="layoutfo">$PARAM[layoutfo]</param>
+                        </include>
+                    </control>
+                    <include content="Layout_Home_Menu_Label" condition="$PARAM[use_labels]">
+                        <param name="detailed">true</param>
+                        <param name="selected">Control.HasFocus(303)</param>
+                        <top>20</top>
                     </include>
                 </control>
-                <include content="Layout_Home_Menu_Label" condition="Skin.String(Home.SideMenuCollapse,Expand)">
-                    <param name="detailed">true</param>
-                    <param name="selected">Control.HasFocus(303)</param>
-                    <top>20</top>
-                </include>
-            </control>
-        </focusedlayout>
+            </focusedlayout>
+        </definition>
     </include>
 
     <include name="Home_Menu_Button_Back">
