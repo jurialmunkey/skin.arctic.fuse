@@ -741,12 +741,8 @@
         </definition>
     </include>
 
-    <include name="Object_Indicator_Selected_Shadow">
-        <include content="Dimension_Padding">
-            <param name="pad">-32</param>
-        </include>
-        <bordertexture colordiffuse="shadow_hard">$VAR[Image_Overlay_Backing$PARAM[affix],,-fo-shadow.png]</bordertexture>
-        <bordersize>32</bordersize>
+    <include name="Object_Indicator_Backing_Visible">
+        <visible>[!Skin.HasSetting(Indicator.DisableEpisodes) + !Integer.IsEqual($PARAM[listitem].Property(UnWatchedEpisodes),0) + [String.IsEqual($PARAM[listitem].DBType,tvshow) | String.IsEqual($PARAM[listitem].DBType,season)]] | $PARAM[listitem].IsRecording | $PARAM[listitem].HasTimer | [!Skin.HasSetting(Indicator.DisableProgress) + $PARAM[listitem].IsResumable] | [!Skin.HasSetting(Indicator.DisableWatched) + String.IsEqual($PARAM[listitem].Overlay,OverlayWatched.png)] | [!Skin.HasSetting(Indicator.DisableWatched) + !Integer.IsEqual($PARAM[listitem].PlayCount,0) + [String.IsEqual($PARAM[listitem].DBType,movie) | String.IsEqual($PARAM[listitem].DBType,tvshow) | String.IsEqual($PARAM[listitem].DBType,season) | String.IsEqual($PARAM[listitem].DBType,set) | String.IsEqual($PARAM[listitem].DBType,video) | String.IsEqual($PARAM[listitem].DBType,episode)]] | [!Skin.HasSetting(Indicator.DisableLibrary) + !String.IsEmpty($PARAM[listitem].DBID) + !String.IsEmpty($PARAM[listitem].Property(Item.Info))] | [!Skin.HasSetting(Indicator.DisableCollection) + $PARAM[listitem].IsCollection]</visible>
     </include>
 
     <include name="Object_Indicator_Selected">
@@ -758,10 +754,15 @@
                     <param name="pad">4</param>
                 </include>
                 <control type="image">
-                    <include condition="$PARAM[shadow]" content="Object_Indicator_Selected_Shadow">
-                        <param name="affix">$PARAM[affix]</param>
+                    <include content="Dimension_Padding">
+                        <param name="pad">-32</param>
                     </include>
-                    <texture colordiffuse="$VAR[ColorHighlight]">$VAR[Image_Overlay_Backing$PARAM[affix],,-fo.png]</texture>
+                    <texture colordiffuse="$VAR[ColorHighlight]">indicator/circle-fo.png</texture>
+                    <bordertexture colordiffuse="shadow_hard">indicator/circle-fo-shadow.png]</bordertexture>
+                    <bordersize>32</bordersize>
+                    <include content="Object_Indicator_Backing_Visible">
+                        <param name="listitem">$PARAM[listitem]</param>
+                    </include>
                 </control>
             </control>
         </definition>
@@ -784,11 +785,15 @@
                 <include content="Object_Indicator_Selected" condition="$PARAM[selected]">
                     <param name="shadow">$PARAM[shadow]</param>
                     <param name="affix">$PARAM[affix]</param>
+                    <param name="listitem">$PARAM[listitem]</param>
                 </include>
 
                 <include content="Object_Control" condition="$PARAM[backing]">
                     <param name="control">image</param>
-                    <texture colordiffuse="ff333333">$VAR[Image_Overlay_Backing$PARAM[affix],,-colordiffuse.png]</texture>
+                    <texture colordiffuse="ff333333">indicator/circle-colordiffuse.png</texture>
+                    <include content="Object_Indicator_Backing_Visible">
+                        <param name="listitem">$PARAM[listitem]</param>
+                    </include>
                 </include>
 
                 <include content="Object_Control" condition="!Skin.HasSetting(Indicator.DisableProgress)">
