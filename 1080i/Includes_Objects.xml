@@ -765,8 +765,12 @@
         <visible>![$PARAM[episodes]] + ![$PARAM[timers]] + ![$PARAM[progress]] + ![$PARAM[watched]] + ![$PARAM[library]] + [$PARAM[collection]]</visible>
     </include>
 
+    <include name="Object_Indicator_Visible_Percentage">
+        <visible>[$PARAM[episodes]] | [$PARAM[percentage]] | [$PARAM[watched]]</visible>
+    </include>
+
     <include name="Object_Indicator_Visible_All">
-        <visible>[$PARAM[episodes]] | [$PARAM[timers]] | [$PARAM[progress]] | [$PARAM[watched]] | [$PARAM[library]] | [$PARAM[collection]]</visible>
+        <visible>[$PARAM[episodes]] | [$PARAM[timers]] | [$PARAM[progress]] | [$PARAM[watched]] | [$PARAM[library]] | [$PARAM[collection]] | [$PARAM[percentage]]</visible>
     </include>
 
     <include name="Object_Indicator_Visible">
@@ -779,9 +783,14 @@
                 <param name="watched">!Skin.HasSetting(Indicator.DisableWatched) + [String.IsEqual($PARAM[listitem].Overlay,OverlayWatched.png) | [!Integer.IsEqual($PARAM[listitem].PlayCount,0) + [String.IsEqual($PARAM[listitem].DBType,movie) | String.IsEqual($PARAM[listitem].DBType,tvshow) | String.IsEqual($PARAM[listitem].DBType,season) | String.IsEqual($PARAM[listitem].DBType,set) | String.IsEqual($PARAM[listitem].DBType,video) | String.IsEqual($PARAM[listitem].DBType,episode)]]]</param>
                 <param name="library">!Skin.HasSetting(Indicator.DisableLibrary) + !String.IsEmpty($PARAM[listitem].DBID) + !String.IsEmpty($PARAM[listitem].Property(Item.Info))</param>
                 <param name="collection">!Skin.HasSetting(Indicator.DisableCollection) + $PARAM[listitem].IsCollection</param>
+                <param name="percentage">!Skin.HasSetting(Indicator.DisableProgress) + [[$PARAM[listitem].IsResumable] | [!String.IsEmpty($PARAM[listitem].Property(WatchedProgress)) + !Integer.IsEqual($PARAM[listitem].Property(WatchedProgress),0) + !Integer.IsEqual($PARAM[listitem].Property(WatchedProgress),100)] | [!String.IsEmpty($PARAM[listitem].Property(WatchedEpisodePercent)) + !Integer.IsEqual($PARAM[listitem].Property(WatchedEpisodePercent),0) + !Integer.IsEqual($PARAM[listitem].Property(WatchedEpisodePercent),100)] | [!String.IsEmpty($PARAM[listitem].PercentPlayed) + !Integer.IsEqual($PARAM[listitem].PercentPlayed,0) + !Integer.IsEqual($PARAM[listitem].PercentPlayed,100)]]</param>
             </include>
         </definition>
     </include>
+
+    <value condition="!String.IsEmpty($PARAM[listitem].Property(WatchedProgress)) + !Integer.IsEqual($PARAM[listitem].Property(WatchedProgress),0) + [!Integer.IsEqual($PARAM[listitem].Property(WatchedProgress),100) | !Skin.HasSetting(Indicator.DisableWatched)]">$INFO[$PARAM[listitem].Property(WatchedProgress)]</value>
+        <value condition="!String.IsEmpty($PARAM[listitem].Property(WatchedEpisodePercent)) + !Integer.IsEqual($PARAM[listitem].Property(WatchedEpisodePercent),0) + [!Integer.IsEqual($PARAM[listitem].Property(WatchedEpisodePercent),100) | !Skin.HasSetting(Indicator.DisableWatched)]">$INFO[$PARAM[listitem].Property(WatchedEpisodePercent)]</value>
+        <value condition="!String.IsEmpty($PARAM[listitem].PercentPlayed) + [!Integer.IsEqual($PARAM[listitem].PercentPlayed,0) | $PARAM[listitem].IsResumable]">$INFO[$PARAM[listitem].PercentPlayed]</value>
 
     <include name="Object_Indicator_Selected">
         <param name="shadow">true</param>
@@ -834,6 +843,17 @@
                     <texture colordiffuse="ff333333">indicator/circle-colordiffuse.png</texture>
                 </include>
 
+                <!-- Percentage -->
+                <include content="Object_Control">
+                    <param name="control">image</param>
+                    <texture colordiffuse="$VAR[ColorWatchedProgress]" diffuse="indicator/circle-diffuse.png" background="true">$VAR[Defs_PercentPlayed$PARAM[affix],progress/circle/p,.png]</texture>
+                    <aspectratio align="center" aligny="center">keep</aspectratio>
+                    <include content="Object_Indicator_Visible">
+                        <param name="include_type">Percentage</param>
+                        <param name="listitem">$PARAM[listitem]</param>
+                    </include>
+                </include>
+
                 <!-- Episodes Count -->
                 <include content="Object_Control" condition="!Skin.HasSetting(Indicator.DisableEpisodes)">
                     <param name="control">label</param>
@@ -868,8 +888,10 @@
                 <!-- Progress -->
                 <include content="Object_Control" condition="!Skin.HasSetting(Indicator.DisableProgress)">
                     <param name="control">image</param>
-                    <texture colordiffuse="$VAR[ColorWatchedProgress]" diffuse="indicator/circle-diffuse.png" background="true">$VAR[Defs_PercentPlayed$PARAM[affix],progress/circle/p,.png]</texture>
-                    <aspectratio align="center" aligny="center">keep</aspectratio>
+                    <include content="Dimension_Padding">
+                        <param name="pad">20</param>
+                    </include>
+                    <texture>indicator/timer.png</texture>
                     <include content="Object_Indicator_Visible">
                         <param name="include_type">Progress</param>
                         <param name="listitem">$PARAM[listitem]</param>
@@ -878,17 +900,11 @@
 
                 <!-- Watched -->
                 <include content="Object_Control" condition="!Skin.HasSetting(Indicator.DisableWatched)">
-                    <param name="control">group</param>
-                    <control type="image">
-                        <texture colordiffuse="$VAR[ColorWatchedProgress]" diffuse="indicator/circle-diffuse.png" background="true">progress/circle/p100.png</texture>
-                    <aspectratio align="center" aligny="center">keep</aspectratio>
-                </control>
-                    <control type="image">
-                        <include content="Dimension_Padding">
-                            <param name="pad">20</param>
-                        </include>
-                        <texture colordiffuse="$VAR[ColorWatchedProgress]">indicator/checkmark.png</texture>
-                    </control>
+                    <param name="control">image</param>
+                    <include content="Dimension_Padding">
+                        <param name="pad">20</param>
+                    </include>
+                    <texture colordiffuse="$VAR[ColorWatchedProgress]">indicator/checkmark.png</texture>
                     <include content="Object_Indicator_Visible">
                         <param name="include_type">Watched</param>
                         <param name="listitem">$PARAM[listitem]</param>
