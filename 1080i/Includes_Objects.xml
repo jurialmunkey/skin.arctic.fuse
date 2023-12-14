@@ -742,7 +742,7 @@
     </include>
 
     <include name="Object_Indicator_Backing_Visible">
-        <visible>[!Skin.HasSetting(Indicator.DisableEpisodes) + !Integer.IsEqual($PARAM[listitem].Property(UnWatchedEpisodes),0) + [String.IsEqual($PARAM[listitem].DBType,tvshow) | String.IsEqual($PARAM[listitem].DBType,season)]] | $PARAM[listitem].IsRecording | $PARAM[listitem].HasTimer | [!Skin.HasSetting(Indicator.DisableProgress) + $PARAM[listitem].IsResumable] | [!Skin.HasSetting(Indicator.DisableWatched) + String.IsEqual($PARAM[listitem].Overlay,OverlayWatched.png)] | [!Skin.HasSetting(Indicator.DisableWatched) + !Integer.IsEqual($PARAM[listitem].PlayCount,0) + [String.IsEqual($PARAM[listitem].DBType,movie) | String.IsEqual($PARAM[listitem].DBType,tvshow) | String.IsEqual($PARAM[listitem].DBType,season) | String.IsEqual($PARAM[listitem].DBType,set) | String.IsEqual($PARAM[listitem].DBType,video) | String.IsEqual($PARAM[listitem].DBType,episode)]] | [!Skin.HasSetting(Indicator.DisableLibrary) + !String.IsEmpty($PARAM[listitem].DBID) + !String.IsEmpty($PARAM[listitem].Property(Item.Info))] | [!Skin.HasSetting(Indicator.DisableCollection) + $PARAM[listitem].IsCollection]</visible>
+        <visible>[!Skin.HasSetting(Indicator.DisableEpisodes) + !Integer.IsEqual($PARAM[listitem].Property(UnWatchedEpisodes),0) + [String.IsEqual($PARAM[listitem].DBType,tvshow) | String.IsEqual($PARAM[listitem].DBType,season)]] | $PARAM[listitem].IsRecording | $PARAM[listitem].HasTimer | [!Skin.HasSetting(Indicator.DisableProgress) + $PARAM[listitem].IsResumable] | [!Skin.HasSetting(Indicator.DisableWatched) + [String.IsEqual($PARAM[listitem].Overlay,OverlayWatched.png) | [!Integer.IsEqual($PARAM[listitem].PlayCount,0) + [String.IsEqual($PARAM[listitem].DBType,movie) | String.IsEqual($PARAM[listitem].DBType,tvshow) | String.IsEqual($PARAM[listitem].DBType,season) | String.IsEqual($PARAM[listitem].DBType,set) | String.IsEqual($PARAM[listitem].DBType,video) | String.IsEqual($PARAM[listitem].DBType,episode)]]]] | [!Skin.HasSetting(Indicator.DisableLibrary) + !String.IsEmpty($PARAM[listitem].DBID) + !String.IsEmpty($PARAM[listitem].Property(Item.Info))] | [!Skin.HasSetting(Indicator.DisableCollection) + $PARAM[listitem].IsCollection]</visible>
     </include>
 
     <include name="Object_Indicator_Selected">
@@ -803,10 +803,19 @@
                     <visible>String.IsEmpty($PARAM[listitem].Property(role))</visible>
                 </include>
 
-                <control type="image">
-                    <include content="Dimension_Padding"><param name="pad">20</param></include>
-                    <texture>$VAR[Image_Overlay$PARAM[affix]]</texture>
+
+                <control type="group">
+                    <include content="Dimension_Padding">
+                        <param name="pad">20</param>
+                    </include>
+                    <control type="image">
+                    </control>
                 </control>
+
+                <!-- <control type="image">
+
+                    <texture>$VAR[Image_Overlay$PARAM[affix]]</texture>
+                </control> -->
 
                 <include content="Object_Control" condition="!Skin.HasSetting(Indicator.DisableWatched)">
                     <param name="control">image</param>
