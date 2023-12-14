@@ -68,9 +68,8 @@
     </variable>
 
     <variable name="Image_Overlay" containers="50,51,52,503,513,523,553" start="-20" end="20" types="listitem,listitemposition">
-
         <!-- Unwatched Episodes -->
-        <value condition="[String.IsEqual({listitem}.DBType,tvshow) | String.IsEqual({listitem}.DBType,season)] + !Integer.IsEqual({listitem}.Property(UnWatchedEpisodes),0) + !Skin.HasSetting(Indicator.DisableEpisodes)">common/null.png</value>
+        <value condition="!Skin.HasSetting(Indicator.DisableEpisodes) + !Integer.IsEqual({listitem}.Property(UnWatchedEpisodes),0) + [String.IsEqual({listitem}.DBType,tvshow) | String.IsEqual({listitem}.DBType,season)]">common/null.png</value>
 
         <!-- PVR Timers / Recording -->
         <value condition="{listitem}.IsRecording">indicator/record.png</value>
@@ -80,13 +79,12 @@
         <value condition="{listitem}.IsResumable + !Skin.HasSetting(Indicator.DisableProgress)">indicator/timer.png</value>
 
         <!-- Watched -->
-        <value condition="String.IsEqual({listitem}.Overlay,OverlayWatched.png) + !Skin.HasSetting(Indicator.DisableWatched)">common/null.png</value>
-        <value condition="Integer.IsGreater({listitem}.PlayCount,0) + !String.IsEqual({listitem}.DBType,song) + !String.IsEqual({listitem}.DBType,album) + !String.IsEqual({listitem}.DBType,artist) + !String.IsEqual({listitem}.DBType,image) + !String.IsEqual({listitem}.DBType,addon) + !Skin.HasSetting(Indicator.DisableWatched)">common/null.png</value>
+        <value condition="!Skin.HasSetting(Indicator.DisableWatched) + [String.IsEqual({listitem}.Overlay,OverlayWatched.png) | [!Integer.IsEqual({listitem}.PlayCount,0) + [String.IsEqual({listitem}.DBType,movie) | String.IsEqual({listitem}.DBType,tvshow) | String.IsEqual({listitem}.DBType,season) | String.IsEqual({listitem}.DBType,set) | String.IsEqual({listitem}.DBType,video) | String.IsEqual({listitem}.DBType,episode)]]]">common/null.png</value>
 
         <!-- Is Library DBID -->
-        <value condition="!String.IsEmpty({listitem}.Property(Item.Info)) + !String.IsEmpty({listitem}.DBID) + !Skin.HasSetting(Indicator.DisableLibrary)">indicator/library.png</value>
+        <value condition="!Skin.HasSetting(Indicator.DisableLibrary) + !String.IsEmpty({listitem}.DBID) + !String.IsEmpty({listitem}.Property(Item.Info))">indicator/library.png</value>
 
         <!-- Is Collection -->
-        <value condition="{listitem}.IsCollection + !Skin.HasSetting(Indicator.DisableCollection)">indicator/movieset.png</value>
+        <value condition="!Skin.HasSetting(Indicator.DisableCollection) + {listitem}.IsCollection">indicator/movieset.png</value>
     </variable>
 </includes>
