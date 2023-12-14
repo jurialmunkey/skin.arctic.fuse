@@ -741,19 +741,22 @@
         </definition>
     </include>
 
-    <include name="Object_Indicator_Backing_Visible_Definition">
+    <include name="Object_Indicator_Visible_All">
         <visible>[$PARAM[episodes]] | [$PARAM[timers]] | [$PARAM[progress]] | [$PARAM[watched]] | [$PARAM[library]] | [$PARAM[collection]]</visible>
     </include>
 
-    <include name="Object_Indicator_Backing_Visible">
-        <include content="Object_Indicator_Backing_Visible_Definition">
-            <param name="episodes">!Skin.HasSetting(Indicator.DisableEpisodes) + !Integer.IsEqual($PARAM[listitem].Property(UnWatchedEpisodes),0) + [String.IsEqual($PARAM[listitem].DBType,tvshow) | String.IsEqual($PARAM[listitem].DBType,season)]</param>
-            <param name="timers">$PARAM[listitem].IsRecording | $PARAM[listitem].HasTimer</param>
-            <param name="progress">!Skin.HasSetting(Indicator.DisableProgress) + $PARAM[listitem].IsResumable</param>
-            <param name="watched">!Skin.HasSetting(Indicator.DisableWatched) + [String.IsEqual($PARAM[listitem].Overlay,OverlayWatched.png) | [!Integer.IsEqual($PARAM[listitem].PlayCount,0) + [String.IsEqual($PARAM[listitem].DBType,movie) | String.IsEqual($PARAM[listitem].DBType,tvshow) | String.IsEqual($PARAM[listitem].DBType,season) | String.IsEqual($PARAM[listitem].DBType,set) | String.IsEqual($PARAM[listitem].DBType,video) | String.IsEqual($PARAM[listitem].DBType,episode)]]]</param>
-            <param name="library">!Skin.HasSetting(Indicator.DisableLibrary) + !String.IsEmpty($PARAM[listitem].DBID) + !String.IsEmpty($PARAM[listitem].Property(Item.Info))</param>
-            <param name="collection">!Skin.HasSetting(Indicator.DisableCollection) + $PARAM[listitem].IsCollection</param>
-        </include>
+    <include name="Object_Indicator_Visible">
+        <param name="include_affix">All</param>
+        <definition>
+            <include content="Object_Indicator_Visible_$PARAM[include_affix]">
+                <param name="episodes">!Skin.HasSetting(Indicator.DisableEpisodes) + !Integer.IsEqual($PARAM[listitem].Property(UnWatchedEpisodes),0) + [String.IsEqual($PARAM[listitem].DBType,tvshow) | String.IsEqual($PARAM[listitem].DBType,season)]</param>
+                <param name="timers">$PARAM[listitem].IsRecording | $PARAM[listitem].HasTimer</param>
+                <param name="progress">!Skin.HasSetting(Indicator.DisableProgress) + $PARAM[listitem].IsResumable</param>
+                <param name="watched">!Skin.HasSetting(Indicator.DisableWatched) + [String.IsEqual($PARAM[listitem].Overlay,OverlayWatched.png) | [!Integer.IsEqual($PARAM[listitem].PlayCount,0) + [String.IsEqual($PARAM[listitem].DBType,movie) | String.IsEqual($PARAM[listitem].DBType,tvshow) | String.IsEqual($PARAM[listitem].DBType,season) | String.IsEqual($PARAM[listitem].DBType,set) | String.IsEqual($PARAM[listitem].DBType,video) | String.IsEqual($PARAM[listitem].DBType,episode)]]]</param>
+                <param name="library">!Skin.HasSetting(Indicator.DisableLibrary) + !String.IsEmpty($PARAM[listitem].DBID) + !String.IsEmpty($PARAM[listitem].Property(Item.Info))</param>
+                <param name="collection">!Skin.HasSetting(Indicator.DisableCollection) + $PARAM[listitem].IsCollection</param>
+            </include>
+        </definition>
     </include>
 
     <include name="Object_Indicator_Selected">
@@ -771,9 +774,6 @@
                     <texture colordiffuse="$VAR[ColorHighlight]">indicator/circle-fo.png</texture>
                     <bordertexture colordiffuse="shadow_hard">indicator/circle-fo-shadow.png]</bordertexture>
                     <bordersize>32</bordersize>
-                    <include content="Object_Indicator_Backing_Visible">
-                        <param name="listitem">$PARAM[listitem]</param>
-                    </include>
                 </control>
             </control>
         </definition>
@@ -793,6 +793,10 @@
                 <width>64</width>
                 <height>64</height>
 
+                <include content="Object_Indicator_Visible">
+                    <param name="listitem">$PARAM[listitem]</param>
+                </include>
+
                 <include content="Object_Indicator_Selected" condition="$PARAM[selected]">
                     <param name="shadow">$PARAM[shadow]</param>
                     <param name="affix">$PARAM[affix]</param>
@@ -802,9 +806,6 @@
                 <include content="Object_Control" condition="$PARAM[backing]">
                     <param name="control">image</param>
                     <texture colordiffuse="ff333333">indicator/circle-colordiffuse.png</texture>
-                    <include content="Object_Indicator_Backing_Visible">
-                        <param name="listitem">$PARAM[listitem]</param>
-                    </include>
                 </include>
 
                 <include content="Object_Control" condition="!Skin.HasSetting(Indicator.DisableProgress)">
@@ -814,17 +815,7 @@
                     <visible>String.IsEmpty($PARAM[listitem].Property(role))</visible>
                 </include>
 
-
-                <control type="group">
-                    <include content="Dimension_Padding">
-                        <param name="pad">20</param>
-                    </include>
-                    <control type="image">
-                    </control>
-                </control>
-
                 <control type="image">
-
                     <texture>$VAR[Image_Overlay$PARAM[affix]]</texture>
                 </control>
 
