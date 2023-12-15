@@ -124,8 +124,8 @@
                 <left>120</left>
                 <right>400</right>
                 <include content="DialogInfo_List_Movement">
-                <param name="id">50</param>
-            </include>
+                    <param name="id">50</param>
+                </include>
             </include>
             <include content="List_Button_Row" condition="String.IsEqual(ListItem.DBType,artist) | String.IsEqual(ListItem.DBType,song)">
                 <param name="id">5050</param>
@@ -205,6 +205,10 @@
             <include content="Animation_ConditionalFade">
                 <param name="condition">Container(5008).IsUpdating</param>
             </include>
+
+            <onclick>Dialog.Close(musicinformation,force)</onclick>
+            <onclick condition="Window.IsVisible(MyMusicNav.xml)">Container.Update($INFO[Container(5008).ListItem.FolderPath])</onclick>
+            <onclick condition="!Window.IsVisible(MyMusicNav.xml)">ActivateWindow(music,$INFO[Container(5008).ListItem.FolderPath],return)</onclick>
 
             <content target="music">musicdb://albums/?xsp={"rules":{"and":[{"field":"artist","operator":"contains","value":["$INFO[Window.Property(Encoded.ListItem.Artist)]"]}]},"type":"albums"}</content>
             <visible>String.IsEqual(Window.Property(DetailsView),Albums)</visible>
