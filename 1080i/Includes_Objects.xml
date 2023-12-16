@@ -766,11 +766,11 @@
     </include>
 
     <include name="Object_Indicator_Visible_Percentage">
-        <visible>[$PARAM[episodes]] | [$PARAM[percentage]] | [$PARAM[watched]]</visible>
+        <visible>[$PARAM[episodes]] | [$PARAM[progress]]</visible>
     </include>
 
     <include name="Object_Indicator_Visible_All">
-        <visible>[$PARAM[episodes]] | [$PARAM[timers]] | [$PARAM[progress]] | [$PARAM[watched]] | [$PARAM[library]] | [$PARAM[collection]] | [$PARAM[percentage]]</visible>
+        <visible>[$PARAM[episodes]] | [$PARAM[timers]] | [$PARAM[progress]] | [$PARAM[watched]] | [$PARAM[library]] | [$PARAM[collection]]</visible>
     </include>
 
     <include name="Object_Indicator_Visible">
@@ -783,7 +783,6 @@
                 <param name="watched">!Skin.HasSetting(Indicator.DisableWatched) + [String.IsEqual($PARAM[listitem].Overlay,OverlayWatched.png) | [!Integer.IsEqual($PARAM[listitem].PlayCount,0) + [String.IsEqual($PARAM[listitem].DBType,movie) | String.IsEqual($PARAM[listitem].DBType,tvshow) | String.IsEqual($PARAM[listitem].DBType,season) | String.IsEqual($PARAM[listitem].DBType,set) | String.IsEqual($PARAM[listitem].DBType,video) | String.IsEqual($PARAM[listitem].DBType,episode)]]]</param>
                 <param name="library">!Skin.HasSetting(Indicator.DisableLibrary) + !String.IsEmpty($PARAM[listitem].DBID) + !String.IsEmpty($PARAM[listitem].Property(Item.Info))</param>
                 <param name="collection">!Skin.HasSetting(Indicator.DisableCollection) + $PARAM[listitem].IsCollection</param>
-                <param name="percentage">!Skin.HasSetting(Indicator.DisableProgress) + [[$PARAM[listitem].IsResumable] | [!String.IsEmpty($PARAM[listitem].Property(WatchedProgress)) + !Integer.IsEqual($PARAM[listitem].Property(WatchedProgress),0) + !Integer.IsEqual($PARAM[listitem].Property(WatchedProgress),100)] | [!String.IsEmpty($PARAM[listitem].Property(WatchedEpisodePercent)) + !Integer.IsEqual($PARAM[listitem].Property(WatchedEpisodePercent),0) + !Integer.IsEqual($PARAM[listitem].Property(WatchedEpisodePercent),100)] | [!String.IsEmpty($PARAM[listitem].PercentPlayed) + !Integer.IsEqual($PARAM[listitem].PercentPlayed,0) + !Integer.IsEqual($PARAM[listitem].PercentPlayed,100)]]</param>
             </include>
         </definition>
     </include>
@@ -900,11 +899,17 @@
 
                 <!-- Watched -->
                 <include content="Object_Control" condition="!Skin.HasSetting(Indicator.DisableWatched)">
-                    <param name="control">image</param>
-                    <include content="Dimension_Padding">
-                        <param name="pad">20</param>
-                    </include>
-                    <texture colordiffuse="$VAR[ColorWatchedProgress]">indicator/checkmark.png</texture>
+                    <param name="control">group</param>
+                    <control type="image">
+                        <texture colordiffuse="$VAR[ColorWatchedProgress]" diffuse="indicator/circle-diffuse.png" background="true">progress/circle/p100.png</texture>
+                        <aspectratio align="center" aligny="center">keep</aspectratio>
+                    </control>
+                    <control type="image">
+                        <include content="Dimension_Padding">
+                            <param name="pad">20</param>
+                        </include>
+                        <texture colordiffuse="$VAR[ColorWatchedProgress]">indicator/checkmark.png</texture>
+                    </control>
                     <include content="Object_Indicator_Visible">
                         <param name="include_type">Watched</param>
                         <param name="listitem">$PARAM[listitem]</param>
