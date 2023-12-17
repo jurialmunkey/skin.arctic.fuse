@@ -332,7 +332,6 @@
     <include name="Search_Filter_Categories">
         <control type="grouplist" id="9500">
             <include>Search_View_Visible_OnEdit</include>
-            <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
             <top>340</top>
             <width>1280</width>
             <orientation>horizontal</orientation>
@@ -342,6 +341,19 @@
             </include>
             <onup>9098</onup>
             <ondown>5099</ondown>
+
+            <include content="Search_Filter_Button">
+                <param name="id">9501</param>
+                <label>$LOCALIZE[456]$VAR[Label_Setting_SearchMode,: ,]</label>
+                <font>font_main_bold</font>
+                <onfocus>ClearProperty(SearchDiscover.FilterLabel)</onfocus>
+                <onclick condition="!Skin.HasSetting(Search.EnableDiscover)">Skin.Reset(Search.LibraryDiscover)</onclick>
+                <onclick condition="!Skin.HasSetting(Search.EnableDiscover)">Skin.SetBool(Search.EnableDiscover)</onclick>
+                <onclick condition="Skin.HasSetting(Search.EnableDiscover) + !Skin.HasSetting(Search.LibraryDiscover)">Skin.SetBool(Search.EnableDiscover)</onclick>
+                <onclick condition="Skin.HasSetting(Search.EnableDiscover) + !Skin.HasSetting(Search.LibraryDiscover)">Skin.SetBool(Search.LibraryDiscover)</onclick>
+                <onclick condition="Skin.HasSetting(Search.EnableDiscover) + Skin.HasSetting(Search.LibraryDiscover)">Skin.Reset(Search.EnableDiscover)</onclick>
+                <onclick condition="Skin.HasSetting(Search.EnableDiscover) + Skin.HasSetting(Search.LibraryDiscover)">Skin.Reset(Search.LibraryDiscover)</onclick>
+            </include>
 
             <!-- Library Discover -->
             <include content="Search_Filter_Button">
