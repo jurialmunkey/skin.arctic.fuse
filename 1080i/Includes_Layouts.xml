@@ -88,6 +88,61 @@
         </definition>
     </include>
 
+    <include name="Layout_MenuList">
+        <param name="selected">false</param>
+        <param name="detailed">false</param>
+        <definition>
+
+            <control type="group">
+                <centerleft>40</centerleft>
+                <centertop>50%</centertop>
+                <width>40</width>
+                <height>40</height>
+                <!-- <include content="Object_Control" condition="$PARAM[selected]">
+                    <param name="control">image</param>
+                    <include>Texture_CircleButtonDialog_Highlight_V</include>
+                    <aspectratio>keep</aspectratio>
+                    <bordersize>-60</bordersize>
+                </include> -->
+                <include content="Object_Control" condition="$PARAM[selected]">
+                    <param name="control">image</param>
+                    <include>Texture_Circle_Highlight_V</include>
+                    <aspectratio>keep</aspectratio>
+                    <width>10</width>
+                    <height>10</height>
+                    <centertop>50%</centertop>
+                    <left>-20</left>
+                </include>
+                <control type="image">
+                    <aspectratio>keep</aspectratio>
+                    <bordersize>icon_home_bordersize</bordersize>
+                    <include content="Object_ColorDiffuse" condition="$PARAM[selected]">
+                        <param name="colordiffuse">$VAR[ColorSelected]</param>
+                    </include>
+                    <colordiffuse>dialog_fg_30</colordiffuse>
+                    <texture>$INFO[ListItem.Icon]</texture>
+                </control>
+            </control>
+
+            <control type="group">
+                <left>120</left>
+                <include content="Object_Control" condition="$PARAM[selected]">
+                    <param name="control">image</param>
+                    <include>Texture_Menu_Highlight_H</include>
+                </include>
+                <control type="label">
+                    <include condition="$PARAM[selected]">Color_SelectedText</include>
+                    <textoffsetx>40</textoffsetx>
+                    <textcolor>dialog_fg_70</textcolor>
+                    <selectedcolor>dialog_fg_70</selectedcolor>
+                    <label>$INFO[ListItem.Label]</label>
+                </control>
+            </control>
+
+        </definition>
+    </include>
+
+
     <include name="Layout_IconList">
         <param name="selected">false</param>
         <param name="detailed">false</param>
@@ -417,7 +472,7 @@
     </include>
 
     <include name="Layout_Shortcuts">
-        <param name="detailed">false</param>
+        <param name="detailed">String.IsEqual(ListItem.Property(mode),widgets)</param>
         <param name="selected">false</param>
         <param name="textcolor">dialog_fg_90</param>
         <definition>
@@ -432,7 +487,7 @@
                     <width>$PARAM[item_h]</width>
 
                     <control type="group">
-                        <visible>!String.IsEqual(ListItem.Property(mode),widgets)</visible>
+                        <visible>!$PARAM[detailed]</visible>
                         <control type="image">
                             <width>$PARAM[item_h]</width>
                             <bordersize>18</bordersize>
@@ -454,7 +509,7 @@
                     </control>
 
                     <control type="group">
-                        <visible>String.IsEqual(ListItem.Property(mode),widgets)</visible>
+                        <visible>$PARAM[detailed]</visible>
 
                         <!-- Order -->
                         <control type="group">
@@ -1008,6 +1063,72 @@
                             </control>
                         </control>
 
+                    </control>
+                </control>
+            </control>
+        </definition>
+    </include>
+
+    <include name="Layout_DialogVideoVersions">
+        <param name="detailed">false</param>
+        <param name="selected">false</param>
+        <param name="misc">ListItem.IsSelected</param>
+        <param name="icon">$VAR[Image_Landscape]</param>
+        <definition>
+            <include content="Object_Control" condition="$PARAM[selected]">
+                <param name="control">image</param>
+                <include>Texture_Menu_Highlight_H</include>
+            </include>
+            <control type="group">
+                <left>40</left>
+                <right>40</right>
+                <control type="group">
+                    <include condition="!$PARAM[selected]" content="Object_IsSelected_Checkmark">
+                        <param name="selected">$PARAM[misc]</param>
+                        <param name="color_off">dialog_fg_30</param>
+                        <param name="color_on">dialog_fg_70</param>
+                    </include>
+                    <include condition="$PARAM[selected]" content="Object_IsSelected_Checkmark_Focus">
+                        <param name="selected">$PARAM[misc]</param>
+                    </include>
+                </control>
+                <control type="group">
+                    <control type="group">
+                        <left>0</left>
+                        <width>$PARAM[item_h]</width>
+                        <control type="image">
+                            <top>20</top>
+                            <bottom>20</bottom>
+                            <aspectratio align="left">keep</aspectratio>
+                            <texture background="true" diffuse="diffuse/square_w120_h120.png">$PARAM[icon]</texture>
+                        </control>
+                    </control>
+                    <control type="group">
+                        <left>$PARAM[item_h]</left>
+                        <control type="group">
+                            <left>40</left>
+                            <height>80</height>
+                            <centertop>50%</centertop>
+                            <right>80</right>
+                            <control type="label">
+                                <height>40</height>
+                                <top>4</top>
+                                <include condition="$PARAM[selected]">Color_SelectedText</include>
+                                <textcolor>dialog_fg_70</textcolor>
+                                <selectedcolor>dialog_fg_70</selectedcolor>
+                                <font>font_main_bold</font>
+                                <label>$INFO[ListItem.Label]</label>
+                            </control>
+                            <control type="label">
+                                <height>40</height>
+                                <font>font_tiny</font>
+                                <bottom>4</bottom>
+                                <include condition="$PARAM[selected]">Color_SelectedText</include>
+                                <textcolor>dialog_fg_70</textcolor>
+                                <selectedcolor>dialog_fg_70</selectedcolor>
+                                <label>$INFO[ListItem.Duration]$INFO[ListItem.VideoCodec,  ,]$INFO[ListItem.VideoResolution,  ,]$INFO[ListItem.VideoAspect,  ,]$INFO[ListItem.AudioCodec,  ,]$VAR[Label_ListItem_AudioChannels,  ,]</label>
+                            </control>
+                        </control>
                     </control>
                 </control>
             </control>
