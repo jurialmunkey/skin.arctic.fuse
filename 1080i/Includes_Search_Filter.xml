@@ -29,9 +29,7 @@
             </control>
 
             <include>Search_Filter_Categories</include>
-            <include content="Search_Filter_Submenu">
-                <param name="id">5099</param>
-            </include>
+            <include>Search_Filter_Submenu</include>
             <include>Search_Filter_Selector</include>
         </control>
 
@@ -454,46 +452,72 @@
     <include name="Search_Filter_Submenu">
         <control type="grouplist">
             <include>Search_View_Visible_OnEdit</include>
-            <visible>!Integer.IsEqual(Container($PARAM[id]).NumItems,0)</visible>
+            <visible>!Integer.IsEqual(Container(5099).NumItems,0)</visible>
             <visible>!String.IsEmpty(Control.GetLabel(9099).index(1)) | Skin.HasSetting(Search.EnableDiscover)</visible>
             <top>400</top>
-            <width>1280</width>
+            <width>1680</width>
             <orientation>horizontal</orientation>
             <itemgap>-20</itemgap>
-            <animation effect="slide" end="-40" time="400" tween="quadratic" reversible="false" condition="!Container($PARAM[id]).OnNext">Conditional</animation>
-            <animation effect="slide" end="40" time="400" tween="quadratic" reversible="false" condition="!Container($PARAM[id]).OnPrevious">Conditional</animation>
-            <control type="togglebutton">
-                <include>Texture_Highlight_ToggleButton_FakeFocus</include>
-                <usealttexture>Control.HasFocus($PARAM[id])</usealttexture>
-                <label>$INFO[Container($PARAM[id]).ListItem.Label]$INFO[Container($PARAM[id]).ListItem.Property(numitems), (,)]</label>
-                <altlabel>[COLOR=$VAR[ColorSelected]]$INFO[Container($PARAM[id]).ListItem.Label]$INFO[Container($PARAM[id]).ListItem.Property(numitems), (,)][/COLOR]</altlabel>
-                <font>font_mini</font>
-                <height>80</height>
-                <width>auto</width>
-                <textoffsetx>40</textoffsetx>
-                <textcolor>main_fg_30</textcolor>
-                <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0)</visible>
-            </control>
-            <include content="Search_Filter_Button">
-                <label>$INFO[Container($PARAM[id]).ListItem(1).Label]$INFO[Container($PARAM[id]).ListItem(1).Property(numitems), (,)]</label>
-                <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,1)</visible>
+            <include content="Search_Filter_ToggleButton">
+                <param name="pos">0</param>
             </include>
-            <include content="Search_Filter_Button">
-                <label>$INFO[Container($PARAM[id]).ListItem(2).Label]$INFO[Container($PARAM[id]).ListItem(2).Property(numitems), (,)]</label>
-                <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,2)</visible>
+            <include content="Search_Filter_ToggleButton">
+                <param name="pos">1</param>
             </include>
-            <include content="Search_Filter_Button">
-                <label>$INFO[Container($PARAM[id]).ListItem(3).Label]$INFO[Container($PARAM[id]).ListItem(3).Property(numitems), (,)]</label>
-                <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,3)</visible>
+            <include content="Search_Filter_ToggleButton">
+                <param name="pos">2</param>
             </include>
-            <include content="Search_Filter_Button">
-                <label>$INFO[Container($PARAM[id]).ListItem(4).Label]$INFO[Container($PARAM[id]).ListItem(4).Property(numitems), (,)]</label>
-                <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,4)</visible>
+            <include content="Search_Filter_ToggleButton">
+                <param name="pos">3</param>
             </include>
-            <include content="Search_Filter_Button">
-                <label>$INFO[Container($PARAM[id]).ListItem(5).Label]$INFO[Container($PARAM[id]).ListItem(5).Property(numitems), (,)]</label>
-                <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,5)</visible>
+            <include content="Search_Filter_ToggleButton">
+                <param name="pos">4</param>
             </include>
+            <include content="Search_Filter_ToggleButton">
+                <param name="pos">5</param>
+            </include>
+            <include content="Search_Filter_ToggleButton">
+                <param name="pos">6</param>
+            </include>
+            <include content="Search_Filter_ToggleButton">
+                <param name="pos">7</param>
+            </include>
+            <include content="Search_Filter_ToggleButton">
+                <param name="pos">8</param>
+            </include>
+            <include content="Search_Filter_ToggleButton">
+                <param name="pos">9</param>
+            </include>
+            <include content="Search_Filter_ToggleButton">
+                <param name="pos">10</param>
+            </include>
+            <include content="Search_Filter_ToggleButton">
+                <param name="pos">11</param>
+            </include>
+            <include content="Search_Filter_ToggleButton">
+                <param name="pos">12</param>
+            </include>
+            <include content="Search_Filter_ToggleButton">
+                <param name="pos">13</param>
+            </include>
+            <include content="Search_Filter_ToggleButton">
+                <param name="pos">14</param>
+            </include>
+        </control>
+    </include>
+
+    <include name="Search_Filter_ToggleButton">
+        <control type="togglebutton">
+            <include>Texture_Highlight_ToggleButton_FakeFocus</include>
+            <usealttexture>Control.HasFocus(5099) + String.IsEqual(Container(5099).ListItemAbsolute($PARAM[pos]).Property(guid),Container(5099).ListItem.Property(guid))</usealttexture>
+            <label>$INFO[Container(5099).ListItemAbsolute($PARAM[pos]).Label]</label>
+            <altlabel>[COLOR=$VAR[ColorSelected]]$INFO[Container(5099).ListItemAbsolute($PARAM[pos]).Label][/COLOR]</altlabel>
+            <font>font_mini</font>
+            <height>80</height>
+            <width>auto</width>
+            <textoffsetx>40</textoffsetx>
+            <textcolor>main_fg_30</textcolor>
+            <visible>Integer.IsGreater(Container(5099).NumItems,$PARAM[pos])</visible>
         </control>
     </include>
 
@@ -578,8 +602,12 @@
     <include name="Search_Filter_Selector">
         <control type="list" id="5099">
             <visible>!String.IsEmpty(Control.GetLabel(9099).index(1)) | Skin.HasSetting(Search.EnableDiscover)</visible>
-            <onleft>5099</onleft>
-            <onright>5099</onright>
+            <include content="Action_View_Movement_OnLeft">
+                <param name="id">5099</param>
+            </include>
+            <include content="Action_View_Movement_OnRight">
+                <param name="id">5099</param>
+            </include>
             <orientation>horizontal</orientation>
             <width>1</width>
             <height>1</height>
