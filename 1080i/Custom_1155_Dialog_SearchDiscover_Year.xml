@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window type="dialog" id="1155">
     <defaultcontrol always="true">8000</defaultcontrol>
+    <onunload condition="Window.IsVisible(videos)">RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onunload>
     <controls>
 
         <include content="Dialog_Overlay_Side">
             <param name="dialog_size">Dimension_DialogSideMenu</param>
             <include>Animation_Right_Delay</include>
             <include content="Dialog_Head">
-                <param name="label">$LOCALIZE[345]</param>
+                <param name="id">0</param>
+                <param name="label">$LOCALIZE[345]: $LOCALIZE[31117] &gt;=</param>
+                <visible>!String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog))</visible>
+            </include>
+            <include content="Dialog_Head">
+                <param name="id">0</param>
+                <param name="label">$LOCALIZE[345]: $LOCALIZE[31119] &lt;=</param>
+                <visible>String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog))</visible>
             </include>
             <include content="Dialog_Body">
                 <control type="group">
@@ -33,6 +41,7 @@
                             <onclick condition="!String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog))">ClearProperty(SearchDiscover.YearLow.Dialog,1105)</onclick>
                             <onclick condition="String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog))">SetProperty(SearchDiscover.YearHigh,$INFO[Container(8000).ListItem.Label],1105)</onclick>
                             <onclick condition="String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog))">Close</onclick>
+
                             <content>
                                 <include content="Search_Filter_YearItems">
                                     <param name="include">Search_Filter_DecadeItem</param>
@@ -56,7 +65,7 @@
                             <onclick condition="!String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog))">ClearProperty(SearchDiscover.YearLow.Dialog,1105)</onclick>
                             <onclick condition="String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog))">SetProperty(SearchDiscover.YearHigh,$INFO[Container(8001).ListItem.Label],1105)</onclick>
                             <onclick condition="String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog))">Close</onclick>
-                            <onclick>Close</onclick>
+
                             <content>
                                 <include content="Search_Filter_YearItems">
                                     <param name="include">Search_Filter_YearItem</param>

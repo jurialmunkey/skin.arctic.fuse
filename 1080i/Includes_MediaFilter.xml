@@ -20,234 +20,196 @@
 
     <include name="MediaFilter_Node_Filters">
         <control type="grouplist" id="9500">
-            <top>300</top>
+            <top>340</top>
             <left>160</left>
+            <width>1280</width>
             <orientation>horizontal</orientation>
+            <itemgap>-20</itemgap>
             <onup>9003</onup>
             <ondown>9600</ondown>
             <onback>68</onback>
-            <itemgap>-20</itemgap>
-            <control type="button" id="9508">
-                <visible>Window.IsVisible(MyMusicNav.xml)</visible>
-                <texturenofocus />
+            <include content="Action_View_Movement_OnLeft">
+                <param name="id">9500</param>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9501</param>
+                <label>$LOCALIZE[456]$INFO[Window.Property(MediaFilter.ContentType),: ,]</label>
                 <font>font_main_bold</font>
-                <label>Content$INFO[Window.Property(MediaFilter.ContentType),: ,]$INFO[Window.Property(MediaFilter.BaseDir.Name), (,)]</label>
-                <height>80</height>
-                <width>auto</width>
-                <textoffsetx>40</textoffsetx>
-                <textcolor>main_fg_30</textcolor>
-                <include>MediaFilter_Node_ClearAll</include>
-                <onfocus>SetProperty(MediaFilter.InfoLabel,BaseDir)</onfocus>
-                <onclick>SetProperty(MediaFilter.ContentType,Music)</onclick>
-                <onclick condition="!String.IsEqual(Window.Property(MediaFilter.BaseDir.Name),Artists)">SetProperty(MediaFilter.BaseDir,musicdb://artists/)</onclick>
-                <onclick condition="!String.IsEqual(Window.Property(MediaFilter.BaseDir.Name),Artists)">SetProperty(MediaFilter.BaseDir.Name,Artists)</onclick>
-                <onclick condition="String.IsEqual(Window.Property(MediaFilter.BaseDir.Name),Artists)">SetProperty(MediaFilter.BaseDir,musicdb://albums/)</onclick>
-                <onclick condition="String.IsEqual(Window.Property(MediaFilter.BaseDir.Name),Artists)">SetProperty(MediaFilter.BaseDir.Name,Albums)</onclick>
-
-                <onclick>ClearProperty(MediaFilter.Genre)</onclick>
-                <onclick>ClearProperty(MediaFilter.Studio)</onclick>
-                <onclick>ClearProperty(MediaFilter.Country)</onclick>
-                <onclick>ClearProperty(MediaFilter.MPAA)</onclick>
-                <onclick>ClearProperty(MediaFilter.Director)</onclick>
-                <onclick>ClearProperty(MediaFilter.Writer)</onclick>
-                <onclick>ClearProperty(MediaFilter.Artist)</onclick>
-                <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
-            </control>
-            <control type="button" id="9507">
-                <visible>Window.IsVisible(MyVideoNav.xml)</visible>
-                <texturenofocus />
-                <font>font_main_bold</font>
-                <label>Content$INFO[Window.Property(MediaFilter.ContentType),: ,]$INFO[Window.Property(MediaFilter.BaseDir.Name), (,)]</label>
-                <height>80</height>
-                <width>auto</width>
-                <textoffsetx>40</textoffsetx>
-                <textcolor>main_fg_30</textcolor>
-                <include>MediaFilter_Node_ClearAll</include>
-                <onfocus>SetProperty(MediaFilter.InfoLabel,BaseDir)</onfocus>
-                <onclick condition="!String.IsEqual(Window.Property(MediaFilter.ContentType),Movies)">SetProperty(MediaFilter.ContentType,Movies)</onclick>
-                <onclick condition="!String.IsEqual(Window.Property(MediaFilter.ContentType),Movies) + Library.HasContent(Movies)">SetProperty(MediaFilter.BaseDir,videodb://movies/titles)</onclick>
-                <onclick condition="!String.IsEqual(Window.Property(MediaFilter.ContentType),Movies) + Library.HasContent(Movies)">SetProperty(MediaFilter.BaseDir.Name,Library)</onclick>
-                <onclick condition="!String.IsEqual(Window.Property(MediaFilter.ContentType),Movies) + !Library.HasContent(Movies)">SetProperty(MediaFilter.BaseDir,plugin://plugin.video.themoviedb.helper/?info=trakt_trending&amp;tmdb_type=movie)</onclick>
-                <onclick condition="!String.IsEqual(Window.Property(MediaFilter.ContentType),Movies) + !Library.HasContent(Movies)">SetProperty(MediaFilter.BaseDir.Name,Trending)</onclick>
-
                 <onclick condition="String.IsEqual(Window.Property(MediaFilter.ContentType),Movies)">SetProperty(MediaFilter.ContentType,TV)</onclick>
-                <onclick condition="String.IsEqual(Window.Property(MediaFilter.ContentType),Movies) + Library.HasContent(TVShows)">SetProperty(MediaFilter.BaseDir,videodb://tvshows/titles)</onclick>
-                <onclick condition="String.IsEqual(Window.Property(MediaFilter.ContentType),Movies) + Library.HasContent(TVShows)">SetProperty(MediaFilter.BaseDir.Name,Library)</onclick>
                 <onclick condition="String.IsEqual(Window.Property(MediaFilter.ContentType),Movies) + !Library.HasContent(TVShows)">SetProperty(MediaFilter.BaseDir,plugin://plugin.video.themoviedb.helper/?info=trakt_trending&amp;tmdb_type=tv)</onclick>
-                <onclick condition="String.IsEqual(Window.Property(MediaFilter.ContentType),Movies) + !Library.HasContent(TVShows)">SetProperty(MediaFilter.BaseDir.Name,Trending)</onclick>
+                <onclick condition="String.IsEqual(Window.Property(MediaFilter.ContentType),Movies) + Library.HasContent(TVShows)">SetProperty(MediaFilter.BaseDir,videodb://tvshows/titles)</onclick>
+                <onclick condition="String.IsEqual(Window.Property(MediaFilter.ContentType),TV)">SetProperty(MediaFilter.ContentType,Movies)</onclick>
+                <onclick condition="String.IsEqual(Window.Property(MediaFilter.ContentType),TV) + !Library.HasContent(Movies)">SetProperty(MediaFilter.BaseDir,plugin://plugin.video.themoviedb.helper/?info=trakt_trending&amp;tmdb_type=movie)</onclick>
+                <onclick condition="String.IsEqual(Window.Property(MediaFilter.ContentType),TV) + Library.HasContent(Movies)">SetProperty(MediaFilter.BaseDir,videodb://movies/titles)</onclick>
+                <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
+                <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),Movies) | String.IsEqual(Window.Property(MediaFilter.ContentType),TV)</visible>
+            </include>
 
-                <onclick>ClearProperty(MediaFilter.Genre)</onclick>
-                <onclick>ClearProperty(MediaFilter.Studio)</onclick>
-                <onclick>ClearProperty(MediaFilter.Country)</onclick>
-                <onclick>ClearProperty(MediaFilter.MPAA)</onclick>
-                <onclick>ClearProperty(MediaFilter.Director)</onclick>
-                <onclick>ClearProperty(MediaFilter.Writer)</onclick>
-                <onclick>ClearProperty(MediaFilter.Artist)</onclick>
-
-                <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
-            </control>
-            <control type="button" id="9501">
-                <visible>!String.IsEmpty(Window.Property(MediaFilter.BaseDir))</visible>
-                <texturenofocus />
+            <!-- Library Discover -->
+            <include content="Search_Filter_Button">
+                <param name="id">9511</param>
+                <label>$LOCALIZE[515]$INFO[Window.Property(MediaFilter.Genre),: ,]</label>
                 <font>font_main_bold</font>
-                <label>Genre$INFO[Window.Property(MediaFilter.Genre),: ,]</label>
-                <height>80</height>
-                <width>auto</width>
-                <textoffsetx>40</textoffsetx>
-                <textcolor>main_fg_30</textcolor>
                 <include>MediaFilter_Node_ClearAll</include>
-                <onfocus>SetProperty(MediaFilter.InfoLabel,Genre)</onfocus>
-                <onclick>ClearProperty(MediaFilter.Genre)</onclick>
-                <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
-            </control>
-            <control type="button" id="9502">
-                <visible>Window.IsVisible(MyVideoNav.xml)</visible>
-                <visible>!String.IsEmpty(Window.Property(MediaFilter.BaseDir))</visible>
-                <texturenofocus />
+                <onclick condition="!String.IsEmpty(Window.Property(MediaFilter.Genre))">ClearProperty(MediaFilter.Genre)</onclick>
+                <onclick condition="!String.IsEmpty(Window.Property(MediaFilter.Genre))">RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
+                <onclick condition="String.IsEmpty(Window.Property(MediaFilter.Genre))">SetProperty(MediaFilter.InfoLabel,Genre)</onclick>
+                <onclick condition="String.IsEmpty(Window.Property(MediaFilter.Genre))">SetFocus(9701)</onclick>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9512</param>
+                <label>$LOCALIZE[572]$INFO[Window.Property(MediaFilter.Studio),: ,]</label>
                 <font>font_main_bold</font>
-                <label>Studio$INFO[Window.Property(MediaFilter.Studio),: ,]</label>
-                <height>80</height>
-                <width>auto</width>
-                <textoffsetx>40</textoffsetx>
-                <textcolor>main_fg_30</textcolor>
                 <include>MediaFilter_Node_ClearAll</include>
-                <onfocus>SetProperty(MediaFilter.InfoLabel,Studio)</onfocus>
-                <onclick>ClearProperty(MediaFilter.Studio)</onclick>
-                <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
-            </control>
-            <control type="button" id="9504">
-                <visible>Window.IsVisible(MyVideoNav.xml)</visible>
-                <visible>!String.IsEmpty(Window.Property(MediaFilter.BaseDir))</visible>
-                <texturenofocus />
-                <font>font_main_bold</font>
+                <onclick condition="!String.IsEmpty(Window.Property(MediaFilter.Studio))">ClearProperty(MediaFilter.Studio)</onclick>
+                <onclick condition="!String.IsEmpty(Window.Property(MediaFilter.Studio))">RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
+                <onclick condition="String.IsEmpty(Window.Property(MediaFilter.Studio))">SetProperty(MediaFilter.InfoLabel,Studio)</onclick>
+                <onclick condition="String.IsEmpty(Window.Property(MediaFilter.Studio))">SetFocus(9701)</onclick>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9513</param>
                 <label>MPAA$INFO[Window.Property(MediaFilter.MPAA),: ,]</label>
-                <height>80</height>
-                <width>auto</width>
-                <textoffsetx>40</textoffsetx>
-                <textcolor>main_fg_30</textcolor>
+                <font>font_main_bold</font>
                 <include>MediaFilter_Node_ClearAll</include>
-                <onfocus>SetProperty(MediaFilter.InfoLabel,MPAA)</onfocus>
-                <onclick>ClearProperty(MediaFilter.MPAA)</onclick>
-                <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
-            </control>
+                <onclick>SetProperty(MediaFilter.InfoLabel,MPAA)</onclick>
+                <onclick condition="!String.IsEmpty(Window.Property(MediaFilter.MPAA))">ClearProperty(MediaFilter.MPAA)</onclick>
+                <onclick condition="!String.IsEmpty(Window.Property(MediaFilter.MPAA))">RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
+                <onclick condition="String.IsEmpty(Window.Property(MediaFilter.MPAA))">SetProperty(MediaFilter.InfoLabel,MPAA)</onclick>
+                <onclick condition="String.IsEmpty(Window.Property(MediaFilter.MPAA))">SetFocus(9701)</onclick>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9514</param>
+                <label>$LOCALIZE[345]$INFO[Window(1105).Property(SearchDiscover.YearLow), &gt; ,]$INFO[Window(1105).Property(SearchDiscover.YearHigh), &lt; ,]</label>
+                <font>font_main_bold</font>
+                <onclick>SetProperty(SearchDiscover.YearLow.Dialog,1,1105)</onclick>
+                <onclick>ClearProperty(SearchDiscover.YearLow,1105)</onclick>
+                <onclick>ClearProperty(SearchDiscover.YearHigh,1105)</onclick>
+                <onclick condition="String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow)) + String.IsEmpty(Window(1105).Property(SearchDiscover.YearHigh))">ActivateWindow(1155)</onclick>
+                <onclick condition="!String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow)) | !String.IsEmpty(Window(1105).Property(SearchDiscover.YearHigh))">RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
+            </include>
         </control>
         <control type="grouplist" id="9600">
-            <top>360</top>
+            <top>400</top>
             <left>160</left>
-            <width>1080</width>
+            <width>1280</width>
             <orientation>horizontal</orientation>
             <onup>9500</onup>
             <onback>68</onback>
             <ondown>68</ondown>
-            <!-- <ondown>67</ondown> -->
+            <include content="Action_View_Movement_OnLeft">
+                <param name="id">9600</param>
+            </include>
             <itemgap>-20</itemgap>
-            <onleft>Control.Move(9701,-1)</onleft>
-            <onright>Control.Move(9701,1)</onright>
-            <animation effect="slide" end="-80" time="400" tween="quadratic" reversible="false" condition="!Container(9701).OnNext">Conditional</animation>
-            <animation effect="slide" end="80" time="400" tween="quadratic" reversible="false" condition="!Container(9701).OnPrevious">Conditional</animation>
-            <control type="button" id="9601">
-                <texturenofocus />
-                <font>font_mini</font>
-                <label>$INFO[Container(9701).ListItem.Label]</label>
-                <height>80</height>
-                <width>auto</width>
-                <textoffsetx>40</textoffsetx>
-                <textcolor>main_fg_30</textcolor>
-                <onclick condition="Integer.IsGreater(Container(9701).NumItems,1) + !String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)">SetProperty(MediaFilter.$INFO[Window.Property(MediaFilter.InfoLabel)],$INFO[Container(9701).ListItem.Label])</onclick>
-                <onclick condition="!Integer.IsGreater(Container(9701).NumItems,1) + !String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)">ClearProperty(MediaFilter.$INFO[Window.Property(MediaFilter.InfoLabel)])</onclick>
-
-                <onclick condition="String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)">SetProperty(MediaFilter.BaseDir.Name,$INFO[Container(9701).ListItem.Label])</onclick>
-                <onclick condition="String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)">SetProperty(MediaFilter.BaseDir,$INFO[Container(9701).ListItem.Property(path)])</onclick>
-                <onclick condition="String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)">ClearProperty(MediaFilter.Genre)</onclick>
-                <onclick condition="String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)">ClearProperty(MediaFilter.Studio)</onclick>
-                <onclick condition="String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)">ClearProperty(MediaFilter.Country)</onclick>
-                <onclick condition="String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)">ClearProperty(MediaFilter.MPAA)</onclick>
-                <onclick condition="String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)">ClearProperty(MediaFilter.Director)</onclick>
-                <onclick condition="String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)">ClearProperty(MediaFilter.Writer)</onclick>
-
-
+            <include content="Search_Filter_Button">
+                <param name="id">9601</param>
+                <label>Library</label>
+                <onclick>SetProperty(MediaFilter.BaseDir,videodb://movies/titles)</onclick>
                 <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
-            </control>
-            <control type="button" id="9602">
-                <texturenofocus />
-                <font>font_mini</font>
-                <left>0</left>
-                <width>20</width>
-                <texturefocus />
-                <texturenofocus />
-                <onfocus>SetFocus(9601)</onfocus>
-                <onfocus>Control.Move(9701,1)</onfocus>
-            </control>
-            <control type="button" id="9603">
-                <texturenofocus />
-                <font>font_mini</font>
-                <label>$INFO[Container(9701).ListItem(1).Label]</label>
-                <visible>Integer.IsGreater(Container(9701).NumItems,1)</visible>
-                <height>80</height>
-                <width>auto</width>
-                <textoffsetx>40</textoffsetx>
-                <textcolor>main_fg_30</textcolor>
-            </control>
-            <control type="button" id="9604">
-                <texturenofocus />
-                <font>font_mini</font>
-                <label>$INFO[Container(9701).ListItem(2).Label]</label>
-                <visible>Integer.IsGreater(Container(9701).NumItems,2)</visible>
-                <height>80</height>
-                <width>auto</width>
-                <textoffsetx>40</textoffsetx>
-                <textcolor>main_fg_30</textcolor>
-            </control>
-            <control type="button" id="9605">
-                <texturenofocus />
-                <font>font_mini</font>
-                <label>$INFO[Container(9701).ListItem(3).Label]</label>
-                <visible>Integer.IsGreater(Container(9701).NumItems,3)</visible>
-                <height>80</height>
-                <width>auto</width>
-                <textoffsetx>40</textoffsetx>
-                <textcolor>main_fg_30</textcolor>
-            </control>
-            <control type="button" id="9606">
-                <texturenofocus />
-                <font>font_mini</font>
-                <label>$INFO[Container(9701).ListItem(4).Label]</label>
-                <visible>Integer.IsGreater(Container(9701).NumItems,4)</visible>
-                <height>80</height>
-                <width>auto</width>
-                <textoffsetx>40</textoffsetx>
-                <textcolor>main_fg_30</textcolor>
-            </control>
-            <control type="button" id="9607">
-                <texturenofocus />
-                <font>font_mini</font>
-                <label>$INFO[Container(9701).ListItem(5).Label]</label>
-                <visible>Integer.IsGreater(Container(9701).NumItems,5)</visible>
-                <height>80</height>
-                <width>auto</width>
-                <textoffsetx>40</textoffsetx>
-                <textcolor>main_fg_30</textcolor>
-            </control>
-            <control type="button" id="9608">
-                <texturenofocus />
-                <font>font_mini</font>
-                <label>$INFO[Container(9701).ListItem(6).Label]</label>
-                <visible>Integer.IsGreater(Container(9701).NumItems,6)</visible>
-                <height>80</height>
-                <width>auto</width>
-                <textoffsetx>40</textoffsetx>
-                <textcolor>main_fg_30</textcolor>
-            </control>
-            <control type="button" id="9609">
-                <texturenofocus />
-                <font>font_mini</font>
-                <label>$INFO[Container(9701).ListItem(7).Label]</label>
-                <visible>Integer.IsGreater(Container(9701).NumItems,7)</visible>
-                <height>80</height>
-                <width>auto</width>
-                <textoffsetx>40</textoffsetx>
-                <textcolor>main_fg_30</textcolor>
-            </control>
+                <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),Movies)</visible>
+                <visible>Library.HasContent(Movies)</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9602</param>
+                <label>Library</label>
+                <onclick>SetProperty(MediaFilter.BaseDir,videodb://tvshows/titles)</onclick>
+                <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
+                <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),TV)</visible>
+                <visible>Library.HasContent(TVShows)</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9603</param>
+                <label>Artists</label>
+                <onclick>SetProperty(MediaFilter.BaseDir,musicdb://artists)</onclick>
+                <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
+                <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),Music)</visible>
+                <visible>Library.HasContent(Music)</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9604</param>
+                <label>Albums</label>
+                <onclick>SetProperty(MediaFilter.BaseDir,musicdb://albums)</onclick>
+                <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
+                <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),Music)</visible>
+                <visible>Library.HasContent(Music)</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9605</param>
+                <label>Watchlist</label>
+                <onclick>SetProperty(MediaFilter.BaseDir,plugin://plugin.video.themoviedb.helper/?info=trakt_watchlist&amp;tmdb_type=movie)</onclick>
+                <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
+                <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),Movies)</visible>
+                <visible>!String.IsEmpty(Window(Home).Property(TMDbHelper.TraktIsAuth))</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9606</param>
+                <label>Watchlist</label>
+                <onclick>SetProperty(MediaFilter.BaseDir,plugin://plugin.video.themoviedb.helper/?info=trakt_watchlist&amp;tmdb_type=tv)</onclick>
+                <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
+                <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),TV)</visible>
+                <visible>!String.IsEmpty(Window(Home).Property(TMDbHelper.TraktIsAuth))</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9607</param>
+                <label>On Deck</label>
+                <onclick>SetProperty(MediaFilter.BaseDir,plugin://plugin.video.themoviedb.helper/?info=trakt_towatch&amp;tmdb_type=movie)</onclick>
+                <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
+                <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),Movies)</visible>
+                <visible>!String.IsEmpty(Window(Home).Property(TMDbHelper.TraktIsAuth))</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9608</param>
+                <label>On Deck</label>
+                <onclick>SetProperty(MediaFilter.BaseDir,plugin://plugin.video.themoviedb.helper/?info=trakt_towatch&amp;tmdb_type=tv)</onclick>
+                <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
+                <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),TV)</visible>
+                <visible>!String.IsEmpty(Window(Home).Property(TMDbHelper.TraktIsAuth))</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9609</param>
+                <label>Recommendations</label>
+                <onclick>SetProperty(MediaFilter.BaseDir,plugin://plugin.video.themoviedb.helper/?info=trakt_recommendations&amp;tmdb_type=movie)</onclick>
+                <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
+                <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),Movies)</visible>
+                <visible>!String.IsEmpty(Window(Home).Property(TMDbHelper.TraktIsAuth))</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9610</param>
+                <label>Recommendations</label>
+                <onclick>SetProperty(MediaFilter.BaseDir,plugin://plugin.video.themoviedb.helper/?info=trakt_recommendations&amp;tmdb_type=tv)</onclick>
+                <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
+                <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),TV)</visible>
+                <visible>!String.IsEmpty(Window(Home).Property(TMDbHelper.TraktIsAuth))</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9611</param>
+                <label>Trending</label>
+                <onclick>SetProperty(MediaFilter.BaseDir,plugin://plugin.video.themoviedb.helper/?info=trakt_trending&amp;tmdb_type=movie)</onclick>
+                <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
+                <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),Movies)</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9612</param>
+                <label>Trending</label>
+                <onclick>SetProperty(MediaFilter.BaseDir,plugin://plugin.video.themoviedb.helper/?info=trakt_trending&amp;tmdb_type=tv)</onclick>
+                <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
+                <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),TV)</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9613</param>
+                <label>History</label>
+                <onclick>SetProperty(MediaFilter.BaseDir,plugin://plugin.video.themoviedb.helper/?info=trakt_history&amp;tmdb_type=movie)</onclick>
+                <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
+                <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),Movies)</visible>
+                <visible>!String.IsEmpty(Window(Home).Property(TMDbHelper.TraktIsAuth))</visible>
+            </include>
+            <include content="Search_Filter_Button">
+                <param name="id">9614</param>
+                <label>History</label>
+                <onclick>SetProperty(MediaFilter.BaseDir,plugin://plugin.video.themoviedb.helper/?info=trakt_history&amp;tmdb_type=tv)</onclick>
+                <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
+                <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),TV)</visible>
+                <visible>!String.IsEmpty(Window(Home).Property(TMDbHelper.TraktIsAuth))</visible>
+            </include>
         </control>
     </include>
 
@@ -255,9 +217,9 @@
         <include content="Dialog_Overlay_Side">
             <param name="dialog_size">Dimension_DialogSideMenu</param>
             <include>Animation_Right_Delay</include>
-            <right>-1920</right>
+            <visible allowhiddenfocus="true">Control.HasFocus(9701)</visible>
             <include content="Dialog_Head">
-                <param name="label"> </param>
+                <param name="label">$INFO[Window.Property(MediaFilter.InfoLabel)]</param>
             </include>
             <include content="Dialog_Body">
                 <include content="Dialog_Body_Group">
@@ -265,107 +227,15 @@
                         <param name="id">9701</param>
                         <param name="textcolor">dialog_fg</param>
 
-                        <content>
-                            <item>
-                                <label>Library</label>
-                                <property name="path">videodb://movies/titles</property>
-                                <visible>String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)</visible>
-                                <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),Movies)</visible>
-                                <visible>Library.HasContent(Movies)</visible>
-                            </item>
-                            <item>
-                                <label>Library</label>
-                                <property name="path">videodb://tvshows/titles</property>
-                                <visible>String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)</visible>
-                                <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),TV)</visible>
-                                <visible>Library.HasContent(TVShows)</visible>
-                            </item>
-                            <item>
-                                <label>Artists</label>
-                                <property name="path">musicdb://artists</property>
-                                <visible>String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)</visible>
-                                <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),Music)</visible>
-                                <visible>Library.HasContent(Music)</visible>
-                            </item>
-                            <item>
-                                <label>Albums</label>
-                                <property name="path">musicdb://albums</property>
-                                <visible>String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)</visible>
-                                <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),Music)</visible>
-                                <visible>Library.HasContent(Music)</visible>
-                            </item>
-                            <item>
-                                <label>Watchlist</label>
-                                <property name="path">plugin://plugin.video.themoviedb.helper/?info=trakt_watchlist&amp;tmdb_type=movie</property>
-                                <visible>String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)</visible>
-                                <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),Movies)</visible>
-                                <visible>!String.IsEmpty(Window(Home).Property(TMDbHelper.TraktIsAuth))</visible>
-                            </item>
-                            <item>
-                                <label>Watchlist</label>
-                                <property name="path">plugin://plugin.video.themoviedb.helper/?info=trakt_watchlist&amp;tmdb_type=tv</property>
-                                <visible>String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)</visible>
-                                <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),TV)</visible>
-                                <visible>!String.IsEmpty(Window(Home).Property(TMDbHelper.TraktIsAuth))</visible>
-                            </item>
-                            <item>
-                                <label>On Deck</label>
-                                <property name="path">plugin://plugin.video.themoviedb.helper/?info=trakt_towatch&amp;tmdb_type=movie</property>
-                                <visible>String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)</visible>
-                                <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),Movies)</visible>
-                                <visible>!String.IsEmpty(Window(Home).Property(TMDbHelper.TraktIsAuth))</visible>
-                            </item>
-                            <item>
-                                <label>On Deck</label>
-                                <property name="path">plugin://plugin.video.themoviedb.helper/?info=trakt_towatch&amp;tmdb_type=tv</property>
-                                <visible>String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)</visible>
-                                <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),TV)</visible>
-                                <visible>!String.IsEmpty(Window(Home).Property(TMDbHelper.TraktIsAuth))</visible>
-                            </item>
-                            <item>
-                                <label>Recommendations</label>
-                                <property name="path">plugin://plugin.video.themoviedb.helper/?info=trakt_recommendations&amp;tmdb_type=movie</property>
-                                <visible>String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)</visible>
-                                <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),Movies)</visible>
-                                <visible>!String.IsEmpty(Window(Home).Property(TMDbHelper.TraktIsAuth))</visible>
-                            </item>
-                            <item>
-                                <label>Recommendations</label>
-                                <property name="path">plugin://plugin.video.themoviedb.helper/?info=trakt_recommendations&amp;tmdb_type=tv</property>
-                                <visible>String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)</visible>
-                                <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),TV)</visible>
-                                <visible>!String.IsEmpty(Window(Home).Property(TMDbHelper.TraktIsAuth))</visible>
-                            </item>
-                            <item>
-                                <label>Trending</label>
-                                <property name="path">plugin://plugin.video.themoviedb.helper/?info=trakt_trending&amp;tmdb_type=movie</property>
-                                <visible>String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)</visible>
-                                <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),Movies)</visible>
-                            </item>
-                            <item>
-                                <label>Trending</label>
-                                <property name="path">plugin://plugin.video.themoviedb.helper/?info=trakt_trending&amp;tmdb_type=tv</property>
-                                <visible>String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)</visible>
-                                <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),TV)</visible>
-                            </item>
-                            <item>
-                                <label>History</label>
-                                <property name="path">plugin://plugin.video.themoviedb.helper/?info=trakt_history&amp;tmdb_type=movie</property>
-                                <visible>String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)</visible>
-                                <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),Movies)</visible>
-                                <visible>!String.IsEmpty(Window(Home).Property(TMDbHelper.TraktIsAuth))</visible>
-                            </item>
-                            <item>
-                                <label>History</label>
-                                <property name="path">plugin://plugin.video.themoviedb.helper/?info=trakt_history&amp;tmdb_type=tv</property>
-                                <visible>String.IsEqual(Window.Property(MediaFilter.InfoLabel),BaseDir)</visible>
-                                <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),TV)</visible>
-                                <visible>!String.IsEmpty(Window(Home).Property(TMDbHelper.TraktIsAuth))</visible>
-                            </item>
-                        </content>
+                        <param name="misc">[[String.IsEqual(Window.Property(MediaFilter.InfoLabel),Genre) + !String.IsEmpty(Window.Property(MediaFilter.Genre)) + String.IsEqual(Window.Property(MediaFilter.Genre),ListItem.Label)] | [String.IsEqual(Window.Property(MediaFilter.InfoLabel),Studio) + !String.IsEmpty(Window.Property(MediaFilter.Studio)) + String.IsEqual(Window.Property(MediaFilter.Studio),ListItem.Label)] | [String.IsEqual(Window.Property(MediaFilter.InfoLabel),MPAA) + !String.IsEmpty(Window.Property(MediaFilter.MPAA)) + String.IsEqual(Window.Property(MediaFilter.MPAA),ListItem.Label)]]</param>
 
+                        <onleft>9500</onleft>
+                        <onright>9500</onright>
+                        <onback>9500</onback>
 
                         <content sortby="label">$VAR[Path_MediaFilter_Node]</content>
+                        <onclick>SetProperty(MediaFilter.$INFO[Window.Property(MediaFilter.InfoLabel)],$INFO[Container(9701).ListItem.Label])</onclick>
+                        <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
                     </include>
                 </include>
             </include>
@@ -488,7 +358,7 @@
                     <param name="vertical">false</param>
                     <param name="id">07</param>
                     <param name="label">$VAR[Label_SortMethod]</param>
-                    <param name="icon">special://skin/extras/icons/sort.png</param>
+                    <param name="icon">special://skin/extras/icons/arrow-updown-short-wide.png</param>
                     <param name="visible">Window.IsMedia</param>
                     <param name="textcolor">main_fg</param>
                     <param name="nf_opacity">30</param>
