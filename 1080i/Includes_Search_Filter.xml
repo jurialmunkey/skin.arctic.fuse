@@ -6,6 +6,7 @@
             <left>160</left>
             <width>720</width>
             <visible>!$EXP[Exp_InfoDialogs]</visible>
+            <include>Animation_Group_Bumper</include>
 
             <!-- Top Row -->
             <control type="group">
@@ -47,15 +48,17 @@
             <height>view_pad</height>
             <textoffsetx>40</textoffsetx>
             <align>left</align>
-            <!-- TO PREVIOUS MENU -->
-            <onup>PreviousMenu</onup>
+            <onup>SetProperty(List.ViewContainer,9099)</onup>
+            <onup>333</onup>
             <!-- TO KEYBOARD -->
             <ondown>SetProperty(SearchTerm,$INFO[Control.GetLabel(9099).index(1)])</ondown>
             <ondown>9002</ondown>
-            <!-- TO SEARCH ICON -->
-            <onleft>ClearProperty(List.ViewContainer)</onleft>
-            <onleft>SetProperty(SearchTerm,$INFO[Control.GetLabel(9099).index(1)])</onleft>
-            <onleft>308</onleft>
+
+            <include content="Action_View_Movement_OnLeft">
+                <param name="id">9099</param>
+                <param name="onbump">True</param>
+            </include>
+
             <!-- TO OPTIONS -->
             <onright>SetProperty(SearchTerm,$INFO[Control.GetLabel(9099).index(1)])</onright>
             <onright>9000</onright>
@@ -75,13 +78,20 @@
     <include name="Search_Filter_Mode">
         <control type="grouplist" id="9000">
             <itemgap>0</itemgap>
-            <align>right</align>
-            <right>-520</right>
+            <align>left</align>
             <centertop>50%</centertop>
             <orientation>horizontal</orientation>
             <height>160</height>
             <onleft>9099</onleft>
+            <left>700</left>
+            <right>-700</right>
+            <include content="Action_View_Movement_OnRight">
+                <param name="id">9000</param>
+                <param name="onbump">True</param>
+            </include>
             <ondown>9500</ondown>
+            <onup>SetProperty(List.ViewContainer,9000)</onup>
+            <onup>333</onup>
             <include>Search_View_Visible_OnEdit</include>
             <include content="Dialog_Side_Button">
                 <param name="vertical">false</param>
@@ -150,9 +160,6 @@
                 <onclick>Skin.Reset(Search.EnableDiscover)</onclick>
                 <onclick>Skin.Reset(Search.LibraryDiscover)</onclick>
             </include>
-            <control type="group">
-                <width>100</width>
-            </control>
         </control>
     </include>
 
@@ -338,6 +345,11 @@
             <itemgap>-20</itemgap>
             <include content="Action_View_Movement_OnLeft">
                 <param name="id">9500</param>
+                <param name="onbump">True</param>
+            </include>
+            <include content="Action_View_Movement_OnRight">
+                <param name="id">9500</param>
+                <param name="onbump">True</param>
             </include>
             <onup>9098</onup>
             <ondown>5099</ondown>
@@ -616,9 +628,11 @@
             <visible>!String.IsEmpty(Control.GetLabel(9099).index(1)) | Skin.HasSetting(Search.EnableDiscover)</visible>
             <include content="Action_View_Movement_OnLeft">
                 <param name="id">5099</param>
+                <param name="onbump">True</param>
             </include>
             <include content="Action_View_Movement_OnRight">
                 <param name="id">5099</param>
+                <param name="onbump">True</param>
             </include>
             <orientation>horizontal</orientation>
             <width>1</width>
@@ -710,7 +724,7 @@
         <param name="ondown">9098</param>
         <param name="rowone">9002</param>
         <param name="rowtwo">9003</param>
-        <param name="onback">303</param>
+        <param name="onback">6000</param>
         <definition>
             <!-- First Row -->
             <control type="grouplist" id="$PARAM[rowone]">
@@ -718,6 +732,16 @@
                 <itemgap>0</itemgap>
                 <height>view_pad</height>
                 <onback>$PARAM[onback]</onback>
+
+                <include content="Action_View_Movement_OnLeft">
+                    <param name="id">$PARAM[rowone]</param>
+                    <param name="onbump">True</param>
+                </include>
+                <include content="Action_View_Movement_OnRight">
+                    <param name="id">$PARAM[rowone]</param>
+                    <param name="onbump">True</param>
+                </include>
+
                 <include content="Search_Filter_Letter">
                     <param name="letter">a</param>
                     <param name="id">1</param>
@@ -855,6 +879,16 @@
                 <orientation>horizontal</orientation>
                 <itemgap>0</itemgap>
                 <onback>$PARAM[onback]</onback>
+
+                <include content="Action_View_Movement_OnLeft">
+                    <param name="id">$PARAM[rowtwo]</param>
+                    <param name="onbump">True</param>
+                </include>
+                <include content="Action_View_Movement_OnRight">
+                    <param name="id">$PARAM[rowtwo]</param>
+                    <param name="onbump">True</param>
+                </include>
+
                 <include content="Search_Filter_Letter">
                     <param name="letter">q</param>
                     <param name="id">1</param>
@@ -953,7 +987,7 @@
                 </include>
                 <include content="Search_Filter_Letter">
                     <visible>false</visible>
-                    <param name="letter">ac</param>
+                    <param name="letter">a</param>
                     <param name="id">3</param>
                     <param name="groupid">4</param>
                     <param name="grouponup">2</param>
@@ -962,7 +996,7 @@
                 </include>
                 <include content="Search_Filter_Letter">
                     <visible>false</visible>
-                    <param name="letter">aa</param>
+                    <param name="letter">a</param>
                     <param name="id">4</param>
                     <param name="groupid">4</param>
                     <param name="grouponup">2</param>
@@ -971,7 +1005,7 @@
                 </include>
                 <include content="Search_Filter_Letter">
                     <visible>false</visible>
-                    <param name="letter">ab</param>
+                    <param name="letter">a</param>
                     <param name="id">5</param>
                     <param name="groupid">4</param>
                     <param name="grouponup">2</param>
@@ -980,7 +1014,7 @@
                 </include>
                 <include content="Search_Filter_Letter">
                     <visible>false</visible>
-                    <param name="letter">ac</param>
+                    <param name="letter">a</param>
                     <param name="id">6</param>
                     <param name="groupid">4</param>
                     <param name="grouponup">2</param>

@@ -1,39 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window type="dialog" id="1170">
-    <defaultcontrol always="true">7000</defaultcontrol>
-    <!-- <defaultcontrol always="true">7021</defaultcontrol>
-    <onload>AlarmClock(Refocus,SetFocus(7021),00:00,silent)</onload> -->
+    <defaultcontrol always="true">8000</defaultcontrol>
+    <onload>SetFocus(8000,0,absolute)</onload>
     <include>Action_ButtonMenu_Onload</include>
     <controls>
 
         <include content="Dialog_Overlay_Side">
             <param name="dialog_size">Dimension_DialogSideMenu</param>
-            <param name="flipx">false</param>
-            <param name="flipside">false</param>
-            <include>Animation_Left</include>
-            <left>0</left>
+            <include>Animation_Right_Delay</include>
             <include content="Dialog_Head">
                 <param name="label">$VAR[Label_ProfileName]</param>
-                <left>view_side</left>
-                <right>view_pad</right>
+                <param name="label">$LOCALIZE[33061]</param>
             </include>
             <include content="Dialog_Body">
 
                 <include content="Dialog_Body_Group">
                     <param name="id">7000</param>
 
-                    <left>20</left>
-                    <right>20</right>
+                    <include content="ButtonMenu_Layout" condition="Skin.String(OptionsTiles.Layout,$NUMBER[2])">
+                        <param name="layout_include">ButtonMenu_Layout_Two</param>
+                    </include>
+                    <include content="ButtonMenu_Layout" condition="Skin.String(OptionsTiles.Layout,$NUMBER[3])">
+                        <param name="layout_include">ButtonMenu_Layout_Three</param>
+                    </include>
+                    <include content="ButtonMenu_Layout" condition="Skin.String(OptionsTiles.Layout,$NUMBER[4])">
+                        <param name="layout_include">ButtonMenu_Layout_Four</param>
+                    </include>
+
+                    <control type="image">
+                        <top>300</top>
+                        <left>20</left>
+                        <right>20</right>
+                        <height>1</height>
+                        <texture colordiffuse="dialog_fg_12">common/white.png</texture>
+                    </control>
 
                     <include content="List_DialogSelect">
                         <param name="id">8000</param>
                         <param name="textcolor">dialog_fg</param>
                         <param name="itemlayout_include">Layout_MenuList</param>
+                        <top>320</top>
                         <bottom>0</bottom>
                         <orientation>vertical</orientation>
-                        <!-- <onleft>9000</onleft> -->
                         <onleft>Close</onleft>
-                        <onright>Close</onright>
+                        <onright>9000</onright>
+                        <onup>7020</onup>
+                        <ondown>7010</ondown>
                         <onclick condition="Skin.HasSetting(KioskMode.HubConfigurationUnlocked)">Close</onclick>
                         <include content="Action_SkinVariables_ShortcutList_Onclick" condition="Skin.HasSetting(KioskMode.HubConfigurationUnlocked)">
                             <param name="id">8000</param>
@@ -43,6 +55,7 @@
                                 <label>$LOCALIZE[137]</label>
                                 <icon>special://skin/extras/icons/search.png</icon>
                                 <property name="path">ActivateWindow(1105)</property>
+                                <property name="expression">search</property>
                                 <onclick>Close</onclick>
                                 <onclick>ActivateWindow(1105)</onclick>
                             </item>
@@ -50,31 +63,22 @@
                         <include content="Home_Menu_Content">
                             <param name="condition">[True]</param>
                         </include>
-                        <content>
-                            <item>
-                                <label>$LOCALIZE[33063]</label>
-                                <icon>special://skin/extras/icons/bars.png</icon>
-                                <property name="path">ActivateWindow(shutdownmenu)</property>
-                                <onclick>Close</onclick>
-                                <onclick>ActivateWindow(shutdownmenu)</onclick>
-                            </item>
-                        </content>
                     </include>
                 </include>
 
 
-                <!-- <include content="Dialog_Side_Grouplist">
+                <include content="Dialog_Side_Grouplist">
                     <param name="id">9000</param>
-                    <onleft>Close</onleft>
-                    <onright>7000</onright>
-                    <left>-20</left>
+                    <onright>Close</onright>
+                    <onleft>7000</onleft>
                     <include content="Dialog_Side_Button">
                         <param name="id">01</param>
                         <param name="label">$LOCALIZE[15067]</param>
                         <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
                         <onclick>Close</onclick>
                     </include>
-                </include> -->
+                    <include>skinvariables-powersidemenu-staticitems</include>
+                </include>
             </include>
         </include>
 
