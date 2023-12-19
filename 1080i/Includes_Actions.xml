@@ -294,7 +294,7 @@
         <onright condition="$PARAM[condition]">SetFocus(4000)</onright>
     </include>
 
-    <include name="Action_Info_Cast_OnClick">
+    <include name="Action_Info_Recommendations_OnClick">
         <onclick>SetProperty(Item_Title,$VAR[Label_Title],1121)</onclick>
         <onclick>SetProperty(Item_Query,$VAR[Path_Param_Query],1121)</onclick>
         <onclick>SetProperty(Item_Type,$VAR[Path_Param_Type],1121)</onclick>
@@ -302,10 +302,19 @@
 
         <onclick>SetProperty(Genre_Title,$INFO[Container(99950).ListItem.Property(Genre.1.Name)]$INFO[Container(99950).ListItem.Property(Genre.2.Name), / ,]$INFO[Container(99950).ListItem.Property(Genre.3.Name), / ,],1121)</onclick>
         <onclick>SetProperty(Genre_Query,$INFO[Container(99950).ListItem.Property(Genre.1.TMDB_ID),&amp;with_separator=AND&amp;with_id=True&amp;with_genres=,]$INFO[Container(99950).ListItem.Property(Genre.2.TMDB_ID), / ,]$INFO[Container(99950).ListItem.Property(Genre.3.TMDB_ID), / ,],1121)</onclick>
-
         <onclick>SetFocus(7001)</onclick>
         <onclick>ActivateWindow(1121)</onclick>
         <onclick>SetFocus(4000)</onclick>
+    </include>
+
+    <include name="Action_Info_Recommendations_OnDown">
+        <ondown>SetProperty(Item_Title,$VAR[Label_Title],1181)</ondown>
+        <ondown>SetProperty(Item_Query,$VAR[Path_Param_Query],1181)</ondown>
+        <ondown>SetProperty(Item_Type,$VAR[Path_Param_Type],1181)</ondown>
+        <ondown>SetProperty(Item_Year,$INFO[ListItem.Year],1181)</ondown>
+        <ondown>SetProperty(Genre_Title,$INFO[Container(99950).ListItem.Property(Genre.1.Name)]$INFO[Container(99950).ListItem.Property(Genre.2.Name), / ,]$INFO[Container(99950).ListItem.Property(Genre.3.Name), / ,],1181)</ondown>
+        <ondown>SetProperty(Genre_Query,$INFO[Container(99950).ListItem.Property(Genre.1.TMDB_ID),&amp;with_separator=AND&amp;with_id=True&amp;with_genres=,]$INFO[Container(99950).ListItem.Property(Genre.2.TMDB_ID), / ,]$INFO[Container(99950).ListItem.Property(Genre.3.TMDB_ID), / ,],1181)</ondown>
+        <ondown>ActivateWindow(1181)</ondown>
     </include>
 
     <include name="Action_View_Movement_OnUp">
@@ -320,7 +329,8 @@
     </include>
 
     <include name="Action_View_Movement_OnDown">
-        <!-- <ondown>$VAR[Action_Var_ToMediaFilter]</ondown> -->
+        <!-- <ondown>65</ondown> -->
+        <!-- <include>Action_Info_Recommendations_OnDown</include> -->
         <ondown>$VAR[Action_Var_ToScrollBar]</ondown>
         <!-- <ondown>SetProperty(View.WallSwitchRow,1)</ondown> -->
         <!-- <ondown condition="$EXP[Exp_FilterWall_IsEnabled] + $EXP[Exp_FilterWall_IsViewtype]">$VAR[Action_Var_ToWallView]</ondown>
@@ -435,7 +445,7 @@
     </variable>
 
     <variable name="Action_Var_ToScrollBar">
-        <value condition="$EXP[Exp_AlphabetTypes_Only] + Skin.HasSetting(EnableAlphabetStrip)">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=65,clear_prop_one=Null,clear_prop_two=Null,preaction=ClearProperty(View.WallSwitchPosition))</value>
+        <value condition="$EXP[Exp_AlphabetTypes_Only] + !Skin.HasSetting(DisableAlphabetStrip)">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=65,clear_prop_one=Null,clear_prop_two=Null,preaction=ClearProperty(View.WallSwitchPosition))</value>
         <value>Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=64,clear_prop_one=Null,clear_prop_two=Null,preaction=ClearProperty(View.WallSwitchPosition))</value>
     </variable>
 
