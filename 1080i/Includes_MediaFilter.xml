@@ -4,6 +4,8 @@
     <include name="MediaFilter_Node_ClearAll">
         <!-- <onfocus condition="!String.StartsWith(Container.FolderPath,plugin://script.skinvariables/?info=get_filter_dir)">ClearProperty(MediaFilter.BaseDir)</onfocus> -->
 
+        <onfocus>ClearProperty(MediaFilter.InfoLabel)</onfocus>
+
         <onfocus condition="!String.StartsWith(Container.FolderPath,plugin://script.skinvariables/?info=get_filter_dir) + [Container.Content(movies) | Container.Content(tvshows) | Container.Content(albums) | Container.Content(artists)]">SetProperty(MediaFilter.BaseDir.Name,$VAR[Label_Section_Main])</onfocus>
         <onfocus condition="!String.StartsWith(Container.FolderPath,plugin://script.skinvariables/?info=get_filter_dir) + [Container.Content(movies) | Container.Content(tvshows) | Container.Content(albums) | Container.Content(artists)]">SetProperty(MediaFilter.BaseDir,$INFO[Container.FolderPath])</onfocus>
         <onfocus condition="!String.StartsWith(Container.FolderPath,plugin://script.skinvariables/?info=get_filter_dir) + ![Container.Content(movies) | Container.Content(tvshows) | Container.Content(albums) | Container.Content(artists)]">ClearProperty(MediaFilter.BaseDir.Name)</onfocus>
@@ -35,12 +37,23 @@
                 <param name="id">9501</param>
                 <label>$LOCALIZE[456]$INFO[Window.Property(MediaFilter.ContentType),: ,]</label>
                 <font>font_main_bold</font>
+
                 <onclick condition="String.IsEqual(Window.Property(MediaFilter.ContentType),Movies)">SetProperty(MediaFilter.ContentType,TV)</onclick>
+
                 <onclick condition="String.IsEqual(Window.Property(MediaFilter.ContentType),Movies) + !Library.HasContent(TVShows)">SetProperty(MediaFilter.BaseDir,plugin://plugin.video.themoviedb.helper/?info=trakt_trending&amp;tmdb_type=tv)</onclick>
+                <onclick condition="String.IsEqual(Window.Property(MediaFilter.ContentType),Movies) + !Library.HasContent(TVShows)">SetProperty(MediaFilter.BaseDir.Name,$LOCALIZE[31128])</onclick>
+
                 <onclick condition="String.IsEqual(Window.Property(MediaFilter.ContentType),Movies) + Library.HasContent(TVShows)">SetProperty(MediaFilter.BaseDir,videodb://tvshows/titles)</onclick>
+                <onclick condition="String.IsEqual(Window.Property(MediaFilter.ContentType),Movies) + Library.HasContent(TVShows)">SetProperty(MediaFilter.BaseDir.Name,$LOCALIZE[10024])</onclick>
+
                 <onclick condition="String.IsEqual(Window.Property(MediaFilter.ContentType),TV)">SetProperty(MediaFilter.ContentType,Movies)</onclick>
+
                 <onclick condition="String.IsEqual(Window.Property(MediaFilter.ContentType),TV) + !Library.HasContent(Movies)">SetProperty(MediaFilter.BaseDir,plugin://plugin.video.themoviedb.helper/?info=trakt_trending&amp;tmdb_type=movie)</onclick>
+                <onclick condition="String.IsEqual(Window.Property(MediaFilter.ContentType),TV) + !Library.HasContent(Movies)">SetProperty(MediaFilter.BaseDir.Name,$LOCALIZE[31128])</onclick>
+
                 <onclick condition="String.IsEqual(Window.Property(MediaFilter.ContentType),TV) + Library.HasContent(Movies)">SetProperty(MediaFilter.BaseDir,videodb://movies/titles)</onclick>
+                <onclick condition="String.IsEqual(Window.Property(MediaFilter.ContentType),TV) + Library.HasContent(Movies)">SetProperty(MediaFilter.BaseDir.Name,$LOCALIZE[10024])</onclick>
+
                 <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
                 <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),Movies) | String.IsEqual(Window.Property(MediaFilter.ContentType),TV)</visible>
             </include>
@@ -71,7 +84,6 @@
                 <label>MPAA$INFO[Window.Property(MediaFilter.MPAA),: ,]</label>
                 <font>font_main_bold</font>
                 <include>MediaFilter_Node_ClearAll</include>
-                <onclick>SetProperty(MediaFilter.InfoLabel,MPAA)</onclick>
                 <onclick condition="!String.IsEmpty(Window.Property(MediaFilter.MPAA))">ClearProperty(MediaFilter.MPAA)</onclick>
                 <onclick condition="!String.IsEmpty(Window.Property(MediaFilter.MPAA))">RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
                 <onclick condition="String.IsEmpty(Window.Property(MediaFilter.MPAA))">SetProperty(MediaFilter.InfoLabel,MPAA)</onclick>
@@ -102,7 +114,8 @@
             <itemgap>-20</itemgap>
             <include content="Search_Filter_Button">
                 <param name="id">9601</param>
-                <label>Library</label>
+                <label>$LOCALIZE[14022]</label>
+                <onclick>SetProperty(MediaFilter.BaseDir.Name,$LOCALIZE[14022])</onclick>
                 <onclick>SetProperty(MediaFilter.BaseDir,videodb://movies/titles)</onclick>
                 <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
                 <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),Movies)</visible>
@@ -110,7 +123,8 @@
             </include>
             <include content="Search_Filter_Button">
                 <param name="id">9602</param>
-                <label>Library</label>
+                <label>$LOCALIZE[14022]</label>
+                <onclick>SetProperty(MediaFilter.BaseDir.Name,$LOCALIZE[14022])</onclick>
                 <onclick>SetProperty(MediaFilter.BaseDir,videodb://tvshows/titles)</onclick>
                 <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
                 <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),TV)</visible>
@@ -118,7 +132,8 @@
             </include>
             <include content="Search_Filter_Button">
                 <param name="id">9603</param>
-                <label>Artists</label>
+                <label>$LOCALIZE[133]</label>
+                <onclick>SetProperty(MediaFilter.BaseDir.Name,$LOCALIZE[133])</onclick>
                 <onclick>SetProperty(MediaFilter.BaseDir,musicdb://artists)</onclick>
                 <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
                 <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),Music)</visible>
@@ -126,7 +141,8 @@
             </include>
             <include content="Search_Filter_Button">
                 <param name="id">9604</param>
-                <label>Albums</label>
+                <label>$LOCALIZE[132]</label>
+                <onclick>SetProperty(MediaFilter.BaseDir.Name,$LOCALIZE[132])</onclick>
                 <onclick>SetProperty(MediaFilter.BaseDir,musicdb://albums)</onclick>
                 <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
                 <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),Music)</visible>
@@ -134,7 +150,8 @@
             </include>
             <include content="Search_Filter_Button">
                 <param name="id">9605</param>
-                <label>Watchlist</label>
+                <label>$LOCALIZE[31122]</label>
+                <onclick>SetProperty(MediaFilter.BaseDir.Name,$LOCALIZE[31122])</onclick>
                 <onclick>SetProperty(MediaFilter.BaseDir,plugin://plugin.video.themoviedb.helper/?info=trakt_watchlist&amp;tmdb_type=movie)</onclick>
                 <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
                 <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),Movies)</visible>
@@ -142,7 +159,8 @@
             </include>
             <include content="Search_Filter_Button">
                 <param name="id">9606</param>
-                <label>Watchlist</label>
+                <label>$LOCALIZE[31122]</label>
+                <onclick>SetProperty(MediaFilter.BaseDir.Name,$LOCALIZE[31122])</onclick>
                 <onclick>SetProperty(MediaFilter.BaseDir,plugin://plugin.video.themoviedb.helper/?info=trakt_watchlist&amp;tmdb_type=tv)</onclick>
                 <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
                 <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),TV)</visible>
@@ -150,7 +168,8 @@
             </include>
             <include content="Search_Filter_Button">
                 <param name="id">9607</param>
-                <label>On Deck</label>
+                <label>$LOCALIZE[31123]</label>
+                <onclick>SetProperty(MediaFilter.BaseDir.Name,$LOCALIZE[31123])</onclick>
                 <onclick>SetProperty(MediaFilter.BaseDir,plugin://plugin.video.themoviedb.helper/?info=trakt_towatch&amp;tmdb_type=movie)</onclick>
                 <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
                 <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),Movies)</visible>
@@ -158,7 +177,8 @@
             </include>
             <include content="Search_Filter_Button">
                 <param name="id">9608</param>
-                <label>On Deck</label>
+                <label>$LOCALIZE[31123]</label>
+                <onclick>SetProperty(MediaFilter.BaseDir.Name,$LOCALIZE[31123])</onclick>
                 <onclick>SetProperty(MediaFilter.BaseDir,plugin://plugin.video.themoviedb.helper/?info=trakt_towatch&amp;tmdb_type=tv)</onclick>
                 <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
                 <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),TV)</visible>
@@ -166,7 +186,8 @@
             </include>
             <include content="Search_Filter_Button">
                 <param name="id">9609</param>
-                <label>Recommendations</label>
+                <label>$LOCALIZE[31018]</label>
+                <onclick>SetProperty(MediaFilter.BaseDir.Name,$LOCALIZE[31018])</onclick>
                 <onclick>SetProperty(MediaFilter.BaseDir,plugin://plugin.video.themoviedb.helper/?info=trakt_recommendations&amp;tmdb_type=movie)</onclick>
                 <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
                 <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),Movies)</visible>
@@ -174,7 +195,8 @@
             </include>
             <include content="Search_Filter_Button">
                 <param name="id">9610</param>
-                <label>Recommendations</label>
+                <label>$LOCALIZE[31018]</label>
+                <onclick>SetProperty(MediaFilter.BaseDir.Name,$LOCALIZE[31018])</onclick>
                 <onclick>SetProperty(MediaFilter.BaseDir,plugin://plugin.video.themoviedb.helper/?info=trakt_recommendations&amp;tmdb_type=tv)</onclick>
                 <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
                 <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),TV)</visible>
@@ -182,21 +204,24 @@
             </include>
             <include content="Search_Filter_Button">
                 <param name="id">9611</param>
-                <label>Trending</label>
+                <label>$LOCALIZE[31128]</label>
+                <onclick>SetProperty(MediaFilter.BaseDir.Name,$LOCALIZE[31128])</onclick>
                 <onclick>SetProperty(MediaFilter.BaseDir,plugin://plugin.video.themoviedb.helper/?info=trakt_trending&amp;tmdb_type=movie)</onclick>
                 <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
                 <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),Movies)</visible>
             </include>
             <include content="Search_Filter_Button">
                 <param name="id">9612</param>
-                <label>Trending</label>
+                <label>$LOCALIZE[31128]</label>
+                <onclick>SetProperty(MediaFilter.BaseDir.Name,$LOCALIZE[31128])</onclick>
                 <onclick>SetProperty(MediaFilter.BaseDir,plugin://plugin.video.themoviedb.helper/?info=trakt_trending&amp;tmdb_type=tv)</onclick>
                 <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
                 <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),TV)</visible>
             </include>
             <include content="Search_Filter_Button">
                 <param name="id">9613</param>
-                <label>History</label>
+                <label>$LOCALIZE[31132]</label>
+                <onclick>SetProperty(MediaFilter.BaseDir.Name,$LOCALIZE[31132])</onclick>
                 <onclick>SetProperty(MediaFilter.BaseDir,plugin://plugin.video.themoviedb.helper/?info=trakt_history&amp;tmdb_type=movie)</onclick>
                 <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
                 <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),Movies)</visible>
@@ -204,7 +229,8 @@
             </include>
             <include content="Search_Filter_Button">
                 <param name="id">9614</param>
-                <label>History</label>
+                <label>$LOCALIZE[31132]</label>
+                <onclick>SetProperty(MediaFilter.BaseDir.Name,$LOCALIZE[31132])</onclick>
                 <onclick>SetProperty(MediaFilter.BaseDir,plugin://plugin.video.themoviedb.helper/?info=trakt_history&amp;tmdb_type=tv)</onclick>
                 <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
                 <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),TV)</visible>
@@ -217,7 +243,7 @@
         <include content="Dialog_Overlay_Side">
             <param name="dialog_size">Dimension_DialogSideMenu</param>
             <include>Animation_Right_Delay</include>
-            <visible allowhiddenfocus="true">Control.HasFocus(9701)</visible>
+            <visible>!String.IsEmpty(Window.Property(MediaFilter.InfoLabel))</visible>
             <include content="Dialog_Head">
                 <param name="label">$INFO[Window.Property(MediaFilter.InfoLabel)]</param>
             </include>
@@ -227,15 +253,36 @@
                         <param name="id">9701</param>
                         <param name="textcolor">dialog_fg</param>
 
-                        <param name="misc">[[String.IsEqual(Window.Property(MediaFilter.InfoLabel),Genre) + !String.IsEmpty(Window.Property(MediaFilter.Genre)) + String.IsEqual(Window.Property(MediaFilter.Genre),ListItem.Label)] | [String.IsEqual(Window.Property(MediaFilter.InfoLabel),Studio) + !String.IsEmpty(Window.Property(MediaFilter.Studio)) + String.IsEqual(Window.Property(MediaFilter.Studio),ListItem.Label)] | [String.IsEqual(Window.Property(MediaFilter.InfoLabel),MPAA) + !String.IsEmpty(Window.Property(MediaFilter.MPAA)) + String.IsEqual(Window.Property(MediaFilter.MPAA),ListItem.Label)]]</param>
+                        <param name="misc">[[String.IsEqual(Window.Property(MediaFilter.InfoLabel),Genre) + [[!String.IsEmpty(Window.Property(MediaFilter.Genre)) + String.IsEqual(Window.Property(MediaFilter.Genre),ListItem.Label)] | [String.IsEmpty(Window.Property(MediaFilter.Genre)) + !String.IsEmpty(ListItem.Property(clear))]]] | [String.IsEqual(Window.Property(MediaFilter.InfoLabel),Studio) + [[!String.IsEmpty(Window.Property(MediaFilter.Studio)) + String.IsEqual(Window.Property(MediaFilter.Studio),ListItem.Label)] | [String.IsEmpty(Window.Property(MediaFilter.Studio)) + !String.IsEmpty(ListItem.Property(clear))]]] | [String.IsEqual(Window.Property(MediaFilter.InfoLabel),MPAA) + [[!String.IsEmpty(Window.Property(MediaFilter.MPAA)) + String.IsEqual(Window.Property(MediaFilter.MPAA),ListItem.Label)] | [String.IsEmpty(Window.Property(MediaFilter.MPAA)) + !String.IsEmpty(ListItem.Property(clear))]]]]</param>
 
                         <onleft>9500</onleft>
-                        <onright>9500</onright>
+                        <onright>9702</onright>
                         <onback>9500</onback>
 
+                        <content>
+                            <item>
+                                <label>$LOCALIZE[231]</label>
+                                <property name="clear">True</property>
+                            </item>
+                        </content>
+
                         <content sortby="label">$VAR[Path_MediaFilter_Node]</content>
-                        <onclick>SetProperty(MediaFilter.$INFO[Window.Property(MediaFilter.InfoLabel)],$INFO[Container(9701).ListItem.Label])</onclick>
+                        <onclick condition="String.IsEmpty(Container(9701).ListItem.Property(clear))">SetProperty(MediaFilter.$INFO[Window.Property(MediaFilter.InfoLabel)],$INFO[Container(9701).ListItem.Label])</onclick>
+                        <onclick condition="!String.IsEmpty(Container(9701).ListItem.Property(clear))">ClearProperty(MediaFilter.$INFO[Window.Property(MediaFilter.InfoLabel)])</onclick>
                         <onclick>RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
+                    </include>
+                </include>
+                <include content="Dialog_Side_Grouplist">
+                    <param name="id">9702</param>
+                    <onright>9500</onright>
+                    <onleft>9701</onleft>
+                    <include content="Dialog_Side_Button">
+                        <param name="id" />
+                        <param name="id_prefix">73</param>
+                        <param name="groupid_prefix">74</param>
+                        <param name="label">$LOCALIZE[15067]</param>
+                        <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
+                        <onclick>SetFocus(9500)</onclick>
                     </include>
                 </include>
             </include>
