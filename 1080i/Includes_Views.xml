@@ -75,7 +75,7 @@
                 <onfocus condition="![$EXP[Exp_FilterWall_IsMedia]]">ClearProperty(MediaFilterBase)</onfocus>
                 <onfocus>ClearProperty(View.WallSwitchRow)</onfocus>
 
-                <onfocus condition="$EXP[Exp_FilterWall_IsMedia] + !String.IsEmpty(Window.Property(View.WallSwitchRow))">Control.Move($VAR[Action_View_ContentID],1)</onfocus>
+                <!-- <onfocus condition="$EXP[Exp_FilterWall_IsMedia] + !String.IsEmpty(Window.Property(View.WallSwitchRow))">Control.Move($VAR[Action_View_ContentID],1)</onfocus> -->
                 <onfocus condition="$EXP[Exp_FilterWall_IsMedia]">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideOut,focus_id=63,clear_prop_one=MediaFilterBase,clear_prop_two=View.WallSwitchPosition)</onfocus>
             </include>
 
@@ -89,10 +89,14 @@
                 <onup condition="String.IsEmpty(Window.Property(View.WallSwitchRow))">SetFocus(68)</onup>
                 <onup condition="!String.IsEmpty(Window.Property(View.WallSwitchRow))">ClearProperty(View.WallSwitchRow)</onup>
 
-                <ondown condition="!String.IsEmpty(Window.Property(View.WallSwitchRow))">$VAR[Action_Var_ToScrollBar]</ondown>
-                <ondown condition="String.IsEmpty(Window.Property(View.WallSwitchRow))">SetProperty(View.WallSwitchRow,1)</ondown>
+                <!-- <ondown condition="!String.IsEmpty(Window.Property(View.WallSwitchRow))">$VAR[Action_Var_ToScrollBar]</ondown> -->
+                <!-- <ondown condition="String.IsEmpty(Window.Property(View.WallSwitchRow))">SetProperty(View.WallSwitchRow,1)</ondown>
+                <ondown condition="!String.IsEmpty(Window.Property(View.WallSwitchRow))">Action(Back)</ondown> -->
 
-                <onback>ClearPRoperty(View.WallSwitchRow)</onback>
+                <ondown condition="!String.IsEmpty(Window.Property(View.WallSwitchRow))">ClearProperty(View.WallSwitchRow)</ondown>
+                <ondown condition="!String.IsEmpty(Window.Property(View.WallSwitchRow))">68</ondown>
+
+                <onback>ClearProperty(View.WallSwitchRow)</onback>
                 <onback>68</onback>
 
                 <onclick>SetProperty(View.WallSwitchRow.Action,Action(Select),Home)</onclick>
@@ -147,8 +151,20 @@
             <!-- Scrollbar -->
             <control type="group">
                 <height>scrollbar_w</height>
-                <centertop>-40</centertop>
-                <visible>$EXP[Exp_ScrollbarVisible]</visible>
+                <centertop>-510</centertop>
+                <!-- <centertop>-550</centertop> -->
+                <width>680</width>
+                <visible>!$EXP[Exp_InfoDialogs]</visible>
+                <visible>$EXP[Exp_MediaFilterVisible]</visible>
+                <include content="Animation_Fade_In">
+                    <param name="delay">0</param>
+                    <param name="type">Visible</param>
+                </include>
+                <!-- <control type="image">
+                    <texture colordiffuse="main_fg_12">common/white.png</texture>
+                    <height>1</height>
+                    <centertop>-135</centertop>
+                </control> -->
                 <control type="image">
                     <texture colordiffuse="main_fg_12">common/white.png</texture>
                     <height>1</height>
@@ -162,6 +178,7 @@
                     <showonepage>true</showonepage>
                     <include>Action_Scrollbar</include>
                     <onfocus>SetFocus(64)</onfocus>
+                    <visible>$EXP[Exp_ScrollbarVisible]</visible>
                 </control>
             </control>
 
