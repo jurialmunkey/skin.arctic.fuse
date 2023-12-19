@@ -125,34 +125,24 @@
                 <param name="id">64</param>
                 <include>Action_Scrollbar</include>
                 <onfocus>ClearProperty(View.WallSwitchRow)</onfocus>
-                <onleft>SetFocus($VAR[Action_View_ContentID])</onleft>
-                <onleft>Action(PageUp)</onleft>
-                <onleft condition="$EXP[Exp_FilterWall_IsMedia]">Action(PageUp)</onleft>
-                <onleft>SetFocus(64)</onleft>
-                <onright>SetFocus($VAR[Action_View_ContentID])</onright>
-                <onright>Action(PageDown)</onright>
-                <onright condition="$EXP[Exp_FilterWall_IsMedia]">Action(PageDown)</onright>
-                <onright>SetFocus(64)</onright>
-            </include>
-
-            <!-- Dummy for jumping to alphabet letter -->
-            <include content="Object_Hidden_Button">
-                <param name="id">65</param>
-                <onfocus>ClearProperty(View.WallSwitchRow)</onfocus>
-                <onleft>SetFocus($VAR[Action_View_ContentID])</onleft>
-                <onleft>Action(prevletter)</onleft>
-                <onleft>SetFocus(65)</onleft>
-                <onright>SetFocus($VAR[Action_View_ContentID])</onright>
-                <onright>Action(nextletter)</onright>
-                <onright>SetFocus(65)</onright>
-                <include>Action_Scrollbar</include>
+                <onleft condition="!Integer.IsEqual(Container.CurrentPage,1)">SetFocus($VAR[Action_View_ContentID])</onleft>
+                <onleft condition="!Integer.IsEqual(Container.CurrentPage,1)">Action(PageUp)</onleft>
+                <onleft condition="!Integer.IsEqual(Container.CurrentPage,1) + $EXP[Exp_FilterWall_IsMedia]">Action(PageUp)</onleft>
+                <onleft condition="!Integer.IsEqual(Container.CurrentPage,1)">SetFocus(64)</onleft>
+                <onleft condition="Integer.IsEqual(Container.CurrentPage,1)">SetProperty(List.ViewContainer,64)</onleft>
+                <onleft condition="Integer.IsEqual(Container.CurrentPage,1)">303</onleft>
+                <onright condition="Container.HasNext">SetFocus($VAR[Action_View_ContentID])</onright>
+                <onright condition="Container.HasNext">Action(PageDown)</onright>
+                <onright condition="Container.HasNext + $EXP[Exp_FilterWall_IsMedia]">Action(PageDown)</onright>
+                <onright condition="Container.HasNext">SetFocus(64)</onright>
+                <onright condition="!Container.HasNext">SetProperty(List.ViewContainer,64)</onright>
+                <onright condition="!Container.HasNext">332</onright>
             </include>
 
             <!-- Scrollbar -->
             <control type="group">
                 <height>scrollbar_w</height>
                 <centertop>-510</centertop>
-                <!-- <centertop>-550</centertop> -->
                 <width>680</width>
                 <visible>!$EXP[Exp_InfoDialogs]</visible>
                 <visible>$EXP[Exp_MediaFilterVisible]</visible>
@@ -160,11 +150,6 @@
                     <param name="delay">0</param>
                     <param name="type">Visible</param>
                 </include>
-                <!-- <control type="image">
-                    <texture colordiffuse="main_fg_12">common/white.png</texture>
-                    <height>1</height>
-                    <centertop>-135</centertop>
-                </control> -->
                 <control type="image">
                     <texture colordiffuse="main_fg_12">common/white.png</texture>
                     <height>1</height>
@@ -181,43 +166,6 @@
                     <visible>$EXP[Exp_ScrollbarVisible]</visible>
                 </control>
             </control>
-
-            <!-- Alphabet -->
-            <include content="Object_Control" condition="!Skin.HasSetting(DisableAlphabetStrip)">
-                <param name="control">grouplist</param>
-                <visible>$EXP[Exp_AlphabetVisible]</visible>
-                <orientation>horizontal</orientation>
-                <centertop>50%</centertop>
-                <height>40</height>
-                <itemgap>0</itemgap>
-                <include>Object_AlphabetNumber</include>
-                <include content="Object_AlphabetLetter"><param name="letter">A</param></include>
-                <include content="Object_AlphabetLetter"><param name="letter">B</param></include>
-                <include content="Object_AlphabetLetter"><param name="letter">C</param></include>
-                <include content="Object_AlphabetLetter"><param name="letter">D</param></include>
-                <include content="Object_AlphabetLetter"><param name="letter">E</param></include>
-                <include content="Object_AlphabetLetter"><param name="letter">F</param></include>
-                <include content="Object_AlphabetLetter"><param name="letter">G</param></include>
-                <include content="Object_AlphabetLetter"><param name="letter">H</param></include>
-                <include content="Object_AlphabetLetter"><param name="letter">I</param></include>
-                <include content="Object_AlphabetLetter"><param name="letter">J</param></include>
-                <include content="Object_AlphabetLetter"><param name="letter">K</param></include>
-                <include content="Object_AlphabetLetter"><param name="letter">L</param></include>
-                <include content="Object_AlphabetLetter"><param name="letter">M</param></include>
-                <include content="Object_AlphabetLetter"><param name="letter">N</param></include>
-                <include content="Object_AlphabetLetter"><param name="letter">O</param></include>
-                <include content="Object_AlphabetLetter"><param name="letter">P</param></include>
-                <include content="Object_AlphabetLetter"><param name="letter">Q</param></include>
-                <include content="Object_AlphabetLetter"><param name="letter">R</param></include>
-                <include content="Object_AlphabetLetter"><param name="letter">S</param></include>
-                <include content="Object_AlphabetLetter"><param name="letter">T</param></include>
-                <include content="Object_AlphabetLetter"><param name="letter">U</param></include>
-                <include content="Object_AlphabetLetter"><param name="letter">V</param></include>
-                <include content="Object_AlphabetLetter"><param name="letter">W</param></include>
-                <include content="Object_AlphabetLetter"><param name="letter">X</param></include>
-                <include content="Object_AlphabetLetter"><param name="letter">Y</param></include>
-                <include content="Object_AlphabetLetter"><param name="letter">Z</param></include>
-            </include>
         </include>
     </include>
 
@@ -398,8 +346,12 @@
     <include name="View_Furniture_Edges">
         <include>Home_Fade</include>
         <control type="group">
-            <include>View_Row_Header</include>
+            <control type="group">
+                <visible>!Control.HasFocus(19)</visible>
+                <include>View_Row_Header</include>
+            </control>
             <include>View_Row_Gutter</include>
+            <include>Animation_Group_Bumper</include>
         </control>
         <include content="Home_Menu">
             <param name="onlist">50</param>
@@ -444,17 +396,18 @@
             <include>Background_Transition</include>
 
             <control type="group">
-                <animation effect="fade" start="100" end="0" condition="!String.IsEmpty(Window(Home).Property(TMDbHelper.Instance))">Conditional</animation>
-                <include>View_MediaWall</include>
                 <control type="group">
                     <include>Animation_Group_Bumper</include>
-                    <include>Animation_View_WindowChange</include>
-                    <include>View_Row_Items</include>
-                    <include>View_Row_Info</include>
+                    <animation effect="fade" start="100" end="0" condition="!String.IsEmpty(Window(Home).Property(TMDbHelper.Instance))">Conditional</animation>
+                    <include>View_MediaWall</include>
+                    <control type="group">
+                        <include>Animation_View_WindowChange</include>
+                        <include>View_Row_Items</include>
+                        <include>View_Row_Info</include>
+                    </control>
+                    <include>View_MediaFilter_Node</include>
                 </control>
-
                 <include>View_Furniture_Edges</include>
-                <include>View_MediaFilter_Node</include>
             </control>
 
             <include>View_Dialog_Plot</include>
