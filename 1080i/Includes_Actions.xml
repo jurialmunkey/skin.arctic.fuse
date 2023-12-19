@@ -184,6 +184,8 @@
         <param name="c_bmp">[!String.IsEmpty(Window.Property(List.ViewContainer.Bump))]</param>
         <param name="c_wof">[Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + !String.IsEmpty(Container(303).ListItem.Property(widgets_only_focus))]</param>
         <param name="i_wof">$INFO[Container(303).ListItem.Property(widgets_only_focus)]</param>
+        <param name="c_lvl">[!String.IsEmpty(Window.Property(List.ViewContainer.Left))]</param>
+        <param name="i_lvl">$INFO[Window.Property(List.ViewContainer.Left)]</param>
         <param name="c_lvc">[!String.IsEmpty(Window.Property(List.ViewContainer))]</param>
         <param name="i_lvc">$INFO[Window.Property(List.ViewContainer)]</param>
         <param name="c_twc">[!String.IsEmpty(Window.Property(TMDbHelper.WidgetContainer))]</param>
@@ -191,7 +193,8 @@
         <definition>
 
             <onleft condition="$PARAM[c_bmp]">331</onleft>
-            <onleft condition="!$PARAM[c_bmp] + $PARAM[c_lvc]">SetFocus($PARAM[i_lvc],99999,absolute)</onleft>
+            <onleft condition="!$PARAM[c_bmp] + $PARAM[c_lvl]">SetFocus($PARAM[i_lvl])</onleft>
+            <onleft condition="!$PARAM[c_bmp] + !$PARAM[c_lvl] + $PARAM[c_lvc]">SetFocus($PARAM[i_lvc],99999,absolute)</onleft>
             <onleft condition="!$PARAM[c_bmp] + !$PARAM[c_lvc] + $PARAM[c_twc]">SetFocus($PARAM[i_twc],99999,absolute)</onleft>
             <onleft condition="!$PARAM[c_bmp] + $PARAM[c_wof]">$PARAM[i_wof]</onleft>
             <onleft condition="!$PARAM[c_bmp] + !$PARAM[c_lvc] + !$PARAM[c_twc] + !$PARAM[c_wof]">$PARAM[onlist]</onleft>
@@ -335,18 +338,26 @@
     </include>
 
     <include name="Action_Menu_Movement_OnBack">
-        <onback>303</onback>
-        <onback>SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onback>
-        <onback>$VAR[Action_Menu_Position]</onback>
+        <param name="onmenu">$VAR[Action_Menu_Position]</param>
+        <param name="onbump" />
+        <param name="onleft" />
+        <definition>
+            <onback>303</onback>
+            <onback>SetProperty(List.ViewContainer.Bump,$PARAM[onbump])</onback>
+            <onback>SetProperty(List.ViewContainer.Left,$PARAM[onleft])</onback>
+            <onback>SetProperty(List.ViewContainer,$PARAM[id])</onback>
+            <onback>$PARAM[onmenu]</onback>
+        </definition>
     </include>
 
     <include name="Action_View_Movement_OnLeft">
-        <param name="onbump">False</param>
         <param name="onmenu">$VAR[Action_Menu_Position]</param>
+        <param name="onbump" />
+        <param name="onleft" />
         <definition>
             <onleft>303</onleft>
-            <onleft condition="$PARAM[onbump]">SetProperty(List.ViewContainer.Bump,1)</onleft>
-            <onleft condition="![$PARAM[onbump]]">ClearProperty(List.ViewContainer.Bump)</onleft>
+            <onleft>SetProperty(List.ViewContainer.Bump,$PARAM[onbump])</onleft>
+            <onleft>SetProperty(List.ViewContainer.Left,$PARAM[onleft])</onleft>
             <onleft>SetProperty(List.ViewContainer,$PARAM[id])</onleft>
             <onleft>$PARAM[onmenu]</onleft>
         </definition>
@@ -355,21 +366,44 @@
     <include name="Action_View_Movement_OnRight">
         <param name="onmenu">$VAR[Action_Menu_Position]</param>
         <param name="onbump">False</param>
+        <param name="onleft" />
         <definition>
 
             <!-- Menu -->
             <onright condition="![$PARAM[onbump]]">303</onright>
             <onright condition="![$PARAM[onbump]]">SetProperty(List.ViewContainer,$PARAM[id])</onright>
+            <onright condition="![$PARAM[onbump]]">SetProperty(List.ViewContainer.Left,$PARAM[onleft])</onright>
             <onright condition="![$PARAM[onbump]]">SetFocus($PARAM[id],0,absolute)</onright>
             <onright condition="![$PARAM[onbump]]">$PARAM[onmenu]</onright>
-
-            <!-- Loop -->
-            <!-- <onright condition="![$PARAM[onbump]]">SetFocus($PARAM[id],0,absolute)</onright> -->
 
             <!-- Bump -->
             <onright condition="$PARAM[onbump]">SetProperty(List.ViewContainer,$PARAM[id])</onright>
             <onright condition="$PARAM[onbump]">332</onright>
 
+        </definition>
+    </include>
+
+    <include name="Action_View_Movement_OnLeftRight">
+        <param name="include_onback">True</param>
+        <definition>
+            <include content="Action_View_Movement_OnLeft">
+                <param name="id">$PARAM[id]</param>
+                <param name="onmenu">$PARAM[onmenu]</param>
+                <param name="onbump">$PARAM[onbump]</param>
+                <param name="onleft">$PARAM[onleft]</param>
+            </include>
+            <include content="Action_View_Movement_OnRight">
+                <param name="id">$PARAM[id]</param>
+                <param name="onmenu">$PARAM[onmenu]</param>
+                <param name="onbump">$PARAM[onbump]</param>
+                <param name="onleft">$PARAM[onleft]</param>
+            </include>
+            <include content="Action_View_Movement_OnBack" condition="$PARAM[include_onback]">
+                <param name="id">$PARAM[id]</param>
+                <param name="onmenu">$PARAM[onmenu]</param>
+                <param name="onbump">$PARAM[onbump]</param>
+                <param name="onleft">$PARAM[onleft]</param>
+            </include>
         </definition>
     </include>
 
