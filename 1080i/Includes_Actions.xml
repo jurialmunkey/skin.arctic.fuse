@@ -181,21 +181,26 @@
     <include name="Action_HomeMenu_OnRightLeft">
         <param name="onlist">320</param>
         <param name="onmenu">ActivateWindow(shutdownmenu)</param>
-        <param name="cond_bmp">[!String.IsEmpty(Window.Property(List.ViewContainer.Bump))]</param>
-        <param name="cond_wof">[Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + !String.IsEmpty(Container(303).ListItem.Property(widgets_only_focus))]</param>
-        <param name="info_wof">$INFO[Container(303).ListItem.Property(widgets_only_focus)]</param>
-        <param name="cond_cid">[!String.IsEmpty(Window.Property(List.ViewContainer))]</param>
-        <param name="info_cid">$INFO[Window.Property(List.ViewContainer)]</param>
+        <param name="c_bmp">[!String.IsEmpty(Window.Property(List.ViewContainer.Bump))]</param>
+        <param name="c_wof">[Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + !String.IsEmpty(Container(303).ListItem.Property(widgets_only_focus))]</param>
+        <param name="i_wof">$INFO[Container(303).ListItem.Property(widgets_only_focus)]</param>
+        <param name="c_lvc">[!String.IsEmpty(Window.Property(List.ViewContainer))]</param>
+        <param name="i_lvc">$INFO[Window.Property(List.ViewContainer)]</param>
+        <param name="c_twc">[!String.IsEmpty(Window.Property(TMDbHelper.WidgetContainer))]</param>
+        <param name="i_twc">$INFO[Window.Property(TMDbHelper.WidgetContainer)]</param>
         <definition>
 
-            <onleft condition="$PARAM[cond_bmp]">331</onleft>
-            <onleft condition="!$PARAM[cond_bmp] + $PARAM[cond_wof]">$PARAM[info_wof]</onleft>
-            <onleft condition="!$PARAM[cond_bmp] + !$PARAM[cond_wof] + $PARAM[cond_cid]">SetFocus($PARAM[info_cid],99999,absolute)</onleft>
-            <onleft condition="!$PARAM[cond_bmp] + !$PARAM[cond_wof] + !$PARAM[cond_cid]">$PARAM[onlist]</onleft>
+            <onleft condition="$PARAM[c_bmp]">331</onleft>
+            <onleft condition="!$PARAM[c_bmp] + $PARAM[c_lvc]">SetFocus($PARAM[i_lvc],99999,absolute)</onleft>
+            <onleft condition="!$PARAM[c_bmp] + !$PARAM[c_lvc] + $PARAM[c_twc]">SetFocus($PARAM[i_twc],99999,absolute)</onleft>
+            <onleft condition="!$PARAM[c_bmp] + !$PARAM[c_lvc] + $PARAM[c_wof]">$PARAM[i_wof]</onleft>
+            <onleft condition="!$PARAM[c_bmp] + !$PARAM[c_lvc] + !$PARAM[c_twc] + !$PARAM[c_wof]">$PARAM[onlist]</onleft>
 
-            <onright condition="$PARAM[cond_wof]">$PARAM[info_wof]</onright>
-            <onright condition="!$PARAM[cond_wof] + $PARAM[cond_cid]">SetFocus($PARAM[info_cid],0,absolute)</onright>
-            <onright condition="!$PARAM[cond_wof] + !$PARAM[cond_cid]">$PARAM[onlist]</onright>
+            <onright condition="$PARAM[c_lvc]">SetFocus($PARAM[i_lvc],0,absolute)</onright>
+            <onright condition="!$PARAM[c_lvc] + $PARAM[c_twc]">SetFocus($PARAM[i_twc],0,absolute)</onright>
+            <onright condition="!$PARAM[c_lvc] + $PARAM[c_wof]">$PARAM[i_wof]</onright>
+            <onright condition="!$PARAM[c_lvc] + !$PARAM[c_twc] + !$PARAM[c_wof]">$PARAM[onlist]</onright>
+
         </definition>
     </include>
 
