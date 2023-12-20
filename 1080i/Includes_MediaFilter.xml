@@ -6,6 +6,10 @@
 
         <onfocus>ClearProperty(MediaFilter.InfoLabel)</onfocus>
 
+        <onfocus condition="Window.IsVisible(MyVideoNav.xml) + [Container.Content(movies) | Container.Content(sets)]">SetProperty(MediaFilter.ContentType,Movies)</onfocus>
+        <onfocus condition="Window.IsVisible(MyVideoNav.xml) + [Container.Content(tvshows) | Container.Content(seasons) | Container.Content(episodes)]">SetProperty(MediaFilter.ContentType,TV)</onfocus>
+        <onfocus condition="Window.IsVisible(MyMusicNav.xml)">SetProperty(MediaFilter.ContentType,Music)</onfocus>
+
         <onfocus condition="!String.StartsWith(Container.FolderPath,plugin://script.skinvariables/?info=get_filter_dir) + [Container.Content(movies) | Container.Content(tvshows) | Container.Content(albums) | Container.Content(artists)]">SetProperty(MediaFilter.BaseDir.Name,$VAR[Label_Section_Main])</onfocus>
         <onfocus condition="!String.StartsWith(Container.FolderPath,plugin://script.skinvariables/?info=get_filter_dir) + [Container.Content(movies) | Container.Content(tvshows) | Container.Content(albums) | Container.Content(artists)]">SetProperty(MediaFilter.BaseDir,$INFO[Container.FolderPath])</onfocus>
         <onfocus condition="!String.StartsWith(Container.FolderPath,plugin://script.skinvariables/?info=get_filter_dir) + ![Container.Content(movies) | Container.Content(tvshows) | Container.Content(albums) | Container.Content(artists)]">ClearProperty(MediaFilter.BaseDir.Name)</onfocus>
@@ -30,13 +34,9 @@
             <onup>9003</onup>
             <ondown>9600</ondown>
             <onback>68</onback>
-            <include content="Action_View_Movement_OnLeft">
-                <param name="id">9500</param>
-                <param name="onbump">True</param>
-            </include>
-            <include content="Action_View_Movement_OnRight">
-                <param name="id">9500</param>
-                <param name="onbump">True</param>
+            <include content="Action_View_Movement_OnLeftRight">
+                <param name="id">9501</param>
+                <param name="onleft">9514</param>
             </include>
             <include content="Search_Filter_Button">
                 <param name="id">9501</param>
@@ -113,15 +113,17 @@
             <onup>9500</onup>
             <onback>68</onback>
             <ondown>64</ondown>
-            <include content="Action_View_Movement_OnLeft">
-                <param name="id">9600</param>
-                <param name="onbump">True</param>
-            </include>
-            <include content="Action_View_Movement_OnRight">
-                <param name="id">9600</param>
-                <param name="onbump">True</param>
+            <include content="Action_View_Movement_OnLeftRight">
+                <param name="id">9615</param>
+                <param name="onleft">9616</param>
             </include>
             <itemgap>-20</itemgap>
+            <include content="Object_Hidden_Looper">
+                <param name="id">9615</param>
+                <param name="grouplistid">9600</param>
+                <param name="action">Right</param>
+                <width>20</width>
+            </include>
             <include content="Search_Filter_Button">
                 <param name="id">9601</param>
                 <label>$LOCALIZE[14022]</label>
@@ -246,6 +248,10 @@
                 <visible>String.IsEqual(Window.Property(MediaFilter.ContentType),TV)</visible>
                 <visible>!String.IsEmpty(Window(Home).Property(TMDbHelper.TraktIsAuth))</visible>
             </include>
+            <include content="Object_Hidden_Looper">
+                <param name="id">9616</param>
+                <param name="grouplistid">9600</param>
+            </include>
         </control>
     </include>
 
@@ -319,9 +325,7 @@
                     <include content="Object_Hidden_Button">
                         <param name="id">9001</param>
                         <include>MediaFilter_Node_ClearAll</include>
-                        <onfocus condition="Window.IsVisible(MyVideoNav.xml) + [Container.Content(movies) | Container.Content(sets)]">SetProperty(MediaFilter.ContentType,Movies)</onfocus>
-                        <onfocus condition="Window.IsVisible(MyVideoNav.xml) + [Container.Content(tvshows) | Container.Content(seasons) | Container.Content(episodes)]">SetProperty(MediaFilter.ContentType,TV)</onfocus>
-                        <onfocus condition="Window.IsVisible(MyMusicNav.xml)">SetProperty(MediaFilter.ContentType,Music)</onfocus>
+
                         <onfocus>SetProperty(View.WallSwitchPosition,1)</onfocus>
                         <onfocus>SetFocus(19)</onfocus>
                     </include>
@@ -342,7 +346,7 @@
                         <onright>9004</onright>
                         <include content="Action_View_Movement_OnLeft">
                             <param name="id">19</param>
-                            <param name="onbump">True</param>
+                            <param name="onleft">9009</param>
                         </include>
                     </control>
                 </control>
@@ -373,8 +377,8 @@
                 <ondown>SetFocus(68)</ondown>
 
                 <include content="Action_View_Movement_OnRight">
-                    <param name="id">9000</param>
-                    <param name="onbump">True</param>
+                    <param name="id">19</param>
+                    <param name="onleft">9009</param>
                 </include>
 
                 <include content="Dialog_Side_Button">
