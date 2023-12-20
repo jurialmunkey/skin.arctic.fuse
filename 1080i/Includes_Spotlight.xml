@@ -103,6 +103,20 @@
         <value>main_bg_100</value>
     </variable>
 
+    <include name="Spotlight_Main_Button_Standard">
+        <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,$PARAM[window_id])</onfocus>
+        <onfocus>ClearProperty(Slide.WidgetContainer,$PARAM[window_id])</onfocus>
+
+        <oninfo>SetFocus(301)</oninfo>
+        <oninfo condition="!Skin.String(Movement.Spotlight.OnInfo,Menu)">Action(ContextMenu)</oninfo>
+        <oninfo condition="Skin.String(Movement.Spotlight.OnInfo,Menu)">Action(Info)</oninfo>
+        <oninfo>SetFocus($PARAM[id])</oninfo>
+
+        <include content="Action_AutoTrailer_OnFocus" condition="Skin.HasSetting(Trailers.EnableAutoPlayback)">
+            <param name="id">301</param>
+        </include>
+    </include>
+
     <include name="Spotlight_Main">
         <param name="window_id">Home</param>
         <param name="visible">True</param>
@@ -128,21 +142,9 @@
                         <param name="id">311</param>
                     </include>
 
-                    <include content="Action_View_Movement_OnLeft">
+                    <include content="Action_View_Movement_OnLeftRight">
                         <param name="id">311</param>
-                        <param name="string">Movement.Spotlight.OnLeft</param>
-                    </include>
-                    <onleft condition="Skin.String(Movement.Spotlight.OnLeft,Move)">Control.Move(301,-1)</onleft>
-
-                    <include content="Action_View_Movement_OnRight">
-                        <param name="id">311</param>
-                        <param name="string">Movement.Spotlight.OnRight</param>
-                        <param name="refocus">False</param>
-                    </include>
-                    <onright condition="Skin.String(Movement.Spotlight.OnRight,Move)">Control.Move(301,1)</onright>
-
-                    <include content="Action_Menu_Movement_OnBack">
-                        <param name="id">311</param>
+                        <param name="onleft">316</param>
                     </include>
 
                     <include content="Action_AutoTrailer_OnRight" condition="Skin.HasSetting(Trailers.EnableAutoPlayback)">
@@ -195,17 +197,11 @@
                         <onclick condition="Container(301).ListItem.IsFolder">ActivateWindow($VAR[Path_Spotlight_Target],$INFO[Container(301).ListItem.FolderPath],return)</onclick>
                         <onclick condition="!Container(301).ListItem.IsFolder + !String.IsEmpty(Container(301).ListItem.FileNameAndPath)">PlayMedia($ESCINFO[Container(301).ListItem.FileNameAndPath])</onclick>
                         <onclick condition="!Container(301).ListItem.IsFolder + String.IsEmpty(Container(301).ListItem.FileNameAndPath) + !String.IsEmpty(Container(301).ListItem.FolderPath)">PlayMedia($ESCINFO[Container(301).ListItem.FolderPath])</onclick>
-                        <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,$PARAM[window_id])</onfocus>
-                        <onfocus>ClearProperty(Slide.WidgetContainer,$PARAM[window_id])</onfocus>
-
-                        <oninfo>SetFocus(301)</oninfo>
-                        <oninfo condition="!Skin.String(Movement.Spotlight.OnInfo,Menu)">Action(ContextMenu)</oninfo>
-                        <oninfo condition="Skin.String(Movement.Spotlight.OnInfo,Menu)">Action(Info)</oninfo>
-                        <oninfo>SetFocus(311)</oninfo>
-
-                        <include content="Action_AutoTrailer_OnFocus" condition="Skin.HasSetting(Trailers.EnableAutoPlayback)">
-                            <param name="id">301</param>
+                        <include content="Spotlight_Main_Button_Standard">
+                            <param name="id">311</param>
+                            <param name="window_id">$PARAM[window_id]</param>
                         </include>
+
                     </control>
 
                     <include content="Object_Info_Button">
@@ -224,18 +220,58 @@
                         <onclick condition="Skin.String(Movement.Spotlight.OnInfo,Menu)">Action(ContextMenu)</onclick>
                         <onclick>SetFocus(312)</onclick>
 
-                        <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,$PARAM[window_id])</onfocus>
-                        <onfocus>ClearProperty(Slide.WidgetContainer,$PARAM[window_id])</onfocus>
-
-                        <oninfo>SetFocus(301)</oninfo>
-                        <oninfo condition="!Skin.String(Movement.Spotlight.OnInfo,Menu)">Action(ContextMenu)</oninfo>
-                        <oninfo condition="Skin.String(Movement.Spotlight.OnInfo,Menu)">Action(Info)</oninfo>
-                        <oninfo>SetFocus(312)</oninfo>
-
-                        <include content="Action_AutoTrailer_OnFocus" condition="Skin.HasSetting(Trailers.EnableAutoPlayback)">
-                            <param name="id">301</param>
+                        <include content="Spotlight_Main_Button_Standard">
+                            <param name="id">312</param>
+                            <param name="window_id">$PARAM[window_id]</param>
                         </include>
                     </include>
+
+                    <control type="group" id="314">
+                        <left>40</left>
+                        <width>80</width>
+                        <height>80</height>
+                        <centertop>50%</centertop>
+                        <visible>!Integer.IsEqual(Container(301).NumItems,0)</visible>
+                        <control type="image">
+                            <include>Texture_Circle_Highlight_H</include>
+                            <visible>Control.HasFocus(315) | Control.HasFocus(316)</visible>
+                        </control>
+                    </control>
+
+                    <control type="togglebutton" id="315">
+                        <left>-4</left>
+                        <width>24</width>
+                        <height>24</height>
+                        <centertop>50%</centertop>
+                        <visible>!Integer.IsEqual(Container(301).NumItems,0)</visible>
+                        <onclick>Control.Move(301,-1)</onclick>
+                        <usealttexture>Control.HasFocus(315) | Control.HasFocus(316)</usealttexture>
+                        <texturenofocus colordiffuse="main_fg_30" flipx="false">buttons/triangle-left.png</texturenofocus>
+                        <texturefocus colordiffuse="$VAR[ColorSelected]" flipx="false">buttons/triangle-left.png</texturefocus>
+                        <alttexturenofocus colordiffuse="main_fg_70" flipx="false">buttons/triangle-left.png</alttexturenofocus>
+                        <alttexturefocus colordiffuse="$VAR[ColorSelected]" flipx="false">buttons/triangle-left.png</alttexturefocus>
+                        <include content="Spotlight_Main_Button_Standard">
+                            <param name="id">315</param>
+                            <param name="window_id">$PARAM[window_id]</param>
+                        </include>
+                    </control>
+                    <control type="togglebutton" id="316">
+                        <left>60</left>
+                        <width>24</width>
+                        <height>24</height>
+                        <centertop>50%</centertop>
+                        <visible>!Integer.IsEqual(Container(301).NumItems,0)</visible>
+                        <onclick>Control.Move(301,1)</onclick>
+                        <usealttexture>Control.HasFocus(315) | Control.HasFocus(316)</usealttexture>
+                        <texturenofocus colordiffuse="main_fg_30" flipx="true">buttons/triangle-left.png</texturenofocus>
+                        <texturefocus colordiffuse="$VAR[ColorSelected]" flipx="true">buttons/triangle-left.png</texturefocus>
+                        <alttexturenofocus colordiffuse="main_fg_70" flipx="true">buttons/triangle-left.png</alttexturenofocus>
+                        <alttexturefocus colordiffuse="$VAR[ColorSelected]" flipx="true">buttons/triangle-left.png</alttexturefocus>
+                        <include content="Spotlight_Main_Button_Standard">
+                            <param name="id">316</param>
+                            <param name="window_id">$PARAM[window_id]</param>
+                        </include>
+                    </control>
                 </control>
             </control>
         </definition>

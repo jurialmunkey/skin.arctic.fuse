@@ -32,6 +32,9 @@
     <include name="Action_Media_Onload">
         <onload>RunScript(script.skinvariables,action=buildviews)</onload>
         <onload>ClearProperty(MediaFilterBase)</onload>
+        <onload>ClearProperty(View.WallSwitchPosition)</onload>
+        <onunload>ClearProperty(MediaFilterBase)</onunload>
+        <onunload>ClearProperty(View.WallSwitchPosition)</onunload>
     </include>
 
     <variable name="Action_View_Content_ItemWidth">
@@ -144,18 +147,15 @@
     <include name="Action_Widget_Top">
         <param name="condition">true</param>
         <definition>
-            <onup condition="$PARAM[condition]">SetProperty(List.ViewContainer.Reset,$NUMBER[$PARAM[id]])</onup>
+            <!-- <onup condition="$PARAM[condition]">ActivateWindow(1105)</onup> -->
             <onup condition="$PARAM[condition]">SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onup>
-            <onup condition="$PARAM[condition] + Skin.String(Movement.Content.OnUp,Menu)">$VAR[Action_Menu_Position]</onup>
-            <onup condition="$PARAM[condition] + !Skin.String(Movement.Content.OnUp,Menu)">333</onup>
+            <onup condition="$PARAM[condition]">333</onup>
         </definition>
     </include>
 
     <include name="Action_Widget_End">
-        <ondown>SetProperty(List.ViewContainer.Reset,$NUMBER[$PARAM[id]])</ondown>
         <ondown>SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</ondown>
-        <ondown condition="Skin.String(Movement.Content.OnDown,Menu)">$VAR[Action_Menu_Position]</ondown>
-        <ondown condition="!Skin.String(Movement.Content.OnDown,Menu)">330</ondown>
+        <ondown>330</ondown>
     </include>
 
     <!-- TODO_SKINVARIABLES :: Positioned based upon widget stack positions -->
@@ -172,46 +172,38 @@
 
     <include name="Action_Recommendations_OnClick">
         <onclick>Action(Info)</onclick>
-        <onclick>Dialog.Close(1120,true)</onclick>
-        <onclick>Dialog.Close(1121,true)</onclick>
-        <onclick>Dialog.Close(1122,true)</onclick>
+        <onclick>Dialog.Close(1120,force)</onclick>
+        <onclick>Dialog.Close(1121,force)</onclick>
+        <onclick>Dialog.Close(1122,force)</onclick>
         <onclick>SetFocus(4001)</onclick>
-    </include>
-
-    <include name="Action_HM_OnLeft_LoopHome_NoWidgets">
-        <onleft condition="!String.IsEmpty(Container(303).ListItem.Property(widgets_only_focus))">$INFO[Container(303).ListItem.Property(widgets_only_focus)]</onleft>
-        <onleft condition="String.IsEmpty(Container(303).ListItem.Property(widgets_only_focus))">$PARAM[onlist]</onleft>
-    </include>
-    <include name="Action_HM_OnRight_LoopHome_NoWidgets">
-        <onright condition="!String.IsEmpty(Container(303).ListItem.Property(widgets_only_focus))">$INFO[Container(303).ListItem.Property(widgets_only_focus)]</onright>
-        <onright condition="String.IsEmpty(Container(303).ListItem.Property(widgets_only_focus))">$PARAM[onlist]</onright>
-    </include>
-
-    <include name="Action_HM_OnLeft_LoopHome">
-        <onleft condition="!String.IsEmpty(Window.Property(List.ViewContainer)) + !String.IsEqual(Window.Property(List.ViewContainer),Window.Property(List.ViewContainer.Reset))">SetFocus($INFO[Window.Property(List.ViewContainer)],99999,absolute)</onleft>
-        <onleft condition="!String.IsEmpty(Window.Property(List.ViewContainer)) + String.IsEqual(Window.Property(List.ViewContainer),Window.Property(List.ViewContainer.Reset))">SetFocus($INFO[Window.Property(List.ViewContainer)])</onleft>
-        <onleft condition="String.IsEmpty(Window.Property(List.ViewContainer))">$PARAM[onlist]</onleft>
-    </include>
-    <include name="Action_HM_OnRight_LoopHome">
-        <onright condition="!String.IsEmpty(Window.Property(List.ViewContainer)) + !String.IsEqual(Window.Property(List.ViewContainer),Window.Property(List.ViewContainer.Reset))">SetFocus($INFO[Window.Property(List.ViewContainer)],0,absolute)</onright>
-        <onright condition="!String.IsEmpty(Window.Property(List.ViewContainer)) + String.IsEqual(Window.Property(List.ViewContainer),Window.Property(List.ViewContainer.Reset))">SetFocus($INFO[Window.Property(List.ViewContainer)])</onright>
-        <onright condition="String.IsEmpty(Window.Property(List.ViewContainer))">$PARAM[onlist]</onright>
     </include>
 
     <include name="Action_HomeMenu_OnRightLeft">
         <param name="onlist">320</param>
         <param name="onmenu">ActivateWindow(shutdownmenu)</param>
+        <param name="c_bmp">[!String.IsEmpty(Window.Property(List.ViewContainer.Bump))]</param>
+        <param name="c_wof">[Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + !String.IsEmpty(Container(303).ListItem.Property(widgets_only_focus))]</param>
+        <param name="i_wof">$INFO[Container(303).ListItem.Property(widgets_only_focus)]</param>
+        <param name="c_lvl">[!String.IsEmpty(Window.Property(List.ViewContainer.Left))]</param>
+        <param name="i_lvl">$INFO[Window.Property(List.ViewContainer.Left)]</param>
+        <param name="c_lvc">[!String.IsEmpty(Window.Property(List.ViewContainer))]</param>
+        <param name="i_lvc">$INFO[Window.Property(List.ViewContainer)]</param>
+        <param name="c_twc">[!String.IsEmpty(Window.Property(TMDbHelper.WidgetContainer))]</param>
+        <param name="i_twc">$INFO[Window.Property(TMDbHelper.WidgetContainer)]</param>
         <definition>
 
-            <!-- On Left -->
-            <include condition="Skin.String(Movement.Menu.OnLeft,Loop) + Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)" content="Action_HM_OnLeft_LoopHome_NoWidgets"><param name="onlist">$PARAM[onlist]</param></include>
-            <include condition="Skin.String(Movement.Menu.OnLeft,Loop) + ![Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)]" content="Action_HM_OnLeft_LoopHome"><param name="onlist">$PARAM[onlist]</param></include>
-            <include condition="Skin.String(Movement.Menu.OnLeft,Bump)" content="Object_OnLeft"><param name="onleft">331</param></include>
-            <include condition="Skin.String(Movement.Menu.OnLeft,Menu)" content="Object_OnLeft"><param name="onleft">$PARAM[onmenu]</param></include>
+            <onleft condition="$PARAM[c_bmp]">331</onleft>
+            <onleft condition="!$PARAM[c_bmp] + $PARAM[c_lvl]">SetFocus($PARAM[i_lvl])</onleft>
+            <onleft condition="!$PARAM[c_bmp] + !$PARAM[c_lvl] + $PARAM[c_lvc]">SetFocus($PARAM[i_lvc],99999,absolute)</onleft>
+            <onleft condition="!$PARAM[c_bmp] + !$PARAM[c_lvc] + $PARAM[c_twc]">SetFocus($PARAM[i_twc],99999,absolute)</onleft>
+            <onleft condition="!$PARAM[c_bmp] + $PARAM[c_wof]">$PARAM[i_wof]</onleft>
+            <onleft condition="!$PARAM[c_bmp] + !$PARAM[c_lvc] + !$PARAM[c_twc] + !$PARAM[c_wof]">$PARAM[onlist]</onleft>
 
-            <!-- On Right -->
-            <include condition="Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)" content="Action_HM_OnRight_LoopHome_NoWidgets"><param name="onlist">$PARAM[onlist]</param></include>
-            <include condition="![Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)]" content="Action_HM_OnRight_LoopHome"><param name="onlist">$PARAM[onlist]</param></include>
+            <onright condition="$PARAM[c_lvc]">SetFocus($PARAM[i_lvc],0,absolute)</onright>
+            <onright condition="!$PARAM[c_lvc] + $PARAM[c_twc]">SetFocus($PARAM[i_twc],0,absolute)</onright>
+            <onright condition="!$PARAM[c_lvc] + $PARAM[c_wof]">$PARAM[i_wof]</onright>
+            <onright condition="!$PARAM[c_lvc] + !$PARAM[c_twc] + !$PARAM[c_wof]">$PARAM[onlist]</onright>
+
         </definition>
     </include>
 
@@ -294,7 +286,7 @@
         <onright condition="$PARAM[condition]">SetFocus(4000)</onright>
     </include>
 
-    <include name="Action_Info_Cast_OnClick">
+    <include name="Action_Info_Recommendations_OnClick">
         <onclick>SetProperty(Item_Title,$VAR[Label_Title],1121)</onclick>
         <onclick>SetProperty(Item_Query,$VAR[Path_Param_Query],1121)</onclick>
         <onclick>SetProperty(Item_Type,$VAR[Path_Param_Type],1121)</onclick>
@@ -302,10 +294,19 @@
 
         <onclick>SetProperty(Genre_Title,$INFO[Container(99950).ListItem.Property(Genre.1.Name)]$INFO[Container(99950).ListItem.Property(Genre.2.Name), / ,]$INFO[Container(99950).ListItem.Property(Genre.3.Name), / ,],1121)</onclick>
         <onclick>SetProperty(Genre_Query,$INFO[Container(99950).ListItem.Property(Genre.1.TMDB_ID),&amp;with_separator=AND&amp;with_id=True&amp;with_genres=,]$INFO[Container(99950).ListItem.Property(Genre.2.TMDB_ID), / ,]$INFO[Container(99950).ListItem.Property(Genre.3.TMDB_ID), / ,],1121)</onclick>
-
         <onclick>SetFocus(7001)</onclick>
         <onclick>ActivateWindow(1121)</onclick>
         <onclick>SetFocus(4000)</onclick>
+    </include>
+
+    <include name="Action_Info_Recommendations_OnDown">
+        <ondown>SetProperty(Item_Title,$VAR[Label_Title],1181)</ondown>
+        <ondown>SetProperty(Item_Query,$VAR[Path_Param_Query],1181)</ondown>
+        <ondown>SetProperty(Item_Type,$VAR[Path_Param_Type],1181)</ondown>
+        <ondown>SetProperty(Item_Year,$INFO[ListItem.Year],1181)</ondown>
+        <ondown>SetProperty(Genre_Title,$INFO[Container(99950).ListItem.Property(Genre.1.Name)]$INFO[Container(99950).ListItem.Property(Genre.2.Name), / ,]$INFO[Container(99950).ListItem.Property(Genre.3.Name), / ,],1181)</ondown>
+        <ondown>SetProperty(Genre_Query,$INFO[Container(99950).ListItem.Property(Genre.1.TMDB_ID),&amp;with_separator=AND&amp;with_id=True&amp;with_genres=,]$INFO[Container(99950).ListItem.Property(Genre.2.TMDB_ID), / ,]$INFO[Container(99950).ListItem.Property(Genre.3.TMDB_ID), / ,],1181)</ondown>
+        <ondown>ActivateWindow(1181)</ondown>
     </include>
 
     <include name="Action_View_Movement_OnUp">
@@ -320,10 +321,11 @@
     </include>
 
     <include name="Action_View_Movement_OnDown">
-        <!-- <ondown>$VAR[Action_Var_ToMediaFilter]</ondown> -->
-        <ondown>$VAR[Action_Var_ToScrollBar]</ondown>
-        <!-- <ondown>SetProperty(View.WallSwitchRow,1)</ondown> -->
-        <!-- <ondown condition="$EXP[Exp_FilterWall_IsEnabled] + $EXP[Exp_FilterWall_IsViewtype]">$VAR[Action_Var_ToWallView]</ondown>
+        <!-- <ondown>65</ondown> -->
+        <include>Action_Info_Recommendations_OnDown</include>
+        <!-- <ondown>$VAR[Action_Var_ToScrollBar]</ondown> -->
+        <!-- <ondown>SetProperty(View.WallSwitchRow,1)</ondown>
+        <ondown condition="$EXP[Exp_FilterWall_IsEnabled] + $EXP[Exp_FilterWall_IsViewtype]">$VAR[Action_Var_ToWallView]</ondown>
         <ondown condition="!$EXP[Exp_FilterWall_IsEnabled] | !$EXP[Exp_FilterWall_IsViewtype]">$VAR[Action_Var_ToScrollBar]</ondown> -->
         <!-- <ondown>64</ondown> -->
         <!-- <ondown>$VAR[Action_Var_ToScrollBar]</ondown> -->
@@ -336,51 +338,72 @@
     </include>
 
     <include name="Action_Menu_Movement_OnBack">
-        <onback>303</onback>
-        <onback>SetProperty(List.ViewContainer.Reset,$NUMBER[$PARAM[id]])</onback>
-        <onback>SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onback>
-        <onback>$VAR[Action_Menu_Position]</onback>
+        <param name="onmenu">$VAR[Action_Menu_Position]</param>
+        <param name="onbump" />
+        <param name="onleft" />
+        <definition>
+            <onback>303</onback>
+            <onback>SetProperty(List.ViewContainer.Bump,$PARAM[onbump])</onback>
+            <onback>SetProperty(List.ViewContainer.Left,$PARAM[onleft])</onback>
+            <onback>SetProperty(List.ViewContainer,$PARAM[id])</onback>
+            <onback>$PARAM[onmenu]</onback>
+        </definition>
     </include>
 
     <include name="Action_View_Movement_OnLeft">
-        <param name="string">Movement.Content.OnLeft</param>
         <param name="onmenu">$VAR[Action_Menu_Position]</param>
+        <param name="onbump" />
+        <param name="onleft" />
         <definition>
-
-            <!-- Menu -->
-            <onleft condition="Skin.String($PARAM[string],Menu)">303</onleft>
-            <onleft condition="Skin.String($PARAM[string],Menu)">SetProperty(List.ViewContainer,$PARAM[id])</onleft>
-            <onleft condition="Skin.String($PARAM[string],Menu)">$PARAM[onmenu]</onleft>
-
-            <!-- Loop -->
-            <onleft condition="Skin.String($PARAM[string],Loop)">SetFocus($PARAM[id],99999,absolute)</onleft>
-
-            <!-- Bump -->
-            <onleft condition="Skin.String($PARAM[string],Bump)">SetProperty(List.ViewContainer,$PARAM[id])</onleft>
-            <onleft condition="Skin.String($PARAM[string],Bump)">332</onleft>
-
+            <onleft>303</onleft>
+            <onleft>SetProperty(List.ViewContainer.Bump,$PARAM[onbump])</onleft>
+            <onleft>SetProperty(List.ViewContainer.Left,$PARAM[onleft])</onleft>
+            <onleft>SetProperty(List.ViewContainer,$PARAM[id])</onleft>
+            <onleft>$PARAM[onmenu]</onleft>
         </definition>
     </include>
 
     <include name="Action_View_Movement_OnRight">
-        <param name="string">Movement.Content.OnRight</param>
-        <param name="refocus">Skin.String(Movement.Content.OnRight,Menu)</param>
         <param name="onmenu">$VAR[Action_Menu_Position]</param>
+        <param name="onbump">False</param>
+        <param name="onleft" />
         <definition>
 
             <!-- Menu -->
-            <onright condition="Skin.String($PARAM[string],Menu)">303</onright>
-            <onright condition="Skin.String($PARAM[string],Menu)">SetProperty(List.ViewContainer,$PARAM[id])</onright>
-            <onright condition="Skin.String($PARAM[string],Menu) + $PARAM[refocus]">SetFocus($PARAM[id],0,absolute)</onright>
-            <onright condition="Skin.String($PARAM[string],Menu)">$PARAM[onmenu]</onright>
-
-            <!-- Loop -->
-            <onright condition="Skin.String($PARAM[string],Loop)">SetFocus($PARAM[id],0,absolute)</onright>
+            <onright condition="![$PARAM[onbump]]">303</onright>
+            <onright condition="![$PARAM[onbump]]">SetProperty(List.ViewContainer,$PARAM[id])</onright>
+            <onright condition="![$PARAM[onbump]]">SetProperty(List.ViewContainer.Left,$PARAM[onleft])</onright>
+            <onright condition="![$PARAM[onbump]]">SetFocus($PARAM[id],0,absolute)</onright>
+            <onright condition="![$PARAM[onbump]]">$PARAM[onmenu]</onright>
 
             <!-- Bump -->
-            <onright condition="Skin.String($PARAM[string],Bump)">SetProperty(List.ViewContainer,$PARAM[id])</onright>
-            <onright condition="Skin.String($PARAM[string],Bump)">332</onright>
+            <onright condition="$PARAM[onbump]">SetProperty(List.ViewContainer,$PARAM[id])</onright>
+            <onright condition="$PARAM[onbump]">332</onright>
 
+        </definition>
+    </include>
+
+    <include name="Action_View_Movement_OnLeftRight">
+        <param name="include_onback">True</param>
+        <definition>
+            <include content="Action_View_Movement_OnLeft">
+                <param name="id">$PARAM[id]</param>
+                <param name="onmenu">$PARAM[onmenu]</param>
+                <param name="onbump">$PARAM[onbump]</param>
+                <param name="onleft">$PARAM[onleft]</param>
+            </include>
+            <include content="Action_View_Movement_OnRight">
+                <param name="id">$PARAM[id]</param>
+                <param name="onmenu">$PARAM[onmenu]</param>
+                <param name="onbump">$PARAM[onbump]</param>
+                <param name="onleft">$PARAM[onleft]</param>
+            </include>
+            <include content="Action_View_Movement_OnBack" condition="$PARAM[include_onback]">
+                <param name="id">$PARAM[id]</param>
+                <param name="onmenu">$PARAM[onmenu]</param>
+                <param name="onbump">$PARAM[onbump]</param>
+                <param name="onleft">$PARAM[onleft]</param>
+            </include>
         </definition>
     </include>
 
@@ -415,10 +438,11 @@
     </include>
 
     <include name="Action_Scrollbar">
-        <onup condition="$EXP[Exp_FilterWall_IsMedia]">SetProperty(View.WallSwitchRow,1)</onup>
+        <!-- <onup condition="$EXP[Exp_FilterWall_IsMedia]">SetProperty(View.WallSwitchRow,1)</onup>
         <onup condition="$EXP[Exp_FilterWall_IsMedia]">SetFocus(67)</onup>
-        <onup condition="!$EXP[Exp_FilterWall_IsMedia]">SetFocus($VAR[Action_View_ContentID])</onup>
+        <onup condition="!$EXP[Exp_FilterWall_IsMedia]">SetFocus($VAR[Action_View_ContentID])</onup> -->
         <!-- <onup>SetFocus(68)</onup> -->
+        <onup>9600</onup>
         <onback>68</onback>
 
         <onclick>SetFocus(68)</onclick>
@@ -427,7 +451,8 @@
     </include>
 
     <variable name="Action_Var_ToMediaFilter">
-        <value>Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=9001,clear_prop_one=Null,clear_prop_two=Null,preaction=SetProperty(View.WallSwitchPosition,1))</value>
+        <value>Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=64,clear_prop_one=Null,clear_prop_two=Null,preaction=SetProperty(View.WallSwitchPosition,1))</value>
+        <!-- <value>Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=9001,clear_prop_one=Null,clear_prop_two=Null,preaction=SetProperty(View.WallSwitchPosition,1))</value> -->
     </variable>
 
     <variable name="Action_Var_ToWallView">
@@ -435,7 +460,7 @@
     </variable>
 
     <variable name="Action_Var_ToScrollBar">
-        <value condition="$EXP[Exp_AlphabetTypes_Only] + Skin.HasSetting(EnableAlphabetStrip)">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=65,clear_prop_one=Null,clear_prop_two=Null,preaction=ClearProperty(View.WallSwitchPosition))</value>
+        <value condition="$EXP[Exp_AlphabetTypes_Only] + !Skin.HasSetting(DisableAlphabetStrip)">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=65,clear_prop_one=Null,clear_prop_two=Null,preaction=ClearProperty(View.WallSwitchPosition))</value>
         <value>Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=64,clear_prop_one=Null,clear_prop_two=Null,preaction=ClearProperty(View.WallSwitchPosition))</value>
     </variable>
 
