@@ -111,11 +111,11 @@
     </include>
 
     <include name="Action_Widget_OnBack">
-        <onback condition="!Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)">$PARAM[grouplistid]</onback>
-        <onback condition="!Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)">SetFocus($PARAM[id],0,absolute)</onback>
-        <onback condition="Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1) + !Control.HasFocus($PARAM[topid])">$PARAM[topid]</onback>
-        <onback condition="Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1) + Control.HasFocus($PARAM[topid])">$PARAM[grouplistid]</onback>
-        <onback condition="Integer.IsEqual(Container($PARAM[id]).ListItem.CurrentItem,1)">AlarmClock(refocus,$PARAM[refocus],00:00,silent)</onback>
+        <onback condition="!Integer.IsEqual(Container($PARAM[id]).CurrentItem,1)">$PARAM[grouplistid]</onback>
+        <onback condition="!Integer.IsEqual(Container($PARAM[id]).CurrentItem,1)">SetFocus($PARAM[id],0,absolute)</onback>
+        <onback condition="Integer.IsEqual(Container($PARAM[id]).CurrentItem,1) + !Control.HasFocus($PARAM[topid])">$PARAM[topid]</onback>
+        <onback condition="Integer.IsEqual(Container($PARAM[id]).CurrentItem,1) + Control.HasFocus($PARAM[topid])">$PARAM[grouplistid]</onback>
+        <onback condition="Integer.IsEqual(Container($PARAM[id]).CurrentItem,1)">AlarmClock(refocus,$PARAM[refocus],00:00,silent)</onback>
     </include>
 
     <include name="Action_Widget_Top_HomeLoop">
@@ -310,45 +310,34 @@
     </include>
 
     <include name="Action_View_Movement_OnUp">
-        <!-- <onup>SetFocus(9001)</onup> -->
         <onup>$VAR[Action_Var_ToMediaFilter]</onup>
-        <!-- <onup condition="Skin.String(Movement.Library.OnUp,Wall)">$VAR[Action_Var_ToWallView]</onup>
-        <onup condition="Skin.String(Movement.Library.OnUp,Plot)">ActivateWindow(1113)</onup>
-        <onup condition="Skin.String(Movement.Library.OnUp,Menu)">$VAR[Action_Menu_Position]</onup>
-        <onup condition="Skin.String(Movement.Library.OnUp,Bump)">SetFocus(333)</onup>
-        <onup condition="Skin.String(Movement.Library.OnUp,View)">$VAR[Action_Var_ToMediaFilter]</onup>
-        <onup condition="Skin.String(Movement.Library.OnUp,Jump)">$VAR[Action_Var_ToScrollBar]</onup> -->
     </include>
 
     <include name="Action_View_Movement_OnDown">
-        <!-- <ondown>65</ondown> -->
         <include>Action_Info_Recommendations_OnDown</include>
-        <!-- <ondown>$VAR[Action_Var_ToScrollBar]</ondown> -->
-        <!-- <ondown>SetProperty(View.WallSwitchRow,1)</ondown>
-        <ondown condition="$EXP[Exp_FilterWall_IsEnabled] + $EXP[Exp_FilterWall_IsViewtype]">$VAR[Action_Var_ToWallView]</ondown>
-        <ondown condition="!$EXP[Exp_FilterWall_IsEnabled] | !$EXP[Exp_FilterWall_IsViewtype]">$VAR[Action_Var_ToScrollBar]</ondown> -->
-        <!-- <ondown>64</ondown> -->
-        <!-- <ondown>$VAR[Action_Var_ToScrollBar]</ondown> -->
-        <!-- <ondown condition="Skin.String(Movement.Library.OnDown,Wall)">$VAR[Action_Var_ToWallView]</ondown>
-        <ondown condition="Skin.String(Movement.Library.OnDown,Plot)">ActivateWindow(1113)</ondown>
-        <ondown condition="Skin.String(Movement.Library.OnDown,Menu)">$VAR[Action_Menu_Position]</ondown>
-        <ondown condition="Skin.String(Movement.Library.OnDown,Bump)">SetFocus(330)</ondown>
-        <ondown condition="Skin.String(Movement.Library.OnDown,View)">$VAR[Action_Var_ToMediaFilter]</ondown>
-        <ondown condition="Skin.String(Movement.Library.OnDown,Jump)">$VAR[Action_Var_ToScrollBar]</ondown> -->
     </include>
 
-    <include name="Action_Menu_Movement_OnBack">
+    <include name="Action_View_Movement_OnBack">
         <param name="onmenu">$VAR[Action_Menu_Position]</param>
         <param name="onbump" />
         <param name="onleft" />
+        <param name="onback">False</param>
         <definition>
-            <onback>303</onback>
-            <onback>SetProperty(List.ViewContainer.Bump,$PARAM[onbump])</onback>
-            <onback>SetProperty(List.ViewContainer.Left,$PARAM[onleft])</onback>
-            <onback>SetProperty(List.ViewContainer,$PARAM[id])</onback>
-            <onback>$PARAM[onmenu]</onback>
+            <onback condition="$PARAM[onback] + Window.IsMedia">62</onback>
+            <onback condition="$PARAM[onback]">$PARAM[id]</onback>
+            <onback condition="$PARAM[onback]">SetFocus($PARAM[id],0,absolute)</onback>
+            <onback condition="![$PARAM[onback]]">303</onback>
+            <onback condition="![$PARAM[onback]]">SetProperty(List.ViewContainer.Bump,$PARAM[onbump])</onback>
+            <onback condition="![$PARAM[onback]]">SetProperty(List.ViewContainer.Left,$PARAM[onleft])</onback>
+            <onback condition="![$PARAM[onback]]">SetProperty(List.ViewContainer,$PARAM[id])</onback>
+            <onback condition="![$PARAM[onback]]">$PARAM[onmenu]</onback>
         </definition>
     </include>
+
+    <!-- <include name="Action_View_Movement_OnBack">
+        <onback condition="!Integer.IsEqual(Container($PARAM[id]).CurrentItem,1) + !Integer.IsEqual(Container($PARAM[id]).CurrentItem,0)">62</onback>
+        <onback condition="!Integer.IsEqual(Container($PARAM[id]).CurrentItem,1) + !Integer.IsEqual(Container($PARAM[id]).CurrentItem,0)">AlarmClock(refocus,SetFocus($PARAM[id],0,absolute),00:00,silent)</onback>
+    </include> -->
 
     <include name="Action_View_Movement_OnLeft">
         <param name="onmenu">$VAR[Action_Menu_Position]</param>
@@ -403,20 +392,15 @@
                 <param name="onmenu">$PARAM[onmenu]</param>
                 <param name="onbump">$PARAM[onbump]</param>
                 <param name="onleft">$PARAM[onleft]</param>
+                <param name="onback">$PARAM[onback]</param>
             </include>
         </definition>
-    </include>
-
-    <include name="Action_View_Movement_OnBack">
-        <onback condition="!Integer.IsEqual(Container($PARAM[id]).CurrentItem,1) + !Integer.IsEqual(Container($PARAM[id]).CurrentItem,0)">62</onback>
-        <onback condition="!Integer.IsEqual(Container($PARAM[id]).CurrentItem,1) + !Integer.IsEqual(Container($PARAM[id]).CurrentItem,0)">AlarmClock(refocus,SetFocus($PARAM[id],0,absolute),00:00,silent)</onback>
     </include>
 
     <include name="Action_OSD_Button_OnFocus">
         <onfocus condition="!String.IsEmpty(Skin.String(OSD_Timeout))">AlarmClock(osd_timeout,SetFocus(99997),$INFO[Skin.String(OSD_Timeout),00:,],silent)</onfocus>
         <onunfocus>CancelAlarm(osd_timeout,true)</onunfocus>
     </include>
-
 
     <include name="Action_OptionsMenu_Default">
         <param name="id">50</param>
@@ -438,21 +422,14 @@
     </include>
 
     <include name="Action_Scrollbar">
-        <!-- <onup condition="$EXP[Exp_FilterWall_IsMedia]">SetProperty(View.WallSwitchRow,1)</onup>
-        <onup condition="$EXP[Exp_FilterWall_IsMedia]">SetFocus(67)</onup>
-        <onup condition="!$EXP[Exp_FilterWall_IsMedia]">SetFocus($VAR[Action_View_ContentID])</onup> -->
-        <!-- <onup>SetFocus(68)</onup> -->
         <onup>9600</onup>
         <onback>68</onback>
-
         <onclick>SetFocus(68)</onclick>
         <ondown>SetFocus(68)</ondown>
-        <!-- <ondown>$VAR[Action_Var_ToMediaFilter]</ondown> -->
     </include>
 
     <variable name="Action_Var_ToMediaFilter">
         <value>Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=64,clear_prop_one=Null,clear_prop_two=Null,preaction=SetProperty(View.WallSwitchPosition,1))</value>
-        <!-- <value>Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=9001,clear_prop_one=Null,clear_prop_two=Null,preaction=SetProperty(View.WallSwitchPosition,1))</value> -->
     </variable>
 
     <variable name="Action_Var_ToWallView">
