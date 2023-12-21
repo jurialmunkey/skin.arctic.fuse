@@ -193,7 +193,7 @@
         <definition>
 
             <onleft condition="$PARAM[c_bmp]">331</onleft>
-            <onleft condition="!$PARAM[c_bmp] + $PARAM[c_lvl]">SetFocus($PARAM[i_lvl])</onleft>
+            <onleft condition="!$PARAM[c_bmp] + $PARAM[c_lvl]">SetFocus($PARAM[i_lvl],99999,absolute)</onleft>
             <onleft condition="!$PARAM[c_bmp] + !$PARAM[c_lvl] + $PARAM[c_lvc]">SetFocus($PARAM[i_lvc],99999,absolute)</onleft>
             <onleft condition="!$PARAM[c_bmp] + !$PARAM[c_lvc] + $PARAM[c_twc]">SetFocus($PARAM[i_twc],99999,absolute)</onleft>
             <onleft condition="!$PARAM[c_bmp] + $PARAM[c_wof]">$PARAM[i_wof]</onleft>
@@ -203,6 +203,10 @@
             <onright condition="!$PARAM[c_lvc] + $PARAM[c_twc]">SetFocus($PARAM[i_twc],0,absolute)</onright>
             <onright condition="!$PARAM[c_lvc] + $PARAM[c_wof]">$PARAM[i_wof]</onright>
             <onright condition="!$PARAM[c_lvc] + !$PARAM[c_twc] + !$PARAM[c_wof]">$PARAM[onlist]</onright>
+
+            <onback condition="!Window.IsVisible(Home)">ClearProperty(List.ViewContainer)</onback>
+            <onback condition="!Window.IsVisible(Home)">ClearProperty(List.ViewContainer.Left)</onback>
+            <onback condition="!Window.IsVisible(Home)">ClearProperty(TMDbHelper.WidgetContainer)</onback>
 
         </definition>
     </include>
@@ -300,7 +304,7 @@
     </include>
 
     <include name="Action_Info_Recommendations_OnDown">
-        <ondown>SetProperty(Item_Title,$VAR[Label_Title],1181)</ondown>
+        <ondown>SetProperty(Item_Title,$VAR[Label_Title_Container],1181)</ondown>
         <ondown>SetProperty(Item_Query,$VAR[Path_Param_Query],1181)</ondown>
         <ondown>SetProperty(Item_Type,$VAR[Path_Param_Type],1181)</ondown>
         <ondown>SetProperty(Item_Year,$INFO[ListItem.Year],1181)</ondown>
@@ -322,8 +326,9 @@
         <param name="onbump" />
         <param name="onleft" />
         <param name="onback">False</param>
+        <param name="backid">62</param>
         <definition>
-            <onback condition="$PARAM[onback] + Window.IsMedia">62</onback>
+            <onback condition="$PARAM[onback] + Window.IsMedia">$PARAM[backid]</onback>
             <onback condition="$PARAM[onback]">$PARAM[id]</onback>
             <onback condition="$PARAM[onback]">SetFocus($PARAM[id],0,absolute)</onback>
             <onback condition="![$PARAM[onback]]">303</onback>
@@ -393,6 +398,7 @@
                 <param name="onbump">$PARAM[onbump]</param>
                 <param name="onleft">$PARAM[onleft]</param>
                 <param name="onback">$PARAM[onback]</param>
+                <param name="backid">$PARAM[backid]</param>
             </include>
         </definition>
     </include>
