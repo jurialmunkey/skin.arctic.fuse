@@ -584,21 +584,12 @@
         </definition>
     </include>
 
-    <include name="Widget_Info_Row_action">
-        <onback condition="!Integer.IsEqual(Container($PARAM[id]).CurrentItem,1)">SetFocus($PARAM[id],0,absolute)</onback>
-        <onback>Action(Left)</onback>
-        <onback>7000</onback>
-        <onleft>7000</onleft>
-        <onright>SetFocus($PARAM[id],0,absolute)</onright>
-        <onright>7000</onright>
-    </include>
-
     <include name="Widget_Info_Row">
-        <param name="include_action">Widget_Info_Row_action</param>
         <param name="set_widgetcontainer">true</param>
         <param name="set_imageoverride">true</param>
         <param name="baseid">50</param>
         <param name="basegroupid">51</param>
+        <param name="backid">$PARAM[backid]</param>
         <definition>
             <include content="_Widget_Row">
                 <param name="id">$PARAM[baseid]$PARAM[id]</param>
@@ -609,7 +600,6 @@
                 <param name="visible">$PARAM[visible]</param>
                 <param name="altvisible">$PARAM[altvisible]</param>
                 <param name="detailed">$PARAM[detailed]</param>
-                <param name="include_action">$PARAM[include_action]</param>
                 <param name="transition_include">$PARAM[transition_include]</param>
                 <param name="transition_hidden">$PARAM[transition_hidden]</param>
                 <param name="labeltop">$PARAM[labeltop]</param>
@@ -620,8 +610,10 @@
                 <param name="shortstack_visible">$PARAM[shortstack_visible]</param>
                 <param name="shortstack_enabled">$PARAM[shortstack_enabled]</param>
 
-                <include content="$PARAM[include_action]">
+                <include content="Action_View_Movement_OnLeftRight">
                     <param name="id">$PARAM[baseid]$PARAM[id]</param>
+                    <param name="backid">$PARAM[baseid]00</param>
+                    <param name="onback">!Integer.IsEqual(Container($PARAM[baseid]$PARAM[id]).CurrentItem,1)</param>
                 </include>
 
                 <onfocus condition="$PARAM[set_imageoverride]">SetProperty(TMDbHelper.Image.Override,1,Home)</onfocus>
