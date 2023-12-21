@@ -99,6 +99,7 @@
         <onload condition="Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu)">SetProperty(Slide.WidgetContainer,True)</onload>
         <onload condition="Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu)">SetFocus(303,0,absolute)</onload>
         <onload condition="Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu)">SetFocus(601)</onload>
+        <onload condition="Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu)">AlarmClock(refocus,SetFocus(601),00:00,silent)</onload>
         <onload condition="!Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu)">SetFocus(300)</onload>
         <include>Action_BuildShortcuts_OnLoad</include>
         <onunload>CancelAlarm(playtrailer,silent)</onunload>
@@ -179,7 +180,6 @@
 
     <include name="Action_HomeMenu_OnRightLeft">
         <param name="onlist">320</param>
-        <param name="onmenu">ActivateWindow(shutdownmenu)</param>
         <param name="c_bmp">[!String.IsEmpty(Window.Property(List.ViewContainer.Bump))]</param>
         <param name="c_wof">[Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + !String.IsEmpty(Container(303).ListItem.Property(widgets_only_focus))]</param>
         <param name="i_wof">$INFO[Container(303).ListItem.Property(widgets_only_focus)]</param>
@@ -343,33 +343,36 @@
             <onback condition="![$PARAM[onback]]">SetProperty(List.ViewContainer.Bump,$PARAM[onbump])</onback>
             <onback condition="![$PARAM[onback]]">SetProperty(List.ViewContainer.Left,$PARAM[onleft])</onback>
             <onback condition="![$PARAM[onback]]">SetProperty(List.ViewContainer,$PARAM[id])</onback>
-            <onback condition="![$PARAM[onback]]">SetFocus($PARAM[menuid])</onback>
+            <onback condition="![$PARAM[onback]]">SetFocus($PARAM[menuid]$PARAM[online])</onback>
         </definition>
     </include>
 
     <include name="Action_View_Movement_OnLeft">
         <param name="onbump" />
         <param name="onleft" />
+        <param name="menuid">303</param>
         <definition>
-            <onleft>303</onleft>
+            <onleft>$PARAM[menuid]</onleft>
             <onleft>SetProperty(List.ViewContainer.Bump,$PARAM[onbump])</onleft>
             <onleft>SetProperty(List.ViewContainer.Left,$PARAM[onleft])</onleft>
             <onleft>SetProperty(List.ViewContainer,$PARAM[id])</onleft>
-            <onleft>SetFocus(303)</onleft>
+            <onleft>SetFocus($PARAM[menuid]$PARAM[online])</onleft>
         </definition>
     </include>
 
     <include name="Action_View_Movement_OnRight">
         <param name="onbump">False</param>
         <param name="onleft" />
+        <param name="online" />
+        <param name="menuid">303</param>
         <definition>
 
             <!-- Menu -->
-            <onright condition="![$PARAM[onbump]]">303</onright>
+            <onright condition="![$PARAM[onbump]]">$PARAM[menuid]</onright>
             <onright condition="![$PARAM[onbump]]">SetProperty(List.ViewContainer,$PARAM[id])</onright>
             <onright condition="![$PARAM[onbump]]">SetProperty(List.ViewContainer.Left,$PARAM[onleft])</onright>
             <onright condition="![$PARAM[onbump]]">SetFocus($PARAM[id],0,absolute)</onright>
-            <onright condition="![$PARAM[onbump]]">SetFocus(303)</onright>
+            <onright condition="![$PARAM[onbump]]">SetFocus($PARAM[menuid]$PARAM[online])</onright>
 
             <!-- Bump -->
             <onright condition="$PARAM[onbump]">SetProperty(List.ViewContainer,$PARAM[id])</onright>
@@ -383,24 +386,26 @@
         <definition>
             <include content="Action_View_Movement_OnLeft">
                 <param name="id">$PARAM[id]</param>
-                <param name="onmenu">$PARAM[onmenu]</param>
+                <param name="menuid">$PARAM[menuid]</param>
                 <param name="onbump">$PARAM[onbump]</param>
                 <param name="onleft">$PARAM[onleft]</param>
+                <param name="online">$PARAM[online]</param>
             </include>
             <include content="Action_View_Movement_OnRight">
                 <param name="id">$PARAM[id]</param>
-                <param name="onmenu">$PARAM[onmenu]</param>
+                <param name="menuid">$PARAM[menuid]</param>
                 <param name="onbump">$PARAM[onbump]</param>
                 <param name="onleft">$PARAM[onleft]</param>
+                <param name="online">$PARAM[online]</param>
             </include>
             <include content="Action_View_Movement_OnBack" condition="$PARAM[include_onback]">
                 <param name="id">$PARAM[id]</param>
-                <param name="onmenu">$PARAM[onmenu]</param>
                 <param name="onbump">$PARAM[onbump]</param>
                 <param name="onleft">$PARAM[onleft]</param>
                 <param name="onback">$PARAM[onback]</param>
                 <param name="backid">$PARAM[backid]</param>
                 <param name="menuid">$PARAM[menuid]</param>
+                <param name="online">$PARAM[online]</param>
             </include>
         </definition>
     </include>
