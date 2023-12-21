@@ -49,16 +49,26 @@
                 <param name="hitrect_y">40</param>
                 <param name="hitrect_w">1640</param>
                 <param name="hitrect_h">80</param>
-
                 <top>0</top>
                 <left>240</left>
                 <height>240</height>
-                <include content="Action_Menu_Movement_OnBack">
-                    <param name="id">$PARAM[id]</param>
-                </include>
                 <onup>300</onup>
                 <ondown>$PARAM[ondown]</ondown>
                 <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,$PARAM[window_id])</onfocus>
+
+                <include content="Action_View_Movement_OnLeftRight" condition="Skin.HasSetting(Slide.WidgetContainer)">
+                    <param name="id">$PARAM[id]</param>
+                    <param name="onback">!Integer.IsEqual(Container($PARAM[id]).CurrentItem,1)</param>
+                    <param name="backid">320</param>
+                    <param name="online">,1</param>
+                </include>
+                <include content="Action_View_Movement_OnLeftRight" condition="!Skin.HasSetting(Slide.WidgetContainer)">
+                    <param name="id">$PARAM[id]</param>
+                    <param name="onback">!Integer.IsEqual(Container($PARAM[id]).CurrentItem,1)</param>
+                    <param name="backid">320</param>
+                    <param name="online">,4</param>
+                </include>
+
                 <nested />
             </include>
         </definition>
@@ -293,23 +303,32 @@
                 <param name="hidden_button_prefix">Item.$INFO[Container(300).ListItem.Property(item)]302.</param>
                 <param name="slide">Skin.HasSetting(Slide.WidgetContainer)</param>
 
+                <include content="Action_View_Movement_OnLeftRight" condition="Skin.HasSetting(Slide.WidgetContainer)">
+                    <param name="id">300</param>
+                    <param name="onback">!Integer.IsEqual(Container(300).CurrentItem,1)</param>
+                    <param name="backid">320</param>
+                    <param name="online">,1</param>
+                </include>
+                <include content="Action_View_Movement_OnLeftRight" condition="!Skin.HasSetting(Slide.WidgetContainer)">
+                    <param name="id">300</param>
+                    <param name="onback">!Integer.IsEqual(Container(300).CurrentItem,1)</param>
+                    <param name="backid">320</param>
+                    <param name="online">,4</param>
+                </include>
+
                 <onup condition="$EXP[Exp_Hubs_Spotlight_HasItems]">311</onup>
                 <include content="Action_Widget_Top">
                     <param name="id">300</param>
                     <param name="condition">[!$EXP[Exp_Hubs_Spotlight_HasItems]]</param>
                 </include>
-
-                <include content="Action_Menu_Movement_OnBack">
-                    <param name="id">300</param>
-                </include>
                 <ondown>302</ondown>
                 <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,$PARAM[window_id])</onfocus>
                 <include content="Hub_Categories_Dynamic" condition="Skin.HasSetting(KioskMode.HubConfigurationUnlocked)">
-                    <param name="id">$PARAM[id]</param>
+                    <param name="id">300</param>
                     <param name="categories">$PARAM[categories]</param>
                 </include>
                 <include content="Hub_Categories_Static" condition="!Skin.HasSetting(KioskMode.HubConfigurationUnlocked)">
-                    <param name="id">$PARAM[id]</param>
+                    <param name="id">300</param>
                     <param name="categories">$PARAM[categories]</param>
                 </include>
             </include>

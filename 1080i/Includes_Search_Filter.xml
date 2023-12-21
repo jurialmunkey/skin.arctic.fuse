@@ -54,7 +54,12 @@
             <ondown>SetProperty(SearchTerm,$INFO[Control.GetLabel(9099).index(1)])</ondown>
             <ondown>9002</ondown>
 
-            <include content="Action_View_Movement_OnLeft">
+            <include content="Action_View_Movement_OnLeft" condition="$EXP[Exp_HomeMenu_DontHide]">
+                <param name="id">9099</param>
+                <param name="onleft">9006</param>
+                <param name="menuid">308</param>
+            </include>
+            <include content="Action_View_Movement_OnLeft" condition="![$EXP[Exp_HomeMenu_DontHide]]">
                 <param name="id">9099</param>
                 <param name="onleft">9006</param>
             </include>
@@ -85,7 +90,18 @@
             <onleft>9099</onleft>
             <left>700</left>
             <right>-700</right>
-            <include content="Action_View_Movement_OnRight">
+            <include content="Action_View_Movement_OnBack">
+                <param name="id">9099</param>
+                <param name="onleft">9006</param>
+                <param name="onback">!Control.HasFocus(9007)</param>
+                <param name="backid">9007</param>
+            </include>
+            <include content="Action_View_Movement_OnRight" condition="$EXP[Exp_HomeMenu_DontHide]">
+                <param name="id">9099</param>
+                <param name="onleft">9006</param>
+                <param name="menuid">308</param>
+            </include>
+            <include content="Action_View_Movement_OnRight" condition="![$EXP[Exp_HomeMenu_DontHide]]">
                 <param name="id">9099</param>
                 <param name="onleft">9006</param>
             </include>
@@ -179,7 +195,10 @@
                 <left>0</left>
                 <orientation>horizontal</orientation>
                 <onup>9003</onup>
-                <onback>PreviousMenu</onback>
+                <include content="Action_View_Movement_OnBack">
+                    <param name="id">9098</param>
+                    <param name="backid">303</param>
+                </include>
                 <ondown>9500</ondown>
                 <focusposition>0</focusposition>
                 <movement>0</movement>
@@ -346,6 +365,9 @@
             <include content="Action_View_Movement_OnLeftRight">
                 <param name="id">9501</param>
                 <param name="onleft">9527</param>
+                <param name="backid">9500</param>
+                <param name="onback">!Control.HasFocus(9501)</param>
+                <param name="online">,1</param>
             </include>
 
             <onup>9098</onup>
@@ -630,6 +652,8 @@
             <visible>!String.IsEmpty(Control.GetLabel(9099).index(1)) | Skin.HasSetting(Search.EnableDiscover)</visible>
             <include content="Action_View_Movement_OnLeftRight">
                 <param name="id">5099</param>
+                <param name="backid">303</param>
+                <param name="online">,1</param>
             </include>
             <orientation>horizontal</orientation>
             <width>1</width>
@@ -721,18 +745,19 @@
         <param name="ondown">9098</param>
         <param name="rowone">9002</param>
         <param name="rowtwo">9003</param>
-        <param name="onback">6000</param>
         <definition>
             <!-- First Row -->
             <control type="grouplist" id="$PARAM[rowone]">
                 <orientation>horizontal</orientation>
                 <itemgap>0</itemgap>
                 <height>view_pad</height>
-                <onback>$PARAM[onback]</onback>
 
                 <include content="Action_View_Movement_OnLeftRight">
                     <param name="id">9011</param>
                     <param name="onleft">9026</param>
+                    <param name="backid">$PARAM[rowone]</param>
+                    <param name="onback">!Control.HasFocus(9011)</param>
+                    <param name="online">,0</param>
                 </include>
 
                 <include content="Search_Filter_Letter">
@@ -871,11 +896,13 @@
                 <height>view_pad</height>
                 <orientation>horizontal</orientation>
                 <itemgap>0</itemgap>
-                <onback>$PARAM[onback]</onback>
 
                 <include content="Action_View_Movement_OnLeftRight">
                     <param name="id">9031</param>
                     <param name="onleft">9047</param>
+                    <param name="backid">$PARAM[rowtwo]</param>
+                    <param name="onback">!Control.HasFocus(9031)</param>
+                    <param name="online">,0</param>
                 </include>
 
                 <include content="Search_Filter_Letter">

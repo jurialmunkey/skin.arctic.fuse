@@ -36,7 +36,7 @@
         <control type="group">
             <left>view_side</left>
             <top>590</top>
-            <visible allowhiddenfocus="true">![Control.HasFocus($PARAM[id]3) | Control.HasFocus(60) | Control.HasFocus(332)]</visible>
+            <visible allowhiddenfocus="true">![Control.HasFocus($PARAM[id]3) | Control.HasFocus(60) | Control.HasFocus(332) | Control.HasFocus(62)]</visible>
             <animation effect="fade" start="0" end="100" time="200" delay="200" reversible="false">Visible</animation>
             <animation effect="fade" start="100" end="0" time="200" reversible="false">Hidden</animation>
 
@@ -61,11 +61,17 @@
 
                 <include content="Action_View_Movement_OnLeft">
                     <param name="id">$PARAM[id]2</param>
+                    <param name="onleft">$PARAM[id]3</param>
+                    <param name="online">,3</param>
                 </include>
+                <include content="Action_View_Movement_OnBack">
+                    <param name="id">$PARAM[id]2</param>
+                    <param name="onleft">$PARAM[id]3</param>
+                </include>
+
                 <onright condition="!Container($PARAM[id]3).IsUpdating">$PARAM[id]3</onright>
                 <onfocus condition="!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),$PARAM[id]3)">SetProperty(TMDbHelper.WidgetContainer,$PARAM[id]3)</onfocus>
                 <onfocus>ClearProperty(SpecialFolderPath)</onfocus>
-                <!-- <onfocus>ClearProperty(MediaFilterBase)</onfocus> -->
                 <visible>$PARAM[visible]</visible>
                 <viewtype label="$PARAM[viewtype_label]">wrap</viewtype>
 
@@ -88,8 +94,8 @@
     <include name="View_Combined_Row_Vert">
         <definition>
             <control type="group">
-                <animation effect="slide" start="$PARAM[slide_x]" end="0" tween="quadratic" easing="out" time="400" reversible="false" condition="[Control.HasFocus($PARAM[id]3) | Control.HasFocus(60) | Control.HasFocus(332) | Control.HasFocus(68)]">Conditional</animation>
-                <animation effect="slide" start="0" end="$PARAM[slide_x]" tween="quadratic" easing="out" time="400" reversible="false" condition="![Control.HasFocus($PARAM[id]3) | Control.HasFocus(60) | Control.HasFocus(332) | Control.HasFocus(68)]">Conditional</animation>
+                <animation effect="slide" start="$PARAM[slide_x]" end="0" tween="quadratic" easing="out" time="400" reversible="false" condition="[Control.HasFocus($PARAM[id]3) | Control.HasFocus(60) | Control.HasFocus(332) | Control.HasFocus(68) | Control.HasFocus(62)]">Conditional</animation>
+                <animation effect="slide" start="0" end="$PARAM[slide_x]" tween="quadratic" easing="out" time="400" reversible="false" condition="![Control.HasFocus($PARAM[id]3) | Control.HasFocus(60) | Control.HasFocus(332) | Control.HasFocus(68) | Control.HasFocus(62)]">Conditional</animation>
                 <visible>Control.IsVisible($PARAM[id]2)</visible>
                 <include content="Transitions_List_Group">
                     <include content="$PARAM[include]">
@@ -98,25 +104,33 @@
                         <bottom>40</bottom>
                         <onleft>$PARAM[id]2</onleft>
 
+                        <onright>SetFocus($PARAM[id]3,0,absolute)</onright>
                         <include content="Action_View_Movement_OnRight">
-                            <param name="id">$PARAM[id]3</param>
+                            <param name="id">$PARAM[id]2</param>
+                            <param name="onleft">$PARAM[id]3</param>
+                            <param name="online">,3</param>
                         </include>
 
-                        <onback>SetFocus($PARAM[id]3,0,absolute)</onback>
-                        <onback>$PARAM[id]2</onback>
                         <pagecontrol>60</pagecontrol>
-                        <ondown>60</ondown>
 
-                        <animation type="Conditional" reversible="false" condition="Container($PARAM[id]3).IsUpdating">
-                            <effect type="fade" start="100" end="0" time="200" delay="600" />
-                        </animation>
-                        <include content="Animation_ConditionalFade">
-                            <param name="condition">!Control.HasFocus($PARAM[id]3)</param>
-                        </include>
+                        <onback condition="!Integer.IsEqual(Container($PARAM[id]3).CurrentItem,1)">SetFocus($PARAM[id]3,0,absolute)</onback>
+                        <onback condition="!Integer.IsEqual(Container($PARAM[id]3).CurrentItem,1)">62</onback>
+                        <onback condition="Integer.IsEqual(Container($PARAM[id]3).CurrentItem,1)">$PARAM[id]2</onback>
 
                         <include content="Action_View_Movement_OnUp">
                             <param name="id">$PARAM[id]3</param>
                         </include>
+
+                        <include>Action_View_Movement_OnDown</include>
+
+                        <animation type="Conditional" reversible="false" condition="Container($PARAM[id]3).IsUpdating">
+                            <effect type="fade" start="100" end="0" time="200" delay="600" />
+                        </animation>
+
+                        <include content="Animation_ConditionalFade">
+                            <param name="condition">!Control.HasFocus($PARAM[id]3)</param>
+                        </include>
+
                         <visible>Container($PARAM[id]2).ListItem.IsFolder</visible>
                         <onclick condition="Container($PARAM[id]3).ListItem.IsFolder">Container.Update($INFO[Container($PARAM[id]3).ListItem.FolderPath])</onclick>
                         <onclick condition="Container($PARAM[id]3).ListItem.IsFolder">SetFocus(50)</onclick>
@@ -124,7 +138,6 @@
                         <content target="$VAR[Path_CollectionNode_Target]" sortby="$VAR[View_Combined_SortBy]" sortorder="ascending">$VAR[View_$PARAM[id]3_Content]</content>
                         <onback>SetFocus($PARAM[id]2)</onback>
                         <onfocus condition="!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),$PARAM[id]3)">SetProperty(TMDbHelper.WidgetContainer,$PARAM[id]3)</onfocus>
-                        <!-- <onfocus>ClearProperty(MediaFilterBase)</onfocus> -->
                     </include>
 
                     <include content="Widget_Busy">
@@ -137,7 +150,7 @@
 
                     <include content="Widget_Fake_$PARAM[include]">
                         <param name="id">$PARAM[id]3</param>
-                        <param name="overhang_visible">[Control.HasFocus($PARAM[id]3) | Control.HasFocus(60) | Control.HasFocus(332) | Control.HasFocus(68)]</param>
+                        <param name="overhang_visible">[Control.HasFocus($PARAM[id]3) | Control.HasFocus(60) | Control.HasFocus(332) | Control.HasFocus(68) | Control.HasFocus(62)]</param>
                         <animation type="Conditional" reversible="false" condition="Container($PARAM[id]3).IsUpdating">
                             <effect type="fade" start="100" end="0" time="200" delay="600" />
                         </animation>
@@ -165,20 +178,14 @@
 
                         <pagecontrol>60</pagecontrol>
 
-                        <include content="Action_View_Movement_OnLeft">
+                        <include content="Action_View_Movement_OnLeftRight">
                             <param name="id">$PARAM[id]3</param>
-                        </include>
-                        <include content="Action_View_Movement_OnRight">
-                            <param name="id">$PARAM[id]3</param>
+                            <param name="onback">!Integer.IsEqual(Container($PARAM[id]3).CurrentItem,1)</param>
+                            <param name="online">,3</param>
                         </include>
 
-                        <onback condition="!Integer.IsEqual(Container($PARAM[id]3).ListItem.CurrentItem,1)">SetFocus($PARAM[id]3,0,absolute)</onback>
-                        <onback condition="!Integer.IsEqual(Container($PARAM[id]3).ListItem.CurrentItem,1)">63</onback>
-                        <onback condition="Integer.IsEqual(Container($PARAM[id]3).ListItem.CurrentItem,1)">$PARAM[id]2</onback>
-
-                        <ondown condition="!Integer.IsEqual(Container($PARAM[id]3).ListItem.CurrentItem,1)">SetFocus($PARAM[id]3,0,absolute)</ondown>
-                        <ondown condition="!Integer.IsEqual(Container($PARAM[id]3).ListItem.CurrentItem,1)">63</ondown>
-                        <ondown condition="Integer.IsEqual(Container($PARAM[id]3).ListItem.CurrentItem,1)">$PARAM[id]2</ondown>
+                        <ondown>SetFocus($PARAM[id]3,0,absolute)</ondown>
+                        <ondown>$PARAM[id]2</ondown>
 
                         <include content="Action_View_Movement_OnUp">
                             <param name="id">$PARAM[id]3</param>
@@ -195,7 +202,6 @@
                         <content target="$VAR[Path_CollectionNode_Target]" sortby="$VAR[View_Combined_SortBy]" sortorder="ascending">$VAR[View_$PARAM[id]3_Content]</content>
                         <onback>SetFocus($PARAM[id]2)</onback>
                         <onfocus condition="!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),$PARAM[id]3)">SetProperty(TMDbHelper.WidgetContainer,$PARAM[id]3)</onfocus>
-                        <!-- <onfocus>ClearProperty(MediaFilterBase)</onfocus> -->
                     </include>
 
                     <include content="Widget_Busy">
@@ -223,12 +229,22 @@
                 <param name="id">$PARAM[id]2</param>
                 <param name="visible">True</param>
                 <param name="font">font_mini</param>
+                <include content="Action_View_Movement_OnLeftRight" condition="$EXP[Exp_HomeMenu_DontHide]">
+                    <param name="id">$PARAM[id]2</param>
+                    <param name="onback">!Integer.IsEqual(Container($PARAM[id]2).CurrentItem,1)</param>
+                    <param name="backid">63</param>
+                    <param name="menuid">309</param>
+                </include>
+                <include content="Action_View_Movement_OnLeftRight" condition="![$EXP[Exp_HomeMenu_DontHide]]">
+                    <param name="id">$PARAM[id]2</param>
+                    <param name="onback">!Integer.IsEqual(Container($PARAM[id]2).CurrentItem,1)</param>
+                    <param name="backid">63</param>
+                </include>
                 <top>920</top>
                 <onup>$PARAM[id]3</onup>
                 <include>Action_View_Movement_OnDown</include>
                 <onfocus condition="!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),$PARAM[id]3)">SetProperty(TMDbHelper.WidgetContainer,$PARAM[id]3)</onfocus>
                 <onfocus>ClearProperty(SpecialFolderPath)</onfocus>
-                <!-- <onfocus>ClearProperty(MediaFilterBase)</onfocus> -->
                 <visible>$PARAM[visible]</visible>
                 <viewtype label="$PARAM[viewtype_label]">wrap</viewtype>
             </include>

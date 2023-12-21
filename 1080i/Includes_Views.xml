@@ -73,7 +73,7 @@
                 <onfocus condition="![$EXP[Exp_FilterWall_IsMedia]]">SetFocus(50)</onfocus>
                 <onfocus condition="![$EXP[Exp_FilterWall_IsMedia]]">ClearProperty(MediaFilterBase)</onfocus>
                 <onfocus>ClearProperty(View.WallSwitchRow)</onfocus>
-                <onfocus condition="$EXP[Exp_FilterWall_IsMedia]">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideOut,focus_id=63,clear_prop_one=MediaFilterBase,clear_prop_two=View.WallSwitchPosition)</onfocus>
+                <onfocus condition="$EXP[Exp_FilterWall_IsMedia]">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideOut,focus_id=$VAR[Action_View_ContentID],clear_prop_one=MediaFilterBase,clear_prop_two=View.WallSwitchPosition)</onfocus>
             </include>
 
             <!-- Dummy for bouncing focus back to view on back -->
@@ -83,8 +83,7 @@
             </include>
             <include content="Object_Hidden_Button">
                 <param name="id">63</param>
-                <animation effect="fade" start="0" end="0" time="600" reversible="false">Focus</animation>
-                <onfocus>SetFocus($VAR[Action_View_ContentID])</onfocus>
+                <onfocus>SetFocus(50)</onfocus>
             </include>
 
             <!-- Dummy for moving scrollbar -->
@@ -93,19 +92,14 @@
                 <include>Action_Scrollbar</include>
                 <include>MediaFilter_Node_ClearAll</include>
                 <onfocus>ClearProperty(View.WallSwitchRow)</onfocus>
-                <onleft condition="!Integer.IsEqual(Container.CurrentPage,1)">SetFocus($VAR[Action_View_ContentID])</onleft>
-                <onleft condition="!Integer.IsEqual(Container.CurrentPage,1)">Action(PageUp)</onleft>
-                <onleft condition="!Integer.IsEqual(Container.CurrentPage,1) + $EXP[Exp_FilterWall_IsMedia]">Action(PageUp)</onleft>
-                <onleft condition="!Integer.IsEqual(Container.CurrentPage,1)">SetFocus(64)</onleft>
-                <onleft condition="Integer.IsEqual(Container.CurrentPage,1)">SetProperty(List.ViewContainer.Bump,1)</onleft>
-                <onleft condition="Integer.IsEqual(Container.CurrentPage,1)">SetProperty(List.ViewContainer,64)</onleft>
-                <onleft condition="Integer.IsEqual(Container.CurrentPage,1)">332</onleft>
-                <onright condition="Container.HasNext">SetFocus($VAR[Action_View_ContentID])</onright>
-                <onright condition="Container.HasNext">Action(PageDown)</onright>
-                <onright condition="Container.HasNext + $EXP[Exp_FilterWall_IsMedia]">Action(PageDown)</onright>
-                <onright condition="Container.HasNext">SetFocus(64)</onright>
-                <onright condition="!Container.HasNext">SetProperty(List.ViewContainer,64)</onright>
-                <onright condition="!Container.HasNext">332</onright>
+                <onleft>SetFocus($VAR[Action_View_ContentID])</onleft>
+                <onleft>Action(PageUp)</onleft>
+                <onleft condition="$EXP[Exp_FilterWall_IsMedia]">Action(PageUp)</onleft>
+                <onleft>SetFocus(64)</onleft>
+                <onright>SetFocus($VAR[Action_View_ContentID])</onright>
+                <onright>Action(PageDown)</onright>
+                <onright condition="$EXP[Exp_FilterWall_IsMedia]">Action(PageDown)</onright>
+                <onright>SetFocus(64)</onright>
             </include>
 
             <!-- Scrollbar -->
@@ -114,7 +108,7 @@
                 <centertop>-520</centertop>
                 <width>680</width>
                 <visible>!$EXP[Exp_InfoDialogs]</visible>
-                <visible>$EXP[Exp_MediaFilterVisible]</visible>
+                <visible>$EXP[Exp_MediaFilterVisible] | $EXP[Exp_ScrollbarVisible]</visible>
                 <include content="Animation_Fade_In">
                     <param name="delay">0</param>
                     <param name="type">Visible</param>
