@@ -237,6 +237,34 @@
         </definition>
     </include>
 
+    <include name="Animation_Widgets_Grouplist_Slide_In">
+        <param name="type">Conditional</param>
+        <param name="posx">0</param>
+        <param name="posy">0</param>
+        <param name="condition">True</param>
+        <param name="time">400</param>
+        <definition>
+            <animation type="$PARAM[type]" reversible="false" condition="$PARAM[condition]">
+                <effect type="fade" start="0" end="100" time="200" tween="sine" easing="out"/>
+                <effect type="slide" start="$PARAM[posx],$PARAM[posy]" end="0" time="$PARAM[time]" tween="quadratic" />
+            </animation>
+        </definition>
+    </include>
+
+    <include name="Animation_Widgets_Grouplist_Slide_Out">
+        <param name="type">Conditional</param>
+        <param name="posx">0</param>
+        <param name="posy">0</param>
+        <param name="condition">True</param>
+        <param name="time">400</param>
+        <definition>
+            <animation type="$PARAM[type]" reversible="false" condition="$PARAM[condition]">
+                <effect type="fade" start="100" end="0" time="$PARAM[time]" tween="sine" easing="out"/>
+                <effect type="slide" start="0" end="$PARAM[posx],$PARAM[posy]" time="$PARAM[time]" tween="quadratic" />
+            </animation>
+        </definition>
+    </include>
+
     <!-- Window Transition For Views -->
     <include name="Animation_View_WindowChange">
         <include content="Animation_Fade_Out">
@@ -253,24 +281,27 @@
 
     <!-- Window Transition For Views -->
     <include name="Animation_Half_WindowChange">
-        <param name="posy">320</param>
+        <param name="posy">240</param>
         <definition>
-            <include content="Animation_Slide_Out">
+            <include content="Animation_Widgets_Grouplist_Slide_Out">
                 <param name="condition">![Window.Next(fullscreenvideo) | Window.Next(visualisation) | $EXP[Exp_SettingsDialogs_Next] | [[Window.IsVisible(MyPVRChannels.xml) | Window.IsVisible(MyPVRGuide.xml) | Window.Next(MyPVRChannels.xml) | Window.Next(MyPVRGuide.xml)] + Skin.HasSetting(Views.UseFullPVRGuide)]] + [Window.IsVisible(1105) | Window.Next(1105) | Window.Previous(1105)]</param>
                 <param name="type">WindowClose</param>
                 <param name="posy">$PARAM[posy]</param>
                 <param name="delay">0</param>
+                <param name="time">300</param>
             </include>
             <include content="Animation_Fade_Out">
                 <param name="condition">![Window.Next(fullscreenvideo) | Window.Next(visualisation) | $EXP[Exp_SettingsDialogs_Next] | [[Window.IsVisible(MyPVRChannels.xml) | Window.IsVisible(MyPVRGuide.xml) | Window.Next(MyPVRChannels.xml) | Window.Next(MyPVRGuide.xml)] + Skin.HasSetting(Views.UseFullPVRGuide)]] + ![Window.IsVisible(1105) | Window.Next(1105) | Window.Previous(1105)]</param>
                 <param name="type">WindowClose</param>
+                <param name="time">300</param>
                 <param name="delay">0</param>
             </include>
-            <include content="Animation_Slide_In">
+            <include content="Animation_Widgets_Grouplist_Slide_In">
                 <param name="condition">![Window.Previous(fullscreenvideo) | Window.Previous(visualisation) | $EXP[Exp_SettingsDialogs_Prev] | [[Window.IsVisible(MyPVRChannels.xml) | Window.IsVisible(MyPVRGuide.xml) | Window.Previous(MyPVRChannels.xml) | Window.Previous(MyPVRGuide.xml)] + Skin.HasSetting(Views.UseFullPVRGuide)]]</param>
                 <param name="type">WindowOpen</param>
                 <param name="posy">$PARAM[posy]</param>
                 <param name="delay">0</param>
+                <param name="time">300</param>
             </include>
         </definition>
     </include>
