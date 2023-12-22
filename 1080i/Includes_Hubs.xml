@@ -319,7 +319,7 @@
                 <onup condition="$EXP[Exp_Hubs_Spotlight_HasItems]">311</onup>
                 <include content="Action_Widget_Top">
                     <param name="id">300</param>
-                    <param name="condition">[!$EXP[Exp_Hubs_Spotlight_HasItems]]</param>
+                    <param name="bump">[!$EXP[Exp_Hubs_Spotlight_HasItems]]</param>
                 </include>
                 <ondown>302</ondown>
                 <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,$PARAM[window_id])</onfocus>
@@ -333,6 +333,27 @@
                 </include>
             </include>
         </control>
+    </include>
+
+    <include name="Hub_Widgets_Grouplist_Animation_Slide">
+        <animation effect="fade" start="100" end="0" delay="400" time="1" reversible="false">Hidden</animation>
+        <animation effect="fade" start="100" end="0" reversible="false" condition="String.IsEmpty(Window.Property(WidgetGroup.Movement)) + ![$PARAM[visible]]">Conditional</animation>
+        <include content="Animation_Widgets_Grouplist_Slide_In">
+            <param name="posy">-320</param>
+            <param name="condition">String.IsEqual(Window.Property(WidgetGroup.Movement),Up) + $PARAM[visible]</param>
+        </include>
+        <include content="Animation_Widgets_Grouplist_Slide_Out">
+            <param name="posy">320</param>
+            <param name="condition">String.IsEqual(Window.Property(WidgetGroup.Movement),Up) + ![$PARAM[visible]]</param>
+        </include>
+        <include content="Animation_Widgets_Grouplist_Slide_In">
+            <param name="posy">320</param>
+            <param name="condition">String.IsEqual(Window.Property(WidgetGroup.Movement),Down) + $PARAM[visible]</param>
+        </include>
+        <include content="Animation_Widgets_Grouplist_Slide_Out">
+            <param name="posy">-320</param>
+            <param name="condition">String.IsEqual(Window.Property(WidgetGroup.Movement),Down) + ![$PARAM[visible]]</param>
+        </include>
     </include>
 
     <include name="Hub_Widgets_Grouplist">
@@ -352,6 +373,10 @@
             </include>
 
             <visible>$PARAM[visible]</visible>
+
+            <include content="Hub_Widgets_Grouplist_Animation_Slide" condition="Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)">
+                <param name="visible">$PARAM[visible]</param>
+            </include>
 
             <nested />
         </control>
