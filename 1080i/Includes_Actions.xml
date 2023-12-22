@@ -118,44 +118,29 @@
         <onback condition="Integer.IsEqual(Container($PARAM[id]).CurrentItem,1)">AlarmClock(refocus,$PARAM[refocus],00:00,silent)</onback>
     </include>
 
-    <include name="Action_Widget_Top_HomeLoop">
-        <param name="condition">true</param>
-        <definition>
-            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),1)">1499</onup>
-            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),2)">2499</onup>
-            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),3)">3499</onup>
-            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),4)">4499</onup>
-            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),5)">5499</onup>
-            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),6)">6499</onup>
-            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),7)">7499</onup>
-            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),8)">8499</onup>
-            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),9)">9499</onup>
-            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),10)">10499</onup>
-            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),11)">11499</onup>
-            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),12)">12499</onup>
-            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),13)">13499</onup>
-            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),14)">14499</onup>
-            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),15)">15499</onup>
-            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),16)">16499</onup>
-            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),17)">17499</onup>
-            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),18)">18499</onup>
-            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),19)">19499</onup>
-            <onup condition="$PARAM[condition] + Integer.IsEqual(Container(300).ListItem.Property(id),20)">20499</onup>
-        </definition>
-    </include>
-
     <include name="Action_Widget_Top">
-        <param name="condition">true</param>
+        <param name="bump">True</param>
+        <param name="condition">Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)</param>
         <definition>
+            <onup condition="$PARAM[condition]">SetProperty(WidgetGroup.Movement,Up)</onup>
+            <onup condition="$PARAM[condition]">Control.Move(303,-1)</onup>
+            <onup condition="$PARAM[condition]">AlarmClock(refocus,$INFO[Container(303).ListItem.Property(widgets_only_focus)],00:00,silent)</onup>
             <!-- <onup condition="$PARAM[condition]">ActivateWindow(1105)</onup> -->
-            <onup condition="$PARAM[condition]">SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onup>
-            <onup condition="$PARAM[condition]">333</onup>
+            <onup condition="![$PARAM[condition]] + $PARAM[bump]">SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onup>
+            <onup condition="![$PARAM[condition]] + $PARAM[bump]">333</onup>
         </definition>
     </include>
 
     <include name="Action_Widget_End">
-        <ondown>SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</ondown>
-        <ondown>330</ondown>
+        <param name="bump">True</param>
+        <param name="condition">Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)</param>
+        <definition>
+            <ondown condition="$PARAM[condition]">SetProperty(WidgetGroup.Movement,Down)</ondown>
+            <ondown condition="$PARAM[condition]">Control.Move(303,1)</ondown>
+            <ondown condition="$PARAM[condition]">AlarmClock(refocus,$INFO[Container(303).ListItem.Property(widgets_only_focus)],00:00,silent)</ondown>
+            <ondown condition="![$PARAM[condition]] + $PARAM[bump]">SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</ondown>
+            <ondown condition="![$PARAM[condition]] + $PARAM[bump]">330</ondown>
+        </definition>
     </include>
 
     <!-- TODO_SKINVARIABLES :: Positioned based upon widget stack positions -->
