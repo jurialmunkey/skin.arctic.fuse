@@ -270,20 +270,6 @@
         </control>
     </include>
 
-    <include name="Hub_Categories_Dynamic">
-        <include content="Action_SkinVariables_ShortcutList_Onclick">
-            <param name="id">$PARAM[id]</param>
-        </include>
-        <content>plugin://script.skinvariables/?info=get_shortcuts_node&amp;menu=$PARAM[categories]&amp;skin=$VAR[Path_SkinVariables_SkinFolder]&amp;reload=$INFO[Window(Home).Property(SkinVariables.ShortcutsNode.Reload)]</content>
-    </include>
-
-    <include name="Hub_Categories_Static">
-        <content>
-            <include>skinvariables-$PARAM[categories]-staticitems</include>
-        </content>
-    </include>
-
-
     <include name="Hub_Categories">
         <control type="group">
             <visible>!$EXP[Exp_InfoDialogs]</visible>
@@ -323,14 +309,11 @@
                 </include>
                 <ondown>302</ondown>
                 <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,$PARAM[window_id])</onfocus>
-                <include content="Hub_Categories_Dynamic" condition="Skin.HasSetting(KioskMode.HubConfigurationUnlocked)">
-                    <param name="id">300</param>
-                    <param name="categories">$PARAM[categories]</param>
-                </include>
-                <include content="Hub_Categories_Static" condition="!Skin.HasSetting(KioskMode.HubConfigurationUnlocked)">
-                    <param name="id">300</param>
-                    <param name="categories">$PARAM[categories]</param>
-                </include>
+
+                <content>
+                    <include>skinvariables-$PARAM[categories]-staticitems</include>
+                </content>
+
             </include>
         </control>
     </include>
