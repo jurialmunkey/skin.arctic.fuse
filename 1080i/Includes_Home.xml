@@ -28,10 +28,7 @@
     <include name="Home_Menu_Content">
         <param name="condition">$EXP[Exp_HomeMenu_DontHide]</param>
         <definition>
-            <include content="Object_ContentDynamic" condition="$PARAM[condition] + Skin.HasSetting(KioskMode.HubConfigurationUnlocked)">
-                <param name="content">plugin://script.skinvariables/?info=get_shortcuts_node&amp;menu=sidemenu&amp;skin=$VAR[Path_SkinVariables_SkinFolder]&amp;reload=$INFO[Window(Home).Property(SkinVariables.ShortcutsNode.Reload)]</param>
-            </include>
-            <include content="Object_ContentNested" condition="$PARAM[condition] + !Skin.HasSetting(KioskMode.HubConfigurationUnlocked)">
+            <include content="Object_ContentNested" condition="$PARAM[condition]">
                 <include>skinvariables-sidemenu-staticitems</include>
             </include>
             <include content="Object_ContentNested" condition="![$PARAM[condition]]">
@@ -75,17 +72,12 @@
                     <onfocus>ClearProperty(WidgetGroup.Movement)</onfocus>
 
                     <onfocus condition="Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)">SetProperty(Slide.WidgetContainer,True,Home)</onfocus>
-                    <onfocus condition="Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)">SetProperty($INFO[Container(303).ListItem.Property(widgets_only_raw_id)],$INFO[Window.Property(TMDbHelper.WidgetContainer)],1198)</onfocus>
+                    <onfocus condition="Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)">SetProperty($INFO[Container(303).ListItem.Property(widgets_tmdbh_id)],$INFO[Window.Property(TMDbHelper.WidgetContainer)],1198)</onfocus>
                     <onfocus condition="Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)">SetProperty(TMDbHelper.WidgetContainer.UpdateLock,True,1198)</onfocus>
 
                     <include content="Action_HomeMenu_OnRightLeft">
                         <param name="onlist">$PARAM[onlist]</param>
                     </include>
-
-                    <include content="Action_SkinVariables_ShortcutList_Onclick" condition="Skin.HasSetting(KioskMode.HubConfigurationUnlocked)">
-                        <param name="id">$PARAM[id]</param>
-                    </include>
-
                     <orientation>vertical</orientation>
                     <scrolltime tween="quadratic">400</scrolltime>
                     <include content="Home_Menu_List_ItemLayout">
@@ -105,8 +97,8 @@
             <animation effect="fade" start="0" end="0" time="100" reversible="false">Focus</animation>
             <onfocus condition="!String.IsEmpty(Window(1198).Property(TMDbHelper.WidgetContainer.UpdateLock))">ClearProperty(TMDbHelper.WidgetContainer.UpdateLock,1198)</onfocus>
             <onfocus condition="String.IsEmpty(Window(1198).Property(TMDbHelper.WidgetContainer.UpdateLock))">ClearProperty(List.ViewContainer)</onfocus>
-            <onfocus condition="!String.IsEmpty(ListItem.Property(widgets_only_old_id)) + String.IsEmpty(Window(1198).Property(TMDbHelper.WidgetContainer.UpdateLock))">SetProperty(TMDbHelper.WidgetContainer,$INFO[ListItem.Property(widgets_only_old_id)])</onfocus>
-            <onfocus condition="String.IsEmpty(ListItem.Property(widgets_only_old_id)) + String.IsEmpty(Window(1198).Property(TMDbHelper.WidgetContainer.UpdateLock))">SetProperty(TMDbHelper.WidgetContainer,$INFO[ListItem.Property(widgets_only_top_id)])</onfocus>
+            <onfocus condition="!String.IsEmpty(ListItem.Property(widgets_saved_id)) + String.IsEmpty(Window(1198).Property(TMDbHelper.WidgetContainer.UpdateLock))">SetProperty(TMDbHelper.WidgetContainer,$INFO[ListItem.Property(widgets_saved_id)])</onfocus>
+            <onfocus condition="String.IsEmpty(ListItem.Property(widgets_saved_id)) + String.IsEmpty(Window(1198).Property(TMDbHelper.WidgetContainer.UpdateLock))">SetProperty(TMDbHelper.WidgetContainer,$INFO[ListItem.Property(widgets_first_id)])</onfocus>
         </control>
     </include>
 

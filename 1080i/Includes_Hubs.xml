@@ -270,20 +270,6 @@
         </control>
     </include>
 
-    <include name="Hub_Categories_Dynamic">
-        <include content="Action_SkinVariables_ShortcutList_Onclick">
-            <param name="id">$PARAM[id]</param>
-        </include>
-        <content>plugin://script.skinvariables/?info=get_shortcuts_node&amp;menu=$PARAM[categories]&amp;skin=$VAR[Path_SkinVariables_SkinFolder]&amp;reload=$INFO[Window(Home).Property(SkinVariables.ShortcutsNode.Reload)]</content>
-    </include>
-
-    <include name="Hub_Categories_Static">
-        <content>
-            <include>skinvariables-$PARAM[categories]-staticitems</include>
-        </content>
-    </include>
-
-
     <include name="Hub_Categories">
         <control type="group">
             <visible>!$EXP[Exp_InfoDialogs]</visible>
@@ -323,14 +309,11 @@
                 </include>
                 <ondown>302</ondown>
                 <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,$PARAM[window_id])</onfocus>
-                <include content="Hub_Categories_Dynamic" condition="Skin.HasSetting(KioskMode.HubConfigurationUnlocked)">
-                    <param name="id">300</param>
-                    <param name="categories">$PARAM[categories]</param>
-                </include>
-                <include content="Hub_Categories_Static" condition="!Skin.HasSetting(KioskMode.HubConfigurationUnlocked)">
-                    <param name="id">300</param>
-                    <param name="categories">$PARAM[categories]</param>
-                </include>
+
+                <content>
+                    <include>skinvariables-$PARAM[categories]-staticitems</include>
+                </content>
+
             </include>
         </control>
     </include>
@@ -340,6 +323,7 @@
         <animation effect="fade" start="100" end="0" reversible="false" condition="String.IsEmpty(Window.Property(WidgetGroup.Movement)) + ![$PARAM[visible]]">Conditional</animation>
         <include content="Animation_Widgets_Grouplist_Slide_In">
             <param name="posy">-320</param>
+            <!-- <param name="delay">200</param> -->
             <param name="condition">String.IsEqual(Window.Property(WidgetGroup.Movement),Up) + $PARAM[visible]</param>
         </include>
         <include content="Animation_Widgets_Grouplist_Slide_Out">
@@ -348,6 +332,7 @@
         </include>
         <include content="Animation_Widgets_Grouplist_Slide_In">
             <param name="posy">320</param>
+            <!-- <param name="delay">200</param> -->
             <param name="condition">String.IsEqual(Window.Property(WidgetGroup.Movement),Down) + $PARAM[visible]</param>
         </include>
         <include content="Animation_Widgets_Grouplist_Slide_Out">
@@ -358,7 +343,6 @@
 
     <include name="Hub_Widgets_Grouplist">
         <control type="grouplist" id="$PARAM[id]">
-
             <top>hub_widgets_grouplist_t</top>
             <bottom>hub_widgets_grouplist_b</bottom>
 
@@ -374,11 +358,34 @@
 
             <visible>$PARAM[visible]</visible>
 
+            <!-- <include content="Animation_ConditionalFade">
+                <param name="condition">Control.HasFocus($PARAM[topid]) | Control.HasFocus($PARAM[bottomid])</param>
+            </include> -->
+
             <include content="Hub_Widgets_Grouplist_Animation_Slide" condition="Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)">
                 <param name="visible">$PARAM[visible]</param>
             </include>
 
+            <control type="group" id="$PARAM[bumperid]">
+                <height>widget_tbump_h</height>
+            </control>
+            <control type="button" id="$PARAM[topid]">
+                <height>0</height>
+                <texturenofocus />
+                <texturefocus />
+                <onfocus>Action(Down)</onfocus>
+                <!-- <animation effect="fade" start="0" end="0" time="400" reversible="false">Focus</animation> -->
+                <visible>!ControlGroup($PARAM[id]).HasFocus() | Control.HasFocus($PARAM[topid])</visible>
+            </control>
             <nested />
+            <control type="button" id="$PARAM[bottomid]">
+                <height>0</height>
+                <texturenofocus />
+                <texturefocus />
+                <onfocus>Action(Up)</onfocus>
+                <!-- <animation effect="fade" start="0" end="0" time="400" reversible="false">Focus</animation> -->
+                <visible>!ControlGroup($PARAM[id]).HasFocus() | Control.HasFocus($PARAM[bottomid])</visible>
+            </control>
         </control>
     </include>
 

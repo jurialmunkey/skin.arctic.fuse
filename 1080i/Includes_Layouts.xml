@@ -2428,6 +2428,7 @@
     </include>
 
     <include name="Layout_Landscape">
+        <param name="detailed">false</param>
         <param name="selected">false</param>
         <param name="icon">$VAR[Image_Landscape]</param>
         <param name="textcolor">main_fg</param>
@@ -2478,7 +2479,8 @@
                     <param name="listitem">$PARAM[listitem]</param>
                 </include>
 
-                <control type="group">
+                <include content="Object_Control" condition="![$PARAM[detailed]]">
+                    <param name="control">group</param>
                     <top>$PARAM[item_h]</top>
                     <control type="group">
                         <top>27</top>
@@ -2489,6 +2491,16 @@
                             <font>font_mini_bold</font>
                             <align>left</align>
                             <height>20</height>
+                            <visible>String.IsEmpty($PARAM[listitem].Title) | String.IsEmpty($PARAM[listitem].ChannelNumberLabel)</visible>
+                        </control>
+                        <control type="label">
+                            <label>$INFO[$PARAM[listitem].Title]</label>
+                            <textcolor>$PARAM[textcolor]_90</textcolor>
+                            <selectedcolor>$PARAM[textcolor]_90</selectedcolor>
+                            <font>font_mini_bold</font>
+                            <align>left</align>
+                            <height>20</height>
+                            <visible>!String.IsEmpty($PARAM[listitem].Title) + !String.IsEmpty($PARAM[listitem].ChannelNumberLabel)</visible>
                         </control>
                         <control type="label">
                             <label>$INFO[$PARAM[listitem].Season,S,]$INFO[$PARAM[listitem].Episode,E,]</label>
@@ -2511,6 +2523,16 @@
                             <height>20</height>
                         </control>
                         <control type="label">
+                            <label>$INFO[$PARAM[listitem].StartTime]$INFO[$PARAM[listitem].EndTime, - ,]</label>
+                            <textcolor>$PARAM[textcolor]_70</textcolor>
+                            <selectedcolor>$PARAM[textcolor]_70</selectedcolor>
+                            <font>font_tiny</font>
+                            <align>right</align>
+                            <height>20</height>
+                            <visible>!String.IsEmpty($PARAM[listitem].ChannelNumberLabel)</visible>
+                            <visible>ListItem.InProgress</visible>
+                        </control>
+                        <control type="label">
                             <label>$INFO[$PARAM[listitem].Date]</label>
                             <textcolor>$PARAM[textcolor]_70</textcolor>
                             <selectedcolor>$PARAM[textcolor]_70</selectedcolor>
@@ -2518,9 +2540,12 @@
                             <align>right</align>
                             <height>20</height>
                             <visible>!String.IsEmpty($PARAM[listitem].ChannelNumberLabel)</visible>
+                            <visible>!ListItem.InProgress</visible>
+                            <visible>!String.ISEmpty($PARAM[listitem].Date)</visible>
                         </control>
                     </control>
-                </control>
+                </include>
+
                 <include content="Object_SelectBox" condition="$PARAM[selected]">
                     <param name="affix">$PARAM[affix]</param>
                     <param name="indicator">true</param>

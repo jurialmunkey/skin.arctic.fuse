@@ -546,7 +546,7 @@
 
     <include name="Widget_Row">
         <param name="grouplistid">5000</param>
-        <param name="topid">5001</param>
+        <param name="topwidgetid">5001</param>
         <param name="refocus">SetFocus(393)</param>
         <definition>
             <include content="_Widget_Row">
@@ -572,7 +572,7 @@
                 <include content="Action_Widget_OnBack">
                     <param name="id">$PARAM[id]</param>
                     <param name="grouplistid">$PARAM[grouplistid]</param>
-                    <param name="topid">$PARAM[topid]</param>
+                    <param name="topwidgetid">$PARAM[topwidgetid]</param>
                     <param name="refocus">$PARAM[refocus]</param>
                 </include>
 
@@ -588,6 +588,7 @@
     <include name="Widget_Info_Row">
         <param name="set_widgetcontainer">true</param>
         <param name="set_imageoverride">true</param>
+        <param name="set_transitionstyle">true</param>
         <param name="baseid">50</param>
         <param name="basegroupid">51</param>
         <param name="backid">$PARAM[backid]</param>
@@ -621,6 +622,9 @@
                 <onunfocus condition="$PARAM[set_imageoverride]">ClearProperty(TMDbHelper.Image.Override,Home)</onunfocus>
                 <onfocus condition="$PARAM[set_widgetcontainer]">SetProperty(TMDbHelper.WidgetContainer,$PARAM[baseid]$PARAM[id])</onfocus>
 
+                <onfocus condition="$PARAM[set_transitionstyle]">SetProperty(Transition.WidgetStyle,List_Poster_Row,Home)</onfocus>
+                <onunfocus condition="$PARAM[set_transitionstyle]">ClearProperty(Transition.WidgetStyle,Home)</onunfocus>
+
                 <nested />
             </include>
         </definition>
@@ -634,6 +638,10 @@
         <control type="group">
             <visible>String.IsEqual(Window(Home).Property(Transition.WidgetStyle),List_Card_Row)</visible>
             <include>Transitions_List_Card_Row</include>
+        </control>
+        <control type="group">
+            <visible>String.IsEqual(Window(Home).Property(Transition.WidgetStyle),List_Board_Row)</visible>
+            <include>Transitions_List_Board_Row</include>
         </control>
         <control type="group">
             <visible>String.IsEqual(Window(Home).Property(Transition.WidgetStyle),List_Poster_Row)</visible>

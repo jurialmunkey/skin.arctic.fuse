@@ -94,13 +94,13 @@
     </include>
 
     <include name="Action_Hubs_Onload">
-        <onload condition="!Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu)">SetProperty(TMDbHelper.WidgetContainer,301)</onload>
-        <onload condition="Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu)">SetProperty(TMDbHelper.WidgetContainer,601)</onload>
-        <onload condition="Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu)">SetProperty(Slide.WidgetContainer,True)</onload>
-        <onload condition="Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu)">SetFocus(303,0,absolute)</onload>
-        <onload condition="Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu)">SetFocus(601)</onload>
-        <onload condition="Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu)">AlarmClock(refocus,SetFocus(601),00:00,silent)</onload>
-        <onload condition="!Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu)">SetFocus(300)</onload>
+        <onload condition="!Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu) + !Window.Previous(1181) + !Window.Previous(videos) + !Window.Previous(music) + !Window.Previous(programs) + !Window.Previous(pictures)">SetProperty(TMDbHelper.WidgetContainer,301)</onload>
+        <onload condition="Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu) + !Window.Previous(1181) + !Window.Previous(videos) + !Window.Previous(music) + !Window.Previous(programs) + !Window.Previous(pictures)">SetProperty(TMDbHelper.WidgetContainer,601)</onload>
+        <onload condition="Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu) + !Window.Previous(1181) + !Window.Previous(videos) + !Window.Previous(music) + !Window.Previous(programs) + !Window.Previous(pictures)">SetProperty(Slide.WidgetContainer,True)</onload>
+        <onload condition="Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu) + !Window.Previous(1181) + !Window.Previous(videos) + !Window.Previous(music) + !Window.Previous(programs) + !Window.Previous(pictures)">SetFocus(303,0,absolute)</onload>
+        <onload condition="Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu) + !Window.Previous(1181) + !Window.Previous(videos) + !Window.Previous(music) + !Window.Previous(programs) + !Window.Previous(pictures)">SetFocus(601)</onload>
+        <onload condition="Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu) + !Window.Previous(1181) + !Window.Previous(videos) + !Window.Previous(music) + !Window.Previous(programs) + !Window.Previous(pictures)">AlarmClock(refocus,SetFocus(601),00:00,silent)</onload>
+        <onload condition="!Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu) + !Window.Previous(1181) + !Window.Previous(videos) + !Window.Previous(music) + !Window.Previous(programs) + !Window.Previous(pictures)">SetFocus(300)</onload>
         <include>Action_BuildShortcuts_OnLoad</include>
         <onunload>CancelAlarm(playtrailer,silent)</onunload>
     </include>
@@ -113,8 +113,8 @@
     <include name="Action_Widget_OnBack">
         <onback condition="!Integer.IsEqual(Container($PARAM[id]).CurrentItem,1)">$PARAM[grouplistid]</onback>
         <onback condition="!Integer.IsEqual(Container($PARAM[id]).CurrentItem,1)">SetFocus($PARAM[id],0,absolute)</onback>
-        <onback condition="Integer.IsEqual(Container($PARAM[id]).CurrentItem,1) + !Control.HasFocus($PARAM[topid])">$PARAM[topid]</onback>
-        <onback condition="Integer.IsEqual(Container($PARAM[id]).CurrentItem,1) + Control.HasFocus($PARAM[topid])">$PARAM[grouplistid]</onback>
+        <onback condition="Integer.IsEqual(Container($PARAM[id]).CurrentItem,1)">$PARAM[topwidgetid]</onback>
+        <onback condition="Integer.IsEqual(Container($PARAM[id]).CurrentItem,1)">$PARAM[grouplistid]</onback>
         <onback condition="Integer.IsEqual(Container($PARAM[id]).CurrentItem,1)">AlarmClock(refocus,$PARAM[refocus],00:00,silent)</onback>
     </include>
 
@@ -124,9 +124,11 @@
         <definition>
 
             <!-- Scroll classic home -->
+            <!-- <onup condition="$PARAM[condition] + !Skin.HasSetting(Hubs.WidgetSelector)">$INFO[Container(303).ListItem(-1).Property(widgets_setfocus_bottom)]</onup> -->
+            <onup condition="$PARAM[condition] + Skin.HasSetting(Hubs.WidgetSelector)">$INFO[Container(303).ListItem(-1).Property(widgets_setfocus_top)]</onup>
             <onup condition="$PARAM[condition]">SetProperty(WidgetGroup.Movement,Up)</onup>
             <onup condition="$PARAM[condition]">Control.Move(303,-1)</onup>
-            <onup condition="$PARAM[condition]">AlarmClock(refocus,$INFO[Container(303).ListItem.Property(widgets_only_focus)],00:00,silent)</onup>
+            <onup condition="$PARAM[condition] + !Skin.HasSetting(Hubs.WidgetSelector)">AlarmClock(refocus,$INFO[Container(303).ListItem.Property(widgets_setfocus)],00:00,silent)</onup>
 
             <!-- Go to search -->
             <onup condition="![$PARAM[condition]] + $PARAM[bump]">ActivateWindow(1105)</onup>
@@ -147,9 +149,11 @@
             <ondown condition="!String.IsEmpty(Window.Property(EndRow.HasFocus))">Action(Up)</ondown>
 
             <!-- Scroll Classic Home -->
+            <!-- <ondown condition="$PARAM[condition] + !Skin.HasSetting(Hubs.WidgetSelector)">$INFO[Container(303).ListItem(1).Property(widgets_setfocus_top)]</ondown> -->
+            <ondown condition="$PARAM[condition] + Skin.HasSetting(Hubs.WidgetSelector)">$INFO[Container(303).ListItem(1).Property(widgets_setfocus_bottom)]</ondown>
             <ondown condition="$PARAM[condition]">SetProperty(WidgetGroup.Movement,Down)</ondown>
             <ondown condition="$PARAM[condition]">Control.Move(303,1)</ondown>
-            <ondown condition="$PARAM[condition]">AlarmClock(refocus,$INFO[Container(303).ListItem.Property(widgets_only_focus)],00:00,silent)</ondown>
+            <ondown condition="$PARAM[condition] + !Skin.HasSetting(Hubs.WidgetSelector)">AlarmClock(refocus,$INFO[Container(303).ListItem.Property(widgets_setfocus)],00:00,silent)</ondown>
 
             <!-- Go to Recs -->
             <include content="Action_Info_Recommendations_OnDown">
@@ -185,8 +189,8 @@
     <include name="Action_HomeMenu_OnRightLeft">
         <param name="onlist">320</param>
         <param name="c_bmp">[!String.IsEmpty(Window.Property(List.ViewContainer.Bump))]</param>
-        <param name="c_wof">[Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + !String.IsEmpty(Container(303).ListItem.Property(widgets_only_focus))]</param>
-        <param name="i_wof">$INFO[Container(303).ListItem.Property(widgets_only_focus)]</param>
+        <param name="c_wof">[Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + !String.IsEmpty(Container(303).ListItem.Property(widgets_setfocus))]</param>
+        <param name="i_wof">$INFO[Container(303).ListItem.Property(widgets_setfocus)]</param>
         <param name="c_lvl">[!String.IsEmpty(Window.Property(List.ViewContainer.Left))]</param>
         <param name="i_lvl">$INFO[Window.Property(List.ViewContainer.Left)]</param>
         <param name="c_lvc">[!String.IsEmpty(Window.Property(List.ViewContainer))]</param>
@@ -310,19 +314,19 @@
     <include name="Action_Info_Recommendations_OnDown">
         <param name="condition">True</param>
         <definition>
-            <ondown condition="$PARAM[condition] + Window.IsVisible(MyVideoNav.xml)">SetProperty(Item_Title,$VAR[Label_Title_Container],1181)</ondown>
-            <ondown condition="$PARAM[condition] + Window.IsVisible(MyVideoNav.xml)">SetProperty(Item_Query,$VAR[Path_Param_Query],1181)</ondown>
-            <ondown condition="$PARAM[condition] + Window.IsVisible(MyVideoNav.xml)">SetProperty(Item_Type,$VAR[Path_Param_Type],1181)</ondown>
-            <ondown condition="$PARAM[condition] + Window.IsVisible(MyVideoNav.xml)">SetProperty(Item_Year,$INFO[ListItem.Year],1181)</ondown>
-            <ondown condition="$PARAM[condition] + Window.IsVisible(MyVideoNav.xml)">SetProperty(Genre_Title,$INFO[Container(99950).ListItem.Property(Genre.1.Name)]$INFO[Container(99950).ListItem.Property(Genre.2.Name), / ,]$INFO[Container(99950).ListItem.Property(Genre.3.Name), / ,],1181)</ondown>
-            <ondown condition="$PARAM[condition] + Window.IsVisible(MyVideoNav.xml)">SetProperty(Genre_Query,$INFO[Container(99950).ListItem.Property(Genre.1.TMDB_ID),&amp;with_separator=AND&amp;with_id=True&amp;with_genres=,]$INFO[Container(99950).ListItem.Property(Genre.2.TMDB_ID), / ,]$INFO[Container(99950).ListItem.Property(Genre.3.TMDB_ID), / ,],1181)</ondown>
+            <ondown condition="$PARAM[condition] + [String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,set) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,episode)]">SetProperty(Item_Title,$VAR[Label_Title_Container],1181)</ondown>
+            <ondown condition="$PARAM[condition] + [String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,set) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,episode)]">SetProperty(Item_Query,$VAR[Path_Param_Query],1181)</ondown>
+            <ondown condition="$PARAM[condition] + [String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,set) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,episode)]">SetProperty(Item_Type,$VAR[Path_Param_Type],1181)</ondown>
+            <ondown condition="$PARAM[condition] + [String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,set) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,episode)]">SetProperty(Item_Year,$INFO[ListItem.Year],1181)</ondown>
+            <ondown condition="$PARAM[condition] + [String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,set) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,episode)]">SetProperty(Genre_Title,$INFO[Container(99950).ListItem.Property(Genre.1.Name)]$INFO[Container(99950).ListItem.Property(Genre.2.Name), / ,]$INFO[Container(99950).ListItem.Property(Genre.3.Name), / ,],1181)</ondown>
+            <ondown condition="$PARAM[condition] + [String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,set) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,episode)]">SetProperty(Genre_Query,$INFO[Container(99950).ListItem.Property(Genre.1.TMDB_ID),&amp;with_separator=AND&amp;with_id=True&amp;with_genres=,]$INFO[Container(99950).ListItem.Property(Genre.2.TMDB_ID), / ,]$INFO[Container(99950).ListItem.Property(Genre.3.TMDB_ID), / ,],1181)</ondown>
 
-            <ondown condition="$PARAM[condition] + !Window.IsVisible(MyVideoNav.xml)">ClearProperty(Item_Title,1181)</ondown>
-            <ondown condition="$PARAM[condition] + !Window.IsVisible(MyVideoNav.xml)">ClearProperty(Item_Query,1181)</ondown>
-            <ondown condition="$PARAM[condition] + !Window.IsVisible(MyVideoNav.xml)">ClearProperty(Item_Type,1181)</ondown>
-            <ondown condition="$PARAM[condition] + !Window.IsVisible(MyVideoNav.xml)">ClearProperty(Item_Year,1181)</ondown>
-            <ondown condition="$PARAM[condition] + !Window.IsVisible(MyVideoNav.xml)">ClearProperty(Genre_Title,1181)</ondown>
-            <ondown condition="$PARAM[condition] + !Window.IsVisible(MyVideoNav.xml)">ClearProperty(Genre_Query,1181)</ondown>
+            <ondown condition="$PARAM[condition] + ![String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,set) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,episode)]">ClearProperty(Item_Title,1181)</ondown>
+            <ondown condition="$PARAM[condition] + ![String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,set) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,episode)]">ClearProperty(Item_Query,1181)</ondown>
+            <ondown condition="$PARAM[condition] + ![String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,set) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,episode)]">ClearProperty(Item_Type,1181)</ondown>
+            <ondown condition="$PARAM[condition] + ![String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,set) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,episode)]">ClearProperty(Item_Year,1181)</ondown>
+            <ondown condition="$PARAM[condition] + ![String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,set) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,episode)]">ClearProperty(Genre_Title,1181)</ondown>
+            <ondown condition="$PARAM[condition] + ![String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,set) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,episode)]">ClearProperty(Genre_Query,1181)</ondown>
 
             <ondown condition="$PARAM[condition]">ActivateWindow(1181)</ondown>
         </definition>
@@ -466,7 +470,7 @@
     </include>
     <include name="Action_Blur_Onload">
         <include content="_Action_Blur_Onload">
-            <param name="sourceimage">Art(fanart)|Property(fanart)|Art(profile)</param>
+            <param name="sourceimage">Art(fanart)|Property(fanart)|Art(profile)||EPGEventIcon</param>
         </include>
     </include>
 
