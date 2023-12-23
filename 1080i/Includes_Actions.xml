@@ -124,9 +124,11 @@
         <definition>
 
             <!-- Scroll classic home -->
+            <!-- <onup condition="$PARAM[condition] + !Skin.HasSetting(Hubs.WidgetSelector)">$INFO[Container(303).ListItem(-1).Property(widgets_setfocus_bottom)]</onup> -->
+            <onup condition="$PARAM[condition] + Skin.HasSetting(Hubs.WidgetSelector)">$INFO[Container(303).ListItem(-1).Property(widgets_setfocus_top)]</onup>
             <onup condition="$PARAM[condition]">SetProperty(WidgetGroup.Movement,Up)</onup>
             <onup condition="$PARAM[condition]">Control.Move(303,-1)</onup>
-            <onup condition="$PARAM[condition]">AlarmClock(refocus,$INFO[Container(303).ListItem.Property(widgets_only_focus)],00:00,silent)</onup>
+            <onup condition="$PARAM[condition] + !Skin.HasSetting(Hubs.WidgetSelector)">AlarmClock(refocus,$INFO[Container(303).ListItem.Property(widgets_setfocus)],00:00,silent)</onup>
 
             <!-- Go to search -->
             <onup condition="![$PARAM[condition]] + $PARAM[bump]">ActivateWindow(1105)</onup>
@@ -147,9 +149,11 @@
             <ondown condition="!String.IsEmpty(Window.Property(EndRow.HasFocus))">Action(Up)</ondown>
 
             <!-- Scroll Classic Home -->
+            <!-- <ondown condition="$PARAM[condition] + !Skin.HasSetting(Hubs.WidgetSelector)">$INFO[Container(303).ListItem(1).Property(widgets_setfocus_top)]</ondown> -->
+            <ondown condition="$PARAM[condition] + Skin.HasSetting(Hubs.WidgetSelector)">$INFO[Container(303).ListItem(1).Property(widgets_setfocus_bottom)]</ondown>
             <ondown condition="$PARAM[condition]">SetProperty(WidgetGroup.Movement,Down)</ondown>
             <ondown condition="$PARAM[condition]">Control.Move(303,1)</ondown>
-            <ondown condition="$PARAM[condition]">AlarmClock(refocus,$INFO[Container(303).ListItem.Property(widgets_only_focus)],00:00,silent)</ondown>
+            <ondown condition="$PARAM[condition] + !Skin.HasSetting(Hubs.WidgetSelector)">AlarmClock(refocus,$INFO[Container(303).ListItem.Property(widgets_setfocus)],00:00,silent)</ondown>
 
             <!-- Go to Recs -->
             <include content="Action_Info_Recommendations_OnDown">
@@ -185,8 +189,8 @@
     <include name="Action_HomeMenu_OnRightLeft">
         <param name="onlist">320</param>
         <param name="c_bmp">[!String.IsEmpty(Window.Property(List.ViewContainer.Bump))]</param>
-        <param name="c_wof">[Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + !String.IsEmpty(Container(303).ListItem.Property(widgets_only_focus))]</param>
-        <param name="i_wof">$INFO[Container(303).ListItem.Property(widgets_only_focus)]</param>
+        <param name="c_wof">[Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + !String.IsEmpty(Container(303).ListItem.Property(widgets_setfocus))]</param>
+        <param name="i_wof">$INFO[Container(303).ListItem.Property(widgets_setfocus)]</param>
         <param name="c_lvl">[!String.IsEmpty(Window.Property(List.ViewContainer.Left))]</param>
         <param name="i_lvl">$INFO[Window.Property(List.ViewContainer.Left)]</param>
         <param name="c_lvc">[!String.IsEmpty(Window.Property(List.ViewContainer))]</param>
