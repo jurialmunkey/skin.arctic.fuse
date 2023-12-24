@@ -65,89 +65,111 @@
     </include>
 
     <include name="View_Scrollbars">
-        <include content="Furniture_Bottombar_Group">
+        <!-- Wall Action -->
+        <include content="Object_Hidden_Button">
+            <param name="id">68</param>
+            <onfocus condition="![$EXP[Exp_FilterWall_IsMedia]]">SetFocus(50)</onfocus>
+            <onfocus condition="![$EXP[Exp_FilterWall_IsMedia]]">ClearProperty(MediaFilterBase)</onfocus>
+            <onfocus>ClearProperty(View.WallSwitchRow)</onfocus>
+            <onfocus condition="$EXP[Exp_FilterWall_IsMedia]">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideOut,focus_id=$VAR[Action_View_ContentID],clear_prop_one=MediaFilterBase,clear_prop_two=View.WallSwitchPosition)</onfocus>
+        </include>
 
-            <!-- Wall Action -->
-            <include content="Object_Hidden_Button">
-                <param name="id">68</param>
-                <onfocus condition="![$EXP[Exp_FilterWall_IsMedia]]">SetFocus(50)</onfocus>
-                <onfocus condition="![$EXP[Exp_FilterWall_IsMedia]]">ClearProperty(MediaFilterBase)</onfocus>
-                <onfocus>ClearProperty(View.WallSwitchRow)</onfocus>
-                <onfocus condition="$EXP[Exp_FilterWall_IsMedia]">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideOut,focus_id=$VAR[Action_View_ContentID],clear_prop_one=MediaFilterBase,clear_prop_two=View.WallSwitchPosition)</onfocus>
-            </include>
+        <!-- Dummy for bouncing focus back to view on back -->
+        <include content="Object_Hidden_Button">
+            <param name="id">62</param>
+            <onfocus>SetFocus($VAR[Action_View_ContentID])</onfocus>
+        </include>
+        <include content="Object_Hidden_Button">
+            <param name="id">63</param>
+            <onfocus>SetFocus(50)</onfocus>
+        </include>
 
-            <!-- Dummy for bouncing focus back to view on back -->
-            <include content="Object_Hidden_Button">
-                <param name="id">62</param>
-                <onfocus>SetFocus($VAR[Action_View_ContentID])</onfocus>
-            </include>
-            <include content="Object_Hidden_Button">
-                <param name="id">63</param>
-                <onfocus>SetFocus(50)</onfocus>
-            </include>
+        <!-- Dummy for moving scrollbar -->
+        <include content="Object_Hidden_Button">
+            <param name="id">64</param>
+            <include>Action_Scrollbar</include>
+            <include>MediaFilter_Node_ClearAll</include>
+            <onfocus>ClearProperty(View.WallSwitchRow)</onfocus>
+            <onleft>SetFocus($VAR[Action_View_ContentID])</onleft>
+            <onleft>Action(PageUp)</onleft>
+            <onleft condition="$EXP[Exp_FilterWall_IsMedia]">Action(PageUp)</onleft>
+            <onleft>SetFocus(64)</onleft>
+            <onright>SetFocus($VAR[Action_View_ContentID])</onright>
+            <onright>Action(PageDown)</onright>
+            <onright condition="$EXP[Exp_FilterWall_IsMedia]">Action(PageDown)</onright>
+            <onright>SetFocus(64)</onright>
+        </include>
 
-            <!-- Dummy for moving scrollbar -->
-            <include content="Object_Hidden_Button">
-                <param name="id">64</param>
+        <!-- Scrollbar H -->
+        <control type="group">
+            <height>scrollbar_w</height>
+            <centertop>320</centertop>
+            <width>680</width>
+            <visible>!$EXP[Exp_InfoDialogs]</visible>
+            <visible>$EXP[Exp_MediaFilterVisible] | $EXP[Exp_ScrollbarVisible_H]</visible>
+            <include content="Animation_Fade_In">
+                <param name="delay">0</param>
+                <param name="type">Visible</param>
+            </include>
+            <control type="image">
+                <texture colordiffuse="main_fg_12">common/white.png</texture>
+                <height>1</height>
+                <centertop>50%</centertop>
+            </control>
+            <control type="scrollbar" id="60">
+                <orientation>horizontal</orientation>
+                <texturesliderbackground />
+                <include>Texture_Scrollbar_SliderBar_H</include>
+                <include>Texture_Scrollbar_H</include>
+                <showonepage>true</showonepage>
                 <include>Action_Scrollbar</include>
-                <include>MediaFilter_Node_ClearAll</include>
-                <onfocus>ClearProperty(View.WallSwitchRow)</onfocus>
-                <onleft>SetFocus($VAR[Action_View_ContentID])</onleft>
-                <onleft>Action(PageUp)</onleft>
-                <onleft condition="$EXP[Exp_FilterWall_IsMedia]">Action(PageUp)</onleft>
-                <onleft>SetFocus(64)</onleft>
-                <onright>SetFocus($VAR[Action_View_ContentID])</onright>
-                <onright>Action(PageDown)</onright>
-                <onright condition="$EXP[Exp_FilterWall_IsMedia]">Action(PageDown)</onright>
-                <onright>SetFocus(64)</onright>
-            </include>
-
-            <!-- Scrollbar -->
+                <onfocus>SetFocus(64)</onfocus>
+                <visible>$EXP[Exp_ScrollbarVisible_H]</visible>
+            </control>
             <control type="group">
-                <height>scrollbar_w</height>
-                <centertop>-520</centertop>
-                <width>680</width>
-                <visible>!$EXP[Exp_InfoDialogs]</visible>
-                <visible>$EXP[Exp_MediaFilterVisible] | $EXP[Exp_ScrollbarVisible]</visible>
-                <include content="Animation_Fade_In">
-                    <param name="delay">0</param>
-                    <param name="type">Visible</param>
-                </include>
-                <control type="image">
-                    <texture colordiffuse="main_fg_12">common/white.png</texture>
-                    <height>1</height>
-                    <centertop>50%</centertop>
+                <height>20</height>
+                <top>20</top>
+                <control type="label">
+                    <align>left</align>
+                    <font>font_hint_black</font>
+                    <textcolor>main_fg_30</textcolor>
+                    <label>$INFO[Container.NumItems,, $LOCALIZE[31022]]</label>
                 </control>
-                <control type="scrollbar" id="60">
-                    <orientation>horizontal</orientation>
-                    <texturesliderbackground />
-                    <include>Texture_Scrollbar_SliderBar_H</include>
-                    <include>Texture_Scrollbar_H</include>
-                    <showonepage>true</showonepage>
-                    <include>Action_Scrollbar</include>
-                    <onfocus>SetFocus(64)</onfocus>
-                    <visible>$EXP[Exp_ScrollbarVisible]</visible>
-                </control>
-
-                <control type="group">
-                    <height>20</height>
-                    <top>20</top>
-                    <!-- <visible>$EXP[Exp_ScrollbarVisible]</visible> -->
-                    <control type="label">
-                        <align>left</align>
-                        <font>font_hint_black</font>
-                        <textcolor>main_fg_30</textcolor>
-                        <label>$INFO[Container.NumItems,, $LOCALIZE[31022]]</label>
-                    </control>
-                    <control type="label">
-                        <align>right</align>
-                        <font>font_hint_black</font>
-                        <textcolor>main_fg_30</textcolor>
-                        <label>$LOCALIZE[31135] $INFO[Container.CurrentPage,, $LOCALIZE[20163] ]$INFO[Container.NumPages]</label>
-                    </control>
+                <control type="label">
+                    <align>right</align>
+                    <font>font_hint_black</font>
+                    <textcolor>main_fg_30</textcolor>
+                    <label>$LOCALIZE[31135] $INFO[Container.CurrentPage,, $LOCALIZE[20163] ]$INFO[Container.NumPages]</label>
                 </control>
             </control>
-        </include>
+        </control>
+
+        <!-- Scrollbar V -->
+        <control type="group">
+            <bottom>view_top</bottom>
+            <height>view_poster_item_h</height>
+            <width>scrollbar_w</width>
+            <centerright>40</centerright>
+            <visible>$EXP[Exp_ScrollbarVisible_V]</visible>
+            <control type="image">
+                <texture colordiffuse="main_fg_12">common/white.png</texture>
+                <width>1</width>
+                <centerleft>50%</centerleft>
+            </control>
+            <control type="scrollbar" id="65">
+                <onleft>SetFocus(50)</onleft>
+                <orientation>vertical</orientation>
+                <texturesliderbackground />
+                <include>Texture_Scrollbar_SliderBar_V</include>
+                <include>Texture_Scrollbar_V</include>
+                <showonepage>true</showonepage>
+                <include content="Action_View_Movement_OnRight">
+                    <param name="id">50</param>
+                    <param name="onleft">65</param>
+                    <param name="online">,2</param>
+                </include>
+            </control>
+        </control>
     </include>
 
     <include name="View_Row_Info">
@@ -228,7 +250,7 @@
                 </include>
 
                 <control type="group">
-                    <visible>[$EXP[Exp_ScrollbarVisible] | $EXP[Exp_FilterWall_IsMedia] | $EXP[Exp_FilterWall_IsDiscover]] | !Skin.HasSetting(Furniture.DisableCount)</visible>
+                    <visible>[$EXP[Exp_ScrollbarVisible_H] | $EXP[Exp_FilterWall_IsMedia] | $EXP[Exp_FilterWall_IsDiscover]] | !Skin.HasSetting(Furniture.DisableCount)</visible>
                     <include content="Object_Control">
                         <param name="control">grouplist</param>
                         <hitrect x="0" y="0" w="0" h="0" />
@@ -250,7 +272,7 @@
                 </control>
 
                 <control type="group">
-                    <visible>![$EXP[Exp_ScrollbarVisible] | $EXP[Exp_FilterWall_IsMedia] | $EXP[Exp_FilterWall_IsDiscover]]</visible>
+                    <visible>![$EXP[Exp_ScrollbarVisible_H] | $EXP[Exp_FilterWall_IsMedia] | $EXP[Exp_FilterWall_IsDiscover]]</visible>
                     <control type="group">
                         <visible>Skin.HasSetting(Furniture.DisableCount)</visible>
                         <include content="Furniture_Bottom_Left">
