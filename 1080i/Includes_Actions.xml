@@ -32,9 +32,7 @@
     <include name="Action_Media_Onload">
         <onload>RunScript(script.skinvariables,action=buildviews)</onload>
         <onload>ClearProperty(MediaFilterBase)</onload>
-        <onload>ClearProperty(View.WallSwitchPosition)</onload>
         <onunload>ClearProperty(MediaFilterBase)</onunload>
-        <onunload>ClearProperty(View.WallSwitchPosition)</onunload>
     </include>
 
     <variable name="Action_OSD_Main_OnDown">
@@ -144,7 +142,7 @@
             <ondown condition="$PARAM[condition]">Control.Move(303,1)</ondown>
 
             <!-- Go to Recs -->
-            <include content="Action_Info_Recommendations_OnDown">
+            <include content="Action_View_Explore_OnDown">
                 <param name="condition">[![$PARAM[condition]] + $PARAM[bump] + Skin.String(Navigation.OnDown,Explore)]</param>
             </include>
 
@@ -299,7 +297,7 @@
         <onclick>SetFocus(4000)</onclick>
     </include>
 
-    <include name="Action_Info_Recommendations_OnDown">
+    <include name="Action_View_Explore_OnDown">
         <param name="condition">True</param>
         <definition>
             <ondown condition="$PARAM[condition] + [String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,set) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,episode)]">SetProperty(Item_Title,$VAR[Label_Title_Container],1181)</ondown>
@@ -325,9 +323,9 @@
     </include>
 
     <include name="Action_View_Movement_OnDown">
-        <include condition="Skin.String(Navigation.OnDown,Recommendations)">Action_Info_Recommendations_OnDown</include>
-        <ondown condition="!Skin.String(Navigation.OnDown,Recommendations)">SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</ondown>
-        <ondown condition="!Skin.String(Navigation.OnDown,Recommendations)">330</ondown>
+        <include condition="Skin.String(Navigation.OnDown,Explore)">Action_View_Explore_OnDown</include>
+        <ondown condition="!Skin.String(Navigation.OnDown,Explore)">SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</ondown>
+        <ondown condition="!Skin.String(Navigation.OnDown,Explore)">330</ondown>
     </include>
 
     <include name="Action_View_Movement_OnBack">
@@ -444,20 +442,20 @@
     </include>
 
     <include name="Action_Scrollbar">
-        <onup condition="!String.IsEmpty(Window.Property(View.WallSwitchPosition))">9600</onup>
-        <onup condition="String.IsEmpty(Window.Property(View.WallSwitchPosition))">SetFocus(68)</onup>
+        <onup condition="!Skin.HasSetting(Navigation.MediaFilterWall)">9600</onup>
+        <onup condition="Skin.HasSetting(Navigation.MediaFilterWall)">SetFocus(19)</onup>
         <onback>68</onback>
         <onclick>SetFocus(68)</onclick>
         <ondown>SetFocus(68)</ondown>
     </include>
 
     <variable name="Action_Var_ToMediaFilter">
-        <value>Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=64,clear_prop_one=Null,clear_prop_two=Null,preaction=SetProperty(View.WallSwitchPosition,1))</value>
+        <value condition="$EXP[Exp_FilterWall_IsViewtype] + Skin.HasSetting(Navigation.MediaFilterWall)">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=64,clear_prop_one=Null,clear_prop_two=Null)</value>
+        <value condition="$EXP[Exp_FilterWall_IsViewtype]">Runscript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter-setfocus.json",use_rules,id=$VAR[Action_View_ContentID],focus_id=64,clear_prop_one=Null,clear_prop_two=Null)</value>
+        <value condition="!Skin.HasSetting(Navigation.MediaFilterWall)">Runscript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter-setfocus.json",use_rules,id=$VAR[Action_View_ContentID],focus_id=9501,clear_prop_one=Null,clear_prop_two=Null)</value>
+        <value>Runscript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter-setfocus.json",use_rules,id=$VAR[Action_View_ContentID],focus_id=9001,clear_prop_one=Null,clear_prop_two=Null)</value>
     </variable>
 
-    <variable name="Action_Var_ToMediaWall">
-        <value>Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=64,clear_prop_one=Null,clear_prop_two=Null,preaction=ClearProperty(View.WallSwitchPosition))</value>
-    </variable>
 
     <include name="_Action_Blur_Onload">
         <param name="sourceimage">Art(fanart)</param>

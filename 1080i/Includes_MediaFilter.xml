@@ -308,66 +308,65 @@
         </include>
     </include>
 
+    <include name="MediaFilter_Node_Alphabet">
+        <control type="group">
+            <top>140</top>
+            <left>160</left>
+            <width>720</width>
+            <include content="Search_Filter_Alphabet">
+                <param name="rowone">9002</param>
+                <param name="rowtwo">9003</param>
+                <param name="editid">19</param>
+                <param name="ondown">9500</param>
+                <param name="onback">68</param>
+            </include>
+        </control>
+    </include>
+
     <include name="MediaFilter_Node">
 
         <control type="group">
             <visible>!$EXP[Exp_InfoDialogs]</visible>
-            <visible>$EXP[Exp_MediaFilterVisible]</visible>
+            <visible>!String.IsEmpty(Window.Property(MediaFilterBase)) + [!$EXP[Exp_ScrollbarVisible_H] | !Skin.HasSetting(Navigation.MediaFilterWall)]</visible>
             <include content="Animation_Fade_In">
                 <param name="delay">0</param>
                 <param name="type">Visible</param>
             </include>
-
+            <!-- Top Row -->
             <control type="group">
                 <left>160</left>
                 <width>720</width>
-                <!-- Top Row -->
-                <control type="group">
-                    <centertop>100</centertop>
+                <centertop>100</centertop>
+                <height>view_pad</height>
+                <include content="Object_Hidden_Button">
+                    <param name="id">9001</param>
+                    <include>MediaFilter_Node_ClearAll</include>
+                    <onfocus>SetFocus(19)</onfocus>
+                </include>
+                <!-- Edit Control -->
+                <control type="edit" id="19">
+                    <description>Filter</description>
+                    <font>font_midi_black</font>
+                    <textcolor>00ffffff</textcolor>
+                    <selectedcolor>00ffffff</selectedcolor>
+                    <disabledcolor>00ffffff</disabledcolor>
+                    <focusedcolor>$VAR[ColorSelected]</focusedcolor>
                     <height>view_pad</height>
-                    <include content="Object_Hidden_Button">
-                        <param name="id">9001</param>
-                        <include>MediaFilter_Node_ClearAll</include>
-
-                        <onfocus>SetProperty(View.WallSwitchPosition,1)</onfocus>
-                        <onfocus>SetFocus(19)</onfocus>
+                    <textoffsetx>40</textoffsetx>
+                    <align>left</align>
+                    <onup>SetProperty(List.ViewContainer,19)</onup>
+                    <onup>333</onup>
+                    <ondown condition="!Skin.HasSetting(Navigation.MediaFilterWall)">9002</ondown>
+                    <ondown condition="Skin.HasSetting(Navigation.MediaFilterWall)">64</ondown>
+                    <onright>9004</onright>
+                    <include content="Action_View_Movement_OnLeft" condition="$EXP[Exp_HomeMenu_DontHide]">
+                        <param name="id">19</param>
+                        <param name="onleft">9009</param>
+                        <param name="menuid">308</param>
                     </include>
-                    <!-- Edit Control -->
-                    <control type="edit" id="19">
-                        <description>Filter</description>
-                        <font>font_midi_black</font>
-                        <textcolor>00ffffff</textcolor>
-                        <selectedcolor>00ffffff</selectedcolor>
-                        <disabledcolor>00ffffff</disabledcolor>
-                        <focusedcolor>$VAR[ColorSelected]</focusedcolor>
-                        <height>view_pad</height>
-                        <textoffsetx>40</textoffsetx>
-                        <align>left</align>
-                        <onup>SetProperty(List.ViewContainer,19)</onup>
-                        <onup>333</onup>
-                        <ondown>9002</ondown>
-                        <onright>9004</onright>
-                        <include content="Action_View_Movement_OnLeft" condition="$EXP[Exp_HomeMenu_DontHide]">
-                            <param name="id">19</param>
-                            <param name="onleft">9009</param>
-                            <param name="menuid">308</param>
-                        </include>
-                        <include content="Action_View_Movement_OnLeft" condition="![$EXP[Exp_HomeMenu_DontHide]]">
-                            <param name="id">19</param>
-                            <param name="onleft">9009</param>
-                        </include>
-                    </control>
-                </control>
-                <!-- Alphabet and Autocomplete -->
-                <control type="group">
-                    <top>140</top>
-                    <left>0</left>
-                    <include content="Search_Filter_Alphabet">
-                        <param name="rowone">9002</param>
-                        <param name="rowtwo">9003</param>
-                        <param name="editid">19</param>
-                        <param name="ondown">9500</param>
-                        <param name="onback">68</param>
+                    <include content="Action_View_Movement_OnLeft" condition="![$EXP[Exp_HomeMenu_DontHide]]">
+                        <param name="id">19</param>
+                        <param name="onleft">9009</param>
                     </include>
                 </control>
             </control>
@@ -378,11 +377,12 @@
                 <orientation>horizontal</orientation>
                 <height>160</height>
                 <right>-20</right>
-                <onleft>SetFocus(9001)</onleft>
+                <onleft>SetFocus(19)</onleft>
                 <onback>68</onback>
                 <onup>SetProperty(List.ViewContainer,9000)</onup>
                 <onup>333</onup>
-                <ondown>SetFocus(68)</ondown>
+                <ondown condition="!Skin.HasSetting(Navigation.MediaFilterWall)">9002</ondown>
+                <ondown condition="Skin.HasSetting(Navigation.MediaFilterWall)">68</ondown>
 
                 <include content="Action_View_Movement_OnRight" condition="$EXP[Exp_HomeMenu_DontHide]">
                     <param name="id">19</param>
@@ -475,9 +475,11 @@
                     <onclick>Runscript(script.skinvariables,action=buildviews,contentid=$VAR[Items_ViewMode_Switch],pluginname=$INFO[Container.PluginName])</onclick>
                 </include>
             </control>
-            <include>MediaFilter_Node_Filters</include>
+
+            <include condition="!Skin.HasSetting(Navigation.MediaFilterWall)">MediaFilter_Node_Alphabet</include>
+            <include condition="!Skin.HasSetting(Navigation.MediaFilterWall)">MediaFilter_Node_Filters</include>
         </control>
-        <include>MediaFilter_Node_Dialog</include>
+        <include condition="!Skin.HasSetting(Navigation.MediaFilterWall)">MediaFilter_Node_Dialog</include>
     </include>
 
     <include name="MediaFilter_Discover_Node">
