@@ -71,8 +71,10 @@
     </include>
 
     <include name="Info_Line_Divider">
-        <control type="image">
+        <control type="button">
             <include>Texture_Circle_Highlight_V</include>
+            <include>Texture_Circle_Highlight_Focus_V</include>
+            <include>Texture_Circle_Highlight_NoFocus_V</include>
             <aspectratio>keep</aspectratio>
             <width>8</width>
             <height>8</height>
@@ -886,11 +888,12 @@
         <param name="container" />
         <param name="starrating">false</param>
         <definition>
-            <control type="grouplist">
+            <control type="grouplist" id="99951">
                 <hitrect x="0" y="0" w="0" h="0" />
                 <height>80</height>
                 <orientation>horizontal</orientation>
                 <itemgap>10</itemgap>
+
                 <include content="Object_Control">
                     <param name="control">image</param>
                     <aspectratio align="left">keep</aspectratio>
@@ -1132,18 +1135,34 @@
                     <param name="visible">!String.IsEmpty($PARAM[container]ListItem.PictureResolution) + !String.IsEmpty($PARAM[container]ListItem.Size)</param>
                     <param name="textcolor">$PARAM[colordiffuse]_90</param>
                 </include>
+
+                <nested />
+            </control>
+
+            <control type="grouplist">
+                <hitrect x="0" y="0" w="0" h="0" />
+                <height>80</height>
+                <orientation>horizontal</orientation>
+                <itemgap>10</itemgap>
+
+                <visible>Integer.IsEqual(Container(99951).NumItems,0)</visible>
+
+                <control type="group">
+                    <width>37</width>
+                    <description>Bumper for info icon</description>
+                </control>
+
                 <include content="Info_Line_Item">
                     <param name="label">$VAR[Label_ProfileName]</param>
-                    <param name="visible">String.IsEmpty(Container(99950).ListItem.Label) + String.IsEmpty($PARAM[container]ListItem.AddonVersion) + String.IsEmpty($PARAM[container]ListItem.PictureResolution) + String.IsEmpty($PARAM[container]ListItem.Artist)</param>
                     <param name="textcolor">$PARAM[colordiffuse]_90</param>
                 </include>
                 <include content="Info_Line_Item">
                     <param name="label">$INFO[System.BuildVersionCode,v,]</param>
-                    <param name="visible">String.IsEmpty(Container(99950).ListItem.Label) + String.IsEmpty($PARAM[container]ListItem.AddonVersion) + String.IsEmpty($PARAM[container]ListItem.PictureResolution) + String.IsEmpty($PARAM[container]ListItem.Artist)</param>
                     <param name="textcolor">$PARAM[colordiffuse]_90</param>
                 </include>
 
                 <nested />
+
             </control>
 
         </definition>
@@ -1702,9 +1721,11 @@
         <param name="plotlabel">$VAR[Label_Plot_Container]</param>
         <param name="titlelabel">$VAR[Label_Title_Container]</param>
         <param name="details_include">Items_Null</param>
+        <param name="visible">true</param>
         <definition>
             <control type="group">
                 <nested />
+                <visible>$PARAM[visible]</visible>
                 <control type="grouplist">
                     <top>-20</top>
                     <hitrect x="0" y="0" w="0" h="0" />
@@ -1726,6 +1747,7 @@
                             <param name="container">$PARAM[container]</param>
                             <param name="starrating">$PARAM[starrating]</param>
                             <centertop>45%</centertop>
+                            <visible>$PARAM[visible]</visible>
                         </include>
                     </control>
 

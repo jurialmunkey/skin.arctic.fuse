@@ -4,11 +4,20 @@
     <include name="NextAired_GroupList">
         <control type="grouplist" id="5000">
             <top>500</top>
-            <onleft>303</onleft>
             <orientation>vertical</orientation>
             <include>Animation_Half_WindowChange</include>
+            <onup>330</onup>
+            <ondown>330</ondown>
             <control type="group" id="5999">
                 <height>widget_tbump_h</height>
+            </control>
+            <control type="button" id="5098">
+                <height>0</height>
+                <texturefocus />
+                <texturenofocus />
+                <onfocus>Action(Down)</onfocus>
+                <animation effect="fade" time="400" start="0" end="0">Focus</animation>
+                <visible>!ControlGroup(5000).HasFocus() | Control.HasFocus(5098)</visible>
             </control>
             <nested />
         </control>
@@ -17,8 +26,7 @@
     <include name="NextAired_Content">
         <include content="Home_Widgets_Infopanel">
             <param name="visible">true</param>
-            <include content="Info_Panel">
-            </include>
+            <include>Info_Panel</include>
         </include>
 
         <include content="NextAired_GroupList">
@@ -63,9 +71,8 @@
         <param name="include">List_Landscape_Row</param>
         <param name="secondary_label">$LOCALIZE[31371] $LOCALIZE[571]</param>
         <definition>
-            <include content="_Widget_Row">
-                <param name="id">50$PARAM[id]</param>
-                <param name="groupid">51$PARAM[id]</param>
+            <include content="Widget_Info_Row">
+                <param name="id">$PARAM[id]</param>
                 <param name="label">$PARAM[label]</param>
                 <param name="secondary_label">$PARAM[secondary_label]</param>
                 <param name="sort_condition">True</param>
@@ -74,14 +81,6 @@
                 <param name="altvisible">$PARAM[altvisible]</param>
                 <param name="transition_include">true</param>
                 <param name="transition_hidden">Control.HasFocus(50$PARAM[id])</param>
-                <onfocus>SetProperty(TMDbHelper.WidgetContainer,50$PARAM[id])</onfocus>
-                <onback condition="!Integer.IsEqual(Container(50$PARAM[id]).CurrentItem,1)">5000</onback>
-                <onback condition="!Integer.IsEqual(Container(50$PARAM[id]).CurrentItem,1)">SetFocus(50$PARAM[id],0,absolute)</onback>
-                <onback condition="Integer.IsEqual(Container(50$PARAM[id]).CurrentItem,1)">3000</onback>
-
-                <onfocus>SetProperty(Transition.WidgetStyle,$PARAM[include],Home)</onfocus>
-                <onunfocus>ClearProperty(Transition.WidgetStyle,Home)</onunfocus>
-
                 <nested />
             </include>
         </definition>
@@ -135,57 +134,6 @@
             <param name="label">$INFO[Container(5008).ListItem.Property(widget)]$INFO[Container(5008).ListItem.Property(air_date_short),$COMMA ,]</param>
             <param name="visible">true</param>
             <content target="videos">plugin://plugin.video.themoviedb.helper/?info=$PARAM[info]&amp;reload=$INFO[System.Time(hh)]&amp;startdate=6&amp;days=1&amp;widget=True&amp;type=episode</content>
-        </include>
-    </include>
-
-    <include name="NextAired_InfoPanels">
-        <include content="Info_Panel">
-            <param name="titlelabel">$VAR[Label_Title_Container]</param>
-            <param name="plotlabel">$VAR[Label_Plot_Container]</param>
-            <param name="container">Container(5001).</param>
-            <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),5001)</visible>
-        </include>
-        <include content="Info_Panel">
-            <param name="titlelabel">$VAR[Label_Title_Container]</param>
-            <param name="plotlabel">$VAR[Label_Plot_Container]</param>
-            <param name="container">Container(5002).</param>
-            <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),5002)</visible>
-        </include>
-        <include content="Info_Panel">
-            <param name="titlelabel">$VAR[Label_Title_Container]</param>
-            <param name="plotlabel">$VAR[Label_Plot_Container]</param>
-            <param name="container">Container(5003).</param>
-            <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),5003)</visible>
-        </include>
-        <include content="Info_Panel">
-            <param name="titlelabel">$VAR[Label_Title_Container]</param>
-            <param name="plotlabel">$VAR[Label_Plot_Container]</param>
-            <param name="container">Container(5004).</param>
-            <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),5004)</visible>
-        </include>
-        <include content="Info_Panel">
-            <param name="titlelabel">$VAR[Label_Title_Container]</param>
-            <param name="plotlabel">$VAR[Label_Plot_Container]</param>
-            <param name="container">Container(5005).</param>
-            <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),5005)</visible>
-        </include>
-        <include content="Info_Panel">
-            <param name="titlelabel">$VAR[Label_Title_Container]</param>
-            <param name="plotlabel">$VAR[Label_Plot_Container]</param>
-            <param name="container">Container(5006).</param>
-            <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),5006)</visible>
-        </include>
-        <include content="Info_Panel">
-            <param name="titlelabel">$VAR[Label_Title_Container]</param>
-            <param name="plotlabel">$VAR[Label_Plot_Container]</param>
-            <param name="container">Container(5007).</param>
-            <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),5007)</visible>
-        </include>
-        <include content="Info_Panel">
-            <param name="titlelabel">$VAR[Label_Title_Container]</param>
-            <param name="plotlabel">$VAR[Label_Plot_Container]</param>
-            <param name="container">Container(5008).</param>
-            <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),5008)</visible>
         </include>
     </include>
 </includes>
