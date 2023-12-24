@@ -37,15 +37,24 @@
             <left>view_side</left>
             <top>590</top>
             <visible allowhiddenfocus="true">![Control.HasFocus($PARAM[id]3) | Control.HasFocus(60) | Control.HasFocus(332) | Control.HasFocus(62)]</visible>
-            <animation effect="fade" start="0" end="100" time="200" delay="200" reversible="false">Visible</animation>
-            <animation effect="fade" start="100" end="0" time="200" reversible="false">Hidden</animation>
+
+            <include content="Animation_Fade_In">
+                <param name="type">Visible</param>
+            </include>
+            <include content="Animation_Fade_Out">
+                <param name="type">Hidden</param>
+                <param name="time">200</param>
+            </include>
 
             <include content="Animation_Fade_In">
                 <param name="condition">!$EXP[Exp_InfoDialogs]</param>
+                <param name="delay">40</param>
+                <param name="time">300</param>
             </include>
             <include content="Animation_Fade_Out">
                 <param name="condition">$EXP[Exp_InfoDialogs]</param>
-                <param name="delay">300</param>
+                <param name="delay">320</param>
+                <param name="time">200</param>
             </include>
 
             <include content="List_Button_Row">
@@ -62,12 +71,15 @@
                 <include content="Action_View_Movement_OnLeft">
                     <param name="id">$PARAM[id]2</param>
                     <param name="onleft">$PARAM[id]3</param>
-                    <param name="online">,3</param>
+                    <param name="online">,2</param>
                 </include>
                 <include content="Action_View_Movement_OnBack">
                     <param name="id">$PARAM[id]2</param>
                     <param name="onleft">$PARAM[id]3</param>
                 </include>
+
+                <include>Action_View_Movement_OnDown</include>
+                <onup>$VAR[Action_Var_ToMediaFilter]</onup>
 
                 <onright condition="!Container($PARAM[id]3).IsUpdating">$PARAM[id]3</onright>
                 <onfocus condition="!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),$PARAM[id]3)">SetProperty(TMDbHelper.WidgetContainer,$PARAM[id]3)</onfocus>
@@ -108,7 +120,7 @@
                         <include content="Action_View_Movement_OnRight">
                             <param name="id">$PARAM[id]2</param>
                             <param name="onleft">$PARAM[id]3</param>
-                            <param name="online">,3</param>
+                            <param name="online">,2</param>
                         </include>
 
                         <pagecontrol>60</pagecontrol>
@@ -181,7 +193,7 @@
                         <include content="Action_View_Movement_OnLeftRight">
                             <param name="id">$PARAM[id]3</param>
                             <param name="onback">!Integer.IsEqual(Container($PARAM[id]3).CurrentItem,1)</param>
-                            <param name="online">,3</param>
+                            <param name="online">,2</param>
                         </include>
 
                         <ondown>SetFocus($PARAM[id]3,0,absolute)</ondown>
@@ -222,7 +234,7 @@
     <include name="View_Combined_List_Horz">
         <control type="group">
             <include content="Animation_ConditionalFade">
-                <param name="condition">[$EXP[Exp_InfoDialogs] | Control.HasFocus(60) | Control.HasFocus(64) | Control.HasFocus(65) | Control.HasFocus(67) | ControlGroup(9000).HasFocus() | !String.IsEmpty(Window.Property(MediaFilterBase))]</param>
+                <param name="condition">[$EXP[Exp_InfoDialogs] | Control.HasFocus(60) | Control.HasFocus(64) | ControlGroup(9000).HasFocus() | !String.IsEmpty(Window.Property(MediaFilterBase))]</param>
             </include>
             <right>480</right>
             <include content="Categories_Selector">

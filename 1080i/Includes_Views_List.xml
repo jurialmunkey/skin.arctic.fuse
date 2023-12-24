@@ -240,10 +240,15 @@
 
                     <visible>!$EXP[Exp_InfoDialogs]</visible>
 
-                    <include content="Transitions_Standard_Animation">
-                        <param name="visible_delay">40</param>
-                        <param name="hidden_delay">320</param>
-                        <param name="slide_x">0</param>
+                    <include content="Animation_Fade_In">
+                        <param name="type">Visible</param>
+                        <param name="delay">40</param>
+                        <param name="time">300</param>
+                    </include>
+                    <include content="Animation_Fade_Out">
+                        <param name="type">Hidden</param>
+                        <param name="delay">320</param>
+                        <param name="time">200</param>
                     </include>
 
                     <include content="List_DialogSelect">
@@ -252,17 +257,27 @@
                         <param name="control">fixedlist</param>
                         <param name="itemlayout_include">Layout_MediaList</param>
 
-
-                        <onleft>303</onleft>
-                        <onleft>SetProperty(List.ViewContainer,$PARAM[id])</onleft>
-                        <onleft>$VAR[Action_Menu_Position]</onleft>
-
-                        <onright>$VAR[Action_Var_ToMediaFilter]</onright>
+                        <include content="Action_View_Movement_OnLeft">
+                            <param name="id">50</param>
+                            <param name="online">,2</param>
+                            <param name="onleft">65</param>
+                        </include>
+                        <include content="Action_View_Movement_OnBack">
+                            <param name="id">50</param>
+                            <param name="online">,2</param>
+                            <param name="onback">False</param>
+                            <param name="onleft">65</param>
+                        </include>
+                        <onright>SetFocus(65)</onright>
+                        <include condition="!Window.IsVisible(MyPlaylist.xml)">Action_View_Movement_OnDown</include>
+                        <onup>$VAR[Action_Var_ToMediaFilter]</onup>
+                        <ondown condition="Window.IsVisible(MyPlaylist.xml)">SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</ondown>
+                        <ondown condition="Window.IsVisible(MyPlaylist.xml)">330</ondown>
 
                         <focusposition>1</focusposition>
                         <movement>2</movement>
-                        <top>14</top>
-                        <pagecontrol>60</pagecontrol>
+                        <top>15</top>
+                        <pagecontrol>65</pagecontrol>
                         <visible>$PARAM[visible]</visible>
                         <viewtype label="$PARAM[viewtype_label]">list</viewtype>
                         <onfocus>ClearProperty(TMDbHelper.WidgetContainer)</onfocus>
