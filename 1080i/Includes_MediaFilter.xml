@@ -45,6 +45,8 @@
                 <label>$LOCALIZE[456]$INFO[Window.Property(MediaFilter.ContentType),: ,]</label>
                 <font>font_main_bold</font>
 
+                <include>MediaFilter_Node_ClearAll</include>
+
                 <onclick condition="String.IsEqual(Window.Property(MediaFilter.ContentType),Movies)">SetProperty(MediaFilter.ContentType,TV)</onclick>
 
                 <onclick condition="String.IsEqual(Window.Property(MediaFilter.ContentType),Movies) + !Library.HasContent(TVShows)">SetProperty(MediaFilter.BaseDir,plugin://plugin.video.themoviedb.helper/?info=trakt_trending&amp;tmdb_type=tv)</onclick>
@@ -100,6 +102,7 @@
                 <param name="id">9514</param>
                 <label>$LOCALIZE[345]$INFO[Window(1105).Property(SearchDiscover.YearLow), &gt; ,]$INFO[Window(1105).Property(SearchDiscover.YearHigh), &lt; ,]</label>
                 <font>font_main_bold</font>
+                <include>MediaFilter_Node_ClearAll</include>
                 <onclick>SetProperty(SearchDiscover.YearLow.Dialog,1,1105)</onclick>
                 <onclick>ClearProperty(SearchDiscover.YearLow,1105)</onclick>
                 <onclick>ClearProperty(SearchDiscover.YearHigh,1105)</onclick>
@@ -490,8 +493,8 @@
                     <align>left</align>
                     <onup>SetProperty(List.ViewContainer,19)</onup>
                     <onup>333</onup>
-                    <ondown condition="!Skin.HasSetting(Navigation.MediaFilterWall) + !Window.IsVisible(MyPlaylist.xml)">9002</ondown>
-                    <ondown condition="Skin.HasSetting(Navigation.MediaFilterWall) + !Window.IsVisible(MyPlaylist.xml)">64</ondown>
+                    <ondown condition="[!Skin.HasSetting(Navigation.MediaFilterWall) + Skin.String(Navigation.OnUp,Search)] + !Window.IsVisible(MyPlaylist.xml)">9002</ondown>
+                    <ondown condition="![!Skin.HasSetting(Navigation.MediaFilterWall) + Skin.String(Navigation.OnUp,Search)] + !Window.IsVisible(MyPlaylist.xml)">64</ondown>
                     <ondown condition="Window.IsVisible(MyPlaylist.xml)">ClearProperty(MediaFilterBase)</ondown>
                     <ondown condition="Window.IsVisible(MyPlaylist.xml)">50</ondown>
                     <onright>9004</onright>
@@ -517,8 +520,8 @@
                 <onback>68</onback>
                 <onup>SetProperty(List.ViewContainer,9000)</onup>
                 <onup>333</onup>
-                <ondown condition="!Skin.HasSetting(Navigation.MediaFilterWall) + !Window.IsVisible(MyPlaylist.xml)">9002</ondown>
-                <ondown condition="Skin.HasSetting(Navigation.MediaFilterWall) + !Window.IsVisible(MyPlaylist.xml)">68</ondown>
+                <ondown condition="[!Skin.HasSetting(Navigation.MediaFilterWall) + Skin.String(Navigation.OnUp,Search)] + !Window.IsVisible(MyPlaylist.xml)">9002</ondown>
+                <ondown condition="![!Skin.HasSetting(Navigation.MediaFilterWall) + Skin.String(Navigation.OnUp,Search)] + !Window.IsVisible(MyPlaylist.xml)">68</ondown>
                 <ondown condition="Window.IsVisible(MyPlaylist.xml)">ClearProperty(MediaFilterBase)</ondown>
                 <ondown condition="Window.IsVisible(MyPlaylist.xml)">50</ondown>
 
@@ -543,16 +546,16 @@
 
         <control type="group">
             <visible>!$EXP[Exp_InfoDialogs]</visible>
-            <visible>!String.IsEmpty(Window.Property(MediaFilterBase)) + [!$EXP[Exp_ScrollbarVisible_H] | !Skin.HasSetting(Navigation.MediaFilterWall)]</visible>
+            <visible>!String.IsEmpty(Window.Property(MediaFilterBase)) + [!$EXP[Exp_ScrollbarVisible_H] | [!Skin.HasSetting(Navigation.MediaFilterWall) + Skin.String(Navigation.OnUp,Search)]]</visible>
             <include content="Animation_Fade_In">
                 <param name="delay">0</param>
                 <param name="type">Visible</param>
             </include>
             <include>MediaFilter_Node_TopRow</include>
-            <include condition="!Skin.HasSetting(Navigation.MediaFilterWall)">MediaFilter_Node_Alphabet</include>
-            <include condition="!Skin.HasSetting(Navigation.MediaFilterWall)">MediaFilter_Node_Filters</include>
+            <include condition="[!Skin.HasSetting(Navigation.MediaFilterWall) + Skin.String(Navigation.OnUp,Search)]">MediaFilter_Node_Alphabet</include>
+            <include condition="[!Skin.HasSetting(Navigation.MediaFilterWall) + Skin.String(Navigation.OnUp,Search)]">MediaFilter_Node_Filters</include>
         </control>
-        <include condition="!Skin.HasSetting(Navigation.MediaFilterWall)">MediaFilter_Node_Dialog</include>
+        <include condition="[!Skin.HasSetting(Navigation.MediaFilterWall) + Skin.String(Navigation.OnUp,Search)]">MediaFilter_Node_Dialog</include>
     </include>
 
     <include name="MediaFilter_Discover_Node">

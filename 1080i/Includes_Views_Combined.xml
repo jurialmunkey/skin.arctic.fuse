@@ -77,9 +77,12 @@
                     <param name="id">$PARAM[id]2</param>
                     <param name="onleft">$PARAM[id]3</param>
                 </include>
-
-                <include>Action_View_Movement_OnDown</include>
-                <onup>$VAR[Action_Var_ToMediaFilter]</onup>
+                <include content="Action_View_Movement_OnDown">
+                    <param name="id">$PARAM[id]2</param>
+                </include>
+                <include content="Action_View_Movement_OnUp">
+                    <param name="id">$PARAM[id]2</param>
+                </include>
 
                 <onright condition="!Container($PARAM[id]3).IsUpdating">$PARAM[id]3</onright>
                 <onfocus condition="!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),$PARAM[id]3)">SetProperty(TMDbHelper.WidgetContainer,$PARAM[id]3)</onfocus>
@@ -106,8 +109,8 @@
     <include name="View_Combined_Row_Vert">
         <definition>
             <control type="group">
-                <animation effect="slide" start="$PARAM[slide_x]" end="0" tween="quadratic" easing="out" time="400" reversible="false" condition="[Control.HasFocus($PARAM[id]3) | Control.HasFocus(60) | Control.HasFocus(332) | Control.HasFocus(68) | Control.HasFocus(62)]">Conditional</animation>
-                <animation effect="slide" start="0" end="$PARAM[slide_x]" tween="quadratic" easing="out" time="400" reversible="false" condition="![Control.HasFocus($PARAM[id]3) | Control.HasFocus(60) | Control.HasFocus(332) | Control.HasFocus(68) | Control.HasFocus(62)]">Conditional</animation>
+                <animation effect="slide" start="$PARAM[slide_x]" end="0" tween="quadratic" easing="out" time="400" reversible="false" condition="[Control.HasFocus($PARAM[id]3) | Control.HasFocus(60) | Control.HasFocus(332) | Control.HasFocus(68) | Control.HasFocus(62) | [Control.HasFocus(330) + Integer.IsEqual(Window.Property(List.ViewContainer),$PARAM[id]3)]]">Conditional</animation>
+                <animation effect="slide" start="0" end="$PARAM[slide_x]" tween="quadratic" easing="out" time="400" reversible="false" condition="![Control.HasFocus($PARAM[id]3) | Control.HasFocus(60) | Control.HasFocus(332) | Control.HasFocus(68) | Control.HasFocus(62) | [Control.HasFocus(330) + Integer.IsEqual(Window.Property(List.ViewContainer),$PARAM[id]3)]]">Conditional</animation>
                 <visible>Control.IsVisible($PARAM[id]2)</visible>
                 <include content="Transitions_List_Group">
                     <include content="$PARAM[include]">
@@ -129,11 +132,12 @@
                         <onback condition="!Integer.IsEqual(Container($PARAM[id]3).CurrentItem,1)">62</onback>
                         <onback condition="Integer.IsEqual(Container($PARAM[id]3).CurrentItem,1)">$PARAM[id]2</onback>
 
+                        <include content="Action_View_Movement_OnDown">
+                            <param name="id">$PARAM[id]3</param>
+                        </include>
                         <include content="Action_View_Movement_OnUp">
                             <param name="id">$PARAM[id]3</param>
                         </include>
-
-                        <include>Action_View_Movement_OnDown</include>
 
                         <animation type="Conditional" reversible="false" condition="Container($PARAM[id]3).IsUpdating">
                             <effect type="fade" start="100" end="0" time="200" delay="600" />
@@ -162,7 +166,7 @@
 
                     <include content="Widget_Fake_$PARAM[include]">
                         <param name="id">$PARAM[id]3</param>
-                        <param name="overhang_visible">[Control.HasFocus($PARAM[id]3) | Control.HasFocus(60) | Control.HasFocus(332) | Control.HasFocus(68) | Control.HasFocus(62)]</param>
+                        <param name="overhang_visible">[Control.HasFocus($PARAM[id]3) | Control.HasFocus(60) | Control.HasFocus(332) | Control.HasFocus(68) | Control.HasFocus(62) | [Control.HasFocus(330) + Integer.IsEqual(Window.Property(List.ViewContainer),$PARAM[id]3)]]</param>
                         <animation type="Conditional" reversible="false" condition="Container($PARAM[id]3).IsUpdating">
                             <effect type="fade" start="100" end="0" time="200" delay="600" />
                         </animation>

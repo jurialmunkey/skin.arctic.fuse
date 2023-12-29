@@ -82,14 +82,20 @@
     </include>
 
     <include name="Action_Hubs_Onload">
-        <onload condition="!Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu) + !Window.Previous(1181) + !Window.Previous(videos) + !Window.Previous(music) + !Window.Previous(programs) + !Window.Previous(pictures)">SetProperty(TMDbHelper.WidgetContainer,301)</onload>
-        <onload condition="Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu) + !Window.Previous(1181) + !Window.Previous(videos) + !Window.Previous(music) + !Window.Previous(programs) + !Window.Previous(pictures)">SetProperty(TMDbHelper.WidgetContainer,601)</onload>
-        <onload condition="Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu) + !Window.Previous(1181) + !Window.Previous(videos) + !Window.Previous(music) + !Window.Previous(programs) + !Window.Previous(pictures)">SetProperty(Slide.WidgetContainer,True)</onload>
-        <onload condition="Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu) + !Window.Previous(1181) + !Window.Previous(videos) + !Window.Previous(music) + !Window.Previous(programs) + !Window.Previous(pictures)">SetFocus(303,0,absolute)</onload>
-        <onload condition="Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu) + !Window.Previous(1181) + !Window.Previous(videos) + !Window.Previous(music) + !Window.Previous(programs) + !Window.Previous(pictures)">SetFocus(601)</onload>
-        <onload condition="Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu) + !Window.Previous(1181) + !Window.Previous(videos) + !Window.Previous(music) + !Window.Previous(programs) + !Window.Previous(pictures)">AlarmClock(refocus,SetFocus(601),00:00,silent)</onload>
-        <onload condition="!Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu) + !Window.Previous(1181) + !Window.Previous(videos) + !Window.Previous(music) + !Window.Previous(programs) + !Window.Previous(pictures)">SetFocus(300)</onload>
+
+        <onload condition="!Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu) + String.IsEmpty(Window.Property(InhibitHubPositionReset))">SetProperty(TMDbHelper.WidgetContainer,301)</onload>
+        <onload condition="!Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu) + String.IsEmpty(Window.Property(InhibitHubPositionReset))">SetFocus(300)</onload>
+
+        <onload condition="Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu) + String.IsEmpty(Window.Property(InhibitHubPositionReset))">SetProperty(TMDbHelper.WidgetContainer,601)</onload>
+        <onload condition="Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu) + String.IsEmpty(Window.Property(InhibitHubPositionReset))">SetProperty(Slide.WidgetContainer,True)</onload>
+        <onload condition="Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu) + String.IsEmpty(Window.Property(InhibitHubPositionReset))">SetFocus(303,0,absolute)</onload>
+        <onload condition="Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu) + String.IsEmpty(Window.Property(InhibitHubPositionReset))">SetFocus(601)</onload>
+        <onload condition="Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu) + String.IsEmpty(Window.Property(InhibitHubPositionReset))">AlarmClock(refocus,SetFocus(601),00:00,silent)</onload>
+
+        <onload>SetProperty(InhibitHubPositionReset,True)</onload>
+
         <include>Action_BuildShortcuts_OnLoad</include>
+
         <onunload>CancelAlarm(playtrailer,silent)</onunload>
     </include>
 
@@ -318,6 +324,14 @@
         </definition>
     </include>
 
+    <variable name="Action_Var_ToMediaFilter">
+        <value condition="Window.IsVisible(MyPlaylist.xml)">Runscript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter-setfocus.json",use_rules,id=$VAR[Action_View_ContentID],focus_id=19,clear_prop_one=Null,clear_prop_two=Null)</value>
+        <value condition="$EXP[Exp_FilterWall_IsViewtype] + Skin.HasSetting(Navigation.MediaFilterWall)">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=64,clear_prop_one=Null,clear_prop_two=Null)</value>
+        <value condition="$EXP[Exp_FilterWall_IsViewtype]">Runscript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter-setfocus.json",use_rules,id=$VAR[Action_View_ContentID],focus_id=64,clear_prop_one=Null,clear_prop_two=Null)</value>
+        <value condition="[!Skin.HasSetting(Navigation.MediaFilterWall) + Skin.String(Navigation.OnUp,Search)]">Runscript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter-setfocus.json",use_rules,id=$VAR[Action_View_ContentID],focus_id=9500,clear_prop_one=Null,clear_prop_two=Null)</value>
+        <value>Runscript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter-setfocus.json",use_rules,id=$VAR[Action_View_ContentID],focus_id=9001,clear_prop_one=Null,clear_prop_two=Null)</value>
+    </variable>
+
     <include name="Action_View_Movement_OnUp">
         <onup>$VAR[Action_Var_ToMediaFilter]</onup>
     </include>
@@ -440,23 +454,6 @@
         <onleft>Close</onleft>
         <onright>Close</onright>
     </include>
-
-    <include name="Action_Scrollbar">
-        <onup condition="!Skin.HasSetting(Navigation.MediaFilterWall)">9600</onup>
-        <onup condition="Skin.HasSetting(Navigation.MediaFilterWall)">SetFocus(19)</onup>
-        <onback>68</onback>
-        <onclick>SetFocus(68)</onclick>
-        <ondown>SetFocus(68)</ondown>
-    </include>
-
-    <variable name="Action_Var_ToMediaFilter">
-        <value condition="Window.IsVisible(MyPlaylist.xml)">Runscript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter-setfocus.json",use_rules,id=$VAR[Action_View_ContentID],focus_id=19,clear_prop_one=Null,clear_prop_two=Null)</value>
-        <value condition="$EXP[Exp_FilterWall_IsViewtype] + Skin.HasSetting(Navigation.MediaFilterWall)">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideIn,focus_id=64,clear_prop_one=Null,clear_prop_two=Null)</value>
-        <value condition="$EXP[Exp_FilterWall_IsViewtype]">Runscript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter-setfocus.json",use_rules,id=$VAR[Action_View_ContentID],focus_id=64,clear_prop_one=Null,clear_prop_two=Null)</value>
-        <value condition="!Skin.HasSetting(Navigation.MediaFilterWall)">Runscript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter-setfocus.json",use_rules,id=$VAR[Action_View_ContentID],focus_id=9501,clear_prop_one=Null,clear_prop_two=Null)</value>
-        <value>Runscript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter-setfocus.json",use_rules,id=$VAR[Action_View_ContentID],focus_id=9001,clear_prop_one=Null,clear_prop_two=Null)</value>
-    </variable>
-
 
     <include name="_Action_Blur_Onload">
         <param name="sourceimage">Art(fanart)</param>

@@ -15,10 +15,10 @@
                 <include content="Animation_ConditionalFade">
                     <param name="condition">Control.HasFocus(19)</param>
                 </include>
-                <include content="Furniture_Top" condition="!Skin.HasSetting(Navigation.MediaFilterWall)">
+                <include content="Furniture_Top" condition="!Skin.HasSetting(Navigation.MediaFilterWall) + Skin.String(Navigation.OnUp,Search)">
                     <param name="label">$PARAM[label]</param>
                 </include>
-                <include content="Furniture_Top" condition="Skin.HasSetting(Navigation.MediaFilterWall)">
+                <include content="Furniture_Top" condition="![!Skin.HasSetting(Navigation.MediaFilterWall) + Skin.String(Navigation.OnUp,Search)]">
                     <param name="label">$PARAM[label]</param>
                     <animation effect="slide" start="0" end="0,-30" delay="0" time="400" reversible="false" tween="cubic" easing="out" condition="[!String.IsEmpty(Window.Property(MediaFilterBase)) + [$EXP[Exp_ScrollbarVisible_H]]]">Conditional</animation>
                     <animation effect="slide" end="0" start="0,-30" time="400" reversible="false" tween="cubic" easing="out" condition="![!String.IsEmpty(Window.Property(MediaFilterBase)) + [$EXP[Exp_ScrollbarVisible_H]]]">Conditional</animation>
@@ -94,7 +94,11 @@
         <!-- Dummy for moving scrollbar -->
         <include content="Object_Hidden_Button">
             <param name="id">64</param>
-            <include>Action_Scrollbar</include>
+            <onup condition="!Skin.HasSetting(Navigation.MediaFilterWall) + Skin.String(Navigation.OnUp,Search)">9600</onup>
+            <onup condition="![!Skin.HasSetting(Navigation.MediaFilterWall) + Skin.String(Navigation.OnUp,Search)]">SetFocus(19)</onup>
+            <onback>68</onback>
+            <onclick>SetFocus(68)</onclick>
+            <ondown>SetFocus(68)</ondown>
             <include>MediaFilter_Node_ClearAll</include>
             <onfocus>ClearProperty(View.WallSwitchRow)</onfocus>
             <onleft>SetFocus($VAR[Action_View_ContentID])</onleft>
@@ -111,7 +115,7 @@
         <!-- Scrollbar H -->
         <control type="group">
             <height>scrollbar_w</height>
-            <animation effect="slide" start="0" end="0,-340" condition="Skin.HasSetting(Navigation.MediaFilterWall)">Conditional</animation>
+            <animation effect="slide" start="0" end="0,-340" condition="![!Skin.HasSetting(Navigation.MediaFilterWall) + Skin.String(Navigation.OnUp,Search)]">Conditional</animation>
             <centertop>440</centertop>
             <left>view_side</left>
             <visible>!$EXP[Exp_InfoDialogs]</visible>
@@ -135,7 +139,6 @@
                     <include>Texture_Scrollbar_SliderBar_H</include>
                     <include>Texture_Scrollbar_H</include>
                     <showonepage>true</showonepage>
-                    <include>Action_Scrollbar</include>
                     <onfocus>SetFocus(64)</onfocus>
                     <visible>$EXP[Exp_FilterWall_IsViewtype]</visible>
                     <visible>$EXP[Exp_ScrollbarVisible_H]</visible>
@@ -143,16 +146,6 @@
                 <control type="group">
                     <height>50</height>
                     <centertop>50%</centertop>
-                    <!-- <control type="label">
-                        <height>10</height>
-                        <top>0</top>
-                        <aligny>center</aligny>
-                        <align>right</align>
-                        <font>font_hint_black</font>
-                        <textcolor>main_fg_30</textcolor>
-                        <label>$INFO[Container.NumItems,, $LOCALIZE[31022]]</label>
-                        <visible>Skin.HasSetting(Navigation.MediaFilterWall)</visible>
-                    </control> -->
                     <control type="label">
                         <height>10</height>
                         <bottom>0</bottom>
@@ -161,7 +154,6 @@
                         <font>font_hint_black</font>
                         <textcolor>main_fg_30</textcolor>
                         <label>$INFO[Container.NumItems,, $LOCALIZE[31022]]</label>
-                        <!-- <visible>!Skin.HasSetting(Navigation.MediaFilterWall)</visible> -->
                     </control>
                     <control type="label">
                         <height>10</height>
