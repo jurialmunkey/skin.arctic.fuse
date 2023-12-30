@@ -1,0 +1,21 @@
+{
+    "comments": "Search Menu End Row",
+    "template": "generator/data/parts/basic_include.xmltemplate",
+    "includes_name": "skinvariables-searchmenu-rowitems",
+    "includes_part": {
+        "menu": "searchmenu",
+        "for_each": [
+            {
+                "template": "generator/data/parts/endrow_item.xmltemplate",
+                "datafile": "generator/data/setup/search_path.json",
+                "item_path": "$VAR[Path_SearchTerm,{widget_path},{widget_path_end}]",
+                "parts_onclick": {
+                    "template": "<onclick>ActivateWindow({item_target},$VAR[Path_SearchTerm,{widget_path},{widget_path_end}],return)</onclick>"
+                },
+                "endrow_widget_id": "$MATH[5000 + {item_x} + 1]",
+                "parts_visible": "!Skin.HasSetting(Search.EnableDiscover) + [!Integer.IsEqual(Container($MATH[5000 + {item_x} + 1]).NumItems,0) | Container($MATH[5000 + {item_x} + 1]).IsUpdating]",
+                "condition": "{item_path}!="
+            }
+        ]
+    }
+}

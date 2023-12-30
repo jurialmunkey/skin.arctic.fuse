@@ -1,0 +1,59 @@
+{
+    "list": [
+        ["1101menu", {"window_id": "1101"}],
+        ["1102menu", {"window_id": "1102"}],
+        ["1103menu", {"window_id": "1103"}],
+        ["1104menu", {"window_id": "1104"}],
+        ["1106menu", {"window_id": "1106"}],
+        ["1107menu", {"window_id": "1107"}],
+        ["1108menu", {"window_id": "1108"}],
+        ["1109menu", {"window_id": "1109"}]
+    ],
+    "for_each": [
+        {
+            "comments": "Hubs Widgets Only",
+            "template": "generator/data/parts/basic_include.xmltemplate",
+            "includes_name": "skinvariables-{item}-widgetsonly",
+            "includes_part": {
+                "comments": "Widget Group",
+                "template": "generator/data/parts/basic_content.xmltemplate",
+                "condition": "Skin.HasSetting(Hub.{window_id}.DisableSubmenu)",
+                "includes_name": "Hub_Menu_Group",
+                "includes_part": {
+                    "template": "generator/data/parts/widgets_grouplist.xmltemplate",
+                    "datafile": [
+                        "generator/data/setup/widgets_grouplist.json",
+                        "generator/data/setup/widgetsonly_grouplist.json"
+                    ],
+                    "all_standard_widgets": {
+                        "menu": "{item}-widgetsonly",
+                        "for_each": [
+                        {
+                            "template": "generator/data/parts/widgets_row.xmltemplate",
+                            "datafile": "generator/data/setup/widgets_row.json",
+                            "condition": "{item_path}!="
+                        }
+                    ]},
+                    "all_endrow_selector": {
+                        "comments": "Widget Selector",
+                        "template": "generator/data/parts/endrow_selector.xmltemplate",
+                        "condition": "Skin.HasSetting(Hubs.WidgetSelector)",
+                        "endrow_visible": "True",
+                        "all_endrow_items": {
+                            "menu": "{item}-widgetsonly",
+                            "for_each": [
+                            {
+                                "template": "generator/data/parts/endrow_item.xmltemplate",
+                                "datafile": [
+                                    "generator/data/setup/onclick_path.json",
+                                    "generator/data/setup/endrow_widgetsonly_item.json"
+                                ],
+                                "condition": "{item_path}!="
+                            }
+                        ]}
+                    }
+                }
+            }
+        }
+    ]
+}

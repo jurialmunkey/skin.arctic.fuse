@@ -1,0 +1,61 @@
+<contents>
+    <template>generator/data/parts/basic_content.xmltemplate</template>
+    <condition>{item_global_widgets}==</condition>
+
+    <value name="comments">Widget Group</value>
+    <value name="includes_name">Hub_Menu_Group</value>
+    <value name="includes_part">
+
+        <template>generator/data/parts/widgets_grouplist.xmltemplate</template>
+        <datafile>generator/data/setup/widgets_grouplist.json</datafile>
+
+        <value name="all_content_adapative_widgets">
+            <template>generator/data/parts/widgets_row.xmltemplate</template>
+            <datafile>generator/data/setup/widgets_row.json</datafile>
+            <datafile>generator/data/setup/widgets_content_adaptive.json</datafile>
+            <condition>{item_use_as_widget}==True</condition>
+            <condition>{item_submenulist_path}!=||{item_use_as_list}==True</condition>
+        </value>
+
+        <value name="all_adapative_widgets">
+            <condition>{item_use_as_widget}==True</condition>
+            <condition>{item_submenulist_path}==</condition>
+            <condition>{item_use_as_list}==</condition>
+            <items menu="{item_menu}" item="{item_x}" mode="submenu">
+                <item>
+                    <template>generator/data/parts/widgets_row.xmltemplate</template>
+                    <datafile>generator/data/setup/widgets_row.json</datafile>
+                    <datafile>generator/data/setup/widgets_adaptive.json</datafile>
+                    <condition>{item_path}!=</condition>
+                </item>
+            </items>
+        </value>
+
+        <value name="all_standard_widgets">
+            <items menu="{item_menu}" item="{item_x}" mode="widgets">
+                <item>
+                    <template>generator/data/parts/widgets_row.xmltemplate</template>
+                    <datafile>generator/data/setup/widgets_row.json</datafile>
+                    <condition>{item_path}!=</condition>
+                </item>
+            </items>
+        </value>
+
+        <value name="all_endrow_selector">
+            <value name="comments">Widget Selector</value>
+            <template>generator/data/parts/endrow_selector.xmltemplate</template>
+            <condition>Skin.HasSetting(Hubs.WidgetSelector)</condition>
+            <value name="endrow_visible">String.IsEqual(Container(300).ListItem.Property(guid),{item_guid})</value>
+            <value name="all_endrow_items">
+                <items menu="{item_menu}" item="{item_x}" mode="widgets">
+                    <item>
+                        <template>generator/data/parts/endrow_item.xmltemplate</template>
+                        <datafile>generator/data/setup/onclick_path.json</datafile>
+                        <datafile>generator/data/setup/endrow_item.json</datafile>
+                        <condition>{item_path}!=</condition>
+                    </item>
+                </items>
+            </value>
+        </value>
+    </value>
+</contents>

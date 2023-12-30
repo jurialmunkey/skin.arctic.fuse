@@ -1,0 +1,97 @@
+{
+    "comments": "Home Widgets Only",
+    "template": "generator/data/parts/basic_include.xmltemplate",
+    "includes_name": "skinvariables-homemenu-widgetsonly",
+    "includes_part": {
+        "menu": "sidemenu",
+        "for_each": [
+        {
+            "comments": "Widget Group",
+            "template": "generator/data/parts/basic_content.xmltemplate",
+            "condition": ["Skin.HasSetting(Hub.Home.DisableSubmenu)", "{item_global_widgets}=="],
+            "includes_name": "Hub_Menu_Group",
+            "includes_part": {
+                "template": "generator/data/parts/widgets_grouplist.xmltemplate",
+                "datafile": [
+                    "generator/data/setup/widgets_grouplist.json",
+                    "generator/data/setup/widgetsclassic_grouplist.json"
+                ],
+                "window_id": "Home",
+                "all_standard_widgets": {
+                    "menu": "{item_menu}",
+                    "item": "{item_x}",
+                    "mode": "widgets",
+                    "for_each": [
+                        {
+                            "template": "generator/data/parts/widgets_row.xmltemplate",
+                            "datafile": "generator/data/setup/widgets_row.json",
+                            "condition": "{item_path}!="
+                        }
+                    ]
+                },
+                "all_endrow_selector": {
+                    "comments": "Widget Selector",
+                    "template": "generator/data/parts/endrow_selector.xmltemplate",
+                    "condition": "Skin.HasSetting(Hubs.WidgetSelector)",
+                    "endrow_visible": "String.IsEqual(Container(303).ListItem.Property(guid),{item_guid})",
+                    "all_endrow_items": {
+                        "menu": "{item_menu}",
+                        "item": "{item_x}",
+                        "mode": "widgets",
+                        "for_each": [
+                            {
+                                "template": "generator/data/parts/endrow_item.xmltemplate",
+                                "datafile": [
+                                    "generator/data/setup/onclick_path.json",
+                                    "generator/data/setup/endrow_item.json"
+                                ],
+                                "condition": "{item_path}!="
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    ]},
+    "includes_misc": {
+        "comments": "Widget Global Group",
+        "template": "generator/data/parts/basic_content.xmltemplate",
+        "condition": "Skin.HasSetting(Hub.Home.DisableSubmenu)",
+        "includes_name": "Hub_Menu_Group",
+        "includes_part": {
+            "template": "generator/data/parts/widgets_grouplist.xmltemplate",
+            "datafile": [
+                    "generator/data/setup/widgets_grouplist.json",
+                    "generator/data/setup/globalhomewidgets_grouplist.json"
+                ],
+            "window_id": "Home",
+            "all_standard_widgets": {
+                "menu": "homemenu-globalwidgets",
+                "for_each": [
+                {
+                    "template": "generator/data/parts/widgets_row.xmltemplate",
+                    "datafile": "generator/data/setup/widgets_row.json",
+                    "condition": "{item_path}!="
+                }
+            ]},
+            "all_endrow_selector": {
+                "comments": "Widget Global Selector",
+                "template": "generator/data/parts/endrow_selector.xmltemplate",
+                "condition": "Skin.HasSetting(Hubs.WidgetSelector)",
+                "endrow_visible": "!String.IsEmpty(Container(303).ListItem.Property(global_widgets))",
+                "all_endrow_items": {
+                    "menu": "homemenu-globalwidgets",
+                    "for_each": [
+                    {
+                        "template": "generator/data/parts/endrow_item.xmltemplate",
+                        "datafile": [
+                            "generator/data/setup/onclick_path.json",
+                            "generator/data/setup/endrow_widgetsonly_item.json"
+                        ],
+                        "condition": "{item_path}!="
+                    }
+                ]}
+            }
+        }
+    }
+}
