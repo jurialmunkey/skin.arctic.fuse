@@ -1,0 +1,76 @@
+{
+    "comments": "Widget Group",
+    "template": "template_generator/parts_basic_content.xmltemplate",
+    "condition": "{item_global_widgets}==",
+
+    "includes_name": "Hub_Menu_Group",
+    "includes_part": {
+
+        "template": "template_generator/parts_widgets_grouplist.xmltemplate",
+        "datafile": "template_generator/setup_widgets_grouplist.json",
+
+        "all_content_adapative_widgets": {
+            "template": "template_generator/parts_widgets_row.xmltemplate",
+            "datafile": [
+                "template_generator/setup_widgets_row.json",
+                "template_generator/setup_widgets_content_adaptive.json"
+            ],
+            "condition": [
+                "{item_use_as_widget}==True",
+                "{item_submenulist_path}!=||{item_use_as_list}==True"
+            ]
+        },
+
+        "all_adapative_widgets": {
+            "menu": "{item_menu}",
+            "item": "{item_x}",
+            "mode": "submenu",
+            "condition": ["{item_use_as_widget}==True", "{item_submenulist_path}==", "{item_use_as_list}=="],
+            "for_each": [
+                {
+                    "template": "template_generator/parts_widgets_row.xmltemplate",
+                    "datafile": [
+                        "template_generator/setup_widgets_row.json",
+                        "template_generator/setup_widgets_adaptive.json"
+                    ],
+                    "condition": "{item_path}!="
+                }
+            ]
+        },
+
+        "all_standard_widgets": {
+            "menu": "{item_menu}",
+            "item": "{item_x}",
+            "mode": "widgets",
+            "for_each": [
+                {
+                    "template": "template_generator/parts_widgets_row.xmltemplate",
+                    "datafile": "template_generator/setup_widgets_row.json",
+                    "condition": "{item_path}!="
+                }
+            ]
+        },
+
+        "all_endrow_selector": {
+            "comments": "Widget Selector",
+            "template": "template_generator/parts_endrow_selector.xmltemplate",
+            "condition": "Skin.HasSetting(Hubs.WidgetSelector)",
+            "endrow_visible": "String.IsEqual(Container(300).ListItem.Property(guid),{item_guid})",
+            "all_endrow_items": {
+                "menu": "{item_menu}",
+                "item": "{item_x}",
+                "mode": "widgets",
+                "for_each": [
+                    {
+                        "template": "template_generator/parts_endrow_item.xmltemplate",
+                        "datafile": [
+                            "template_generator/setup_onclick_path.json",
+                            "template_generator/setup_endrow_item.json"
+                        ],
+                        "condition": "{item_path}!="
+                    }
+                ]
+            }
+        }
+    }
+}
