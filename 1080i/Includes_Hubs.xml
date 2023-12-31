@@ -92,6 +92,18 @@
         <definition>
             <control type="group">
                 <include>Animation_Half_WindowChange</include>
+
+                <include content="Animation_Widgets_Grouplist_Slide_Out">
+                    <param name="type">Conditional</param>
+                    <param name="condition">Window.IsActive(1105)</param>
+                    <param name="posy">440</param>
+                </include>
+                <include content="Animation_Widgets_Grouplist_Slide_In">
+                    <param name="type">Conditional</param>
+                    <param name="condition">!Window.IsActive(1105)</param>
+                    <param name="posy">440</param>
+                </include>
+
                 <include condition="![$PARAM[widgets_only]]">Hub_Slide_Group_NoSpotlight</include>
                 <include>Hub_Slide_Group_WidgetsUp</include>
                 <nested />
@@ -391,6 +403,7 @@
 
     <include name="Home_Widgets_Infopanel">
         <param name="visible">True</param>
+        <param name="conditional_fade">Window.IsActive(1105)</param>
         <definition>
             <control type="group">
                 <width>info_panel_w</width>
@@ -399,6 +412,8 @@
                 <top>view_top</top>
                 <visible>$PARAM[visible]</visible>
                 <include>Animation_Transition_InfoPanel_Cond</include>
+                <animation effect="fade" start="100" end="0" condition="$PARAM[conditional_fade]" reversible="false">Conditional</animation>
+                <animation effect="fade" start="0" end="100" delay="200" time="200" tween="sine" easing="in" condition="![$PARAM[conditional_fade]]" reversible="false">Conditional</animation>
                 <nested />
             </control>
         </definition>
