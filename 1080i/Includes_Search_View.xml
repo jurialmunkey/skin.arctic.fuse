@@ -4,11 +4,15 @@
     <include name="Search_View_Widgets_Group">
         <control type="group">
             <include>Animation_Group_Bumper</include>
-            <include>Search_View_Widgets_InfoPanel</include>
             <control type="group">
                 <description>Lower Half Widgets</description>
-                <include content="Animation_Half_WindowChange">
-                    <param name="posy">-240</param>
+                <include content="Animation_Widgets_Grouplist_Slide_Out">
+                    <param name="type">WindowClose</param>
+                    <param name="posy">-440</param>
+                </include>
+                <include content="Animation_Widgets_Grouplist_Slide_In">
+                    <param name="type">WindowOpen</param>
+                    <param name="posy">-440</param>
                 </include>
                 <include content="Search_View_Widgets_Grouplist">
                     <include>skinvariables-searchmenu-widgets</include>
@@ -17,7 +21,13 @@
                 <include>Widget_Transitions</include>
                 <include>Search_View_Widgets_NoResults</include>
             </control>
-            <include>Search_View_Footer</include>
+
+            <control type="group">
+                <animation effect="fade" start="100" end="0" delay="0" time="1">WindowClose</animation>
+                <animation effect="fade" start="0" end="100" time="400">WindowOpen</animation>
+                <include>Search_View_Widgets_InfoPanel</include>
+                <include>Search_View_Footer</include>
+            </control>
         </control>
     </include>
 
@@ -30,6 +40,8 @@
         <control type="grouplist" id="6000">
             <top>500</top>
             <onup>5099</onup>
+            <ondown>SetProperty(TMDbHelper.ListItem.BlurImage.Original,$INFO[Backup.Blur.Original)],Home)</ondown>
+            <ondown>SetProperty(TMDbHelper.ListItem.BlurImage,$INFO[Backup.Blur)],Home)</ondown>
             <ondown>PreviousMenu</ondown>
             <orientation>vertical</orientation>
             <control type="group" id="6100">
@@ -42,14 +54,15 @@
     <include name="Search_View_Widgets_InfoPanel">
         <include content="Home_Widgets_Infopanel">
             <param name="visible">$EXP[Exp_Search_WidgetGroup_HasFocus]</param>
+            <param name="conditional_fade">False</param>
             <include content="Info_Panel">
                 <param name="container">Container.</param>
             </include>
-            <include content="Animation_Fade_In">
+            <!-- <include content="Animation_Fade_In">
                 <param name="type">Visible</param>
                 <param name="delay">200</param>
             </include>
-            <animation effect="fade" start="100" end="0" time="150" tween="sine" easing="in" reversible="false">Hidden</animation>
+            <animation effect="fade" start="100" end="0" time="150" tween="sine" easing="in" reversible="false">Hidden</animation> -->
         </include>
     </include>
 

@@ -1,0 +1,84 @@
+<contents>
+    <value name="comments">Home Widgets Only</value>
+    <template>generator/data/parts/basic_include.xmltemplate</template>
+    <value name="includes_name">skinvariables-homemenu-widgetsonly</value>
+    <value name="includes_part">
+        <items menu="sidemenu">
+            <item>
+                <value name="comments">Widget Group</value>
+                <template>generator/data/parts/basic_content.xmltemplate</template>
+                <condition>Skin.HasSetting(Hub.Home.DisableSubmenu)</condition>
+                <condition>{item_global_widgets}==</condition>
+                <value name="includes_name">Hub_Menu_Group</value>
+                <value name="includes_part">
+                    <template>generator/data/parts/widgets_grouplist.xmltemplate</template>
+                    <datafile>generator/data/setup/widgets_grouplist.xml</datafile>
+                    <datafile>generator/data/setup/widgetsclassic_grouplist.xml</datafile>
+                    <value name="window_id">Home</value>
+                    <value name="all_standard_widgets">
+                        <items mode="widgets" item="{item_x}" menu="{item_menu}">
+                            <item>
+                                <template>generator/data/parts/widgets_row.xmltemplate</template>
+                                <datafile>generator/data/setup/widgets_row.xml</datafile>
+                                <condition>{item_path}!=</condition>
+                            </item>
+                        </items>
+                    </value>
+                    <value name="all_endrow_selector">
+                        <value name="comments">Widget Selector</value>
+                        <template>generator/data/parts/endrow_selector.xmltemplate</template>
+                        <condition>Skin.HasSetting(Hubs.WidgetSelector)</condition>
+                        <value name="endrow_visible">String.IsEqual(Container(303).ListItem.Property(guid),{item_guid})</value>
+                        <value name="all_endrow_items">
+                            <items mode="widgets" item="{item_x}" menu="{item_menu}">
+                                <item>
+                                    <template>generator/data/parts/endrow_item.xmltemplate</template>
+                                    <datafile>generator/data/setup/onclick_path.xml</datafile>
+                                    <datafile>generator/data/setup/endrow_item.xml</datafile>
+                                    <condition>{item_path}!=</condition>
+                                </item>
+                            </items>
+                        </value>
+                    </value>
+                </value>
+            </item>
+        </items>
+    </value>
+    <value name="includes_misc">
+        <value name="comments">Widget Global Group</value>
+        <template>generator/data/parts/basic_content.xmltemplate</template>
+        <condition>Skin.HasSetting(Hub.Home.DisableSubmenu)</condition>
+        <value name="includes_name">Hub_Menu_Group</value>
+        <value name="includes_part">
+            <template>generator/data/parts/widgets_grouplist.xmltemplate</template>
+            <datafile>generator/data/setup/widgets_grouplist.xml</datafile>
+            <datafile>generator/data/setup/globalhomewidgets_grouplist.xml</datafile>
+            <value name="window_id">Home</value>
+            <value name="all_standard_widgets">
+                <items menu="homemenu-globalwidgets">
+                    <item>
+                        <template>generator/data/parts/widgets_row.xmltemplate</template>
+                        <datafile>generator/data/setup/widgets_row.xml</datafile>
+                        <condition>{item_path}!=</condition>
+                    </item>
+                </items>
+            </value>
+            <value name="all_endrow_selector">
+                <value name="comments">Widget Global Selector</value>
+                <template>generator/data/parts/endrow_selector.xmltemplate</template>
+                <condition>Skin.HasSetting(Hubs.WidgetSelector)</condition>
+                <value name="endrow_visible">!String.IsEmpty(Container(303).ListItem.Property(global_widgets))</value>
+                <value name="all_endrow_items">
+                    <items menu="homemenu-globalwidgets">
+                        <item>
+                            <template>generator/data/parts/endrow_item.xmltemplate</template>
+                            <datafile>generator/data/setup/onclick_path.xml</datafile>
+                            <datafile>generator/data/setup/endrow_widgetsonly_item.xml</datafile>
+                            <condition>{item_path}!=</condition>
+                        </item>
+                    </items>
+                </value>
+            </value>
+        </value>
+    </value>
+</contents>
