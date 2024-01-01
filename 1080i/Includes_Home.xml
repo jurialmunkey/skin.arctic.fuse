@@ -1,30 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
 
-    <include name="Home_FloatingClock">
-        <param name="minify">false</param>
-        <definition>
-            <include content="Furniture_Bottombar_Group">
-                <visible>!$EXP[Exp_InfoDialogs]</visible>
-                <nested />
-                <include content="Furniture_Gutters">
-                    <control type="group">
-                        <include content="Animation_Fade_In">
-                            <param name="type">Visible</param>
-                        </include>
-                        <include content="Furniture_Clock" condition="Skin.HasSetting(Furniture.EnableClock) + Skin.HasSetting(Furniture.ExpandClock)">
-                            <param name="minify">[$PARAM[minify]]</param>
-                            <param name="flipx">true</param>
-                        </include>
-                        <include content="Furniture_Clock" condition="Skin.HasSetting(Furniture.EnableClock) + !Skin.HasSetting(Furniture.ExpandClock)">
-                            <param name="flipx">true</param>
-                        </include>
-                    </control>
-                </include>
-            </include>
-        </definition>
-    </include>
-
     <include name="Home_Menu_Content">
         <param name="condition">$EXP[Exp_HomeMenu_DontHide]</param>
         <definition>
@@ -60,9 +36,11 @@
 
                     <width>560</width>
 
-                    <onup condition="$EXP[Exp_HomeMenu_DontHide]">308</onup>
+                    <onup condition="$EXP[Exp_HomeMenu_DontHide] + !Skin.HasSetting(Home.SideMenu.DisableSearchOptions)">308</onup>
+                    <onup condition="$EXP[Exp_HomeMenu_DontHide] + Skin.HasSetting(Home.SideMenu.DisableSearchOptions)">$PARAM[id]</onup>
                     <onup condition="!$EXP[Exp_HomeMenu_DontHide]">333</onup>
-                    <ondown condition="$EXP[Exp_HomeMenu_DontHide]">309</ondown>
+                    <ondown condition="$EXP[Exp_HomeMenu_DontHide] + !Skin.HasSetting(Home.SideMenu.DisableSearchOptions)">309</ondown>
+                    <ondown condition="$EXP[Exp_HomeMenu_DontHide] + Skin.HasSetting(Home.SideMenu.DisableSearchOptions)">$PARAM[id]</ondown>
                     <ondown condition="!$EXP[Exp_HomeMenu_DontHide]">$PARAM[onlist]</ondown>
                     <ondown condition="!$EXP[Exp_HomeMenu_DontHide]">SetFocus($PARAM[onlist])</ondown>
 
@@ -230,7 +208,7 @@
 
             <control type="group">
                 <!-- Search -->
-                <include content="Home_Menu_Button_Icon" condition="$EXP[Exp_HomeMenu_DontHide]">
+                <include content="Home_Menu_Button_Icon" condition="$EXP[Exp_HomeMenu_DontHide] + !Skin.HasSetting(Home.SideMenu.DisableSearchOptions)">
                     <param name="id">308</param>
                     <param name="icon">special://skin/extras/icons/search.png</param>
                     <param name="label">$LOCALIZE[137]</param>
@@ -256,7 +234,7 @@
                 </include>
 
                 <!-- Settings -->
-                <include content="Home_Menu_Button_Icon" condition="$EXP[Exp_HomeMenu_DontHide]">
+                <include content="Home_Menu_Button_Icon" condition="$EXP[Exp_HomeMenu_DontHide] + !Skin.HasSetting(Home.SideMenu.DisableSearchOptions)">
                     <param name="id">309</param>
                     <param name="icon">special://skin/extras/icons/bars.png</param>
                     <param name="label">$LOCALIZE[33063]</param>

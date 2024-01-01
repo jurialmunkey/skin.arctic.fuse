@@ -105,11 +105,14 @@
     </include>
 
     <include name="Action_Widget_OnBack">
-        <onback condition="!Integer.IsEqual(Container($PARAM[id]).CurrentItem,1)">$PARAM[grouplistid]</onback>
-        <onback condition="!Integer.IsEqual(Container($PARAM[id]).CurrentItem,1)">SetFocus($PARAM[id],0,absolute)</onback>
-        <onback condition="Integer.IsEqual(Container($PARAM[id]).CurrentItem,1)">$PARAM[grouplistid]</onback>
-        <onback condition="Integer.IsEqual(Container($PARAM[id]).CurrentItem,1)">AlarmClock(refocus1,SetFocus($PARAM[topwidgetid]),00:00,silent)</onback>
-        <onback condition="Integer.IsEqual(Container($PARAM[id]).CurrentItem,1)">AlarmClock(refocus2,$PARAM[refocus],00:00,silent)</onback>
+        <param name="enable">!Skin.HasSetting(Navigation.DisableOnBackSpecialHandling)</param>
+        <definition>
+            <onback condition="$PARAM[enable] + !Integer.IsEqual(Container($PARAM[id]).CurrentItem,1)">$PARAM[grouplistid]</onback>
+            <onback condition="$PARAM[enable] + !Integer.IsEqual(Container($PARAM[id]).CurrentItem,1)">SetFocus($PARAM[id],0,absolute)</onback>
+            <onback condition="$PARAM[enable] + Integer.IsEqual(Container($PARAM[id]).CurrentItem,1)">$PARAM[grouplistid]</onback>
+            <onback condition="$PARAM[enable] + Integer.IsEqual(Container($PARAM[id]).CurrentItem,1)">AlarmClock(refocus1,SetFocus($PARAM[topwidgetid]),00:00,silent)</onback>
+            <onback condition="$PARAM[enable] + Integer.IsEqual(Container($PARAM[id]).CurrentItem,1)">AlarmClock(refocus2,$PARAM[refocus],00:00,silent)</onback>
+        </definition>
     </include>
 
     <include name="Action_Widget_Top">
@@ -348,15 +351,20 @@
         <param name="backid">62</param>
         <param name="menuid">303</param>
         <param name="onbump">Skin.String(Navigation.OnLeftRight,Bump)</param>
+        <param name="enable">!Skin.HasSetting(Navigation.DisableOnBackSpecialHandling)</param>
+        <param name="always">False</param>
         <definition>
-            <onback condition="$PARAM[onback]">$PARAM[backid]</onback>
-            <onback condition="$PARAM[onback]">SetFocus($PARAM[id],0,absolute)</onback>
-            <onleft condition="![$PARAM[onback]] + $PARAM[onbump]">SetProperty(List.ViewContainer.Bump,True)</onleft>
-            <onleft condition="![$PARAM[onback]] + ![$PARAM[onbump]]">ClearProperty(List.ViewContainer.Bump)</onleft>
-            <onback condition="![$PARAM[onback]]">$PARAM[menuid]</onback>
-            <onback condition="![$PARAM[onback]]">SetProperty(List.ViewContainer.Left,$PARAM[onleft])</onback>
-            <onback condition="![$PARAM[onback]]">SetProperty(List.ViewContainer,$PARAM[id])</onback>
-            <onback condition="![$PARAM[onback]]">SetFocus($PARAM[menuid]$PARAM[online])</onback>
+            <onback condition="$PARAM[enable] + $PARAM[onback]">$PARAM[backid]</onback>
+            <onback condition="$PARAM[enable] + $PARAM[onback]">SetFocus($PARAM[id],0,absolute)</onback>
+            <onback condition="$PARAM[enable] + ![$PARAM[onback]] + $PARAM[onbump]">SetProperty(List.ViewContainer.Bump,True)</onback>
+            <onback condition="$PARAM[enable] + ![$PARAM[onback]] + ![$PARAM[onbump]]">ClearProperty(List.ViewContainer.Bump)</onback>
+            <onback condition="$PARAM[enable] + ![$PARAM[onback]]">$PARAM[menuid]</onback>
+            <onback condition="$PARAM[enable] + ![$PARAM[onback]]">SetProperty(List.ViewContainer.Left,$PARAM[onleft])</onback>
+            <onback condition="$PARAM[enable] + ![$PARAM[onback]]">SetProperty(List.ViewContainer,$PARAM[id])</onback>
+            <onback condition="$PARAM[enable] + ![$PARAM[onback]]">SetFocus($PARAM[menuid]$PARAM[online])</onback>
+
+            <onback condition="$PARAM[always] + ![$PARAM[enable]]">SetFocus($PARAM[id],0,absolute)</onback>
+            <onback condition="$PARAM[always] + ![$PARAM[enable]]">SetFocus(50)</onback>
         </definition>
     </include>
 
@@ -427,6 +435,7 @@
                 <param name="backid">$PARAM[backid]</param>
                 <param name="menuid">$PARAM[menuid]</param>
                 <param name="online">$PARAM[online]</param>
+                <param name="always">$PARAM[always]</param>
             </include>
         </definition>
     </include>
