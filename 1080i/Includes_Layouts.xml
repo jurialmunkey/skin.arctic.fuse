@@ -2318,9 +2318,9 @@
                     </include>
 
                     <control type="group">
-                        <visible>!String.IsEqual($PARAM[listitem].DBType,genre)</visible>
-                        <visible>!String.IsEqual($PARAM[listitem].DBType,studio)</visible>
-                        <visible>!String.IsEqual($PARAM[listitem].DBType,country)</visible>
+                        <visible>![String.IsEqual($PARAM[listitem].DBType,genre) | String.IsEqual($PARAM[listitem].Property(DBType),genre)]</visible>
+                        <visible>![String.IsEqual($PARAM[listitem].DBType,studio) | String.IsEqual($PARAM[listitem].Property(DBType),studio)]</visible>
+                        <visible>![String.IsEqual($PARAM[listitem].DBType,country) | String.IsEqual($PARAM[listitem].Property(DBType),country)]</visible>
                         <include content="Object_Layout_Image">
                             <param name="diffuse">$PARAM[diffuse]</param>
                             <param name="icon">$PARAM[icon]</param>
@@ -2328,16 +2328,22 @@
                         </include>
                     </control>
                     <control type="image">
-                        <texture background="true" diffuse="$PARAM[diffuse]" colordiffuse="main_fg_100">$PARAM[icon]</texture>
+                        <texture background="true" diffuse="$PARAM[diffuse]" colordiffuse="main_fg_100" fallback="DefaultGenres.png">$PARAM[icon]</texture>
                         <aspectratio scalediffuse="false">keep</aspectratio>
                         <bordersize>50</bordersize>
-                        <visible>String.IsEqual($PARAM[listitem].DBType,genre)</visible>
+                        <visible>[String.IsEqual($PARAM[listitem].DBType,genre) | String.IsEqual($PARAM[listitem].Property(DBType),genre)]</visible>
                     </control>
                     <control type="image">
-                        <texture background="true" diffuse="$PARAM[diffuse]" colordiffuse="main_fg_100">$PARAM[icon]</texture>
+                        <texture background="true" diffuse="$PARAM[diffuse]" colordiffuse="main_fg_100" fallback="DefaultStudios.png">$PARAM[icon]</texture>
                         <aspectratio scalediffuse="false">keep</aspectratio>
                         <bordersize>20</bordersize>
-                        <visible>String.IsEqual($PARAM[listitem].DBType,studio) | String.IsEqual($PARAM[listitem].DBType,country)</visible>
+                        <visible>[String.IsEqual($PARAM[listitem].DBType,studio) | String.IsEqual($PARAM[listitem].Property(DBType),studio)]</visible>
+                    </control>
+                    <control type="image">
+                        <texture background="true" diffuse="$PARAM[diffuse]" colordiffuse="main_fg_100" fallback="DefaultCountry.png">$PARAM[icon]</texture>
+                        <aspectratio scalediffuse="false">keep</aspectratio>
+                        <bordersize>20</bordersize>
+                        <visible>[String.IsEqual($PARAM[listitem].DBType,country) | String.IsEqual($PARAM[listitem].Property(DBType),country)]</visible>
                     </control>
                     <include content="Object_ProgressLine">
                         <param name="progress">$PARAM[listitem].$PARAM[progress]</param>
