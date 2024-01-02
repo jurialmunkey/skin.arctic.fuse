@@ -15,14 +15,18 @@
                 <include content="Animation_ConditionalFade">
                     <param name="condition">Control.HasFocus(19)</param>
                 </include>
-                <include content="Furniture_Top" condition="!Skin.HasSetting(Navigation.MediaFilterWall) + Skin.String(Navigation.OnUp,Search)">
+                <include content="Furniture_Top">
+                    <param name="label">$PARAM[label]</param>
+                    <visible>!Skin.HasSetting(Navigation.MediaFilterWall) | String.IsEmpty(Window.Property(MediaFilterBase)) | !$EXP[Exp_ScrollbarVisible_H]</visible>
+                </include>
+                <!-- <include content="Furniture_Top" condition="!Skin.HasSetting(Navigation.MediaFilterWall) + Skin.String(Navigation.OnUp,Search)">
                     <param name="label">$PARAM[label]</param>
                 </include>
                 <include content="Furniture_Top" condition="![!Skin.HasSetting(Navigation.MediaFilterWall) + Skin.String(Navigation.OnUp,Search)]">
                     <param name="label">$PARAM[label]</param>
                     <animation effect="slide" start="0" end="0,-30" delay="0" time="400" reversible="false" tween="cubic" easing="out" condition="[!String.IsEmpty(Window.Property(MediaFilterBase)) + [$EXP[Exp_ScrollbarVisible_H]]]">Conditional</animation>
                     <animation effect="slide" end="0" start="0,-30" time="400" reversible="false" tween="cubic" easing="out" condition="![!String.IsEmpty(Window.Property(MediaFilterBase)) + [$EXP[Exp_ScrollbarVisible_H]]]">Conditional</animation>
-                </include>
+                </include> -->
             </control>
         </definition>
     </include>
@@ -91,33 +95,13 @@
             <onfocus>SetFocus(50)</onfocus>
         </include>
 
-        <!-- Dummy for moving scrollbar -->
-        <include content="Object_Hidden_Button">
-            <param name="id">64</param>
-            <onup condition="!Skin.HasSetting(Navigation.MediaFilterWall) + Skin.String(Navigation.OnUp,Search)">9600</onup>
-            <onup condition="![!Skin.HasSetting(Navigation.MediaFilterWall) + Skin.String(Navigation.OnUp,Search)]">SetFocus(19)</onup>
-            <onback>68</onback>
-            <onclick>SetFocus(68)</onclick>
-            <ondown>SetFocus(68)</ondown>
-            <include>MediaFilter_Node_ClearAll</include>
-            <onfocus>ClearProperty(View.WallSwitchRow)</onfocus>
-            <onleft>SetFocus($VAR[Action_View_ContentID])</onleft>
-            <onleft>Action(PageUp)</onleft>
-            <onleft condition="$EXP[Exp_FilterWall_IsMedia]">Action(PageUp)</onleft>
-            <onleft>SetFocus(64)</onleft>
-            <onright>SetFocus($VAR[Action_View_ContentID])</onright>
-            <onright>Action(PageDown)</onright>
-            <onright condition="$EXP[Exp_FilterWall_IsMedia]">Action(PageDown)</onright>
-            <onright>SetFocus(64)</onright>
-            <visible>$EXP[Exp_FilterWall_IsViewtype]</visible>
-        </include>
-
         <!-- Scrollbar H -->
         <control type="group">
             <height>scrollbar_w</height>
             <animation effect="slide" start="0" end="0,-340" condition="![!Skin.HasSetting(Navigation.MediaFilterWall) + Skin.String(Navigation.OnUp,Search)]">Conditional</animation>
             <centertop>440</centertop>
             <left>view_side</left>
+            <right>view_pad</right>
             <visible>!$EXP[Exp_InfoDialogs]</visible>
             <visible>$EXP[Exp_MediaFilterVisible] | $EXP[Exp_ScrollbarVisible_H]</visible>
             <include content="Animation_Fade_In">
@@ -125,7 +109,6 @@
                 <param name="type">Visible</param>
             </include>
             <control type="group">
-                <width>800</width>
                 <height>scrollbar_w</height>
                 <centertop>50%</centertop>
                 <control type="image">
@@ -136,19 +119,20 @@
                 <control type="scrollbar" id="60">
                     <orientation>horizontal</orientation>
                     <texturesliderbackground />
-                    <include>Texture_Scrollbar_SliderBar_H</include>
                     <include>Texture_Scrollbar_H</include>
                     <showonepage>true</showonepage>
-                    <onfocus>SetFocus(64)</onfocus>
-                    <visible>$EXP[Exp_FilterWall_IsViewtype]</visible>
-                    <visible>$EXP[Exp_ScrollbarVisible_H]</visible>
+                    <include>MediaFilter_Node_ClearAll</include>
+                    <onup condition="!Skin.HasSetting(Navigation.MediaFilterWall) + Skin.String(Navigation.OnUp,Search)">9600</onup>
+                    <onup condition="![!Skin.HasSetting(Navigation.MediaFilterWall) + Skin.String(Navigation.OnUp,Search)]">SetFocus(19)</onup>
+                    <onback>68</onback>
+                    <ondown>SetFocus(68)</ondown>
                 </control>
                 <control type="group">
                     <height>50</height>
                     <centertop>50%</centertop>
                     <control type="label">
-                        <height>10</height>
-                        <bottom>0</bottom>
+                        <height>16</height>
+                        <top>0</top>
                         <aligny>center</aligny>
                         <align>left</align>
                         <font>font_hint_black</font>
@@ -156,10 +140,10 @@
                         <label>$INFO[Container.NumItems,, $LOCALIZE[31022]]</label>
                     </control>
                     <control type="label">
-                        <height>10</height>
+                        <height>18</height>
                         <bottom>0</bottom>
                         <aligny>center</aligny>
-                        <align>right</align>
+                        <align>left</align>
                         <font>font_hint_black</font>
                         <textcolor>main_fg_30</textcolor>
                         <label>$LOCALIZE[31135] $INFO[Container.CurrentPage,, $LOCALIZE[20163] ]$INFO[Container.NumPages]</label>
