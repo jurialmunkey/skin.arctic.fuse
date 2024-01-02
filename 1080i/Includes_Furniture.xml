@@ -25,19 +25,7 @@
             <include content="Furniture_Topbar_Group" condition="$PARAM[enabled]">
                 <nested />
                 <include content="Furniture_Gutters">
-                    <include content="Furniture_Clock" condition="$PARAM[clock] + !Skin.HasSetting(Furniture.TopLeftClock.LabelOnly)">
-                        <param name="minify">$PARAM[minify]</param>
-                        <param name="flipx">false</param>
-                        <param name="toplabel">$PARAM[clock_toplabel]</param>
-                        <param name="bottomlabel">$PARAM[label]</param>
-                        <param name="topshadowcolor">main_bg_30</param>
-                        <param name="bottomshadowcolor">main_bg_30</param>
-                        <param name="bottomcolor">main_fg_90</param>
-                        <param name="topfont">font_main_black</param>
-                        <param name="bottomfont">font_mini</param>
-                        <param name="centerfont">font_midi_black</param>
-                    </include>
-                    <include content="Furniture_ClockLabel" condition="$PARAM[clock] + Skin.HasSetting(Furniture.TopLeftClock.LabelOnly)">
+                    <include content="Furniture_ClockLabel" condition="$PARAM[clock]">
                         <param name="minify">$PARAM[minify]</param>
                         <param name="flipx">false</param>
                         <param name="toplabel">$PARAM[clock_toplabel]</param>
@@ -67,76 +55,83 @@
                 <include content="Furniture_Gutters">
 
                     <control type="group">
-                        <visible>!Player.HasMedia | Skin.HasSetting(Furniture.DisableNowPlaying)</visible>
+                        <visible>Skin.HasSetting(Furniture.DisableNowPlaying) | !Player.HasMedia</visible>
                         <include content="Info_Studio" condition="![Skin.HasSetting(Furniture.EnableClock) | $EXP[Exp_Furniture_PVR]]">
                             <centertop>50%</centertop>
                         </include>
                         <include content="Furniture_Clock" condition="Skin.HasSetting(Furniture.EnableClock)">
                             <param name="flipx">true</param>
+                            <param name="topshadowcolor">main_bg_50</param>
+                            <param name="bottomshadowcolor">main_bg_50</param>
                         </include>
                     </control>
-
-                    <control type="group">
-                        <visible>Player.HasMedia + !Skin.HasSetting(Furniture.DisableNowPlaying)</visible>
-                        <right>-20</right>
-                        <height>80</height>
-                        <centertop>50%</centertop>
-                        <control type="group">
-                            <width>80</width>
-                            <right>0</right>
-                            <include content="Info_Codec_LabelIcon">
-                                <param name="icon">$VAR[Image_NowPlaying_PlayPause]</param>
-                                <centerleft>50%</centerleft>
-                            </include>
-                            <control type="image">
-                                <bordersize>-4</bordersize>
-                                <texture colordiffuse="$VAR[ColorHighlight]">$INFO[Player.Progress,progress/circle/p,.png]</texture>
-                                <aspectratio align="center" aligny="center">keep</aspectratio>
-                            </control>
-                            <control type="image">
-                                <bordersize>-4</bordersize>
-                                <texture colordiffuse="$VAR[ColorGradient]">$INFO[Player.Progress,progress/circle/p,.png]</texture>
-                                <animation effect="fade" end="66" condition="true">Conditional</animation>
-                                <aspectratio align="center" aligny="center">keep</aspectratio>
-                                <include content="Defs_Progress_Colorfade">
-                                    <param name="id">933</param>
-                                </include>
-                            </control>
-                            <control type="progress" id="933">
-                                <height>1</height>
-                                <width>1</width>
-                                <left>-1000</left>
-                                <texturebg />
-                                <lefttexture />
-                                <midtexture />
-                                <righttexture />
-                                <info>Player.Progress</info>
-                                <visible>false</visible>
-                            </control>
-                        </control>
-                        <control type="group">
-                            <right>80</right>
-                            <control type="label">
-                                <height>10</height>
-                                <top>22</top>
-                                <label>$VAR[Label_NowPlayingTitle]</label>
-                                <align>right</align>
-                                <font>font_mini_black</font>
-                                <textcolor>main_fg_90</textcolor>
-                            </control>
-                            <control type="label">
-                                <height>10</height>
-                                <bottom>22</bottom>
-                                <label>$VAR[Label_NowPlayingSubLabel,, • ]$INFO[Player.Time]$INFO[Player.Duration, / ,]</label>
-                                <align>right</align>
-                                <font>font_tiny</font>
-                                <textcolor>main_fg_70</textcolor>
-                            </control>
-                        </control>
-                    </control>
+                    <include condition="!Skin.HasSetting(Furniture.DisableNowPlaying)">Furniture_NowPlaying</include>
                 </include>
             </include>
         </definition>
+    </include>
+
+    <include name="Furniture_NowPlaying">
+        <control type="group">
+            <visible>Player.HasMedia</visible>
+            <right>-20</right>
+            <height>80</height>
+            <centertop>50%</centertop>
+            <control type="group">
+                <width>80</width>
+                <right>0</right>
+                <include content="Info_Codec_LabelIcon">
+                    <param name="icon">$VAR[Image_NowPlaying_PlayPause]</param>
+                    <centerleft>50%</centerleft>
+                </include>
+                <control type="image">
+                    <bordersize>-4</bordersize>
+                    <texture colordiffuse="$VAR[ColorHighlight]">$INFO[Player.Progress,progress/circle/p,.png]</texture>
+                    <aspectratio align="center" aligny="center">keep</aspectratio>
+                </control>
+                <control type="image">
+                    <bordersize>-4</bordersize>
+                    <texture colordiffuse="$VAR[ColorGradient]">$INFO[Player.Progress,progress/circle/p,.png]</texture>
+                    <animation effect="fade" end="66" condition="true">Conditional</animation>
+                    <aspectratio align="center" aligny="center">keep</aspectratio>
+                    <include content="Defs_Progress_Colorfade">
+                        <param name="id">933</param>
+                    </include>
+                </control>
+                <control type="progress" id="933">
+                    <height>1</height>
+                    <width>1</width>
+                    <left>-1000</left>
+                    <texturebg />
+                    <lefttexture />
+                    <midtexture />
+                    <righttexture />
+                    <info>Player.Progress</info>
+                    <visible>false</visible>
+                </control>
+            </control>
+            <control type="group">
+                <right>80</right>
+                <control type="label">
+                    <height>10</height>
+                    <top>22</top>
+                    <label>$VAR[Label_NowPlayingTitle]</label>
+                    <align>right</align>
+                    <font>font_mini_black</font>
+                    <textcolor>main_fg_90</textcolor>
+                    <shadowcolor>main_bg_50</shadowcolor>
+                </control>
+                <control type="label">
+                    <height>10</height>
+                    <bottom>22</bottom>
+                    <label>$VAR[Label_NowPlayingSubLabel,, • ]$INFO[Player.Time]$INFO[Player.Duration, / ,]</label>
+                    <align>right</align>
+                    <font>font_tiny</font>
+                    <textcolor>main_fg_70</textcolor>
+                    <shadowcolor>main_bg_50</shadowcolor>
+                </control>
+            </control>
+        </control>
     </include>
 
     <include name="Furniture_Bottom_Left">
@@ -375,7 +370,7 @@
         <param name="bottomlabel">$INFO[System.Date]</param>
         <param name="topcolor">main_fg_90</param>
         <param name="bottomcolor">main_fg_70</param>
-        <param name="minify">!Skin.HasSetting(Furniture.ExpandClock)</param>
+        <param name="minify">False</param>
         <param name="topfont">font_main_black</param>
         <param name="bottomfont">font_mini</param>
         <param name="centerfont">font_midi_black</param>
@@ -454,7 +449,7 @@
         <param name="bottomlabel">$INFO[System.Date]</param>
         <param name="topcolor">main_fg_90</param>
         <param name="bottomcolor">main_fg_70</param>
-        <param name="minify">!Skin.HasSetting(Furniture.ExpandClock)</param>
+        <param name="minify">False</param>
         <param name="topfont">font_mini_black</param>
         <param name="bottomfont">font_tiny</param>
         <param name="centerfont">font_mini</param>
