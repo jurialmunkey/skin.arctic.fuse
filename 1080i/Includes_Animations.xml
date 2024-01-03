@@ -246,10 +246,12 @@
         <param name="delay">0</param>
         <param name="fade_time">200</param>
         <param name="fade_delay">0</param>
+        <param name="tween">quadratic</param>
+        <param name="easing" />
         <definition>
             <animation type="$PARAM[type]" reversible="false" condition="$PARAM[condition]">
                 <effect type="fade" start="0" end="100" delay="$PARAM[fade_delay]" time="$PARAM[fade_time]" tween="sine" easing="out"/>
-                <effect type="slide" start="$PARAM[posx],$PARAM[posy]" end="0" delay="$PARAM[delay]" time="$PARAM[time]" tween="quadratic" />
+                <effect type="slide" start="$PARAM[posx],$PARAM[posy]" end="0" delay="$PARAM[delay]" time="$PARAM[time]" tween="$PARAM[tween]" easing="$PARAM[easing]" />
             </animation>
         </definition>
     </include>
@@ -262,10 +264,12 @@
         <param name="time">400</param>
         <param name="fade_time">200</param>
         <param name="fade_delay">0</param>
+        <param name="tween">quadratic</param>
+        <param name="easing" />
         <definition>
             <animation type="$PARAM[type]" reversible="false" condition="$PARAM[condition]">
                 <effect type="fade" start="100" end="0" delay="$PARAM[fade_delay]" time="$PARAM[fade_time]" tween="sine" easing="out"/>
-                <effect type="slide" start="0" end="$PARAM[posx],$PARAM[posy]" time="$PARAM[time]" tween="quadratic" />
+                <effect type="slide" start="0" end="$PARAM[posx],$PARAM[posy]" time="$PARAM[time]" tween="$PARAM[tween]" easing="$PARAM[easing]" />
             </animation>
         </definition>
     </include>
@@ -286,29 +290,47 @@
 
     <!-- Window Transition For Views -->
     <include name="Animation_Half_WindowChange">
-        <param name="posy">440</param>
+        <param name="posy">220</param>
+        <param name="windowopen_up">Window.Previous(1181)</param>
+        <param name="windowopen_down">Window.Previous(1105)</param>
+        <param name="windowclose_up">Window.Next(1181)</param>
+        <param name="windowclose_down">Window.Next(1105)</param>
         <definition>
-            <include content="Animation_Fade_Out">
-                <param name="condition">![Window.Next(fullscreenvideo) | Window.Next(visualisation) | $EXP[Exp_SettingsDialogs_Next] | [[Window.IsVisible(MyPVRChannels.xml) | Window.IsVisible(MyPVRGuide.xml) | Window.Next(MyPVRChannels.xml) | Window.Next(MyPVRGuide.xml)] + Skin.HasSetting(Views.UseFullPVRGuide)]]</param>
+            <include content="Animation_Widgets_Grouplist_Slide_Out">
+                <param name="condition">$PARAM[windowclose_down]</param>
                 <param name="type">WindowClose</param>
                 <param name="time">200</param>
+                <param name="tween">circle</param>
+                <param name="easing">out</param>
                 <param name="delay">0</param>
+                <param name="posy">$PARAM[posy]</param>
+            </include>
+            <include content="Animation_Widgets_Grouplist_Slide_Out">
+                <param name="condition">$PARAM[windowclose_up]</param>
+                <param name="type">WindowClose</param>
+                <param name="time">200</param>
+                <param name="tween">circle</param>
+                <param name="easing">out</param>
+                <param name="delay">0</param>
+                <param name="posy">-$PARAM[posy]</param>
             </include>
             <include content="Animation_Widgets_Grouplist_Slide_In">
-                <param name="condition">!Window.Previous(1181) + ![Window.Previous(fullscreenvideo) | Window.Previous(visualisation) | $EXP[Exp_SettingsDialogs_Prev] | [[Window.IsVisible(MyPVRChannels.xml) | Window.IsVisible(MyPVRGuide.xml) | Window.Previous(MyPVRChannels.xml) | Window.Previous(MyPVRGuide.xml)] + Skin.HasSetting(Views.UseFullPVRGuide)]]</param>
+                <param name="condition">$PARAM[windowopen_down]</param>
                 <param name="type">WindowOpen</param>
                 <param name="posy">$PARAM[posy]</param>
                 <param name="delay">0</param>
-                <param name="time">400</param>
-                <param name="fade_delay">100</param>
+                <param name="time">200</param>
+                <param name="tween">circle</param>
+                <param name="easing">out</param>
             </include>
             <include content="Animation_Widgets_Grouplist_Slide_In">
-                <param name="condition">Window.Previous(1181)</param>
+                <param name="condition">$PARAM[windowopen_up]</param>
                 <param name="type">WindowOpen</param>
                 <param name="posy">-$PARAM[posy]</param>
                 <param name="delay">0</param>
-                <param name="time">400</param>
-                <param name="fade_delay">100</param>
+                <param name="time">200</param>
+                <param name="tween">circle</param>
+                <param name="easing">out</param>
             </include>
         </definition>
     </include>

@@ -92,18 +92,6 @@
         <definition>
             <control type="group">
                 <include>Animation_Half_WindowChange</include>
-
-                <include content="Animation_Widgets_Grouplist_Slide_Out">
-                    <param name="type">Conditional</param>
-                    <param name="condition">Window.IsActive(1105)</param>
-                    <param name="posy">440</param>
-                </include>
-                <include content="Animation_Widgets_Grouplist_Slide_In">
-                    <param name="type">Conditional</param>
-                    <param name="condition">!Window.IsActive(1105)</param>
-                    <param name="posy">440</param>
-                </include>
-
                 <include condition="![$PARAM[widgets_only]]">Hub_Slide_Group_NoSpotlight</include>
                 <include>Hub_Slide_Group_WidgetsUp</include>
                 <nested />
@@ -216,7 +204,7 @@
             <control type="group">
                 <visible>!$EXP[Exp_InfoDialogs]</visible>
                 <include>Furniture_Top</include>
-                <include>Furniture_Bottom_Right</include>
+                <!-- <include>Furniture_Bottom_Right</include> -->
             </control>
 
             <nested />
@@ -396,19 +384,17 @@
                 <visible>!ControlGroup($PARAM[id]).HasFocus() | Control.HasFocus($PARAM[bottomid])</visible>
             </control>
 
-            <!-- <include content="Object_Control" condition="!Skin.HasSetting(Hubs.WidgetSelector) + Skin.HasSetting(Furniture.DisableCount)">
-                <param name="control">group</param>
-                <param name="id">$PARAM[furnitureid]</param>
+            <control type="group" id="$PARAM[furnitureid]">
                 <height>0</height>
                 <control type="group">
                     <visible>!Integer.IsEqual(Container($PARAM[id]).NumItems,0)</visible>
                     <visible>!Integer.IsEqual(Container($PARAM[id]).NumItems,1) | [!Control.HasFocus($PARAM[topid]) + !Control.HasFocus($PARAM[bottomid])]</visible>
                     <visible>!Integer.IsEqual(Container($PARAM[id]).NumItems,2) | ControlGroup($PARAM[id]).HasFocus()</visible>
                     <visible>!$EXP[Exp_InfoDialogs]</visible>
-                    <include>Furniture_Bottom_Left</include>
+                    <include condition="!Skin.HasSetting(Hubs.WidgetSelector)">Furniture_Bottom_Left</include>
                     <include>Furniture_Bottom_Right</include>
                 </control>
-            </include> -->
+            </control>
         </control>
     </include>
 
