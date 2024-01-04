@@ -15,8 +15,8 @@
                 <right>view_pad</right>
                 <visible>$PARAM[visible]</visible>
 
-                <!-- MISC003: add  + !Window.IsVisible(Home) to remove Widget Name from Home Page -->
-                <include content="Info_Viewline" condition="$PARAM[labelvisible] + ![$PARAM[usewidgetlabel]] + !Window.IsVisible(Home)">
+                <!-- MISC003: add  + !Window.IsVisible(Home) to remove Widget Name from Home Page with Stacked Widgets -->
+                <include content="Info_Viewline" condition="$PARAM[labelvisible] + ![$PARAM[usewidgetlabel]] + ![Window.IsVisible(Home) + Skin.HasSetting(Hubs.WidgetSelector)]">
                     <param name="label">$PARAM[label]</param>
                     <param name="secondary_label">$PARAM[secondary_label]</param>
                     <param name="sort_condition">$PARAM[sort_condition]</param>
@@ -24,6 +24,8 @@
                     <param name="item_condition">true</param>
                     <param name="item_count">$INFO[Container($PARAM[id]).NumItems]</param>
                     <param name="item_updating">Container($PARAM[id]).IsUpdating</param>
+					<!-- MISC003: add  text_color parameter -->
+					<param name="text_color">$VAR[ColorGradient]</param>
                     <animation effect="fade" start="100" end="30" time="200" condition="!Control.HasFocus($PARAM[id])">Conditional</animation>
                     <top>20</top>
                     <left>0</left>
