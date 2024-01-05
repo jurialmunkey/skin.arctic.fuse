@@ -17,7 +17,6 @@
                 </include>
                 <include content="Furniture_Top">
                     <param name="label">$PARAM[label]</param>
-                    <visible>[!Skin.HasSetting(Navigation.MediaFilterWall) + Skin.String(Navigation.OnUp,Search)] | String.IsEmpty(Window.Property(MediaFilterBase)) | !$EXP[Exp_ScrollbarVisible_H]</visible>
                 </include>
             </control>
         </definition>
@@ -86,67 +85,80 @@
             <param name="id">63</param>
             <onfocus>SetFocus(50)</onfocus>
         </include>
+        <!-- <include content="Object_Hidden_Button">
+            <param name="id">66</param>
+            <onfocus>Action(Down)</onfocus>
+            <onfocus condition="!Skin.String(Navigation.OnDown,Explore)">SetFocus($VAR[Action_View_ContentID])</onfocus>
+            <include condition="Skin.String(Navigation.OnDown,Explore)">Action_View_Explore_OnDown</include>
+        </include> -->
 
         <!-- Scrollbar H -->
         <control type="group">
             <height>scrollbar_w</height>
-            <animation effect="slide" start="0" end="0,-340" condition="![!Skin.HasSetting(Navigation.MediaFilterWall) + Skin.String(Navigation.OnUp,Search)]">Conditional</animation>
-            <centertop>440</centertop>
+            <centerbottom>100</centerbottom>
             <left>view_side</left>
             <right>view_pad</right>
-            <visible>!$EXP[Exp_InfoDialogs]</visible>
-            <visible>$EXP[Exp_MediaFilterVisible] | $EXP[Exp_ScrollbarVisible_H]</visible>
-            <include content="Animation_Fade_In">
-                <param name="delay">0</param>
-                <param name="type">Visible</param>
-            </include>
+            <visible>$EXP[Exp_ScrollbarVisible_H] | $EXP[Exp_ScrollbarVisible_V] | !String.IsEmpty(Window.Property(MediaFilterBase))</visible>
             <control type="group">
                 <height>scrollbar_w</height>
                 <centertop>50%</centertop>
-                <control type="image">
-                    <texture colordiffuse="main_fg_12">common/white.png</texture>
-                    <height>1</height>
-                    <centertop>50%</centertop>
-                </control>
-                <control type="scrollbar" id="60">
-                    <orientation>horizontal</orientation>
-                    <texturesliderbackground />
-                    <texturesliderbar colordiffuse="main_back" border="4">scrollbar/scrollh.png</texturesliderbar>
-                    <include>Texture_Scrollbar_H</include>
-                    <showonepage>true</showonepage>
-                    <include>MediaFilter_Node_ClearAll</include>
-                    <onup condition="!Skin.HasSetting(Navigation.MediaFilterWall) + Skin.String(Navigation.OnUp,Search)">9600</onup>
-                    <onup condition="![!Skin.HasSetting(Navigation.MediaFilterWall) + Skin.String(Navigation.OnUp,Search)]">SetFocus(19)</onup>
-                    <onback>68</onback>
-                    <ondown>SetFocus(68)</ondown>
-                </control>
+                <include content="Info_Codec_LabelIcon">
+                    <param name="icon">special://skin/extras/icons/grip.png</param>
+                </include>
                 <control type="group">
-                    <height>50</height>
+                    <left>60</left>
+                    <height>80</height>
                     <centertop>50%</centertop>
                     <control type="label">
-                        <height>16</height>
-                        <top>0</top>
+                        <height>10</height>
+                        <top>22</top>
                         <aligny>center</aligny>
                         <align>left</align>
-                        <font>font_hint_black</font>
-                        <textcolor>main_fg_30</textcolor>
-                        <label>$INFO[Container.NumItems,, $LOCALIZE[31022]]</label>
+                        <font>font_mini_black</font>
+                        <textcolor>main_fg_90</textcolor>
+                        <label>$INFO[Container.Content,[CAPITALIZE],[/CAPITALIZE] • ]$INFO[ListItem.SortLetter]</label>
                     </control>
                     <control type="label">
-                        <height>18</height>
-                        <bottom>0</bottom>
+                        <height>10</height>
+                        <bottom>22</bottom>
                         <aligny>center</aligny>
                         <align>left</align>
-                        <font>font_hint_black</font>
-                        <textcolor>main_fg_30</textcolor>
-                        <label>$LOCALIZE[31135] $INFO[Container.CurrentPage,, $LOCALIZE[20163] ]$INFO[Container.NumPages]</label>
+                        <font>font_tiny</font>
+                        <textcolor>main_fg_70</textcolor>
+                        <label>$LOCALIZE[31135] $INFO[Container.CurrentPage,, $LOCALIZE[20163] ]$INFO[Container.NumPages] • $INFO[Container.NumItems,, $LOCALIZE[31022]]</label>
+                    </control>
+                </control>
+                <control type="group">
+                    <left>320</left>
+                    <right>320</right>
+                    <visible>$EXP[Exp_ScrollbarVisible_H]</visible>
+                    <control type="image">
+                        <texture colordiffuse="main_fg_12">common/white.png</texture>
+                        <height>1</height>
+                        <centertop>50%</centertop>
+                    </control>
+                    <control type="scrollbar" id="60">
+                        <orientation>horizontal</orientation>
+                        <texturesliderbackground />
+                        <texturesliderbar colordiffuse="main_back" border="4">scrollbar/scrollh.png</texturesliderbar>
+                        <include>Texture_Scrollbar_H</include>
+                        <showonepage>true</showonepage>
+                        <include>MediaFilter_Node_ClearAll</include>
+                        <onup>SetFocus(68)</onup>
+                        <onback>68</onback>
+                        <ondown condition="!Skin.String(Navigation.OnDown,Explore)">SetProperty(List.ViewContainer,60)</ondown>
+                        <ondown condition="!Skin.String(Navigation.OnDown,Explore)">330</ondown>
+                        <include condition="Skin.String(Navigation.OnDown,Explore)">Action_View_Explore_OnDown</include>
+                        <!-- <ondown condition="$EXP[Exp_FilterWall_IsMedia] + Skin.String(Navigation.OnDown,Explore)">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideOut,focus_id=$VAR[Action_View_ContentID],clear_prop_one=MediaFilterBase,clear_prop_two=Null,wallaction=SetFocus(66))</ondown>
+                        <ondown condition="!$EXP[Exp_FilterWall_IsMedia] + Skin.String(Navigation.OnDown,Explore)">ClearProperty(MediaFilterBase)</ondown>
+                        <ondown condition="!$EXP[Exp_FilterWall_IsMedia] + Skin.String(Navigation.OnDown,Explore)">SetFocus(66)</ondown> -->
                     </control>
                 </control>
             </control>
         </control>
 
         <!-- Scrollbar V -->
-        <include>View_Scrollbars_Vert</include>
+        <!-- <include>View_Scrollbars_Vert</include> -->
     </include>
 
     <include name="View_Scrollbars_Vert">
@@ -327,8 +339,10 @@
             <control type="group">
                 <include>Animation_Half_WindowChange</include>
                 <include>View_Row_Gutter</include>
+                <include condition="!Window.IsVisible(MyPlaylist.xml)">View_Scrollbars</include>
             </control>
-            <include condition="!Window.IsVisible(MyPlaylist.xml)">View_Scrollbars</include>
+            <!-- <include condition="!Window.IsVisible(MyPlaylist.xml)">View_Scrollbars</include> -->
+            <include condition="!Window.IsVisible(MyPlaylist.xml)">View_Scrollbars_Vert</include>
             <include>Animation_Group_Bumper</include>
         </control>
         <include content="Home_Menu">
@@ -337,8 +351,11 @@
     </include>
 
     <include name="View_MediaWall">
-        <include condition="Window.IsVisible(MyVideoNav.xml)">MediaWall_Discover</include>
-        <include condition="$EXP[Exp_FilterWall_IsEnabled]">MediaWall_All</include>
+        <control type="group">
+            <include>Animation_Half_WindowChange</include>
+            <include condition="Window.IsVisible(MyVideoNav.xml)">MediaWall_Discover</include>
+            <include condition="$EXP[Exp_FilterWall_IsEnabled]">MediaWall_All</include>
+        </control>
     </include>
 
     <include name="View_MediaFilter_Node">
