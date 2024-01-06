@@ -14,7 +14,7 @@
 
         <include content="DialogInfo_Main_Group">
             <control type="group">
-                <animation effect="fade" start="100" end="0" condition="!ControlGroup(5000).HasFocus()">Conditional</animation>
+                <animation effect="fade" start="100" end="0" condition="!Control.HasFocus(513)">Conditional</animation>
                 <control type="image">
                     <texture colordiffuse="$VAR[ColorBackground]">common/white.png</texture>
                 </control>
@@ -29,8 +29,8 @@
                 </include>
 
                 <control type="group">
-                    <animation effect="slide" start="420" end="0" tween="quadratic" easing="out" time="400" reversible="false" condition="ControlGroup(5000).HasFocus()">Conditional</animation>
-                    <animation effect="slide" start="0" end="420" tween="quadratic" easing="out" time="400" reversible="false" condition="!ControlGroup(5000).HasFocus()">Conditional</animation>
+                    <animation effect="slide" start="420" end="0" tween="quadratic" easing="out" time="400" reversible="false" condition="Control.HasFocus(513)">Conditional</animation>
+                    <animation effect="slide" start="0" end="420" tween="quadratic" easing="out" time="400" reversible="false" condition="!Control.HasFocus(513)">Conditional</animation>
                     <control type="group" id="5000">
                         <top>500</top>
                         <orientation>vertical</orientation>
@@ -45,6 +45,8 @@
                             <param name="visible">[!String.IsEmpty(Window.Property(Director_Query)) + [String.IsEqual(Container(7000).ListItem.Label,$LOCALIZE[20339])]]</param>
                             <param name="altvisible">[!String.IsEmpty(Window.Property(Director_Query)) + [String.IsEqual(Container(7000).ListItem.Label,$LOCALIZE[20339])]]</param>
                             <param name="labeltop">0</param>
+                            <param name="menuid">7000</param>
+                            <param name="backid">5000</param>
                             <content>plugin://plugin.video.themoviedb.helper/?info=crew_in_both&amp;type=person&amp;filter_key=job&amp;filter_value=Director$INFO[Window.Property(Director_Query)]$VAR[Path_Param_Widget]</content>
                             <include>Action_Recommendations_OnClick</include>
                             <onup>SetFocus($INFO[System.CurrentControlID],0,absolute)</onup>
@@ -65,6 +67,8 @@
                             <param name="visible">[!String.IsEmpty(Window.Property(Writer_Query)) + [String.IsEqual(Container(7000).ListItem.Label,$LOCALIZE[20417])]]</param>
                             <param name="altvisible">[!String.IsEmpty(Window.Property(Writer_Query)) + [String.IsEqual(Container(7000).ListItem.Label,$LOCALIZE[20417])]]</param>
                             <param name="labeltop">0</param>
+                            <param name="menuid">7000</param>
+                            <param name="backid">5000</param>
                             <content>plugin://plugin.video.themoviedb.helper/?info=crew_in_both&amp;type=person&amp;filter_key=department&amp;filter_value=Writing$INFO[Window.Property(Writer_Query)]$VAR[Path_Param_Widget]</content>
                             <include>Action_Recommendations_OnClick</include>
                             <onup>SetFocus($INFO[System.CurrentControlID],0,absolute)</onup>
@@ -85,6 +89,8 @@
                             <param name="visible">[!String.IsEmpty(Window.Property(Creator_Query)) + [String.IsEqual(Container(7000).ListItem.Label,$LOCALIZE[31065])]]</param>
                             <param name="altvisible">[!String.IsEmpty(Window.Property(Creator_Query)) + [String.IsEqual(Container(7000).ListItem.Label,$LOCALIZE[31065])]]</param>
                             <param name="labeltop">0</param>
+                            <param name="menuid">7000</param>
+                            <param name="backid">5000</param>
                             <content>plugin://plugin.video.themoviedb.helper/?info=crew_in_both&amp;type=person&amp;filter_key=department&amp;filter_value=Creator$INFO[Window.Property(Creator_Query)]$VAR[Path_Param_Widget]</content>
                             <include>Action_Recommendations_OnClick</include>
                             <onup>SetFocus($INFO[System.CurrentControlID],0,absolute)</onup>
@@ -105,6 +111,8 @@
                             <param name="visible">[!String.IsEmpty(Window.Property(Studio_Query)) + [String.IsEqual(Container(7000).ListItem.Label,$LOCALIZE[572])]]</param>
                             <param name="altvisible">[!String.IsEmpty(Window.Property(Studio_Query)) + [String.IsEqual(Container(7000).ListItem.Label,$LOCALIZE[572])]]</param>
                             <param name="labeltop">0</param>
+                            <param name="menuid">7000</param>
+                            <param name="backid">5000</param>
                             <content>plugin://plugin.video.themoviedb.helper/?info=discover$INFO[Window.Property(Studio_Query)]$VAR[Path_Param_Widget]</content>
                             <include>Action_Recommendations_OnClick</include>
                             <onup>SetFocus($INFO[System.CurrentControlID],0,absolute)</onup>
@@ -125,7 +133,31 @@
                             <param name="visible">[!String.IsEmpty(Window.Property(Set_Query)) + [String.IsEqual(Container(7000).ListItem.Label,$LOCALIZE[31236])]]</param>
                             <param name="altvisible">[!String.IsEmpty(Window.Property(Set_Query)) + [String.IsEqual(Container(7000).ListItem.Label,$LOCALIZE[31236])]]</param>
                             <param name="labeltop">0</param>
+                            <param name="menuid">7000</param>
+                            <param name="backid">5000</param>
                             <content>plugin://plugin.video.themoviedb.helper/?info=collection&amp;tmdb_type=collection$INFO[Window.Property(Set_Query)]$VAR[Path_Param_Widget]</content>
+                            <include>Action_Recommendations_OnClick</include>
+                            <onup>SetFocus($INFO[System.CurrentControlID],0,absolute)</onup>
+                            <onup>7000</onup>
+                            <ondown>SetFocus($INFO[System.CurrentControlID],0,absolute)</ondown>
+                            <ondown>7000</ondown>
+                            <include content="Animation_ConditionalFade">
+                                <param name="condition">!Control.HasFocus(513)</param>
+                            </include>
+                        </include>
+                        <include content="Widget_Info_Row">
+                            <param name="baseid">51</param>
+                            <param name="basegroupid">52</param>
+                            <param name="id">3</param>
+                            <param name="secondary_label">$INFO[Window.Property(Version_Label)]</param>
+                            <param name="label">$LOCALIZE[31159]</param>
+                            <param name="include">List_Landscape_Row</param>
+                            <param name="visible">[!String.IsEmpty(Window.Property(Version_Query)) + [String.IsEqual(Container(7000).ListItem.Label,$LOCALIZE[31159])]]</param>
+                            <param name="altvisible">[!String.IsEmpty(Window.Property(Version_Query)) + [String.IsEqual(Container(7000).ListItem.Label,$LOCALIZE[31159])]]</param>
+                            <param name="labeltop">0</param>
+                            <param name="menuid">7000</param>
+                            <param name="backid">5000</param>
+                            <content>$INFO[Window.Property(Version_Query)]</content>
                             <include>Action_Recommendations_OnClick</include>
                             <onup>SetFocus($INFO[System.CurrentControlID],0,absolute)</onup>
                             <onup>7000</onup>
@@ -145,6 +177,8 @@
                             <param name="visible">[String.IsEqual(Window.Property(Item_Type),type=tv) + [String.IsEqual(Container(7000).ListItem.Label,$LOCALIZE[20360])]]</param>
                             <param name="altvisible">[String.IsEqual(Window.Property(Item_Type),type=tv) + [String.IsEqual(Container(7000).ListItem.Label,$LOCALIZE[20360])]]</param>
                             <param name="labeltop">0</param>
+                            <param name="menuid">7000</param>
+                            <param name="backid">5000</param>
                             <content target="videos">plugin://plugin.video.themoviedb.helper/?info=flatseasons&amp;tmdb_type=tv$INFO[Window.Property(Item_Query)]$VAR[Path_Param_Widget]</content>
                             <onup>SetFocus($INFO[System.CurrentControlID],0,absolute)</onup>
                             <onup>7000</onup>
@@ -173,7 +207,7 @@
                     <param name="titlelabel">$VAR[Label_Title_C513]</param>
                     <param name="container">Container(513).</param>
                     <param name="plotlabel">$VAR[Label_Plot_C513]</param>
-                    <param name="visible">ControlGroup(5000).HasFocus()</param>
+                    <param name="visible">Control.HasFocus(513)</param>
                     <width>info_panel_w</width>
                 </include>
                 <control type="group">
@@ -208,7 +242,7 @@
                             <param name="slide_y">-80</param>
                         </include>
 
-                        <visible allowhiddenfocus="true">!ControlGroup(5000).HasFocus()</visible>
+                        <visible allowhiddenfocus="true">!Control.HasFocus(513)</visible>
 
                         <content>
                             <item>
@@ -254,6 +288,14 @@
                                 <visible>!String.IsEmpty(Window.Property(Set_Query))</visible>
                             </item>
                             <item>
+                                <label2>$INFO[Window.Property(Version_Label)]</label2>
+                                <label>$LOCALIZE[31159]</label>
+                                <icon>$INFO[Window.Property(Version_Image)]</icon>
+                                <property name="icon">special://skin/extras/icons/cubes.png</property>
+                                <onclick>runscript(script.wikipedia,wikipedia=$INFO[Window.Property(Version_Label)])</onclick>
+                                <visible>!String.IsEmpty(Window.Property(Version_Query))</visible>
+                            </item>
+                            <item>
                                 <label2>$INFO[Window.Property(Episodes_Label)]</label2>
                                 <label>$LOCALIZE[20360]</label>
                                 <icon>$INFO[Window.Property(Seasons_Image)]</icon>
@@ -268,7 +310,7 @@
 
 
             <control type="group">
-                <visible>ControlGroup(5000).HasFocus()</visible>
+                <visible>Control.HasFocus(513)</visible>
                 <include content="DialogInfo_ButtonGroup">
                     <param name="include">Items_DialogVideoInfo_MenuBar</param>
                 </include>
