@@ -142,6 +142,104 @@
         </include>
     </include>
 
+    <include name="Dialog_Overlay_Side_Panel_Adaptive">
+        <definition>
+            <control type="image">
+                <include content="Object_Right" condition="$PARAM[flipside]">
+                    <param name="right">120</param>
+                </include>
+                <include content="Object_Left" condition="![$PARAM[flipside]]">
+                    <param name="left">120</param>
+                </include>
+                <texture colordiffuse="dialog_fg_12" border="20" flipx="$PARAM[flipside]">common/dialog.png</texture>
+            </control>
+            <control type="image">
+                <width>12</width>
+                <include content="Object_Right" condition="$PARAM[flipside]">
+                    <param name="right">120</param>
+                </include>
+                <include content="Object_Left" condition="![$PARAM[flipside]]">
+                    <param name="left">120</param>
+                </include>
+                <texture colordiffuse="dialog_fg_12" border="6,20,6,20" flipx="$PARAM[flipside]">common/dialog-edge-outline.png</texture>
+            </control>
+        </definition>
+    </include>
+
+    <include name="Dialog_Overlay_Side_Panel_Standard">
+        <definition>
+            <control type="image">
+                <include content="Object_Right" condition="$PARAM[flipside]">
+                    <param name="right">120</param>
+                </include>
+                <include content="Object_Left" condition="![$PARAM[flipside]]">
+                    <param name="left">120</param>
+                </include>
+                <texture colordiffuse="dialog_fg_12" border="20" flipx="$PARAM[flipside]">common/dialog_overlay.png</texture>
+            </control>
+        </definition>
+    </include>
+
+    <include name="Dialog_Overlay_Side_Panel">
+        <definition>
+            <include content="Dialog_Overlay_Side_Panel_Standard" condition="![$EXP[Exp_DialogTheme_IsAdaptive]]">
+                <param name="flipside">$PARAM[flipside]</param>
+            </include>
+            <include content="Dialog_Overlay_Side_Panel_Adaptive" condition="$EXP[Exp_DialogTheme_IsAdaptive]">
+                <param name="flipside">$PARAM[flipside]</param>
+            </include>
+        </definition>
+    </include>
+
+    <include name="Dialog_Overlay_Mode_Panel_Adaptive">
+        <definition>
+            <control type="image">
+                <include content="Object_Top" condition="$PARAM[flipside]">
+                    <param name="top">120</param>
+                </include>
+                <include content="Object_Bottom" condition="![$PARAM[flipside]]">
+                    <param name="bottom">120</param>
+                </include>
+                <texture colordiffuse="dialog_fg_12" border="20" flipy="$PARAM[flipside]">common/dialog.png</texture>
+            </control>
+            <control type="image">
+                <height>12</height>
+                <include content="Object_Top" condition="$PARAM[flipside]">
+                    <param name="top">120</param>
+                </include>
+                <include content="Object_Bottom" condition="![$PARAM[flipside]]">
+                    <param name="bottom">120</param>
+                </include>
+                <texture colordiffuse="dialog_fg_12" border="20,6,20,6" flipy="$PARAM[flipside]">common/dialog-edge-outline-v.png</texture>
+            </control>
+        </definition>
+    </include>
+
+    <include name="Dialog_Overlay_Mode_Panel_Standard">
+        <definition>
+            <control type="image">
+                <include content="Object_Top" condition="$PARAM[flipside]">
+                    <param name="top">120</param>
+                </include>
+                <include content="Object_Bottom" condition="![$PARAM[flipside]]">
+                    <param name="bottom">120</param>
+                </include>
+                <texture colordiffuse="dialog_fg_12" border="20" flipy="$PARAM[flipside]">common/dialog_overlay_v.png</texture>
+            </control>
+        </definition>
+    </include>
+
+    <include name="Dialog_Overlay_Mode_Panel">
+        <definition>
+            <include content="Dialog_Overlay_Mode_Panel_Standard" condition="![$EXP[Exp_DialogTheme_IsAdaptive]]">
+                <param name="flipside">$PARAM[flipside]</param>
+            </include>
+            <include content="Dialog_Overlay_Mode_Panel_Adaptive" condition="$EXP[Exp_DialogTheme_IsAdaptive]">
+                <param name="flipside">$PARAM[flipside]</param>
+            </include>
+        </definition>
+    </include>
+
     <include name="Dialog_Overlay_Side">
         <param name="flipx">true</param>
         <param name="flipside">true</param>
@@ -191,15 +289,9 @@
                             <right>$PARAM[lines_right]</right>
                         </include>
                     </control>
-                    <control type="image">
-                        <include content="Object_Right" condition="$PARAM[flipside]">
-                            <param name="right">120</param>
-                        </include>
-                        <include content="Object_Left" condition="![$PARAM[flipside]]">
-                            <param name="left">120</param>
-                        </include>
-                        <texture colordiffuse="dialog_fg_12" border="20" flipx="$PARAM[flipside]">common/dialog_overlay.png</texture>
-                    </control>
+                    <include content="Dialog_Overlay_Side_Panel">
+                        <param name="flipside">$PARAM[flipside]</param>
+                    </include>
                 </control>
                 <nested />
                 <include>$PARAM[dialog_size]</include>
@@ -457,6 +549,9 @@
                     <left>20</left>
                     <top>5</top>
                 </include>
+                <control type="image">
+                    <texture colordiffuse="dialog_fg_12" border="40">common/menu-outline.png</texture>
+                </control>
             </control>
         </definition>
     </include>
@@ -596,10 +691,9 @@
     </include>
 
     <include name="Dialog_Outline">
-        <include content="Object_Control">
-            <param name="control">image</param>
+        <control type="image">
             <texture colordiffuse="dialog_fg_12" border="12">common/box-outline.png</texture>
-        </include>
+        </control>
     </include>
 
     <include name="Dialog_Box">
