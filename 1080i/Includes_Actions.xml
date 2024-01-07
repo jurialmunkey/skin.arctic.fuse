@@ -105,7 +105,7 @@
     </include>
 
     <include name="Action_Widget_OnBack">
-        <param name="enable">!Skin.HasSetting(Navigation.DisableOnBackSpecialHandling)</param>
+        <param name="enable">True</param>
         <definition>
             <onback condition="$PARAM[enable] + !Integer.IsEqual(Container($PARAM[id]).CurrentItem,1)">$PARAM[grouplistid]</onback>
             <onback condition="$PARAM[enable] + !Integer.IsEqual(Container($PARAM[id]).CurrentItem,1)">SetFocus($PARAM[id],0,absolute)</onback>
@@ -355,20 +355,22 @@
     <include name="Action_View_Movement_OnBack">
         <param name="onleft" />
         <param name="onback">False</param>
+        <param name="onmenu">[Skin.String(Navigation.OnBack,Menu) | String.IsEmpty(Skin.String(Navigation.OnBack)) | Window.IsVisible(Home)]</param>
         <param name="backid">62</param>
         <param name="menuid">303</param>
         <param name="onbump">Skin.String(Navigation.OnLeftRight,Bump)</param>
-        <param name="enable">!Skin.HasSetting(Navigation.DisableOnBackSpecialHandling)</param>
+        <param name="enable">True</param>
         <param name="always">False</param>
         <definition>
             <onback condition="$PARAM[enable] + $PARAM[onback]">$PARAM[backid]</onback>
             <onback condition="$PARAM[enable] + $PARAM[onback]">SetFocus($PARAM[id],0,absolute)</onback>
-            <onback condition="$PARAM[enable] + ![$PARAM[onback]] + $PARAM[onbump]">SetProperty(List.ViewContainer.Bump,True)</onback>
-            <onback condition="$PARAM[enable] + ![$PARAM[onback]] + ![$PARAM[onbump]]">ClearProperty(List.ViewContainer.Bump)</onback>
-            <onback condition="$PARAM[enable] + ![$PARAM[onback]]">$PARAM[menuid]</onback>
-            <onback condition="$PARAM[enable] + ![$PARAM[onback]]">SetProperty(List.ViewContainer.Left,$PARAM[onleft])</onback>
-            <onback condition="$PARAM[enable] + ![$PARAM[onback]]">SetProperty(List.ViewContainer,$PARAM[id])</onback>
-            <onback condition="$PARAM[enable] + ![$PARAM[onback]]">SetFocus($PARAM[menuid]$PARAM[online])</onback>
+
+            <onback condition="$PARAM[enable] + $PARAM[onmenu] + ![$PARAM[onback]] + $PARAM[onbump]">SetProperty(List.ViewContainer.Bump,True)</onback>
+            <onback condition="$PARAM[enable] + $PARAM[onmenu] + ![$PARAM[onback]] + ![$PARAM[onbump]]">ClearProperty(List.ViewContainer.Bump)</onback>
+            <onback condition="$PARAM[enable] + $PARAM[onmenu] + ![$PARAM[onback]]">$PARAM[menuid]</onback>
+            <onback condition="$PARAM[enable] + $PARAM[onmenu] + ![$PARAM[onback]]">SetProperty(List.ViewContainer.Left,$PARAM[onleft])</onback>
+            <onback condition="$PARAM[enable] + $PARAM[onmenu] + ![$PARAM[onback]]">SetProperty(List.ViewContainer,$PARAM[id])</onback>
+            <onback condition="$PARAM[enable] + $PARAM[onmenu] + ![$PARAM[onback]]">SetFocus($PARAM[menuid]$PARAM[online])</onback>
 
             <onback condition="$PARAM[always] + ![$PARAM[enable]]">SetFocus($PARAM[id],0,absolute)</onback>
             <onback condition="$PARAM[always] + ![$PARAM[enable]]">SetFocus(50)</onback>
@@ -439,6 +441,7 @@
                 <param name="onbump">$PARAM[onbump]</param>
                 <param name="onleft">$PARAM[onleft]</param>
                 <param name="onback">$PARAM[onback]</param>
+                <param name="onmenu">$PARAM[onmenu]</param>
                 <param name="backid">$PARAM[backid]</param>
                 <param name="menuid">$PARAM[menuid]</param>
                 <param name="online">$PARAM[online]</param>
