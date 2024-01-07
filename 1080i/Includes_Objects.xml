@@ -239,14 +239,14 @@
     </include>
 
     <include name="Object_RatingCircle">
-        <param name="rating">ListItem.Rating</param>
+        <param name="listitem">ListItem</param>
         <definition>
             <control type="group">
                 <width>40</width>
                 <height>40</height>
                 <top>12</top>
                 <right>12</right>
-                <visible>!String.IsEmpty($PARAM[rating])</visible>
+                <visible>!String.IsEmpty($PARAM[listitem].Rating) | !String.IsEmpty($PARAM[listitem].UserRating)</visible>
                 <control type="image">
                     <texture colordiffuse="$VAR[ColorWatchedProgress]">common/circle.png</texture>
                 </control>
@@ -259,7 +259,17 @@
                     <textcolor>panel_fg_90</textcolor>
                     <align>center</align>
                     <aligny>center</aligny>
-                    <label>$INFO[$PARAM[rating]]</label>
+                    <label>$INFO[$PARAM[listitem].UserRating,,.0]</label>
+                    <visible>!String.IsEmpty($PARAM[listitem].UserRating)</visible>
+                </control>
+                <control type="label">
+                    <font>font_hint</font>
+                    <textcolor>panel_fg_90</textcolor>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <label>$INFO[$PARAM[listitem].Rating]</label>
+                    <visible>!String.IsEmpty($PARAM[listitem].Rating)</visible>
+                    <visible>String.IsEmpty($PARAM[listitem].UserRating)</visible>
                 </control>
             </control>
         </definition>
