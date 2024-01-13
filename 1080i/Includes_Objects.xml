@@ -217,6 +217,7 @@
                 <width>64</width>
                 <height>24</height>
                 <visible>$PARAM[listitem].IsResumable</visible>
+                <visible>!$PARAM[listitem].IsCollection</visible>
                 <control type="image">
                     <include>Texture_Shadow_20</include>
                     <texture colordiffuse="panel_fg_90" border="10">common/box.png</texture>
@@ -789,20 +790,17 @@
             <include content="Object_Indicator_Visible_$PARAM[include_type]">
                 <param name="episodes">!Skin.HasSetting(Indicator.DisableEpisodes) + !Integer.IsEqual($PARAM[listitem].Property(UnWatchedEpisodes),0) + [String.IsEqual($PARAM[listitem].DBType,tvshow) | String.IsEqual($PARAM[listitem].DBType,season) | String.IsEqual($PARAM[listitem].DBType,episode)]</param>
                 <param name="timers">$PARAM[listitem].IsRecording | $PARAM[listitem].HasTimer</param>
-                <param name="progress">!Skin.HasSetting(Indicator.DisableProgress) + [$PARAM[listitem].IsResumable | [!String.IsEmpty($PARAM[listitem].Property(WatchedProgress)) + !Integer.IsEqual($PARAM[listitem].Property(WatchedProgress),0) + !Integer.IsEqual($PARAM[listitem].Property(WatchedProgress),100)]]</param>
+                <param name="progress">!Skin.HasSetting(Indicator.DisableProgress) + !$PARAM[listitem].IsCollection + [$PARAM[listitem].IsResumable | [!String.IsEmpty($PARAM[listitem].Property(WatchedProgress)) + !Integer.IsEqual($PARAM[listitem].Property(WatchedProgress),0) + !Integer.IsEqual($PARAM[listitem].Property(WatchedProgress),100)]]</param>
                 <param name="watched">!Skin.HasSetting(Indicator.DisableWatched) + [String.IsEqual($PARAM[listitem].Overlay,OverlayWatched.png) | [!Integer.IsEqual($PARAM[listitem].PlayCount,0) + [String.IsEqual($PARAM[listitem].DBType,movie) | String.IsEqual($PARAM[listitem].DBType,tvshow) | String.IsEqual($PARAM[listitem].DBType,season) | String.IsEqual($PARAM[listitem].DBType,set) | String.IsEqual($PARAM[listitem].DBType,video) | String.IsEqual($PARAM[listitem].DBType,episode)]]]</param>
                 <param name="library">!Skin.HasSetting(Indicator.DisableLibrary) + !String.IsEmpty($PARAM[listitem].DBID) + !String.IsEmpty($PARAM[listitem].Property(Item.Info))</param>
                 <param name="collection">!Skin.HasSetting(Indicator.DisableCollection) + $PARAM[listitem].IsCollection</param>
                 <param name="percentage">!Skin.HasSetting(Indicator.DisableProgress) + [[$PARAM[listitem].IsResumable] | [!String.IsEmpty($PARAM[listitem].Property(WatchedProgress)) + !Integer.IsEqual($PARAM[listitem].Property(WatchedProgress),0) + !Integer.IsEqual($PARAM[listitem].Property(WatchedProgress),100)] | [!String.IsEmpty($PARAM[listitem].Property(WatchedEpisodePercent)) + !Integer.IsEqual($PARAM[listitem].Property(WatchedEpisodePercent),0) + !Integer.IsEqual($PARAM[listitem].Property(WatchedEpisodePercent),100)] | [!String.IsEmpty($PARAM[listitem].PercentPlayed) + !Integer.IsEqual($PARAM[listitem].PercentPlayed,0) + !Integer.IsEqual($PARAM[listitem].PercentPlayed,100)]]</param>
+                <param name="collection">!Skin.HasSetting(Indicator.DisableCollection) + [$PARAM[listitem].IsCollection | $PARAM[listitem].HasVideoVersions]</param>
                 <!-- MISC004: add "online video" option -->
 				        <param name="onlinevideo">[String.IsEqual($PARAM[listitem].DBType,tvshow) | String.IsEqual($PARAM[listitem].DBType,season) | String.IsEqual($PARAM[listitem].DBType,movie)] + [String.Contains($PARAM[listitem].Path,Video Library VOD Streams) | String.Contains($PARAM[listitem].Path,context.addtolib)]</param>
 			      </include>
         </definition>
     </include>
-
-    <value condition="!String.IsEmpty($PARAM[listitem].Property(WatchedProgress)) + !Integer.IsEqual($PARAM[listitem].Property(WatchedProgress),0) + [!Integer.IsEqual($PARAM[listitem].Property(WatchedProgress),100) | !Skin.HasSetting(Indicator.DisableWatched)]">$INFO[$PARAM[listitem].Property(WatchedProgress)]</value>
-        <value condition="!String.IsEmpty($PARAM[listitem].Property(WatchedEpisodePercent)) + !Integer.IsEqual($PARAM[listitem].Property(WatchedEpisodePercent),0) + [!Integer.IsEqual($PARAM[listitem].Property(WatchedEpisodePercent),100) | !Skin.HasSetting(Indicator.DisableWatched)]">$INFO[$PARAM[listitem].Property(WatchedEpisodePercent)]</value>
-        <value condition="!String.IsEmpty($PARAM[listitem].PercentPlayed) + [!Integer.IsEqual($PARAM[listitem].PercentPlayed,0) | $PARAM[listitem].IsResumable]">$INFO[$PARAM[listitem].PercentPlayed]</value>
 
     <include name="Object_Indicator_Selected">
         <param name="shadow">true</param>

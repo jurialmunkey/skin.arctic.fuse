@@ -19,30 +19,28 @@
         <param name="label">[CAPITALIZE]$VAR[Label_Header_Main][/CAPITALIZE]</param>
         <param name="enabled">true</param>
         <param name="clock">Skin.HasSetting(Furniture.EnableClock.TopLeft)</param>
-        <param name="clock_toplabel">$INFO[System.Time]</param>
-        <param name="minify">true</param>
+        <param name="textcolor">main_fg_100</param>
+        <param name="textcolor_sublabel">main_fg_70</param>
+        <param name="shadowcolor_sublabel">main_bg_12</param>
         <definition>
             <include content="Furniture_Topbar_Group" condition="$PARAM[enabled]">
                 <nested />
                 <include content="Furniture_Gutters">
-                    <include content="Furniture_ClockLabel" condition="$PARAM[clock]">
-                        <param name="minify">$PARAM[minify]</param>
-                        <param name="flipx">false</param>
-                        <param name="toplabel">$PARAM[clock_toplabel]</param>
-                        <param name="bottomlabel">$PARAM[label]</param>
-                        <param name="topshadowcolor">main_bg_30</param>
-                        <param name="bottomshadowcolor">main_bg_30</param>
-                        <param name="bottomcolor">main_fg_90</param>
-                        <param name="topfont">font_main_black</param>
-                        <param name="bottomfont">font_mini</param>
-                        <param name="centerfont">font_midi_black</param>
-                    </include>
-                    <include content="Furniture_MainLabel" condition="!$PARAM[clock]">
-                        <param name="id">$PARAM[id]</param>
-                        <param name="textcolor">$PARAM[textcolor]</param>
-                        <aligny>center</aligny>
-                        <label>$PARAM[label]</label>
-                    </include>
+                    <control type="group">
+                        <animation effect="slide" start="0" end="0,-15" condition="[Window.IsVisible(MyPVRGuide.xml) | Window.IsVisible(MyPVRChannels.xml) | $PARAM[clock]] + !Skin.HasSetting(Furniture.EnableClock)">Conditional</animation>
+                        <include content="Furniture_MainLabel">
+                            <param name="id">$PARAM[id]</param>
+                            <param name="textcolor">$PARAM[textcolor]</param>
+                            <aligny>center</aligny>
+                            <label>$PARAM[label]</label>
+                        </include>
+                        <include content="Furniture_DateLabel">
+                            <param name="textcolor">$PARAM[textcolor_sublabel]</param>
+                            <param name="shadowcolor">$PARAM[shadowcolor_sublabel]</param>
+                            <visible>!Skin.HasSetting(Furniture.EnableClock)</visible>
+                            <visible>Window.IsVisible(MyPVRGuide.xml) | Window.IsVisible(MyPVRChannels.xml) | $PARAM[clock]</visible>
+                        </include>
+                    </control>
                 </include>
 				<!-- MISC013: START Top right clock added for Home screen without stacked widgets OR Explore mode -->
 				<control type="group">
@@ -227,6 +225,39 @@
                 <nested />
             </include>
         </definition>
+    </include>
+
+    <include name="Furniture_DateLabel">
+        <control type="grouplist">
+            <nested />
+            <orientation>horizontal</orientation>
+            <bottom>-30</bottom>
+            <height>50</height>
+            <itemgap>10</itemgap>
+            <control type="label">
+                <aligny>center</aligny>
+                <width>auto</width>
+                <font>font_tiny_bold</font>
+                <label>$INFO[System.Date]</label>
+                <textcolor>$PARAM[textcolor]</textcolor>
+                <shadowcolor>$PARAM[shadowcolor]</shadowcolor>
+            </control>
+            <control type="label">
+                <aligny>center</aligny>
+                <width>auto</width>
+                <font>font_tiny_bold</font>
+                <label>$LOCALIZE[19107]</label>
+                <textcolor>main_fg_30</textcolor>
+            </control>
+            <control type="label">
+                <aligny>center</aligny>
+                <width>auto</width>
+                <font>font_tiny_bold</font>
+                <label>$INFO[System.Time]</label>
+                <textcolor>$PARAM[textcolor]</textcolor>
+                <shadowcolor>$PARAM[shadowcolor]</shadowcolor>
+            </control>
+        </control>
     </include>
 
     <include name="Furniture_Bottom">
@@ -423,85 +454,6 @@
                     <param name="minilabel">$PARAM[minilabel]</param>
                 </include>
             </include>
-        </definition>
-    </include>
-
-    <include name="Furniture_ClockLabel">
-        <param name="flipx">true</param>
-        <param name="toplabel">$INFO[System.Time]</param>
-        <param name="bottomlabel">$INFO[System.Date]</param>
-        <param name="topcolor">main_fg_90</param>
-        <param name="bottomcolor">main_fg_70</param>
-        <param name="minify">False</param>
-        <param name="topfont">font_main_black</param>
-        <param name="bottomfont">font_mini</param>
-        <param name="centerfont">font_midi_black</param>
-        <definition>
-            <control type="group">
-                <include content="Object_Left" condition="!$PARAM[flipx]">
-                    <param name="left">0</param>
-                </include>
-                <include content="Object_Right" condition="$PARAM[flipx]">
-                    <param name="right">0</param>
-                </include>
-                <height>60</height>
-                <centertop>50%</centertop>
-                <control type="group">
-                    <control type="label">
-                        <height>30</height>
-                        <centertop>50%</centertop>
-                        <label>$PARAM[toplabel]</label>
-                        <include content="Object_Align" condition="!$PARAM[flipx]">
-                            <param name="align">left</param>
-                        </include>
-                        <include content="Object_Align" condition="$PARAM[flipx]">
-                            <param name="align">right</param>
-                        </include>
-                        <font>$PARAM[centerfont]</font>
-                        <textcolor>$PARAM[bottomcolor]</textcolor>
-                        <shadowcolor>$PARAM[bottomshadowcolor]</shadowcolor>
-                        <visible>[$PARAM[minify]]</visible>
-                        <include content="Animation_Fade_Out">
-                            <param name="type">Hidden</param>
-                        </include>
-                    </control>
-                    <control type="label">
-                        <height>30</height>
-                        <label>$PARAM[toplabel]</label>
-                        <include content="Object_Align" condition="!$PARAM[flipx]">
-                            <param name="align">left</param>
-                        </include>
-                        <include content="Object_Align" condition="$PARAM[flipx]">
-                            <param name="align">right</param>
-                        </include>
-                        <font>$PARAM[topfont]</font>
-                        <textcolor>$PARAM[topcolor]</textcolor>
-                        <shadowcolor>$PARAM[topshadowcolor]</shadowcolor>
-                        <visible>![$PARAM[minify]]</visible>
-                        <include content="Animation_Fade_In">
-                            <param name="type">Visible</param>
-                        </include>
-                    </control>
-                    <control type="label">
-                        <height>30</height>
-                        <bottom>0</bottom>
-                        <label>$PARAM[bottomlabel]</label>
-                        <include content="Object_Align" condition="!$PARAM[flipx]">
-                            <param name="align">left</param>
-                        </include>
-                        <include content="Object_Align" condition="$PARAM[flipx]">
-                            <param name="align">right</param>
-                        </include>
-                        <font>$PARAM[bottomfont]</font>
-                        <textcolor>$PARAM[bottomcolor]</textcolor>
-                        <shadowcolor>$PARAM[bottomshadowcolor]</shadowcolor>
-                        <visible>![$PARAM[minify]]</visible>
-                        <include content="Animation_Fade_In">
-                            <param name="type">Visible</param>
-                        </include>
-                    </control>
-                </control>
-            </control>
         </definition>
     </include>
 
