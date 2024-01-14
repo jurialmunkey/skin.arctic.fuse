@@ -80,12 +80,55 @@
 
         <control type="group">
             <height>80</height>
-            <left>160</left>
+            <left>210</left>
             <centerbottom>100</centerbottom>
             <control type="group">
                 <left>settings_category_w</left>
                 <right>view_pad</right>
-                <control type="image">
+                <include content="Info_Codec_LabelIcon">
+                    <param name="icon">special://skin/extras/icons/view-list.png</param>
+                </include>
+                <control type="group">
+                    <left>60</left>
+                    <height>80</height>
+                    <centertop>50%</centertop>
+                    <control type="grouplist">
+                        <orientation>horizontal</orientation>
+                        <control type="label">
+                            <height>10</height>
+                            <top>22</top>
+                            <width>auto</width>
+                            <aligny>center</aligny>
+                            <align>left</align>
+                            <font>font_mini_black</font>
+                            <textcolor>main_fg_90</textcolor>
+                            <label>$INFO[ListItem.Title,[CAPITALIZE],[/CAPITALIZE] • ]</label>
+                            <visible>!String.IsEqual(ListItem.Title,ListITem.ChannelName)</visible>
+                        </control>
+                        <control type="label">
+                            <height>10</height>
+                            <top>22</top>
+                            <width>auto</width>
+                            <aligny>center</aligny>
+                            <align>left</align>
+                            <font>font_mini_black</font>
+                            <textcolor>main_fg_90</textcolor>
+                            <label>$INFO[ListItem.ChannelName]</label>
+                        </control>
+                    </control>
+                    <control type="label">
+                        <height>10</height>
+                        <bottom>22</bottom>
+                        <aligny>center</aligny>
+                        <align>left</align>
+                        <font>font_tiny</font>
+                        <textcolor>main_fg_70</textcolor>
+                        <label fallback="19055">$INFO[ListItem.StartDate]$INFO[ListItem.StartTime, • ,]$INFO[ListItem.EndTime, - ,]</label>
+                        <!-- <label>$INFO[Container.NumItems,, $LOCALIZE[19019]]</label> -->
+                    </control>
+                </control>
+
+                <!-- <control type="image">
                     <left>20</left>
                     <bordersize>8</bordersize>
                     <aspectratio align="left">keep</aspectratio>
@@ -100,7 +143,7 @@
                     <font>font_mini_plot</font>
                     <aligny>center</aligny>
                     <label>$INFO[Container.NumItems,, [LOWERCASE]$LOCALIZE[19019][/LOWERCASE]]</label>
-                </control>
+                </control> -->
             </control>
         </control>
     </include>
@@ -123,7 +166,7 @@
                 <ondown>$PARAM[id]</ondown>
                 <onback>11</onback>
                 <viewtype label="$PARAM[viewtype_label]">list</viewtype>
-                <progresstexture border="0,160,40,0" colordiffuse="main_fg_30">$PARAM[progresstexture]</progresstexture>
+                <progresstexture border="0,160,20,20" colordiffuse="main_fg_30">$PARAM[progresstexture]</progresstexture>
                 <pagecontrol>8060</pagecontrol>
                 <top>-100</top>
                 <bottom>100</bottom>
@@ -173,7 +216,7 @@
             </control>
             <nested />
             <include>Furniture_Bottom</include>
-            <include condition="!Skin.HasSetting(Furniture.EnableClock.BottomLeft)">View_PVR_GroupSwitcher</include>
+            <include>View_PVR_GroupSwitcher</include>
         </control>
     </include>
 
@@ -205,7 +248,7 @@
             </control>
             <nested />
             <include>Furniture_Bottom</include>
-            <include condition="!Skin.HasSetting(Furniture.EnableClock.BottomLeft)">View_PVR_GroupSwitcher</include>
+            <include>View_PVR_GroupSwitcher</include>
         </control>
         <control type="group">
             <include>Animation_Group_Bumper</include>
@@ -219,11 +262,18 @@
                 <width>info_panel_w</width>
                 <left>view_side</left>
             </include>
+
             <!-- PVR008: Detailed EPG Date Display consistent with Basic (Full Screen) EPG -->
             <!-- include content="Info_Viewline">
                 <param name="secondary_label">$INFO[System.Time]</param>
                 <param name="label">$INFO[System.Date(ddd),,$COMMA ]$INFO[System.Date(d MMM)]</param>
             </include -->
+
+            <include content="Info_Viewline">
+                <param name="secondary_include">False</param>
+                <param name="label">$INFO[Container.NumItems,, $LOCALIZE[19019]]</param>
+            </include>
+
         </control>
     </include>
 
@@ -266,26 +316,61 @@
                     <control type="group">
                         <left>20</left>
                         <right>-20</right>
-                        <control type="label">
-                            <width>$PARAM[channelwidth]</width>
-                            <align>left</align>
-                            <aligny>center</aligny>
-                            <font>font_tiny_bold</font>
-                            <label>$LOCALIZE[19030]</label>
-                            <textcolor>main_fg_70</textcolor>
-                            <shadowcolor>main_bg_12</shadowcolor>
+                        <control type="group">
+                            <control type="image">
+                                <width>1</width>
+                                <texture colordiffuse="main_fg_30">common/white.png</texture>
+                                <bottom>-5</bottom>
+                                <top>15</top>
+                                <visible>!Skin.HasSetting(Views.UseHalfPVRGuide)</visible>
+                            </control>
+                            <control type="image">
+                                <width>1</width>
+                                <texture colordiffuse="main_fg_30">common/white.png</texture>
+                                <bottom>10</bottom>
+                                <top>15</top>
+                                <visible>Skin.HasSetting(Views.UseHalfPVRGuide)</visible>
+                            </control>
+                            <control type="label">
+                                <left>10</left>
+                                <width>$PARAM[channelwidth]</width>
+                                <align>left</align>
+                                <aligny>center</aligny>
+                                <font>font_tiny_bold</font>
+                                <label>$LOCALIZE[19030]</label>
+                                <textcolor>main_fg_70</textcolor>
+                                <shadowcolor>main_bg_12</shadowcolor>
+                            </control>
                         </control>
 
-                        <control type="label">
+                        <control type="group">
                             <left>50%</left>
-                            <width>$PARAM[channelwidth]</width>
-                            <align>left</align>
-                            <aligny>center</aligny>
-                            <font>font_tiny_bold</font>
-                            <label>$LOCALIZE[19031]</label>
-                            <textcolor>main_fg_70</textcolor>
-                            <shadowcolor>main_bg_12</shadowcolor>
+                            <control type="image">
+                                <width>1</width>
+                                <texture colordiffuse="main_fg_30">common/white.png</texture>
+                                <bottom>-5</bottom>
+                                <top>15</top>
+                                <visible>!Skin.HasSetting(Views.UseHalfPVRGuide)</visible>
+                            </control>
+                            <control type="image">
+                                <width>1</width>
+                                <texture colordiffuse="main_fg_30">common/white.png</texture>
+                                <bottom>10</bottom>
+                                <top>15</top>
+                                <visible>Skin.HasSetting(Views.UseHalfPVRGuide)</visible>
+                            </control>
+                            <control type="label">
+                                <left>10</left>
+                                <width>$PARAM[channelwidth]</width>
+                                <align>left</align>
+                                <aligny>center</aligny>
+                                <font>font_tiny_bold</font>
+                                <label>$LOCALIZE[19031]</label>
+                                <textcolor>main_fg_70</textcolor>
+                                <shadowcolor>main_bg_12</shadowcolor>
+                            </control>
                         </control>
+
                     </control>
                 </control>
             </control>
