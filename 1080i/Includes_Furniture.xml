@@ -38,9 +38,7 @@
                             <param name="textcolor">$PARAM[textcolor_sublabel]</param>
                             <param name="shadowcolor">$PARAM[shadowcolor_sublabel]</param>
                             <visible>!Skin.HasSetting(Furniture.EnableClock)</visible>
-							<!-- PVR008: Do not display Top Left Date/Clock on EPG -->
-                            <!-- visible>Window.IsVisible(MyPVRGuide.xml) | Window.IsVisible(MyPVRChannels.xml) | $PARAM[clock]</visible -->
-                            <visible>!Window.IsVisible(MyPVRGuide.xml) + $PARAM[clock]</visible>
+                            <visible>Window.IsVisible(MyPVRGuide.xml) | Window.IsVisible(MyPVRChannels.xml) | $PARAM[clock]</visible>
                         </include>
                     </control>
                 </include>
@@ -260,28 +258,42 @@
             <bottom>-30</bottom>
             <height>50</height>
             <itemgap>10</itemgap>
-            <control type="label">
+            <!-- PVR008: do not display System Date top left on EPG -->
+			<control type="group">
+			    <visible>!Window.IsVisible(10702)</visible>
+                <control type="label">
+                    <aligny>center</aligny>
+                    <width>auto</width>
+                    <font>font_tiny_bold</font>
+                    <label>$INFO[System.Date]</label>
+                    <textcolor>$PARAM[textcolor]</textcolor>
+                    <shadowcolor>$PARAM[shadowcolor]</shadowcolor>
+                </control>
+                <control type="label">
+                    <aligny>center</aligny>
+                    <width>auto</width>
+                    <font>font_tiny_bold</font>
+                    <label>$LOCALIZE[19107]</label>
+                    <textcolor>main_fg_30</textcolor>
+                </control>
+                <control type="label">
+                    <aligny>center</aligny>
+                    <width>auto</width>
+                    <font>font_tiny_bold</font>
+                    <label>$INFO[System.Time]</label>
+                    <textcolor>$PARAM[textcolor]</textcolor>
+                    <shadowcolor>$PARAM[shadowcolor]</shadowcolor>
+                </control>
+			</control>
+			<!-- PVR008: display Program Start Date on Basic (Full Screen) EPG -->
+			<control type="label">
                 <aligny>center</aligny>
                 <width>auto</width>
                 <font>font_tiny_bold</font>
-                <label>$INFO[System.Date]</label>
+                <label>$INFO[ListItem.StartDate]</label>
                 <textcolor>$PARAM[textcolor]</textcolor>
                 <shadowcolor>$PARAM[shadowcolor]</shadowcolor>
-            </control>
-            <control type="label">
-                <aligny>center</aligny>
-                <width>auto</width>
-                <font>font_tiny_bold</font>
-                <label>$LOCALIZE[19107]</label>
-                <textcolor>main_fg_30</textcolor>
-            </control>
-            <control type="label">
-                <aligny>center</aligny>
-                <width>auto</width>
-                <font>font_tiny_bold</font>
-                <label>$INFO[System.Time]</label>
-                <textcolor>$PARAM[textcolor]</textcolor>
-                <shadowcolor>$PARAM[shadowcolor]</shadowcolor>
+				<visible>Window.IsVisible(10702) + !Skin.HasSetting(Views.UseHalfPVRGuide)</visible>
             </control>
         </control>
     </include>
