@@ -366,8 +366,8 @@
     </include>
 
     <include name="Furniture_Busy_Group">
-        <param name="floating">Skin.HasSetting(ToastNotifications.Minimal)</param>
-        <param name="hasbackground">true</param>
+        <param name="floating">!Skin.HasSetting(ToastNotifications.Tabbed)</param>
+        <param name="hasbackground">Skin.HasSetting(ToastNotifications.Tabbed)</param>
         <definition>
             <control type="group">
                 <include content="Object_Control" condition="$PARAM[hasbackground]">
@@ -423,6 +423,32 @@
         </definition>
     </include>
 
+    <include name="Furniture_Busy_FloatingText">
+        <definition>
+            <control type="group">
+                <left>20</left>
+                <right>80</right>
+                <control type="label" id="$PARAM[mainlabel_id]">
+                    <top>-15</top>
+                    <bottom>15</bottom>
+                    <align>right</align>
+                    <label>$PARAM[mainlabel]</label>
+                    <font>font_midi_black</font>
+                    <textcolor>main_fg_100</textcolor>
+                </control>
+                <control type="label" id="$PARAM[minilabel_id]">
+                    <bottom>-5</bottom>
+                    <height>50</height>
+                    <align>right</align>
+                    <label>$PARAM[minilabel]</label>
+                    <font>font_tiny_bold</font>
+                    <shadowcolor>main_bg_12</shadowcolor>
+                    <textcolor>main_fg_70</textcolor>
+                </control>
+            </control>
+        </definition>
+    </include>
+
     <include name="Furniture_Busy">
         <param name="mainlabel">$LOCALIZE[20186]</param>
         <param name="minilabel">$LOCALIZE[31023]...</param>
@@ -432,7 +458,7 @@
         <param name="hasicon">true</param>
         <param name="spinspinner">false</param>
         <param name="spinnervisible">true</param>
-        <param name="hasbackground">true</param>
+        <param name="hasbackground">Skin.HasSetting(ToastNotifications.Tabbed)</param>
         <definition>
 
             <include content="Furniture_Busy_Group">
@@ -451,7 +477,14 @@
 
                 <nested />
 
-                <include content="Furniture_Busy_Text" condition="$PARAM[haslabel]">
+                <include content="Furniture_Busy_Text" condition="$PARAM[haslabel] + $PARAM[hasbackground]">
+                    <param name="mainlabel_id">$PARAM[mainlabel_id]</param>
+                    <param name="mainlabel">$PARAM[mainlabel]</param>
+                    <param name="minilabel_id">$PARAM[minilabel_id]</param>
+                    <param name="minilabel">$PARAM[minilabel]</param>
+                </include>
+
+                <include content="Furniture_Busy_FloatingText" condition="$PARAM[haslabel] + ![$PARAM[hasbackground]]">
                     <param name="mainlabel_id">$PARAM[mainlabel_id]</param>
                     <param name="mainlabel">$PARAM[mainlabel]</param>
                     <param name="minilabel_id">$PARAM[minilabel_id]</param>
