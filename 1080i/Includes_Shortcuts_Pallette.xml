@@ -96,6 +96,8 @@
         <value>$LOCALIZE[39164]</value>
     </variable>
 
+    <expression name="Exp_IsUpdatingNode">[[Integer.IsEqual(Window.Property(list_id),300) + Container(300).IsUpdating] | [Integer.IsEqual(Window.Property(list_id),302) + Container(302).IsUpdating] | [Integer.IsEqual(Window.Property(list_id),303) + Container(303).IsUpdating] | [Integer.IsEqual(Window.Property(list_id),304) + Container(304).IsUpdating]]</expression>
+
     <include name="Shortcuts_Pallette_Items">
         <!-- Move Up -->
         <include content="Shortcuts_Pallette_Button">
@@ -103,7 +105,7 @@
             <param name="label">$VAR[Shortcuts_Pallette_Up_Label]</param>
             <param name="icon">$VAR[Shortcuts_Pallette_Up_Icon]</param>
             <param name="visible">$EXP[Shortcuts_Pallette_Exp_HasMoreThanOne]</param>
-            <onclick>RunPlugin($INFO[Window.Property(url),,&amp;func=do_move&amp;&amp;move::-1&amp;&amp;window_prop::url])</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode]">RunPlugin($INFO[Window.Property(url),,&amp;func=do_move&amp;&amp;move::-1&amp;&amp;window_prop::url])</onclick>
         </include>
 
         <!-- Move Down -->
@@ -112,7 +114,7 @@
             <param name="label">$VAR[Shortcuts_Pallette_Down_Label]</param>
             <param name="icon">$VAR[Shortcuts_Pallette_Down_Icon]</param>
             <param name="visible">$EXP[Shortcuts_Pallette_Exp_HasMoreThanOne]</param>
-            <onclick>RunPlugin($INFO[Window.Property(url),,&amp;func=do_move&amp;&amp;move::1&amp;&amp;window_prop::url])</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode]">RunPlugin($INFO[Window.Property(url),,&amp;func=do_move&amp;&amp;move::1&amp;&amp;window_prop::url])</onclick>
         </include>
 
         <!-- Add New -->
@@ -121,11 +123,11 @@
             <param name="label">$LOCALIZE[15019]</param>
             <param name="icon">special://skin/extras/icons/circle-plus.png</param>
             <param name="visible">!$EXP[Shortcuts_Pallette_Exp_IsAddItem]</param>
-            <onclick>SetFocus($INFO[Window.Property(list_id)])</onclick>
-            <onclick condition="!Integer.IsEqual(Window.Property(list_id),304)">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
-            <onclick condition="!Integer.IsEqual(Window.Property(list_id),304)">RunPlugin($INFO[Window.Property(url),,&amp;func=do_new])</onclick>
-            <onclick condition="Integer.IsEqual(Window.Property(list_id),304)">ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
-            <onclick condition="Integer.IsEqual(Window.Property(list_id),304)">RunPlugin($INFO[Window.Property(url),,&amp;func=do_new&amp;&amp;use_rawpath::True])</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode]">SetFocus($INFO[Window.Property(list_id)])</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode] + !Integer.IsEqual(Window.Property(list_id),304)">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode] + !Integer.IsEqual(Window.Property(list_id),304)">RunPlugin($INFO[Window.Property(url),,&amp;func=do_new])</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode] + Integer.IsEqual(Window.Property(list_id),304)">ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode] + Integer.IsEqual(Window.Property(list_id),304)">RunPlugin($INFO[Window.Property(url),,&amp;func=do_new&amp;&amp;use_rawpath::True])</onclick>
 
         </include>
 
@@ -135,18 +137,18 @@
             <param name="label">$LOCALIZE[24021]</param>
             <param name="icon">special://skin/extras/icons/circle-cancel.png</param>
             <param name="visible">!$EXP[Shortcuts_Pallette_Exp_IsAddItem] + String.IsEmpty(Window.Property(disabled))</param>
-            <onclick>RunPlugin($INFO[Window.Property(url),,&amp;func=do_toggle])</onclick>
-            <onclick>SetProperty(disabled,True)</onclick>
-            <onclick>SetFocus(3999)</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode]">RunPlugin($INFO[Window.Property(url),,&amp;func=do_toggle])</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode]">SetProperty(disabled,True)</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode]">SetFocus(3999)</onclick>
         </include>
         <include content="Shortcuts_Pallette_Button">
             <param name="id">05</param>
             <param name="label">$LOCALIZE[24022]</param>
             <param name="icon">special://skin/extras/icons/circle-check-regular.png</param>
             <param name="visible">!$EXP[Shortcuts_Pallette_Exp_IsAddItem] + !String.IsEmpty(Window.Property(disabled))</param>
-            <onclick>RunPlugin($INFO[Window.Property(url),,&amp;func=do_toggle])</onclick>
-            <onclick>ClearProperty(disabled)</onclick>
-            <onclick>SetFocus(3999)</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode]">RunPlugin($INFO[Window.Property(url),,&amp;func=do_toggle])</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode]">ClearProperty(disabled)</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode]">SetFocus(3999)</onclick>
         </include>
 
         <!-- Delete -->
@@ -155,9 +157,9 @@
             <param name="label">$LOCALIZE[117]</param>
             <param name="icon">special://skin/extras/icons/trash-can.png</param>
             <param name="visible">String.IsEmpty(Window.Property(forced)) + !$EXP[Shortcuts_Pallette_Exp_IsAddItem]</param>
-            <onclick>SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
-            <onclick>RunPlugin($INFO[Window.Property(url),,&amp;func=do_delete&amp;&amp;False])</onclick>
-            <onclick>SetFocus($INFO[Window.Property(list_id)])</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode]">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode]">RunPlugin($INFO[Window.Property(url),,&amp;func=do_delete&amp;&amp;False])</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode]">SetFocus($INFO[Window.Property(list_id)])</onclick>
         </include>
 
         <!-- Delete: Submenu List -->
@@ -166,8 +168,8 @@
             <param name="label">$LOCALIZE[117]</param>
             <param name="icon">special://skin/extras/icons/trash-can.png</param>
             <param name="visible">Integer.IsEqual(Window.Property(list_id),302) + !String.IsEmpty(Container(300).ListItem.Property(submenulist_path))</param>
-            <onclick>RunPlugin($INFO[Container(300).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;submenulist_path])</onclick>
-            <onclick>SetFocus($INFO[Window.Property(list_id)])</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode]">RunPlugin($INFO[Container(300).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;submenulist_path])</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode]">SetFocus($INFO[Window.Property(list_id)])</onclick>
         </include>
 
         <!-- Shortcuts -->
@@ -176,10 +178,10 @@
             <param name="label">$LOCALIZE[31511]</param>
             <param name="icon">special://skin/extras/icons/share.png</param>
             <param name="visible">String.IsEmpty(Window.Property(forced))</param>
-            <onclick condition="!Integer.IsEqual(Window.Property(list_id),304)">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
-            <onclick condition="!Integer.IsEqual(Window.Property(list_id),304)">RunPlugin($INFO[Window.Property(url),,&amp;func=do_choose])</onclick>
-            <onclick condition="Integer.IsEqual(Window.Property(list_id),304)">ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
-            <onclick condition="Integer.IsEqual(Window.Property(list_id),304)">RunPlugin($INFO[Window.Property(url),,&amp;func=do_choose&amp;&amp;use_rawpath::True])</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode] + !Integer.IsEqual(Window.Property(list_id),304)">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode] + !Integer.IsEqual(Window.Property(list_id),304)">RunPlugin($INFO[Window.Property(url),,&amp;func=do_choose])</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode] + Integer.IsEqual(Window.Property(list_id),304)">ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode] + Integer.IsEqual(Window.Property(list_id),304)">RunPlugin($INFO[Window.Property(url),,&amp;func=do_choose&amp;&amp;use_rawpath::True])</onclick>
         </include>
 
         <!-- Shortcuts: Submenu List -->
@@ -188,8 +190,8 @@
             <param name="label">$LOCALIZE[31511]</param>
             <param name="icon">special://skin/extras/icons/share.png</param>
             <param name="visible">Integer.IsEqual(Window.Property(list_id),302) + !String.IsEmpty(Container(300).ListItem.Property(submenulist_path))</param>
-            <onclick>ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
-            <onclick>RunPlugin($INFO[Container(300).ListItem.Property(url),,&amp;func=do_choose&amp;&amp;submenulist&amp;&amp;use_rawpath::True])</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode]">ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode]">RunPlugin($INFO[Container(300).ListItem.Property(url),,&amp;func=do_choose&amp;&amp;submenulist&amp;&amp;use_rawpath::True])</onclick>
         </include>
 
         <!-- Action -->
@@ -198,10 +200,10 @@
             <param name="label">Action</param>
             <param name="icon">special://skin/extras/icons/terminal.png</param>
             <param name="visible">String.IsEmpty(Window.Property(forced))</param>
-            <onclick condition="!Integer.IsEqual(Window.Property(list_id),304)">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
-            <onclick condition="!Integer.IsEqual(Window.Property(list_id),304)">RunPlugin($INFO[Window.Property(url),,&amp;func=do_action])</onclick>
-            <onclick condition="Integer.IsEqual(Window.Property(list_id),304)">ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
-            <onclick condition="Integer.IsEqual(Window.Property(list_id),304)">RunPlugin($INFO[Window.Property(url),,&amp;func=do_action&amp;&amp;use_rawpath::True])</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode] + !Integer.IsEqual(Window.Property(list_id),304)">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode] + !Integer.IsEqual(Window.Property(list_id),304)">RunPlugin($INFO[Window.Property(url),,&amp;func=do_action])</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode] + Integer.IsEqual(Window.Property(list_id),304)">ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode] + Integer.IsEqual(Window.Property(list_id),304)">RunPlugin($INFO[Window.Property(url),,&amp;func=do_action&amp;&amp;use_rawpath::True])</onclick>
         </include>
 
         <!-- Rename -->
@@ -210,7 +212,7 @@
             <param name="label">$LOCALIZE[118]</param>
             <param name="icon">special://skin/extras/icons/pen-to-square.png</param>
             <param name="visible">![Integer.IsEqual(Window.Property(list_id),302) + !String.IsEmpty(Container(300).ListItem.Property(submenulist_path))]</param>
-            <onclick>RunPlugin($INFO[Window.Property(url),,&amp;func=do_edit])</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode]">RunPlugin($INFO[Window.Property(url),,&amp;func=do_edit])</onclick>
         </include>
 
         <!-- Icon -->
@@ -219,7 +221,7 @@
             <param name="label">$LOCALIZE[31274]</param>
             <param name="icon">special://skin/extras/icons/images.png</param>
             <param name="visible">$EXP[Shortcuts_Pallette_Exp_IsIconList]</param>
-            <onclick>RunPlugin($INFO[Window.Property(url),,&amp;func=do_icon])</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode]">RunPlugin($INFO[Window.Property(url),,&amp;func=do_icon])</onclick>
         </include>
 
         <!-- Highlight Type -->
@@ -228,7 +230,7 @@
             <param name="label">$LOCALIZE[467]</param>
             <param name="icon">special://skin/extras/icons/lightbulb.png</param>
             <param name="visible">Integer.IsEqual(Window.Property(list_id),303)</param>
-            <onclick>RunPlugin($INFO[Window.Property(url),,&amp;func=do_edit&amp;&amp;expression&amp;&amp;home&amp;movies&amp;tvshows&amp;music&amp;livetv&amp;addons&amp;pictures&amp;weather&amp;videos&amp;search&amp;none&amp;&amp;Highlight type&amp;&amp;True])</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode]">RunPlugin($INFO[Window.Property(url),,&amp;func=do_edit&amp;&amp;expression&amp;&amp;home&amp;movies&amp;tvshows&amp;music&amp;livetv&amp;addons&amp;pictures&amp;weather&amp;videos&amp;search&amp;none&amp;&amp;Highlight type&amp;&amp;True])</onclick>
         </include>
 
         <!-- Configure Hub -->
@@ -262,16 +264,16 @@
             <param name="visible">Integer.IsEqual(Window.Property(list_id),302) | Integer.IsEqual(Window.Property(list_id),304)</param>
 
             <!-- Submenu Options -->
-            <onclick condition="Integer.IsEqual(Window.Property(list_id),302)">SetProperty(Options.Mode.Heading,Submenu)</onclick>
-            <onclick condition="Integer.IsEqual(Window.Property(list_id),302)">SetProperty(Options.Mode.Heading.Sublabel,$INFO[Window.Property(hub_prefix)] >$INFO[Container(300).ListItem.Label])</onclick>
-            <onclick condition="Integer.IsEqual(Window.Property(list_id),302)">SetProperty(Options.Mode,Categories.Submenu)</onclick>
-            <onclick condition="Integer.IsEqual(Window.Property(list_id),302)">SetFocus(33999)</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode] + Integer.IsEqual(Window.Property(list_id),302)">SetProperty(Options.Mode.Heading,Submenu)</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode] + Integer.IsEqual(Window.Property(list_id),302)">SetProperty(Options.Mode.Heading.Sublabel,$INFO[Window.Property(hub_prefix)] >$INFO[Container(300).ListItem.Label])</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode] + Integer.IsEqual(Window.Property(list_id),302)">SetProperty(Options.Mode,Categories.Submenu)</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode] + Integer.IsEqual(Window.Property(list_id),302)">SetFocus(33999)</onclick>
 
             <!-- Widgets Options -->
-            <onclick condition="Integer.IsEqual(Window.Property(list_id),304)">SetProperty(Options.Mode.Heading,Widgets)</onclick>
-            <onclick condition="Integer.IsEqual(Window.Property(list_id),304)">SetProperty(Options.Mode.Heading.Sublabel,$INFO[Window.Property(hub_prefix)] > $INFO[Container(300).ListItem.Label] > $LOCALIZE[31103] > $INFO[Container(304).ListItem.Label])</onclick>
-            <onclick condition="Integer.IsEqual(Window.Property(list_id),304)">SetProperty(Options.Mode,Categories.Widgets)</onclick>
-            <onclick condition="Integer.IsEqual(Window.Property(list_id),304)">SetFocus(33999)</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode] + Integer.IsEqual(Window.Property(list_id),304)">SetProperty(Options.Mode.Heading,Widgets)</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode] + Integer.IsEqual(Window.Property(list_id),304)">SetProperty(Options.Mode.Heading.Sublabel,$INFO[Window.Property(hub_prefix)] > $INFO[Container(300).ListItem.Label] > $LOCALIZE[31103] > $INFO[Container(304).ListItem.Label])</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode] + Integer.IsEqual(Window.Property(list_id),304)">SetProperty(Options.Mode,Categories.Widgets)</onclick>
+            <onclick condition="!$EXP[Exp_IsUpdatingNode] + Integer.IsEqual(Window.Property(list_id),304)">SetFocus(33999)</onclick>
         </include>
 
     </include>
