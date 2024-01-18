@@ -37,12 +37,23 @@
                         <include content="Furniture_DateLabel">
                             <param name="textcolor">$PARAM[textcolor_sublabel]</param>
                             <param name="shadowcolor">$PARAM[shadowcolor_sublabel]</param>
-                            <visible>!Skin.HasSetting(Furniture.EnableClock)</visible>
-                            <visible>Window.IsVisible(MyPVRGuide.xml) | Window.IsVisible(MyPVRChannels.xml) | $PARAM[clock]</visible>
-                        </include>
+							<!-- MISC013A: disable visibility -->
+                            <!-- visible>!Skin.HasSetting(Furniture.EnableClock)</visible -->
+							
+							<!-- MISC013A: custom visibility -->
+                            <!-- WAS visible>Window.IsVisible(MyPVRGuide.xml) | Window.IsVisible(MyPVRChannels.xml) | $PARAM[clock]</visible -->
+							<!-- visible if : -->
+							<!-- "Always display Date and Time" is set AND -->
+							    <!-- Home Window and NOT Stacked Widgets OR Explore Window (11181)-->
+							<!-- OR Full Screen EPG (for EPG listing start date) -->
+							<!-- OR PVR Channels -->
+							<visible>[[$PARAM[clock] + [Window.IsVisible(Home) + !Skin.HasSetting(hubs.widgetselector)] | Window.IsVisible(11181)]] | [Window.IsVisible(MyPVRGuide.xml) + !Skin.HasSetting(Views.UseHalfPVRGuide)] | Window.IsVisible(MyPVRChannels.xml)</visible>
+                        	<!--visible>[$PARAM[clock] + [[Window.IsVisible(Home) + !Skin.HasSetting(hubs.widgetselector)]] | Window.IsVisible(11181)] | [Window.IsVisible(MyPVRGuide.xml) + !Skin.HasSetting(Views.UseHalfPVRGuide)]] | Window.IsVisible(MyPVRChannels.xml)</visible -->
+
+						</include>
                     </control>
                 </include>
-				<!--MISC013: START Top right clock added for Home screen without stacked widgets OR Explore mode (DISABLED) -->
+				<!-- MISC013B: START Alternative always display Top right clock (DISABLED) -->
 				<!-- control type="group">
                     <control type="image">
                         <texture colordiffuse="dialog_bg_50" border="20">common/dialog.png</texture>						
@@ -56,9 +67,9 @@
                         <param name="topshadowcolor">main_bg_50</param>
                         <param name="bottomshadowcolor">main_bg_50</param>
                     </include>					
-					<visible>[Window.IsVisible(Home) + !Skin.HasSetting(hubs.widgetselector)] | !Window.IsVisible(10702)</visible>
+					<visible>[[$PARAM[clock] + [Window.IsVisible(Home) + !Skin.HasSetting(hubs.widgetselector)] | Window.IsVisible(11181)]] | [Window.IsVisible(MyPVRGuide.xml) + !Skin.HasSetting(Views.UseHalfPVRGuide)] | Window.IsVisible(MyPVRChannels.xml)</visible>
 				</control>
-				<!-- MISC013: END Top right clock added for Home screen without stacked widgets OR Explore mode -->
+				<!-- MISC013B: END Alternative always display Top right clock (DISABLED) -->
             </include>
         </definition>
     </include>
@@ -71,14 +82,14 @@
 
                     <control type="group">
                         <visible>Skin.HasSetting(Furniture.DisableNowPlaying) | !Player.HasMedia</visible>
-                        <include content="Info_Studio" condition="![Skin.HasSetting(Furniture.EnableClock) | $EXP[Exp_Furniture_PVR]]">
+                        <!-- MISC013: do not display if "Always display Date and Time" is set -->
+						<!-- include content="Info_Studio" condition="![Skin.HasSetting(Furniture.EnableClock) | $EXP[Exp_Furniture_PVR]]" -->
+                        <include content="Info_Studio" condition="![Skin.HasSetting(Furniture.EnableClock) | $EXP[Exp_Furniture_PVR]] + !Skin.HasSetting(Furniture.EnableClock.TopLeft) ">
                             <centertop>50%</centertop>
                         </include>
-                        <!-- MISC013: condition extended -  ![[Window.IsVisible(Home) + !Skin.HasSetting(hubs.widgetselector)] | Window.IsVisible(11181)] (DISABLED) -->
-                        <!-- include content="Furniture_Clock" condition="Skin.HasSetting(Furniture.EnableClock) + ![[Window.IsVisible(Home) + !Skin.HasSetting(hubs.widgetselector)] | Window.IsVisible(11181)]" -->
-                        <!-- PVR008: display System Date/Time at Bottom Right for EPG -->
+                        <!-- MISC013: condition extended -->
 						<!-- include content="Furniture_Clock" condition="Skin.HasSetting(Furniture.EnableClock)" --> 
-						<include content="Furniture_Clock" condition="Skin.HasSetting(Furniture.EnableClock) | Window.IsVisible(10702)">
+						<include content="Furniture_Clock" condition="Skin.HasSetting(Furniture.EnableClock) | Skin.HasSetting(Furniture.EnableClock.TopLeft) | Window.IsVisible(10702)">
 							<param name="flipx">true</param>
                             <param name="topshadowcolor">main_bg_50</param>
                             <param name="bottomshadowcolor">main_bg_50</param>
