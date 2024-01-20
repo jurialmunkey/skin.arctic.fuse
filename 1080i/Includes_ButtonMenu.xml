@@ -22,16 +22,55 @@
                     <width>50</width>
                     <height>50</height>
                     <centertop>50%</centertop>
-                    <control type="image">
-                        <include content="Dimension_Padding"><param name="pad">-40</param></include>
-                        <bordersize>40</bordersize>
-                        <bordertexture colordiffuse="shadow_hard">shadows/circle_50-shadow-40.png</bordertexture>
-                        <texture colordiffuse="dialog_fg_100">diffuse/circle_50.png</texture>
+                    <control type="group">
+                        <visible>!Player.HasVideo</visible>
+                        <control type="image">
+                            <include content="Dimension_Padding"><param name="pad">-40</param></include>
+                            <bordersize>40</bordersize>
+                            <bordertexture colordiffuse="shadow_hard">shadows/circle_50-shadow-40.png</bordertexture>
+                            <texture colordiffuse="dialog_fg_100">diffuse/circle_50.png</texture>
+                        </control>
+                        <include content="Object_InfoCircle_Image">
+                            <param name="colordiffuse">white</param>
+                            <param name="icon">$VAR[Image_OSD_Thumb]</param>
+                        </include>
                     </control>
-                    <include content="Object_InfoCircle_Image">
-                        <param name="colordiffuse">white</param>
-                        <param name="icon">$VAR[Image_OSD_Thumb]</param>
-                    </include>
+                    <control type="group">
+                        <visible>Player.HasVideo</visible>
+                        <height>80</height>
+                        <width>80</width>
+                        <centertop>50%</centertop>
+                        <centerleft>50%</centerleft>
+                        <include content="Info_Codec_LabelIcon">
+                            <param name="icon">$VAR[Image_NowPlaying_PlayPause]</param>
+                            <centerleft>50%</centerleft>
+                        </include>
+                        <control type="image">
+                            <bordersize>-4</bordersize>
+                            <texture colordiffuse="$VAR[ColorHighlight]">$INFO[Player.Progress,progress/circle/p,.png]</texture>
+                            <aspectratio align="center" aligny="center">keep</aspectratio>
+                        </control>
+                        <control type="image">
+                            <bordersize>-4</bordersize>
+                            <texture colordiffuse="$VAR[ColorGradient]">$INFO[Player.Progress,progress/circle/p,.png]</texture>
+                            <animation effect="fade" end="66" condition="true">Conditional</animation>
+                            <aspectratio align="center" aligny="center">keep</aspectratio>
+                            <include content="Defs_Progress_Colorfade">
+                                <param name="id">933</param>
+                            </include>
+                        </control>
+                        <control type="progress" id="933">
+                            <height>1</height>
+                            <width>1</width>
+                            <left>-1000</left>
+                            <texturebg />
+                            <lefttexture />
+                            <midtexture />
+                            <righttexture />
+                            <info>Player.Progress</info>
+                            <visible>false</visible>
+                        </control>
+                    </control>
                     <control type="group">
                         <visible>!Player.HasMedia</visible>
                         <centerleft>50%</centerleft>
