@@ -21,8 +21,7 @@
                 </control>
                 <control type="label" id="28">
                     <textoffsetx>30</textoffsetx>
-					<!-- PVR005: EPG Group Switcher - custom font (was font_main) -->
-                    <font>font_epg_group_switcher</font>
+                    <font>font_main</font>
                     <textcolor>$VAR[ColorSelected]</textcolor>
                 </control>
             </control>
@@ -31,14 +30,13 @@
                 <visible>!ControlGroup(2800).HasFocus()</visible>
                 <control type="label">
                     <textoffsetx>30</textoffsetx>
-                    <!-- PVR005: EPG Group Switcher - custom font (was font_main) -->
-                    <font>font_epg_group_switcher</font>
-                    <!-- PVR005: EPG Group Switcher - custom textcolor (was main_fg_30) -->
-                    <textcolor>$VAR[ColorGradient]</textcolor>
+                    <font>font_main</font>
+                    <textcolor>main_fg_30</textcolor>
                     <label>$INFO[Control.GetLAbel(28)]</label>
                 </control>
             </control>
             <control type="grouplist" id="2800">
+                <visible allowhiddenfocus="true">ControlGroup(2800).HasFocus()</visible>
                 <height>80</height>
                 <centertop>50%</centertop>
                 <align>right</align>
@@ -51,10 +49,8 @@
                 <onright>SetFocus(11)</onright>
                 <onright>Action(Right)</onright>
                 <onright>SetFocus(2802)</onright>
-
                 <ondown>50</ondown>
                 <onup>50</onup>
-
                 <right>-10</right>
                 <control type="button" id="2801">
                     <width>30</width>
@@ -80,115 +76,34 @@
 
         <control type="group">
             <height>80</height>
-            <!-- PVR010: left changed from 210 -->
-            <left>180</left>
+            <left>210</left>
             <centerbottom>100</centerbottom>
             <control type="group">
                 <left>settings_category_w</left>
                 <right>view_pad</right>
-				<!-- PVR010: START custom icon for Basic EPG plotbox -->
-                <!-- include content="Info_Codec_LabelIcon">
+                <include content="Info_Codec_LabelIcon">
                     <param name="icon">special://skin/extras/icons/view-list.png</param>
-                </include -->
-				<control type="image">
-                    <left>-20</left>
-                    <bordersize>8</bordersize>
-                    <aspectratio align="left">keep</aspectratio>
-                    <colordiffuse>dialog_fg_70</colordiffuse>
-                    <texture>special://skin/extras/icons/info2.png</texture>
-					<visible>!Skin.HasSetting(Views.UseHalfPVRGuide)</visible>
-                </control>
-				<!-- PVR010: END custom icon for Basic EPG plotbox -->
-				<!-- PVR010: START disable standard EPG listings info (date etc.) -->
-                <!-- control type="group">
-                    <left>60</left>
+                </include>
+                <control type="group">
+                    <left>70</left>
                     <height>80</height>
                     <centertop>50%</centertop>
                     <control type="grouplist">
                         <orientation>horizontal</orientation>
-                        <control type="label">
-                            <height>10</height>
-                            <top>22</top>
+                        <include content="Object_InfoCircle_Text_Top">
                             <width>auto</width>
-                            <aligny>center</aligny>
-                            <align>left</align>
-                            <font>font_mini_black</font>
-                            <textcolor>main_fg_90</textcolor>
                             <label>$INFO[ListItem.Title,[CAPITALIZE],[/CAPITALIZE] • ]</label>
                             <visible>!String.IsEqual(ListItem.Title,ListITem.ChannelName)</visible>
-                        </control>
-                        <control type="label">
-                            <height>10</height>
-                            <top>22</top>
+                        </include>
+                        <include content="Object_InfoCircle_Text_Top">
                             <width>auto</width>
-                            <aligny>center</aligny>
-                            <align>left</align>
-                            <font>font_mini_black</font>
-                            <textcolor>main_fg_90</textcolor>
                             <label>$INFO[ListItem.ChannelName]</label>
-                        </control>
+                        </include>
                     </control>
-                    <control type="label">
-                        <height>10</height>
-                        <bottom>22</bottom>
-                        <aligny>center</aligny>
-                        <align>left</align>
-                        <font>font_tiny</font>
-                        <textcolor>main_fg_70</textcolor>
+                    <include content="Object_InfoCircle_Text_Sub">
                         <label fallback="19055">$INFO[ListItem.StartDate]$INFO[ListItem.StartTime, • ,]$INFO[ListItem.EndTime, - ,]</label>
-                        <!-- <label>$INFO[Container.NumItems,, $LOCALIZE[19019]]</label> -->
-                    <!--/control>
-                </control -->
-
-                <!-- <control type="image">
-                    <left>20</left>
-                    <bordersize>8</bordersize>
-                    <aspectratio align="left">keep</aspectratio>
-                    <colordiffuse>dialog_fg_70</colordiffuse>
-                    <texture>special://skin/extras/icons/info2.png</texture>
+                    </include>
                 </control>
-                <control type="textbox">
-                    <left>100</left>
-                    <height>80</height>
-                    <centertop>50%</centertop>
-                    <textcolor>main_fg_70</textcolor>
-                    <font>font_mini_plot</font>
-                    <aligny>center</aligny>
-                    <label>$INFO[Container.NumItems,, [LOWERCASE]$LOCALIZE[19019][/LOWERCASE]]</label>
-                </control> -->
-				<!-- PVR010: END disable standard EPG listings info (date etc.) -->
-				
-				<!-- PVR010: START add plotbox for Basic EPG -->
-				<control type="label">
-                    <height>15</height>							
-                    <top>0</top>
-				    <left>55</left>
-                    <width>auto</width>
-                    <aligny>center</aligny>
-                    <align>left</align>							
-                    <font>font_tiny_bold</font>							
-                    <textcolor>main_fg_70</textcolor>
-				    <shadowcolor>main_bg_12</shadowcolor>
-                    <label>$VAR[TextPVREPGProgramInfo] : $INFO[ListItem.StartTime,,]$INFO[ListItem.EndTime, - ,]</label>
-                    <visible>!String.IsEqual(ListItem.Title,ListITem.ChannelName)</visible>
-					<visible>!Skin.HasSetting(Views.UseHalfPVRGuide)</visible>
-                </control>
-				
-				<control type="textbox">
-                    <top>18</top>
-					<left>55</left>
-					<width>800</width>
-                    <height>60</height>
-                    <centertop>50%</centertop>
-                    <textcolor>main_fg_70</textcolor>
-					<align>left</align>
-                    <font>font_tiny</font>
-                    <aligny>center</aligny>
-                    <label>$VAR[TextPVREPGProgramPlot]</label>
-					<visible>!Skin.HasSetting(Views.UseHalfPVRGuide)</visible>
-					<autoscroll delay="3500" time="3500" repeat="3500">Window.IsVisible(10702)</autoscroll>
-                </control>
-				<!-- PVR010: END add plotbox for Basic EPG -->
             </control>
         </control>
     </include>
@@ -301,21 +216,16 @@
             <include>Animation_Transition_InfoPanel_Hide</include>
             <include>Animation_View_WindowChange</include>
             <include content="Info_Panel">
-			    <!-- PVR010: titlelabel changed from $VAR[Label_Title] -->
-                <param name="titlelabel">$VAR[TextPVREPGProgramInfo]</param>
-                <!-- PVR010: titlelabel changed from $VAR[Label_Plot] -->				
-                <param name="plotlabel">$VAR[TextPVREPGProgramPlot]</param>
+                <param name="titlelabel">$VAR[Label_Title]</param>
+                <param name="plotlabel">$VAR[Label_Plot]</param>
                 <top>view_top</top>
                 <width>info_panel_w</width>
                 <left>view_side</left>
             </include>
-			          
             <include content="Info_Viewline">
                 <param name="secondary_include">False</param>
-				<!-- PVR008: Use Program Start Date for Detailed EPG -->
-                <param name="label">$VAR[LabelProgramStartDate]</param>
+                <param name="label">$INFO[Container.NumItems,, $LOCALIZE[19019]]</param>
             </include>
-
         </control>
     </include>
 
