@@ -2,14 +2,18 @@
 <window type="dialog" id="1170">
     <defaultcontrol always="true">8000</defaultcontrol>
     <onload>SetFocus(8000,0,absolute)</onload>
+    <onunload>ClearProperty(DialogHomeMenu.UseButtonMenu,Home)</onunload>
     <include>Action_ButtonMenu_Onload</include>
     <controls>
 
         <include content="Dialog_Overlay_Side">
             <param name="dialog_size">Dimension_DialogSideMenu</param>
             <include>Animation_Right_Delay</include>
-            <include content="Dialog_Head">
+            <include content="Dialog_Head" condition="String.IsEmpty(Window(Home).Property(DialogHomeMenu.UseButtonMenu))">
                 <param name="label">$LOCALIZE[33061]</param>
+            </include>
+            <include content="Dialog_Head" condition="!String.IsEmpty(Window(Home).Property(DialogHomeMenu.UseButtonMenu))">
+                <param name="label">$LOCALIZE[33063]</param>
             </include>
             <include content="Dialog_Body">
 
@@ -34,7 +38,7 @@
                         <texture colordiffuse="dialog_fg_12">common/white.png</texture>
                     </control>
 
-                    <include content="List_DialogSelect">
+                    <include content="List_DialogSelect" condition="String.IsEmpty(Window(Home).Property(DialogHomeMenu.UseButtonMenu))">
                         <param name="id">8000</param>
                         <param name="textcolor">dialog_fg</param>
                         <param name="itemlayout_include">Layout_MenuList</param>
@@ -58,6 +62,19 @@
                         <include content="Home_Menu_Content">
                             <param name="condition">[True]</param>
                         </include>
+                    </include>
+
+                    <include content="Object_Control" condition="!String.IsEmpty(Window(Home).Property(DialogHomeMenu.UseButtonMenu))">
+                        <param name="control">grouplist</param>
+                        <param name="id">8000</param>
+                        <top>320</top>
+                        <bottom>160</bottom>
+                        <orientation>vertical</orientation>
+                        <onup>7020</onup>
+                        <ondown>6000</ondown>
+                        <onright>9000</onright>
+                        <onleft>Close</onleft>
+                        <include>skinvariables-powermainmenu-staticitems</include>
                     </include>
 
                     <include>ButtonMenu_NowPlaying</include>

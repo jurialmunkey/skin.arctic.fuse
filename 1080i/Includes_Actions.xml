@@ -346,10 +346,15 @@
     </include>
 
     <include name="Action_View_Movement_OnDown">
-        <ondown condition="$EXP[Exp_FilterWall_IsViewtype] | Control.HasFocus(503) | Control.HasFocus(513) | Control.HasFocus(523) | Control.HasFocus(500)">$VAR[Action_Var_ToMediaScrollbar]</ondown>
-        <include condition="Skin.String(Navigation.OnDown,Explore)" content="Action_View_Explore_OnDown">
-            <param name="condition">![$EXP[Exp_FilterWall_IsViewtype] | Control.HasFocus(503) | Control.HasFocus(513) | Control.HasFocus(523) | Control.HasFocus(500)]</param>
-        </include>
+        <param name="to_scrollbar">true</param>
+        <definition>
+            <ondown condition="$PARAM[to_scrollbar]">$VAR[Action_Var_ToMediaScrollbar]</ondown>
+            <include condition="Skin.String(Navigation.OnDown,Explore)" content="Action_View_Explore_OnDown">
+                <param name="condition">![$PARAM[to_scrollbar]]</param>
+            </include>
+            <ondown condition="!Skin.String(Navigation.OnDown,Explore) + ![$PARAM[to_scrollbar]]">SetProperty(List.ViewContainer,$PARAM[id])</ondown>
+            <ondown condition="!Skin.String(Navigation.OnDown,Explore) + ![$PARAM[to_scrollbar]]">330</ondown>
+        </definition>
     </include>
 
     <include name="Action_View_Movement_OnBack">

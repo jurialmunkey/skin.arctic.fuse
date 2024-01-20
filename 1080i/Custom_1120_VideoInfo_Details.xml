@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window type="dialog" id="1120">
-    <onload>SetFocus(5001,0,absolute)</onload>
-    <onload>SetFocus(5002,0,absolute)</onload>
-    <onload>SetFocus(5003,0,absolute)</onload>
-    <onload>SetFocus(5004,0,absolute)</onload>
-    <onload>SetFocus(5005,0,absolute)</onload>
+    <defaultcontrol always="true">7000</defaultcontrol>
     <onload>SetFocus(7000,0,absolute)</onload>
-    <onload>ClearProperty(TMDbHelper.WidgetContainer)</onload>
-    <onload>ClearProperty(TMDbHelper.Image.Override,Home)</onload>
+    <onload>SetProperty(TMDbHelper.WidgetContainer,513)</onload>
     <controls>
 
         <include>Defs_TMDbHelper_Loader</include>
@@ -25,6 +20,10 @@
 
                 <include content="Animation_Slide_In">
                     <param name="type">WindowOpen</param>
+                    <param name="posx">320</param>
+                </include>
+                <include content="Animation_Slide_Out">
+                    <param name="type">WindowClose</param>
                     <param name="posx">320</param>
                 </include>
 
@@ -199,10 +198,29 @@
                         <visible>!Control.HasFocus(513)</visible>
                     </include>
                 </control>
+
+                <include content="DialogInfo_VideoInfo_CastSpotlight">
+                    <param name="icon">$INFO[Container(7000).ListItem.Icon]</param>
+                    <param name="plot">$VAR[Label_VideoInfo_CastBio]</param>
+                    <param name="label">$INFO[Container(7000).ListItem.Label2]</param>
+                    <param name="label2">$VAR[Label_VideoInfo_CastAge,   ,]</param>
+                    <include content="Animation_Slide_In">
+                        <param name="type">Visible</param>
+                        <param name="posx">320</param>
+                    </include>
+                    <include content="Animation_Slide_Out">
+                        <param name="type">Hidden</param>
+                        <param name="posx">320</param>
+                    </include>
+                    <visible>Control.HasFocus(7000)</visible>
+                    <visible>!String.ISEmpty(Container(7000).ListItem.Property(query))</visible>
+                    <top>view_top</top>
+                </include>
             </control>
 
             <control type="group">
                 <include>Dimension_Info</include>
+                <animation effect="fade" start="100" end="0" time="0">WindowClose</animation>
                 <include content="Info_Panel">
                     <param name="titlelabel">$VAR[Label_Title_C513]</param>
                     <param name="container">Container(513).</param>
@@ -226,7 +244,6 @@
                         <onleft>Close</onleft>
                         <onleft>AlarmClock(refocus,SetFocus(4001),00:00,silent)</onleft>
                         <onright>SetFocus(5000)</onright>
-                        <onfocus>ClearProperty(TMDbHelper.WidgetContainer)</onfocus>
 
                         <left>-80</left>
                         <top>-40</top>
@@ -250,6 +267,7 @@
                                 <label>$LOCALIZE[20339]</label>
                                 <icon>$INFO[Window.Property(Director_Image)]</icon>
                                 <property name="icon">special://skin/extras/icons/video-addons.png</property>
+                                <property name="query">$INFO[Window.Property(Director_Query)]</property>
                                 <onclick>runscript(script.wikipedia,wikipedia=$INFO[Window.Property(Director_Label)],tmdb_type=person)</onclick>
                                 <visible>!String.IsEmpty(Window.Property(Director_Query))</visible>
                             </item>
@@ -258,6 +276,7 @@
                                 <label>$LOCALIZE[20417]</label>
                                 <icon>$INFO[Window.Property(Writer_Image)]</icon>
                                 <property name="icon">special://skin/extras/icons/write.png</property>
+                                <property name="query">$INFO[Window.Property(Writer_Query)]</property>
                                 <visible>!String.IsEmpty(Window.Property(Writer_Query))</visible>
                                 <onclick>runscript(script.wikipedia,wikipedia=$INFO[Window.Property(Writer_Label)],tmdb_type=person)</onclick>
                                 <visible>!String.IsEmpty(Window.Property(Writer_Query))</visible>
@@ -267,6 +286,7 @@
                                 <label>$LOCALIZE[31065]</label>
                                 <icon>$INFO[Window.Property(Creator_Image)]</icon>
                                 <property name="icon">special://skin/extras/icons/person.png</property>
+                                <property name="query">$INFO[Window.Property(Creator_Query)]</property>
                                 <visible>!String.IsEmpty(Window.Property(Creator_Query))</visible>
                                 <onclick>runscript(script.wikipedia,wikipedia=$INFO[Window.Property(Creator_Label)],tmdb_type=person)</onclick>
                                 <visible>!String.IsEmpty(Window.Property(Creator_Query))</visible>
@@ -316,13 +336,18 @@
                     <param name="include">Items_DialogVideoInfo_MenuBar</param>
                 </include>
                 <include content="Furniture_Top">
-                    <param name="label">Information</param>
+                    <param name="label">$LOCALIZE[19033]</param>
                 </include>
                 <include content="Furniture_Bottom_Left">
                     <param name="container">Container(513).</param>
                 </include>
                 <include>Furniture_Bottom_Right</include>
             </control>
+        </include>
+
+        <include content="Object_Hidden_List">
+            <param name="id">5203</param>
+            <content sortby="year" sortorder="descending">$INFO[Container(7000).ListItem.Property(query),plugin://plugin.video.themoviedb.helper/?info=details&amp;tmdb_type=person,]</content>
         </include>
 
     </controls>
