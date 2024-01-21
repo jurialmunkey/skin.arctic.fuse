@@ -2,20 +2,19 @@
 <includes>
 
     <include name="Info_Title_Label">
-        <param name="font">font_info_black</param>
         <param name="label">$VAR[Label_Title_Container]</param>
+        <param name="wrapmultiline">true</param>
         <definition>
             <control type="group">
                 <nested />
                 <width>info_plot_w</width>
                 <control type="label">
-                    <wrapmultiline>true</wrapmultiline>
-                    <height>110</height>
-                    <centertop>47%</centertop>
+                    <wrapmultiline>$PARAM[wrapmultiline]</wrapmultiline>
+                    <top>5</top>
+                    <bottom>5</bottom>
                     <label>$PARAM[label]</label>
                     <textcolor>$PARAM[colordiffuse]_100</textcolor>
                     <font>font_info_black_doublerow</font>
-                    <autoscroll>false</autoscroll>
                     <right>-40</right>
                 </control>
             </control>
@@ -50,13 +49,15 @@
             <control type="group">
                 <height>120</height>
                 <width>$PARAM[width]</width>
-
+                <nested />
                 <control type="group">
                     <right>80</right>
                     <!-- Title Only -->
                     <include content="Info_Title_Label" condition="!Skin.HasSetting(TMDbHelper.EnableCrop)">
                         <param name="label">$PARAM[label]</param>
                         <param name="colordiffuse">$PARAM[colordiffuse]</param>
+                        <param name="wrapmultiline">false</param>
+                        <height>60</height>
                     </include>
                     <!-- Other -->
                     <include content="Info_Title_Logo" condition="Skin.HasSetting(TMDbHelper.EnableCrop)">
@@ -1812,6 +1813,9 @@
                         <param name="width">$PARAM[plotwidth]</param>
                     </include>
                     <control type="group">
+                        <include content="Object_Top" condition="!Skin.HasSetting(TMDbHelper.EnableCrop)">
+                            <param name="top">-40</param>
+                        </include>
                         <height>40</height>
                         <visible>$PARAM[infoline]</visible>
                         <include content="Info_Line">
@@ -1835,6 +1839,9 @@
                             <aligny>top</aligny>
                             <textcolor>$PARAM[colordiffuse]_70</textcolor>
                             <font>font_main_plot</font>
+                            <include content="Object_Bottom" condition="!Skin.HasSetting(TMDbHelper.EnableCrop)">
+                                <param name="bottom">-40</param>
+                            </include>
                             <include content="Info_Panel_Rating_Visible">
                                 <param name="container">$PARAM[container]</param>
                             </include>
@@ -1845,6 +1852,9 @@
                             <aligny>top</aligny>
                             <textcolor>$PARAM[colordiffuse]_70</textcolor>
                             <font>font_main_plot</font>
+                            <include content="Object_Bottom" condition="!Skin.HasSetting(TMDbHelper.EnableCrop)">
+                                <param name="bottom">-80</param>
+                            </include>
                             <bottom>-40</bottom>
                             <include content="Info_Panel_Rating_Visible">
                                 <param name="mod">!</param>
@@ -1855,6 +1865,9 @@
 
                     <include content="Info_Ratings" condition="$PARAM[ratings]">
                         <param name="$PARAM[container]">$PARAM[container]</param>
+                        <include content="Object_Top" condition="!Skin.HasSetting(TMDbHelper.EnableCrop)">
+                            <param name="top">42</param>
+                        </include>
                         <top>2</top>
                         <left>0</left>
                         <visible>$PARAM[details]</visible>

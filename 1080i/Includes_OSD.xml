@@ -593,6 +593,16 @@
         </control>
     </include>
 
+    <include name="OSD_Progress_Details_Animation_WithCropLogo">
+        <animation effect="slide" start="0" end="0,-120" time="300" tween="sine" easing="out" reversible="false" condition="$EXP[Exp_OSD_FullScreenInfo]">Conditional</animation>
+        <animation effect="slide" end="0" start="0,-120" time="400" tween="sine" easing="inout" reversible="false" condition="!$EXP[Exp_OSD_FullScreenInfo]">Conditional</animation>
+    </include>
+
+    <include name="OSD_Progress_Details_Animation_WithTextLogo">
+        <animation effect="slide" start="0" end="0,-160" time="300" tween="sine" easing="out" reversible="false" condition="$EXP[Exp_OSD_FullScreenInfo]">Conditional</animation>
+        <animation effect="slide" end="0" start="0,-160" time="400" tween="sine" easing="inout" reversible="false" condition="!$EXP[Exp_OSD_FullScreenInfo]">Conditional</animation>
+    </include>
+
     <include name="OSD_Progress_Details">
         <control type="grouplist">
             <visible>Skin.HasSetting(OSD.DetailsOnSeek) | Window.IsActive(videoosd) | Window.IsActive(musicosd) | Window.IsActive(script-cu-lrclyrics-main.xml) | Window.IsActive(DialogFullScreenInfo.xml) | $EXP[Exp_OSD_ExpandInfo]</visible>
@@ -605,30 +615,26 @@
             <left>view_side</left>
             <width>info_panel_w</width>
             <height>320</height>
+            <include content="Object_Bottom" condition="!Skin.HasSetting(TMDbHelper.EnableCrop)">
+                <param name="bottom">40</param>
+            </include>
             <bottom>80</bottom>
-            <animation effect="slide" start="0" end="0,-120" time="300" tween="sine" easing="out" reversible="false" condition="$EXP[Exp_OSD_FullScreenInfo]">Conditional</animation>
-            <animation effect="slide" end="0" start="0,-120" time="400" tween="sine" easing="inout" reversible="false" condition="!$EXP[Exp_OSD_FullScreenInfo]">Conditional</animation>
             <orientation>vertical</orientation>
+
+            <include condition="Skin.HasSetting(TMDbHelper.EnableCrop)">OSD_Progress_Details_Animation_WithCropLogo</include>
+            <include condition="!Skin.HasSetting(TMDbHelper.EnableCrop)">OSD_Progress_Details_Animation_WithTextLogo</include>
+
+            <include content="Info_Title">
+                <param name="colordiffuse">panel_fg</param>
+                <param name="label">$VAR[Label_OSD_Title]</param>
+                <param name="mainlogo_visible">!String.IsEmpty(Window(Home).Property(TMDBHelper.Player.CropImage))</param>
+                <param name="mainlogo_texture">$INFO[Window(Home).Property(TMDBHelper.Player.CropImage)]</param>
+            </include>
+
             <control type="group">
-                <height>120</height>
-                <width>info_plot_w</width>
-                <control type="group">
-                    <right>80</right>
-                    <include content="Info_Title_Label">
-                        <param name="colordiffuse">panel_fg</param>
-                        <param name="label">$VAR[Label_OSD_Title]</param>
-                        <visible>String.IsEmpty(Window(Home).Property(TMDBHelper.Player.CropImage))</visible>
-                    </include>
-                    <control type="image">
-                        <height>120</height>
-                        <aspectratio align="left">keep</aspectratio>
-                        <fadetime>600</fadetime>
-                        <texture background="true">$INFO[Window(Home).Property(TMDBHelper.Player.CropImage)]</texture>
-                        <visible>!String.IsEmpty(Window(Home).Property(TMDBHelper.Player.CropImage))</visible>
-                    </control>
-                </control>
-            </control>
-            <control type="group">
+                <include content="Object_Top" condition="!Skin.HasSetting(TMDbHelper.EnableCrop)">
+                    <param name="top">-40</param>
+                </include>
                 <height>40</height>
                 <control type="grouplist">
                     <centertop>45%</centertop>
@@ -714,6 +720,9 @@
                     <textcolor>panel_fg_70</textcolor>
                     <font>font_main_plot</font>
                     <visible>!VideoPlayer.Content(livetv)</visible>
+                    <include content="Object_Bottom" condition="!Skin.HasSetting(TMDbHelper.EnableCrop)">
+                        <param name="bottom">-40</param>
+                    </include>
                 </control>
                 <control type="textbox">
                     <label>$VAR[Label_Player_Plot]</label>
@@ -721,6 +730,9 @@
                     <textcolor>panel_fg_70</textcolor>
                     <font>font_main_plot</font>
                     <visible>VideoPlayer.Content(livetv)</visible>
+                    <include content="Object_Bottom" condition="!Skin.HasSetting(TMDbHelper.EnableCrop)">
+                        <param name="bottom">-80</param>
+                    </include>
                     <bottom>-40</bottom>
                 </control>
                 <visible>$EXP[Exp_OSD_FullScreenInfo]</visible>
@@ -729,6 +741,9 @@
             </control>
             <include content="Info_Ratings">
                 <param name="is_player">true</param>
+                <include content="Object_Top" condition="!Skin.HasSetting(TMDbHelper.EnableCrop)">
+                    <param name="top">42</param>
+                </include>
                 <top>2</top>
                 <left>0</left>
                 <visible>!VideoPlayer.Content(livetv)</visible>
