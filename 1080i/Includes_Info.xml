@@ -506,14 +506,12 @@
             <include content="Info_Line_Rating" condition="![$PARAM[is_player]]">
                 <param name="label">$VAR[Label_ListItem_NextAired]</param>
                 <param name="icon">$VAR[Image_ListItem_Status]</param>
-                <!-- <param name="bordersize">-12</param> -->
                 <param name="icon_centertop">50%</param>
                 <param name="visible">!String.IsEmpty(Container(99950).ListItem.Status)</param>
             </include>
             <include content="Info_Line_Rating" condition="$PARAM[is_player]">
                 <param name="label">$VAR[Label_Player_NextAired]</param>
                 <param name="icon">$VAR[Image_Player_Status]</param>
-                <!-- <param name="bordersize">-12</param> -->
                 <param name="icon_centertop">50%</param>
                 <param name="visible">!String.IsEmpty(Window(Home).Property(TMDBHelper.Player.Status))</param>
             </include>
@@ -1415,6 +1413,29 @@
         </definition>
     </include>
 
+    <include name="Info_KodiLogo">
+        <definition>
+            <control type="grouplist">
+                <nested />
+                <orientation>horizontal</orientation>
+                <align>left</align>
+                <itemgap>30</itemgap>
+                <height>80</height>
+                <usecontrolcoords>true</usecontrolcoords>
+                <!-- Buffer for Shadow-->
+                <left>-80</left>
+                <control type="group">
+                    <width>50</width>
+                </control>
+
+                <include content="Info_Codec_Label">
+                    <param name="icon">special://skin/extras/icons/kodi.png</param>
+                    <param name="label">Kodi</param>
+                </include>
+            </control>
+        </definition>
+    </include>
+
     <include name="Info_Providers">
         <definition>
             <control type="grouplist">
@@ -1639,36 +1660,61 @@
         </definition>
     </include>
 
-    <include name="Info_Media">
+    <include name="Info_Media_Content">
+        <param name="info_providers">false</param>
+        <param name="info_codecs">false</param>
+        <param name="type_video_file">false</param>
+        <param name="type_video_folder">false</param>
+        <param name="type_music_file">false</param>
+        <param name="type_music_folder">false</param>
         <definition>
+
+            <!-- Fallback -->
+            <include content="Info_KodiLogo">
+                <centertop>50%</centertop>
+                <visible>[$PARAM[type_video_file] + !$PARAM[info_providers] + !$PARAM[info_codecs]] | [!$PARAM[type_video_file] + !$PARAM[type_video_folder] + !$PARAM[type_music_file] + !$PARAM[type_music_folder]]</visible>
+            </include>
 
             <!-- Providers -->
             <include content="Info_Providers">
                 <centertop>50%</centertop>
-                <visible>String.IsEmpty($PARAM[container]ListItem.VideoCodec) + String.IsEmpty($PARAM[container]ListItem.AudioCodec)</visible>
-                <visible>!String.IsEmpty(Container(99950).ListItem.Property(Provider.1.Icon))</visible>
-                <visible>[String.IsEqual($PARAM[container]ListItem.DBType,movie) | String.IsEqual($PARAM[container]ListItem.DBType,episode)]</visible>
+                <visible>$PARAM[info_providers] + !$PARAM[info_codecs]</visible>
+                <visible>$PARAM[type_video_file]</visible>
             </include>
 
             <!-- Codecs -->
             <include content="Info_Codecs">
                 <param name="container">$PARAM[container]</param>
                 <centertop>50%</centertop>
-                <visible>!String.IsEmpty($PARAM[container]ListItem.VideoCodec) | !String.IsEmpty($PARAM[container]ListItem.AudioCodec)</visible>
-                <visible>[String.IsEqual($PARAM[container]ListItem.DBType,movie) | String.IsEqual($PARAM[container]ListItem.DBType,episode)]</visible>
+                <visible>$PARAM[info_codecs]</visible>
+                <visible>$PARAM[type_video_file]</visible>
             </include>
 
             <!-- Shows -->
             <include content="Info_Watched">
                 <param name="container">$PARAM[container]</param>
                 <centertop>50%</centertop>
-                <visible>[String.IsEqual($PARAM[container]ListItem.DBType,tvshow) | String.IsEqual($PARAM[container]ListItem.DBType,season) | String.IsEqual($PARAM[container]ListItem.DBType,set)]</visible>
+                <visible>$PARAM[type_video_folder]</visible>
             </include>
 
             <!-- Music -->
             <include content="Info_Music">
                 <centertop>50%</centertop>
-                <visible>[String.IsEqual($PARAM[container]ListItem.DBType,artist) | String.IsEqual($PARAM[container]ListItem.DBType,album) | String.IsEqual($PARAM[container]ListItem.DBType,song)]</visible>
+                <visible>$PARAM[type_music_folder] | $PARAM[type_music_file]</visible>
+            </include>
+        </definition>
+    </include>
+
+    <include name="Info_Media">
+        <definition>
+            <include content="Info_Media_Content">
+                <param name="container">$PARAM[container]</param>
+                <param name="info_providers">[!String.IsEmpty(Container(99950).ListItem.Property(Provider.1.Icon))]</param>
+                <param name="info_codecs">[!String.IsEmpty($PARAM[container]ListItem.VideoCodec) | !String.IsEmpty($PARAM[container]ListItem.AudioCodec)]</param>
+                <param name="type_video_file">[String.IsEqual($PARAM[container]ListItem.DBType,movie) | String.IsEqual($PARAM[container]ListItem.DBType,episode) | String.IsEqual($PARAM[container]ListItem.DBType,videos) | String.IsEqual($PARAM[container]ListItem.DBType,files)]</param>
+                <param name="type_video_folder">[String.IsEqual($PARAM[container]ListItem.DBType,tvshow) | String.IsEqual($PARAM[container]ListItem.DBType,season) | String.IsEqual($PARAM[container]ListItem.DBType,set)]</param>
+                <param name="type_music_file">[String.IsEqual($PARAM[container]ListItem.DBType,song)]</param>
+                <param name="type_music_folder">[String.IsEqual($PARAM[container]ListItem.DBType,artist) | String.IsEqual($PARAM[container]ListItem.DBType,album)]</param>
             </include>
         </definition>
     </include>
