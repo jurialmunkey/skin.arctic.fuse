@@ -70,10 +70,10 @@
         <!-- Wall Action -->
         <include content="Object_Hidden_Button">
             <param name="id">68</param>
-            <onfocus condition="![$EXP[Exp_FilterWall_IsMedia]]">SetFocus($VAR[Action_View_ContentID])</onfocus>
-            <onfocus condition="![$EXP[Exp_FilterWall_IsMedia]]">ClearProperty(MediaFilterBase)</onfocus>
-            <onfocus>ClearProperty(View.WallSwitchRow)</onfocus>
-            <onfocus condition="$EXP[Exp_FilterWall_IsMedia]">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideOut,focus_id=$VAR[Action_View_ContentID],clear_prop_one=MediaFilterBase,clear_prop_two=Null)</onfocus>
+            <onfocus condition="![$EXP[Exp_FilterWall_IsActive]]">SetFocus($VAR[Action_View_ContentID])</onfocus>
+            <onfocus condition="![$EXP[Exp_FilterWall_IsActive]]">ClearProperty(MediaFilterBase)</onfocus>
+            <onfocus condition="![$EXP[Exp_FilterWall_IsActive]]">ClearProperty(MediaFilterWall)</onfocus>
+            <onfocus condition="$EXP[Exp_FilterWall_IsActive]">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideOut,focus_id=$VAR[Action_View_ContentID],clear_prop_one=MediaFilterBase,clear_prop_two=MediaFilterWall)</onfocus>
         </include>
 
         <!-- Dummy for bouncing focus back to view on back -->
@@ -85,12 +85,6 @@
             <param name="id">63</param>
             <onfocus>SetFocus(50)</onfocus>
         </include>
-        <!-- <include content="Object_Hidden_Button">
-            <param name="id">66</param>
-            <onfocus>Action(Down)</onfocus>
-            <onfocus condition="!Skin.String(Navigation.OnDown,Explore)">SetFocus($VAR[Action_View_ContentID])</onfocus>
-            <include condition="Skin.String(Navigation.OnDown,Explore)">Action_View_Explore_OnDown</include>
-        </include> -->
 
         <!-- Scrollbar H -->
         <control type="group">
@@ -103,7 +97,7 @@
                 <height>scrollbar_w</height>
                 <centertop>50%</centertop>
                 <include content="Info_Codec_LabelIcon">
-                    <param name="icon">special://skin/extras/icons/grip.png</param>
+                    <param name="icon">$VAR[Image_Scrollbar_Content]</param>
                     <visible>!Container.Scrolling</visible>
                     <animation effect="fade" start="0" end="100" delay="400" reversible="false">Visible</animation>
                 </include>
@@ -124,17 +118,16 @@
                         <label>$INFO[ListItem.SortLetter]</label>
                     </control>
                 </control>
-                <control type="group">
+                <include content="Info_Codec_LabelLabel">
+                    <param name="label">$INFO[Container.NumItems,[COLOR=main_fg_90][B],[/B][/COLOR]] $VAR[Label_Scrollbar_Content,[CAPITALIZE],[/CAPITALIZE]]</param>
                     <left>70</left>
-                    <height>80</height>
-                    <centertop>50%</centertop>
-                    <include content="Object_InfoCircle_Text_Top">
-                        <label fallback="571">$INFO[Container.Content,[CAPITALIZE],[/CAPITALIZE]]</label>
-                    </include>
-                    <include content="Object_InfoCircle_Text_Sub">
-                        <label>$LOCALIZE[31135] $INFO[Container.CurrentPage,[COLOR=main_fg_90][B],[/B][/COLOR] $LOCALIZE[20163] ]$INFO[Container.NumPages,[COLOR=main_fg_90][B],[/B][/COLOR]] • $INFO[Container.NumItems,[COLOR=main_fg_90][B],[/B][/COLOR] $LOCALIZE[31022]]</label>
-                    </include>
-                </control>
+                </include>
+                <include content="Info_Codec_LabelLabel">
+                    <param name="label">$LOCALIZE[31135] $INFO[Container.CurrentPage,[COLOR=main_fg_90][B],[/B][/COLOR] $LOCALIZE[20163] ]$INFO[Container.NumPages,[COLOR=main_fg_90][B],[/B][/COLOR]]</param>
+                    <right>0</right>
+                    <width>320</width>
+                    <align>right</align>
+                </include>
                 <control type="group">
                     <left>340</left>
                     <right>340</right>
@@ -156,9 +149,6 @@
                         <ondown condition="!Skin.String(Navigation.OnDown,Explore)">SetProperty(List.ViewContainer,60)</ondown>
                         <ondown condition="!Skin.String(Navigation.OnDown,Explore)">330</ondown>
                         <include condition="Skin.String(Navigation.OnDown,Explore)">Action_View_Explore_OnDown</include>
-                        <!-- <ondown condition="$EXP[Exp_FilterWall_IsMedia] + Skin.String(Navigation.OnDown,Explore)">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideOut,focus_id=$VAR[Action_View_ContentID],clear_prop_one=MediaFilterBase,clear_prop_two=Null,wallaction=SetFocus(66))</ondown>
-                        <ondown condition="!$EXP[Exp_FilterWall_IsMedia] + Skin.String(Navigation.OnDown,Explore)">ClearProperty(MediaFilterBase)</ondown>
-                        <ondown condition="!$EXP[Exp_FilterWall_IsMedia] + Skin.String(Navigation.OnDown,Explore)">SetFocus(66)</ondown> -->
                     </control>
                 </control>
             </control>
@@ -249,10 +239,10 @@
                 <visible>!$EXP[Exp_InfoDialogs]</visible>
                 <include>Animation_Transition_InfoPanel_Hide</include>
                 <control type="group">
-                    <animation type="Conditional" reversible="false" condition="[$EXP[Exp_FilterWall_IsMedia] | $EXP[Exp_FilterWall_IsDiscover]]">
+                    <animation type="Conditional" reversible="false" condition="[$EXP[Exp_FilterWall_IsActive] | $EXP[Exp_DiscoverWall_IsActive]]">
                         <effect type="slide" end="0,-334" start="0" time="400" delay="0" tween="cubic" easing="out" />
                     </animation>
-                    <animation type="Conditional" reversible="false" condition="![$EXP[Exp_FilterWall_IsMedia] | $EXP[Exp_FilterWall_IsDiscover]]">
+                    <animation type="Conditional" reversible="false" condition="![$EXP[Exp_FilterWall_IsActive] | $EXP[Exp_DiscoverWall_IsActive]]">
                         <effect type="slide" start="0,-334" end="0" time="400" delay="0" tween="cubic" easing="out" />
                     </animation>
                     <include content="Info_Viewline">
@@ -267,22 +257,23 @@
     <include name="View_Row_Gutter">
         <control type="group">
             <visible>!$EXP[Exp_InfoDialogs]</visible>
+            <visible>$EXP[Exp_FurnitureFooter_IsVisible]</visible>
             <control type="group">
-                <visible>$EXP[Exp_FurnitureVisible]</visible>
+                <visible>$EXP[Exp_FurnitureFooter_Left_IsVisible]</visible>
                 <include content="Furniture_Bottom_Left">
                     <visible>![$EXP[Exp_View_502] | $EXP[Exp_View_512] | $EXP[Exp_View_522]]</visible>
                 </include>
                 <include content="Furniture_Bottom_Left">
                     <param name="container">Container(503).</param>
-                    <visible>$EXP[Exp_View_502] + Skin.HasSetting(Views.UseAltCombined)</visible>
+                    <visible>$EXP[Exp_View_502]</visible>
                 </include>
                 <include content="Furniture_Bottom_Left">
                     <param name="container">Container(513).</param>
-                    <visible>$EXP[Exp_View_512] + Skin.HasSetting(Views.UseAltCombined)</visible>
+                    <visible>$EXP[Exp_View_512]</visible>
                 </include>
                 <include content="Furniture_Bottom_Left">
                     <param name="container">Container(523).</param>
-                    <visible>$EXP[Exp_View_522] + Skin.HasSetting(Views.UseAltCombined)</visible>
+                    <visible>$EXP[Exp_View_522]</visible>
                 </include>
             </control>
             <include>Furniture_Bottom_Right</include>

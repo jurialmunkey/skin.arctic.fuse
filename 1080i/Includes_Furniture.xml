@@ -27,7 +27,7 @@
                 <nested />
                 <include content="Furniture_Gutters">
                     <control type="group">
-                        <animation effect="slide" start="0" end="0,-15" condition="[Window.IsVisible(MyPVRGuide.xml) | Window.IsVisible(MyPVRChannels.xml) | $PARAM[clock]] + !Skin.HasSetting(Furniture.EnableClock)">Conditional</animation>
+                        <animation effect="slide" start="0" end="0,-15" condition="!Skin.HasSetting(Furniture.EnableClock) + !$EXP[Exp_MediaFilter_IsActive] + [Window.IsVisible(MyPVRGuide.xml) | Window.IsVisible(MyPVRChannels.xml) | $PARAM[clock]]">Conditional</animation>
                         <include content="Furniture_MainLabel">
                             <param name="id">$PARAM[id]</param>
                             <param name="textcolor">$PARAM[textcolor]</param>
@@ -37,6 +37,7 @@
                         <include content="Furniture_DateLabel">
                             <param name="textcolor">$PARAM[textcolor_sublabel]</param>
                             <param name="shadowcolor">$PARAM[shadowcolor_sublabel]</param>
+
 							<!-- MISC013A: disable visibility -->
                             <!-- visible>!Skin.HasSetting(Furniture.EnableClock)</visible -->
 							
@@ -48,8 +49,7 @@
 							<!-- OR Full Screen EPG (for EPG listing start date) -->
 							<!-- OR PVR Channels -->
 							<visible>[[[$PARAM[clock] + !Skin.HasSetting(Furniture.CustomClock) + [Window.IsVisible(Home) + !Skin.HasSetting(hubs.widgetselector)] | Window.IsVisible(11181)]]] | [Window.IsVisible(MyPVRGuide.xml) + !Skin.HasSetting(Views.UseHalfPVRGuide)] | Window.IsVisible(MyPVRChannels.xml)</visible>
-                        	<!--visible>[$PARAM[clock] + [[Window.IsVisible(Home) + !Skin.HasSetting(hubs.widgetselector)]] | Window.IsVisible(11181)] | [Window.IsVisible(MyPVRGuide.xml) + !Skin.HasSetting(Views.UseHalfPVRGuide)]] | Window.IsVisible(MyPVRChannels.xml)</visible -->
-
+                        	<!--visible>!Skin.HasSetting(Furniture.EnableClock) + !$EXP[Exp_MediaFilter_IsActive] + [Window.IsVisible(MyPVRGuide.xml) | Window.IsVisible(MyPVRChannels.xml) | $PARAM[clock]]</visible -->
 						</include>
                     </control>
                 </include>
@@ -207,28 +207,10 @@
         <param name="enabled">true</param>
         <definition>
             <include content="Furniture_Bottombar_Group" condition="$PARAM[enabled]">
-                <include content="Furniture_Gutters">
-                    <include content="Info_Media" condition="!$EXP[Exp_Furniture_PVR] + [Skin.HasSetting(Furniture.DisableCount) | $EXP[Exp_InfoDialogs]]">
+                <include content="Furniture_Gutters" condition="!$EXP[Exp_Furniture_PVR]">
+                    <include content="Info_Media">
                         <param name="align">left</param>
                         <param name="container">$PARAM[container]</param>
-                    </include>
-                    <include content="Object_Control" condition="!$EXP[Exp_Furniture_PVR] + ![Skin.HasSetting(Furniture.DisableCount) | $EXP[Exp_InfoDialogs]]">
-                        <param name="control">grouplist</param>
-                        <hitrect x="0" y="0" w="0" h="0" />
-                        <orientation>horizontal</orientation>
-                        <itemgap>30</itemgap>
-                        <height>80</height>
-                        <centertop>50%</centertop>
-                        <usecontrolcoords>true</usecontrolcoords>
-                        <left>-80</left>
-                        <control type="group">
-                            <width>50</width>
-                        </control>
-                        <include content="Info_Codec_Label">
-                            <param name="icon">$VAR[Image_Scrollbar_NumItems]</param>
-                            <param name="icon">special://skin/extras/icons/grip.png</param>
-                            <param name="label">$VAR[Label_Scrollbar_NumItems]</param>
-                        </include>
                     </include>
                 </include>
                 <nested />

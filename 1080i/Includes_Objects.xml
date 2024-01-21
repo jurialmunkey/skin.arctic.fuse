@@ -576,6 +576,7 @@
             <nested />
             <font>font_mini_black</font>
             <textcolor>main_fg_90</textcolor>
+            <selectedcolor>main_fg_90</selectedcolor>
         </control>
     </include>
 	
@@ -597,6 +598,7 @@
             <nested />
             <font>font_tiny</font>
             <textcolor>main_fg_70</textcolor>
+            <selectedcolor>main_fg_70</selectedcolor>
         </control>
     </include>
 
@@ -635,11 +637,13 @@
                 <include content="Object_InfoCircle_Text_Top">
                     <left>80</left>
                     <textcolor>$PARAM[textcolor_top]</textcolor>
+                    <selectedcolor>$PARAM[textcolor_top]</selectedcolor>
                     <label>$PARAM[role]</label>
                 </include>
                 <include content="Object_InfoCircle_Text_Sub">
                     <left>80</left>
                     <textcolor>$PARAM[textcolor_sub]</textcolor>
+                    <selectedcolor>$PARAM[textcolor_sub]</selectedcolor>
                     <label>$PARAM[name]</label>
                 </include>
             </control>
@@ -740,28 +744,32 @@
         </definition>
     </include>
 
+    <include name="Object_Indicator_Visible_Playing">
+        <visible>[$PARAM[playing]]</visible>
+    </include>
+
     <include name="Object_Indicator_Visible_Episodes">
-        <visible>[$PARAM[episodes]]</visible>
+        <visible>![$PARAM[playing]] + [$PARAM[episodes]]</visible>
     </include>
 
     <include name="Object_Indicator_Visible_Timers">
-        <visible>![$PARAM[episodes]] + [$PARAM[timers]]</visible>
+        <visible>![$PARAM[playing]] + ![$PARAM[episodes]] + [$PARAM[timers]]</visible>
     </include>
 
     <include name="Object_Indicator_Visible_Progress">
-        <visible>![$PARAM[episodes]] + ![$PARAM[timers]] + [$PARAM[progress]]</visible>
+        <visible>![$PARAM[playing]] + ![$PARAM[episodes]] + ![$PARAM[timers]] + [$PARAM[progress]]</visible>
     </include>
 
     <include name="Object_Indicator_Visible_Watched">
-        <visible>![$PARAM[episodes]] + ![$PARAM[timers]] + ![$PARAM[progress]] + [$PARAM[watched]]</visible>
+        <visible>![$PARAM[playing]] + ![$PARAM[episodes]] + ![$PARAM[timers]] + ![$PARAM[progress]] + [$PARAM[watched]]</visible>
     </include>
 
     <include name="Object_Indicator_Visible_Library">
-        <visible>![$PARAM[episodes]] + ![$PARAM[timers]] + ![$PARAM[progress]] + ![$PARAM[watched]] + [$PARAM[library]]</visible>
+        <visible>![$PARAM[playing]] + ![$PARAM[episodes]] + ![$PARAM[timers]] + ![$PARAM[progress]] + ![$PARAM[watched]] + [$PARAM[library]]</visible>
     </include>
 
     <include name="Object_Indicator_Visible_Collection">
-        <visible>![$PARAM[episodes]] + ![$PARAM[timers]] + ![$PARAM[progress]] + ![$PARAM[watched]] + ![$PARAM[library]] + [$PARAM[collection]]</visible>
+        <visible>![$PARAM[playing]] + ![$PARAM[episodes]] + ![$PARAM[timers]] + ![$PARAM[progress]] + ![$PARAM[watched]] + ![$PARAM[library]] + [$PARAM[collection]]</visible>
     </include>
 
     <include name="Object_Indicator_Visible_Percentage">
@@ -769,14 +777,16 @@
     </include>
 
     <include name="Object_Indicator_Visible_All">
+
 	    <!-- MISC004: add [$PARAM[onlinevideo]] -->
-        <visible>[$PARAM[onlinevideo]] | [$PARAM[episodes]] | [$PARAM[timers]] | [$PARAM[progress]] | [$PARAM[watched]] | [$PARAM[library]] | [$PARAM[collection]]</visible>
+        <visible>[$PARAM[onlinevideo]] | [$PARAM[playing]] | [$PARAM[episodes]] | [$PARAM[timers]] | [$PARAM[progress]] | [$PARAM[watched]] | [$PARAM[library]] | [$PARAM[collection]]</visible>
     </include>
 
     <include name="Object_Indicator_Visible">
         <param name="include_type">All</param>
         <definition>
             <include content="Object_Indicator_Visible_$PARAM[include_type]">
+                <param name="playing">$PARAM[listitem].IsPlaying</param>
                 <param name="episodes">!Skin.HasSetting(Indicator.DisableEpisodes) + !Integer.IsEqual($PARAM[listitem].Property(UnWatchedEpisodes),0) + [String.IsEqual($PARAM[listitem].DBType,tvshow) | String.IsEqual($PARAM[listitem].DBType,season) | String.IsEqual($PARAM[listitem].DBType,episode)]</param>
                 <param name="timers">$PARAM[listitem].IsRecording | $PARAM[listitem].HasTimer</param>
                 <param name="progress">!Skin.HasSetting(Indicator.DisableProgress) + !$PARAM[listitem].IsCollection + [$PARAM[listitem].IsResumable | [!String.IsEmpty($PARAM[listitem].Property(WatchedProgress)) + !Integer.IsEqual($PARAM[listitem].Property(WatchedProgress),0) + !Integer.IsEqual($PARAM[listitem].Property(WatchedProgress),100)]]</param>
@@ -950,6 +960,23 @@
                     <texture>indicator/movieset.png</texture>
                     <include content="Object_Indicator_Visible">
                         <param name="include_type">Collection</param>
+                        <param name="listitem">$PARAM[listitem]</param>
+                    </include>
+                </include>
+
+                <!-- Playing -->
+                <include content="Object_Control" condition="True">
+                    <param name="control">group</param>
+                    <control type="image">
+                        <texture colordiffuse="$VAR[ColorWatchedProgress]" diffuse="indicator/circle-diffuse.png" background="true">progress/circle/p100.png</texture>
+                        <aspectratio align="center" aligny="center">keep</aspectratio>
+                    </control>
+                    <control type="image">
+                        <bordersize>20</bordersize>
+                        <texture>indicator/play.png</texture>
+                    </control>
+                    <include content="Object_Indicator_Visible">
+                        <param name="include_type">Playing</param>
                         <param name="listitem">$PARAM[listitem]</param>
                     </include>
                 </include>
