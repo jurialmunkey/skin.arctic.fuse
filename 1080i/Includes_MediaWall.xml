@@ -197,7 +197,7 @@
         <param name="icon_base_var">Image_Poster</param>
         <param name="interchange_condition">[String.IsEmpty(Window.Property(MediaFilterSwap)) + !Window.IsVisible(DialogBusy.xml)]</param>
         <param name="interchange_animation_include">MediaWall_Interchange</param>
-        <param name="visible">$EXP[Exp_FilterWall_IsMedia]</param>
+        <param name="visible">$EXP[Exp_FilterWall_IsActive]</param>
         <param name="visible_animation_include">MediaWall_Visible</param>
         <param name="prefix">mf_wp</param>
         <param name="id">50</param>
@@ -472,7 +472,7 @@
             <param name="item_w">view_poster_item_w</param>
             <param name="item_h">view_poster_item_h</param>
             <param name="prefix">mf_wp</param>
-            <param name="visible">[$EXP[Exp_FilterWall_IsMedia] + Control.IsVisible(502)]</param>
+            <param name="visible">[$EXP[Exp_FilterWall_IsActive] + Control.IsVisible(502)]</param>
         </include>
         <include content="MediaWall">
             <param name="id">513</param>
@@ -481,7 +481,7 @@
             <param name="item_w">view_landscape_item_w</param>
             <param name="item_h">view_landscape_item_h</param>
             <param name="prefix">mf_wl</param>
-            <param name="visible">[$EXP[Exp_FilterWall_IsMedia] + Control.IsVisible(512)]</param>
+            <param name="visible">[$EXP[Exp_FilterWall_IsActive] + Control.IsVisible(512)]</param>
             <param name="enable_7">false</param>
             <param name="enable_8">false</param>
             <param name="enable_9">false</param>
@@ -493,7 +493,7 @@
             <param name="item_w">view_poster_item_w</param>
             <param name="item_h">view_poster_item_h</param>
             <param name="prefix">mf_wp</param>
-            <param name="visible">[$EXP[Exp_FilterWall_IsMedia] + Control.IsVisible(522)]</param>
+            <param name="visible">[$EXP[Exp_FilterWall_IsActive] + Control.IsVisible(522)]</param>
         </include>
     </include>
 
@@ -598,7 +598,6 @@
                     <param name="interchange_condition">$PARAM[interchange_condition]</param>
                     <param name="visible">$PARAM[visible]</param>
                     <param name="visible_animation_include">$PARAM[visible_animation_include]</param>
-                    <param name="selected">[Control.HasFocus(67) | Control.HasFocus($PARAM[id])] + String.IsEmpty(Window.Property(View.WallSwitchRow))</param>
                     <param name="id">$PARAM[id]</param>
                     <param name="row">1</param>
                     <param name="p_0">0</param>
@@ -633,7 +632,6 @@
                     <param name="interchange_condition">$PARAM[interchange_condition]</param>
                     <param name="visible">$PARAM[visible]</param>
                     <param name="visible_animation_include">$PARAM[visible_animation_include]</param>
-                    <param name="selected">[Control.HasFocus(67) | Control.HasFocus($PARAM[id])] + !String.IsEmpty(Window.Property(View.WallSwitchRow))</param>
                     <param name="id">$PARAM[id]</param>
                     <param name="row">2</param>
                     <param name="p_0">1</param>
@@ -670,7 +668,6 @@
                     <param name="interchange_condition">$PARAM[interchange_condition]</param>
                     <param name="visible">$PARAM[visible]</param>
                     <param name="visible_animation_include">$PARAM[visible_animation_include]</param>
-                    <param name="selected">[Control.HasFocus(67) | Control.HasFocus($PARAM[id])] + String.IsEmpty(Window.Property(View.WallSwitchRow))</param>
                     <param name="id">$PARAM[id]</param>
                     <param name="mod">-</param>
                     <param name="row">1</param>
@@ -705,7 +702,6 @@
                     <param name="interchange_condition">$PARAM[interchange_condition]</param>
                     <param name="visible">$PARAM[visible]</param>
                     <param name="visible_animation_include">$PARAM[visible_animation_include]</param>
-                    <param name="selected">[Control.HasFocus(67) | Control.HasFocus($PARAM[id])] + !String.IsEmpty(Window.Property(View.WallSwitchRow))</param>
                     <param name="id">$PARAM[id]</param>
                     <param name="mod">-</param>
                     <param name="row">2</param>
@@ -738,7 +734,7 @@
     <include name="MediaWall_Discover">
         <include content="MediaWall" condition="Skin.HasSetting(Navigation.MediaFilterWall)">
             <param name="id">553</param>
-            <param name="visible">$EXP[Exp_FilterWall_IsDiscover]</param>
+            <param name="visible">$EXP[Exp_DiscoverWall_IsActive]</param>
             <param name="interchange_condition">[!Container(553).IsUpdating]</param>
         </include>
         <include content="List_Poster_Row">
@@ -781,7 +777,7 @@
     </include>
 
     <include name="MediaWall_View_Transition">
-        <param name="condition">[$EXP[Exp_FilterWall_IsMedia] | $EXP[Exp_FilterWall_IsDiscover]]</param>
+        <param name="condition">[$EXP[Exp_FilterWall_IsActive] | $EXP[Exp_DiscoverWall_IsActive]]</param>
         <param name="delay">mf_faded_h_r</param>
         <definition>
             <animation effect="fade" start="0" end="100" delay="$PARAM[delay]" time="1" reversible="false" condition="!$PARAM[condition]">Conditional</animation>
@@ -790,8 +786,8 @@
     </include>
 
     <include name="MediaWall_Info_Transition">
-        <animation effect="fade" start="0" end="100" delay="200" time="400" reversible="false" condition="![$EXP[Exp_FilterWall_IsMedia] | $EXP[Exp_FilterWall_IsDiscover]]">Conditional</animation>
-        <animation effect="fade" start="100" end="0" delay="0" time="200" reversible="false" condition="[$EXP[Exp_FilterWall_IsMedia] | $EXP[Exp_FilterWall_IsDiscover]]">Conditional</animation>
+        <animation effect="fade" start="0" end="100" delay="200" time="400" reversible="false" condition="![$EXP[Exp_FilterWall_IsActive] | $EXP[Exp_DiscoverWall_IsActive]]">Conditional</animation>
+        <animation effect="fade" start="100" end="0" delay="0" time="200" reversible="false" condition="[$EXP[Exp_FilterWall_IsActive] | $EXP[Exp_DiscoverWall_IsActive]]">Conditional</animation>
     </include>
 
 </includes>
