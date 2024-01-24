@@ -47,8 +47,11 @@
         <param name="mainlogo_texture">$VAR[Image_CropLogo]</param>
         <definition>
             <control type="group">
-                <height>120</height>
                 <width>$PARAM[width]</width>
+                <include content="Object_Height" condition="!Skin.HasSetting(TMDbHelper.EnableCrop)">
+                    <param name="height">80</param>
+                </include>
+                <height>120</height>
                 <nested />
                 <control type="group">
                     <right>80</right>
@@ -1780,6 +1783,75 @@
         </include>
     </include>
 
+    <include name="Info_Panel_Textbox">
+        <param name="colordiffuse">main_fg</param>
+        <param name="details">true</param>
+        <param name="details_include">Items_Null</param>
+        <param name="check_ratings">true</param>
+        <param name="visible_ratings">false</param>
+        <definition>
+            <control type="group">
+                <top>17</top>
+                <height>$PARAM[plotheight]</height>
+                <visible>$PARAM[details]</visible>
+                <include>$PARAM[details_include]</include>
+                <control type="textbox">
+                    <width>$PARAM[plotwidth]</width>
+                    <label>$PARAM[plotlabel]</label>
+                    <aligny>top</aligny>
+                    <textcolor>$PARAM[colordiffuse]_70</textcolor>
+                    <font>font_main_plot</font>
+
+                    <include content="Object_Top" condition="Skin.HasSetting(Info.DisableDetailsLine) + Skin.HasSetting(TMDbHelper.EnableCrop)">
+                        <param name="top">-40</param>
+                    </include>
+                    <include content="Object_Top" condition="Skin.HasSetting(Info.DisableDetailsLine) + !Skin.HasSetting(TMDbHelper.EnableCrop)">
+                        <param name="top">-60</param>
+                    </include>
+
+                    <include content="Object_Bottom" condition="Skin.HasSetting(Info.DisableDetailsLine) + !Skin.HasSetting(TMDbHelper.EnableCrop)">
+                        <param name="bottom">-20</param>
+                    </include>
+                    <include content="Object_Bottom" condition="!Skin.HasSetting(Info.DisableDetailsLine) + !Skin.HasSetting(TMDbHelper.EnableCrop)">
+                        <param name="bottom">-40</param>
+                    </include>
+
+                    <include content="Info_Panel_Rating_Visible" condition="$PARAM[check_ratings]">
+                        <param name="container">$PARAM[container]</param>
+                    </include>
+                    <visible>$PARAM[check_ratings] | $PARAM[visible_ratings]</visible>
+                </control>
+                <control type="textbox">
+                    <width>$PARAM[plotwidth]</width>
+                    <label>$PARAM[plotlabel]</label>
+                    <aligny>top</aligny>
+                    <textcolor>$PARAM[colordiffuse]_70</textcolor>
+                    <font>font_main_plot</font>
+                    <include content="Object_Top" condition="Skin.HasSetting(Info.DisableDetailsLine) + Skin.HasSetting(TMDbHelper.EnableCrop)">
+                        <param name="top">-40</param>
+                    </include>
+                    <include content="Object_Top" condition="Skin.HasSetting(Info.DisableDetailsLine) + !Skin.HasSetting(TMDbHelper.EnableCrop)">
+                        <param name="top">-60</param>
+                    </include>
+
+                    <include content="Object_Bottom" condition="Skin.HasSetting(Info.DisableDetailsLine) + !Skin.HasSetting(TMDbHelper.EnableCrop)">
+                        <param name="bottom">-60</param>
+                    </include>
+                    <include content="Object_Bottom" condition="!Skin.HasSetting(Info.DisableDetailsLine) + !Skin.HasSetting(TMDbHelper.EnableCrop)">
+                        <param name="bottom">-80</param>
+                    </include>
+                    <bottom>-40</bottom>
+                    <include content="Info_Panel_Rating_Visible" condition="$PARAM[check_ratings]">
+                        <param name="mod">!</param>
+                        <param name="container">$PARAM[container]</param>
+                    </include>
+                    <visible>$PARAM[check_ratings] | ![$PARAM[visible_ratings]]</visible>
+                </control>
+                <nested />
+            </control>
+        </definition>
+    </include>
+
     <include name="Info_Panel">
         <param name="container" />
         <param name="plotheight">info_plot_h</param>
@@ -1788,7 +1860,6 @@
         <param name="details">true</param>
         <param name="ratings">!Skin.HasSetting(Info.DisableAllRatings)</param>
         <param name="title">true</param>
-        <param name="infoline">true</param>
         <param name="plotlabel">$VAR[Label_Plot_Container]</param>
         <param name="titlelabel">$VAR[Label_Title_Container]</param>
         <param name="details_include">Items_Null</param>
@@ -1813,12 +1884,8 @@
                         <param name="width">$PARAM[plotwidth]</param>
                     </include>
                     <control type="group">
-                        <include content="Object_Top" condition="!Skin.HasSetting(TMDbHelper.EnableCrop)">
-                            <param name="top">-40</param>
-                        </include>
                         <height>40</height>
-                        <visible>$PARAM[infoline]</visible>
-                        <include content="Info_Line">
+                        <include content="Info_Line" condition="!Skin.HasSetting(Info.DisableDetailsLine)">
                             <param name="colordiffuse">$PARAM[colordiffuse]</param>
                             <param name="container">$PARAM[container]</param>
                             <param name="starrating">$PARAM[starrating]</param>
@@ -1828,40 +1895,14 @@
                     </control>
 
                     <!-- Textbox -->
-                    <control type="group">
-                        <top>17</top>
-                        <height>$PARAM[plotheight]</height>
-                        <visible>$PARAM[details]</visible>
-                        <include>$PARAM[details_include]</include>
-                        <control type="textbox">
-                            <width>$PARAM[plotwidth]</width>
-                            <label>$PARAM[plotlabel]</label>
-                            <aligny>top</aligny>
-                            <textcolor>$PARAM[colordiffuse]_70</textcolor>
-                            <font>font_main_plot</font>
-                            <include content="Object_Bottom" condition="!Skin.HasSetting(TMDbHelper.EnableCrop)">
-                                <param name="bottom">-40</param>
-                            </include>
-                            <include content="Info_Panel_Rating_Visible">
-                                <param name="container">$PARAM[container]</param>
-                            </include>
-                        </control>
-                        <control type="textbox">
-                            <width>$PARAM[plotwidth]</width>
-                            <label>$PARAM[plotlabel]</label>
-                            <aligny>top</aligny>
-                            <textcolor>$PARAM[colordiffuse]_70</textcolor>
-                            <font>font_main_plot</font>
-                            <include content="Object_Bottom" condition="!Skin.HasSetting(TMDbHelper.EnableCrop)">
-                                <param name="bottom">-80</param>
-                            </include>
-                            <bottom>-40</bottom>
-                            <include content="Info_Panel_Rating_Visible">
-                                <param name="mod">!</param>
-                                <param name="container">$PARAM[container]</param>
-                            </include>
-                        </control>
-                    </control>
+                    <include content="Info_Panel_Textbox">
+                        <param name="plotlabel">$PARAM[plotlabel]</param>
+                        <param name="plotwidth">$PARAM[plotwidth]</param>
+                        <param name="plotheight">$PARAM[plotheight]</param>
+                        <param name="details">$PARAM[details]</param>
+                        <param name="details_include">$PARAM[details_include]</param>
+                        <param name="container">$PARAM[container]</param>
+                    </include>
 
                     <include content="Info_Ratings" condition="$PARAM[ratings]">
                         <param name="$PARAM[container]">$PARAM[container]</param>
