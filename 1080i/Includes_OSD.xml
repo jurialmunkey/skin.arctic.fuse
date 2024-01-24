@@ -593,19 +593,91 @@
         </control>
     </include>
 
-    <include name="OSD_Progress_Details_Animation_WithCropLogo">
-        <animation effect="slide" start="0" end="0,-120" time="300" tween="sine" easing="out" reversible="false" condition="$EXP[Exp_OSD_FullScreenInfo]">Conditional</animation>
-        <animation effect="slide" end="0" start="0,-120" time="400" tween="sine" easing="inout" reversible="false" condition="!$EXP[Exp_OSD_FullScreenInfo]">Conditional</animation>
+    <include name="OSD_Progress_Details_Animation">
+        <animation effect="slide" start="0" end="0,$PARAM[posy]" time="300" tween="sine" easing="out" reversible="false" condition="$EXP[Exp_OSD_FullScreenInfo]">Conditional</animation>
+        <animation effect="slide" end="0" start="0,$PARAM[posy]" time="400" tween="sine" easing="inout" reversible="false" condition="!$EXP[Exp_OSD_FullScreenInfo]">Conditional</animation>
     </include>
 
-    <include name="OSD_Progress_Details_Animation_WithTextLogo">
-        <animation effect="slide" start="0" end="0,-160" time="300" tween="sine" easing="out" reversible="false" condition="$EXP[Exp_OSD_FullScreenInfo]">Conditional</animation>
-        <animation effect="slide" end="0" start="0,-160" time="400" tween="sine" easing="inout" reversible="false" condition="!$EXP[Exp_OSD_FullScreenInfo]">Conditional</animation>
+    <include name="OSD_Info_Line">
+        <control type="grouplist">
+            <centertop>45%</centertop>
+            <hitrect x="0" y="0" w="0" h="0" />
+            <height>80</height>
+            <orientation>horizontal</orientation>
+            <itemgap>10</itemgap>
+            <control type="image">
+                <aspectratio align="left">keep</aspectratio>
+                <texture colordiffuse="panel_fg_90">$VAR[Image_OSD_VideoQuality]</texture>
+                <centertop>52%</centertop>
+                <width>37</width>
+                <height>24</height>
+            </control>
+            <control type="grouplist">
+                <hitrect x="0" y="0" w="0" h="0" />
+                <orientation>horizontal</orientation>
+                <height>80</height>
+                <itemgap>10</itemgap>
+
+                <!-- PVR Channel Name -->
+                <include content="Info_Line_Item">
+                    <param name="label">$INFO[VideoPlayer.ChannelName]</param>
+                    <param name="visible">!String.IsEmpty(VideoPlayer.ChannelName)</param>
+                    <param name="textcolor">panel_fg_90</param>
+                </include>
+
+                <!-- Season / Episode -->
+                <include content="Info_Line_Item">
+                    <param name="label">$INFO[VideoPlayer.Season,,x]$INFO[VideoPlayer.Episode,0,]</param>
+                    <param name="visible">VideoPlayer.Content(episodes) + !String.IsEmpty(VideoPlayer.Episode) + Integer.IsLess(VideoPlayer.Episode,10)</param>
+                    <param name="textcolor">panel_fg_90</param>
+                </include>
+                <include content="Info_Line_Item">
+                    <param name="label">$INFO[VideoPlayer.Season,,x]$INFO[VideoPlayer.Episode,,]</param>
+                    <param name="visible">VideoPlayer.Content(episodes) + !String.IsEmpty(VideoPlayer.Episode) + !Integer.IsLess(VideoPlayer.Episode,10)</param>
+                    <param name="textcolor">panel_fg_90</param>
+                </include>
+
+                <!-- Year / Premiered -->
+                <include content="Info_Line_Item">
+                    <param name="label">$INFO[VideoPlayer.Year]</param>
+                    <param name="visible">!String.IsEmpty(VideoPlayer.Year) + [String.IsEmpty(VideoPlayer.Premiered) | VideoPlayer.Content(movies)]</param>
+                    <param name="textcolor">panel_fg_90</param>
+                </include>
+                <include content="Info_Line_Item">
+                    <param name="label">$INFO[VideoPlayer.Premiered]</param>
+                    <param name="visible">!String.IsEmpty(VideoPlayer.Premiered) + !VideoPlayer.Content(movies)</param>
+                    <param name="textcolor">panel_fg_90</param>
+                </include>
+
+                <!-- MPAA -->
+                <include content="Info_Line_Item">
+                    <param name="label">$INFO[VideoPlayer.MPAA]</param>
+                    <param name="visible">!String.IsEmpty(VideoPlayer.MPAA)</param>
+                    <param name="textcolor">panel_fg_90</param>
+                </include>
+
+                <!-- Genres -->
+                <include content="Info_Line_Item">
+                    <param name="label">$INFO[Window(Home).Property(TMDbHelper.Player.Genre.1.Name)]</param>
+                    <param name="visible">String.IsEmpty(VideoPlayer.Property(Genre.1.Name)) + !String.IsEmpty(Window(Home).Property(TMDbHelper.Player.Genre.1.Name))</param>
+                    <param name="textcolor">panel_fg_90</param>
+                </include>
+
+                <!-- Ends -->
+                <include content="Info_Line_Item">
+                    <param name="label">$INFO[Player.FinishTime,$LOCALIZE[31184] ,]</param>
+                    <param name="visible">!String.IsEmpty(Player.FinishTime)</param>
+                    <param name="textcolor">panel_fg_90</param>
+                </include>
+
+            </control>
+        </control>
     </include>
 
     <include name="OSD_Progress_Details">
         <control type="grouplist">
-            <visible>Skin.HasSetting(OSD.DetailsOnSeek) | Window.IsActive(videoosd) | Window.IsActive(musicosd) | Window.IsActive(script-cu-lrclyrics-main.xml) | Window.IsActive(DialogFullScreenInfo.xml) | $EXP[Exp_OSD_ExpandInfo]</visible>
+            <visible>Skin.HasSetting(OSD.DetailsOnSeek) | Window.IsActive(videoosd) | Window.IsActive(musicosd) | Window.IsActive(script-cu-lrclyrics-main.xml) | Window.IsActive(DialogFullScreenInfo.xml) | $EXP[Exp_OSD_ExpandInfo] | Skin.HasSetting(OSD.DisplayTitleDetailsOnSeek)</visible>
+
             <animation effect="fade" start="0" end="100" time="300" delay="200" condition="Window.IsVisible(DialogSeekBar.xml)">Visible</animation>
             <animation effect="fade" start="0" end="100" time="300" delay="0" condition="!Window.IsVisible(DialogSeekBar.xml)">Visible</animation>
             <animation effect="fade" end="0" start="100" time="300">Hidden</animation>
@@ -615,14 +687,30 @@
             <left>view_side</left>
             <width>info_panel_w</width>
             <height>320</height>
-            <include content="Object_Bottom" condition="!Skin.HasSetting(TMDbHelper.EnableCrop)">
+            <include content="Object_Bottom" condition="!Skin.HasSetting(TMDbHelper.EnableCrop) + Skin.HasSetting(Info.DisableDetailsLine)">
+                <param name="bottom">0</param>
+            </include>
+            <include content="Object_Bottom" condition="!Skin.HasSetting(TMDbHelper.EnableCrop) + !Skin.HasSetting(Info.DisableDetailsLine)">
+                <param name="bottom">40</param>
+            </include>
+            <include content="Object_Bottom" condition="Skin.HasSetting(TMDbHelper.EnableCrop) + Skin.HasSetting(Info.DisableDetailsLine)">
                 <param name="bottom">40</param>
             </include>
             <bottom>80</bottom>
             <orientation>vertical</orientation>
 
-            <include condition="Skin.HasSetting(TMDbHelper.EnableCrop)">OSD_Progress_Details_Animation_WithCropLogo</include>
-            <include condition="!Skin.HasSetting(TMDbHelper.EnableCrop)">OSD_Progress_Details_Animation_WithTextLogo</include>
+            <include content="OSD_Progress_Details_Animation" condition="!Skin.HasSetting(TMDbHelper.EnableCrop) + Skin.HasSetting(Info.DisableDetailsLine)">
+                <param name="posy">-200</param>
+            </include>
+            <include content="OSD_Progress_Details_Animation" condition="!Skin.HasSetting(TMDbHelper.EnableCrop) + !Skin.HasSetting(Info.DisableDetailsLine)">
+                <param name="posy">-160</param>
+            </include>
+            <include content="OSD_Progress_Details_Animation" condition="Skin.HasSetting(TMDbHelper.EnableCrop) + Skin.HasSetting(Info.DisableDetailsLine)">
+                <param name="posy">-160</param>
+            </include>
+            <include content="OSD_Progress_Details_Animation" condition="Skin.HasSetting(TMDbHelper.EnableCrop) + !Skin.HasSetting(Info.DisableDetailsLine)">
+                <param name="posy">-120</param>
+            </include>
 
             <include content="Info_Title">
                 <param name="colordiffuse">panel_fg</param>
@@ -632,113 +720,20 @@
             </include>
 
             <control type="group">
-                <include content="Object_Top" condition="!Skin.HasSetting(TMDbHelper.EnableCrop)">
-                    <param name="top">-40</param>
-                </include>
                 <height>40</height>
-                <control type="grouplist">
-                    <centertop>45%</centertop>
-                    <hitrect x="0" y="0" w="0" h="0" />
-                    <height>80</height>
-                    <orientation>horizontal</orientation>
-                    <itemgap>10</itemgap>
-                    <control type="image">
-                        <aspectratio align="left">keep</aspectratio>
-                        <texture colordiffuse="panel_fg_90">$VAR[Image_OSD_VideoQuality]</texture>
-                        <centertop>52%</centertop>
-                        <width>37</width>
-                        <height>24</height>
-                    </control>
-                    <control type="grouplist">
-                        <hitrect x="0" y="0" w="0" h="0" />
-                        <orientation>horizontal</orientation>
-                        <height>80</height>
-                        <itemgap>10</itemgap>
-
-                        <!-- PVR Channel Name -->
-                        <include content="Info_Line_Item">
-                            <param name="label">$INFO[VideoPlayer.ChannelName]</param>
-                            <param name="visible">!String.IsEmpty(VideoPlayer.ChannelName)</param>
-                            <param name="textcolor">panel_fg_90</param>
-                        </include>
-
-                        <!-- Season / Episode -->
-                        <include content="Info_Line_Item">
-                            <param name="label">$INFO[VideoPlayer.Season,,x]$INFO[VideoPlayer.Episode,0,]</param>
-                            <param name="visible">VideoPlayer.Content(episodes) + !String.IsEmpty(VideoPlayer.Episode) + Integer.IsLess(VideoPlayer.Episode,10)</param>
-                            <param name="textcolor">panel_fg_90</param>
-                        </include>
-                        <include content="Info_Line_Item">
-                            <param name="label">$INFO[VideoPlayer.Season,,x]$INFO[VideoPlayer.Episode,,]</param>
-                            <param name="visible">VideoPlayer.Content(episodes) + !String.IsEmpty(VideoPlayer.Episode) + !Integer.IsLess(VideoPlayer.Episode,10)</param>
-                            <param name="textcolor">panel_fg_90</param>
-                        </include>
-
-                        <!-- Year / Premiered -->
-                        <include content="Info_Line_Item">
-                            <param name="label">$INFO[VideoPlayer.Year]</param>
-                            <param name="visible">!String.IsEmpty(VideoPlayer.Year) + [String.IsEmpty(VideoPlayer.Premiered) | VideoPlayer.Content(movies)]</param>
-                            <param name="textcolor">panel_fg_90</param>
-                        </include>
-                        <include content="Info_Line_Item">
-                            <param name="label">$INFO[VideoPlayer.Premiered]</param>
-                            <param name="visible">!String.IsEmpty(VideoPlayer.Premiered) + !VideoPlayer.Content(movies)</param>
-                            <param name="textcolor">panel_fg_90</param>
-                        </include>
-
-                        <!-- MPAA -->
-                        <include content="Info_Line_Item">
-                            <param name="label">$INFO[VideoPlayer.MPAA]</param>
-                            <param name="visible">!String.IsEmpty(VideoPlayer.MPAA)</param>
-                            <param name="textcolor">panel_fg_90</param>
-                        </include>
-
-                        <!-- Genres -->
-                        <include content="Info_Line_Item">
-                            <param name="label">$INFO[Window(Home).Property(TMDbHelper.Player.Genre.1.Name)]</param>
-                            <param name="visible">String.IsEmpty(VideoPlayer.Property(Genre.1.Name)) + !String.IsEmpty(Window(Home).Property(TMDbHelper.Player.Genre.1.Name))</param>
-                            <param name="textcolor">panel_fg_90</param>
-                        </include>
-
-                        <!-- Ends -->
-                        <include content="Info_Line_Item">
-                            <param name="label">$INFO[Player.FinishTime,$LOCALIZE[31184] ,]</param>
-                            <param name="visible">!String.IsEmpty(Player.FinishTime)</param>
-                            <param name="textcolor">panel_fg_90</param>
-                        </include>
-
-                    </control>
-                </control>
+                <include condition="!Skin.HasSetting(Info.DisableDetailsLine)">OSD_Info_Line</include>
             </control>
-            <control type="group">
-                <top>17</top>
-                <width>info_plot_w</width>
-                <height>info_plot_h</height>
-                <control type="textbox">
-                    <label>$VAR[Label_Player_Plot]</label>
-                    <aligny>top</aligny>
-                    <textcolor>panel_fg_70</textcolor>
-                    <font>font_main_plot</font>
-                    <visible>!VideoPlayer.Content(livetv)</visible>
-                    <include content="Object_Bottom" condition="!Skin.HasSetting(TMDbHelper.EnableCrop)">
-                        <param name="bottom">-40</param>
-                    </include>
-                </control>
-                <control type="textbox">
-                    <label>$VAR[Label_Player_Plot]</label>
-                    <aligny>top</aligny>
-                    <textcolor>panel_fg_70</textcolor>
-                    <font>font_main_plot</font>
-                    <visible>VideoPlayer.Content(livetv)</visible>
-                    <include content="Object_Bottom" condition="!Skin.HasSetting(TMDbHelper.EnableCrop)">
-                        <param name="bottom">-80</param>
-                    </include>
-                    <bottom>-40</bottom>
-                </control>
+            <include content="Info_Panel_Textbox">
+                <param name="plotlabel">$VAR[Label_Player_Plot]</param>
+                <param name="plotwidth">info_plot_w</param>
+                <param name="plotheight">info_plot_h</param>
+                <param name="check_ratings">false</param>
+                <param name="visible_ratings">!VideoPlayer.Content(livetv)</param>
+                <param name="colordiffuse">panel_fg</param>
                 <visible>$EXP[Exp_OSD_FullScreenInfo]</visible>
                 <animation effect="fade" start="0" end="100" time="200" delay="150">Visible</animation>
                 <animation effect="fade" start="100" end="0" time="150" delay="0">Hidden</animation>
-            </control>
+            </include>
             <include content="Info_Ratings">
                 <param name="is_player">true</param>
                 <include content="Object_Top" condition="!Skin.HasSetting(TMDbHelper.EnableCrop)">
