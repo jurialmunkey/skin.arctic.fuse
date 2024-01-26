@@ -75,7 +75,8 @@
     </include>
 
     <include name="Info_Line_Divider">
-        <control type="button">
+        <include content="Object_Control" condition="!Skin.HasSetting(Info.EnablePillboxStyle)">
+            <param name="control">button</param>
             <include>Texture_Circle_Highlight_V</include>
             <include>Texture_Circle_Highlight_Focus_V</include>
             <include>Texture_Circle_Highlight_NoFocus_V</include>
@@ -84,20 +85,42 @@
             <height>8</height>
             <centertop>52%</centertop>
             <nested />
+        </include>
+    </include>
+
+    <include name="Info_Line_Pillbox">
+        <control type="button">
+            <texturefocus colordiffuse="$PARAM[textcolor]" border="4">flags/quality/blank.png</texturefocus>
+            <texturenofocus colordiffuse="$PARAM[textcolor]" border="4">flags/quality/blank.png</texturenofocus>
+            <font>font_infotag_bold</font>
+            <textcolor>ff2a2a2a</textcolor>
+            <shadowcolor>20ffffff</shadowcolor>
+            <centertop>52%</centertop>
+            <height>24</height>
+            <textoffsety>-2</textoffsety>
+            <aligny>top</aligny>
+            <nested />
+            <width>auto</width>
+            <textoffsetx>8</textoffsetx>
         </control>
     </include>
 
     <include name="Info_Line_Label">
         <param name="font">font_main_black</param>
         <definition>
-            <control type="label">
+            <include content="Object_Control" condition="!Skin.HasSetting(Info.EnablePillboxStyle)">
+                <param name="control">label</param>
                 <nested />
                 <width>auto</width>
                 <aligny>center</aligny>
                 <textcolor>$PARAM[textcolor]</textcolor>
                 <font>font_main_black</font>
                 <textoffsetx>0</textoffsetx>
-            </control>
+            </include>
+            <include content="Info_Line_Pillbox" condition="Skin.HasSetting(Info.EnablePillboxStyle)">
+                <param name="textcolor">$PARAM[textcolor]</param>
+                <nested />
+            </include>
         </definition>
     </include>
 
@@ -898,24 +921,151 @@
         </definition>
     </include>
 
+    <include name="Info_Line_VideoQuality_Items">
+        <param name="is_set">false</param>
+        <param name="is_4k">false</param>
+        <param name="is_fhd">false</param>
+        <param name="is_hd">false</param>
+        <param name="is_sd">false</param>
+        <definition>
+            <control type="group">
+                <centertop>52%</centertop>
+                <height>24</height>
+                <width>56</width>
+                <control type="image">
+                    <texture colordiffuse="$PARAM[textcolor]" border="4">flags/quality/blank.png</texture>
+                </control>
+                <control type="group">
+                    <width>37</width>
+                    <height>24</height>
+                    <centerleft>50%</centerleft>
+                    <visible>$PARAM[is_set]</visible>
+                    <control type="image">
+                        <top>1</top>
+                        <bottom>-1</bottom>
+                        <left>1</left>
+                        <right>-1</right>
+                        <texture colordiffuse="20ffffff">flags/sets-inverted.png</texture>
+                    </control>
+                    <control type="image">
+                        <texture colordiffuse="ff181818">flags/sets-inverted.png</texture>
+                    </control>
+                </control>
+                <control type="label">
+                    <align>center</align>
+                    <top>-2</top>
+                    <aligny>top</aligny>
+                    <font>font_infotag_bold</font>
+                    <textcolor>ff2a2a2a</textcolor>
+                    <shadowcolor>20ffffff</shadowcolor>
+                    <label>4K</label>
+                    <visible>!$PARAM[is_set]</visible>
+                    <visible>$PARAM[is_4k]</visible>
+                </control>
+                <control type="label">
+                    <align>center</align>
+                    <top>-2</top>
+                    <aligny>top</aligny>
+                    <font>font_infotag_bold</font>
+                    <textcolor>ff2a2a2a</textcolor>
+                    <shadowcolor>20ffffff</shadowcolor>
+                    <label>FHD</label>
+                    <visible>!$PARAM[is_set]</visible>
+                    <visible>!$PARAM[is_4k]</visible>
+                    <visible>$PARAM[is_fhd]</visible>
+                </control>
+                <control type="label">
+                    <align>center</align>
+                    <top>-2</top>
+                    <aligny>top</aligny>
+                    <font>font_infotag_bold</font>
+                    <textcolor>ff2a2a2a</textcolor>
+                    <shadowcolor>20ffffff</shadowcolor>
+                    <label>HD</label>
+                    <visible>!$PARAM[is_set]</visible>
+                    <visible>!$PARAM[is_4k]</visible>
+                    <visible>!$PARAM[is_fhd]</visible>
+                    <visible>$PARAM[is_hd]</visible>
+                </control>
+                <control type="label">
+                    <align>center</align>
+                    <top>-2</top>
+                    <aligny>top</aligny>
+                    <font>font_infotag_bold</font>
+                    <textcolor>ff2a2a2a</textcolor>
+                    <shadowcolor>20ffffff</shadowcolor>
+                    <label>SD</label>
+                    <visible>!$PARAM[is_set]</visible>
+                    <visible>!$PARAM[is_4k]</visible>
+                    <visible>!$PARAM[is_fhd]</visible>
+                    <visible>!$PARAM[is_hd]</visible>
+                    <visible>$PARAM[is_sd]</visible>
+                </control>
+                <control type="label">
+                    <align>center</align>
+                    <top>-2</top>
+                    <aligny>top</aligny>
+                    <font>font_infotag_bold</font>
+                    <textcolor>ff2a2a2a</textcolor>
+                    <shadowcolor>20ffffff</shadowcolor>
+                    <label>WEB</label>
+                    <visible>!$PARAM[is_set]</visible>
+                    <visible>!$PARAM[is_4k]</visible>
+                    <visible>!$PARAM[is_fhd]</visible>
+                    <visible>!$PARAM[is_hd]</visible>
+                    <visible>!$PARAM[is_sd]</visible>
+                    <visible>$PARAM[is_web]</visible>
+                </control>
+                <control type="label">
+                    <align>center</align>
+                    <top>-2</top>
+                    <aligny>top</aligny>
+                    <font>font_infotag_bold</font>
+                    <textcolor>ff2a2a2a</textcolor>
+                    <shadowcolor>20ffffff</shadowcolor>
+                    <label>INFO</label>
+                    <visible>!$PARAM[is_set]</visible>
+                    <visible>!$PARAM[is_4k]</visible>
+                    <visible>!$PARAM[is_fhd]</visible>
+                    <visible>!$PARAM[is_hd]</visible>
+                    <visible>!$PARAM[is_sd]</visible>
+                    <visible>!$PARAM[is_web]</visible>
+                </control>
+            </control>
+
+        </definition>
+    </include>
+
+    <include name="Info_Line_VideoQuality">
+        <param name="item_hd">false</param>
+        <definition>
+            <include content="Info_Line_VideoQuality_Items">
+                <param name="textcolor">$PARAM[textcolor]</param>
+                <param name="is_set">[$PARAM[container]ListItem.IsCollection | $PARAM[container]ListItem.HasVideoVersions]</param>
+                <param name="is_4k">[Integer.IsGreater($PARAM[container]ListItem.VideoResolution,1080) | String.IsEqual($PARAM[container]ListItem.VideoResolution,4K)]</param>
+                <param name="is_fhd">[Integer.IsGreater($PARAM[container]ListItem.VideoResolution,720)]</param>
+                <param name="is_hd">[Integer.IsEqual($PARAM[container]ListItem.VideoResolution,720)]</param>
+                <param name="is_sd">[!String.IsEmpty($PARAM[container]ListItem.VideoResolution)]</param>
+                <param name="is_web">[[String.IsEqual($PARAM[container]ListItem.DBType,movie) | String.IsEqual($PARAM[container]ListItem.DBType,episode) | String.IsEqual($PARAM[container]ListItem.DBType,video)] + !String.IsEqual($PARAM[container]ListItem.Property(item.type),person)]</param>
+            </include>
+        </definition>
+    </include>
+
     <include name="Info_Line">
         <param name="colordiffuse">main_fg</param>
         <param name="container" />
         <param name="starrating">false</param>
         <definition>
+
             <control type="grouplist" id="99951">
                 <hitrect x="0" y="0" w="0" h="0" />
                 <height>80</height>
                 <orientation>horizontal</orientation>
                 <itemgap>10</itemgap>
 
-                <include content="Object_Control">
-                    <param name="control">image</param>
-                    <aspectratio align="left">keep</aspectratio>
-                    <texture colordiffuse="$PARAM[colordiffuse]_90">$VAR[Image_VideoQuality_Container]</texture>
-                    <centertop>52%</centertop>
-                    <width>37</width>
-                    <height>24</height>
+                <include content="Info_Line_VideoQuality">
+                    <param name="textcolor">$PARAM[colordiffuse]_90</param>
+                    <param name="container">$PARAM[container]</param>
                 </include>
 
                 <!-- Star Rating -->
@@ -1174,22 +1324,13 @@
                 <visible>Integer.IsEqual(Container(99951).NumItems,0)</visible>
 
                 <control type="group">
-                    <width>37</width>
+                    <width>56</width>
                     <description>Bumper for info icon</description>
                 </control>
                 <include content="Info_Line_Item">
                     <param name="label">$LOCALIZE[19055]</param>
                     <param name="textcolor">$PARAM[colordiffuse]_90</param>
                 </include>
-
-                <!-- <include content="Info_Line_Item">
-                    <param name="label">$VAR[Label_ProfileName]</param>
-                    <param name="textcolor">$PARAM[colordiffuse]_90</param>
-                </include>
-                <include content="Info_Line_Item">
-                    <param name="label">$INFO[System.BuildVersionCode,v,]</param>
-                    <param name="textcolor">$PARAM[colordiffuse]_90</param>
-                </include> -->
 
                 <nested />
 
@@ -1246,6 +1387,11 @@
         </include>
     </include>
 
+    <variable name="Info_Codecs_FlagType_Path">
+        <value condition="Skin.HasSetting(Furniture.EnableColourCodecs)">color</value>
+        <value>monochrome</value>
+    </variable>
+
     <include name="Info_Codecs_MonoIcon">
         <param name="colordiffuse">main_fg_90</param>
         <definition>
@@ -1259,7 +1405,7 @@
                     <width>$PARAM[iconwidth]</width>
                     <height>$PARAM[iconheight]</height>
                     <aspectratio>keep</aspectratio>
-                    <texture colordiffuse="$PARAM[colordiffuse]">flags/monochrome/$PARAM[icon]</texture>
+                    <texture colordiffuse="$PARAM[colordiffuse]">flags/$VAR[Info_Codecs_FlagType_Path]/$PARAM[icon]</texture>
                 </control>
                 <nested />
             </control>
@@ -1483,6 +1629,51 @@
         </definition>
     </include>
 
+    <variable name="Info_Codecs_Resolution_Color_main_fg_90">
+        <value condition="Skin.HasSetting(Furniture.EnableColourCodecs)">fffc0a0a</value>
+        <value>main_fg_90</value>
+    </variable>
+
+    <variable name="Info_Codecs_AspectRatio_Color_main_fg_90">
+        <value condition="Skin.HasSetting(Furniture.EnableColourCodecs)">ff2091ea</value>
+        <value>main_fg_90</value>
+    </variable>
+
+    <variable name="Info_Codecs_AudioChannels_Color_main_fg_90">
+        <value condition="Skin.HasSetting(Furniture.EnableColourCodecs)">ffce953a</value>
+        <value>main_fg_90</value>
+    </variable>
+
+    <variable name="Info_Codecs_Resolution_Color_dialog_fg_90">
+        <value condition="Skin.HasSetting(Furniture.EnableColourCodecs)">fffc0a0a</value>
+        <value>dialog_fg_90</value>
+    </variable>
+
+    <variable name="Info_Codecs_AspectRatio_Color_dialog_fg_90">
+        <value condition="Skin.HasSetting(Furniture.EnableColourCodecs)">ff2091ea</value>
+        <value>dialog_fg_90</value>
+    </variable>
+
+    <variable name="Info_Codecs_AudioChannels_Color_dialog_fg_90">
+        <value condition="Skin.HasSetting(Furniture.EnableColourCodecs)">ffce953a</value>
+        <value>dialog_fg_90</value>
+    </variable>
+
+    <variable name="Info_Codecs_Resolution_Color_panel_fg_90">
+        <value condition="Skin.HasSetting(Furniture.EnableColourCodecs)">fffc0a0a</value>
+        <value>panel_fg_90</value>
+    </variable>
+
+    <variable name="Info_Codecs_AspectRatio_Color_panel_fg_90">
+        <value condition="Skin.HasSetting(Furniture.EnableColourCodecs)">ff2091ea</value>
+        <value>panel_fg_90</value>
+    </variable>
+
+    <variable name="Info_Codecs_AudioChannels_Color_panel_fg_90">
+        <value condition="Skin.HasSetting(Furniture.EnableColourCodecs)">ffce953a</value>
+        <value>panel_fg_90</value>
+    </variable>
+
     <include name="Info_Codecs">
         <definition>
             <include content="Info_Codec_LabelIcon">
@@ -1493,7 +1684,7 @@
             <!-- VIDEO RESOLUTION-->
             <!-- 4K -->
             <include content="Info_Codecs_StackedText">
-                <param name="topcolor">main_fg_90</param>
+                <param name="topcolor">$VAR[Info_Codecs_Resolution_Color_main_fg_90]</param>
                 <param name="bottomcolor">main_fg_70</param>
                 <param name="toplabel">4K</param>
                 <param name="bottomlabel">UHD</param>
@@ -1506,7 +1697,7 @@
 
             <!-- HD -->
             <include content="Info_Codecs_StackedText">
-                <param name="topcolor">main_fg_90</param>
+                <param name="topcolor">$VAR[Info_Codecs_Resolution_Color_main_fg_90]</param>
                 <param name="bottomcolor">main_fg_70</param>
                 <param name="toplabel">HD</param>
                 <param name="bottomlabel">$INFO[$PARAM[container]ListItem.VideoResolution]</param>
@@ -1520,7 +1711,7 @@
 
             <!-- SD -->
             <include content="Info_Codecs_StackedText">
-                <param name="topcolor">main_fg_90</param>
+                <param name="topcolor">$VAR[Info_Codecs_Resolution_Color_main_fg_90]</param>
                 <param name="bottomcolor">main_fg_70</param>
                 <param name="toplabel">SD</param>
                 <param name="bottomlabel">$INFO[$PARAM[container]ListItem.VideoResolution]</param>
@@ -1534,7 +1725,7 @@
 
             <!-- VIDEO CODEC + ASPECT -->
             <include content="Info_Codecs_StackedText">
-                <param name="topcolor">main_fg_90</param>
+                <param name="topcolor">$VAR[Info_Codecs_AspectRatio_Color_main_fg_90]</param>
                 <param name="bottomcolor">main_fg_70</param>
                 <param name="bottomlabel">[UPPERCASE]$INFO[$PARAM[container]ListItem.VideoCodec][/UPPERCASE]</param>
                 <param name="toplabel">$INFO[$PARAM[container]ListItem.VideoAspect]</param>
@@ -1560,7 +1751,7 @@
                 <param name="type">$PARAM[container]ListItem</param>
                 <param name="channelscolor">main_fg_90</param>
                 <param name="iconcolor">main_fg_90</param>
-                <param name="imagecolor">main_fg_70</param>
+                <param name="imagecolor">$VAR[Info_Codecs_AudioChannels_Color_main_fg_90]</param>
                 <nested />
                 <left>-10</left>
             </include>
@@ -1681,7 +1872,7 @@
             <nested />
         </include>
         <include content="Info_Codecs_StackedText">
-            <param name="topcolor">main_fg_90</param>
+            <param name="topcolor">$VAR[Info_Codecs_AspectRatio_Color_main_fg_90]</param>
             <param name="bottomcolor">main_fg_70</param>
             <param name="toplabel">$INFO[$PARAM[container]ListItem.SampleRate]</param>
             <param name="bottomlabel">$INFO[$PARAM[container]ListItem.BitRate,, kbps]</param>
@@ -1694,7 +1885,7 @@
             <param name="info">MusicChannels</param>
             <param name="channelscolor">main_fg_90</param>
             <param name="iconcolor">main_fg_90</param>
-            <param name="imagecolor">main_fg_70</param>
+            <param name="imagecolor">$VAR[Info_Codecs_AudioChannels_Color_main_fg_90]</param>
             <nested />
             <left>-10</left>
         </include>
@@ -1790,41 +1981,31 @@
                     <visible>$PARAM[info_musicduration]</visible>
                 </include>
 
-
-                <include content="Info_Codec_Label">
-                    <param name="icon">$VAR[Image_Scrollbar_Content]</param>
-                    <param name="label">$INFO[$PARAM[container]ListItem.DBType,[CAPITALIZE],[/CAPITALIZE]]</param>
+                <control type="group">
                     <visible>!$PARAM[info_musiccodecs]</visible>
                     <visible>!$PARAM[info_codecs]</visible>
                     <visible>!$PARAM[info_providers]</visible>
                     <visible>!$PARAM[info_watchedepisodes]</visible>
                     <visible>!$PARAM[info_playcount]</visible>
                     <visible>!$PARAM[info_musicduration]</visible>
-                    <visible>!String.IsEmpty($PARAM[container]ListItem.DBType)</visible>
-                </include>
-                <include content="Info_Codec_Label">
-                    <param name="icon">special://skin/extras/icons/folder2.png</param>
-                    <param name="label">Folder</param>
-                    <visible>!$PARAM[info_musiccodecs]</visible>
-                    <visible>!$PARAM[info_codecs]</visible>
-                    <visible>!$PARAM[info_providers]</visible>
-                    <visible>!$PARAM[info_watchedepisodes]</visible>
-                    <visible>!$PARAM[info_playcount]</visible>
-                    <visible>!$PARAM[info_musicduration]</visible>
-                    <visible>String.IsEmpty($PARAM[container]ListItem.DBType) + $PARAM[container]ListItem.IsFolder</visible>
-                </include>
-                <include content="Info_Codec_Label">
-                    <param name="icon">special://skin/extras/icons/file.png</param>
-                    <param name="label">File</param>
-                    <visible>!$PARAM[info_musiccodecs]</visible>
-                    <visible>!$PARAM[info_codecs]</visible>
-                    <visible>!$PARAM[info_providers]</visible>
-                    <visible>!$PARAM[info_watchedepisodes]</visible>
-                    <visible>!$PARAM[info_playcount]</visible>
-                    <visible>!$PARAM[info_musicduration]</visible>
-                    <visible>String.IsEmpty($PARAM[container]ListItem.DBType) + !$PARAM[container]ListItem.IsFolder</visible>
-                </include>
-
+                    <control type="image">
+                        <centertop>50%</centertop>
+                        <width>40</width>
+                        <height>40</height>
+                        <bordersize>-18</bordersize>
+                        <texture colordiffuse="ff30adde">special://skin/extras/icons/kodi.png</texture>
+                    </control>
+                    <control type="label">
+                        <left>70</left>
+                        <label>KODI</label>
+                        <centertop>50%</centertop>
+                        <width>auto</width>
+                        <height>20</height>
+                        <textcolor>main_fg_90</textcolor>
+                        <font>font_logo</font>
+                        <textoffsetx>0</textoffsetx>
+                    </control>
+                </control>
             </control>
         </definition>
     </include>
@@ -1837,8 +2018,8 @@
                 <param name="info_codecs">[[String.IsEqual($PARAM[container]ListItem.DBType,movie) | String.IsEqual($PARAM[container]ListItem.DBType,episode) | String.IsEqual($PARAM[container]ListItem.DBType,video)] + [!String.IsEmpty($PARAM[container]ListItem.VideoCodec) | !String.IsEmpty($PARAM[container]ListItem.AudioCodec)] + Skin.HasSetting(Furniture.ProvidersCodecs)]</param>
                 <param name="info_musiccodecs">[[String.IsEqual($PARAM[container]ListItem.DBType,album) | String.IsEqual($PARAM[container]ListItem.DBType,song)] + [!String.IsEmpty($PARAM[container]ListItem.MusicChannels) | !String.IsEmpty($PARAM[container]ListItem.SampleRate)] + Skin.HasSetting(Furniture.ProvidersCodecs)]</param>
                 <param name="info_watchedepisodes">[[String.IsEqual($PARAM[container]ListItem.DBType,tvshow) | String.IsEqual($PARAM[container]ListItem.DBType,season)]]</param>
-                <param name="info_playcount">[[String.IsEqual($PARAM[container]ListItem.DBType,movie) | String.IsEqual($PARAM[container]ListItem.DBType,episode)]]</param>
-                <param name="info_musicduration">[[String.IsEqual($PARAM[container]ListItem.DBType,album) | String.IsEqual($PARAM[container]ListItem.DBType,song)] + !String.IsEmpty($PARAM[container]ListItem.Duration)]</param>
+                <param name="info_playcount">[[String.IsEqual($PARAM[container]ListItem.DBType,movie) | String.IsEqual($PARAM[container]ListItem.DBType,episode)] + !Skin.HasSetting(Furniture.ProvidersCodecs)]</param>
+                <param name="info_musicduration">[[String.IsEqual($PARAM[container]ListItem.DBType,album) | [String.IsEqual($PARAM[container]ListItem.DBType,song) + !Skin.HasSetting(Furniture.ProvidersCodecs)]] + !String.IsEmpty($PARAM[container]ListItem.Duration)]</param>
             </include>
         </definition>
     </include>

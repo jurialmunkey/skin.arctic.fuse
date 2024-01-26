@@ -367,26 +367,41 @@
             <control type="group" id="$PARAM[bumperid]">
                 <height>widget_tbump_h</height>
             </control>
+
             <control type="button" id="$PARAM[topid]">
                 <height>0</height>
                 <texturenofocus />
                 <texturefocus />
-                <onfocus>Action(Down)</onfocus>
+
+                <onleft>303</onleft>
+                <onback>303</onback>
+                <onright>303</onright>
+
+                <onfocus condition="[Control.IsVisible($PARAM[topid]) + Control.IsVisible($PARAM[bottomid]) + !Integer.IsEqual(Container($PARAM[id]).NumItems,2)] | [!Control.IsVisible($PARAM[topid]) + Control.IsVisible($PARAM[bottomid]) + !Integer.IsEqual(Container($PARAM[id]).NumItems,1)] | [Control.IsVisible($PARAM[topid]) + !Control.IsVisible($PARAM[bottomid]) + !Integer.IsEqual(Container($PARAM[id]).NumItems,1)] | [!Control.IsVisible($PARAM[topid]) + !Control.IsVisible($PARAM[bottomid]) + !Integer.IsEqual(Container($PARAM[id]).NumItems,0)]">Action(Down)</onfocus>
+
                 <visible>!ControlGroup($PARAM[id]).HasFocus() | Control.HasFocus($PARAM[topid])</visible>
             </control>
+
             <nested />
 
             <control type="button" id="$PARAM[bottomid]">
                 <height>0</height>
                 <texturenofocus />
                 <texturefocus />
-                <onfocus>Action(Up)</onfocus>
+
+                <onleft>303</onleft>
+                <onback>303</onback>
+                <onright>303</onright>
+
+                <onfocus condition="[Control.IsVisible($PARAM[topid]) + Control.IsVisible($PARAM[bottomid]) + !Integer.IsEqual(Container($PARAM[id]).NumItems,2)] | [!Control.IsVisible($PARAM[topid]) + Control.IsVisible($PARAM[bottomid]) + !Integer.IsEqual(Container($PARAM[id]).NumItems,1)] | [Control.IsVisible($PARAM[topid]) + !Control.IsVisible($PARAM[bottomid]) + !Integer.IsEqual(Container($PARAM[id]).NumItems,1)] | [!Control.IsVisible($PARAM[topid]) + !Control.IsVisible($PARAM[bottomid]) + !Integer.IsEqual(Container($PARAM[id]).NumItems,0)]">Action(Up)</onfocus>
+
                 <visible>!ControlGroup($PARAM[id]).HasFocus() | Control.HasFocus($PARAM[bottomid])</visible>
             </control>
 
             <control type="group" id="$PARAM[furnitureid]">
                 <height>0</height>
                 <control type="group">
+                    <visible>!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)</visible>
                     <visible>!Integer.IsEqual(Container($PARAM[id]).NumItems,0)</visible>
                     <visible>!Integer.IsEqual(Container($PARAM[id]).NumItems,1) | [!Control.HasFocus($PARAM[topid]) + !Control.HasFocus($PARAM[bottomid])]</visible>
                     <visible>!Integer.IsEqual(Container($PARAM[id]).NumItems,2) | ControlGroup($PARAM[id]).HasFocus()</visible>

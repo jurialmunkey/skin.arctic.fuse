@@ -605,13 +605,14 @@
             <height>80</height>
             <orientation>horizontal</orientation>
             <itemgap>10</itemgap>
-            <control type="image">
-                <aspectratio align="left">keep</aspectratio>
-                <texture colordiffuse="panel_fg_90">$VAR[Image_OSD_VideoQuality]</texture>
-                <centertop>52%</centertop>
-                <width>37</width>
-                <height>24</height>
-            </control>
+            <include content="Info_Line_VideoQuality_Items">
+                <param name="textcolor">panel_fg_90</param>
+                <param name="is_4k">[Integer.IsGreater(VideoPlayer.VideoResolution,1080) | String.IsEqual(VideoPlayer.VideoResolution,4K)]</param>
+                <param name="is_fhd">[Integer.IsGreater(VideoPlayer.VideoResolution,720)]</param>
+                <param name="is_hd">[Integer.IsEqual(VideoPlayer.VideoResolution,720)]</param>
+                <param name="is_sd">[!String.IsEmpty(VideoPlayer.VideoResolution)]</param>
+                <param name="is_web">[False]</param>
+            </include>
             <control type="grouplist">
                 <hitrect x="0" y="0" w="0" h="0" />
                 <orientation>horizontal</orientation>
@@ -921,7 +922,7 @@
                 </include>
 
                 <include content="Info_Codecs_StackedText">
-                    <param name="topcolor">$PARAM[color]_90</param>
+                    <param name="topcolor">$VAR[Info_Codecs_Resolution_Color_$PARAM[color]_90]</param>
                     <param name="bottomcolor">$PARAM[color]_70</param>
                     <param name="toplabel">$VAR[Label_OSD_VideoQuality]</param>
                     <param name="bottomlabel">$VAR[Label_OSD_VideoResolution]</param>
@@ -931,7 +932,7 @@
 
                 <!-- Codec / Aspect -->
                 <include content="Info_Codecs_StackedText">
-                    <param name="topcolor">$PARAM[color]_90</param>
+                    <param name="topcolor">$VAR[Info_Codecs_AspectRatio_Color_$PARAM[color]_90]</param>
                     <param name="bottomcolor">$PARAM[color]_70</param>
                     <param name="bottomlabel">[UPPERCASE]$INFO[VideoPlayer.VideoCodec][/UPPERCASE]</param>
                     <param name="toplabel">$INFO[VideoPlayer.VideoAspect]</param>
@@ -943,7 +944,7 @@
                 <include content="OSD_Codecs_FPS" condition="$PARAM[include_fps]">
                     <param name="topcolor">$PARAM[color]_100</param>
                     <param name="bottomcolor">$PARAM[color]_70</param>
-                    <param name="directory">monochrome</param>
+                    <param name="directory">$VAR[Info_Codecs_FlagType_Path]</param>
                 </include>
 
                 <!-- 3d Stereoscopic -->
@@ -961,7 +962,7 @@
                     <param name="type">VideoPlayer</param>
                     <param name="channelscolor">$PARAM[color]_90</param>
                     <param name="iconcolor">$PARAM[color]_90</param>
-                    <param name="imagecolor">$PARAM[color]_70</param>
+                    <param name="imagecolor">$VAR[Info_Codecs_AudioChannels_Color_$PARAM[color]_90]</param>
                 </include>
 
                 <!-- AudioCodec -->
@@ -1244,17 +1245,6 @@
                                 <centertop>50%</centertop>
                                 <orientation>horizontal</orientation>
                                 <itemgap>10</itemgap>
-
-                                <!-- <control type="group">
-                                    <centertop>52%</centertop>
-                                    <width>37</width>
-                                    <height>24</height>
-                                    <visible>!VideoPlayer.Content(livetv)</visible>
-                                    <control type="image">
-                                        <aspectratio>keep</aspectratio>
-                                        <texture colordiffuse="panel_fg_90">$VAR[Image_OSD_VideoQuality]</texture>
-                                    </control>
-                                </control> -->
 
                                 <!-- PVR Channel Name -->
                                 <include content="OSD_Landscape_Info_SubLine_Item">
