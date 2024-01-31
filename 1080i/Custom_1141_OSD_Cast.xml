@@ -2,10 +2,9 @@
 <window type="dialog" id="1141">
     <defaultcontrol always="true">6501</defaultcontrol>
     <onload>CancelAlarm(osd_timeout,true)</onload>
+    <onload>SetProperty(CastMemberList,plugin://plugin.video.themoviedb.helper/,1141)</onload>
     <onload>SetProperty(TMDbHelper.WidgetContainer,6501,1141)</onload>
-    <onload>SetProperty(CastMemberList,videodb://)</onload>
-    <!-- <onload>ClearProperty(TMDbHelper.WidgetContainer,1141)</onload> -->
-    <onunload>ClearProperty(TMDbHelper.WidgetContainer,1141)</onunload>
+    <onload>SetProperty(WidgetInfo,stars_in_both,1141)</onload>
     <include>Animation_OSD_Dialog_WindowChange</include>
     <controls>
 
@@ -50,16 +49,17 @@
                 <param name="id">6501</param>
                 <content>$VAR[Path_OSD_Cast]</content>
                 <include>OSD_List_Dimensions</include>
-                <!-- <onup>6000</onup> -->
-                <onup>Close</onup>
+
                 <onfocus>SetProperty(TMDbHelper.WidgetContainer,6501,1141)</onfocus>
-                <onunfocus>ClearProperty(TMDbHelper.WidgetContainer,1141)</onunfocus>
-                <onfocus>SetProperty(CastMemberList,plugin://plugin.video.themoviedb.helper/?info=stars_in_both&amp;limit=50&amp;tmdb_type=person&amp;tmdb_id=$INFO[Container(6501).ListItem.Property(TMDb_ID)]$VAR[Path_Param_Widget])</onfocus>
-                <ondown>SetProperty(CastMemberList,plugin://plugin.video.themoviedb.helper/?info=stars_in_both&amp;limit=50&amp;tmdb_type=person&amp;tmdb_id=$INFO[Container(6501).ListItem.Property(TMDb_ID)]$VAR[Path_Param_Widget])</ondown>
-                <ondown>SetFocus(6539)</ondown>
+
+                <onup>Close</onup>
+
+                <ondown>SetProperty(CastMemberList,plugin://plugin.video.themoviedb.helper/?limit=50$INFO[Window.Property(WidgetInfo),&amp;info=,]&amp;tmdb_type=person&amp;tmdb_id=$INFO[Container(6501).ListItem.Property(TMDb_ID)]$VAR[Path_Param_Widget])</ondown>
+                <ondown>SetProperty(TMDbHelper.WidgetContainer,6539,1141)</ondown>
                 <ondown>6539</ondown>
+
                 <include>Animation_OSD_Dialog_VisibleChange</include>
-                <visible allowhiddenfocus="true">Control.HasFocus(6501)</visible>
+                <visible allowhiddenfocus="true">Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),6501)</visible>
                 <include content="Animation_Busy_Fade">
                     <param name="end">0</param>
                     <param name="id">6501</param>
@@ -78,15 +78,22 @@
                 <param name="detailed">true</param>
                 <content>$INFO[Window.Property(CastMemberList)]</content>
                 <include>OSD_List_Dimensions</include>
-                <onunfocus>ClearProperty(TMDbHelper.WidgetContainer,1141)</onunfocus>
+
+                <onfocus>SetProperty(CastMemberList,plugin://plugin.video.themoviedb.helper/?limit=50$INFO[Window.Property(WidgetInfo),&amp;info=,]&amp;tmdb_type=person&amp;tmdb_id=$INFO[Container(6501).ListItem.Property(TMDb_ID)]$VAR[Path_Param_Widget])</onfocus>
                 <onfocus>SetProperty(TMDbHelper.WidgetContainer,6539,1141)</onfocus>
+
+                <onup>SetProperty(TMDbHelper.WidgetContainer,6501,1141)</onup>
                 <onup>SetFocus(6501)</onup>
+
                 <include>Animation_OSD_Dialog_VisibleChange</include>
-                <visible allowhiddenfocus="true">Control.HasFocus(6539)</visible>
+
+                <visible allowhiddenfocus="true">Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),6539)</visible>
+
                 <include content="Animation_Busy_Fade">
                     <param name="end">0</param>
                     <param name="id">6539</param>
                 </include>
+
                 <onclick>SetProperty(OSDExtendedInfo,1,Home)</onclick>
                 <onclick condition="!Player.Paused">Pause</onclick>
                 <onclick>runscript(script.wikipedia,wikipedia=$INFO[Container(6539).ListItem.Label],tmdb_type=$INFO[Container(6539).ListItem.Property(tmdb_type)])</onclick>
@@ -100,7 +107,7 @@
             <bottom>46</bottom>
             <left>200</left>
             <visible>!Window.IsVisible(script-wikipedia.xml)</visible>
-            <visible>String.IsEqual(Window.Property(TMDBHelper.WidgetContainer),6501)</visible>
+            <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),6501)</visible>
         </include>
 
         <include content="Widget_Busy">
@@ -110,7 +117,7 @@
             <bottom>46</bottom>
             <left>200</left>
             <visible>!Window.IsVisible(script-wikipedia.xml)</visible>
-            <visible>String.IsEqual(Window.Property(TMDBHelper.WidgetContainer),6539)</visible>
+            <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),6539)</visible>
         </include>
     </controls>
 </window>
