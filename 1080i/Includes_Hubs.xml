@@ -170,13 +170,13 @@
 
             <include content="Hub_Main_Group">
                 <param name="widgets_only">[$PARAM[widgets_only]]</param>
-                <include content="Hub_Menu_Group" condition="![$PARAM[widgets_only]]">
+                <include content="Hub_Menu_Group" condition="![$PARAM[widgets_only]] + !Skin.HasSetting(Hubs.TopBarCategories)">
                     <include content="Hub_Categories">
                         <param name="categories">$PARAM[categories]</param>
                         <param name="window_id">$PARAM[window_id]</param>
                     </include>
                 </include>
-                <include content="Spotlight_List" condition="![$PARAM[widgets_only]]">
+                <include content="Spotlight_List" condition="![$PARAM[widgets_only]] + !Skin.HasSetting(Hubs.TopBarCategories)">
                     <param name="window_id">$PARAM[window_id]</param>
                     <param name="sortby">$PARAM[fullscreen_sortby]</param>
                     <param name="sortorder">$PARAM[fullscreen_sortorder]</param>
@@ -190,7 +190,7 @@
                     <param name="categories">$PARAM[categories]</param>
                     <param name="window_id">$PARAM[window_id]</param>
                 </include>
-                <include content="Hub_Widgets_Only" condition="$PARAM[widgets_only]">
+                <include content="Hub_Widgets_Only" condition="$PARAM[widgets_only] + !Skin.HasSetting(Hubs.TopBarCategories)">
                     <param name="widgets_include">$PARAM[widgets_include]</param>
                 </include>
             </include>
@@ -203,8 +203,12 @@
             <!-- Furniture -->
             <control type="group">
                 <visible>!$EXP[Exp_InfoDialogs]</visible>
-                <include>Furniture_Top</include>
-                <!-- <include>Furniture_Bottom_Right</include> -->
+                <include condition="!Skin.HasSetting(Hubs.TopBarCategories)">Furniture_Top</include>
+
+                <include content="Hub_TopBar_Categories" condition="Skin.HasSetting(Hubs.TopBarCategories)">
+                    <param name="categories">$PARAM[categories]</param>
+                </include>
+
             </control>
 
             <nested />
@@ -215,6 +219,85 @@
             <!-- Plot Dialog Overlay -->
             <include>View_Dialog_Plot</include>
         </definition>
+    </include>
+
+    <include name="Hub_TopBar_Categories">
+        <control type="group">
+            <visible>!Control.HasFocus(300)</visible>
+            <include content="Animation_Fade_In">
+                <param name="type">Visible</param>
+            </include>
+            <include content="Animation_Fade_Out">
+                <param name="type">Hidden</param>
+            </include>
+            <include content="Furniture_Top">
+                <param name="label">$INFO[Container(300).ListItem.Label]</param>
+            </include>
+        </control>
+        <control type="list" id="300">
+            <visible allowhiddenfocus="true">Control.HasFocus(300)</visible>
+            <include content="Animation_Fade_In">
+                <param name="type">Visible</param>
+            </include>
+            <include content="Animation_Fade_Out">
+                <param name="type">Hidden</param>
+            </include>
+            <ondown>340</ondown>
+            <top>20</top>
+            <left>120</left>
+            <height>200</height>
+            <width>440</width>
+            <orientation>horizontal</orientation>
+            <scrolltime tween="quadratic">400</scrolltime>
+            <include content="Home_Menu_List_ItemLayout">
+                <param name="id">300</param>
+                <param name="use_labels">False</param>
+                <param name="hidden_button_enabled">False</param>
+                <param name="itemlayout_w">100</param>
+                <param name="vertical">false</param>
+                <param name="layoutnf">[False]</param>
+                <param name="layoutfo">[True]</param>
+            </include>
+            <content>
+                <include>skinvariables-$PARAM[categories]-staticitems</include>
+            </content>
+        </control>
+        <control type="group">
+            <top>80</top>
+            <left>160</left>
+            <height>40</height>
+            <width>420</width>
+            <control type="image">
+                <texture colordiffuse="main_fg_30">special://skin/extras/icons/angle-left.png</texture>
+                <height>40</height>
+                <width>40</width>
+                <left>-40</left>
+                <centertop>50%</centertop>
+                <visible>Container(300).HasPrevious</visible>
+                <visible>Control.HasFocus(300)</visible>
+                <include content="Animation_Fade_In">
+                    <param name="type">Visible</param>
+                </include>
+                <include content="Animation_Fade_Out">
+                    <param name="type">Hidden</param>
+                </include>
+            </control>
+            <control type="image">
+                <texture colordiffuse="main_fg_30" flipx="true">special://skin/extras/icons/angle-left.png</texture>
+                <height>40</height>
+                <width>40</width>
+                <right>-40</right>
+                <centertop>50%</centertop>
+                <visible>Container(300).HasNext</visible>
+                <visible>Control.HasFocus(300)</visible>
+                <include content="Animation_Fade_In">
+                    <param name="type">Visible</param>
+                </include>
+                <include content="Animation_Fade_Out">
+                    <param name="type">Hidden</param>
+                </include>
+            </control>
+        </control>
     </include>
 
     <include name="Hub_Widgets_Only">
@@ -235,13 +318,13 @@
     </variable>
 
     <include name="Hub_Standard">
-        <include content="Hub_Menu_Group">
+        <include content="Hub_Menu_Group" condition="!Skin.HasSetting(Hubs.TopBarCategories)">
             <include content="Hub_Submenu_Group">
                 <include>skinvariables-$PARAM[categories]-submenu</include>
             </include>
         </include>
 
-        <include>skinvariables-$PARAM[categories]-spotlight</include>
+        <include condition="!Skin.HasSetting(Hubs.TopBarCategories)">skinvariables-$PARAM[categories]-spotlight</include>
 
         <include content="Hub_Widgets_Group">
             <include>skinvariables-$PARAM[categories]-widgets</include>
@@ -432,7 +515,8 @@
     </include>
 
     <include name="Hub_Widgets_Grouplist__Def_Layout_Expanded">
-        <onup>302</onup>
+        <onup condition="!Skin.HasSetting(Hubs.TopBarCategories)">302</onup>
+        <onup condition="Skin.HasSetting(Hubs.TopBarCategories)">300</onup>
         <include>Hub_Slide_Widgets_NoCategories</include>
         <include>Hub_Slide_Widgets_NoSubmenu</include>
     </include>
