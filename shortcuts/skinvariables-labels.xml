@@ -13,11 +13,21 @@
         <value>$VAR[Label_TitleFallback]</value>
     </variable>
 
+    <variable name="Label_Plot_Episode_Type" containers="301,503,513,523,553,7000" null_id="True">
+        <value condition="String.IsEqual({listitem}.Property(episode_type),series_premiere)">$LOCALIZE[31210]</value>
+        <value condition="String.IsEqual({listitem}.Property(episode_type),season_premiere)">$LOCALIZE[31211]</value>
+        <value condition="String.IsEqual({listitem}.Property(episode_type),mid_season_premiere)">$LOCALIZE[31212]</value>
+        <value condition="String.IsEqual({listitem}.Property(episode_type),series_finale)">$LOCALIZE[31214]</value>
+        <value condition="String.IsEqual({listitem}.Property(episode_type),season_finale)">$LOCALIZE[31215]</value>
+        <value condition="String.IsEqual({listitem}.Property(episode_type),mid_season_finale)">$LOCALIZE[31218]</value>
+        <value>$VAR[Label_Plot_Episode_Type_TMDBHelper]</value>
+    </variable>
+
     <variable name="Label_Plot" containers="301,503,513,523,553,7000" null_id="True">
         <value condition="!String.IsEmpty({listitem}.Property(Album_Description))">$INFO[{listitem}.Property(Album_Description)]</value>
         <value condition="!String.IsEmpty({listitem}.Property(Artist_Description))">$INFO[{listitem}.Property(Artist_Description)]</value>
         <value condition="!String.IsEmpty({listitem}.AddonDescription)">$INFO[{listitem}.AddonDescription]</value>
-        <value condition="String.IsEqual({listitem}.DBType,episode) + !String.IsEmpty({listitem}.Plot)">$INFO[{listitem}.Title,[B][COLOR=main_fg_100],[/COLOR][/B] ~ ]$INFO[{listitem}.Plot]</value>
+        <value condition="String.IsEqual({listitem}.DBType,episode) + !String.IsEmpty({listitem}.Plot) + !String.IsEmpty({listitem}.Title)">[B][COLOR=main_fg_100]$VAR[Label_Plot_Episode_Type{cid}{lid},,: ]$INFO[{listitem}.Title][/COLOR][/B]$INFO[{listitem}.Plot, ~ ,]</value>
         <value condition="!String.IsEmpty({listitem}.Plot)">$INFO[{listitem}.Plot]</value>
         <value condition="!String.IsEmpty({listitem}.Property(biography))">$INFO[{listitem}.Property(biography)]</value>
         <value condition="!String.IsEmpty(Window.Property(TMDbHelper.WidgetContainer))">$VAR[Label_WidgetPlot]</value>
