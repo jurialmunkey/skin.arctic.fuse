@@ -2,10 +2,11 @@
 <window type="dialog" id="1141">
     <defaultcontrol always="true">6501</defaultcontrol>
     <onload>CancelAlarm(osd_timeout,true)</onload>
+    <onload>ClearProperty(TMDb_ID,1141)</onload>
     <onload>SetProperty(TMDbHelper.WidgetContainer,6501,1141)</onload>
-    <onload>SetProperty(CastMemberList,videodb://)</onload>
-    <!-- <onload>ClearProperty(TMDbHelper.WidgetContainer,1141)</onload> -->
-    <onunload>ClearProperty(TMDbHelper.WidgetContainer,1141)</onunload>
+    <onload condition="String.IsEmpty(Skin.String(VideoOSD.PersonCredits.SortKey))">Skin.SetString(VideoOSD.PersonCredits.SortKey,popular)</onload>
+    <onload>Skin.SetString(VideoOSD.PersonCredits.CastCrew,cast)</onload>
+    <onload>Skin.SetString(VideoOSD.PersonCredits.WidgetInfo,films)</onload>
     <include>Animation_OSD_Dialog_WindowChange</include>
     <controls>
 
@@ -50,16 +51,23 @@
                 <param name="id">6501</param>
                 <content>$VAR[Path_OSD_Cast]</content>
                 <include>OSD_List_Dimensions</include>
-                <!-- <onup>6000</onup> -->
-                <onup>Close</onup>
+
                 <onfocus>SetProperty(TMDbHelper.WidgetContainer,6501,1141)</onfocus>
-                <onunfocus>ClearProperty(TMDbHelper.WidgetContainer,1141)</onunfocus>
-                <onfocus>SetProperty(CastMemberList,plugin://plugin.video.themoviedb.helper/?info=stars_in_both&amp;limit=50&amp;tmdb_type=person&amp;tmdb_id=$INFO[Container(6501).ListItem.Property(TMDb_ID)]$VAR[Path_Param_Widget])</onfocus>
-                <ondown>SetProperty(CastMemberList,plugin://plugin.video.themoviedb.helper/?info=stars_in_both&amp;limit=50&amp;tmdb_type=person&amp;tmdb_id=$INFO[Container(6501).ListItem.Property(TMDb_ID)]$VAR[Path_Param_Widget])</ondown>
-                <ondown>SetFocus(6539)</ondown>
+
+                <onup>Close</onup>
+
+                <onleft>4100</onleft>
+                <onright>SetFocus(6501,0,absolute)</onright>
+                <onright>4100</onright>
+
+                <ondown condition="Skin.String(VideoOSD.PersonCredits.CastCrew,cast)">Skin.SetString(VideoOSD.PersonCredits.WidgetInfo,films)</ondown>
+                <ondown condition="Skin.String(VideoOSD.PersonCredits.CastCrew,crew)">Skin.SetString(VideoOSD.PersonCredits.WidgetInfo,crew)</ondown>
+                <ondown>SetProperty(TMDb_ID,$INFO[Container(6501).ListItem.Property(TMDb_ID)],1141)</ondown>
+                <ondown>SetProperty(TMDbHelper.WidgetContainer,6539,1141)</ondown>
                 <ondown>6539</ondown>
+
                 <include>Animation_OSD_Dialog_VisibleChange</include>
-                <visible allowhiddenfocus="true">Control.HasFocus(6501)</visible>
+                <visible allowhiddenfocus="true">Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),6501)</visible>
                 <include content="Animation_Busy_Fade">
                     <param name="end">0</param>
                     <param name="id">6501</param>
@@ -76,21 +84,94 @@
                 <param name="control">fixedlist</param>
                 <param name="id">6539</param>
                 <param name="detailed">true</param>
-                <content>$INFO[Window.Property(CastMemberList)]</content>
+                <content>$VAR[Path_VideoOSD_PersonCredits]</content>
                 <include>OSD_List_Dimensions</include>
-                <onunfocus>ClearProperty(TMDbHelper.WidgetContainer,1141)</onunfocus>
+
+                <onleft>4000</onleft>
+                <onright>SetFocus(6539,0,absolute)</onright>
+                <onright>4000</onright>
+
+                <onfocus>SetProperty(TMDb_ID,$INFO[Container(6501).ListItem.Property(TMDb_ID)],1141)</onfocus>
                 <onfocus>SetProperty(TMDbHelper.WidgetContainer,6539,1141)</onfocus>
+
+                <onup>SetProperty(TMDbHelper.WidgetContainer,6501,1141)</onup>
                 <onup>SetFocus(6501)</onup>
+
+                <onback>SetProperty(TMDbHelper.WidgetContainer,6501,1141)</onback>
+                <onback>6501</onback>
+
                 <include>Animation_OSD_Dialog_VisibleChange</include>
-                <visible allowhiddenfocus="true">Control.HasFocus(6539)</visible>
+
+                <visible allowhiddenfocus="true">Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),6539)</visible>
+
                 <include content="Animation_Busy_Fade">
                     <param name="end">0</param>
                     <param name="id">6539</param>
                 </include>
+
                 <onclick>SetProperty(OSDExtendedInfo,1,Home)</onclick>
                 <onclick condition="!Player.Paused">Pause</onclick>
                 <onclick>runscript(script.wikipedia,wikipedia=$INFO[Container(6539).ListItem.Label],tmdb_type=$INFO[Container(6539).ListItem.Property(tmdb_type)])</onclick>
             </include>
+
+
+            <control type="grouplist" id="4000">
+                <top>-20</top>
+                <itemgap>0</itemgap>
+                <orientation>vertical</orientation>
+                <width>160</width>
+                <left>view_list</left>
+
+                <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),6539)</visible>
+
+                <onright>SetFocus(6539,0,absolute)</onright>
+                <onleft>SetFocus(6539,9999,absolute)</onleft>
+
+                <include content="Dialog_Side_Button">
+                    <param name="id">01</param>
+                    <param name="baseid">4</param>
+                    <param name="label">[CAPITALIZE]$INFO[Skin.String(VideoOSD.PersonCredits.WidgetInfo)][/CAPITALIZE]</param>
+                    <param name="icon">$VAR[Image_VideoOSD_PersonCredits]</param>
+                    <param name="visible">true</param>
+                    <onclick condition="Skin.String(VideoOSD.PersonCredits.WidgetInfo,films)">Skin.SetString(VideoOSD.PersonCredits.WidgetInfo,shows)</onclick>
+                    <onclick condition="Skin.String(VideoOSD.PersonCredits.WidgetInfo,shows)">Skin.SetString(VideoOSD.PersonCredits.WidgetInfo,crew)</onclick>
+                    <onclick condition="Skin.String(VideoOSD.PersonCredits.WidgetInfo,crew)">Skin.SetString(VideoOSD.PersonCredits.WidgetInfo,films)</onclick>
+                </include>
+                <include content="Dialog_Side_Button">
+                    <param name="id">02</param>
+                    <param name="baseid">4</param>
+                    <param name="label">[CAPITALIZE]$INFO[Skin.String(VideoOSD.PersonCredits.SortKey)][/CAPITALIZE]</param>
+                    <param name="icon">special://skin/extras/icons/arrow-updown-short-wide.png</param>
+                    <param name="visible">[Skin.String(VideoOSD.PersonCredits.WidgetInfo,films) | Skin.String(VideoOSD.PersonCredits.WidgetInfo,shows)]</param>
+                    <onclick condition="Skin.String(VideoOSD.PersonCredits.SortKey,popular)">Skin.SetString(VideoOSD.PersonCredits.SortKey,date)</onclick>
+                    <onclick condition="Skin.String(VideoOSD.PersonCredits.SortKey,date)">Skin.SetString(VideoOSD.PersonCredits.SortKey,rating)</onclick>
+                    <onclick condition="Skin.String(VideoOSD.PersonCredits.SortKey,rating)">Skin.SetString(VideoOSD.PersonCredits.SortKey,votes)</onclick>
+                    <onclick condition="Skin.String(VideoOSD.PersonCredits.SortKey,votes)">Skin.SetString(VideoOSD.PersonCredits.SortKey,popular)</onclick>
+                </include>
+            </control>
+
+            <control type="grouplist" id="4100">
+                <top>-20</top>
+                <itemgap>0</itemgap>
+                <orientation>vertical</orientation>
+                <width>160</width>
+                <left>view_list</left>
+
+                <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),6501)</visible>
+
+                <onright>SetFocus(6501,0,absolute)</onright>
+                <onleft>SetFocus(6501,9999,absolute)</onleft>
+
+                <include content="Dialog_Side_Button">
+                    <param name="id">03</param>
+                    <param name="baseid">4</param>
+                    <param name="label">[CAPITALIZE]$INFO[Skin.String(VideoOSD.PersonCredits.CastCrew)][/CAPITALIZE]</param>
+                    <param name="icon">special://skin/extras/icons/starring.png</param>
+                    <param name="visible">true</param>
+                    <onclick condition="Skin.String(VideoOSD.PersonCredits.CastCrew,cast)">Skin.SetString(VideoOSD.PersonCredits.CastCrew,crew)</onclick>
+                    <onclick condition="Skin.String(VideoOSD.PersonCredits.CastCrew,crew)">Skin.SetString(VideoOSD.PersonCredits.CastCrew,cast)</onclick>
+                </include>
+            </control>
         </include>
 
         <include content="Widget_Busy">
@@ -100,7 +181,7 @@
             <bottom>46</bottom>
             <left>200</left>
             <visible>!Window.IsVisible(script-wikipedia.xml)</visible>
-            <visible>String.IsEqual(Window.Property(TMDBHelper.WidgetContainer),6501)</visible>
+            <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),6501)</visible>
         </include>
 
         <include content="Widget_Busy">
@@ -110,7 +191,7 @@
             <bottom>46</bottom>
             <left>200</left>
             <visible>!Window.IsVisible(script-wikipedia.xml)</visible>
-            <visible>String.IsEqual(Window.Property(TMDBHelper.WidgetContainer),6539)</visible>
+            <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),6539)</visible>
         </include>
     </controls>
 </window>
