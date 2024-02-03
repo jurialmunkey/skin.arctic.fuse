@@ -737,6 +737,7 @@
         <control type="group">
             <visible>$PARAM[visible]</visible>
             <control type="image">
+                <animation effect="fade" end="70" condition="true">Conditional</animation>
                 <texture flipy="true" border="10" colordiffuse="$PARAM[colordiffuse]">common/dialog_overlay_v.png</texture>
             </control>
             <control type="label">
@@ -757,32 +758,32 @@
                 <visible>String.IsEqual($PARAM[listitem].DBType,episode)</visible>
                 <visible>!String.IsEmpty($PARAM[listitem].Property(episode_type))</visible>
                 <include content="Object_BannerOverlay">
-                    <param name="colordiffuse">b303b585</param>
+                    <param name="colordiffuse">$VAR[ColorBanner_series_premiere]</param>
                     <param name="visible">String.IsEqual($PARAM[listitem].Property(episode_type),series_premiere)</param>
                     <param name="label">$LOCALIZE[31210]</param>
                 </include>
                 <include content="Object_BannerOverlay">
-                    <param name="colordiffuse">b30385b5</param>
+                    <param name="colordiffuse">$VAR[ColorBanner_season_premiere]</param>
                     <param name="visible">String.IsEqual($PARAM[listitem].Property(episode_type),season_premiere)</param>
                     <param name="label">$LOCALIZE[31211]</param>
                 </include>
                 <include content="Object_BannerOverlay">
-                    <param name="colordiffuse">b385b503</param>
+                    <param name="colordiffuse">$VAR[ColorBanner_mid_season_premiere]</param>
                     <param name="visible">String.IsEqual($PARAM[listitem].Property(episode_type),mid_season_premiere)</param>
                     <param name="label">$LOCALIZE[31212]</param>
                 </include>
                 <include content="Object_BannerOverlay">
-                    <param name="colordiffuse">b38503b5</param>
+                    <param name="colordiffuse">$VAR[ColorBanner_series_finale]</param>
                     <param name="visible">String.IsEqual($PARAM[listitem].Property(episode_type),series_finale)</param>
                     <param name="label">$LOCALIZE[31214]</param>
                 </include>
                 <include content="Object_BannerOverlay">
-                    <param name="colordiffuse">b3b50385</param>
+                    <param name="colordiffuse">$VAR[ColorBanner_season_finale]</param>
                     <param name="visible">String.IsEqual($PARAM[listitem].Property(episode_type),season_finale)</param>
                     <param name="label">$LOCALIZE[31215]</param>
                 </include>
                 <include content="Object_BannerOverlay">
-                    <param name="colordiffuse">b3b58503</param>
+                    <param name="colordiffuse">$VAR[ColorBanner_mid_season_finale]</param>
                     <param name="visible">String.IsEqual($PARAM[listitem].Property(episode_type),mid_season_finale)</param>
                     <param name="label">$LOCALIZE[31218]</param>
                 </include>
@@ -1704,33 +1705,36 @@
     </include>
 
     <include name="Object_ColorSwatch">
-        <control type="label">
-            <align>center</align>
-            <font>font_hint_black</font>
-            <height>40</height>
-            <label>$PARAM[label]</label>
-            <textcolor>dialog_fg_30</textcolor>
-        </control>
-        <control type="group">
-            <top>40</top>
-            <control type="image">
-                <texture colordiffuse="$PARAM[colordiffuse]" border="20">common/box.png</texture>
-                <visible>!$PARAM[condition] | !Control.HasFocus(3000)</visible>
+        <param name="visible_label">true</param>
+        <definition>
+            <control type="label">
+                <font>font_hint_black</font>
+                <height>40</height>
+                <label>$PARAM[label]</label>
+                <textcolor>dialog_fg_30</textcolor>
+                <visible>$PARAM[visible_label]</visible>
             </control>
-            <control type="image">
-                <texture colordiffuse="$INFO[Container(3000).ListItem.Label]" border="20">common/box.png</texture>
-                <visible>$PARAM[condition]</visible>
-                <visible>Control.HasFocus(3000)</visible>
+            <control type="group">
+                <top>40</top>
+                <control type="image">
+                    <texture colordiffuse="$PARAM[colordiffuse]" border="20">common/box.png</texture>
+                    <visible>!$PARAM[condition] | !Control.HasFocus(3000)</visible>
+                </control>
+                <control type="image">
+                    <texture colordiffuse="$INFO[Container(3000).ListItem.Label]" border="20">common/box.png</texture>
+                    <visible>$PARAM[condition]</visible>
+                    <visible>Control.HasFocus(3000)</visible>
+                </control>
+                <control type="image">
+                    <centerleft>50%</centerleft>
+                    <centertop>50%</centertop>
+                    <width>16</width>
+                    <height>16</height>
+                    <texture>buttons/check-on.png</texture>
+                    <visible>$PARAM[condition]</visible>
+                </control>
             </control>
-            <control type="image">
-                <centerleft>50%</centerleft>
-                <centertop>50%</centertop>
-                <width>16</width>
-                <height>16</height>
-                <texture>buttons/check-on.png</texture>
-                <visible>$PARAM[condition]</visible>
-            </control>
-        </control>
+        </definition>
     </include>
 
     <include name="Object_Overlay">
@@ -1811,6 +1815,34 @@
                         <texture flipy="false" colordiffuse="$VAR[ColorSelected]">buttons/triangle-down.png</texture>
                         <visible>Control.HasFocus($PARAM[id])</visible>
                         <visible>!String.IsEmpty(Window.Property(FakeSpinner_$PARAM[id]))</visible>
+                    </control>
+                </control>
+            </control>
+        </definition>
+    </include>
+
+    <include name="Object_FakeDropDown">
+        <param name="colordiffuse">main_bg</param>
+        <definition>
+            <control type="group" id="$PARAM[groupid]">
+                <nested />
+                <top>-80</top>
+                <height>80</height>
+                <control type="group">
+                    <right>40</right>
+                    <height>30</height>
+                    <centertop>50%</centertop>
+                    <control type="image">
+                        <right>0</right>
+                        <width>30</width>
+                        <texture flipy="false" colordiffuse="$PARAM[colordiffuse]_30">buttons/triangle-down.png</texture>
+                        <visible>!Control.HasFocus($PARAM[id])</visible>
+                    </control>
+                    <control type="image">
+                        <right>0</right>
+                        <width>30</width>
+                        <texture flipy="false" colordiffuse="$VAR[ColorSelected]">buttons/triangle-down.png</texture>
+                        <visible>Control.HasFocus($PARAM[id])</visible>
                     </control>
                 </control>
             </control>
