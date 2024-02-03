@@ -166,35 +166,7 @@
             <param name="id">9000</param>
             <onleft condition="Control.IsVisible(3)">61</onleft>
             <onleft condition="Control.IsVisible(6)">62</onleft>
-
-
-
-            <include content="Dialog_Side_Button">
-                <param name="id">02</param>
-                <param name="label">$VAR[DialogSelect_SideButtons_Label_5]</param>
-                <param name="icon">$VAR[DialogSelect_SideButtons_Image_5]</param>
-                <param name="visible">Control.IsEnabled(5) + Control.IsVisible(5)</param>
-                <onclick>SendClick(5)</onclick>
-            </include>
-
-            <include content="Dialog_Side_Button">
-                <param name="id">03</param>
-                <param name="label">$VAR[DialogSelect_SideButtons_Label_8]</param>
-                <param name="icon">$VAR[DialogSelect_SideButtons_Image_8]</param>
-                <param name="visible">Control.IsEnabled(8) + Control.IsVisible(8)</param>
-                <onclick>SendClick(8)</onclick>
-            </include>
-
-            <include content="Dialog_Side_Button">
-                <param name="id">01</param>
-                <param name="label">$INFO[Control.GetLabel(7)]</param>
-                <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
-                <param name="visible">Control.IsEnabled(7) + Control.IsVisible(7)</param>
-                <onclick>SendClick(7)</onclick>
-            </include>
-
-            <include condition="[Window.IsActive(DialogVideoInfo.xml) | Window.IsActive(DialogMusicInfo.xml)]">DialogSelect_SideButtons_Artwork</include>
-
+            <include>Items_DialogSelect_Standard</include>
         </include>
     </include>
 
@@ -217,97 +189,85 @@
         </include>
     </include>
 
-    <include name="DialogSelect_VideoVersions">
-        <include content="Dialog_Overlay_Side">
-            <param name="dialog_size">Dimension_DialogFullMenu</param>
-            <include>Animation_Right_Delay</include>
-            <include content="Dialog_Head">
-                <visible>!Control.IsVisible(6)</visible>
-            </include>
-            <include content="Dialog_Head">
-                <param name="id">0</param>
-                <param name="label">$INFO[Control.GetLabel(1)]</param>
-                <visible>Control.IsVisible(6)</visible>
-            </include>
-            <include content="Dialog_Body">
-                <include content="Dialog_Body_Group">
-                    <include content="DialogInfo_PlotBox_Artwork">
-                        <param name="poster_icon">$INFO[Container(6).ListItem.Art(poster)]</param>
-                        <param name="landscape_icon">$INFO[Container(6).ListItem.Art(landscape)]</param>
-                    </include>
-                    <control type="group">
-                        <left>356</left>
-                        <control type="group">
-                            <left>40</left>
-                            <!-- <left>60</left>
-                            <include content="Dimension_Padding">
-                                <param name="pad">20</param>
-                            </include> -->
-                            <include content="List_DialogSelect">
-                                <param name="id">3</param>
-                                <param name="textcolor">dialog_fg</param>
-                                <pagecontrol>61</pagecontrol>
-                                <onright>61</onright>
-                                <onleft>Close</onleft>
-                            </include>
-                            <include content="List_DialogSelect">
-                                <param name="id">6</param>
-                                <param name="detailed">True</param>
-                                <param name="item_height">100</param>
-                                <param name="itemlayout_include">Layout_DialogVideoVersions</param>
-                                <pagecontrol>62</pagecontrol>
-                                <onright>62</onright>
-                                <onleft>Close</onleft>
-                                <include content="Dimension_Padding">
-                                    <param name="pad">20</param>
-                                </include>
-                            </include>
+    <include name="DialogVideoManager_Main">
+        <definition>
+            <include content="Dialog_Overlay_Side">
+                <param name="lines_right">476</param>
+                <param name="dialog_size">Dimension_DialogFullMenu</param>
+                <include>Animation_Right_Delay</include>
+                <include content="Dialog_Head">
+                    <param name="id">0</param>
+                    <param name="label">$PARAM[label_header]</param>
+                </include>
+                <include content="Dialog_Body">
+                    <include content="Dialog_Body_Group">
+
+                        <include content="DialogInfo_PlotBox_Artwork">
+                            <param name="poster_icon">$PARAM[poster_icon]</param>
+                            <param name="poster_visible">True</param>
+                            <param name="square_icon">-</param>
+                            <param name="landscape_icon">$PARAM[landscape_icon]</param>
+                        </include>
+
+                        <control type="group" id="7000">
+                            <right>496</right>
                             <control type="group">
-                                <height>40</height>
-                                <bottom>-60</bottom>
-                                <control type="label">
-                                    <aligny>center</aligny>
-                                    <align>right</align>
-                                    <font>font_hint_black</font>
-                                    <textcolor>main_fg_30</textcolor>
-                                    <label>$INFO[Container(6).NumItems,, $LOCALIZE[31022]]</label>
+                                <include content="List_DialogSelect">
+                                    <param name="id">$PARAM[id]</param>
+                                    <param name="detailed">True</param>
+                                    <param name="item_height">100</param>
+                                    <param name="textcolor">dialog_fg</param>
+                                    <param name="altfocus">true</param>
+                                    <param name="itemlayout_include">Layout_DialogVersions</param>
+                                    <onright>9000</onright>
+                                    <onleft>Close</onleft>
+                                    <right>-20</right>
+                                    <pagecontrol>62</pagecontrol>
+                                </include>
+                                <control type="group">
+                                    <height>40</height>
+                                    <bottom>-60</bottom>
+                                    <control type="label">
+                                        <aligny>center</aligny>
+                                        <align>right</align>
+                                        <font>font_hint_black</font>
+                                        <textcolor>main_fg_30</textcolor>
+                                        <label>$INFO[Container($PARAM[id]).NumItems,, $LOCALIZE[31022]]</label>
+                                    </control>
                                 </control>
                             </control>
                         </control>
-                    </control>
-                </include>
-                <include content="Dialog_Scrollbar">
-                    <param name="id">62</param>
-                    <onleft>6</onleft>
-                    <onright>9000</onright>
-                </include>
-                <include content="Dialog_Side_Grouplist">
-                    <param name="id">9000</param>
-                    <onleft>62</onleft>
-                    <include content="Dialog_Side_Button">
-                        <param name="id">01</param>
-                        <param name="label">$INFO[Control.GetLabel(5)]</param>
-                        <param name="icon">special://skin/extras/icons/circle-check.png</param>
-                        <param name="visible">Control.IsEnabled(5) + Control.IsVisible(5)</param>
-                        <onclick>SendClick(5)</onclick>
                     </include>
-                    <include content="Dialog_Side_Button">
-                        <param name="id">02</param>
-                        <param name="label">$INFO[Control.GetLabel(7)]</param>
-                        <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
-                        <param name="visible">Control.IsEnabled(7) + Control.IsVisible(7)</param>
-                        <onclick>SendClick(7)</onclick>
+                    <include content="Dialog_Scrollbar">
+                        <param name="id">62</param>
+                        <onleft>7000</onleft>
+                        <onright>9000</onright>
                     </include>
-                    <include content="Dialog_Side_Button">
-                        <param name="id">03</param>
-                        <param name="label">$INFO[Control.GetLabel(8)]</param>
-                        <param name="icon">special://skin/extras/icons/table-list.png</param>
-                        <param name="visible">Control.IsEnabled(8) + Control.IsVisible(8)</param>
-                        <onclick>SendClick(8)</onclick>
+                    <include content="Dialog_Side_Grouplist">
+                        <param name="id">9000</param>
+                        <onleft>62</onleft>
+                        <include>$PARAM[include_sidegrouplist_items]</include>
                     </include>
+
                 </include>
             </include>
+        </definition>
+    </include>
+
+    <include name="DialogSelect_VideoVersions">
+        <include content="DialogVideoManager_Main">
+            <param name="id">6</param>
+            <param name="include_sidegrouplist_items">Items_DialogSelect_Standard</param>
+            <param name="label_header">$INFO[Control.GetLabel(1)]</param>
+            <param name="poster_icon">$INFO[Container(6).ListItem.Art(poster)]</param>
+            <param name="landscape_icon">$INFO[Container(6).ListItem.Art(landscape)]</param>
         </include>
+        <include content="Object_Hidden_List">
+            <param name="id">3</param>
+        </include>
+        <control type="label" id="1">
+            <visible>false</visible>
+        </control>
     </include>
 
 </includes>

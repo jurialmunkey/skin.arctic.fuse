@@ -28,12 +28,28 @@
                 <param name="itemgap">20</param>
                 <param name="bordersize">12</param>
                 <onclick>Close</onclick>
-                <onclick condition="Integer.IsGreater(Playlist.Length(video),0) + Player.HasVideo">ActivateWindow(videoplaylist)</onclick>
-                <onclick condition="Integer.IsGreater(Playlist.Length(music),0) + Player.HasAudio">ActivateWindow(musicplaylist)</onclick>
-                <enable>[Integer.IsGreater(Playlist.Length(video),0) + Player.HasVideo] | [Integer.IsGreater(Playlist.Length(music),0) + Player.HasAudio]</enable>
+                <onclick condition="Integer.IsGreater(Playlist.Length(video),0) + [Player.HasVideo | Integer.IsEqual(Playlist.Length(music),0)]">ActivateWindow(videoplaylist)</onclick>
+                <onclick condition="Integer.IsGreater(Playlist.Length(music),0) + !Player.HasVideo">ActivateWindow(musicplaylist)</onclick>
+                <enable>[Integer.IsGreater(Playlist.Length(video),0) + [Player.HasVideo | Integer.IsEqual(Playlist.Length(music),0)]] | [Integer.IsGreater(Playlist.Length(music),0) + !Player.HasVideo]</enable>
             </include>
             <include content="OSD_Button">
                 <param name="visible">true</param>
+                <param name="size">80</param>
+                <param name="icon">$VAR[Image_OSD_PausePlay]</param>
+                <param name="id">6003</param>
+                <param name="groupid">6103</param>
+                <param name="grouplist">true</param>
+                <param name="icon_colordiffuse">dialog_fg_70</param>
+                <param name="itemgap">20</param>
+                <param name="bordersize">12</param>
+                <onclick condition="Player.HasMedia">PlayerControl(Play)</onclick>
+                <onclick condition="!Player.HasMedia">Close</onclick>
+                <onclick condition="!Player.HasMedia + Integer.IsGreater(Playlist.Length(music),0)">PlayMedia(playlistmusic://,isdir,playlist_type_hint=0)</onclick>
+                <onclick condition="!Player.HasMedia + !Integer.IsGreater(Playlist.Length(music),0)">PlayMedia(playlistvideo://,isdir,playlist_type_hint=1)</onclick>
+                <enable>Player.HasMedia | Integer.IsGreater(Playlist.Length(video),0) | Integer.IsGreater(Playlist.Length(music),0)</enable>
+            </include>
+            <include content="OSD_Button">
+                <param name="visible">[!Player.HasVideo]</param>
                 <param name="size">80</param>
                 <param name="icon">special://skin/extras/icons/forward-step.png</param>
                 <param name="flipx">true</param>
@@ -47,16 +63,17 @@
                 <enable>Player.HasMedia</enable>
             </include>
             <include content="OSD_Button">
-                <param name="visible">true</param>
+                <param name="visible">[Player.HasVideo]</param>
                 <param name="size">80</param>
-                <param name="icon">$VAR[Image_OSD_PausePlay]</param>
-                <param name="id">6003</param>
-                <param name="groupid">6103</param>
+                <param name="icon">special://skin/extras/icons/stop.png</param>
+                <param name="flipx">false</param>
+                <param name="id">6006</param>
+                <param name="groupid">6106</param>
                 <param name="grouplist">true</param>
                 <param name="icon_colordiffuse">dialog_fg_70</param>
                 <param name="itemgap">20</param>
                 <param name="bordersize">12</param>
-                <onclick>PlayerControl(Play)</onclick>
+                <onclick>PlayerControl(Stop)</onclick>
                 <enable>Player.HasMedia</enable>
             </include>
             <include content="OSD_Button">
@@ -84,7 +101,7 @@
                 <param name="icon_colordiffuse">dialog_fg_70</param>
                 <param name="itemgap">20</param>
                 <param name="bordersize">12</param>
-                <onclick>Close</onclick>
+                <onclick>Dialog.Close(all,true)</onclick>
                 <onclick>Fullscreen</onclick>
                 <enable>Player.HasMedia</enable>
             </include>
