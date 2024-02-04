@@ -280,11 +280,13 @@
         <param name="windowopen_condition">[Window.Previous(fullscreenvideo) | Window.Previous(visualisation) | $EXP[Exp_SettingsDialogs_Prev] | Window.Previous(weather) | Window.IsVisible(weather) | [[Window.IsVisible(MyPVRChannels.xml) | Window.IsVisible(MyPVRGuide.xml) | Window.Previous(MyPVRChannels.xml) | Window.Previous(MyPVRGuide.xml)] + !Skin.HasSetting(Views.UseHalfPVRGuide)]]</param>
         <definition>
             <include content="Animation_Fade_Out">
-                <param name="condition">[$PARAM[windowclose_condition]]</param>
+                <!-- <param name="condition">[$PARAM[windowclose_condition]]</param> -->
+                <param name="condition">String.IsEmpty(Window(Home).Property(WindowTransition))</param>
                 <param name="type">WindowClose</param>
             </include>
             <include content="Animation_Slide_In">
-                <param name="condition">[$PARAM[windowopen_condition]]</param>
+                <!-- <param name="condition">[$PARAM[windowopen_condition]]</param> -->
+                <param name="condition">String.IsEmpty(Window(Home).Property(WindowTransition))</param>
                 <param name="type">WindowOpen</param>
                 <param name="posx">320</param>
                 <param name="delay">0</param>
@@ -296,9 +298,9 @@
     <include name="Animation_Half_WindowChange">
         <param name="posy">220</param>
         <param name="windowopen_up">Window.Previous(1181)</param>
-        <param name="windowopen_down">[Window.Previous(1105) + !String.IsEmpty(Window(1105).Property(WindowTransition))]</param>
+        <param name="windowopen_down">[Window.Previous(1105) + !String.IsEmpty(Window(Home).Property(WindowTransition))]</param>
         <param name="windowclose_up">Window.Next(1181)</param>
-        <param name="windowclose_down">[Window.Next(1105) + !String.IsEmpty(Window(1105).Property(WindowTransition))]</param>
+        <param name="windowclose_down">[Window.Next(1105) + !String.IsEmpty(Window(Home).Property(WindowTransition))]</param>
         <definition>
             <include content="Animation_Widgets_Grouplist_Slide_Out">
                 <param name="condition">$PARAM[windowclose_down]</param>

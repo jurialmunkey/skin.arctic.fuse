@@ -118,21 +118,22 @@
     <include name="Action_Widget_Top">
         <param name="bump">!Skin.String(Navigation.OnUp,Search)</param>
         <param name="move">Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + !String.IsEmpty(Container(303).ListItemNoWrap(-1).Property(guid)) + !Skin.HasSetting(Hub.Home.DisableMoveBetweenGroups)</param>
+        <param name="condition">true</param>
         <definition>
 
             <!-- Scroll classic home -->
-            <onup condition="$PARAM[move] + !Skin.HasSetting(Hubs.WidgetSelector)">$INFO[Container(303).ListItem(-1).Property(widgets_setfocus_bottom)]</onup>
-            <onup condition="$PARAM[move] + Skin.HasSetting(Hubs.WidgetSelector)">$INFO[Container(303).ListItem(-1).Property(widgets_setfocus_top)]</onup>
-            <onup condition="$PARAM[move]">SetProperty(WidgetGroup.Movement,Up)</onup>
-            <onup condition="$PARAM[move]">Control.Move(303,-1)</onup>
+            <onup condition="$PARAM[condition] + $PARAM[move] + !Skin.HasSetting(Hubs.WidgetSelector)">$INFO[Container(303).ListItem(-1).Property(widgets_setfocus_bottom)]</onup>
+            <onup condition="$PARAM[condition] + $PARAM[move] + Skin.HasSetting(Hubs.WidgetSelector)">$INFO[Container(303).ListItem(-1).Property(widgets_setfocus_top)]</onup>
+            <onup condition="$PARAM[condition] + $PARAM[move]">SetProperty(WidgetGroup.Movement,Up)</onup>
+            <onup condition="$PARAM[condition] + $PARAM[move]">Control.Move(303,-1)</onup>
 
             <!-- Go to search -->
-            <onup condition="![$PARAM[move]] + ![$PARAM[bump]]">SetProperty(WindowTransition,True,1105)</onup>
-            <onup condition="![$PARAM[move]] + ![$PARAM[bump]]">ActivateWindow(1105)</onup>
+            <onup condition="$PARAM[condition] + ![$PARAM[move]] + ![$PARAM[bump]]">SetProperty(WindowTransition,True,Home)</onup>
+            <onup condition="$PARAM[condition] + ![$PARAM[move]] + ![$PARAM[bump]]">ActivateWindow(1105)</onup>
 
             <!-- Bump -->
-            <onup condition="![$PARAM[move]] + $PARAM[bump]">SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onup>
-            <onup condition="![$PARAM[move]] + $PARAM[bump]">333</onup>
+            <onup condition="$PARAM[condition] + ![$PARAM[move]] + $PARAM[bump]">SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onup>
+            <onup condition="$PARAM[condition] + ![$PARAM[move]] + $PARAM[bump]">333</onup>
 
         </definition>
     </include>
@@ -329,6 +330,7 @@
             <ondown condition="$PARAM[condition] + ![String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,set) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,episode)]">ClearProperty(Genre_Title,1181)</ondown>
             <ondown condition="$PARAM[condition] + ![String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,set) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,episode)]">ClearProperty(Genre_Query,1181)</ondown>
 
+            <ondown condition="$PARAM[condition]">SetProperty(WindowTransition,True,Home)</ondown>
             <ondown condition="$PARAM[condition]">ActivateWindow(1181)</ondown>
         </definition>
     </include>
