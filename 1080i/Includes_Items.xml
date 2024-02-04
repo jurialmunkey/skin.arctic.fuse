@@ -196,7 +196,7 @@
         <param name="visible">true</param>
         <param name="dialog">true</param>
         <definition>
-            <include content="Settings_Button" description="Wizard">
+            <include content="Settings_Button" description="Setup Wizard">
                 <param name="id">$PARAM[baseid]01</param>
                 <param name="dialog">$PARAM[dialog]</param>
                 <param name="control">button</param>
@@ -207,7 +207,15 @@
                 <visible>$PARAM[visible]</visible>
             </include>
 
-            <include content="Settings_Label" description="SideMenu Label">
+            <include content="Settings_Button" description="Customise Widgets">
+                <param name="id">$PARAM[baseid]04</param>
+                <param name="dialog">$PARAM[dialog]</param>
+                <label>$LOCALIZE[31496]</label>
+                <onclick>ActivateWindow(1115)</onclick>
+                <visible>$PARAM[visible]</visible>
+            </include>
+
+            <include content="Settings_Label" description="Label: Side Menu">
                 <param name="id">$PARAM[baseid]02</param>
                 <param name="dialog">$PARAM[dialog]</param>
                 <label>$LOCALIZE[31416]</label>
@@ -217,11 +225,22 @@
                 <param name="id">$PARAM[baseid]03</param>
                 <param name="dialog">$PARAM[dialog]</param>
                 <param name="control">button</param>
-                <label>$LOCALIZE[31149]</label>
-                <label2>$INFO[Skin.String(Home.SideMenuCollapse),$LOCALIZE[31497]: ,]</label2>
-                <onclick condition="Window.IsVisible(1118)">RunScript(script.skinvariables,run_dialog=select,heading=$LOCALIZE[31149],separator=||,list=Always||Library||Expand||Never,preselect=$VAR[Label_Settings_MenuStyle_Preselect],"executebuiltin=Skin.SetString(Home.SideMenuCollapse,{v})||sleep=0.2||ReloadSkin()||sleep=0.2||ActivateWindow(1118)")</onclick>
-                <onclick condition="!Window.IsVisible(1118)">RunScript(script.skinvariables,run_dialog=select,heading=$LOCALIZE[31149],separator=||,list=Always||Library||Expand||Never,preselect=$VAR[Label_Settings_MenuStyle_Preselect],"executebuiltin=Skin.SetString(Home.SideMenuCollapse,{v})||sleep=0.2||ReloadSkin()")</onclick>
+                <label>$LOCALIZE[31497]</label>
+                <label2>$INFO[Skin.String(Home.SideMenuCollapse)]</label2>
+                <onclick condition="Skin.String(Home.SideMenuCollapse,Never)">Skin.SetString(Home.SideMenuCollapse,Library)</onclick>
+                <onclick condition="Skin.String(Home.SideMenuCollapse,Library)">Skin.SetString(Home.SideMenuCollapse,Always)</onclick>
+                <onclick condition="!Skin.String(Home.SideMenuCollapse,Never) + !Skin.String(Home.SideMenuCollapse,Library)">Skin.SetString(Home.SideMenuCollapse,Never)</onclick>
                 <visible>$PARAM[visible]</visible>
+            </include>
+            <include content="Settings_Button" description="Expand side menu labels on focus">
+                <param name="id">$PARAM[baseid]12</param>
+                <param name="dialog">$PARAM[dialog]</param>
+                <param name="control">radiobutton</param>
+                <label>Menu expands to display labels</label>
+                <onclick>Skin.ToggleSetting(SideMenu.ExpandLabels)</onclick>
+                <selected>Skin.HasSetting(SideMenu.ExpandLabels)</selected>
+                <visible>$PARAM[visible]</visible>
+                <visible>Skin.String(Home.SideMenuCollapse,Never) | Skin.String(Home.SideMenuCollapse,Library)</visible>
             </include>
             <include content="Settings_Button" description="">
                 <param name="id">$PARAM[baseid]11</param>
@@ -233,20 +252,11 @@
                 <selected>!Skin.HasSetting(Home.SideMenu.DisableSearchOptions)</selected>
                 <visible>$PARAM[visible]</visible>
             </include>
-            <include content="Settings_ButtonImage" description="Home Menu">
-                <param name="id">$PARAM[baseid]04</param>
-                <param name="dialog">$PARAM[dialog]</param>
-                <param name="groupid">8107</param>
-                <param name="icon">special://skin/extras/icons/shapes.png</param>
-                <label>$LOCALIZE[31496]</label>
-                <onclick>ActivateWindow(1115)</onclick>
-                <visible>$PARAM[visible]</visible>
-            </include>
 
             <include content="Settings_Label" description="SideMenu Label">
                 <param name="id">$PARAM[baseid]07</param>
                 <param name="dialog">$PARAM[dialog]</param>
-                <label>$LOCALIZE[33063]</label>
+                <label>$LOCALIZE[31026] $LOCALIZE[33063]</label>
                 <visible>$PARAM[visible]</visible>
             </include>
 
