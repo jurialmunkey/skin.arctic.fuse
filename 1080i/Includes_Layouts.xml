@@ -1977,7 +1977,6 @@
         <param name="label">$INFO[ListItem.Label]</param>
         <definition>
             <control type="group">
-                <nested />
                 <left>120</left>
                 <width>400</width>
                 <height>35</height>
@@ -2244,18 +2243,21 @@
                         <left>-20</left>
                         <right>-20</right>
                     </include>
-                    <include content="Object_InfoCircle" condition="$PARAM[selected]">
-                        <param name="icon">special://skin/extras/icons/person.png</param>
-                        <param name="role">$INFO[ListItem.Label]</param>
-                        <param name="name">$INFO[ListItem.Rating,, - ]$INFO[ListItem.Premiered]</param>
-                        <param name="textcolor_top">$VAR[ColorSelected]</param>
-                        <param name="textcolor_sub">$VAR[ColorSelected]</param>
-                    </include>
-                    <include content="Object_InfoCircle" condition="!$PARAM[selected]">
-                        <param name="icon">special://skin/extras/icons/person.png</param>
-                        <param name="role">$INFO[ListItem.Label]</param>
-                        <param name="name">$INFO[ListItem.Rating,, - ]$INFO[ListItem.Premiered]</param>
-                    </include>
+                    <control type="group">
+                        <left>-40</left>
+                        <include content="Object_InfoCircle" condition="$PARAM[selected]">
+                            <param name="icon">special://skin/extras/icons/person.png</param>
+                            <param name="role">$INFO[ListItem.Label]</param>
+                            <param name="name">$INFO[ListItem.Rating,, - ]$INFO[ListItem.Premiered]</param>
+                            <param name="textcolor_top">$VAR[ColorSelected]</param>
+                            <param name="textcolor_sub">$VAR[ColorSelected]</param>
+                        </include>
+                        <include content="Object_InfoCircle" condition="!$PARAM[selected]">
+                            <param name="icon">special://skin/extras/icons/person.png</param>
+                            <param name="role">$INFO[ListItem.Label]</param>
+                            <param name="name">$INFO[ListItem.Rating,, - ]$INFO[ListItem.Premiered]</param>
+                        </include>
+                    </control>
                 </control>
                 <control type="textbox">
                     <font>font_mini_plot</font>
@@ -2479,50 +2481,55 @@
                     <control type="group">
                         <top>15</top>
                         <height>80</height>
-                        <include content="Object_InfoCircle_Text_Top">
-                            <label>$INFO[$PARAM[listitem].Label]</label>
-                            <textcolor>$PARAM[textcolor]_90</textcolor>
-                            <selectedcolor>$PARAM[textcolor]_90</selectedcolor>
-                            <visible>String.IsEmpty($PARAM[listitem].Title) | String.IsEmpty($PARAM[listitem].ChannelNumberLabel)</visible>
-                        </include>
-                        <include content="Object_InfoCircle_Text_Top">
-                            <label>$INFO[$PARAM[listitem].Title]</label>
-                            <textcolor>$PARAM[textcolor]_90</textcolor>
-                            <selectedcolor>$PARAM[textcolor]_90</selectedcolor>
-                            <align>left</align>
-                            <visible>!String.IsEmpty($PARAM[listitem].Title) + !String.IsEmpty($PARAM[listitem].ChannelNumberLabel)</visible>
-                        </include>
-                        <include content="Object_InfoCircle_Text_Top">
-                            <label>$INFO[$PARAM[listitem].Season,S,]$INFO[$PARAM[listitem].Episode,E,]</label>
-                            <textcolor>$PARAM[textcolor]_90</textcolor>
-                            <selectedcolor>$PARAM[textcolor]_90</selectedcolor>
-                            <align>right</align>
-                            <visible>!String.IsEmpty($PARAM[listitem].ChannelNumberLabel)</visible>
-                        </include>
 
-                        <include content="Object_InfoCircle_Text_Sub">
-                            <label>$VAR[Label_Landscape_Lower$PARAM[affix]]</label>
-                            <textcolor>$PARAM[textcolor]_70</textcolor>
-                            <selectedcolor>$PARAM[textcolor]_70</selectedcolor>
-                            <align>left</align>
-                        </include>
-                        <include content="Object_InfoCircle_Text_Sub">
-                            <label>$INFO[$PARAM[listitem].StartTime]$INFO[$PARAM[listitem].EndTime, - ,]</label>
-                            <textcolor>$PARAM[textcolor]_70</textcolor>
-                            <selectedcolor>$PARAM[textcolor]_70</selectedcolor>
-                            <align>right</align>
-                            <visible>!String.IsEmpty($PARAM[listitem].ChannelNumberLabel)</visible>
-                            <visible>ListItem.InProgress</visible>
-                        </include>
-                        <include content="Object_InfoCircle_Text_Sub">
-                            <label>$INFO[$PARAM[listitem].Date]</label>
-                            <textcolor>$PARAM[textcolor]_70</textcolor>
-                            <selectedcolor>$PARAM[textcolor]_70</selectedcolor>
-                            <align>right</align>
-                            <visible>!String.IsEmpty($PARAM[listitem].ChannelNumberLabel)</visible>
-                            <visible>!ListItem.InProgress</visible>
-                            <visible>!String.ISEmpty($PARAM[listitem].Date)</visible>
-                        </include>
+                        <control type="group">
+                            <include content="Object_InfoCircle_Text_Top">
+                                <label>$INFO[$PARAM[listitem].Label]</label>
+                                <textcolor>$PARAM[textcolor]_90</textcolor>
+                                <selectedcolor>$PARAM[textcolor]_90</selectedcolor>
+                                <visible>String.IsEmpty($PARAM[listitem].Title) | String.IsEmpty($PARAM[listitem].ChannelNumberLabel)</visible>
+                            </include>
+                            <include content="Object_InfoCircle_Text_Top">
+                                <label>$INFO[$PARAM[listitem].Title]</label>
+                                <textcolor>$PARAM[textcolor]_90</textcolor>
+                                <selectedcolor>$PARAM[textcolor]_90</selectedcolor>
+                                <align>left</align>
+                                <visible>!String.IsEmpty($PARAM[listitem].Title) + !String.IsEmpty($PARAM[listitem].ChannelNumberLabel)</visible>
+                            </include>
+                            <include content="Object_InfoCircle_Text_Top">
+                                <label>$INFO[$PARAM[listitem].Season,S,]$INFO[$PARAM[listitem].Episode,E,]</label>
+                                <textcolor>$PARAM[textcolor]_90</textcolor>
+                                <selectedcolor>$PARAM[textcolor]_90</selectedcolor>
+                                <align>right</align>
+                                <visible>!String.IsEmpty($PARAM[listitem].ChannelNumberLabel)</visible>
+                            </include>
+                        </control>
+
+                        <control type="group">
+                            <include content="Object_InfoCircle_Text_Sub">
+                                <label>$VAR[Label_Landscape_Lower$PARAM[affix]]</label>
+                                <textcolor>$PARAM[textcolor]_70</textcolor>
+                                <selectedcolor>$PARAM[textcolor]_70</selectedcolor>
+                                <align>left</align>
+                            </include>
+                            <include content="Object_InfoCircle_Text_Sub">
+                                <label>$INFO[$PARAM[listitem].StartTime]$INFO[$PARAM[listitem].EndTime, - ,]</label>
+                                <textcolor>$PARAM[textcolor]_70</textcolor>
+                                <selectedcolor>$PARAM[textcolor]_70</selectedcolor>
+                                <align>right</align>
+                                <visible>!String.IsEmpty($PARAM[listitem].ChannelNumberLabel)</visible>
+                                <visible>ListItem.InProgress</visible>
+                            </include>
+                            <include content="Object_InfoCircle_Text_Sub">
+                                <label>$INFO[$PARAM[listitem].Date]</label>
+                                <textcolor>$PARAM[textcolor]_70</textcolor>
+                                <selectedcolor>$PARAM[textcolor]_70</selectedcolor>
+                                <align>right</align>
+                                <visible>!String.IsEmpty($PARAM[listitem].ChannelNumberLabel)</visible>
+                                <visible>!ListItem.InProgress</visible>
+                                <visible>!String.ISEmpty($PARAM[listitem].Date)</visible>
+                            </include>
+                        </control>
                     </control>
                 </include>
 

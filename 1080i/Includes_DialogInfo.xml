@@ -527,7 +527,7 @@
                     <param name="role">$LOCALIZE[31064]</param>
                     <param name="name">$INFO[Container(99950).ListItem.Property(Awards)]</param>
                     <left>0</left>
-                    <top>0</top>
+                    <top>-15</top>
                 </include>
                 <control type="textbox">
                     <font>font_mini_plot</font>
@@ -704,6 +704,8 @@
         <param name="radioround">false</param>
         <param name="radiocross">false</param>
         <param name="radiocheck">true</param>
+        <param name="zoom_in_delay">0</param>
+        <param name="zoom_in_include">false</param>
         <definition>
             <control type="$PARAM[control]" id="$PARAM[id]">
                 <include content="Object_Top" condition="$PARAM[vertical]">
@@ -712,6 +714,11 @@
                 <include content="Object_Left" condition="!$PARAM[vertical]">
                     <param name="left">$PARAM[itemgap]</param>
                 </include>
+
+                <include content="Animation_DialogInfoButton_ZoomIn" condition="$PARAM[zoom_in_include]">
+                    <param name="delay">$PARAM[zoom_in_delay]</param>
+                </include>
+
                 <height>$PARAM[back_size]</height>
                 <width>$PARAM[back_size]</width>
                 <include>Texture_CircleButtonDialog_Highlight_Focus_V</include>
@@ -749,6 +756,10 @@
                 <nested />
             </control>
             <control type="group" id="$PARAM[groupid]">
+
+                <include content="Animation_DialogInfoButton_ZoomIn" condition="$PARAM[zoom_in_include]">
+                    <param name="delay">$PARAM[zoom_in_delay]</param>
+                </include>
 
                 <include content="Object_Top" condition="$PARAM[vertical]">
                     <param name="top">-110</param>
@@ -1284,16 +1295,17 @@
                 <param name="onlist">5000</param>
             </include>
             <ondown>5000</ondown>
+            <onup condition="Skin.String(Navigation.OnDown,Explore) + Window.IsVisible(1181)">SetProperty(WindowTransition,True,Home)</onup>
             <onup>PreviousMenu</onup>
         </include>
         <include content="Furniture_Top">
             <param name="label">$LOCALIZE[31148]</param>
         </include>
-        <!-- <include>Furniture_Bottom_Right</include> -->
     </include>
 
     <include name="DialogInfo_Recommendations_Widgets_Grouplist">
         <control type="grouplist" id="5000">
+            <onup condition="Skin.String(Navigation.OnDown,Explore) + Window.IsVisible(1181)">SetProperty(WindowTransition,True,Home)</onup>
             <onup>PreviousMenu</onup>
             <ondown>330</ondown>
             <include content="Animation_Half_WindowChange">

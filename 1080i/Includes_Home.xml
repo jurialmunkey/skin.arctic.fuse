@@ -34,7 +34,7 @@
                     <focusposition>2</focusposition>
                     <movement>2</movement>
 
-                    <width>560</width>
+                    <width>view_side</width>
 
                     <onup condition="$EXP[Exp_HomeMenu_DontHide] + !Skin.HasSetting(Home.SideMenu.DisableSearchOptions)">308</onup>
                     <onup condition="$EXP[Exp_HomeMenu_DontHide] + Skin.HasSetting(Home.SideMenu.DisableSearchOptions)">$PARAM[id]</onup>
@@ -44,7 +44,6 @@
                     <ondown condition="!$EXP[Exp_HomeMenu_DontHide]">$PARAM[onlist]</ondown>
                     <ondown condition="!$EXP[Exp_HomeMenu_DontHide]">SetFocus($PARAM[onlist])</ondown>
 
-                    <hitrect x="40" w="120" />
                     <onfocus>CancelAlarm(SplashTimeOut,silent)</onfocus>
 
                     <onfocus>ClearProperty(WidgetGroup.Movement)</onfocus>
@@ -58,11 +57,13 @@
                     </include>
                     <orientation>vertical</orientation>
                     <scrolltime tween="quadratic">400</scrolltime>
+
                     <include content="Home_Menu_List_ItemLayout">
                         <param name="id">$PARAM[id]</param>
                         <param name="hidden_button">Home_Menu_List_HiddenButton</param>
                         <param name="hidden_button_enabled">Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)</param>
                     </include>
+
                     <include>$PARAM[items_include]</include>
                 </control>
             </control>
@@ -81,12 +82,10 @@
     </include>
 
     <include name="Home_Menu_List_ItemLayout">
-        <param name="use_labels">Skin.String(Home.SideMenuCollapse,Expand)</param>
         <param name="layoutnf">[![!Window.IsVisible(1105) + Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + $EXP[Exp_HomeMenu_DontHide]] + $EXP[Exp_HomeMenu_IsSelected]]</param>
         <param name="layoutfo">[[![!Window.IsVisible(1105) + Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + $EXP[Exp_HomeMenu_DontHide]] + $EXP[Exp_HomeMenu_IsSelected]] | [!Window.IsVisible(1105) + Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + $EXP[Exp_HomeMenu_DontHide]]]</param>
-        <param name="itemlayout_w">560</param>
         <definition>
-            <itemlayout height="100" width="$PARAM[itemlayout_w]">
+            <itemlayout height="100" width="100">
                 <control type="group">
                     <left>view_menu</left>
                     <top>40</top>
@@ -97,13 +96,9 @@
                         <param name="layoutfo">$PARAM[layoutnf]</param>
                         <param name="vertical">$PARAM[vertical]</param>
                     </include>
-                    <include content="Layout_Home_Menu_Label" condition="$PARAM[use_labels]">
-                        <param name="selected">false</param>
-                        <top>20</top>
-                    </include>
                 </control>
             </itemlayout>
-            <focusedlayout height="100" width="$PARAM[itemlayout_w]">
+            <focusedlayout height="100" width="100">
                 <include condition="$PARAM[hidden_button_enabled]">$PARAM[hidden_button]</include>
                 <control type="group">
                     <left>view_menu</left>
@@ -127,11 +122,6 @@
                             <param name="vertical">$PARAM[vertical]</param>
                         </include>
                     </control>
-                    <include content="Layout_Home_Menu_Label" condition="$PARAM[use_labels]">
-                        <param name="detailed">true</param>
-                        <param name="selected">Control.HasFocus(303)</param>
-                        <top>20</top>
-                    </include>
                 </control>
             </focusedlayout>
         </definition>
@@ -185,32 +175,83 @@
         </definition>
     </include>
 
+    <include name="Home_Menu_Fade_Labels">
+        <control type="group">
+            <width>480</width>
+            <visible>$EXP[Exp_HomeMenu_HasFocus]</visible>
+            <include content="Animation_Slide_In">
+                <param name="type">Visible</param>
+                <param name="posx">-80</param>
+            </include>
+            <include content="Animation_Slide_Out">
+                <param name="type">Hidden</param>
+                <param name="posx">-80</param>
+            </include>
+            <include content="Object_Dim_Side">
+                <param name="flipx">false</param>
+                <left>-320</left>
+                <right>-160</right>
+            </include>
+            <include content="Object_Dim_Side">
+                <param name="flipx">false</param>
+                <left>-320</left>
+                <right>-320</right>
+            </include>
+        </control>
+        <control type="grouplist">
+            <top>320</top>
+            <left>80</left>
+            <orientation>vertical</orientation>
+            <animation effect="slide" end="0,-100" time="400" tween="quadratic" reversible="false" condition="Container(303).OnScrollNext">Conditional</animation>
+            <animation effect="slide" end="0,100" time="400" tween="quadratic" reversible="false" condition="Container(303).OnScrollPrevious">Conditional</animation>
+            <control type="group">
+                <height>100</height>
+                <include content="Layout_Home_Menu_Label">
+                    <param name="detailed">true</param>
+                    <param name="selected">[Control.HasFocus(303) + String.IsEqual(Container(303).ListItemPosition(0).CurrentItem,Container(303).ListItem.CurrentItem)]</param>
+                    <param name="label">$INFO[Container(303).ListItemPosition(0).Label]</param>
+                </include>
+            </control>
+            <control type="group">
+                <height>100</height>
+                <include content="Layout_Home_Menu_Label">
+                    <param name="detailed">true</param>
+                    <param name="selected">[Control.HasFocus(303) + String.IsEqual(Container(303).ListItemPosition(1).CurrentItem,Container(303).ListItem.CurrentItem)]</param>
+                    <param name="label">$INFO[Container(303).ListItemPosition(1).Label]</param>
+                </include>
+            </control>
+            <control type="group">
+                <height>100</height>
+                <include content="Layout_Home_Menu_Label">
+                    <param name="detailed">true</param>
+                    <param name="selected">[Control.HasFocus(303) + String.IsEqual(Container(303).ListItemPosition(2).CurrentItem,Container(303).ListItem.CurrentItem)]</param>
+                    <param name="label">$INFO[Container(303).ListItemPosition(2).Label]</param>
+                </include>
+            </control>
+            <control type="group">
+                <height>100</height>
+                <include content="Layout_Home_Menu_Label">
+                    <param name="detailed">true</param>
+                    <param name="selected">[Control.HasFocus(303) + String.IsEqual(Container(303).ListItemPosition(3).CurrentItem,Container(303).ListItem.CurrentItem)]</param>
+                    <param name="label">$INFO[Container(303).ListItemPosition(3).Label]</param>
+                </include>
+            </control>
+            <control type="group">
+                <height>100</height>
+                <include content="Layout_Home_Menu_Label">
+                    <param name="detailed">true</param>
+                    <param name="selected">[Control.HasFocus(303) + String.IsEqual(Container(303).ListItemPosition(4).CurrentItem,Container(303).ListItem.CurrentItem)]</param>
+                    <param name="label">$INFO[Container(303).ListItemPosition(4).Label]</param>
+                </include>
+            </control>
+        </control>
+    </include>
+
     <include name="Home_Menu">
         <control type="group">
             <visible>!$EXP[Exp_InfoDialogs]</visible>
-            <include content="Object_Control" condition="Skin.String(Home.SideMenuCollapse,Expand)">
-                <param name="control">group</param>
-                <width>480</width>
-                <visible>$EXP[Exp_HomeMenu_HasFocus]</visible>
-                <include content="Animation_Slide_In">
-                    <param name="type">Visible</param>
-                    <param name="posx">-80</param>
-                </include>
-                <include content="Animation_Slide_Out">
-                    <param name="type">Hidden</param>
-                    <param name="posx">-80</param>
-                </include>
-                <include content="Object_Dim_Side">
-                    <param name="flipx">false</param>
-                    <left>-320</left>
-                    <right>-160</right>
-                </include>
-                <include content="Object_Dim_Side">
-                    <param name="flipx">false</param>
-                    <left>-320</left>
-                    <right>-320</right>
-                </include>
-            </include>
+
+            <include condition="$EXP[Exp_HomeMenu_DontHide] + Skin.HasSetting(SideMenu.ExpandLabels)">Home_Menu_Fade_Labels</include>
 
             <control type="group">
                 <!-- Search -->
@@ -232,7 +273,7 @@
                     </include>
                     <left>view_menu</left>
                     <top>view_pad</top>
-                    <include content="Layout_Home_Menu_Label" condition="Skin.String(Home.SideMenuCollapse,Expand)">
+                    <include content="Layout_Home_Menu_Label" condition="Skin.HasSetting(SideMenu.ExpandLabels)">
                         <param name="detailed">true</param>
                         <param name="selected">Control.HasFocus(308)</param>
                         <param name="label">$LOCALIZE[137]</param>
@@ -255,7 +296,7 @@
                     </include>
                     <left>view_menu</left>
                     <bottom>view_pad</bottom>
-                    <include content="Layout_Home_Menu_Label" condition="Skin.String(Home.SideMenuCollapse,Expand)">
+                    <include content="Layout_Home_Menu_Label" condition="Skin.HasSetting(SideMenu.ExpandLabels)">
                         <param name="detailed">true</param>
                         <param name="selected">Control.HasFocus(309)</param>
                         <param name="label">$LOCALIZE[5]</param>
