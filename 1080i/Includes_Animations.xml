@@ -276,16 +276,20 @@
 
     <!-- Window Transition For Views -->
     <include name="Animation_View_WindowChange">
-        <include content="Animation_Fade_Out">
-            <param name="condition">[Window.Next(fullscreenvideo) | Window.Next(visualisation) | $EXP[Exp_SettingsDialogs_Next] | Window.Next(weather) | Window.IsVisible(weather) | [[Window.IsVisible(MyPVRChannels.xml) | Window.IsVisible(MyPVRGuide.xml) | Window.Next(MyPVRChannels.xml) | Window.Next(MyPVRGuide.xml)] + !Skin.HasSetting(Views.UseHalfPVRGuide)]]</param>
-            <param name="type">WindowClose</param>
-        </include>
-        <include content="Animation_Slide_In">
-            <param name="condition">[Window.Previous(fullscreenvideo) | Window.Previous(visualisation) | $EXP[Exp_SettingsDialogs_Prev] | Window.Previous(weather) | Window.IsVisible(weather) | [[Window.IsVisible(MyPVRChannels.xml) | Window.IsVisible(MyPVRGuide.xml) | Window.Previous(MyPVRChannels.xml) | Window.Previous(MyPVRGuide.xml)] + !Skin.HasSetting(Views.UseHalfPVRGuide)]]</param>
-            <param name="type">WindowOpen</param>
-            <param name="posx">320</param>
-            <param name="delay">0</param>
-        </include>
+        <param name="windowclose_condition">[Window.Next(fullscreenvideo) | Window.Next(visualisation) | $EXP[Exp_SettingsDialogs_Next] | Window.Next(weather) | Window.IsVisible(weather) | [[Window.IsVisible(MyPVRChannels.xml) | Window.IsVisible(MyPVRGuide.xml) | Window.Next(MyPVRChannels.xml) | Window.Next(MyPVRGuide.xml)] + !Skin.HasSetting(Views.UseHalfPVRGuide)]]</param>
+        <param name="windowopen_condition">[Window.Previous(fullscreenvideo) | Window.Previous(visualisation) | $EXP[Exp_SettingsDialogs_Prev] | Window.Previous(weather) | Window.IsVisible(weather) | [[Window.IsVisible(MyPVRChannels.xml) | Window.IsVisible(MyPVRGuide.xml) | Window.Previous(MyPVRChannels.xml) | Window.Previous(MyPVRGuide.xml)] + !Skin.HasSetting(Views.UseHalfPVRGuide)]]</param>
+        <definition>
+            <include content="Animation_Fade_Out">
+                <param name="condition">[$PARAM[windowclose_condition]]</param>
+                <param name="type">WindowClose</param>
+            </include>
+            <include content="Animation_Slide_In">
+                <param name="condition">[$PARAM[windowopen_condition]]</param>
+                <param name="type">WindowOpen</param>
+                <param name="posx">320</param>
+                <param name="delay">0</param>
+            </include>
+        </definition>
     </include>
 
     <!-- Window Transition For Views -->
@@ -440,18 +444,12 @@
     </include>
 
     <include name="Animation_Settings_WindowChange">
-        <param name="windowopen">!$EXP[Exp_SettingsDialogs_Prev]</param>
-        <param name="windowclose">!$EXP[Exp_SettingsDialogs_Next]</param>
-        <param name="windowopen_delay">400</param>
+
         <definition>
-            <animation type="WindowOpen" reversible="false" condition="$PARAM[windowopen]">
-                <effect type="fade" start="0" end="100" time="300" delay="$PARAM[windowopen_delay]" tween="sine" easing="out"/>
-                <effect type="slide" start="320" end="0" time="400" delay="$PARAM[windowopen_delay]" tween="cubic" easing="out" />
-            </animation>
-            <animation type="WindowClose" reversible="false"  condition="$PARAM[windowclose]">
-                <effect type="fade" start="100" end="0" time="300" delay="0" tween="sine" easing="out" />
-                <effect type="slide" start="0" end="320" time="300" delay="0" tween="cubic" easing="out" />
-            </animation>
+            <include content="Animation_View_WindowChange">
+                <param name="windowopen_condition">!$EXP[Exp_SettingsDialogs_Prev]</param>
+                <param name="windowclose_condition">!$EXP[Exp_SettingsDialogs_Next]</param>
+            </include>
         </definition>
     </include>
 
