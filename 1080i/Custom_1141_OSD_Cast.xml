@@ -54,11 +54,14 @@
 
                 <onfocus>SetProperty(TMDbHelper.WidgetContainer,6501,1141)</onfocus>
 
-                <onup>Close</onup>
+                <onup>PreviousMenu</onup>
 
                 <onleft>4100</onleft>
                 <onright>SetFocus(6501,0,absolute)</onright>
                 <onright>4100</onright>
+
+                <onback>SetFocus(6501,0,absolute)</onback>
+                <onback>4100</onback>
 
                 <ondown condition="Skin.String(VideoOSD.PersonCredits.CastCrew,cast)">Skin.SetString(VideoOSD.PersonCredits.WidgetInfo,films)</ondown>
                 <ondown condition="Skin.String(VideoOSD.PersonCredits.CastCrew,crew)">Skin.SetString(VideoOSD.PersonCredits.WidgetInfo,crew)</ondown>
@@ -84,7 +87,6 @@
                 <param name="control">fixedlist</param>
                 <param name="id">6539</param>
                 <param name="detailed">true</param>
-                <content>$VAR[Path_VideoOSD_PersonCredits]</content>
                 <include>OSD_List_Dimensions</include>
 
                 <onleft>4000</onleft>
@@ -97,8 +99,8 @@
                 <onup>SetProperty(TMDbHelper.WidgetContainer,6501,1141)</onup>
                 <onup>SetFocus(6501)</onup>
 
-                <onback>SetProperty(TMDbHelper.WidgetContainer,6501,1141)</onback>
-                <onback>6501</onback>
+                <onback>SetFocus(6539,0,absolute)</onback>
+                <onback>4000</onback>
 
                 <include>Animation_OSD_Dialog_VisibleChange</include>
 
@@ -109,9 +111,22 @@
                     <param name="id">6539</param>
                 </include>
 
-                <onclick>SetProperty(OSDExtendedInfo,1,Home)</onclick>
-                <onclick condition="!Player.Paused">Pause</onclick>
-                <onclick>runscript(script.wikipedia,wikipedia=$INFO[Container(6539).ListItem.Label],tmdb_type=$INFO[Container(6539).ListItem.Property(tmdb_type)])</onclick>
+                <onclick condition="!String.IsEqual(Container(6539).ListItem.Label,$LOCALIZE[31046])">SetProperty(OSDExtendedInfo,1,Home)</onclick>
+                <onclick condition="!String.IsEqual(Container(6539).ListItem.Label,$LOCALIZE[31046]) + !Player.Paused">Pause</onclick>
+                <onclick condition="!String.IsEqual(Container(6539).ListItem.Label,$LOCALIZE[31046])">runscript(script.wikipedia,wikipedia=$INFO[Container(6539).ListItem.Label],tmdb_type=$INFO[Container(6539).ListItem.Property(tmdb_type)])</onclick>
+
+                <onclick condition="String.IsEqual(Container(6539).ListItem.Label,$LOCALIZE[31046])">SetFocus(4001)</onclick>
+                <onclick condition="String.IsEqual(Container(6539).ListItem.Label,$LOCALIZE[31046])">Action(Select)</onclick>
+
+                <content>$VAR[Path_VideoOSD_PersonCredits]</content>
+
+                <content>
+                    <item>
+                        <label>$LOCALIZE[31046]</label>
+                        <icon>fallback/no-results.png</icon>
+                        <visible>Integer.IsEqual(Container(6539).NumItems,0) | [Integer.IsEqual(Container(6539).NumItems,1) + String.IsEqual(Container(6539).ListItemAbsolute(0).Label,$LOCALIZE[31046])]</visible>
+                    </item>
+                </content>
             </include>
 
 
@@ -123,6 +138,9 @@
                 <left>view_list</left>
 
                 <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),6539)</visible>
+
+                <onback>SetProperty(TMDbHelper.WidgetContainer,6501,1141)</onback>
+                <onback>6501</onback>
 
                 <onright>SetFocus(6539,0,absolute)</onright>
                 <onleft>SetFocus(6539,9999,absolute)</onleft>
