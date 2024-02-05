@@ -276,17 +276,13 @@
 
     <!-- Window Transition For Views -->
     <include name="Animation_View_WindowChange">
-        <param name="windowclose_condition">[Window.Next(fullscreenvideo) | Window.Next(visualisation) | $EXP[Exp_SettingsDialogs_Next] | Window.Next(weather) | Window.IsVisible(weather) | [[Window.IsVisible(MyPVRChannels.xml) | Window.IsVisible(MyPVRGuide.xml) | Window.Next(MyPVRChannels.xml) | Window.Next(MyPVRGuide.xml)] + !Skin.HasSetting(Views.UseHalfPVRGuide)]]</param>
-        <param name="windowopen_condition">[Window.Previous(fullscreenvideo) | Window.Previous(visualisation) | $EXP[Exp_SettingsDialogs_Prev] | Window.Previous(weather) | Window.IsVisible(weather) | [[Window.IsVisible(MyPVRChannels.xml) | Window.IsVisible(MyPVRGuide.xml) | Window.Previous(MyPVRChannels.xml) | Window.Previous(MyPVRGuide.xml)] + !Skin.HasSetting(Views.UseHalfPVRGuide)]]</param>
         <definition>
             <include content="Animation_Fade_Out">
-                <!-- <param name="condition">[$PARAM[windowclose_condition]]</param> -->
-                <param name="condition">String.IsEmpty(Window(Home).Property(WindowTransition))</param>
+                <param name="condition">[!$EXP[Exp_InfoPanelWindows] | !$EXP[Exp_InfoPanelWindows_Next]]</param>
                 <param name="type">WindowClose</param>
             </include>
             <include content="Animation_Slide_In">
-                <!-- <param name="condition">[$PARAM[windowopen_condition]]</param> -->
-                <param name="condition">String.IsEmpty(Window(Home).Property(WindowTransition))</param>
+                <param name="condition">[!$EXP[Exp_InfoPanelWindows] | !$EXP[Exp_InfoPanelWindows_Prev]]</param>
                 <param name="type">WindowOpen</param>
                 <param name="posx">320</param>
                 <param name="delay">0</param>
@@ -297,10 +293,10 @@
     <!-- Window Transition For Views -->
     <include name="Animation_Half_WindowChange">
         <param name="posy">220</param>
-        <param name="windowopen_up">Window.Previous(1181)</param>
-        <param name="windowopen_down">[Window.Previous(1105) + !String.IsEmpty(Window(Home).Property(WindowTransition))]</param>
-        <param name="windowclose_up">Window.Next(1181)</param>
-        <param name="windowclose_down">[Window.Next(1105) + !String.IsEmpty(Window(Home).Property(WindowTransition))]</param>
+        <param name="windowopen_down">[False]</param>
+        <param name="windowclose_down">[False]</param>
+        <param name="windowopen_up">[False]</param>
+        <param name="windowclose_up">[False]</param>
         <definition>
             <include content="Animation_Widgets_Grouplist_Slide_Out">
                 <param name="condition">$PARAM[windowclose_down]</param>
@@ -339,6 +335,30 @@
                 <param name="easing">out</param>
             </include>
         </definition>
+    </include>
+    <include name="Animation_Half_WindowChange_01">
+        <include content="Animation_Half_WindowChange">
+            <param name="windowopen_up">[$EXP[Exp_InfoPanelWindows_Prev_02] | $EXP[Exp_InfoPanelWindows_Prev_03] | $EXP[Exp_InfoPanelWindows_Prev_04]]</param>
+            <param name="windowclose_up">[$EXP[Exp_InfoPanelWindows_Next_02] | $EXP[Exp_InfoPanelWindows_Next_03] | $EXP[Exp_InfoPanelWindows_Next_04]]</param>
+        </include>
+    </include>
+
+    <include name="Animation_Half_WindowChange_02">
+        <include content="Animation_Half_WindowChange">
+            <param name="windowopen_down">[$EXP[Exp_InfoPanelWindows_Prev_01]]</param>
+            <param name="windowclose_down">[$EXP[Exp_InfoPanelWindows_Next_01]]</param>
+            <param name="windowopen_up">[$EXP[Exp_InfoPanelWindows_Prev_04]]</param>
+            <param name="windowclose_up">[$EXP[Exp_InfoPanelWindows_Next_04]]</param>
+        </include>
+    </include>
+
+    <include name="Animation_Half_WindowChange_03">
+        <include content="Animation_Half_WindowChange">
+            <param name="windowopen_down">[$EXP[Exp_InfoPanelWindows_Prev_01]]</param>
+            <param name="windowclose_down">[$EXP[Exp_InfoPanelWindows_Next_01]]</param>
+            <param name="windowopen_up">$EXP[Exp_InfoPanelWindows_Prev_04]</param>
+            <param name="windowclose_up">$EXP[Exp_InfoPanelWindows_Next_04]</param>
+        </include>
     </include>
 
     <!-- Home Slide In -->
