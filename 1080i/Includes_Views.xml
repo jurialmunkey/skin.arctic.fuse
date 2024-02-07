@@ -12,9 +12,6 @@
                 <visible>!Window.IsVisible(DialogGameControllers.xml)</visible>
                 <visible>!Window.IsVisible(DialogPVRChannelManager.xml)</visible>
                 <visible>!Window.IsVisible(DialogPVRGroupManager.xml)</visible>
-                <include content="Animation_ConditionalFade">
-                    <param name="condition">Control.HasFocus(19)</param>
-                </include>
                 <include content="Furniture_Top">
                     <param name="label">$PARAM[label]</param>
                 </include>
@@ -76,6 +73,11 @@
             <onfocus condition="$EXP[Exp_FilterWall_IsActive]">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideOut,focus_id=$VAR[Action_View_ContentID],clear_prop_one=MediaFilterBase,clear_prop_two=MediaFilterWall)</onfocus>
         </include>
 
+        <include content="Object_Hidden_Button">
+            <param name="id">62</param>
+            <onfocus>SetFocus($VAR[Action_View_ContentID])</onfocus>
+        </include>
+
         <!-- Dummy for bouncing focus back to view on back -->
         <include content="Object_Hidden_Button">
             <param name="id">62</param>
@@ -85,10 +87,47 @@
             <param name="id">63</param>
             <onfocus>SetFocus(50)</onfocus>
         </include>
+        <include content="Object_Hidden_Button">
+            <param name="id">67</param>
+            <onfocus condition="Skin.String(Navigation.OnDown,Explore)">Action(Down)</onfocus>
+            <include condition="Skin.String(Navigation.OnDown,Explore)">Action_View_Explore_OnDown</include>
+        </include>
+
 
         <!-- Scrollbar H -->
         <control type="group">
             <visible>$EXP[Exp_ScrollbarVisible_H] | $EXP[Exp_ScrollbarVisible_V] | !String.IsEmpty(Window.Property(MediaFilterBase))</visible>
+            <control type="grouplist">
+                <bottom>0</bottom>
+                <height>40</height>
+                <left>view_side</left>
+                <right>view_pad</right>
+                <orientation>horizontal</orientation>
+                <align>left</align>
+                <include>Animation_FadeIn_Delay</include>
+                <control type="image">
+                    <left>-10</left>
+                    <texture flipy="true" colordiffuse="main_fg_90">special://skin/extras/icons/angle-up.png</texture>
+                    <width>40</width>
+                    <height>40</height>
+                    <visible>![$EXP[Exp_ScrollbarVisible_H]] | Skin.String(Navigation.OnDown,Explore)</visible>
+                </control>
+                <control type="image">
+                    <left>-10</left>
+                    <texture flipy="false" colordiffuse="main_fg_90">special://skin/extras/icons/angle-up.png</texture>
+                    <width>40</width>
+                    <height>40</height>
+                    <visible>![![$EXP[Exp_ScrollbarVisible_H]] | Skin.String(Navigation.OnDown,Explore)]</visible>
+                </control>
+                <control type="label">
+                    <left>10</left>
+                    <font>font_tiny</font>
+                    <textcolor>main_fg_90</textcolor>
+                    <label>$VAR[Label_Scrollbar_Hint]</label>
+                    <height>35</height>
+                    <width>auto</width>
+                </control>
+            </control>
             <control type="group">
                 <height>scrollbar_w</height>
                 <centerbottom>100</centerbottom>
@@ -140,8 +179,8 @@
                         <include>Defs_Label_FooterItem</include>
                     </control>
                     <control type="group">
-                        <left>340</left>
-                        <right>340</right>
+                        <left>280</left>
+                        <right>280</right>
                         <visible>$EXP[Exp_ScrollbarVisible_H]</visible>
                         <control type="image">
                             <texture colordiffuse="main_fg_12">common/white.png</texture>
@@ -155,11 +194,12 @@
                             <include>Texture_Scrollbar_H</include>
                             <showonepage>true</showonepage>
                             <include>MediaFilter_Node_ClearAll</include>
-                            <onup>SetFocus(68)</onup>
+                            <onup>SetFocus(19)</onup>
                             <onback>68</onback>
                             <ondown condition="!Skin.String(Navigation.OnDown,Explore)">SetProperty(List.ViewContainer,60)</ondown>
                             <ondown condition="!Skin.String(Navigation.OnDown,Explore)">330</ondown>
-                            <include condition="Skin.String(Navigation.OnDown,Explore)">Action_View_Explore_OnDown</include>
+                            <ondown condition="Skin.String(Navigation.OnDown,Explore) + $EXP[Exp_FilterWall_IsActive]">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideOut,focus_id=$VAR[Action_View_ContentID],clear_prop_one=MediaFilterBase,clear_prop_two=MediaFilterWall,last_action=SetFocus(67))</ondown>
+                            <ondown condition="Skin.String(Navigation.OnDown,Explore) + ![$EXP[Exp_FilterWall_IsActive]]">SetFocus(67)</ondown>
                         </control>
                     </control>
                 </control>

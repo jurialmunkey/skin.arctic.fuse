@@ -465,13 +465,19 @@
         </include>
     </include>
 
-    <include name="MediaFilter_Node_TopRow">
-        <definition>
-            <!-- Top Row -->
+    <include name="MediaFilter_Node">
+        <control type="group">
+            <visible>!$EXP[Exp_InfoDialogs]</visible>
+            <visible>!$EXP[Exp_ScrollbarVisible_H]</visible>
+            <visible>$EXP[Exp_MediaFilter_IsActive]</visible>
+            <include content="Animation_Fade_In">
+                <param name="delay">0</param>
+                <param name="type">Visible</param>
+            </include>
             <control type="group">
-                <left>160</left>
-                <width>720</width>
-                <centertop>100</centertop>
+                <left>440</left>
+                <right>880</right>
+                <centerbottom>100</centerbottom>
                 <height>view_pad</height>
                 <include content="Object_Hidden_Button" condition="!Window.IsVisible(MyPlaylist.xml)">
                     <param name="id">9001</param>
@@ -489,67 +495,41 @@
                     <height>view_pad</height>
                     <textoffsetx>40</textoffsetx>
                     <align>left</align>
-                    <onup condition="Skin.String(Navigation.OnUp,Search)">ActivateWindow(1105)</onup>
-                    <onup condition="!Skin.String(Navigation.OnUp,Search)">SetProperty(List.ViewContainer,19)</onup>
-                    <onup condition="!Skin.String(Navigation.OnUp,Search)">333</onup>
-                    <ondown condition="!Window.IsVisible(MyPlaylist.xml)">SetFocus(68)</ondown>
-                    <ondown condition="Window.IsVisible(MyPlaylist.xml)">ClearProperty(MediaFilterBase)</ondown>
-                    <ondown condition="Window.IsVisible(MyPlaylist.xml)">ClearProperty(MediaFilterWall)</ondown>
-                    <ondown condition="Window.IsVisible(MyPlaylist.xml)">50</ondown>
+                    <onup condition="!Window.IsVisible(MyPlaylist.xml)">SetFocus(68)</onup>
+                    <onup condition="Window.IsVisible(MyPlaylist.xml)">ClearProperty(MediaFilterBase)</onup>
+                    <onup condition="Window.IsVisible(MyPlaylist.xml)">ClearProperty(MediaFilterWall)</onup>
+                    <onup condition="Window.IsVisible(MyPlaylist.xml)">50</onup>
+                    <ondown>$VAR[Action_Var_ToMediaScrollbar]</ondown>
+                    <onleft>9009</onleft>
                     <onright>9004</onright>
-                    <include content="Action_View_Movement_OnLeft" condition="$EXP[Exp_HomeMenu_DontHide]">
-                        <param name="id">19</param>
-                        <param name="onleft">9009</param>
-                        <param name="menuid">308</param>
-                    </include>
-                    <include content="Action_View_Movement_OnLeft" condition="![$EXP[Exp_HomeMenu_DontHide]]">
-                        <param name="id">19</param>
-                        <param name="onleft">9009</param>
-                    </include>
                 </control>
             </control>
             <control type="grouplist" id="9000">
-                <left>870</left>
-                <centertop>100</centertop>
+                <right>300</right>
+                <align>right</align>
+                <centerbottom>100</centerbottom>
                 <itemgap>0</itemgap>
                 <orientation>horizontal</orientation>
                 <height>160</height>
-                <right>-20</right>
                 <onleft>SetFocus(19)</onleft>
                 <onback>68</onback>
-                <onup>SetProperty(List.ViewContainer,9000)</onup>
-                <onup>333</onup>
-                <ondown condition="!Window.IsVisible(MyPlaylist.xml)">SetFocus(68)</ondown>
-                <ondown condition="Window.IsVisible(MyPlaylist.xml)">ClearProperty(MediaFilterBase)</ondown>
-                <ondown condition="Window.IsVisible(MyPlaylist.xml)">ClearProperty(MediaFilterWall)</ondown>
-                <ondown condition="Window.IsVisible(MyPlaylist.xml)">50</ondown>
+                <onup condition="!Window.IsVisible(MyPlaylist.xml)">SetFocus(68)</onup>
+                <onup condition="Window.IsVisible(MyPlaylist.xml)">ClearProperty(MediaFilterBase)</onup>
+                <onup condition="Window.IsVisible(MyPlaylist.xml)">ClearProperty(MediaFilterWall)</onup>
+                <onup condition="Window.IsVisible(MyPlaylist.xml)">50</onup>
+                <ondown>$VAR[Action_Var_ToMediaScrollbar]</ondown>
 
-                <include content="Action_View_Movement_OnRight" condition="$EXP[Exp_HomeMenu_DontHide]">
-                    <param name="id">19</param>
-                    <param name="onleft">9009</param>
-                    <param name="menuid">308</param>
-                </include>
-                <include content="Action_View_Movement_OnRight" condition="![$EXP[Exp_HomeMenu_DontHide]]">
-                    <param name="id">19</param>
-                    <param name="onleft">9009</param>
-                </include>
+                <onleft>19</onleft>
+                <onright>19</onright>
 
                 <include condition="!Window.IsVisible(MyPlaylist.xml)">MediaFilter_Node_Buttons</include>
                 <include condition="Window.IsVisible(MyPlaylist.xml)">MediaFilter_Node_PlaylistButtons</include>
 
-            </control>
-        </definition>
-    </include>
+                <control type="group" id="9999">
+                    <width>40</width>
+                </control>
 
-    <include name="MediaFilter_Node">
-        <control type="group">
-            <visible>!$EXP[Exp_InfoDialogs]</visible>
-            <visible>$EXP[Exp_MediaFilter_IsActive]</visible>
-            <include content="Animation_Fade_In">
-                <param name="delay">0</param>
-                <param name="type">Visible</param>
-            </include>
-            <include>MediaFilter_Node_TopRow</include>
+            </control>
         </control>
     </include>
 
