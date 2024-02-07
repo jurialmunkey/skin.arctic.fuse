@@ -62,6 +62,26 @@
         </content>
     </include>
 
+    <include name="Object_PosX">
+        <param name="flipped">false</param>
+        <param name="centered">false</param>
+        <param name="centerleft">50%</param>
+        <definition>
+            <include content="Object_Left" condition="![$PARAM[centered]] + ![$PARAM[flipped]]">
+                <param name="left">$PARAM[left]</param>
+            </include>
+            <include content="Object_Right" condition="![$PARAM[centered]] + $PARAM[flipped]">
+                <param name="right">$PARAM[right]</param>
+            </include>
+            <include content="Object_CenterLeft" condition="$PARAM[centered] + ![$PARAM[flipped]]">
+                <param name="centerleft">$PARAM[centerleft]</param>
+            </include>
+            <include content="Object_CenterRight" condition="$PARAM[centered] + $PARAM[flipped]">
+                <param name="centerright">$PARAM[centerright]</param>
+            </include>
+        </definition>
+    </include>
+
     <include name="Object_FocusedLayout">
         <focusedlayout width="$PARAM[width]" height="$PARAM[height]">
             <nested />
@@ -392,6 +412,14 @@
         </definition>
     </include>
 
+    <include name="Object_BusySpinner_Image">
+        <control type="image">
+            <include content="Defs_BusySpinner_Image">
+                <param name="spinspinner">$PARAM[spinspinner]</param>
+            </include>
+        </control>
+    </include>
+
     <include name="Object_BusySpinner">
         <param name="colordiffuse">main_fg</param>
         <param name="label">$LOCALIZE[31023]</param>
@@ -425,7 +453,7 @@
                     <animation effect="fade" start="0" end="100" time="200" delay="1200" reversible="true">Visible</animation>
                     <animation effect="fade" start="100" end="0" time="200" delay="400" reversible="true">Hidden</animation>
                 </control>
-                <include content="Generator_Object_BusySpinner" condition="$PARAM[hasspinner]">
+                <include content="Object_BusySpinner_Image" condition="$PARAM[hasspinner]">
                     <param name="spinspinner">$PARAM[spinspinner]</param>
                 </include>
                 <include content="Object_Control" condition="$PARAM[hasprogress]">
@@ -1023,10 +1051,6 @@
                 <!-- Playing -->
                 <include content="Object_Control" condition="True">
                     <param name="control">group</param>
-                    <control type="image">
-                        <texture colordiffuse="$VAR[ColorWatchedProgress]" diffuse="indicator/circle-diffuse.png" background="true">progress/circle/p100.png</texture>
-                        <aspectratio align="center" aligny="center">keep</aspectratio>
-                    </control>
                     <control type="image">
                         <bordersize>20</bordersize>
                         <texture>indicator/play.png</texture>
