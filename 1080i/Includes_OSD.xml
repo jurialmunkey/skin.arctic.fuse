@@ -574,10 +574,12 @@
             </control>
 
             <!-- Codecs -->
-            <include content="OSD_Codecs">
-                <param name="include_fps">false</param>
+            <control type="grouplist">
                 <centerbottom>20</centerbottom>
-            </include>
+                <include content="OSD_Codecs">
+                    <param name="include_fps">false</param>
+                </include>
+            </control>
             <control type="image">
                 <right>0</right>
                 <centerbottom>20</centerbottom>
@@ -897,77 +899,73 @@
 
 
     <include name="OSD_Codecs">
-        <param name="align">left</param>
         <param name="anchor">true</param>
         <param name="color">panel_fg</param>
         <param name="include_fps">true</param>
         <definition>
-            <control type="grouplist">
-                <nested />
-                <align>$PARAM[align]</align>
-                <orientation>horizontal</orientation>
-                <align>left</align>
-                <itemgap>20</itemgap>
-                <height>80</height>
-                <usecontrolcoords>true</usecontrolcoords>
 
-                <include content="Info_FooterItemIcon" condition="$PARAM[anchor]">
-                    <param name="icon">special://skin/extras/icons/info2.png</param>
-                </include>
+            <orientation>horizontal</orientation>
+            <align>left</align>
+            <itemgap>20</itemgap>
+            <height>80</height>
+            <usecontrolcoords>true</usecontrolcoords>
 
-                <include content="Info_Codecs_StackedText">
-                    <param name="topcolor">$VAR[Info_Codecs_Resolution_Color_$PARAM[color]_90]</param>
-                    <param name="bottomcolor">$PARAM[color]_70</param>
-                    <param name="toplabel">$VAR[Label_OSD_VideoQuality]</param>
-                    <param name="bottomlabel">$VAR[Label_OSD_VideoResolution]</param>
-                    <param name="visible">!String.IsEmpty(VideoPlayer.VideoResolution)</param>
-                    <param name="width">50</param>
-                </include>
+            <include content="Info_FooterItemIcon" condition="$PARAM[anchor]">
+                <param name="icon">special://skin/extras/icons/info2.png</param>
+            </include>
 
-                <!-- Codec / Aspect -->
-                <include content="Info_Codecs_StackedText">
-                    <param name="topcolor">$VAR[Info_Codecs_AspectRatio_Color_$PARAM[color]_90]</param>
-                    <param name="bottomcolor">$PARAM[color]_70</param>
-                    <param name="bottomlabel">[UPPERCASE]$INFO[VideoPlayer.VideoCodec][/UPPERCASE]</param>
-                    <param name="toplabel">$INFO[VideoPlayer.VideoAspect]</param>
-                    <param name="visible">!String.IsEmpty(VideoPlayer.VideoCodec) + !String.IsEmpty(VideoPlayer.VideoAspect)</param>
-                </include>
+            <include content="Info_Codecs_StackedText">
+                <param name="topcolor">$VAR[Info_Codecs_Resolution_Color_$PARAM[color]_90]</param>
+                <param name="bottomcolor">$PARAM[color]_70</param>
+                <param name="toplabel">$VAR[Label_OSD_VideoQuality]</param>
+                <param name="bottomlabel">$VAR[Label_OSD_VideoResolution]</param>
+                <param name="visible">!String.IsEmpty(VideoPlayer.VideoResolution)</param>
+                <param name="width">50</param>
+            </include>
 
-                <!-- FPS -->
-                <include content="OSD_Codecs_FPS" condition="$PARAM[include_fps]">
-                    <param name="topcolor">$PARAM[color]_100</param>
-                    <param name="bottomcolor">$PARAM[color]_70</param>
-                    <param name="directory">$VAR[Info_Codecs_FlagType_Path]</param>
-                </include>
+            <!-- Codec / Aspect -->
+            <include content="Info_Codecs_StackedText">
+                <param name="topcolor">$VAR[Info_Codecs_AspectRatio_Color_$PARAM[color]_90]</param>
+                <param name="bottomcolor">$PARAM[color]_70</param>
+                <param name="bottomlabel">[UPPERCASE]$INFO[VideoPlayer.VideoCodec][/UPPERCASE]</param>
+                <param name="toplabel">$INFO[VideoPlayer.VideoAspect]</param>
+                <param name="visible">!String.IsEmpty(VideoPlayer.VideoCodec) + !String.IsEmpty(VideoPlayer.VideoAspect)</param>
+            </include>
 
-                <!-- 3d Stereoscopic -->
-                <include content="Info_Codecs_MonoIcon">
-                    <param name="icon">other/3D.png</param>
-                    <param name="colordiffuse">$PARAM[color]_90</param>
-                    <param name="width">48</param>
-                    <param name="iconwidth">64</param>
-                    <param name="iconheight">56</param>
-                    <param name="visible">VideoPlayer.IsStereoscopic</param>
-                </include>
+            <!-- FPS -->
+            <include content="OSD_Codecs_FPS" condition="$PARAM[include_fps]">
+                <param name="topcolor">$PARAM[color]_100</param>
+                <param name="bottomcolor">$PARAM[color]_70</param>
+                <param name="directory">$VAR[Info_Codecs_FlagType_Path]</param>
+            </include>
 
-                <!-- Audio Channels -->
-                <include content="Info_Codec_AudioChannels">
-                    <param name="type">VideoPlayer</param>
-                    <param name="channelscolor">$PARAM[color]_90</param>
-                    <param name="iconcolor">$PARAM[color]_90</param>
-                    <param name="imagecolor">$VAR[Info_Codecs_AudioChannels_Color_$PARAM[color]_90]</param>
-                </include>
+            <!-- 3d Stereoscopic -->
+            <include content="Info_Codecs_MonoIcon">
+                <param name="icon">other/3D.png</param>
+                <param name="colordiffuse">$PARAM[color]_90</param>
+                <param name="width">48</param>
+                <param name="iconwidth">64</param>
+                <param name="iconheight">56</param>
+                <param name="visible">VideoPlayer.IsStereoscopic</param>
+            </include>
 
-                <!-- AudioCodec -->
-                <include content="Info_Codecs_MonoIcon">
-                    <param name="icon">$VAR[Image_OSD_AudioCodec]</param>
-                    <param name="colordiffuse">$PARAM[color]_90</param>
-                    <param name="width">80</param>
-                    <param name="iconwidth">100</param>
-                    <param name="iconheight">48</param>
-                    <param name="visible">!String.IsEmpty(VideoPlayer.AudioCodec)</param>
-                </include>
-            </control>
+            <!-- Audio Channels -->
+            <include content="Info_Codec_AudioChannels">
+                <param name="type">VideoPlayer</param>
+                <param name="channelscolor">$PARAM[color]_90</param>
+                <param name="iconcolor">$PARAM[color]_90</param>
+                <param name="imagecolor">$VAR[Info_Codecs_AudioChannels_Color_$PARAM[color]_90]</param>
+            </include>
+
+            <!-- AudioCodec -->
+            <include content="Info_Codecs_MonoIcon">
+                <param name="icon">$VAR[Image_OSD_AudioCodec]</param>
+                <param name="colordiffuse">$PARAM[color]_90</param>
+                <param name="width">80</param>
+                <param name="iconwidth">100</param>
+                <param name="iconheight">48</param>
+                <param name="visible">!String.IsEmpty(VideoPlayer.AudioCodec)</param>
+            </include>
         </definition>
     </include>
 
