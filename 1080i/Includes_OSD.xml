@@ -1,6 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
 
+    <include name="OSD_UpNext_Buttons">
+        <control type="button" id="3012">
+            <include>Defs_OSD_Button</include>
+        </control>
+        <include content="OSD_Button_Icon_Overlay">
+            <param name="icon">special://skin/extras/icons/play2.png</param>
+            <param name="id">3012</param>
+            <param name="groupid">5012</param>
+            <param name="vertical">true</param>
+            <param name="itemgap">0</param>
+        </include>
+        <control type="button" id="4013">
+            <include>Defs_OSD_Button</include>
+            <onclick>SetFocus(3013)</onclick>
+            <onclick>Action(Select)</onclick>
+        </control>
+        <include content="OSD_Button_Icon_Overlay">
+            <param name="icon">special://skin/extras/icons/xmark.png</param>
+            <param name="id">4013</param>
+            <param name="groupid">5013</param>
+            <param name="vertical">true</param>
+            <param name="itemgap">0</param>
+        </include>
+    </include>
+
+    <include name="OSD_UpNext_FakeButtons">
+        <control type="image">
+            <bordersize>12</bordersize>
+            <height>80</height>
+            <width>80</width>
+            <texture colordiffuse="panel_fg_70">special://skin/extras/icons/forward-step.png</texture>
+        </control>
+        <control type="image">
+            <bordersize>12</bordersize>
+            <height>80</height>
+            <width>80</width>
+            <texture colordiffuse="panel_fg_70">special://skin/extras/icons/arrow-right.png</texture>
+        </control>
+    </include>
+
     <include name="OSD_UpNext">
         <param name="is_addon">true</param>
         <param name="icon">$VAR[Image_UpNext]</param>
@@ -41,42 +81,8 @@
                         <orientation>vertical</orientation>
                         <itemgap>0</itemgap>
                         <centerleft>-180</centerleft>
-                        <include content="OSD_Button" condition="$PARAM[is_addon]">
-                            <param name="icon">special://skin/extras/icons/play2.png</param>
-                            <param name="visible">true</param>
-                            <param name="id">3012</param>
-                            <param name="groupid">5012</param>
-                            <param name="vertical">true</param>
-                            <param name="itemgap">0</param>
-                        </include>
-                        <include content="OSD_Button" condition="$PARAM[is_addon]">
-                            <param name="icon">special://skin/extras/icons/xmark.png</param>
-                            <param name="visible">true</param>
-                            <param name="id">4013</param>
-                            <param name="groupid">5013</param>
-                            <param name="vertical">true</param>
-                            <param name="itemgap">0</param>
-                            <onclick>SetFocus(3013)</onclick>
-                            <onclick>Action(Select)</onclick>
-                        </include>
-
-                        <control type="image">
-                            <bordersize>12</bordersize>
-                            <height>80</height>
-                            <width>80</width>
-                            <texture colordiffuse="panel_fg_70">special://skin/extras/icons/forward-step.png</texture>
-                            <visible>!$PARAM[is_addon]</visible>
-                        </control>
-
-                        <control type="image">
-                            <bordersize>12</bordersize>
-                            <height>80</height>
-                            <width>80</width>
-                            <texture colordiffuse="panel_fg_70">special://skin/extras/icons/arrow-right.png</texture>
-                            <visible>!$PARAM[is_addon]</visible>
-                        </control>
-
-
+                        <include condition="$PARAM[is_addon]">OSD_UpNext_Buttons</include>
+                        <include condition="![$PARAM[is_addon]]">OSD_UpNext_FakeButtons</include>
                     </control>
                 </control>
                 <control type="group">
@@ -384,28 +390,18 @@
         </definition>
     </include>
 
-    <include name="OSD_Button">
+    <include name="OSD_Button_Icon_Overlay">
         <param name="size">80</param>
         <param name="bordersize">12</param>
         <param name="itemgap">40</param>
         <param name="visible">true</param>
         <param name="flipx">false</param>
         <param name="icon_colordiffuse">panel_fg_70</param>
-        <param name="back_colordiffuse">00ffffff</param>
         <param name="vertical">false</param>
-        <param name="autoclose">false</param>
         <param name="grouplist">true</param>
         <param name="iconoffset_condition">false</param>
         <definition>
-            <control type="button" id="$PARAM[id]">
-                <height>$PARAM[size]</height>
-                <width>$PARAM[size]</width>
-                <include>Texture_Circle_Highlight_Focus_V</include>
-                <texturenofocus colordiffuse="$PARAM[back_colordiffuse]">common/circle.png</texturenofocus>
-                <visible>$PARAM[visible]</visible>
-                <include condition="$PARAM[autoclose]">Action_OSD_Button_OnFocus</include>
-                <nested />
-            </control>
+
             <control type="group" id="$PARAM[groupid]">
                 <animation effect="fade" start="100" end="30" condition="!Control.IsEnabled($PARAM[id])" reversible="false">Conditional</animation>
                 <include content="Object_Left" condition="!$PARAM[vertical] + $PARAM[grouplist]">
