@@ -85,6 +85,7 @@
     <include name="Home_Menu_List_ItemLayout">
         <param name="layoutnf">[![!Window.IsVisible(1105) + Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + $EXP[Exp_HomeMenu_DontHide]] + $EXP[Exp_HomeMenu_IsSelected]]</param>
         <param name="layoutfo">[[![!Window.IsVisible(1105) + Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + $EXP[Exp_HomeMenu_DontHide]] + $EXP[Exp_HomeMenu_IsSelected]] | [!Window.IsVisible(1105) + Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + $EXP[Exp_HomeMenu_DontHide]]]</param>
+        <param name="altfocus">false</param>
         <definition>
             <itemlayout height="100" width="100">
                 <control type="group">
@@ -106,19 +107,19 @@
                     <top>40</top>
                     <bottom>-40</bottom>
                     <control type="group">
-                        <visible>!Control.HasFocus($PARAM[id])</visible>
+                        <visible>![Control.HasFocus($PARAM[id]) | $PARAM[altfocus]]</visible>
                         <include content="Layout_Home_Menu">
                             <param name="selected">false</param>
-                            <param name="detailed">Control.HasFocus($PARAM[id])</param>
+                            <param name="detailed">[Control.HasFocus($PARAM[id]) | $PARAM[altfocus]]</param>
                             <param name="layoutfo">$PARAM[layoutfo]</param>
                             <param name="vertical">$PARAM[vertical]</param>
                         </include>
                     </control>
                     <control type="group">
-                        <visible>Control.HasFocus($PARAM[id])</visible>
+                        <visible>Control.HasFocus($PARAM[id]) | $PARAM[altfocus]</visible>
                         <include content="Layout_Home_Menu">
                             <param name="selected">true</param>
-                            <param name="detailed">Control.HasFocus($PARAM[id])</param>
+                            <param name="detailed">[Control.HasFocus($PARAM[id]) | $PARAM[altfocus]]</param>
                             <param name="layoutfo">$PARAM[layoutfo]</param>
                             <param name="vertical">$PARAM[vertical]</param>
                         </include>
