@@ -351,52 +351,33 @@
         </definition>
     </include>
 
-    <include name="Dialog_Head_Toast">
-        <control type="group">
-            <nested />
-            <height>70</height>
-            <centertop>50%</centertop>
-            <left>30</left>
-            <right>30</right>
-            <control type="label">
-                <label>$PARAM[toplabel]</label>
-                <font>font_main_bold</font>
-                <textcolor>dialog_fg_90</textcolor>
-                <height>40</height>
-                <top>0</top>
-            </control>
-            <control type="label">
-                <label>$PARAM[sublabel]</label>
-                <font>font_tiny</font>
-                <height>40</height>
-                <bottom>0</bottom>
-                <textcolor>dialog_fg_70</textcolor>
-                <bottom>0</bottom>
-            </control>
-        </control>
-    </include>
-
     <include name="Dialog_Head">
         <param name="id">1</param>
         <param name="textcolor">dialog_fg_90</param>
-        <param name="enabled">true</param>
+        <param name="sublabel_visible">true</param>
+        <param name="sublabel_include">false</param>
         <definition>
-            <include content="Object_Control" condition="$PARAM[enabled]">
-                <param name="control">group</param>
+            <control type="group">
                 <nested />
                 <right>view_side</right>
                 <height>view_bar</height>
                 <top>view_pad</top>
                 <left>view_pad</left>
                 <include content="Furniture_Gutters">
+                    <animation effect="slide" start="0" end="0,-15" condition="$PARAM[sublabel_visible] + $PARAM[sublabel_include]">Conditional</animation>
                     <include content="Furniture_MainLabel">
                         <param name="id">$PARAM[id]</param>
                         <param name="textcolor">$PARAM[textcolor]</param>
                         <aligny>center</aligny>
                         <label>$PARAM[label]</label>
                     </include>
+                    <include content="Furniture_DateLabel" condition="$PARAM[sublabel_include]">
+                        <param name="textcolor">$PARAM[textcolor]</param>
+                        <param name="label">$PARAM[sublabel]</param>
+                        <param name="visible">$PARAM[sublabel_visible]</param>
+                    </include>
                 </include>
-            </include>
+            </control>
         </definition>
     </include>
 
