@@ -327,35 +327,17 @@
         </definition>
     </include>
 
-    <include name="Furniture_Busy_Group">
-        <param name="floating">!Skin.HasSetting(ToastNotifications.Tabbed)</param>
-        <param name="hasbackground">Skin.HasSetting(ToastNotifications.Tabbed)</param>
+    <include name="Furniture_Busy_Group_Background">
         <definition>
             <control type="group">
-                <include content="Object_Control" condition="$PARAM[hasbackground]">
-                    <param name="control">group</param>
-                    <include content="Object_Top" condition="![$PARAM[floating]]"><param name="top">-320</param></include>
-                    <include content="Dialog_Background_Blur" condition="![$PARAM[floating]]">
-                        <param name="diffuse">diffuse/dialog_w480_h400.png</param>
-                        <param name="flipy">true</param>
-                    </include>
-                    <include content="Dialog_Background_Blur" condition="$PARAM[floating]">
-                        <param name="flipy">true</param>
-                        <param name="aspectratio">scale</param>
-                        <param name="diffuse">diffuse/dialog_w480_h80.png</param>
-                        <param name="border">0</param>
-                    </include>
-                    <control type="image">
-                        <texture colordiffuse="dialog_fg_12" border="20">common/dialog.png</texture>
-                    </control>
+                <top>-320</top>
+                <include content="Dialog_Background_Blur">
+                    <param name="diffuse">diffuse/dialog_w480_h400.png</param>
+                    <param name="flipy">true</param>
                 </include>
-                <nested />
-                <height>80</height>
-                <width>480</width>
-                <include>Animation_SlideIn_Dialog</include>
-                <include content="Object_Top" condition="$PARAM[floating]"><param name="top">60</param></include>
-                <include content="Object_Right" condition="$PARAM[floating]"><param name="right">60</param></include>
-                <include content="Object_Right" condition="![$PARAM[floating]]"><param name="right">80</param></include>
+                <control type="image">
+                    <texture colordiffuse="dialog_fg_12" border="20">common/dialog.png</texture>
+                </control>
             </control>
         </definition>
     </include>
@@ -417,8 +399,10 @@
         <param name="hasbackground">Skin.HasSetting(ToastNotifications.Tabbed)</param>
         <definition>
 
-            <include content="Furniture_Busy_Group">
-                <param name="hasbackground">$PARAM[hasbackground]</param>
+            <control type="group">
+
+                <include condition="$PARAM[hasbackground]">Furniture_Busy_Group_Background</include>
+
                 <include content="Furniture_Busy_Icon">
                     <param name="hasspinner">$PARAM[hasspinner]</param>
                     <param name="hasprogress">$PARAM[hasprogress]</param>
@@ -433,6 +417,16 @@
 
                 <nested />
 
+                <include condition="$PARAM[hasbackground]">Dimension_FurnitureBusy_Tabbed</include>
+                <include condition="![$PARAM[hasbackground]]">Dimension_FurnitureBusy_Floating</include>
+
+                <include content="Animation_SlideIn_Dialog">
+                    <param name="visible_delay">$PARAM[visible_delay]</param>
+                    <param name="visible_condition">$PARAM[visible_condition]</param>
+                    <param name="windowopen_delay">$PARAM[windowopen_delay]</param>
+                    <param name="windowopen_condition">$PARAM[windowopen_condition]</param>
+                </include>
+
                 <include content="Furniture_Busy_Text" condition="$PARAM[haslabel] + $PARAM[hasbackground]">
                     <param name="mainlabel_id">$PARAM[mainlabel_id]</param>
                     <param name="mainlabel">$PARAM[mainlabel]</param>
@@ -446,7 +440,8 @@
                     <param name="minilabel_id">$PARAM[minilabel_id]</param>
                     <param name="minilabel">$PARAM[minilabel]</param>
                 </include>
-            </include>
+            </control>
+
         </definition>
     </include>
 
