@@ -27,7 +27,7 @@
                 <nested />
                 <include content="Furniture_Gutters">
                     <control type="group">
-                        <animation effect="slide" start="0" end="0,-15" condition="!Skin.HasSetting(Furniture.EnableClock) + !$EXP[Exp_MediaFilter_IsActive] + [Window.IsVisible(MyPVRGuide.xml) | Window.IsVisible(MyPVRChannels.xml) | $PARAM[clock]]">Conditional</animation>
+                        <animation effect="slide" start="0" end="0,-15" condition="!Skin.HasSetting(Furniture.EnableClock) + [Window.IsVisible(MyPVRGuide.xml) | Window.IsVisible(MyPVRChannels.xml) | $PARAM[clock]]">Conditional</animation>
                         <include content="Furniture_MainLabel">
                             <param name="id">$PARAM[id]</param>
                             <param name="textcolor">$PARAM[textcolor]</param>
@@ -37,7 +37,7 @@
                         <include content="Furniture_DateLabel">
                             <param name="textcolor">$PARAM[textcolor_sublabel]</param>
                             <param name="shadowcolor">$PARAM[shadowcolor_sublabel]</param>
-                            <visible>!Skin.HasSetting(Furniture.EnableClock) + !$EXP[Exp_MediaFilter_IsActive] + [Window.IsVisible(MyPVRGuide.xml) | Window.IsVisible(MyPVRChannels.xml) | $PARAM[clock]]</visible>
+                            <visible>!Skin.HasSetting(Furniture.EnableClock) + [Window.IsVisible(MyPVRGuide.xml) | Window.IsVisible(MyPVRChannels.xml) | $PARAM[clock]]</visible>
                         </include>
                     </control>
                 </include>
@@ -77,9 +77,9 @@
             <control type="group">
                 <width>80</width>
                 <right>0</right>
-                <include content="Info_Codec_LabelIcon">
+                <include content="Info_FooterItemIcon">
                     <param name="icon">$VAR[Image_NowPlaying_PlayPause]</param>
-                    <centerleft>50%</centerleft>
+                    <param name="centered">true</param>
                 </include>
                 <control type="image">
                     <bordersize>-4</bordersize>
@@ -263,6 +263,20 @@
         </definition>
     </include>
 
+    <include name="Furniture_Busy_Spinner">
+        <control type="image">
+            <visible>$PARAM[spinnervisible]</visible>
+            <bordersize>-4</bordersize>
+            <include content="Animation_Fade_Out">
+                <param name="type">hidden</param>
+                <param name="delay">200</param>
+            </include>
+            <include content="Defs_BusySpinner_Image">
+                <param name="spinspinner">$PARAM[spinspinner]</param>
+            </include>
+        </control>
+    </include>
+
     <include name="Furniture_Busy_Icon">
         <param name="hasspinner">false</param>
         <param name="hasprogress">false</param>
@@ -276,18 +290,13 @@
                 <height>80</height>
                 <width>80</width>
                 <nested />
-                <include content="Info_Codec_LabelIcon" condition="$PARAM[hasicon]">
+                <include content="Info_FooterItemIcon" condition="$PARAM[hasicon]">
                     <param name="icon">$PARAM[icon]</param>
-                    <centerleft>50%</centerleft>
+                    <param name="centered">true</param>
                 </include>
-                <include content="Generator_Object_BusySpinner" condition="$PARAM[hasspinner]">
+                <include content="Furniture_Busy_Spinner" condition="$PARAM[hasspinner]">
+                    <param name="spinnervisible">$PARAM[spinnervisible]</param>
                     <param name="spinspinner">$PARAM[spinspinner]</param>
-                    <visible>$PARAM[spinnervisible]</visible>
-                    <bordersize>-4</bordersize>
-                    <include content="Animation_Fade_Out">
-                        <param name="type">hidden</param>
-                        <param name="delay">200</param>
-                    </include>
                 </include>
                 <include content="Object_Control" condition="$PARAM[hasprogress]">
                     <param name="control">group</param>
@@ -469,10 +478,10 @@
                     <include content="Object_Right" condition="$PARAM[flipx]">
                         <param name="right">0</param>
                     </include>
-                    <include content="Info_Codec_LabelIcon">
+                    <include content="Info_FooterItemIcon">
                         <param name="icon">special://skin/extras/icons/_none.png</param>
                         <param name="bordersize">12</param>
-                        <centerleft>50%</centerleft>
+                        <param name="centered">true</param>
                     </include>
                     <control type="group">
                         <centerleft>50%</centerleft>

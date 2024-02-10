@@ -2,53 +2,39 @@
 <includes>
 
     <include name="DialogInfo_Main_Group">
-        <control type="group">
-            <visible>!Window.IsVisible(script-wikipedia.xml)</visible>
-            <nested />
-        </control>
+        <visible>!Window.IsVisible(script-wikipedia.xml)</visible>
     </include>
 
     <include name="DialogInfo_Body_Group">
-        <definition>
-            <control type="group">
-                <include>Dimension_Info</include>
-                <include>Animation_Transition_InfoPanel_Open</include>
-                <nested />
-            </control>
-        </definition>
+        <include>Dimension_Info</include>
+        <include>Animation_Transition_InfoPanel_Open</include>
     </include>
 
     <include name="DialogInfo_InfoDetails_Group">
-        <control type="group">
-            <top>390</top>
-            <left>-200</left>
-            <right>-80</right>
-            <include content="Animation_Fade_In">
-                <param name="type">WindowOpen</param>
-            </include>
-            <visible>![Window.IsActive(1120) | Window.IsActive(1121) | Window.IsActive(1122) | Window.IsActive(1123)]</visible>
-            <nested />
-        </control>
+        <top>390</top>
+        <left>-200</left>
+        <right>-80</right>
+        <include content="Animation_Fade_In">
+            <param name="type">WindowOpen</param>
+        </include>
+        <visible>![Window.IsActive(1120) | Window.IsActive(1121) | Window.IsActive(1122) | Window.IsActive(1123)]</visible>
     </include>
 
     <include name="DialogInfo_InfoPanel_Group">
-        <control type="group">
-            <visible>!String.IsEqual(Window.Property(DetailsView),Artwork)</visible>
-            <include content="Animation_Fade_In">
-                <param name="type">Visible</param>
-                <param name="delay">400</param>
-            </include>
-            <include content="Info_Panel">
-                <param name="titlelabel">$VAR[Label_Title]</param>
-                <param name="plotlabel">$VAR[Label_Plot]</param>
-            </include>
-            <include content="Info_Viewline">
-                <param name="label">$VAR[Label_Info_ViewLine_Sub]</param>
-                <top>320</top>
-                <left>0</left>
-            </include>
-            <nested />
-        </control>
+        <visible>!String.IsEqual(Window.Property(DetailsView),Artwork)</visible>
+        <include content="Animation_Fade_In">
+            <param name="type">Visible</param>
+            <param name="delay">400</param>
+        </include>
+        <include content="Info_Panel">
+            <param name="titlelabel">$VAR[Label_Title]</param>
+            <param name="plotlabel">$VAR[Label_Plot]</param>
+        </include>
+        <include content="Info_Viewline">
+            <param name="label">$VAR[Label_Info_ViewLine_Sub]</param>
+            <top>320</top>
+            <left>0</left>
+        </include>
     </include>
 
     <include name="DialogInfo_Furniture">
@@ -217,82 +203,79 @@
         <param name="label">$INFO[Container(5003).ListItem.Label]</param>
         <param name="label2">$VAR[Label_VideoInfo_CastAge,   ,]</param>
         <definition>
+            <right>80</right>
+            <height>320</height>
             <control type="group">
-                <nested />
-                <right>80</right>
-                <height>320</height>
+                <height>294</height>
+                <bottom>0</bottom>
+                <right>240</right>
+                <left>920</left>
+                <include content="Dialog_Background_Blur">
+                    <animation effect="fade" end="90" condition="true">Conditional</animation>
+                    <param name="diffuse">diffuse/card_w800_h294.png</param>
+                </include>
+                <control type="image">
+                    <texture colordiffuse="dialog_fg_12" border="20">common/dialog.png</texture>
+                </control>
+
                 <control type="group">
-                    <height>294</height>
-                    <bottom>0</bottom>
-                    <right>240</right>
-                    <left>920</left>
-                    <!-- <width>720</width> -->
-                    <include content="Dialog_Background_Blur">
-                        <animation effect="fade" end="90" condition="true">Conditional</animation>
-                    </include>
+                    <right>-16</right>
+                    <centertop>60</centertop>
+                    <height>16</height>
+                    <width>16</width>
                     <control type="image">
-                        <texture colordiffuse="dialog_fg_12" border="20">common/dialog.png</texture>
+                        <texture colordiffuse="dialog_nib" flipx="true">arrows/arrow-menu.png</texture>
                     </control>
-
-                    <control type="group">
-                        <right>-16</right>
-                        <centertop>60</centertop>
-                        <height>16</height>
-                        <width>16</width>
-                        <control type="image">
-                            <texture colordiffuse="dialog_nib" flipx="true">arrows/arrow-menu.png</texture>
-                        </control>
-                        <control type="image">
-                            <texture colordiffuse="dialog_fg_12" flipx="true">arrows/arrow-menu.png</texture>
-                        </control>
-                    </control>
-
-                    <control type="grouplist">
-                        <top>20</top>
-                        <left>40</left>
-                        <right>40</right>
-                        <bottom>20</bottom>
-                        <orientation>vertical</orientation>
-                        <control type="grouplist">
-                            <orientation>horizontal</orientation>
-                            <height>40</height>
-                            <control type="label">
-                                <font>font_main_bold</font>
-                                <textcolor>dialog_fg_90</textcolor>
-                                <label>$PARAM[label]</label>
-                                <height>40</height>
-                                <aligny>center</aligny>
-                                <top>0</top>
-                                <width>auto</width>
-                            </control>
-                            <control type="label">
-                                <font>font_mini</font>
-                                <textcolor>dialog_fg_90</textcolor>
-                                <label>$PARAM[label2]</label>
-                                <height>40</height>
-                                <aligny>center</aligny>
-                                <top>3</top>
-                            </control>
-                        </control>
-                        <control type="textbox">
-                            <top>10</top>
-                            <font>font_main_plot</font>
-                            <textcolor>dialog_fg_90</textcolor>
-                            <label>$PARAM[plot]</label>
-                            <height>200</height>
-                        </control>
+                    <control type="image">
+                        <texture colordiffuse="dialog_fg_12" flipx="true">arrows/arrow-menu.png</texture>
                     </control>
                 </control>
-                <control type="group">
-                    <width>200</width>
-                    <height>294</height>
-                    <bottom>0</bottom>
-                    <right>0</right>
-                    <include>Object_ItemBack</include>
-                    <control type="image">
-                        <aspectratio scalediffuse="false">scale</aspectratio>
-                        <texture background="true" diffuse="diffuse/poster_w200_h294.png">$PARAM[icon]</texture>
+
+                <control type="grouplist">
+                    <top>20</top>
+                    <left>40</left>
+                    <right>40</right>
+                    <bottom>20</bottom>
+                    <orientation>vertical</orientation>
+                    <control type="grouplist">
+                        <orientation>horizontal</orientation>
+                        <height>40</height>
+                        <control type="label">
+                            <font>font_main_bold</font>
+                            <textcolor>dialog_fg_90</textcolor>
+                            <label>$PARAM[label]</label>
+                            <height>40</height>
+                            <aligny>center</aligny>
+                            <top>0</top>
+                            <width>auto</width>
+                        </control>
+                        <control type="label">
+                            <font>font_mini</font>
+                            <textcolor>dialog_fg_90</textcolor>
+                            <label>$PARAM[label2]</label>
+                            <height>40</height>
+                            <aligny>center</aligny>
+                            <top>3</top>
+                        </control>
                     </control>
+                    <control type="textbox">
+                        <top>10</top>
+                        <font>font_main_plot</font>
+                        <textcolor>dialog_fg_90</textcolor>
+                        <label>$PARAM[plot]</label>
+                        <height>200</height>
+                    </control>
+                </control>
+            </control>
+            <control type="group">
+                <width>200</width>
+                <height>294</height>
+                <bottom>0</bottom>
+                <right>0</right>
+                <include>Object_ItemBack</include>
+                <control type="image">
+                    <aspectratio scalediffuse="false">scale</aspectratio>
+                    <texture background="true" diffuse="diffuse/poster_w200_h294.png">$PARAM[icon]</texture>
                 </control>
             </control>
         </definition>
@@ -333,11 +316,12 @@
                 <param name="id">5203</param>
                 <content sortby="year" sortorder="descending">$INFO[Container(5003).ListItem.Property(TMDb_ID),plugin://plugin.video.themoviedb.helper/?info=details&amp;tmdb_type=person&amp;tmdb_id=,]</content>
             </include>
-            <include content="DialogInfo_VideoInfo_CastSpotlight">
+            <control type="group">
+                <include>DialogInfo_VideoInfo_CastSpotlight</include>
                 <include>Animation_Right</include>
                 <visible>Control.HasFocus(5003) | Control.HasFocus(5103) | Control.HasFocus(5303)</visible>
                 <top>-390</top>
-            </include>
+            </control>
 
             <control type="group">
                 <top>-40</top>
@@ -463,13 +447,16 @@
                 <param name="id">5203</param>
                 <content sortby="year" sortorder="descending">$INFO[Container(50).ListItem.Label,plugin://plugin.video.themoviedb.helper/?info=details&amp;tmdb_type=person&amp;query=,]</content>
             </include>
-            <include content="DialogInfo_VideoInfo_CastSpotlight">
-                <param name="icon">$INFO[Container(50).ListItem.Icon]</param>
-                <param name="label">$INFO[Container(50).ListItem.Label]</param>
+
+            <control type="group">
+                <include content="DialogInfo_VideoInfo_CastSpotlight">
+                    <param name="icon">$INFO[Container(50).ListItem.Icon]</param>
+                    <param name="label">$INFO[Container(50).ListItem.Label]</param>
+                </include>
                 <include>Animation_Right</include>
                 <visible>Control.HasFocus(50)</visible>
                 <top>-390</top>
-            </include>
+            </control>
 
             <include content="List_Poster_Row">
                 <param name="id">50</param>
@@ -1207,62 +1194,6 @@
 
     <include name="DialogInfo_VideoFanartContent">
         <content target="images" limit="20">$VAR[Path_VideoInfo_Generic,,&amp;info=fanart]</content>
-    </include>
-
-    <!-- File Path for Management -->
-    <include name="DialogInfo_FilePathInfo">
-        <control type="grouplist">
-            <orientation>horizontal</orientation>
-            <bottom>0</bottom>
-            <itemgap>10</itemgap>
-            <height>view_pad</height>
-            <left>40</left>
-            <right>40</right>
-            <align>right</align>
-            <visible>ControlGroup(9000).HasFocus()</visible>
-            <animation effect="fade" start="0" end="100" time="300" delay="100">Visible</animation>
-            <control type="image">
-                <width>56</width>
-                <height>56</height>
-                <centertop>51%</centertop>
-                <texture colordiffuse="main_fg_90">special://skin/extras/icons/files.png</texture>
-            </control>
-            <control type="label">
-                <aligny>center</aligny>
-                <label>$INFO[ListItem.FileNameAndPath]</label>
-                <font>font_mini</font>
-                <textcolor>main_fg_90</textcolor>
-                <haspath>true</haspath>
-                <width max="1800">auto</width>
-            </control>
-        </control>
-    </include>
-
-    <!-- Music ExtraArt -->
-    <include name="DialogInfo_MusicArt">
-        <param name="discart_top">231</param>
-        <param name="discart_spin">true</param>
-        <param name="discart_image">$VAR[Image_DiscArt]</param>
-        <param name="width">infodialog_poster_w</param>
-        <definition>
-            <control type="group">
-                <top>view_top</top>
-                <bottom>view_pad</bottom>
-                <width>$PARAM[width]</width>
-                <centerleft>50%</centerleft>
-                <control type="image">
-                    <top>$PARAM[discart_top]</top>
-                    <height>$PARAM[width]</height>
-                    <width>$PARAM[width]</width>
-                    <texture background="true">$PARAM[discart_image]</texture>
-                    <aspectratio>keep</aspectratio>
-                    <bordersize>40</bordersize>
-                    <animation effect="rotate" condition="true" start="0" end="180" center="auto">Conditional</animation>
-                    <!-- <animation effect="rotate" condition="$PARAM[discart_spin]" start="0" end="360" loop="true" time="50000" center="auto">Conditional</animation> -->
-                    <fadetime>300</fadetime>
-                </control>
-            </control>
-        </definition>
     </include>
 
     <include name="DialogInfo_Recommendations_BackgroundLoader">
