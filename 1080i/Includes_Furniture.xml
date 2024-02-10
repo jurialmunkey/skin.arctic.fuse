@@ -37,39 +37,10 @@
                         <include content="Furniture_DateLabel">
                             <param name="textcolor">$PARAM[textcolor_sublabel]</param>
                             <param name="shadowcolor">$PARAM[shadowcolor_sublabel]</param>
-
-							<!-- MISC013A: disable visibility -->
-                            <!-- visible>!Skin.HasSetting(Furniture.EnableClock)</visible -->					
-							<!-- MISC013A: custom visibility -->
-                            <!-- WAS visible>Window.IsVisible(MyPVRGuide.xml) | Window.IsVisible(MyPVRChannels.xml) | $PARAM[clock]</visible -->
-							<!-- visible if : -->
-							<!-- "Always display Date and Time" is set AND -->
-							    <!-- Home Window and NOT Stacked Widgets OR Explore Window (11181)-->
-							<!-- OR Full Screen EPG (for EPG listing start date) -->
-							<!-- OR PVR Channels -->
-							<visible>[[[$PARAM[clock] + !Skin.HasSetting(Furniture.CustomClock) + [Window.IsVisible(Home) + !Skin.HasSetting(hubs.widgetselector)] | Window.IsVisible(11181)]]] | [Window.IsVisible(MyPVRGuide.xml) + !Skin.HasSetting(Views.UseHalfPVRGuide)] | Window.IsVisible(MyPVRChannels.xml)</visible>
-                        	<!--visible>!Skin.HasSetting(Furniture.EnableClock) + !$EXP[Exp_MediaFilter_IsActive] + [Window.IsVisible(MyPVRGuide.xml) | Window.IsVisible(MyPVRChannels.xml) | $PARAM[clock]]</visible -->
-						</include>
+                            <param name="visible">!Skin.HasSetting(Furniture.EnableClock) + [Window.IsVisible(MyPVRGuide.xml) | Window.IsVisible(MyPVRChannels.xml) | $PARAM[clock]]</param>
+                        </include>
                     </control>
                 </include>
-				<!-- MISC013B: START Alternative always display Top right clock -->
-				<control type="group">
-                    <top>-6</top>
-                    <control type="image">
-                        <texture colordiffuse="dialog_bg_50" border="20">common/dialog.png</texture>						
-						<left>1390</left>					
-						<height>75</height>
-						<top>-16</top>
-						<right>-10</right>
-                    </control>
-					<include content="Furniture_Clock">
-					    <param name="flipx">true</param>
-                        <param name="topshadowcolor">main_bg_50</param>
-                        <param name="bottomshadowcolor">main_bg_50</param>
-                    </include>					
-					<visible>Skin.HasSetting(Furniture.CustomClock) + $PARAM[clock] + [[Window.IsVisible(Home) + !Skin.HasSetting(hubs.widgetselector)] | Window.IsVisible(11181)] </visible>
-				</control>
-				<!-- MISC013B: END Alternative always display Top right clock -->
             </include>
         </definition>
     </include>
@@ -82,15 +53,11 @@
 
                     <control type="group">
                         <visible>Skin.HasSetting(Furniture.DisableNowPlaying) | !Player.HasMedia</visible>
-                        <!-- MISC013: do not display if "Always display Date and Time" is set -->
-						<!-- include content="Info_Studio" condition="![Skin.HasSetting(Furniture.EnableClock) | $EXP[Exp_Furniture_PVR]]" -->
-                        <include content="Info_Studio" condition="![Skin.HasSetting(Furniture.EnableClock) | $EXP[Exp_Furniture_PVR]] + !Skin.HasSetting(Furniture.EnableClock.TopLeft) ">
+                        <include content="Info_Studio" condition="![Skin.HasSetting(Furniture.EnableClock) | $EXP[Exp_Furniture_PVR]]">
                             <centertop>50%</centertop>
                         </include>
-                        <!-- MISC013: condition extended -->
-						<!-- include content="Furniture_Clock" condition="Skin.HasSetting(Furniture.EnableClock)" --> 
-						<include content="Furniture_Clock" condition="Skin.HasSetting(Furniture.EnableClock) | Skin.HasSetting(Furniture.EnableClock.TopLeft) | Window.IsVisible(10702)">
-							<param name="flipx">true</param>
+                        <include content="Furniture_Clock" condition="Skin.HasSetting(Furniture.EnableClock)">
+                            <param name="flipx">true</param>
                             <param name="topshadowcolor">main_bg_50</param>
                             <param name="bottomshadowcolor">main_bg_50</param>
                         </include>
@@ -218,53 +185,21 @@
     </include>
 
     <include name="Furniture_DateLabel">
-        <control type="grouplist">
-            <nested />
-            <orientation>horizontal</orientation>
-            <bottom>-30</bottom>
-            <height>50</height>
-            <itemgap>10</itemgap>
-            <!-- PVR008: do not display System Date top left on EPG -->
-			<control type="label">
-                <aligny>center</aligny>
-                <width>auto</width>
-                <font>font_tiny_bold</font>
-                <label>$INFO[System.Date]</label>
-                <textcolor>$PARAM[textcolor]</textcolor>
-                <shadowcolor>$PARAM[shadowcolor]</shadowcolor>
-				<!-- PVR008: do not display System Date top left on EPG -->
-				<visible>!Window.IsVisible(10702)</visible>					
-            </control>
+        <param name="label">$INFO[System.Date]  [COLOR=main_fg_30]$LOCALIZE[19107][/COLOR]  $INFO[System.Time]</param>
+        <param name="font">font_tiny_bold</param>
+        <definition>
             <control type="label">
                 <aligny>center</aligny>
                 <width>auto</width>
-                <font>font_tiny_bold</font>
-                <label>$LOCALIZE[19107]</label>
-                <textcolor>main_fg_30</textcolor>
-				<!-- PVR008: do not display System Date top left on EPG -->
-				<visible>!Window.IsVisible(10702)</visible>	
-            </control>
-            <control type="label">
-                <aligny>center</aligny>
-                <width>auto</width>
-                <font>font_tiny_bold</font>
-                <label>$INFO[System.Time]</label>
+                <font>$PARAM[font]</font>
+                <label>$PARAM[label]</label>
                 <textcolor>$PARAM[textcolor]</textcolor>
                 <shadowcolor>$PARAM[shadowcolor]</shadowcolor>
-				<!-- PVR008: do not display System Date top left on EPG -->
-				<visible>!Window.IsVisible(10702)</visible>	
-            </control>	
-			<!-- PVR008: display Program Start Date on Basic (Full Screen) EPG -->
-			<control type="label">
-                <aligny>center</aligny>
-                <width>auto</width>
-                <font>font_tiny_bold</font>
-                <label>$VAR[LabelProgramStartDate]</label>
-                <textcolor>$PARAM[textcolor]</textcolor>
-                <shadowcolor>$PARAM[shadowcolor]</shadowcolor>
-				<visible>Window.IsVisible(10702) + !Skin.HasSetting(Views.UseHalfPVRGuide)</visible>
+                <bottom>-30</bottom>
+                <height>50</height>
+                <visible>$PARAM[visible]</visible>
             </control>
-        </control>
+        </definition>
     </include>
 
     <include name="Furniture_Bottom">
@@ -377,35 +312,17 @@
         </definition>
     </include>
 
-    <include name="Furniture_Busy_Group">
-        <param name="floating">!Skin.HasSetting(ToastNotifications.Tabbed)</param>
-        <param name="hasbackground">Skin.HasSetting(ToastNotifications.Tabbed)</param>
+    <include name="Furniture_Busy_Group_Background">
         <definition>
             <control type="group">
-                <include content="Object_Control" condition="$PARAM[hasbackground]">
-                    <param name="control">group</param>
-                    <include content="Object_Top" condition="![$PARAM[floating]]"><param name="top">-320</param></include>
-                    <include content="Dialog_Background_Blur" condition="![$PARAM[floating]]">
-                        <param name="diffuse">diffuse/dialog_w480_h400.png</param>
-                        <param name="flipy">true</param>
-                    </include>
-                    <include content="Dialog_Background_Blur" condition="$PARAM[floating]">
-                        <param name="flipy">true</param>
-                        <param name="aspectratio">scale</param>
-                        <param name="diffuse">diffuse/dialog_w480_h80.png</param>
-                        <param name="border">0</param>
-                    </include>
-                    <control type="image">
-                        <texture colordiffuse="dialog_fg_12" border="20">common/dialog.png</texture>
-                    </control>
+                <top>-320</top>
+                <include content="Dialog_Background_Blur">
+                    <param name="diffuse">diffuse/dialog_w480_h400.png</param>
+                    <param name="flipy">true</param>
                 </include>
-                <nested />
-                <height>80</height>
-                <width>480</width>
-                <include>Animation_SlideIn_Dialog</include>
-                <include content="Object_Top" condition="$PARAM[floating]"><param name="top">60</param></include>
-                <include content="Object_Right" condition="$PARAM[floating]"><param name="right">60</param></include>
-                <include content="Object_Right" condition="![$PARAM[floating]]"><param name="right">80</param></include>
+                <control type="image">
+                    <texture colordiffuse="dialog_fg_12" border="20">common/dialog.png</texture>
+                </control>
             </control>
         </definition>
     </include>
@@ -467,8 +384,10 @@
         <param name="hasbackground">Skin.HasSetting(ToastNotifications.Tabbed)</param>
         <definition>
 
-            <include content="Furniture_Busy_Group">
-                <param name="hasbackground">$PARAM[hasbackground]</param>
+            <control type="group">
+
+                <include condition="$PARAM[hasbackground]">Furniture_Busy_Group_Background</include>
+
                 <include content="Furniture_Busy_Icon">
                     <param name="hasspinner">$PARAM[hasspinner]</param>
                     <param name="hasprogress">$PARAM[hasprogress]</param>
@@ -483,6 +402,16 @@
 
                 <nested />
 
+                <include condition="$PARAM[hasbackground]">Dimension_FurnitureBusy_Tabbed</include>
+                <include condition="![$PARAM[hasbackground]]">Dimension_FurnitureBusy_Floating</include>
+
+                <include content="Animation_SlideIn_Dialog">
+                    <param name="visible_delay">$PARAM[visible_delay]</param>
+                    <param name="visible_condition">$PARAM[visible_condition]</param>
+                    <param name="windowopen_delay">$PARAM[windowopen_delay]</param>
+                    <param name="windowopen_condition">$PARAM[windowopen_condition]</param>
+                </include>
+
                 <include content="Furniture_Busy_Text" condition="$PARAM[haslabel] + $PARAM[hasbackground]">
                     <param name="mainlabel_id">$PARAM[mainlabel_id]</param>
                     <param name="mainlabel">$PARAM[mainlabel]</param>
@@ -496,7 +425,8 @@
                     <param name="minilabel_id">$PARAM[minilabel_id]</param>
                     <param name="minilabel">$PARAM[minilabel]</param>
                 </include>
-            </include>
+            </control>
+
         </definition>
     </include>
 
@@ -513,17 +443,14 @@
         <definition>
             <control type="group">
                 <include content="Object_Left" condition="!$PARAM[flipx]">
-				    <!-- MISC014: param changed from -20 -->
-                    <param name="left">-80</param>
+                    <param name="left">-20</param>
                 </include>
                 <include content="Object_Right" condition="$PARAM[flipx]">
-				    <!-- MISC014: param changed from -20 -->
-                    <param name="right">-80</param>
+                    <param name="right">-20</param>
                 </include>
                 <height>80</height>
                 <centertop>50%</centertop>
-				<!-- MISC014: analog clock disabled -->
-                <!-- control type="group">
+                <control type="group">
                     <width>80</width>
                     <include content="Object_Left" condition="!$PARAM[flipx]">
                         <param name="left">0</param>
@@ -556,7 +483,7 @@
                         </control>
                     </control>
 
-                </control -->
+                </control>
                 <control type="group">
                     <include content="Object_Left" condition="!$PARAM[flipx]">
                         <param name="left">80</param>
