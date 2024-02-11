@@ -1328,11 +1328,12 @@
         <param name="centered">false</param>
         <param name="flipped">false</param>
         <param name="visible">true</param>
+        <param name="size">40</param>
         <definition>
             <control type="group">
                 <centertop>50%</centertop>
-                <width>40</width>
-                <height>40</height>
+                <width>$PARAM[size]</width>
+                <height>$PARAM[size]</height>
                 <include content="Object_PosX">
                     <param name="left">$PARAM[left]</param>
                     <param name="right">$PARAM[right]</param>
@@ -1575,6 +1576,11 @@
     <include name="Info_Providers">
         <param name="visible">false</param>
         <definition>
+            <control type="group">
+                <width>50</width>
+                <include>Info_KodiLogo_Image</include>
+                <visible>$PARAM[visible]</visible>
+            </control>
             <include content="Info_FooterItemIcon">
                 <param name="icon">special://skin/extras/icons/justwatch.png</param>
                 <param name="visible">$PARAM[visible]</param>
@@ -1662,10 +1668,11 @@
     <include name="Info_Codecs">
         <param name="visible">false</param>
         <definition>
-            <include content="Info_FooterItemIcon">
-                <param name="icon">special://skin/extras/icons/info2.png</param>
-                <param name="visible">$PARAM[visible]</param>
-            </include>
+            <control type="group">
+                <width>50</width>
+                <include>Info_KodiLogo_Image</include>
+                <visible>$PARAM[visible]</visible>
+            </control>
 
             <!-- VIDEO RESOLUTION-->
             <!-- 4K -->
@@ -1775,60 +1782,117 @@
         </definition>
     </include>
 
+    <variable name="Info_KodiLogo_Color">
+        <value condition="Skin.HasSetting(Furniture.EnableColourCodecs)">ff30adde</value>
+        <value>main_fg_90</value>
+    </variable>
+
+    <include name="Info_KodiLogo_Image">
+        <control type="image">
+            <centertop>50%</centertop>
+            <width>50</width>
+            <height>50</height>
+            <bordersize>-12</bordersize>
+            <texture colordiffuse="$VAR[Info_KodiLogo_Color]">special://skin/extras/icons/kodi.png</texture>
+        </control>
+    </include>
+
     <include name="Info_WatchedEpisodes">
         <param name="visible">false</param>
         <definition>
-            <include content="Info_FooterItem">
-                <param name="icon">special://skin/extras/icons/eye2.png</param>
-                <param name="label">$LOCALIZE[16102] $INFO[$PARAM[container]ListItem.Property(totalepisodes),all [B],[/B]] $LOCALIZE[20453]$INFO[$PARAM[container]ListItem.LastPlayed,. $LOCALIZE[568] [B],[/B]]</param>
-                <param name="visible">$PARAM[visible] + !Integer.IsEqual($PARAM[container]ListItem.Property(watchedepisodes),0) + Integer.IsEqual($PARAM[container]ListItem.Property(watchedepisodes),$PARAM[container]ListItem.Property(totalepisodes)) + !String.IsEmpty($PARAM[container]ListItem.Property(watchedepisodes))</param>
-            </include>
-            <include content="Info_FooterItem">
-                <param name="icon">special://skin/extras/icons/eye2.png</param>
-                <param name="label">$LOCALIZE[16102] $INFO[$PARAM[container]ListItem.Property(watchedepisodes),[B],[/B]]$INFO[$PARAM[container]ListItem.Property(totalepisodes), $LOCALIZE[1443] [B],[/B]] $LOCALIZE[20453]$INFO[$PARAM[container]ListItem.LastPlayed,. $LOCALIZE[568] [B],[/B]]</param>
-                <param name="visible">$PARAM[visible] + !Integer.IsEqual($PARAM[container]ListItem.Property(watchedepisodes),0) + !Integer.IsEqual($PARAM[container]ListItem.Property(watchedepisodes),$PARAM[container]ListItem.Property(totalepisodes)) + !String.IsEmpty($PARAM[container]ListItem.Property(watchedepisodes))</param>
-            </include>
-            <include content="Info_FooterItem">
-                <param name="icon">special://skin/extras/icons/watched-hide.png</param>
-                <param name="label">$LOCALIZE[16101]$INFO[$PARAM[container]ListItem.Property(totalepisodes), $LOCALIZE[1411] [B],[/B] $LOCALIZE[20453]]$INFO[$PARAM[container]ListItem.DateAdded,. $LOCALIZE[31200] [B],[/B]]</param>
-                <param name="visible">$PARAM[visible] + Integer.IsEqual($PARAM[container]ListItem.Property(watchedepisodes),0) + !String.IsEmpty($PARAM[container]ListItem.Property(watchedepisodes))</param>
-            </include>
-            <include content="Info_FooterItem">
-                <param name="icon">special://skin/extras/icons/watched-hide.png</param>
-                <param name="label">$LOCALIZE[16101]</param>
-                <param name="visible">$PARAM[visible] + String.IsEmpty($PARAM[container]ListItem.Property(watchedepisodes))</param>
-            </include>
+            <control type="group">
+                <height>80</height>
+                <centertop>50%</centertop>
+                <visible>$PARAM[visible]</visible>
+                <include>Info_KodiLogo_Image</include>
+                <control type="group">
+                    <left>80</left>
+                    <include content="Object_InfoCircle_Text_Top">
+                        <width>auto</width>
+                        <label>$LOCALIZE[16102]</label>
+                        <visible>Integer.IsEqual($PARAM[container]ListItem.Property(watchedepisodes),$PARAM[container]ListItem.Property(totalepisodes))</visible>
+                        <visible>!String.IsEmpty($PARAM[container]ListItem.Property(watchedepisodes))</visible>
+                    </include>
+                    <include content="Object_InfoCircle_Text_Top">
+                        <width>auto</width>
+                        <label>$LOCALIZE[31090]</label>
+                        <visible>!Integer.IsEqual($PARAM[container]ListItem.Property(watchedepisodes),$PARAM[container]ListItem.Property(totalepisodes))</visible>
+                        <visible>!Integer.IsEqual($PARAM[container]ListItem.Property(watchedepisodes),0)</visible>
+                    </include>
+                    <include content="Object_InfoCircle_Text_Top">
+                        <width>auto</width>
+                        <label>$LOCALIZE[16101]</label>
+                        <visible>!Integer.IsEqual($PARAM[container]ListItem.Property(watchedepisodes),$PARAM[container]ListItem.Property(totalepisodes))</visible>
+                        <visible>Integer.IsEqual($PARAM[container]ListItem.Property(watchedepisodes),0)</visible>
+                    </include>
+
+                    <include content="Object_InfoCircle_Text_Sub">
+                        <label>$INFO[$PARAM[container]ListItem.Property(watchedepisodes),$LOCALIZE[31283] [B],[/B]]$INFO[$PARAM[container]ListItem.Property(totalepisodes), $LOCALIZE[1443] [B],[/B]] $LOCALIZE[20453]$INFO[$PARAM[container]ListItem.LastPlayed,. $LOCALIZE[568] [B],[/B]]</label>
+                        <visible>!String.IsEmpty($PARAM[container]ListItem.LastPlayed)</visible>
+                    </include>
+                    <include content="Object_InfoCircle_Text_Sub">
+                        <label fallback="19055">$INFO[$PARAM[container]ListItem.Property(watchedepisodes),$LOCALIZE[31283] [B],[/B]]$INFO[$PARAM[container]ListItem.Property(totalepisodes), $LOCALIZE[1443] [B],[/B]] $LOCALIZE[20453]$INFO[$PARAM[container]ListItem.DateAdded,. $LOCALIZE[31200] [B],[/B]]</label>
+                        <visible>String.IsEmpty($PARAM[container]ListItem.LastPlayed)</visible>
+                    </include>
+                </control>
+            </control>
+
         </definition>
     </include>
 
     <include name="Info_PlayCount">
         <param name="visible">false</param>
         <definition>
-            <include content="Info_FooterItem">
-                <param name="icon">special://skin/extras/icons/eye2.png</param>
-                <param name="label">$LOCALIZE[16102] $INFO[$PARAM[container]ListItem.PlayCount,[B],[/B] $LOCALIZE[31190]]$INFO[$PARAM[container]ListItem.LastPlayed,. $LOCALIZE[568] [B],[/B]]</param>
-                <param name="visible">$PARAM[visible] + Integer.IsEqual($PARAM[container]ListItem.PlayCount,1) + !String.IsEmpty($PARAM[container]ListItem.PlayCount)</param>
-            </include>
-            <include content="Info_FooterItem">
-                <param name="icon">special://skin/extras/icons/eye2.png</param>
-                <param name="label">$LOCALIZE[16102] $INFO[$PARAM[container]ListItem.PlayCount,[B],[/B] $LOCALIZE[31183]]$INFO[$PARAM[container]ListItem.LastPlayed,. $LOCALIZE[568] [B],[/B]]</param>
-                <param name="visible">$PARAM[visible] + !Integer.IsEqual($PARAM[container]ListItem.PlayCount,1) + !String.IsEmpty($PARAM[container]ListItem.PlayCount)</param>
-            </include>
-            <include content="Info_FooterItem">
-                <param name="icon">special://skin/extras/icons/watched-hide.png</param>
-                <param name="label">$LOCALIZE[16101]$INFO[$PARAM[container]ListItem.DateAdded,. $LOCALIZE[31200] [B],[/B]]</param>
-                <param name="visible">$PARAM[visible] + String.IsEmpty($PARAM[container]ListItem.PlayCount)</param>
-            </include>
+            <control type="group">
+                <height>80</height>
+                <centertop>50%</centertop>
+                <visible>$PARAM[visible]</visible>
+                <include>Info_KodiLogo_Image</include>
+                <control type="group">
+                    <left>80</left>
+                    <include content="Object_InfoCircle_Text_Top">
+                        <width>auto</width>
+                        <label>$LOCALIZE[16102]</label>
+                        <visible>![Integer.IsEqual($PARAM[container]ListItem.PlayCount,0) | String.IsEmpty($PARAM[container]ListItem.PlayCount)]</visible>
+                    </include>
+                    <include content="Object_InfoCircle_Text_Top">
+                        <width>auto</width>
+                        <label>$LOCALIZE[31090]</label>
+                        <visible>[Integer.IsEqual($PARAM[container]ListItem.PlayCount,0) | String.IsEmpty($PARAM[container]ListItem.PlayCount)] + $PARAM[container]ListItem.IsResumable</visible>
+                    </include>
+                    <include content="Object_InfoCircle_Text_Top">
+                        <width>auto</width>
+                        <label>$LOCALIZE[16101]</label>
+                        <visible>[Integer.IsEqual($PARAM[container]ListItem.PlayCount,0) | String.IsEmpty($PARAM[container]ListItem.PlayCount)] + !$PARAM[container]ListItem.IsResumable</visible>
+                    </include>
+
+                    <include content="Object_InfoCircle_Text_Sub">
+                        <label>$LOCALIZE[31283] $INFO[$PARAM[container]ListItem.PlayCount,[B],[/B] $LOCALIZE[31183]]$INFO[$PARAM[container]ListItem.LastPlayed,. $LOCALIZE[568] [B],[/B]]</label>
+                        <visible>!String.IsEmpty($PARAM[container]ListItem.LastPlayed)</visible>
+                        <visible>![Integer.IsEqual($PARAM[container]ListItem.PlayCount,0) | String.IsEmpty($PARAM[container]ListItem.PlayCount)]</visible>
+                    </include>
+                    <include content="Object_InfoCircle_Text_Sub">
+                        <label>$LOCALIZE[31283] $INFO[$PARAM[container]ListItem.PlayCount,[B],[/B] $LOCALIZE[31183]]$INFO[$PARAM[container]ListItem.DateAdded,. $LOCALIZE[31200] [B],[/B]]</label>
+                        <visible>String.IsEmpty($PARAM[container]ListItem.LastPlayed)</visible>
+                        <visible>![Integer.IsEqual($PARAM[container]ListItem.PlayCount,0) | String.IsEmpty($PARAM[container]ListItem.PlayCount)]</visible>
+                    </include>
+                    <include content="Object_InfoCircle_Text_Sub">
+                        <label fallback="19055">$INFO[$PARAM[container]ListItem.DateAdded,$LOCALIZE[31200] [B],[/B]]</label>
+                        <visible>[Integer.IsEqual($PARAM[container]ListItem.PlayCount,0) | String.IsEmpty($PARAM[container]ListItem.PlayCount)]</visible>
+                    </include>
+                </control>
+            </control>
         </definition>
     </include>
 
     <include name="Info_MusicCodecs">
         <param name="visible">false</param>
         <definition>
-            <include content="Info_FooterItemIcon">
-                <param name="icon">special://skin/extras/icons/info2.png</param>
-                <param name="visible">$PARAM[visible]</param>
-            </include>
+            <control type="group">
+                <width>50</width>
+                <include>Info_KodiLogo_Image</include>
+                <visible>$PARAM[visible]</visible>
+            </control>
             <include content="Info_Codecs_StackedText">
                 <param name="topcolor">$VAR[Info_Codecs_AspectRatio_Color_main_fg_90]</param>
                 <param name="bottomcolor">main_fg_70</param>
@@ -1862,16 +1926,52 @@
     <include name="Info_MusicDuration">
         <param name="visible">false</param>
         <definition>
-            <include content="Info_FooterItem">
-                <param name="icon">special://skin/extras/icons/clock.png</param>
-                <param name="label">$INFO[ListItem.Duration,$LOCALIZE[31198] [B],[/B]]</param>
-                <param name="visible">$PARAM[visible] + String.IsEqual($PARAM[container]ListItem.DBType,song)</param>
-            </include>
-            <include content="Info_FooterItem">
-                <param name="icon">special://skin/extras/icons/clock.png</param>
-                <param name="label">$INFO[ListItem.Duration,$LOCALIZE[31194] [B],[/B]]</param>
-                <param name="visible">$PARAM[visible] + String.IsEqual($PARAM[container]ListItem.DBType,album)</param>
-            </include>
+            <control type="group">
+                <height>80</height>
+                <centertop>50%</centertop>
+
+                <visible>$PARAM[visible]</visible>
+
+                <include>Info_KodiLogo_Image</include>
+
+                <control type="group">
+                    <left>80</left>
+                    <include content="Object_InfoCircle_Text_Top">
+                        <width>auto</width>
+                        <label>Track</label>
+                        <visible>String.IsEqual($PARAM[container]ListItem.DBType,song)</visible>
+                    </include>
+                    <include content="Object_InfoCircle_Text_Top">
+                        <width>auto</width>
+                        <label>Album</label>
+                        <visible>String.IsEqual($PARAM[container]ListItem.DBType,album)</visible>
+                    </include>
+
+                    <include content="Object_InfoCircle_Text_Sub">
+                        <label>$INFO[$PARAM[container]ListItem.Duration,Duration [B],[/B]]</label>
+                    </include>
+                </control>
+            </control>
+        </definition>
+    </include>
+
+    <include name="Info_KodiLogo">
+        <param name="visible">true</param>
+        <definition>
+            <control type="group">
+                <visible>$PARAM[visible]</visible>
+                <include>Info_KodiLogo_Image</include>
+                <control type="label">
+                    <left>80</left>
+                    <label>KODI</label>
+                    <centertop>50%</centertop>
+                    <width>auto</width>
+                    <height>20</height>
+                    <textcolor>main_fg_90</textcolor>
+                    <font>font_logo</font>
+                    <textoffsetx>0</textoffsetx>
+                </control>
+            </control>
         </definition>
     </include>
 
@@ -1922,31 +2022,9 @@
                     <param name="visible">!$PARAM[info_musiccodecs] + !$PARAM[info_codecs] + !$PARAM[info_providers] + !$PARAM[info_watchedepisodes] + !$PARAM[info_playcount] + $PARAM[info_musicduration]</param>
                 </include>
 
-                <control type="group">
-                    <visible>!$PARAM[info_musiccodecs]</visible>
-                    <visible>!$PARAM[info_codecs]</visible>
-                    <visible>!$PARAM[info_providers]</visible>
-                    <visible>!$PARAM[info_watchedepisodes]</visible>
-                    <visible>!$PARAM[info_playcount]</visible>
-                    <visible>!$PARAM[info_musicduration]</visible>
-                    <control type="image">
-                        <centertop>50%</centertop>
-                        <width>40</width>
-                        <height>40</height>
-                        <bordersize>-18</bordersize>
-                        <texture colordiffuse="ff30adde">special://skin/extras/icons/kodi.png</texture>
-                    </control>
-                    <control type="label">
-                        <left>70</left>
-                        <label>KODI</label>
-                        <centertop>50%</centertop>
-                        <width>auto</width>
-                        <height>20</height>
-                        <textcolor>main_fg_90</textcolor>
-                        <font>font_logo</font>
-                        <textoffsetx>0</textoffsetx>
-                    </control>
-                </control>
+                <include content="Info_KodiLogo">
+                    <param name="visible">!$PARAM[info_musiccodecs] + !$PARAM[info_codecs] + !$PARAM[info_providers] + !$PARAM[info_watchedepisodes] + !$PARAM[info_playcount] + !$PARAM[info_musicduration]</param>
+                </include>
             </control>
         </definition>
     </include>
