@@ -110,14 +110,15 @@
                     <texture flipy="true" colordiffuse="main_fg_90">special://skin/extras/icons/angle-up.png</texture>
                     <width>40</width>
                     <height>40</height>
-                    <visible>![$EXP[Exp_ScrollbarVisible_H]] | Skin.String(Navigation.OnDown,Explore)</visible>
+                    <visible>!$EXP[Exp_ScrollbarVisible_V]</visible>
+                    <visible>$EXP[Exp_ScrollbarVisible_H] | Skin.String(Navigation.OnDown,Explore)</visible>
                 </control>
                 <control type="image">
                     <left>-10</left>
-                    <texture flipy="false" colordiffuse="main_fg_90">special://skin/extras/icons/angle-up.png</texture>
+                    <texture flipy="false" colordiffuse="main_fg_90">special://skin/extras/icons/angle-right.png</texture>
                     <width>40</width>
                     <height>40</height>
-                    <visible>![![$EXP[Exp_ScrollbarVisible_H]] | Skin.String(Navigation.OnDown,Explore)]</visible>
+                    <visible>$EXP[Exp_ScrollbarVisible_V]</visible>
                 </control>
                 <control type="label">
                     <left>10</left>
@@ -188,12 +189,12 @@
                             <include>Texture_Scrollbar_H</include>
                             <showonepage>true</showonepage>
                             <include>MediaFilter_Node_ClearAll</include>
-                            <onup>SetFocus(19)</onup>
+                            <onup condition="!Window.IsVisible(MyPlaylist.xml)">SetFocus(68)</onup>
+                            <onup condition="Window.IsVisible(MyPlaylist.xml)">ClearProperty(MediaFilterBase)</onup>
+                            <onup condition="Window.IsVisible(MyPlaylist.xml)">ClearProperty(MediaFilterWall)</onup>
+                            <onup condition="Window.IsVisible(MyPlaylist.xml)">50</onup>
                             <onback>68</onback>
-                            <ondown condition="!Skin.String(Navigation.OnDown,Explore)">SetProperty(List.ViewContainer,60)</ondown>
-                            <ondown condition="!Skin.String(Navigation.OnDown,Explore)">330</ondown>
-                            <ondown condition="Skin.String(Navigation.OnDown,Explore) + $EXP[Exp_FilterWall_IsActive]">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideOut,focus_id=$VAR[Action_View_ContentID],clear_prop_one=MediaFilterBase,clear_prop_two=MediaFilterWall,last_action=SetFocus(67))</ondown>
-                            <ondown condition="Skin.String(Navigation.OnDown,Explore) + ![$EXP[Exp_FilterWall_IsActive]]">SetFocus(67)</ondown>
+                            <ondown>$VAR[Action_Var_ToMediaFilter]</ondown>
                         </control>
                     </control>
                 </control>
@@ -221,11 +222,7 @@
                 <include>Texture_Scrollbar_SliderBar_V</include>
                 <include>Texture_Scrollbar_V</include>
                 <showonepage>true</showonepage>
-                <include content="Action_View_Movement_OnRight">
-                    <param name="id">50</param>
-                    <param name="onleft">65</param>
-                    <param name="online">,2</param>
-                </include>
+                <onright>$VAR[Action_Var_ToMediaFilter_Vert]</onright>
                 <onback>50</onback>
             </control>
         </control>
@@ -380,17 +377,18 @@
             <include>Animation_Group_Bumper</include>
             <include>Animation_View_WindowChange</include>
             <include>View_Row_Header</include>
-            <include>View_MediaFilter_Node</include>
             <control type="group">
                 <include>Animation_Half_WindowChange_02</include>
                 <include>View_Row_Gutter</include>
                 <include condition="!Window.IsVisible(MyPlaylist.xml)">View_Scrollbars</include>
                 <include condition="!Window.IsVisible(MyPlaylist.xml)">View_Scrollbars_Vert</include>
+                <include>MediaFilter_Node</include>
             </control>
         </control>
         <include content="Home_Menu">
             <param name="onlist">50</param>
         </include>
+        <include condition="Window.IsVisible(MyVideoNav.xml)">MediaFilter_Discover_Node</include>
     </include>
 
     <include name="View_MediaWall">
@@ -399,11 +397,6 @@
             <include condition="Window.IsVisible(MyVideoNav.xml)">MediaWall_Discover</include>
             <include condition="$EXP[Exp_FilterWall_IsEnabled]">MediaWall_All</include>
         </control>
-    </include>
-
-    <include name="View_MediaFilter_Node">
-        <include>MediaFilter_Node</include>
-        <include condition="Window.IsVisible(MyVideoNav.xml)">MediaFilter_Discover_Node</include>
     </include>
 
     <include name="View_Main">
