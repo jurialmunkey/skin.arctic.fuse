@@ -1,105 +1,106 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
 
+    <include name="View_PVR_GroupSwitcher_Labels">
+        <param name="selected">false</param>
+        <definition>
+            <control type="group">
+                <left>80</left>
+                <height>80</height>
+                <centertop>50%</centertop>
+                <visible>$PARAM[visible]</visible>
+                <include content="Object_InfoCircle_Text_Top">
+                    <width>auto</width>
+                    <label fallback="19055">$INFO[Control.GetLabel(28)]</label>
+                    <include condition="$PARAM[selected]">Color_SelectedText</include>
+                </include>
+                <include content="Object_InfoCircle_Text_Sub">
+                    <label>$INFO[Container.NumItems,, ]$LOCALIZE[14301]</label>
+                    <include condition="$PARAM[selected]">Color_SelectedText</include>
+                </include>
+            </control>
+        </definition>
+    </include>
+
     <!-- Group Switcher -->
     <include name="View_PVR_GroupSwitcher">
         <include content="Object_Hidden_List">
             <param name="id">11</param>
             <orientation>horizontal</orientation>
-            <onfocus>SetFocus(2800)</onfocus>
+            <onfocus>SetFocus(28)</onfocus>
         </include>
         <control type="group">
             <height>80</height>
-            <left>160</left>
+            <left>view_side</left>
             <centerbottom>100</centerbottom>
             <width>settings_category_w</width>
-            <control type="group">
-                <left>20</left>
-                <visible>ControlGroup(2800).HasFocus()</visible>
-                <control type="image">
-                    <include>Texture_Menu_Highlight_H</include>
-                </control>
-                <control type="label" id="28">
-                    <textoffsetx>30</textoffsetx>
-                    <!-- PVR005: EPG Group Switcher - custom font (was font_main) -->
-                    <font>font_epg_group_switcher</font>                    
-                    <include>Color_SelectedText</include>
-               </control>
-            </control>
-            <control type="group">
-                <left>20</left>
-                <visible>!ControlGroup(2800).HasFocus()</visible>
-                <control type="label">
-                    <textoffsetx>30</textoffsetx>
-                    <!-- PVR005: EPG Group Switcher - custom font (was font_main) -->
-                    <font>font_epg_group_switcher</font>
-                    <!-- PVR005: EPG Group Switcher - custom textcolor (was main_fg_30) -->
-                    <textcolor>$VAR[ColorGradient]</textcolor>
-                    <label>$INFO[Control.GetLAbel(28)]</label>
-                </control>
-            </control>
-            <control type="grouplist" id="2800">
-                <visible allowhiddenfocus="true">ControlGroup(2800).HasFocus()</visible>
-                <height>80</height>
-                <centertop>50%</centertop>
-                <align>right</align>
-                <orientation>horizontal</orientation>
-                <onleft>2801</onleft>
+            <control type="button" id="28">
+                <left>-20</left>
+                <right>40</right>
                 <onleft>SetFocus(11)</onleft>
                 <onleft>Action(Left)</onleft>
-                <onleft>SetFocus(2801)</onleft>
-                <onright>2802</onright>
+                <onleft>SetFocus(28)</onleft>
                 <onright>SetFocus(11)</onright>
                 <onright>Action(Right)</onright>
-                <onright>SetFocus(2802)</onright>
+                <onright>SetFocus(28)</onright>
                 <ondown>50</ondown>
                 <onup>50</onup>
-                <right>-10</right>
-                <control type="button" id="2801">
-                    <width>30</width>
-                    <height>30</height>
-                    <centertop>50%</centertop>
-                    <onclick>SendClick(28)</onclick>
-                    <texturenofocus colordiffuse="main_fg_30" flipx="false">buttons/triangle-left.png</texturenofocus>
-                    <texturefocus colordiffuse="$VAR[ColorSelected]" flipx="false">buttons/triangle-left.png</texturefocus>
+                <texturenofocus />
+                <font />
+            </control>
+            <control type="group">
+                <width>50</width>
+                <height>50</height>
+                <centertop>50%</centertop>
+                <visible>Control.HasFocus(28)</visible>
+                <control type="image">
+                    <include content="Dimension_Padding"><param name="pad">-40</param></include>
+                    <bordersize>40</bordersize>
+                    <bordertexture colordiffuse="shadow_hard">shadows/circle_50-shadow-40.png</bordertexture>
+                    <texture colordiffuse="main_fg_100">diffuse/circle_50.png</texture>
                 </control>
-                <control type="button" id="2802">
-                    <width>30</width>
-                    <height>30</height>
-                    <centertop>50%</centertop>
-                    <texturenofocus colordiffuse="main_fg_30" flipx="true">buttons/triangle-left.png</texturenofocus>
-                    <texturefocus colordiffuse="$VAR[ColorSelected]" flipx="true">buttons/triangle-left.png</texturefocus>
-                    <onclick>SendClick(28)</onclick>
+                <control type="image">
+                    <bordersize>2</bordersize>
+                    <texture colordiffuse="main_bg_100">diffuse/circle_50.png</texture>
                 </control>
-                <control type="group" id="2803">
+            </control>
+            <include>Info_KodiLogo_Image</include>
+            <include content="View_PVR_GroupSwitcher_Labels">
+                <param name="selected">false</param>
+                <param name="visible">!Control.HasFocus(28)</param>
+            </include>
+            <include content="View_PVR_GroupSwitcher_Labels">
+                <param name="selected">true</param>
+                <param name="visible">Control.HasFocus(28)</param>
+            </include>
+            <control type="group">
+                <visible>Control.HasFocus(28)</visible>
+                <control type="image">
+                    <texture colordiffuse="main_fg_70">special://skin/extras/icons/angle-left.png</texture>
+                    <height>40</height>
                     <width>40</width>
+                    <centerleft>-30</centerleft>
+                    <centertop>50%</centertop>
+                </control>
+                <control type="image">
+                    <texture colordiffuse="main_fg_70" flipx="true">special://skin/extras/icons/angle-left.png</texture>
+                    <height>40</height>
+                    <width>40</width>
+                    <centerright>30</centerright>
+                    <centertop>50%</centertop>
                 </control>
             </control>
         </control>
 
         <control type="group">
             <height>80</height>
-            <!-- PVR010: left changed from 210 -->
-            <left>180</left>
+            <left>200</left>
             <centerbottom>100</centerbottom>
             <control type="group">
                 <left>settings_category_w</left>
                 <right>view_pad</right>
-
-                <!-- PVR010: START custom icon for Basic EPG plotbox -->
-                <!-- include>Info_KodiLogo_Image</include -->
-				<control type="image">
-                    <left>-20</left>
-                    <bordersize>8</bordersize>
-                    <aspectratio align="left">keep</aspectratio>
-                    <colordiffuse>dialog_fg_70</colordiffuse>
-                    <texture>special://skin/extras/icons/info2.png</texture>
-					<visible>!Skin.HasSetting(Views.UseHalfPVRGuide)</visible>
-                </control>
-				<!-- PVR010: END custom icon for Basic EPG plotbox -->
-				<!-- PVR010: START disable standard EPG listings info (date etc.) -->
-                <!-- control type="group">
-                    <left>70</left>
+                <control type="group">
+                    <left>0</left>
                     <height>80</height>
                     <centertop>50%</centertop>
                     <control type="grouplist">
@@ -117,38 +118,7 @@
                     <include content="Object_InfoCircle_Text_Sub">
                         <label fallback="19055">$INFO[ListItem.StartDate]$INFO[ListItem.StartTime, • ,]$INFO[ListItem.EndTime, - ,]</label>
                     </include>
-                </control -->
-				<!-- PVR010: START add plotbox for Basic EPG -->
-				<control type="label">
-                    <height>15</height>							
-                    <top>0</top>
-				    <left>55</left>
-                    <width>auto</width>
-                    <aligny>center</aligny>
-                    <align>left</align>							
-                    <font>font_tiny_bold</font>							
-                    <textcolor>main_fg_70</textcolor>
-				    <shadowcolor>main_bg_12</shadowcolor>
-                    <label>$VAR[TextPVREPGProgramInfo] : $INFO[ListItem.StartTime,,]$INFO[ListItem.EndTime, - ,]</label>
-                    <visible>!String.IsEqual(ListItem.Title,ListITem.ChannelName)</visible>
-					<visible>!Skin.HasSetting(Views.UseHalfPVRGuide)</visible>
                 </control>
-				
-				<control type="textbox">
-                    <top>18</top>
-					<left>55</left>
-					<width>800</width>
-                    <height>60</height>
-                    <centertop>50%</centertop>
-                    <textcolor>main_fg_70</textcolor>
-					<align>left</align>
-                    <font>font_tiny</font>
-                    <aligny>center</aligny>
-                    <label>$VAR[TextPVREPGProgramPlot]</label>
-					<visible>!Skin.HasSetting(Views.UseHalfPVRGuide)</visible>
-					<autoscroll delay="3500" time="3500" repeat="3500">Window.IsVisible(10702)</autoscroll>
-                </control>
-				<!-- PVR010: END add plotbox for Basic EPG -->
             </control>
         </control>
     </include>
@@ -268,9 +238,8 @@
                 <width>info_panel_w</width>
                 <left>view_side</left>
             </include>
-            <include content="Info_Viewline">            
-                <!-- PVR008: Use Program Start Date for Detailed EPG -->
-                <param name="label">$VAR[LabelProgramStartDate]</param>
+            <include content="Info_Viewline">
+                <param name="label">$INFO[Container.NumItems,, $LOCALIZE[19019]]</param>
             </include>
             <include>View_Row_Header</include>
         </control>
@@ -390,7 +359,7 @@
                 </itemlayout>
                 <focusedlayout height="$PARAM[channelheight]">
                     <control type="group">
-                        <visible>[Control.HasFocus(11) | $EXP[Exp_HomeMenu_HasFocus] | Control.HasFocus(331) | ControlGroup(2800).HasFocus()]</visible>
+                        <visible>[Control.HasFocus(11) | $EXP[Exp_HomeMenu_HasFocus] | Control.HasFocus(331) | Control.HasFocus(28)]</visible>
                         <include content="Layout_PVRChannel">
                             <param name="channelwidth">$PARAM[channelwidth]</param>
                             <param name="detailed">$PARAM[detailed]</param>
@@ -398,7 +367,7 @@
                         </include>
                     </control>
                     <control type="group">
-                        <visible>![Control.HasFocus(11) | $EXP[Exp_HomeMenu_HasFocus] | Control.HasFocus(331) | ControlGroup(2800).HasFocus()]</visible>
+                        <visible>![Control.HasFocus(11) | $EXP[Exp_HomeMenu_HasFocus] | Control.HasFocus(331) | Control.HasFocus(28)]</visible>
                         <include content="Layout_PVRChannel">
                             <param name="channelwidth">$PARAM[channelwidth]</param>
                             <param name="detailed">$PARAM[detailed]</param>
