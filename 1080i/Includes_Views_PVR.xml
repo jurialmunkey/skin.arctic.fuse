@@ -93,13 +93,24 @@
         </control>
 
         <control type="group">
-            <height>80</height>
-            <left>200</left>
+            <!-- PVR010: left changed from 200 -->
+            <left>180</left>
             <centerbottom>100</centerbottom>
             <control type="group">
                 <left>settings_category_w</left>
                 <right>view_pad</right>
-                <control type="group">
+				<!-- PVR010: START custom icon for Basic EPG plotbox -->
+				<control type="image">
+                    <left>-20</left>
+                    <bordersize>8</bordersize>
+                    <aspectratio align="left">keep</aspectratio>
+                    <colordiffuse>dialog_fg_70</colordiffuse>
+                    <texture>special://skin/extras/icons/info2.png</texture>
+					<visible>!Skin.HasSetting(Views.UseHalfPVRGuide)</visible>
+                </control>
+				<!-- PVR010: END custom icon for Basic EPG plotbox -->
+                <!-- PVR010: START disable standard EPG listings info (date etc.) -->
+                <!-- control type="group">
                     <left>0</left>
                     <height>80</height>
                     <centertop>50%</centertop>
@@ -118,7 +129,40 @@
                     <include content="Object_InfoCircle_Text_Sub">
                         <label fallback="19055">$INFO[ListItem.StartDate]$INFO[ListItem.StartTime, • ,]$INFO[ListItem.EndTime, - ,]</label>
                     </include>
+                </control -->
+				<!-- PVR010: END disable standard EPG listings info (date etc.) -->
+				
+				<!-- PVR010: START add plotbox for Basic EPG -->
+				<control type="label">
+                    <height>15</height>							
+                    <top>0</top>
+				    <left>55</left>
+                    <width>auto</width>
+                    <aligny>center</aligny>
+                    <align>left</align>							
+                    <font>font_tiny_bold</font>							
+                    <textcolor>main_fg_70</textcolor>
+				    <shadowcolor>main_bg_12</shadowcolor>
+                    <label>$VAR[TextPVREPGProgramInfo] : $INFO[ListItem.StartTime,,]$INFO[ListItem.EndTime, - ,]</label>
+                    <visible>!String.IsEqual(ListItem.Title,ListITem.ChannelName)</visible>
+					<visible>!Skin.HasSetting(Views.UseHalfPVRGuide)</visible>
                 </control>
+				
+				<control type="textbox">
+                    <top>18</top>
+					<left>55</left>
+					<width>800</width>
+                    <height>60</height>
+                    <centertop>50%</centertop>
+                    <textcolor>main_fg_70</textcolor>
+					<align>left</align>
+                    <font>font_tiny</font>
+                    <aligny>center</aligny>
+                    <label>$VAR[TextPVREPGProgramPlot]</label>
+					<visible>!Skin.HasSetting(Views.UseHalfPVRGuide)</visible>
+					<autoscroll delay="3500" time="3500" repeat="3500">Window.IsVisible(10702)</autoscroll>
+                </control>
+				<!-- PVR010: END add plotbox for Basic EPG -->
             </control>
         </control>
     </include>
@@ -239,7 +283,8 @@
                 <left>view_side</left>
             </include>
             <include content="Info_Viewline">
-                <param name="label">$INFO[Container.NumItems,, $LOCALIZE[19019]]</param>
+                <!-- PVR008: Use Program Start Date for Detailed EPG -->
+                <param name="label">$VAR[LabelProgramStartDate]</param>
             </include>
             <include>View_Row_Header</include>
         </control>
