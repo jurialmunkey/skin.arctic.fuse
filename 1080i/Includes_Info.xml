@@ -1830,14 +1830,85 @@
                         <visible>Integer.IsEqual($PARAM[container]ListItem.Property(watchedepisodes),0)</visible>
                     </include>
 
-                    <include content="Object_InfoCircle_Text_Sub">
-                        <label>$INFO[$PARAM[container]ListItem.Property(watchedepisodes),$LOCALIZE[31283] [B],[/B]]$INFO[$PARAM[container]ListItem.Property(totalepisodes), $LOCALIZE[1443] [B],[/B]] $LOCALIZE[20453]$INFO[$PARAM[container]ListItem.LastPlayed,. $LOCALIZE[568] [B],[/B]]</label>
-                        <visible>!String.IsEmpty($PARAM[container]ListItem.LastPlayed)</visible>
-                    </include>
-                    <include content="Object_InfoCircle_Text_Sub">
-                        <label fallback="19055">$INFO[$PARAM[container]ListItem.Property(watchedepisodes),$LOCALIZE[31283] [B],[/B]]$INFO[$PARAM[container]ListItem.Property(totalepisodes), $LOCALIZE[1443] [B],[/B]] $LOCALIZE[20453]$INFO[$PARAM[container]ListItem.DateAdded,. $LOCALIZE[31200] [B],[/B]]</label>
-                        <visible>String.IsEmpty($PARAM[container]ListItem.LastPlayed)</visible>
-                    </include>
+                    <control type="grouplist">
+                        <orientation>horizontal</orientation>
+                        <itemgap>6</itemgap>
+                        <include content="Object_InfoCircle_Text_Sub">
+                            <label>$LOCALIZE[31283]</label>
+                            <width>auto</width>
+                        </include>
+                        <include content="Object_InfoCircle_Text_Sub">
+                            <label>$NUMBER[0]</label>
+                            <width>auto</width>
+                            <font>font_tiny_bold</font>
+                            <textcolor>main_fg_90</textcolor>
+                            <selectedcolor>main_fg_90</selectedcolor>
+                            <visible>!String.IsEmpty($PARAM[container]ListItem.Property(watchedepisodes))</visible>
+                        </include>
+                        <include content="Object_InfoCircle_Text_Sub">
+                            <label>$INFO[$PARAM[container]ListItem.Property(watchedepisodes)]</label>
+                            <width>auto</width>
+                            <font>font_tiny_bold</font>
+                            <textcolor>main_fg_90</textcolor>
+                            <selectedcolor>main_fg_90</selectedcolor>
+                            <visible>String.IsEmpty($PARAM[container]ListItem.Property(watchedepisodes))</visible>
+                        </include>
+                        <include content="Object_InfoCircle_Text_Sub">
+                            <label>$LOCALIZE[1443]</label>
+                            <width>auto</width>
+                            <visible>!String.IsEmpty($PARAM[container]ListItem.Property(totalepisodes))</visible>
+                        </include>
+                        <include content="Object_InfoCircle_Text_Sub">
+                            <label>$INFO[$PARAM[container]ListItem.Property(totalepisodes)]</label>
+                            <width>auto</width>
+                            <font>font_tiny_bold</font>
+                            <textcolor>main_fg_90</textcolor>
+                            <selectedcolor>main_fg_90</selectedcolor>
+                            <visible>!String.IsEmpty($PARAM[container]ListItem.Property(totalepisodes))</visible>
+                        </include>
+                        <include content="Object_InfoCircle_Text_Sub">
+                            <label>$LOCALIZE[20453]</label>
+                            <width>auto</width>
+                        </include>
+                        <include content="Object_InfoCircle_Text_Sub">
+                            <label>.</label>
+                            <width>auto</width>
+                            <left>-6</left>
+                            <visible>!String.IsEmpty($PARAM[container]ListItem.LastPlayed) | !String.IsEmpty($PARAM[container]ListItem.DateAdded)</visible>
+                        </include>
+
+                        <!-- Last Played -->
+                        <include content="Object_InfoCircle_Text_Sub">
+                            <label>$LOCALIZE[568]</label>
+                            <width>auto</width>
+                            <visible>!String.IsEmpty($PARAM[container]ListItem.LastPlayed)</visible>
+                        </include>
+                        <include content="Object_InfoCircle_Text_Sub">
+                            <label>$INFO[$PARAM[container]ListItem.LastPlayed]</label>
+                            <width>auto</width>
+                            <font>font_tiny_bold</font>
+                            <textcolor>main_fg_90</textcolor>
+                            <selectedcolor>main_fg_90</selectedcolor>
+                            <visible>!String.IsEmpty($PARAM[container]ListItem.LastPlayed)</visible>
+                        </include>
+
+                        <!-- Date Added -->
+                        <include content="Object_InfoCircle_Text_Sub">
+                            <label>$LOCALIZE[31200]</label>
+                            <width>auto</width>
+                            <visible>String.IsEmpty($PARAM[container]ListItem.LastPlayed)</visible>
+                            <visible>!String.IsEmpty($PARAM[container]ListItem.DateAdded)</visible>
+                        </include>
+                        <include content="Object_InfoCircle_Text_Sub">
+                            <label>$INFO[$PARAM[container]ListItem.DateAdded]</label>
+                            <width>auto</width>
+                            <font>font_tiny_bold</font>
+                            <textcolor>main_fg_90</textcolor>
+                            <selectedcolor>main_fg_90</selectedcolor>
+                            <visible>String.IsEmpty($PARAM[container]ListItem.LastPlayed)</visible>
+                            <visible>!String.IsEmpty($PARAM[container]ListItem.DateAdded)</visible>
+                        </include>
+                    </control>
                 </control>
             </control>
 
@@ -1870,20 +1941,74 @@
                         <visible>[Integer.IsEqual($PARAM[container]ListItem.PlayCount,0) | String.IsEmpty($PARAM[container]ListItem.PlayCount)] + !$PARAM[container]ListItem.IsResumable</visible>
                     </include>
 
-                    <include content="Object_InfoCircle_Text_Sub">
-                        <label>$LOCALIZE[31283] $INFO[$PARAM[container]ListItem.PlayCount,[B],[/B] $LOCALIZE[31183]]$INFO[$PARAM[container]ListItem.LastPlayed,. $LOCALIZE[568] [B],[/B]]</label>
-                        <visible>!String.IsEmpty($PARAM[container]ListItem.LastPlayed)</visible>
-                        <visible>![Integer.IsEqual($PARAM[container]ListItem.PlayCount,0) | String.IsEmpty($PARAM[container]ListItem.PlayCount)]</visible>
-                    </include>
-                    <include content="Object_InfoCircle_Text_Sub">
-                        <label>$LOCALIZE[31283] $INFO[$PARAM[container]ListItem.PlayCount,[B],[/B] $LOCALIZE[31183]]$INFO[$PARAM[container]ListItem.DateAdded,. $LOCALIZE[31200] [B],[/B]]</label>
-                        <visible>String.IsEmpty($PARAM[container]ListItem.LastPlayed)</visible>
-                        <visible>![Integer.IsEqual($PARAM[container]ListItem.PlayCount,0) | String.IsEmpty($PARAM[container]ListItem.PlayCount)]</visible>
-                    </include>
-                    <include content="Object_InfoCircle_Text_Sub">
-                        <label fallback="19055">$INFO[$PARAM[container]ListItem.DateAdded,$LOCALIZE[31200] [B],[/B]]</label>
-                        <visible>[Integer.IsEqual($PARAM[container]ListItem.PlayCount,0) | String.IsEmpty($PARAM[container]ListItem.PlayCount)]</visible>
-                    </include>
+                    <control type="grouplist">
+                        <orientation>horizontal</orientation>
+                        <itemgap>6</itemgap>
+                        <include content="Object_InfoCircle_Text_Sub">
+                            <label>$LOCALIZE[31283]</label>
+                            <width>auto</width>
+                        </include>
+                        <include content="Object_InfoCircle_Text_Sub">
+                            <label>$NUMBER[0]</label>
+                            <width>auto</width>
+                            <font>font_tiny_bold</font>
+                            <textcolor>main_fg_90</textcolor>
+                            <selectedcolor>main_fg_90</selectedcolor>
+                            <visible>String.IsEmpty($PARAM[container]ListItem.PlayCount)</visible>
+                        </include>
+                        <include content="Object_InfoCircle_Text_Sub">
+                            <label>$INFO[$PARAM[container]ListItem.PlayCount]</label>
+                            <width>auto</width>
+                            <font>font_tiny_bold</font>
+                            <textcolor>main_fg_90</textcolor>
+                            <selectedcolor>main_fg_90</selectedcolor>
+                            <visible>!String.IsEmpty($PARAM[container]ListItem.PlayCount)</visible>
+                        </include>
+                        <include content="Object_InfoCircle_Text_Sub">
+                            <label>$LOCALIZE[31183]</label>
+                            <width>auto</width>
+                        </include>
+                        <include content="Object_InfoCircle_Text_Sub">
+                            <label>.</label>
+                            <width>auto</width>
+                            <left>-6</left>
+                            <visible>!String.IsEmpty($PARAM[container]ListItem.LastPlayed) | !String.IsEmpty($PARAM[container]ListItem.DateAdded)</visible>
+                        </include>
+
+                        <!-- Last Played -->
+                        <include content="Object_InfoCircle_Text_Sub">
+                            <label>$LOCALIZE[568]</label>
+                            <width>auto</width>
+                            <visible>!String.IsEmpty($PARAM[container]ListItem.LastPlayed)</visible>
+                        </include>
+                        <include content="Object_InfoCircle_Text_Sub">
+                            <label>$INFO[$PARAM[container]ListItem.LastPlayed]</label>
+                            <width>auto</width>
+                            <font>font_tiny_bold</font>
+                            <textcolor>main_fg_90</textcolor>
+                            <selectedcolor>main_fg_90</selectedcolor>
+                            <visible>!String.IsEmpty($PARAM[container]ListItem.LastPlayed)</visible>
+                        </include>
+
+                        <!-- Date Added -->
+                        <include content="Object_InfoCircle_Text_Sub">
+                            <label>$LOCALIZE[31200]</label>
+                            <width>auto</width>
+                            <visible>String.IsEmpty($PARAM[container]ListItem.LastPlayed)</visible>
+                            <visible>!String.IsEmpty($PARAM[container]ListItem.DateAdded)</visible>
+                        </include>
+                        <include content="Object_InfoCircle_Text_Sub">
+                            <label>$INFO[$PARAM[container]ListItem.DateAdded]</label>
+                            <width>auto</width>
+                            <font>font_tiny_bold</font>
+                            <textcolor>main_fg_90</textcolor>
+                            <selectedcolor>main_fg_90</selectedcolor>
+                            <visible>String.IsEmpty($PARAM[container]ListItem.LastPlayed)</visible>
+                            <visible>!String.IsEmpty($PARAM[container]ListItem.DateAdded)</visible>
+                        </include>
+                    </control>
+
+
                 </control>
             </control>
         </definition>
@@ -1951,9 +2076,21 @@
                         <visible>String.IsEqual($PARAM[container]ListItem.DBType,album)</visible>
                     </include>
 
-                    <include content="Object_InfoCircle_Text_Sub">
-                        <label>$INFO[$PARAM[container]ListItem.Duration,Duration [B],[/B]]</label>
-                    </include>
+                    <control type="grouplist">
+                        <orientation>horizontal</orientation>
+                        <itemgap>6</itemgap>
+                        <include content="Object_InfoCircle_Text_Sub">
+                            <label>$LOCALIZE[180]</label>
+                            <width>auto</width>
+                        </include>
+                        <include content="Object_InfoCircle_Text_Sub">
+                            <label>$INFO[$PARAM[container]ListItem.Duration]</label>
+                            <width>auto</width>
+                            <font>font_tiny_bold</font>
+                            <textcolor>main_fg_90</textcolor>
+                            <selectedcolor>main_fg_90</selectedcolor>
+                        </include>
+                    </control>
                 </control>
             </control>
         </definition>
