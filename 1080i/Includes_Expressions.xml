@@ -109,27 +109,31 @@
     <expression name="Exp_View_513">$EXP[Exp_View_512]</expression>
     <expression name="Exp_View_523">$EXP[Exp_View_522]</expression>
 
+    <expression name="Exp_Views_UseAltCombined">[Skin.HasSetting(Views.UseAltCombined) + !Skin.HasSetting(Navigation.TouchMode)]</expression>
+
     <!-- Scrollbar -->
     <expression name="Exp_ScrollbarVisible_H">[Control.HasFocus(60) | [Control.HasFocus(330) + Integer.IsEqual(Window.Property(List.ViewContainer),60)]]</expression>
     <expression name="Exp_ScrollbarVisible_V">[Control.HasFocus(61) | Control.HasFocus(65)]</expression>
 
-    <expression name="Exp_FurnitureFooter_IsVisible">[!$EXP[Exp_ScrollbarVisible_H] + !$EXP[Exp_ScrollbarVisible_V] + String.IsEmpty(Window.Property(MediaFilterBase)) + String.IsEmpty(Window.Property(MediaFilterWall))]</expression>
+    <expression name="Exp_FurnitureFooter_IsVisible">[!$EXP[Exp_ScrollbarVisible_H] + !$EXP[Exp_ScrollbarVisible_V] + String.IsEmpty(Window.Property(MediaFilterBase)) + String.IsEmpty(Window.Property(MediaFilterWall)) + !Skin.HasSetting(Navigation.TouchMode)]</expression>
 
-    <expression name="Exp_FurnitureFooter_Left_IsVisible">[![$EXP[Exp_View_502] | $EXP[Exp_View_512] | $EXP[Exp_View_522]] | Skin.HasSetting(Views.UseAltCombined)]</expression>
+    <expression name="Exp_FurnitureFooter_Left_IsVisible">[![$EXP[Exp_View_502] | $EXP[Exp_View_512] | $EXP[Exp_View_522]] | $EXP[Exp_Views_UseAltCombined]]</expression>
 
 
     <!-- Filter Walls -->
-    <expression name="Exp_DiscoverWall_IsActive">[Control.IsVisible(55) + !Integer.IsEqual(Container(553).NumItems,0) + Skin.HasSetting(Navigation.MediaFilterWall)]</expression>
+    <expression name="Exp_DiscoverWall_IsActive">[Control.IsVisible(55) + !Integer.IsEqual(Container(553).NumItems,0) + Skin.HasSetting(Navigation.MediaFilterWall) + !Skin.HasSetting(Navigation.TouchMode)]</expression>
 
     <expression name="Exp_FilterWall_IsActive">[!String.IsEmpty(Window.Property(MediaFilterWall)) + $EXP[Exp_FilterWall_IsEnabled] + $EXP[Exp_FilterWall_IsViewtype]]</expression>
 
-    <expression name="Exp_FilterWall_IsEnabled">[Window.IsMedia + Skin.HasSetting(Navigation.MediaFilterWall)]</expression>
+    <expression name="Exp_FilterWall_IsEnabled">[Window.IsMedia + Skin.HasSetting(Navigation.MediaFilterWall) + !Skin.HasSetting(Navigation.TouchMode)]</expression>
 
-    <expression name="Exp_FilterWall_IsViewtype">[Control.IsVisible(50) | Control.IsVisible(51) | Control.IsVisible(52) | [[Control.IsVisible(502) | Control.IsVisible(512) | Control.IsVisible(522)] + !Skin.HasSetting(Views.UseAltCombined)]]</expression>
+    <expression name="Exp_FilterWall_IsViewtype">[Control.IsVisible(50) | Control.IsVisible(51) | Control.IsVisible(52) | [[Control.IsVisible(502) | Control.IsVisible(512) | Control.IsVisible(522)] + !$EXP[Exp_Views_UseAltCombined]]]</expression>
 
     <expression name="Exp_BackgroundArtwork_IsHidden">[$EXP[Exp_FilterWall_IsActive]]</expression>
 
-    <expression name="Exp_MediaFilter_IsActive">[!String.IsEmpty(Window.Property(MediaFilterBase)) | [Window.IsVisible(1105) + !$EXP[Exp_Search_WidgetGroup_HasFocus]]]</expression>
+    <expression name="Exp_MediaFilter_IsActive">[!String.IsEmpty(Window.Property(MediaFilterBase)) | [Window.IsVisible(1105) + !$EXP[Exp_Search_WidgetGroup_HasFocus]] | Skin.HasSetting(Navigation.TouchMode)]</expression>
+
+
 
 
     <!-- ================= -->
