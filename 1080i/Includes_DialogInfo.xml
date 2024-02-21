@@ -69,6 +69,7 @@
         <onload>ClearProperty(BlurImage,Home)</onload>
         <onload>ClearProperty(BlurImage.Original,Home)</onload>
         <onload>ClearProperty(TMDbHelper.Image.Override,Home)</onload>
+        <onload>ClearProperty(ReviewsActive)</onload>
     </include>
 
     <include name="DialogInfo_List_Movement">
@@ -502,6 +503,7 @@
             <content target="videos">$VAR[Path_VideoInfo_Generic,,&amp;info=trakt_comments]</content>
             <visible>String.IsEqual(Window.Property(DetailsView),Reviews)</visible>
             <animation effect="fade" start="100" end="0" condition="Container(5004).IsUpdating">Conditional</animation>
+            <onfocus>SetProperty(ReviewsActive,1)</onfocus>
         </include>
 
         <control type="group">
@@ -569,12 +571,22 @@
                     <param name="color_nf">main_fg_70</param>
                     <include content="Home_Menu_Button_Back">
                         <param name="id">4008</param>
+                        <onleft>SetProperty(ReturnFromPlot,4008)</onleft>
+                        <onleft>61</onleft>
+                        <!-- <onright>SetProperty(ReturnFromPlot,4008)</onright>
+                        <onright>61</onright> -->
                         <onup>4009</onup>
+                        <!-- <onup>SetProperty(ReturnFromPlot,4008)</onup>
+                        <onup>61</onup> -->
                         <ondown>4000</ondown>
+                        <!-- <onleft>Control.Move(7003,-1)</onleft>
+                        <onright>Control.Move(7003,1)</onright> -->
                         <onclick>SetProperty(CustomSearchTerm,$ESCINFO[ListItem.Title],Home)</onclick>
                         <onclick>SetProperty(ReplaceWindow,1105,Home)</onclick>
                         <onclick>Close</onclick>
                         <onclick>ActivateWindow(1105)</onclick>
+                        <!-- <onfocus>SetProperty(DetailsView,Artwork)</onfocus> -->
+                        <onfocus>ClearProperty(DetailsView)</onfocus>
                     </include>
                     <left>view_menu</left>
                     <top>view_pad</top>
@@ -589,6 +601,8 @@
                         <param name="id">4009</param>
                         <onup>4000</onup>
                         <ondown>4008</ondown>
+                        <!-- <ondown>SetProperty(ReturnFromPlot,4009)</ondown>
+                        <ondown>61</ondown> -->
                         <onleft>Control.Move(7003,-1)</onleft>
                         <onright>Control.Move(7003,1)</onright>
                         <onclick condition="Window.IsVisible(DialogVideoInfo.xml) | Window.IsVisible(DialogMusicInfo.xml)">SendClick(10)</onclick>
@@ -618,31 +632,33 @@
                         <param name="condition">[String.IsEqual(Window.Property(DetailsView),Cast) + !Integer.IsEqual(Container(5003).NumItems,0)]</param>
                     </include> -->
 
-                    <onleft condition="[[String.IsEqual(Window.Property(DetailsView),Cast)] + !Integer.IsEqual(Container(5003).NumItems,0)]">SetFocus(5003,0,absolute)</onleft>
+                    <onleft>61</onleft>
+
+                    <!-- <onleft condition="[[String.IsEqual(Window.Property(DetailsView),Cast)] + !Integer.IsEqual(Container(5003).NumItems,0)]">SetFocus(5003,0,absolute)</onleft> -->
                     <onright condition="[[String.IsEqual(Window.Property(DetailsView),Cast)] + !Integer.IsEqual(Container(5003).NumItems,0)]">SetFocus(5003,0,absolute)</onright>
 
-                    <onleft condition="[[String.IsEmpty(Window.Property(DetailsView)) | String.IsEqual(Window.Property(DetailsView),Cast)] + !Integer.IsEqual(Container(50).NumItems,0)]">SetFocus(50,99999,absolute)</onleft>
-                    <onright condition="[[String.IsEmpty(Window.Property(DetailsView)) | String.IsEqual(Window.Property(DetailsView),Cast)] + !Integer.IsEqual(Container(50).NumItems,0)]">SetFocus(50,0,absolute)</onright>
+                    <!-- <onleft condition="[String.IsEqual(Window.Property(DetailsView),Cast) + !Integer.IsEqual(Container(50).NumItems,0)]">SetFocus(50,99999,absolute)</onleft> -->
+                    <onright condition="[String.IsEqual(Window.Property(DetailsView),Cast) + !Integer.IsEqual(Container(50).NumItems,0)]">SetFocus(50,0,absolute)</onright>
 
-                    <onleft condition="[String.IsEmpty(Window.Property(DetailsView)) + !Integer.IsEqual(Container(5050).NumItems,0)]">SetFocus(5050,99999,absolute)</onleft>
+                    <!-- <onleft condition="[String.IsEmpty(Window.Property(DetailsView)) + !Integer.IsEqual(Container(5050).NumItems,0)]">SetFocus(5050,99999,absolute)</onleft> -->
                     <onright condition="[String.IsEmpty(Window.Property(DetailsView)) + !Integer.IsEqual(Container(5050).NumItems,0)]">SetFocus(5050,0,absolute)</onright>
 
-                    <onleft condition="[String.IsEqual(Window.Property(DetailsView),Critics)]">61</onleft>
-                    <onright condition="[String.IsEqual(Window.Property(DetailsView),Critics)]">61</onright>
+                    <!-- <onleft condition="[String.IsEqual(Window.Property(DetailsView),Critics) | String.IsEmpty(Window.Property(DetailsView)) | [String.IsEqual(Window.Property(DetailsView),Cast) + Integer.IsEqual(Container(50).NumItems,0)]]">61</onleft> -->
+                    <!-- <onright condition="[String.IsEqual(Window.Property(DetailsView),Critics)]">61</onright> -->
 
-                    <onleft condition="[String.IsEqual(Window.Property(DetailsView),Reviews) + !Integer.IsEqual(Container(5004).NumItems,0)]">SetFocus(5004,99999,absolute)</onleft>
+                    <!-- <onleft condition="[String.IsEqual(Window.Property(DetailsView),Reviews) + !Integer.IsEqual(Container(5004).NumItems,0)]">SetFocus(5004,99999,absolute)</onleft> -->
                     <onright condition="[String.IsEqual(Window.Property(DetailsView),Reviews) + !Integer.IsEqual(Container(5004).NumItems,0)]">SetFocus(5004,0,absolute)</onright>
 
-                    <onleft condition="[String.IsEqual(Window.Property(DetailsView),Trailer) + !Integer.IsEqual(Container(5002).NumItems,0)]">SetFocus(5002,99999,absolute)</onleft>
+                    <!-- <onleft condition="[String.IsEqual(Window.Property(DetailsView),Trailer) + !Integer.IsEqual(Container(5002).NumItems,0)]">SetFocus(5002,99999,absolute)</onleft> -->
                     <onright condition="[String.IsEqual(Window.Property(DetailsView),Trailer) + !Integer.IsEqual(Container(5002).NumItems,0)]">SetFocus(5002,0,absolute)</onright>
 
-                    <onleft condition="[String.IsEqual(Window.Property(DetailsView),Images) + !Integer.IsEqual(Container(5006).NumItems,0)]">SetFocus(5006,99999,absolute)</onleft>
+                    <!-- <onleft condition="[String.IsEqual(Window.Property(DetailsView),Images) + !Integer.IsEqual(Container(5006).NumItems,0)]">SetFocus(5006,99999,absolute)</onleft> -->
                     <onright condition="[String.IsEqual(Window.Property(DetailsView),Images) + !Integer.IsEqual(Container(5006).NumItems,0)]">SetFocus(5006,0,absolute)</onright>
 
-                    <onleft condition="[String.IsEqual(Window.Property(DetailsView),Timeline) + !Integer.IsEqual(Container(5007).NumItems,0)]">SetFocus(5007,99999,absolute)</onleft>
+                    <!-- <onleft condition="[String.IsEqual(Window.Property(DetailsView),Timeline) + !Integer.IsEqual(Container(5007).NumItems,0)]">SetFocus(5007,99999,absolute)</onleft> -->
                     <onright condition="[String.IsEqual(Window.Property(DetailsView),Timeline) + !Integer.IsEqual(Container(5007).NumItems,0)]">SetFocus(5007,0,absolute)</onright>
 
-                    <onleft condition="[String.IsEqual(Window.Property(DetailsView),Albums) + !Integer.IsEqual(Container(5008).NumItems,0)]">SetFocus(5008,99999,absolute)</onleft>
+                    <!-- <onleft condition="[String.IsEqual(Window.Property(DetailsView),Albums) + !Integer.IsEqual(Container(5008).NumItems,0)]">SetFocus(5008,99999,absolute)</onleft> -->
                     <onright condition="[String.IsEqual(Window.Property(DetailsView),Albums) + !Integer.IsEqual(Container(5008).NumItems,0)]">SetFocus(5008,0,absolute)</onright>
 
                     <include>$PARAM[include]</include>
@@ -1034,7 +1050,7 @@
                     <include content="Dialog_Body_Group">
                         <include>DialogInfo_PlotBox_Artwork</include>
                         <control type="textbox">
-                            <font>font_main_plot</font>
+                            <font>font_midi_plot</font>
                             <textcolor>dialog_fg_70</textcolor>
                             <pagecontrol>61</pagecontrol>
                             <label>$VAR[Label_Overlay_PlotBox]</label>
@@ -1053,13 +1069,21 @@
                         <texture colordiffuse="dialog_fg_12">common/white.png</texture>
                     </control>
                     <control type="scrollbar" id="61">
-                        <onright condition="!String.IsEqual(Window.Property(DetailsView),Reviews)">4000</onright>
-                        <onleft condition="!String.IsEqual(Window.Property(DetailsView),Reviews)">4000</onleft>
-                        <onback condition="!String.IsEqual(Window.Property(DetailsView),Reviews)">4000</onback>
+                        <onright condition="String.IsEmpty(Window.Property(ReviewsActive)) + String.IsEmpty(Window.Property(ReturnFromPlot))">4000</onright>
+                        <onleft condition="String.IsEmpty(Window.Property(ReviewsActive)) + String.IsEmpty(Window.Property(ReturnFromPlot))">4000</onleft>
+                        <onback condition="String.IsEmpty(Window.Property(ReviewsActive))">4000</onback>
 
-                        <onright condition="String.IsEqual(Window.Property(DetailsView),Reviews)">5004</onright>
-                        <onleft condition="String.IsEqual(Window.Property(DetailsView),Reviews)">5004</onleft>
-                        <onback condition="String.IsEqual(Window.Property(DetailsView),Reviews)">5004</onback>
+                        <onright condition="String.IsEmpty(Window.Property(ReviewsActive)) + !String.IsEmpty(Window.Property(ReturnFromPlot))">SetFocus($INFO[Window.Property(ReturnFromPlot)])</onright>
+                        <onleft condition="String.IsEmpty(Window.Property(ReviewsActive)) + !String.IsEmpty(Window.Property(ReturnFromPlot))">SetFocus($INFO[Window.Property(ReturnFromPlot)])</onleft>
+                        <onback condition="String.IsEmpty(Window.Property(ReviewsActive)) + !String.IsEmpty(Window.Property(ReturnFromPlot))">AlarmClock(refocus,SetFocus($INFO[Window.Property(ReturnFromPlot)]),00:00,silent)</onback>
+
+                        <onright condition="String.IsEmpty(Window.Property(ReviewsActive)) + !String.IsEmpty(Window.Property(ReturnFromPlot))">ClearProperty(ReturnFromPlot)</onright>
+                        <onleft condition="String.IsEmpty(Window.Property(ReviewsActive)) + !String.IsEmpty(Window.Property(ReturnFromPlot))">ClearProperty(ReturnFromPlot)</onleft>
+                        <onback condition="String.IsEmpty(Window.Property(ReviewsActive)) + !String.IsEmpty(Window.Property(ReturnFromPlot))">ClearProperty(ReturnFromPlot)</onback>
+
+                        <onright condition="!String.IsEmpty(Window.Property(ReviewsActive))">5004</onright>
+                        <onleft condition="!String.IsEmpty(Window.Property(ReviewsActive))">5004</onleft>
+                        <onback condition="!String.IsEmpty(Window.Property(ReviewsActive))">5004</onback>
 
                         <top>20</top>
                         <bottom>20</bottom>
