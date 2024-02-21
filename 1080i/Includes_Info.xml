@@ -102,7 +102,25 @@
             <nested />
             <width>auto</width>
             <textoffsetx>8</textoffsetx>
+			<!-- MISC016: visible tag added (DISABLED) -->
+			<!-- visible>Skin.HasSetting(furniture.viewlinemonochrome)</visible -->
         </control>
+		<!-- MISC016: alternative text colour if coloured pillbox (DISABLED) -->
+		<!-- control type="button">
+            <texturefocus colordiffuse="$PARAM[textcolor]" border="4">flags/quality/blank.png</texturefocus>
+            <texturenofocus colordiffuse="$PARAM[textcolor]" border="4">flags/quality/blank.png</texturenofocus>
+            <font>font_infotag_bold</font>
+            <textcolor>main_fg_90</textcolor>
+            <focusedcolor>main_fg_90</focusedcolor>
+            <shadowcolor>20ffffff</shadowcolor>
+            <include>Dimension_Info_Line_Pillbox</include>
+            <textoffsety>info_tag_offset_y</textoffsety>
+            <aligny>top</aligny>
+            <nested />
+            <width>auto</width>
+            <textoffsetx>8</textoffsetx>
+			<visible>!Skin.HasSetting(furniture.viewlinemonochrome)</visible>
+        </control -->
     </include>
 
     <include name="Info_Line_Label">
@@ -117,8 +135,14 @@
                 <font>font_main_black</font>
                 <textoffsetx>0</textoffsetx>
             </include>
-            <include content="Info_Line_Pillbox" condition="Skin.HasSetting(Info.EnablePillboxStyle)">
-                <param name="textcolor">$PARAM[textcolor]</param>
+			<!-- MISC016: add "Skin.HasSetting(furniture.viewlinemonochrome)" to condition -->
+            <include content="Info_Line_Pillbox" condition="Skin.HasSetting(Info.EnablePillboxStyle) + Skin.HasSetting(furniture.viewlinemonochrome)">
+                <param name="textcolor">$PARAM[textcolor]</param>	
+                <nested />
+            </include>
+			<!-- MISC016: Coloured pillbox dependent on viewline setting -->
+			<include content="Info_Line_Pillbox" condition="Skin.HasSetting(Info.EnablePillboxStyle) + !Skin.HasSetting(furniture.viewlinemonochrome)">
+                <param name="textcolor">$VAR[ColorGradient]</param>				
                 <nested />
             </include>
         </definition>
@@ -929,7 +953,12 @@
                 <control type="image">
                     <texture colordiffuse="$PARAM[textcolor]" border="4">flags/quality/blank.png</texture>
 					<!-- MISC016: Do not display "No Information Available" -->
-					<visible>!Integer.IsEqual(Container(99951).NumItems,0)</visible>
+					<visible>!Integer.IsEqual(Container(99951).NumItems,0) + Skin.HasSetting(furniture.viewlinemonochrome)</visible>
+                </control>
+				<!-- MISC016: Coloured pillbox dependent on viewline setting -->
+				<control type="image">
+                    <texture colordiffuse="$VAR[ColorGradient]" border="4">flags/quality/blank.png</texture>		
+					<visible>!Integer.IsEqual(Container(99951).NumItems,0) + !Skin.HasSetting(furniture.viewlinemonochrome)</visible>
                 </control>
                 <control type="group">
                     <width>37</width>
