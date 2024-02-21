@@ -96,6 +96,7 @@
 
         <!-- Scrollbar H -->
         <control type="group">
+            <visible>!$EXP[Exp_InfoDialogs]</visible>
             <visible>$EXP[Exp_ScrollbarVisible_H] | $EXP[Exp_ScrollbarVisible_V] | !String.IsEmpty(Window.Property(MediaFilterBase))</visible>
             <control type="grouplist">
                 <bottom>0</bottom>
@@ -233,6 +234,8 @@
             <visible>!$EXP[Exp_InfoDialogs]</visible>
             <include>Animation_Transition_InfoPanel_Hide</include>
 
+            <animation effect="fade" start="100" end="0" delay="400" reversible="false" time="400" condition="$EXP[Exp_FilterItems_Keyboard]">Conditional</animation>
+
             <control type="group">
                 <include>MediaWall_Info_Transition</include>
                 <include content="Info_Panel">
@@ -251,6 +254,9 @@
 
     <include name="View_Row_Items">
         <control type="group">
+
+            <animation effect="slide" end="0,-320" delay="600" reversible="false" time="400" tween="cubic" easing="out" condition="$EXP[Exp_FilterItems_Keyboard]">Conditional</animation>
+
             <include>Animation_Half_WindowChange_02</include>
             <include condition="$EXP[Exp_View_502_Include]">View_502_Square_Combined_Row</include>
             <include condition="$EXP[Exp_View_512_Include]">View_512_Landscape_Combined_Row</include>
@@ -301,19 +307,19 @@
             <control type="group">
                 <visible>$EXP[Exp_FurnitureFooter_Left_IsVisible]</visible>
                 <include content="Furniture_Bottom_Left">
-                    <visible>![$EXP[Exp_View_502] | $EXP[Exp_View_512] | $EXP[Exp_View_522]]</visible>
+                    <visible>![[$EXP[Exp_View_502] + Control.HasFocus(503)] | [$EXP[Exp_View_512] + Control.HasFocus(513)] | [$EXP[Exp_View_522] + Control.HasFocus(523)]]</visible>
                 </include>
                 <include content="Furniture_Bottom_Left">
                     <param name="container">Container(503).</param>
-                    <visible>$EXP[Exp_View_502]</visible>
+                    <visible>[$EXP[Exp_View_502] + Control.HasFocus(503)]</visible>
                 </include>
                 <include content="Furniture_Bottom_Left">
                     <param name="container">Container(513).</param>
-                    <visible>$EXP[Exp_View_512]</visible>
+                    <visible>[$EXP[Exp_View_512] + Control.HasFocus(513)]</visible>
                 </include>
                 <include content="Furniture_Bottom_Left">
                     <param name="container">Container(523).</param>
-                    <visible>$EXP[Exp_View_522]</visible>
+                    <visible>[$EXP[Exp_View_522] + Control.HasFocus(523)]</visible>
                 </include>
             </control>
             <include>Furniture_Bottom_Right</include>
@@ -417,6 +423,7 @@
             </control>
             <include>View_Furniture_Edges</include>
             <include>View_Dialog_Plot</include>
+            <include>TouchMode_Media_Zones</include>
 
         </definition>
     </include>

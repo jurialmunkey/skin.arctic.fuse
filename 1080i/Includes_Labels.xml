@@ -23,6 +23,20 @@
         <value>$LOCALIZE[31277]</value> -->
     </variable>
 
+    <variable name="Label_Settings_InfoText_Top">
+        <value condition="System.HasVisibleModalDialog | ControlGroup(30030).HasFocus() | ControlGroup(30000).HasFocus() | ControlGroup(30040).HasFocus() | ControlGroup(30700).HasFocus()">$LOCALIZE[14116]</value>
+        <value condition="Window.IsVisible(SettingsCategory.xml) + [ControlGroup(3).HasFocus() | ControlGroup(5).HasFocus()]">$INFO[System.CurrentControl]</value>
+        <value condition="Window.IsVisible(addonbrowser) + Control.HasFocus(50)">$INFO[Container(50).ListItem.AddonName]</value>
+        <value>$LOCALIZE[14116]</value>
+    </variable>
+
+    <variable name="Label_Settings_InfoText_Sub">
+        <value condition="System.HasVisibleModalDialog | ControlGroup(30030).HasFocus() | ControlGroup(30000).HasFocus() | ControlGroup(30040).HasFocus() | ControlGroup(30700).HasFocus()">$INFO[System.BuildVersion,Kodi ,]</value>
+        <value condition="Window.IsVisible(SettingsCategory.xml) + [ControlGroup(3).HasFocus() | ControlGroup(5).HasFocus()]">$INFO[Control.GetLabel(6)]</value>
+        <value condition="Window.IsVisible(addonbrowser) + Control.HasFocus(50)">$INFO[Container(50).ListItem.AddonVersion,v,]$INFO[Container(50).ListItem.AddonOrigin, • ,]$INFO[Container(50).ListItem.AddonCreator, • ,]$INFO[Container(50).ListItem.AddonDescription,[CR],]</value>
+        <value>$INFO[System.BuildVersion,Kodi ,]</value>
+    </variable>
+
     <variable name="Label_Scrollbar_Content">
         <value condition="!String.IsEmpty(Container.Content)">$INFO[Container.Content]</value>
         <value>$LOCALIZE[31022]</value>
@@ -262,8 +276,9 @@
     </variable>
 
     <variable name="Label_Setting_CodecStyle">
-        <value condition="Skin.HasSetting(Furniture.EnableColourCodecs)">$LOCALIZE[737]</value>
-        <value>$LOCALIZE[31458]</value>
+        <value condition="Skin.String(Furniture.CodecStyle,Colour)">$LOCALIZE[737]</value>
+        <value condition="Skin.String(Furniture.CodecStyle,Monochrome)">$LOCALIZE[31458]</value>
+        <value>$LOCALIZE[31329]</value>
     </variable>
 
     <variable name="Label_Setting_SpotlightStyle">
@@ -320,6 +335,11 @@
         <value>$LOCALIZE[571]</value>
     </variable>
 
+    <variable name="Label_Setting_FallbackImage">
+        <value condition="!String.IsEmpty(Skin.String(Background.MultiImage))">$INFO[Skin.String(Background.MultiImage)]</value>
+        <value>$LOCALIZE[231]</value>
+    </variable>
+
     <variable name="Label_Setting_StartUpImage">
         <value condition="!String.IsEmpty(Skin.String(Startup.VideoPath))">$INFO[Skin.String(Startup.VideoPath)]</value>
         <value condition="String.IsEmpty(Skin.String(Startup.ImageFolder))">$LOCALIZE[571]</value>
@@ -365,7 +385,7 @@
     </variable>
 
     <variable name="Label_Setting_CombinedStyle">
-        <value condition="Skin.HasSetting(Views.UseAltCombined)">$LOCALIZE[31163] ($LOCALIZE[31137])</value>
+        <value condition="$EXP[Exp_Views_UseAltCombined]">$LOCALIZE[31163] ($LOCALIZE[31137])</value>
         <value>$LOCALIZE[31164] ($LOCALIZE[31143])</value>
     </variable>
 
@@ -1233,7 +1253,7 @@
     </variable>
 
     <variable name="Label_Overlay_PlotBox">
-        <value condition="String.IsEqual(Window.Property(DetailsView),Reviews)">$INFO[Container(5004).ListItem.Label,[B][COLOR=dialog_fg_90],[/COLOR][/B][CR]]$INFO[Container(5004).ListItem.Plot]</value>
+        <value condition="!String.IsEmpty(Window.Property(ReviewsActive))">$INFO[Container(5004).ListItem.Label,[B][COLOR=dialog_fg_90],[/COLOR][/B][CR]]$INFO[Container(5004).ListItem.Plot]</value>
         <value>$INFO[ListItem.Tagline,[B][COLOR=dialog_fg_90]$LOCALIZE[202][/COLOR][/B][CR],[CR][CR]]$VAR[Label_Plot,[B][COLOR=dialog_fg_90]$LOCALIZE[31028][/COLOR][/B][CR],]$VAR[Label_Overlay_Critics,[CR][CR],]$VAR[Label_Overlay_Directing,[CR][CR][B][COLOR=dialog_fg_90]$LOCALIZE[31038][/COLOR][/B][CR],]$VAR[Label_Overlay_Writing,[CR][CR][B][COLOR=dialog_fg_90]$LOCALIZE[31039][/COLOR][/B][CR],]$VAR[Label_Overlay_TopCast,[CR][CR][B][COLOR=dialog_fg_90]$LOCALIZE[31076][/COLOR][/B][CR],]$VAR[Label_Overlay_Production,[CR][CR][B][COLOR=dialog_fg_90]$LOCALIZE[31383][/COLOR][/B][CR],]$VAR[Label_Overlay_Sound,[CR][CR][B][COLOR=dialog_fg_90]$LOCALIZE[31052][/COLOR][/B][CR],]$VAR[Label_Overlay_ArtDepartment,[CR][CR][B][COLOR=dialog_fg_90]$LOCALIZE[31072][/COLOR][/B][CR],]$VAR[Label_Overlay_Cinematography,[CR][CR][B][COLOR=dialog_fg_90]$LOCALIZE[31067][/COLOR][/B][CR],]$VAR[Label_Overlay_Editing,[CR][CR][B][COLOR=dialog_fg_90]$LOCALIZE[31075][/COLOR][/B][CR],]$INFO[Container(99950).ListItem.Property(Awards),[CR][CR][B][COLOR=dialog_fg_90]$LOCALIZE[31064][/COLOR][/B][CR],]$VAR[Label_Overlay_AwardsWon]$VAR[Label_Overlay_AwardsNominated]</value>
     </variable>
 
@@ -1264,8 +1284,8 @@
     </variable>
 
     <variable name="Label_TitleFallback">
-        <value condition="!String.IsEmpty(Weather.Conditions) + Weather.IsFetched + Skin.HasSetting(Furniture.EnableClock.TopLeft)">$INFO[Weather.Conditions,, ]$INFO[Weather.Temperature][CR]$INFO[Window(Weather).Property(Location)]</value>
-        <value>$INFO[System.Time][CR]$INFO[System.Date]</value>
+        <value condition="!String.IsEmpty(Weather.Conditions) + Weather.IsFetched + Skin.HasSetting(Furniture.EnableClock.TopLeft)">$INFO[Weather.Temperature]$INFO[Weather.Conditions,[CR],]</value>
+        <value>$INFO[System.Time][CR]$INFO[System.Date(dd mmm yyyy)]</value>
     </variable>
 
 </includes>

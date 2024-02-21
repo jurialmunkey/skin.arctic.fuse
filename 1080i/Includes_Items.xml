@@ -225,7 +225,7 @@
                 <param name="id">$PARAM[baseid]03</param>
                 <param name="dialog">$PARAM[dialog]</param>
                 <param name="control">button</param>
-                <label>$LOCALIZE[31497]</label>
+                <label>$LOCALIZE[31416] > $LOCALIZE[13014]</label>
                 <label2>$INFO[Skin.String(Home.SideMenuCollapse)]</label2>
                 <onclick condition="Skin.String(Home.SideMenuCollapse,Never)">Skin.SetString(Home.SideMenuCollapse,Library)</onclick>
                 <onclick condition="Skin.String(Home.SideMenuCollapse,Library)">Skin.SetString(Home.SideMenuCollapse,Always)</onclick>
@@ -236,7 +236,7 @@
                 <param name="id">$PARAM[baseid]12</param>
                 <param name="dialog">$PARAM[dialog]</param>
                 <param name="control">radiobutton</param>
-                <label>$LOCALIZE[31266]</label>
+                <label>$LOCALIZE[31416] > $LOCALIZE[31304]</label>
                 <onclick>Skin.ToggleSetting(SideMenu.ExpandLabels)</onclick>
                 <selected>Skin.HasSetting(SideMenu.ExpandLabels)</selected>
                 <visible>$PARAM[visible]</visible>
@@ -246,7 +246,7 @@
                 <param name="id">$PARAM[baseid]11</param>
                 <param name="dialog">$PARAM[dialog]</param>
                 <param name="control">radiobutton</param>
-                <label>$LOCALIZE[31151]</label>
+                <label>$LOCALIZE[31416] > $LOCALIZE[31151]</label>
                 <onclick condition="Skin.HasSetting(Home.SideMenu.DisableSearchOptions)">Skin.Reset(Home.SideMenu.DisableSearchOptions)</onclick>
                 <onclick condition="!Skin.HasSetting(Home.SideMenu.DisableSearchOptions)">RunScript(script.skinvariables,run_dialog=yesno,heading=$LOCALIZE[31152],yeslabel=$LOCALIZE[1210],nolabel=$LOCALIZE[222],defaultbutton=10,message=[UPPERCASE][COLOR=red][B]$LOCALIZE[14117]: [/B][/COLOR][/UPPERCASE]$LOCALIZE[31153][CR]$LOCALIZE[31155],"executebuiltin=Skin.SetBool(Home.SideMenu.DisableSearchOptions)")</onclick>
                 <selected>!Skin.HasSetting(Home.SideMenu.DisableSearchOptions)</selected>
@@ -264,7 +264,7 @@
                 <param name="id">$PARAM[baseid]10</param>
                 <param name="dialog">$PARAM[dialog]</param>
                 <param name="control">radiobutton</param>
-                <label>$LOCALIZE[31341]</label>
+                <label>$LOCALIZE[31103] > $LOCALIZE[31083]</label>
                 <onclick>Skin.ToggleSetting(Hubs.WidgetSelector)</onclick>
                 <onclick condition="Window.IsVisible(1118)">RunPlugin(plugin://script.skinvariables/?info=get_shortcuts_node&amp;skin=$VAR[Path_SkinVariables_SkinFolder]&amp;menu=sidemenu&amp;func=do_refresh&amp;&amp;False&amp;&amp;ActivateWindow(1118))</onclick>
                 <onclick condition="!Window.IsVisible(1118)">RunPlugin(plugin://script.skinvariables/?info=get_shortcuts_node&amp;skin=$VAR[Path_SkinVariables_SkinFolder]&amp;menu=sidemenu&amp;func=do_refresh&amp;&amp;False)</onclick>
@@ -276,9 +276,19 @@
                 <param name="id">$PARAM[baseid]08</param>
                 <param name="dialog">$PARAM[dialog]</param>
                 <param name="control">radiobutton</param>
-                <label>$LOCALIZE[31488]</label>
+                <label>$LOCALIZE[31150] > $LOCALIZE[31305]</label>
                 <onclick>Skin.ToggleSetting(Slide.WidgetContainer)</onclick>
                 <selected>Skin.HasSetting(Slide.WidgetContainer)</selected>
+                <visible>$PARAM[visible]</visible>
+            </include>
+
+            <include content="Settings_Button" description="Categories focus second position">
+                <param name="id">$PARAM[baseid]09</param>
+                <param name="dialog">$PARAM[dialog]</param>
+                <param name="control">radiobutton</param>
+                <label>$LOCALIZE[31150] > $LOCALIZE[31306]</label>
+                <onclick>Skin.ToggleSetting(Categories.UseSecondPositionFocus)</onclick>
+                <selected>Skin.HasSetting(Categories.UseSecondPositionFocus)</selected>
                 <visible>$PARAM[visible]</visible>
             </include>
         </definition>
@@ -872,6 +882,7 @@
                 <onclick condition="Window.ISVisible(1190) + !$EXP[Exp_IsFolder]">RunScript(plugin.video.themoviedb.helper,close_dialog=1190,"playmedia=$INFO[ListItem.FilenameAndPath]")</onclick>
                 <onclick condition="Window.ISVisible(1190) + $EXP[Exp_IsFolder]">RunScript(plugin.video.themoviedb.helper,close_dialog=1190,"call_path=$INFO[ListItem.FilenameAndPath]")</onclick>
                 <onfocus>ClearProperty(DetailsView)</onfocus>
+                <onfocus>ClearProperty(ReviewsActive)</onfocus>
                 <include content="DialogInfo_Button_HintLabel">
                     <param name="label">$VAR[Label_VideoInfo_PlayButton]</param>
                 </include>
@@ -892,6 +903,7 @@
                 </include>
 
                 <onfocus>SetProperty(DetailsView,Trailer)</onfocus>
+                <onfocus>ClearProperty(ReviewsActive)</onfocus>
                 <include content="DialogInfo_Button_HintLabel">
                     <param name="label">$LOCALIZE[20410]</param>
                 </include>
@@ -906,6 +918,7 @@
                 <param name="zoom_in_delay">120</param>
                 <param name="zoom_in_include">$PARAM[zoom_in_include]</param>
                 <onfocus>SetProperty(DetailsView,Cast)</onfocus>
+                <onfocus>ClearProperty(ReviewsActive)</onfocus>
                 <include>Action_Info_Recommendations_OnClick</include>
                 <include content="DialogInfo_Button_HintLabel">
                     <param name="label">$LOCALIZE[33029]</param>
@@ -926,6 +939,7 @@
                 <onclick condition="!String.IsEmpty(Window(Home).Property(TMDbHelper.TraktIsAuth)) + String.IsEmpty(ListItem.Property(tmdb_id)) + !String.IsEmpty(Container(99950).ListItem.Property(tmdb_id)) + String.IsEqual(ListItem.DBType,episode)">RunScript(plugin.video.themoviedb.helper,sync_trakt,tmdb_id=$INFO[Container(99950).ListItem.Property(tmdb_id)],$VAR[Path_Param_Type],season=$INFO[ListItem.Season],episode=$INFO[ListItem.Episode],cache_refresh)</onclick>
                 <onclick condition="String.IsEmpty(Window(Home).Property(TMDbHelper.TraktIsAuth))">SendClick(12003,7)</onclick>
                 <onfocus>SetProperty(DetailsView,Reviews)</onfocus>
+                <onfocus>ClearProperty(ReviewsActive)</onfocus>
                 <include content="DialogInfo_Button_HintLabel">
                     <param name="label">$VAR[Label_DialogInfo_TraktRating]</param>
                 </include>
@@ -943,6 +957,7 @@
                 <param name="zoom_in_include">$PARAM[zoom_in_include]</param>
                 <onclick>runscript(script.wikipedia,wikipedia=$VAR[Path_Wikipedia_Title],tmdb_type=$VAR[Path_Wikipedia_Type])</onclick>
                 <onfocus>SetProperty(DetailsView,Critics)</onfocus>
+                <onfocus>ClearProperty(ReviewsActive)</onfocus>
                 <include content="DialogInfo_Button_HintLabel">
                     <param name="label">Wiki</param>
                 </include>
@@ -1683,7 +1698,7 @@
             <param name="id">8001</param>
             <param name="control">radiobutton</param>
             <label>$LOCALIZE[31143]</label>
-            <selected>String.IsEmpty(Skin.String(Background.DialogImage)) | [Skin.String(Background.DialogImage,Adaptive) + !$EXP[Exp_DialogTheme_Adaptive_IsEnabled]]</selected>
+            <selected>String.IsEmpty(Skin.String(Background.DialogImage))</selected>
             <onclick>Skin.Reset(Background.DialogImage)</onclick>
             <onclick condition="Skin.String(Background.DialogImage,Adaptive)">ReloadSkin()</onclick>
             <onclick condition="Skin.String(Background.DialogImage,Adaptive)">AlarmClock(reload,ActivateWindow(1118),00:00,silent)</onclick>
@@ -1773,7 +1788,6 @@
             <param name="id">8010</param>
             <param name="control">radiobutton</param>
             <label>$LOCALIZE[31432]</label>
-            <visible>$EXP[Exp_DialogTheme_Adaptive_IsEnabled]</visible>
             <selected>$EXP[Exp_DialogTheme_IsAdaptive]</selected>
             <onclick>Skin.SetString(Background.DialogImage,Adaptive)</onclick>
             <onclick>ReloadSkin()</onclick>

@@ -1,89 +1,106 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
 
+    <include name="View_PVR_GroupSwitcher_Labels">
+        <param name="selected">false</param>
+        <definition>
+            <control type="group">
+                <left>80</left>
+                <height>80</height>
+                <centertop>50%</centertop>
+                <visible>$PARAM[visible]</visible>
+                <include content="Object_InfoCircle_Text_Top">
+                    <width>auto</width>
+                    <label fallback="19055">$INFO[Control.GetLabel(28)]</label>
+                    <include condition="$PARAM[selected]">Color_SelectedText</include>
+                </include>
+                <include content="Object_InfoCircle_Text_Sub">
+                    <label>$INFO[Container.NumItems,, ]$LOCALIZE[14301]</label>
+                    <include condition="$PARAM[selected]">Color_SelectedText</include>
+                </include>
+            </control>
+        </definition>
+    </include>
+
     <!-- Group Switcher -->
     <include name="View_PVR_GroupSwitcher">
         <include content="Object_Hidden_List">
             <param name="id">11</param>
             <orientation>horizontal</orientation>
-            <onfocus>SetFocus(2800)</onfocus>
+            <onfocus>SetFocus(28)</onfocus>
         </include>
         <control type="group">
             <height>80</height>
-            <left>160</left>
+            <left>view_side</left>
             <centerbottom>100</centerbottom>
             <width>settings_category_w</width>
-            <control type="group">
-                <left>20</left>
-                <visible>ControlGroup(2800).HasFocus()</visible>
-                <control type="image">
-                    <include>Texture_Menu_Highlight_H</include>
-                </control>
-                <control type="label" id="28">
-                    <textoffsetx>30</textoffsetx>
-                    <font>font_main</font>
-                    <include>Color_SelectedText</include>
-                </control>
-            </control>
-            <control type="group">
-                <left>20</left>
-                <visible>!ControlGroup(2800).HasFocus()</visible>
-                <control type="label">
-                    <textoffsetx>30</textoffsetx>
-                    <font>font_main</font>
-                    <textcolor>main_fg_30</textcolor>
-                    <label>$INFO[Control.GetLAbel(28)]</label>
-                </control>
-            </control>
-            <control type="grouplist" id="2800">
-                <visible allowhiddenfocus="true">ControlGroup(2800).HasFocus()</visible>
-                <height>80</height>
-                <centertop>50%</centertop>
-                <align>right</align>
-                <orientation>horizontal</orientation>
-                <onleft>2801</onleft>
+            <control type="button" id="28">
+                <left>-20</left>
+                <right>40</right>
                 <onleft>SetFocus(11)</onleft>
                 <onleft>Action(Left)</onleft>
-                <onleft>SetFocus(2801)</onleft>
-                <onright>2802</onright>
+                <onleft>SetFocus(28)</onleft>
                 <onright>SetFocus(11)</onright>
                 <onright>Action(Right)</onright>
-                <onright>SetFocus(2802)</onright>
+                <onright>SetFocus(28)</onright>
                 <ondown>50</ondown>
                 <onup>50</onup>
-                <right>-10</right>
-                <control type="button" id="2801">
-                    <width>30</width>
-                    <height>30</height>
-                    <centertop>50%</centertop>
-                    <onclick>SendClick(28)</onclick>
-                    <texturenofocus colordiffuse="main_fg_30" flipx="false">buttons/triangle-left.png</texturenofocus>
-                    <texturefocus colordiffuse="$VAR[ColorSelected]" flipx="false">buttons/triangle-left.png</texturefocus>
+                <texturenofocus />
+                <font />
+            </control>
+            <control type="group">
+                <width>50</width>
+                <height>50</height>
+                <centertop>50%</centertop>
+                <visible>Control.HasFocus(28)</visible>
+                <control type="image">
+                    <include content="Dimension_Padding"><param name="pad">-40</param></include>
+                    <bordersize>40</bordersize>
+                    <bordertexture colordiffuse="shadow_hard">shadows/circle_50-shadow-40.png</bordertexture>
+                    <texture colordiffuse="main_fg_100">diffuse/circle_50.png</texture>
                 </control>
-                <control type="button" id="2802">
-                    <width>30</width>
-                    <height>30</height>
-                    <centertop>50%</centertop>
-                    <texturenofocus colordiffuse="main_fg_30" flipx="true">buttons/triangle-left.png</texturenofocus>
-                    <texturefocus colordiffuse="$VAR[ColorSelected]" flipx="true">buttons/triangle-left.png</texturefocus>
-                    <onclick>SendClick(28)</onclick>
+                <control type="image">
+                    <bordersize>2</bordersize>
+                    <texture colordiffuse="main_bg_100">diffuse/circle_50.png</texture>
                 </control>
-                <control type="group" id="2803">
+            </control>
+            <include>Info_KodiLogo_Image</include>
+            <include content="View_PVR_GroupSwitcher_Labels">
+                <param name="selected">false</param>
+                <param name="visible">!Control.HasFocus(28)</param>
+            </include>
+            <include content="View_PVR_GroupSwitcher_Labels">
+                <param name="selected">true</param>
+                <param name="visible">Control.HasFocus(28)</param>
+            </include>
+            <control type="group">
+                <visible>Control.HasFocus(28)</visible>
+                <control type="image">
+                    <texture colordiffuse="main_fg_70">special://skin/extras/icons/angle-left.png</texture>
+                    <height>40</height>
                     <width>40</width>
+                    <centerleft>-30</centerleft>
+                    <centertop>50%</centertop>
+                </control>
+                <control type="image">
+                    <texture colordiffuse="main_fg_70" flipx="true">special://skin/extras/icons/angle-left.png</texture>
+                    <height>40</height>
+                    <width>40</width>
+                    <centerright>30</centerright>
+                    <centertop>50%</centertop>
                 </control>
             </control>
         </control>
 
         <control type="group">
             <height>80</height>
-            <left>210</left>
+            <left>200</left>
             <centerbottom>100</centerbottom>
             <control type="group">
                 <left>settings_category_w</left>
                 <right>view_pad</right>
-                <include>Info_KodiLogo_Image</include>
                 <control type="group">
-                    <left>80</left>
+                    <left>0</left>
                     <height>80</height>
                     <centertop>50%</centertop>
                     <control type="grouplist">
@@ -342,7 +359,7 @@
                 </itemlayout>
                 <focusedlayout height="$PARAM[channelheight]">
                     <control type="group">
-                        <visible>[Control.HasFocus(11) | $EXP[Exp_HomeMenu_HasFocus] | Control.HasFocus(331) | ControlGroup(2800).HasFocus()]</visible>
+                        <visible>[Control.HasFocus(11) | $EXP[Exp_HomeMenu_HasFocus] | Control.HasFocus(331) | Control.HasFocus(28)]</visible>
                         <include content="Layout_PVRChannel">
                             <param name="channelwidth">$PARAM[channelwidth]</param>
                             <param name="detailed">$PARAM[detailed]</param>
@@ -350,7 +367,7 @@
                         </include>
                     </control>
                     <control type="group">
-                        <visible>![Control.HasFocus(11) | $EXP[Exp_HomeMenu_HasFocus] | Control.HasFocus(331) | ControlGroup(2800).HasFocus()]</visible>
+                        <visible>![Control.HasFocus(11) | $EXP[Exp_HomeMenu_HasFocus] | Control.HasFocus(331) | Control.HasFocus(28)]</visible>
                         <include content="Layout_PVRChannel">
                             <param name="channelwidth">$PARAM[channelwidth]</param>
                             <param name="detailed">$PARAM[detailed]</param>

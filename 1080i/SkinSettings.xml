@@ -152,12 +152,12 @@
                             <onclick>SetProperty(CustomDialogSettingsItems,Items_Settings_ColourHighlights,Home)</onclick>
                             <onclick>ActivateWindow(1118)</onclick>
                         </include>
-                        <include content="Settings_Button" description="Customise Background">
+                        <include content="Settings_Button" description="Customise Window Background">
                             <param name="id">2004</param>
-                            <label> - $LOCALIZE[31361]</label>
+                            <label> - $LOCALIZE[31300]</label>
                             <label2>$VAR[Label_Setting_ColourBackground]</label2>
                             <visible>Container(3).HasFocus(2)</visible>
-                            <onclick>SetProperty(CustomDialogSettingsTitle,[CAPITALIZE]$LOCALIZE[31361][/CAPITALIZE],Home)</onclick>
+                            <onclick>SetProperty(CustomDialogSettingsTitle,[CAPITALIZE]$LOCALIZE[31300][/CAPITALIZE],Home)</onclick>
                             <onclick>SetProperty(CustomDialogSettingsItems,Items_Settings_BackgroundImage,Home)</onclick>
                             <onclick>ActivateWindow(1118)</onclick>
                         </include>
@@ -170,6 +170,14 @@
                             <onclick>SetProperty(CustomDialogSettingsItems,Items_Settings_BackgroundDialogImage,Home)</onclick>
                             <onclick>ActivateWindow(1118)</onclick>
                             <enable>!$EXP[Exp_DialogTheme_IsLight]</enable>
+                        </include>
+                        <include content="Settings_Button" description="Customise Fanart Fallback Folder">
+                            <param name="id">2007</param>
+                            <label> - $LOCALIZE[31303]</label>
+                            <label2>$VAR[Label_Setting_FallbackImage]</label2>
+                            <visible>Container(3).HasFocus(2)</visible>
+                            <onclick condition="!String.IsEmpty(Skin.String(Background.MultiImage))">Skin.Reset(Background.MultiImage)</onclick>
+                            <onclick condition="String.IsEmpty(Skin.String(Background.MultiImage))">Skin.SetPath(Background.MultiImage)</onclick>
                         </include>
                         <include content="Settings_Button" description="Customise Startup">
                             <param name="id">2006</param>
@@ -215,7 +223,9 @@
                             <param name="control">button</param>
                             <label>$LOCALIZE[31207]</label>
                             <label2>$VAR[Label_Setting_CodecStyle]</label2>
-                            <onclick>Skin.ToggleSetting(Furniture.EnableColourCodecs)</onclick>
+                            <onclick condition="Skin.String(Furniture.CodecStyle,Text) | String.IsEmpty(Skin.String(Furniture.CodecStyle))">Skin.SetString(Furniture.CodecStyle,Monochrome)</onclick>
+                            <onclick condition="Skin.String(Furniture.CodecStyle,Monochrome)">Skin.SetString(Furniture.CodecStyle,Colour)</onclick>
+                            <onclick condition="Skin.String(Furniture.CodecStyle,Colour)">Skin.SetString(Furniture.CodecStyle,Text)</onclick>
                             <visible>Container(3).HasFocus(2)</visible>
                         </include>
                         <include content="Settings_Button" description="Info line style">
@@ -256,6 +266,15 @@
                             <onclick>Skin.ToggleSetting(Background.DisableEpisodeThumb)</onclick>
                             <selected>!Skin.HasSetting(Background.DisableEpisodeThumb)</selected>
                         </include>
+                        <include content="Settings_Button" description="Background extra fanart">
+                            <param name="id">2113</param>
+                            <param name="control">radiobutton</param>
+                            <label>$LOCALIZE[31297]</label>
+                            <visible>Container(3).HasFocus(2)</visible>
+                            <selected>Skin.HasSetting(Background.ExtraFanart)</selected>
+                            <onclick>Skin.ToggleSetting(Background.ExtraFanart)</onclick>
+                            <onclick>CancelAlarm(ResampleExtraFanart,silent)</onclick>
+                        </include>
 
                         <!-- Viewtypes -->
                         <include content="Settings_Label" description="Viewtypes">
@@ -269,6 +288,17 @@
                             <label>$LOCALIZE[31321]</label>
                             <visible>Container(3).HasFocus(3)</visible>
                             <onclick>runscript(script.skinvariables,action=buildviews,configure)</onclick>
+                        </include>
+                        <include content="Settings_Button" description="Touch Mode / Disable Peek">
+                            <param name="id">3023</param>
+                            <param name="control">radiobutton</param>
+                            <label>$LOCALIZE[31289] ($LOCALIZE[31292])</label>
+                            <visible>Container(3).HasFocus(3)</visible>
+                            <onclick>Skin.ToggleSetting(Views.DisableItemPeek)</onclick>
+                            <onclick>ReloadSkin()</onclick>
+                            <onclick>AlarmClock(refocus1,SetFocus(3,2),00:00,silent)</onclick>
+                            <onclick>AlarmClock(refocus2,SetFocus(3023),00:00,silent)</onclick>
+                            <selected>Skin.HasSetting(Views.DisableItemPeek)</selected>
                         </include>
 
                         <include content="Settings_Label" description="Combined viewtype style">
@@ -330,20 +360,6 @@
                             <visible>Container(3).HasFocus(4)</visible>
                         </include>
 
-                        <include content="Settings_Label" description="Focus">
-                            <param name="id">4030</param>
-                            <label>$LOCALIZE[31150]</label>
-                            <visible>Container(3).HasFocus(4)</visible>
-                        </include>
-                        <include content="Settings_Button" description="Categories focus second position">
-                            <param name="id">4031</param>
-                            <param name="control">radiobutton</param>
-                            <label>$LOCALIZE[31489]</label>
-                            <onclick>Skin.ToggleSetting(Categories.UseSecondPositionFocus)</onclick>
-                            <selected>Skin.HasSetting(Categories.UseSecondPositionFocus)</selected>
-                            <visible>Container(3).HasFocus(4)</visible>
-                        </include>
-
                         <include content="Settings_Label" description="Content">
                             <param name="id">4021</param>
                             <label>$LOCALIZE[31324]</label>
@@ -394,6 +410,7 @@
                             <param name="control">radiobutton</param>
                             <label>$LOCALIZE[31324] > $LOCALIZE[31167] > $LOCALIZE[587]</label>
                             <visible>Container(3).HasFocus(4)</visible>
+                            <visible>!Skin.HasSetting(Views.DisableItemPeek)</visible>
                             <onclick>Skin.ToggleSetting(Navigation.MediaFilterWall)</onclick>
                             <selected>Skin.HasSetting(Navigation.MediaFilterWall)</selected>
                         </include>
@@ -406,9 +423,6 @@
                             <onclick>Skin.ToggleSetting(Hub.Home.DisableMoveBetweenGroups)</onclick>
                             <selected>!Skin.HasSetting(Hub.Home.DisableMoveBetweenGroups)</selected>
                         </include>
-
-
-
 
                         <!-- Furniture -->
                         <include content="Settings_Label" description="Header">
@@ -445,6 +459,14 @@
                             <selected>Skin.HasSetting(Furniture.ProvidersCodecs)</selected>
                             <visible>Container(3).HasFocus(5)</visible>
                             <onclick>Skin.ToggleSetting(Furniture.ProvidersCodecs)</onclick>
+                        </include>
+                        <include content="Settings_Button" description="Play counts and dates">
+                            <param name="id">5007</param>
+                            <param name="control">radiobutton</param>
+                            <label>$LOCALIZE[31291]</label>
+                            <selected>!Skin.HasSetting(Furniture.DisablePlayCounts)</selected>
+                            <visible>Container(3).HasFocus(5)</visible>
+                            <onclick>Skin.ToggleSetting(Furniture.DisablePlayCounts)</onclick>
                         </include>
                         <include content="Settings_Button" description="Footer: Right: Studio / Clock / None">
                             <param name="id">5002</param>
@@ -821,6 +843,19 @@
                             <visible>Container(3).HasFocus(8)</visible>
                             <onclick>Skin.ToggleSetting(Keyboard.FullSized)</onclick>
                         </include>
+                        <include content="Settings_Button" description="">
+                            <param name="id">8087</param>
+                            <param name="control">button</param>
+                            <label>Mouse pointer size</label>
+                            <label2>$INFO[Skin.String(Mouse.PointerSize)]</label2>
+                            <visible>Container(3).HasFocus(8)</visible>
+                            <onclick condition="Skin.String(Mouse.PointerSize,32px) | String.IsEmpty(Skin.String(Mouse.PointerSize))">Skin.SetString(Mouse.PointerSize,48px)</onclick>
+                            <onclick condition="Skin.String(Mouse.PointerSize,48px)">Skin.SetString(Mouse.PointerSize,64px)</onclick>
+                            <onclick condition="Skin.String(Mouse.PointerSize,64px)">Skin.SetString(Mouse.PointerSize,32px)</onclick>
+                            <onclick>ReloadSkin()</onclick>
+                            <onclick>AlarmClock(refocus1,SetFocus(3,7),00:00,silent)</onclick>
+                            <onclick>AlarmClock(refocus2,SetFocus(8087),00:00,silent)</onclick>
+                        </include>
                         <include content="Settings_Button" description="Holiday Theme">
                             <param name="id">8094</param>
                             <param name="control">radiobutton</param>
@@ -853,7 +888,7 @@
                         </include>
 
                         <include content="Settings_Label" description="Expert">
-                            <param name="id">8095</param>
+                            <param name="id">8099</param>
                             <label>$LOCALIZE[12999]</label>
                             <visible>Container(3).HasFocus(8)</visible>
                         </include>
@@ -1032,7 +1067,7 @@
                             <top>20</top>
                             <height>600</height>
                             <autoscroll delay="6000" time="3000" repeat="10000">true</autoscroll>
-                            <label>To all my amazing supporters on Ko-fi, thank-you![CR][CR]A special thanks to this month's supporters[CR]SJ10 Blacky JS Blaire Adamosborne83 Ivan Subin Binky Spork booyakafoo dstealth Dml2023 Campos[CR][CR]And to all my supporters over the years[CR]Blurayx Anthrax DanielSanchez Leo meesterexx roidy manfeed PizzaPino dolbel Tobby Kagz DrFireStarterBilly Qirat77 Darkmantom TomH richieNZ99 Brambo onlytanmoy reddituser aemstel mash2k3 chopp8 Homeslixe Rimma JacopoV ray2301 stelcodes eengert alKODIque Tee77 Ch3dd4rGoblin silentscreamiong Jshn Ian JP RZ daviddia5 Jathlon77 SteveF George sito1961 devolute f39 nevermind Shone TechXXX c0ncr3t0 tim Tiago IG Spork lhimo DROIDsheild Blacky Bindou Velimir ronaldoA8ff Omar_alhajlh pferreira1906 Andrea1998 Mr-7mdan pakraider Nipius Nathan valleycake adamosborne83 AdamNo2 realcopacetic Mardup 666jones AliasAllison916 Rara Omars-Comin abaillargeon Caretaker BigRedJim Blaire Zeplumber Timmyrocks jasongrey rien333 Tsweazy booyakafoo DROIDshield ambulancepilot ludovik35[CR][CR]If I've forgotten anyone please let me know!</label>
+                            <label>To all my amazing supporters on Ko-fi, thank-you![CR][CR]A special thanks to this month's supporters[CR]Adamosborne83(x2) DROIDshield booyakafoo(x2) Blaire anon Mongoose18 william_teele Mike Tjoe70s Campos simcheftv xpeiro[CR][CR]And to all my supporters over the years[CR]Blurayx Anthrax DanielSanchez Leo meesterexx roidy manfeed PizzaPino dolbel Tobby Kagz DrFireStarterBilly Qirat77 Darkmantom TomH richieNZ99 Brambo onlytanmoy reddituser aemstel mash2k3 chopp8 Homeslixe Rimma JacopoV ray2301 stelcodes eengert alKODIque Tee77 Ch3dd4rGoblin silentscreamiong Jshn Ian JP RZ daviddia5 Jathlon77 SteveF George sito1961 devolute f39 nevermind Shone TechXXX c0ncr3t0 tim Tiago IG Spork lhimo DROIDsheild Blacky Bindou Velimir ronaldoA8ff Omar_alhajlh pferreira1906 Andrea1998 Mr-7mdan pakraider Nipius Nathan valleycake adamosborne83 AdamNo2 realcopacetic Mardup 666jones AliasAllison916 Rara Omars-Comin abaillargeon Caretaker BigRedJim Blaire Zeplumber Timmyrocks jasongrey rien333 Tsweazy booyakafoo DROIDshield ambulancepilot ludovik35 SJ10 JS Ivan Subin Binky dstealth Dml2023 Campos[CR][CR]If I've forgotten anyone please let me know!</label>
                             <visible>Container(3).HasFocus(9)</visible>
                             <left>40</left>
                             <right>40</right>

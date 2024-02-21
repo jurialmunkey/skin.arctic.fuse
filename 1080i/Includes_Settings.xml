@@ -117,18 +117,31 @@
 
     <include name="Settings_KodiVersion">
         <param name="dialog">false</param>
+        <param name="left">0</param>
         <definition>
-            <control type="label">
+            <control type="group">
                 <nested />
-                <include content="Object_TextColor" condition="$PARAM[dialog]">
-                    <param name="textcolor">dialog_fg_30</param>
-                </include>
-                <label>$INFO[System.FriendlyName][CR]$INFO[System.ProfileName]</label>
-                <textcolor>main_fg_30</textcolor>
                 <height>80</height>
                 <centerbottom>20</centerbottom>
-                <left>0</left>
-                <font>font_mini</font>
+                <left>$PARAM[left]</left>
+                <include>Info_KodiLogo_Image</include>
+
+                <control type="group">
+                    <left>80</left>
+                    <include content="Object_InfoCircle_Text_Top">
+                        <width>auto</width>
+                        <label>$INFO[System.ProfileName]</label>
+                        <include content="Object_TextColor" condition="$PARAM[dialog]">
+                            <param name="textcolor">dialog_fg_90</param>
+                        </include>
+                    </include>
+                    <include content="Object_InfoCircle_Text_Sub">
+                        <label fallback="19055">$INFO[System.FriendlyName]</label>
+                        <include content="Object_TextColor" condition="$PARAM[dialog]">
+                            <param name="textcolor">dialog_fg_70</param>
+                        </include>
+                    </include>
+                </control>
             </control>
         </definition>
     </include>
@@ -309,6 +322,7 @@
                 </include>
             </include>
         </include>
+        <include>TouchMode_Settings_Zones</include>
     </include>
 
     <include name="Settings_Side_Button">
@@ -575,56 +589,60 @@
         <param name="font">font_mini_plot</param>
         <param name="icon">buttons/info.png</param>
         <param name="dialog">false</param>
+        <param name="override">false</param>
+        <param name="heading">$VAR[Label_Settings_InfoText_Top]</param>
         <definition>
             <control type="group">
                 <nested />
                 <bottom>-20</bottom>
                 <left>0</left>
-                <right>40</right>
+                <right>20</right>
                 <height>80</height>
                 <animation effect="fade" start="0" end="100" time="400" delay="200">Visible</animation>
                 <animation effect="fade" start="100" end="0" time="400">Hidden</animation>
                 <visible>$PARAM[visible]</visible>
 
                 <control type="group">
-                    <width>40</width>
-                    <height>40</height>
-                    <centertop>50%</centertop>
-                    <left>0</left>
-                    <control type="image">
-                        <bordersize>4</bordersize>
-                        <aspectratio align="left">keep</aspectratio>
-                        <colordiffuse>dialog_fg_70</colordiffuse>
-                        <texture>$PARAM[icon]</texture>
-                    </control>
-                </control>
-
-                <control type="textbox" id="$PARAM[id]">
-                    <include content="Object_TextColor" condition="$PARAM[dialog]">
-                        <param name="textcolor">dialog_fg_70</param>
+                    <include content="Object_InfoCircle_Text_Top" condition="![$PARAM[override]]">
+                        <label fallback="19033">$VAR[Label_Settings_InfoText_Top]</label>
+                        <include content="Object_TextColor" condition="$PARAM[dialog]">
+                            <param name="textcolor">dialog_fg_90</param>
+                        </include>
                     </include>
-                    <left>60</left>
-                    <height>80</height>
-                    <centertop>50%</centertop>
-                    <textcolor>main_fg_70</textcolor>
-                    <font>$PARAM[font]</font>
-                    <aligny>center</aligny>
-                    <label>$PARAM[label]</label>
-                </control>
-                <control type="textbox">
-                    <include content="Object_TextColor" condition="$PARAM[dialog]">
-                        <param name="textcolor">dialog_fg_70</param>
+                    <include content="Object_InfoCircle_Text_Top" condition="$PARAM[override]">
+                        <label fallback="19033">$PARAM[heading]</label>
+                        <include content="Object_TextColor" condition="$PARAM[dialog]">
+                            <param name="textcolor">dialog_fg_90</param>
+                        </include>
                     </include>
-                    <left>60</left>
-                    <height>80</height>
-                    <centertop>50%</centertop>
-                    <textcolor>main_fg_70</textcolor>
-                    <font>$PARAM[font]</font>
-                    <aligny>center</aligny>
-                    <label>$LOCALIZE[19055]</label>
-                    <visible>String.IsEmpty(Control.GetLabel($PARAM[id]))</visible>
+                    <include content="Object_Hidden_Button" condition="![$PARAM[override]]">
+                        <param name="id">$PARAM[id]</param>
+                        <param name="control">label</param>
+                    </include>
+                    <include content="Object_InfoCircle_Text_Sub" condition="![$PARAM[override]]">
+                        <label fallback="19055">$VAR[Label_Settings_InfoText_Sub]</label>
+                        <include content="Object_TextColor" condition="$PARAM[dialog]">
+                            <param name="textcolor">dialog_fg_70</param>
+                        </include>
+                        <scroll>true</scroll>
+                    </include>
+                    <include content="Object_InfoCircle_Text_Sub" condition="$PARAM[override]">
+                        <param name="id">$PARAM[id]</param>
+                        <label fallback="19055">$PARAM[label]</label>
+                        <include content="Object_TextColor" condition="$PARAM[dialog]">
+                            <param name="textcolor">dialog_fg_70</param>
+                        </include>
+                        <scroll>true</scroll>
+                    </include>
+                    <include content="Object_InfoCircle_Text_Sub" condition="$PARAM[override]">
+                        <label>$LOCALIZE[19055]</label>
+                        <scroll>true</scroll>
+                        <include content="Object_TextColor" condition="$PARAM[dialog]">
+                            <param name="textcolor">dialog_fg_70</param>
+                        </include>
+                        <visible>String.IsEmpty(Control.GetLabel($PARAM[id]))</visible>
+                    </include>
                 </control>
-
             </control>
         </definition>
     </include>
