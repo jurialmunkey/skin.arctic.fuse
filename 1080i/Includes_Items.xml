@@ -979,21 +979,21 @@
                 <param name="zoom_in_include">$PARAM[zoom_in_include]</param>
 
                 <!-- Addon Not Installed -->
-                <onclick condition="!System.AddonIsEnabled(script.playalbum) + System.HasAddon(script.playalbum)">EnableAddon(script.playalbum)</onclick>
-                <onclick condition="!System.HasAddon(script.playalbum)">InstallAddon(script.playalbum)</onclick>
+                <onclick condition="!String.IsEqual(ListItem.DBType,artist) + !System.AddonIsEnabled(script.playalbum) + System.HasAddon(script.playalbum)">EnableAddon(script.playalbum)</onclick>
+                <onclick condition="!String.IsEqual(ListItem.DBType,artist) + !System.HasAddon(script.playalbum)">InstallAddon(script.playalbum)</onclick>
 
                 <!-- Addon Installed -->
-                <onclick condition="System.AddonIsEnabled(script.playalbum)">Dialog.Close(musicinformation)</onclick>
-                <onclick condition="System.AddonIsEnabled(script.playalbum)">Dialog.Close(songinformation)</onclick>
+                <onclick condition="String.IsEqual(ListItem.DBType,artist)">Dialog.Close(musicinformation)</onclick>
+                <onclick condition="String.IsEqual(ListItem.DBType,artist)">Dialog.Close(songinformation)</onclick>
 
                 <!-- Artist Browse -->
-                <onclick condition="System.AddonIsEnabled(script.playalbum) + String.IsEqual(ListItem.DBType,artist) + Window.IsVisible(music)">Container.Update($VAR[Path_MusicInfo_ArtistFolder])</onclick>
-                <onclick condition="System.AddonIsEnabled(script.playalbum) + String.IsEqual(ListItem.DBType,artist) + !Window.IsVisible(music)">ActivateWindow(music,$VAR[Path_MusicInfo_ArtistFolder],return)</onclick>
+                <onclick condition="String.IsEqual(ListItem.DBType,artist) + Window.IsVisible(music)">Container.Update($VAR[Path_MusicInfo_ArtistFolder])</onclick>
+                <onclick condition="String.IsEqual(ListItem.DBType,artist) + !Window.IsVisible(music)">ActivateWindow(music,$VAR[Path_MusicInfo_ArtistFolder],return)</onclick>
 
                 <!-- Album / Song Play -->
-                <onclick condition="System.AddonIsEnabled(script.playalbum) + String.IsEmpty(ListItem.DBID) + !String.IsEqual(ListItem.DBType,artist)">PlayMedia($ESCINFO[ListItem.FilenameAndPath])</onclick>
-                <onclick condition="System.AddonIsEnabled(script.playalbum) + String.IsEqual(ListItem.DBType,album)">RunScript(script.playalbum,albumid=$INFO[ListItem.DBID])</onclick>
-                <onclick condition="System.AddonIsEnabled(script.playalbum) + String.IsEqual(ListItem.DBType,song)">RunScript(script.playalbum,songid=$INFO[ListItem.DBID])</onclick>
+                <onclick condition="!String.IsEqual(ListItem.DBType,artist) + System.AddonIsEnabled(script.playalbum) + String.IsEmpty(ListItem.DBID) + !String.IsEqual(ListItem.DBType,artist)">PlayMedia($ESCINFO[ListItem.FilenameAndPath])</onclick>
+                <onclick condition="!String.IsEqual(ListItem.DBType,artist) + System.AddonIsEnabled(script.playalbum) + String.IsEqual(ListItem.DBType,album)">RunScript(script.playalbum,albumid=$INFO[ListItem.DBID])</onclick>
+                <onclick condition="!String.IsEqual(ListItem.DBType,artist) + System.AddonIsEnabled(script.playalbum) + String.IsEqual(ListItem.DBType,song)">RunScript(script.playalbum,songid=$INFO[ListItem.DBID])</onclick>
 
                 <include content="DialogInfo_Button_HintLabel">
                     <param name="label">$VAR[Label_DialogInfo_PlayButton]</param>
