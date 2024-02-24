@@ -92,8 +92,11 @@
     </include>
 
     <include name="DialogInfo_MusicInfo">
-        <control type="group">
+        <include content="DialogInfo_MusicDetails">
             <visible>String.IsEmpty(Window.Property(DetailsView))</visible>
+        </include>
+        <control type="group">
+            <visible>String.IsEqual(Window.Property(DetailsView),Songs)</visible>
             <include content="List_Button_Row" condition="String.IsEqual(ListItem.DBType,album)">
                 <param name="id">50</param>
                 <param name="orientation">horizontal</param>
@@ -182,9 +185,17 @@
                 <param name="condition">Container(5008).IsUpdating</param>
             </include>
 
-            <onclick>Dialog.Close(musicinformation,force)</onclick>
+            <onclick condition="!System.AddonIsEnabled(script.playalbum) + System.HasAddon(script.playalbum)">EnableAddon(script.playalbum)</onclick>
+            <onclick condition="!System.HasAddon(script.playalbum)">InstallAddon(script.playalbum)</onclick>
+
+            <!-- Album / Song Play -->
+            <onclick condition="System.AddonIsEnabled(script.playalbum) + String.IsEmpty(Container(5008).ListItem.DBID) + !String.IsEqual(Container(5008).ListItem.DBType,artist)">PlayMedia($ESCINFO[Container(5008).ListItem.FilenameAndPath])</onclick>
+            <onclick condition="System.AddonIsEnabled(script.playalbum) + String.IsEqual(Container(5008).ListItem.DBType,album)">RunScript(script.playalbum,albumid=$INFO[Container(5008).ListItem.DBID])</onclick>
+            <onclick condition="System.AddonIsEnabled(script.playalbum) + String.IsEqual(Container(5008).ListItem.DBType,song)">RunScript(script.playalbum,songid=$INFO[Container(5008).ListItem.DBID])</onclick>
+
+            <!-- <onclick>Dialog.Close(musicinformation,force)</onclick>
             <onclick condition="Window.IsVisible(MyMusicNav.xml)">Container.Update($INFO[Container(5008).ListItem.FolderPath])</onclick>
-            <onclick condition="!Window.IsVisible(MyMusicNav.xml)">ActivateWindow(music,$INFO[Container(5008).ListItem.FolderPath],return)</onclick>
+            <onclick condition="!Window.IsVisible(MyMusicNav.xml)">ActivateWindow(music,$INFO[Container(5008).ListItem.FolderPath],return)</onclick> -->
 
             <content target="music">musicdb://albums/?xsp={"rules":{"and":[{"field":"artist","operator":"contains","value":["$INFO[Window.Property(Encoded.ListItem.Artist)]"]}]},"type":"albums"}</content>
             <visible>String.IsEqual(Window.Property(DetailsView),Albums)</visible>
@@ -625,40 +636,27 @@
 
                     <onback>Dialog.Close(movieinformation)</onback>
 
-                    <include content="Action_VideoInfo_Main_OnRight" condition="[Window.IsVisible(DialogVideoInfo.xml) | Window.IsVisible(DialogPVRInfo.xml)]">
-                        <param name="condition">![String.IsEqual(Window.Property(DetailsView),Cast) | String.IsEqual(Window.Property(DetailsView),Reviews) | String.IsEqual(Window.Property(DetailsView),Trailer) | String.IsEqual(Window.Property(DetailsView),Critics)]</param>
-                    </include>
-                    <!-- <include content="Action_VideoInfo_Cast_OnRight" condition="[Window.IsVisible(DialogVideoInfo.xml) | Window.IsVisible(DialogPVRInfo.xml)]">
-                        <param name="condition">[String.IsEqual(Window.Property(DetailsView),Cast) + !Integer.IsEqual(Container(5003).NumItems,0)]</param>
-                    </include> -->
-
                     <onleft>61</onleft>
 
-                    <!-- <onleft condition="[[String.IsEqual(Window.Property(DetailsView),Cast)] + !Integer.IsEqual(Container(5003).NumItems,0)]">SetFocus(5003,0,absolute)</onleft> -->
-                    <onright condition="[[String.IsEqual(Window.Property(DetailsView),Cast)] + !Integer.IsEqual(Container(5003).NumItems,0)]">SetFocus(5003,0,absolute)</onright>
+                    <include content="Action_VideoInfo_Main_OnRight" condition="Window.IsVisible(DialogVideoInfo.xml)">
+                        <param name="condition">![String.IsEqual(Window.Property(DetailsView),Cast) | String.IsEqual(Window.Property(DetailsView),Reviews) | String.IsEqual(Window.Property(DetailsView),Trailer) | String.IsEqual(Window.Property(DetailsView),Critics)]</param>
+                    </include>
 
-                    <!-- <onleft condition="[String.IsEqual(Window.Property(DetailsView),Cast) + !Integer.IsEqual(Container(50).NumItems,0)]">SetFocus(50,99999,absolute)</onleft> -->
+                    <!-- Cast -->
+                    <onright condition="[String.IsEqual(Window.Property(DetailsView),Cast) + !Integer.IsEqual(Container(5003).NumItems,0)]">SetFocus(5003,0,absolute)</onright>
                     <onright condition="[String.IsEqual(Window.Property(DetailsView),Cast) + !Integer.IsEqual(Container(50).NumItems,0)]">SetFocus(50,0,absolute)</onright>
 
-                    <!-- <onleft condition="[String.IsEmpty(Window.Property(DetailsView)) + !Integer.IsEqual(Container(5050).NumItems,0)]">SetFocus(5050,99999,absolute)</onleft> -->
-                    <onright condition="[String.IsEmpty(Window.Property(DetailsView)) + !Integer.IsEqual(Container(5050).NumItems,0)]">SetFocus(5050,0,absolute)</onright>
+                    <!-- Songs -->
+                    <onright condition="[String.IsEqual(Window.Property(DetailsView),Songs) + !Integer.IsEqual(Container(5050).NumItems,0)]">SetFocus(5050,0,absolute)</onright>
+                    <onright condition="[String.IsEqual(Window.Property(DetailsView),Songs) + !Integer.IsEqual(Container(50).NumItems,0)]">SetFocus(50,0,absolute)</onright>
 
-                    <!-- <onleft condition="[String.IsEqual(Window.Property(DetailsView),Critics) | String.IsEmpty(Window.Property(DetailsView)) | [String.IsEqual(Window.Property(DetailsView),Cast) + Integer.IsEqual(Container(50).NumItems,0)]]">61</onleft> -->
-                    <!-- <onright condition="[String.IsEqual(Window.Property(DetailsView),Critics)]">61</onright> -->
-
-                    <!-- <onleft condition="[String.IsEqual(Window.Property(DetailsView),Reviews) + !Integer.IsEqual(Container(5004).NumItems,0)]">SetFocus(5004,99999,absolute)</onleft> -->
-                    <onright condition="[String.IsEqual(Window.Property(DetailsView),Reviews) + !Integer.IsEqual(Container(5004).NumItems,0)]">SetFocus(5004,0,absolute)</onright>
-
-                    <!-- <onleft condition="[String.IsEqual(Window.Property(DetailsView),Trailer) + !Integer.IsEqual(Container(5002).NumItems,0)]">SetFocus(5002,99999,absolute)</onleft> -->
+                    <!-- Videos / Trailers / Extras -->
                     <onright condition="[String.IsEqual(Window.Property(DetailsView),Trailer) + !Integer.IsEqual(Container(5002).NumItems,0)]">SetFocus(5002,0,absolute)</onright>
 
-                    <!-- <onleft condition="[String.IsEqual(Window.Property(DetailsView),Images) + !Integer.IsEqual(Container(5006).NumItems,0)]">SetFocus(5006,99999,absolute)</onleft> -->
-                    <onright condition="[String.IsEqual(Window.Property(DetailsView),Images) + !Integer.IsEqual(Container(5006).NumItems,0)]">SetFocus(5006,0,absolute)</onright>
+                    <!-- Reviews -->
+                    <onright condition="[String.IsEqual(Window.Property(DetailsView),Reviews) + !Integer.IsEqual(Container(5004).NumItems,0)]">SetFocus(5004,0,absolute)</onright>
 
-                    <!-- <onleft condition="[String.IsEqual(Window.Property(DetailsView),Timeline) + !Integer.IsEqual(Container(5007).NumItems,0)]">SetFocus(5007,99999,absolute)</onleft> -->
-                    <onright condition="[String.IsEqual(Window.Property(DetailsView),Timeline) + !Integer.IsEqual(Container(5007).NumItems,0)]">SetFocus(5007,0,absolute)</onright>
-
-                    <!-- <onleft condition="[String.IsEqual(Window.Property(DetailsView),Albums) + !Integer.IsEqual(Container(5008).NumItems,0)]">SetFocus(5008,99999,absolute)</onleft> -->
+                    <!-- Albums -->
                     <onright condition="[String.IsEqual(Window.Property(DetailsView),Albums) + !Integer.IsEqual(Container(5008).NumItems,0)]">SetFocus(5008,0,absolute)</onright>
 
                     <include>$PARAM[include]</include>
@@ -958,6 +956,104 @@
         </control>
     </include>
 
+    <include name="DialogInfo_MusicDetails">
+
+        <control type="group">
+            <left>200</left>
+
+            <nested />
+
+            <!-- Left Details -->
+            <control type="grouplist">
+                <left>-40</left>
+                <top>-40</top>
+                <orientation>vertical</orientation>
+                <itemgap>0</itemgap>
+                <height>350</height>
+                <width>400</width>
+                <control type="group">
+                    <top>25</top>
+                </control>
+                <include content="Object_InfoCircle">
+                    <param name="icon">special://skin/extras/icons/genre.png</param>
+                    <param name="role">$LOCALIZE[515]</param>
+                    <param name="name">$INFO[ListItem.Genre]</param>
+                    <visible>!String.IsEmpty(ListItem.Genre)</visible>
+                </include>
+                <include content="Object_InfoCircle">
+                    <param name="icon">special://skin/extras/icons/guitar.png</param>
+                    <param name="role">$LOCALIZE[31307]</param>
+                    <param name="name">$INFO[ListItem.Property(Artist_Instrument)]</param>
+                    <visible>!String.IsEmpty(ListItem.Property(Artist_Instrument))</visible>
+                </include>
+                <include content="Object_InfoCircle">
+                    <param name="icon">special://skin/extras/icons/compact-disc.png</param>
+                    <param name="role">$LOCALIZE[21899]</param>
+                    <param name="name">$INFO[ListItem.Property(Album_Label)]</param>
+                    <visible>!String.IsEmpty(ListItem.Property(Album_Label))</visible>
+                </include>
+                <include content="Object_InfoCircle">
+                    <param name="icon">special://skin/extras/icons/headphones-simple.png</param>
+                    <param name="role">$LOCALIZE[31308]</param>
+                    <param name="name">$VAR[Label_MusicMood]</param>
+                    <visible>!String.IsEmpty(ListItem.Property(Artist_Mood)) | !String.IsEmpty(ListItem.Property(Album_Mood))</visible>
+                </include>
+                <include content="Object_InfoCircle">
+                    <param name="icon">special://skin/extras/icons/drum.png</param>
+                    <param name="role">$LOCALIZE[736]</param>
+                    <param name="name">$VAR[Label_MusicStyle]</param>
+                    <visible>!String.IsEmpty(ListItem.Property(Artist_Style)) | !String.IsEmpty(ListItem.Property(Album_Style))</visible>
+                </include>
+                <include content="Object_InfoCircle">
+                    <param name="icon">special://skin/extras/icons/radio.png</param>
+                    <param name="role">$LOCALIZE[467]</param>
+                    <param name="name">$VAR[Label_MusicType]</param>
+                    <visible>!String.IsEmpty(ListItem.Property(Artist_Type)) | !String.IsEmpty(ListItem.Property(Album_Type))</visible>
+                </include>
+
+
+            </control>
+
+
+            <!-- Right Details -->
+            <control type="grouplist">
+                <left>380</left>
+                <width>600</width>
+                <top>-40</top>
+                <orientation>vertical</orientation>
+                <itemgap>0</itemgap>
+                <height>350</height>
+                <control type="group">
+                    <top>25</top>
+                </control>
+                <include content="Object_InfoCircle">
+                    <param name="icon">special://skin/extras/icons/cake-candles.png</param>
+                    <param name="role">$LOCALIZE[21893]</param>
+                    <param name="name">$INFO[ListItem.Property(Artist_Born)]</param>
+                    <visible>!String.IsEmpty(ListItem.Property(Artist_Born))</visible>
+                </include>
+                <include content="Object_InfoCircle">
+                    <param name="icon">special://skin/extras/icons/cross.png</param>
+                    <param name="role">$LOCALIZE[21897]</param>
+                    <param name="name">$INFO[ListItem.Property(Artist_Died)]</param>
+                    <visible>!String.IsEmpty(ListItem.Property(Artist_Died))</visible>
+                </include>
+                <include content="Object_InfoCircle">
+                    <param name="icon">special://skin/extras/icons/people-group.png</param>
+                    <param name="role">$LOCALIZE[21894]</param>
+                    <param name="name">$INFO[ListItem.Property(Artist_Formed)]</param>
+                    <visible>!String.IsEmpty(ListItem.Property(Artist_Formed))</visible>
+                </include>
+                <include content="Object_InfoCircle">
+                    <param name="icon">special://skin/extras/icons/explosion.png</param>
+                    <param name="role">$LOCALIZE[21896]</param>
+                    <param name="name">$INFO[ListItem.Property(Artist_Disbanded)]</param>
+                    <visible>!String.IsEmpty(ListItem.Property(Artist_Disbanded))</visible>
+                </include>
+            </control>
+        </control>
+    </include>
+
     <include name="DialogInfo_1121_SlideWidget">
         <animation effect="slide" start="0,440" end="0" time="400" tween="quadratic" easing="out" condition="Control.HasFocus($PARAM[id])" reversible="false">Conditional</animation>
         <animation type="Conditional" condition="!Control.HasFocus($PARAM[id])" reversible="false">
@@ -971,6 +1067,7 @@
         <param name="poster_visible">[!String.IsEmpty(ListItem.Art(poster)) | !String.IsEmpty(ListItem.Art(season.poster)) | !String.IsEmpty(ListItem.Art(tvshow.poster)) | !String.IsEmpty(Container(99950).ListItem.Art(poster)) | !String.IsEmpty(Container(99950).ListItem.Art(season.poster)) | !String.IsEmpty(Container(99950).ListItem.Art(tvshow.poster))]</param>
         <param name="square_icon">$INFO[Container(99950).ListItem.Property(base_icon)]</param>
         <param name="landscape_icon">$VAR[Image_Landscape]</param>
+        <param name="clearlogo_icon">$VAR[Image_Clearlogo]</param>
         <definition>
             <include content="Dialog_Outline_Box">
                 <param name="colordiffuse">dialog_bg_12</param>
@@ -982,7 +1079,9 @@
                     <orientation>vertical</orientation>
                     <itemgap>40</itemgap>
                     <control type="group">
-                        <top>40</top>
+                        <height>0</height>
+                    </control>
+                    <control type="group">
                         <left>40</left>
                         <right>40</right>
                         <height>520</height>
@@ -1019,6 +1118,17 @@
                                 <texture background="true" diffuse="diffuse/landscape_w356_h200.png">$PARAM[landscape_icon]</texture>
                             </control>
                         </include>
+                    </control>
+
+                    <control type="group">
+                        <left>40</left>
+                        <right>40</right>
+                        <height>124</height>
+                        <visible>![$PARAM[poster_visible]]</visible>
+                        <control type="image">
+                            <aspectratio scalediffuse="false" aligny="center">keep</aspectratio>
+                            <texture background="true">$PARAM[clearlogo_icon]</texture>
+                        </control>
                     </control>
                 </control>
             </include>
@@ -1150,6 +1260,7 @@
                         <item>
                             <icon>$INFO[ListItem.Art(thumb)]</icon>
                             <visible>!String.IsEmpty(ListItem.Art(thumb))</visible>
+                            <visible>Window.IsVisible(DialogVideoInfo.xml)</visible>
                         </item>
                         <item>
                             <icon>$INFO[ListItem.Art(fanart)]</icon>
