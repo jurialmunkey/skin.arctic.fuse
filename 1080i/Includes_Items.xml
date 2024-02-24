@@ -966,65 +966,76 @@
     </include>
 
     <include name="Items_DialogMusicInfo_MenuBar">
-        <include content="DialogInfo_Button">
-            <param name="vertical">true</param>
-            <param name="id">4001</param>
-            <param name="groupid">4101</param>
-            <param name="sliceid">4201</param>
-            <param name="label">$VAR[Label_VideoInfo_PlayButton]</param>
-            <param name="icon">$VAR[Image_VideoInfo_PlayButton]</param>
-            <onclick>Dialog.Close(musicinformation)</onclick>
-            <onclick condition="String.IsEmpty(ListItem.DBID) + !String.IsEqual(ListItem.DBType,artist)">PlayMedia($ESCINFO[ListItem.FilenameAndPath])</onclick>
-            <onclick condition="String.IsEqual(ListItem.DBType,artist)">SetFocus(50)</onclick>
-            <onclick condition="System.AddonIsEnabled(script.playalbum) + String.IsEqual(ListItem.DBType,album)">RunScript(script.playalbum,albumid=$INFO[ListItem.DBID])</onclick>
-            <onclick condition="System.AddonIsEnabled(script.playalbum) + String.IsEqual(ListItem.DBType,song)">RunScript(script.playalbum,songid=$INFO[ListItem.DBID])</onclick>
-            <onclick condition="System.HasAddon(script.playalbum) + !System.AddonIsEnabled(script.playalbum) + !String.IsEmpty(ListItem.DBID)">EnableAddon(script.playalbum)</onclick>
-            <onclick condition="!System.HasAddon(script.playalbum) + !String.IsEmpty(ListItem.DBID)">InstallAddon(script.playalbum)</onclick>
-            <include content="DialogInfo_Button_HintLabel">
+        <param name="zoom_in_include">!Window.IsVisible(1120)</param>
+        <definition>
+            <include content="DialogInfo_Button">
+                <param name="vertical">true</param>
+                <param name="id">4001</param>
+                <param name="groupid">4101</param>
+                <param name="sliceid">4201</param>
                 <param name="label">$VAR[Label_VideoInfo_PlayButton]</param>
+                <param name="icon">$VAR[Image_VideoInfo_PlayButton]</param>
+                <param name="zoom_in_delay">0</param>
+                <param name="zoom_in_include">$PARAM[zoom_in_include]</param>
+                <onclick>Dialog.Close(musicinformation)</onclick>
+                <onclick condition="String.IsEmpty(ListItem.DBID) + !String.IsEqual(ListItem.DBType,artist)">PlayMedia($ESCINFO[ListItem.FilenameAndPath])</onclick>
+                <onclick condition="String.IsEqual(ListItem.DBType,artist)">SetFocus(50)</onclick>
+                <onclick condition="System.AddonIsEnabled(script.playalbum) + String.IsEqual(ListItem.DBType,album)">RunScript(script.playalbum,albumid=$INFO[ListItem.DBID])</onclick>
+                <onclick condition="System.AddonIsEnabled(script.playalbum) + String.IsEqual(ListItem.DBType,song)">RunScript(script.playalbum,songid=$INFO[ListItem.DBID])</onclick>
+                <onclick condition="System.HasAddon(script.playalbum) + !System.AddonIsEnabled(script.playalbum) + !String.IsEmpty(ListItem.DBID)">EnableAddon(script.playalbum)</onclick>
+                <onclick condition="!System.HasAddon(script.playalbum) + !String.IsEmpty(ListItem.DBID)">InstallAddon(script.playalbum)</onclick>
+                <include content="DialogInfo_Button_HintLabel">
+                    <param name="label">$VAR[Label_VideoInfo_PlayButton]</param>
+                </include>
+                <onfocus>ClearProperty(DetailsView)</onfocus>
             </include>
-            <onfocus>ClearProperty(DetailsView)</onfocus>
-        </include>
-        <include content="DialogInfo_Button">
-            <param name="vertical">true</param>
-            <param name="id">4002</param>
-            <param name="groupid">4102</param>
-            <param name="sliceid">4202</param>
-            <param name="label">$LOCALIZE[132]</param>
-            <param name="icon">special://skin/extras/icons/songs.png</param>
-            <include content="DialogInfo_Button_HintLabel">
+            <include content="DialogInfo_Button">
+                <param name="vertical">true</param>
+                <param name="id">4002</param>
+                <param name="groupid">4102</param>
+                <param name="sliceid">4202</param>
                 <param name="label">$LOCALIZE[132]</param>
+                <param name="icon">special://skin/extras/icons/songs.png</param>
+                <param name="zoom_in_delay">60</param>
+                <param name="zoom_in_include">$PARAM[zoom_in_include]</param>
+                <include content="DialogInfo_Button_HintLabel">
+                    <param name="label">$LOCALIZE[132]</param>
+                </include>
+                <onfocus>SetProperty(DetailsView,Albums)</onfocus>
             </include>
-            <onfocus>SetProperty(DetailsView,Albums)</onfocus>
-        </include>
-        <include content="DialogInfo_Button">
-            <param name="vertical">true</param>
-            <param name="id">4007</param>
-            <param name="groupid">4107</param>
-            <param name="sliceid">4207</param>
-            <param name="label">YouTube</param>
-            <param name="icon">special://skin/extras/icons/youtube.png</param>
-            <onclick>Dialog.Close(musicinformation)</onclick>
-            <onclick>Dialog.Close(songinformation)</onclick>
-            <onclick>ActivateWindow(videos,$VAR[Path_Youtube_Query,plugin://plugin.video.youtube/kodion/search/query/?q=,],return)</onclick>
-            <include content="DialogInfo_Button_HintLabel">
+            <include content="DialogInfo_Button">
+                <param name="vertical">true</param>
+                <param name="id">4007</param>
+                <param name="groupid">4107</param>
+                <param name="sliceid">4207</param>
                 <param name="label">YouTube</param>
+                <param name="icon">special://skin/extras/icons/youtube.png</param>
+                <param name="zoom_in_delay">120</param>
+                <param name="zoom_in_include">$PARAM[zoom_in_include]</param>
+                <onclick>Dialog.Close(musicinformation)</onclick>
+                <onclick>Dialog.Close(songinformation)</onclick>
+                <onclick>ActivateWindow(videos,$VAR[Path_Youtube_Query,plugin://plugin.video.youtube/kodion/search/query/?q=,],return)</onclick>
+                <include content="DialogInfo_Button_HintLabel">
+                    <param name="label">YouTube</param>
+                </include>
+                <onfocus>SetProperty(DetailsView,Trailer)</onfocus>
             </include>
-            <onfocus>SetProperty(DetailsView,Trailer)</onfocus>
-        </include>
-        <include content="DialogInfo_Button">
-            <param name="vertical">true</param>
-            <param name="id">4005</param>
-            <param name="groupid">4105</param>
-            <param name="sliceid">4205</param>
-            <param name="label">Wiki</param>
-            <param name="icon">special://skin/extras/icons/globe.png</param>
-            <onclick>runscript(script.wikipedia,wikipedia=$VAR[Path_Wikipedia_Title],tmdb_type=$VAR[Path_Wikipedia_Type])</onclick>
-            <include content="DialogInfo_Button_HintLabel">
+            <include content="DialogInfo_Button">
+                <param name="vertical">true</param>
+                <param name="id">4005</param>
+                <param name="groupid">4105</param>
+                <param name="sliceid">4205</param>
                 <param name="label">Wiki</param>
+                <param name="icon">special://skin/extras/icons/globe.png</param>
+                <param name="zoom_in_delay">180</param>
+                <param name="zoom_in_include">$PARAM[zoom_in_include]</param>
+                <onclick>runscript(script.wikipedia,wikipedia=$VAR[Path_Wikipedia_Title],tmdb_type=$VAR[Path_Wikipedia_Type])</onclick>
+                <include content="DialogInfo_Button_HintLabel">
+                    <param name="label">Wiki</param>
+                </include>
+                <onfocus>ClearProperty(DetailsView)</onfocus>
             </include>
-            <onfocus>ClearProperty(DetailsView)</onfocus>
-        </include>
+        </definition>
     </include>
 
     <include name="Items_Settings_SideChanger">
