@@ -185,9 +185,17 @@
                 <param name="condition">Container(5008).IsUpdating</param>
             </include>
 
-            <onclick>Dialog.Close(musicinformation,force)</onclick>
+            <onclick condition="!System.AddonIsEnabled(script.playalbum) + System.HasAddon(script.playalbum)">EnableAddon(script.playalbum)</onclick>
+            <onclick condition="!System.HasAddon(script.playalbum)">InstallAddon(script.playalbum)</onclick>
+
+            <!-- Album / Song Play -->
+            <onclick condition="System.AddonIsEnabled(script.playalbum) + String.IsEmpty(Container(5008).ListItem.DBID) + !String.IsEqual(Container(5008).ListItem.DBType,artist)">PlayMedia($ESCINFO[Container(5008).ListItem.FilenameAndPath])</onclick>
+            <onclick condition="System.AddonIsEnabled(script.playalbum) + String.IsEqual(Container(5008).ListItem.DBType,album)">RunScript(script.playalbum,albumid=$INFO[Container(5008).ListItem.DBID])</onclick>
+            <onclick condition="System.AddonIsEnabled(script.playalbum) + String.IsEqual(Container(5008).ListItem.DBType,song)">RunScript(script.playalbum,songid=$INFO[Container(5008).ListItem.DBID])</onclick>
+
+            <!-- <onclick>Dialog.Close(musicinformation,force)</onclick>
             <onclick condition="Window.IsVisible(MyMusicNav.xml)">Container.Update($INFO[Container(5008).ListItem.FolderPath])</onclick>
-            <onclick condition="!Window.IsVisible(MyMusicNav.xml)">ActivateWindow(music,$INFO[Container(5008).ListItem.FolderPath],return)</onclick>
+            <onclick condition="!Window.IsVisible(MyMusicNav.xml)">ActivateWindow(music,$INFO[Container(5008).ListItem.FolderPath],return)</onclick> -->
 
             <content target="music">musicdb://albums/?xsp={"rules":{"and":[{"field":"artist","operator":"contains","value":["$INFO[Window.Property(Encoded.ListItem.Artist)]"]}]},"type":"albums"}</content>
             <visible>String.IsEqual(Window.Property(DetailsView),Albums)</visible>
@@ -626,40 +634,27 @@
 
                     <onback>Dialog.Close(movieinformation)</onback>
 
-                    <include content="Action_VideoInfo_Main_OnRight" condition="[Window.IsVisible(DialogVideoInfo.xml) | Window.IsVisible(DialogPVRInfo.xml)]">
-                        <param name="condition">![String.IsEqual(Window.Property(DetailsView),Cast) | String.IsEqual(Window.Property(DetailsView),Reviews) | String.IsEqual(Window.Property(DetailsView),Trailer) | String.IsEqual(Window.Property(DetailsView),Critics)]</param>
-                    </include>
-                    <!-- <include content="Action_VideoInfo_Cast_OnRight" condition="[Window.IsVisible(DialogVideoInfo.xml) | Window.IsVisible(DialogPVRInfo.xml)]">
-                        <param name="condition">[String.IsEqual(Window.Property(DetailsView),Cast) + !Integer.IsEqual(Container(5003).NumItems,0)]</param>
-                    </include> -->
-
                     <onleft>61</onleft>
 
-                    <!-- <onleft condition="[[String.IsEqual(Window.Property(DetailsView),Cast)] + !Integer.IsEqual(Container(5003).NumItems,0)]">SetFocus(5003,0,absolute)</onleft> -->
-                    <onright condition="[[String.IsEqual(Window.Property(DetailsView),Cast)] + !Integer.IsEqual(Container(5003).NumItems,0)]">SetFocus(5003,0,absolute)</onright>
+                    <include content="Action_VideoInfo_Main_OnRight" condition="Window.IsVisible(DialogVideoInfo.xml)">
+                        <param name="condition">![String.IsEqual(Window.Property(DetailsView),Cast) | String.IsEqual(Window.Property(DetailsView),Reviews) | String.IsEqual(Window.Property(DetailsView),Trailer) | String.IsEqual(Window.Property(DetailsView),Critics)]</param>
+                    </include>
 
-                    <!-- <onleft condition="[String.IsEqual(Window.Property(DetailsView),Cast) + !Integer.IsEqual(Container(50).NumItems,0)]">SetFocus(50,99999,absolute)</onleft> -->
+                    <!-- Cast -->
+                    <onright condition="[String.IsEqual(Window.Property(DetailsView),Cast) + !Integer.IsEqual(Container(5003).NumItems,0)]">SetFocus(5003,0,absolute)</onright>
                     <onright condition="[String.IsEqual(Window.Property(DetailsView),Cast) + !Integer.IsEqual(Container(50).NumItems,0)]">SetFocus(50,0,absolute)</onright>
 
-                    <!-- <onleft condition="[String.IsEmpty(Window.Property(DetailsView)) + !Integer.IsEqual(Container(5050).NumItems,0)]">SetFocus(5050,99999,absolute)</onleft> -->
-                    <onright condition="[String.IsEmpty(Window.Property(DetailsView)) + !Integer.IsEqual(Container(5050).NumItems,0)]">SetFocus(5050,0,absolute)</onright>
+                    <!-- Songs -->
+                    <onright condition="[String.IsEqual(Window.Property(DetailsView),Songs) + !Integer.IsEqual(Container(5050).NumItems,0)]">SetFocus(5050,0,absolute)</onright>
+                    <onright condition="[String.IsEqual(Window.Property(DetailsView),Songs) + !Integer.IsEqual(Container(50).NumItems,0)]">SetFocus(50,0,absolute)</onright>
 
-                    <!-- <onleft condition="[String.IsEqual(Window.Property(DetailsView),Critics) | String.IsEmpty(Window.Property(DetailsView)) | [String.IsEqual(Window.Property(DetailsView),Cast) + Integer.IsEqual(Container(50).NumItems,0)]]">61</onleft> -->
-                    <!-- <onright condition="[String.IsEqual(Window.Property(DetailsView),Critics)]">61</onright> -->
-
-                    <!-- <onleft condition="[String.IsEqual(Window.Property(DetailsView),Reviews) + !Integer.IsEqual(Container(5004).NumItems,0)]">SetFocus(5004,99999,absolute)</onleft> -->
-                    <onright condition="[String.IsEqual(Window.Property(DetailsView),Reviews) + !Integer.IsEqual(Container(5004).NumItems,0)]">SetFocus(5004,0,absolute)</onright>
-
-                    <!-- <onleft condition="[String.IsEqual(Window.Property(DetailsView),Trailer) + !Integer.IsEqual(Container(5002).NumItems,0)]">SetFocus(5002,99999,absolute)</onleft> -->
+                    <!-- Videos / Trailers / Extras -->
                     <onright condition="[String.IsEqual(Window.Property(DetailsView),Trailer) + !Integer.IsEqual(Container(5002).NumItems,0)]">SetFocus(5002,0,absolute)</onright>
 
-                    <!-- <onleft condition="[String.IsEqual(Window.Property(DetailsView),Images) + !Integer.IsEqual(Container(5006).NumItems,0)]">SetFocus(5006,99999,absolute)</onleft> -->
-                    <onright condition="[String.IsEqual(Window.Property(DetailsView),Images) + !Integer.IsEqual(Container(5006).NumItems,0)]">SetFocus(5006,0,absolute)</onright>
+                    <!-- Reviews -->
+                    <onright condition="[String.IsEqual(Window.Property(DetailsView),Reviews) + !Integer.IsEqual(Container(5004).NumItems,0)]">SetFocus(5004,0,absolute)</onright>
 
-                    <!-- <onleft condition="[String.IsEqual(Window.Property(DetailsView),Timeline) + !Integer.IsEqual(Container(5007).NumItems,0)]">SetFocus(5007,99999,absolute)</onleft> -->
-                    <onright condition="[String.IsEqual(Window.Property(DetailsView),Timeline) + !Integer.IsEqual(Container(5007).NumItems,0)]">SetFocus(5007,0,absolute)</onright>
-
-                    <!-- <onleft condition="[String.IsEqual(Window.Property(DetailsView),Albums) + !Integer.IsEqual(Container(5008).NumItems,0)]">SetFocus(5008,99999,absolute)</onleft> -->
+                    <!-- Albums -->
                     <onright condition="[String.IsEqual(Window.Property(DetailsView),Albums) + !Integer.IsEqual(Container(5008).NumItems,0)]">SetFocus(5008,0,absolute)</onright>
 
                     <include>$PARAM[include]</include>
