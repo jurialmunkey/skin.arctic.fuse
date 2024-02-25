@@ -738,4 +738,98 @@
             </control>
         </definition>
     </include>
+
+    <include name="Dialog_VideoPIP">
+        <param name="include_dimensions">Dimension_Dialog_VideoPIP_Standard</param>
+        <definition>
+            <include content="Dialog_Background_Blur">
+                <param name="diffuse">diffuse/landscape_w720_h405.png</param>
+                <animation type="WindowOpen" reversible="false">
+                    <effect type="slide" start="0,-48" end="0" center="auto" tween="back" easing="out" time="400" />
+                </animation>
+                <include>$PARAM[include_dimensions]</include>
+                <include>Dialog_Overlay_Side_Panel</include>
+                <visible>$PARAM[visible]</visible>
+                <control type="group">
+                    <include content="Dimension_Padding">
+                        <param name="pad">10</param>
+                    </include>
+                    <include content="Dialog_Outline_Box">
+                        <param name="colordiffuse">dialog_bg_12</param>
+                        <control type="image">
+                            <texture border="20" colordiffuse="black">common/dialog.png</texture>
+                        </control>
+                        <control type="group">
+                            <include content="Dimension_Padding">
+                                <param name="pad">0</param>
+                            </include>
+                            <control type="videowindow">
+                                <include content="Dimension_Padding">
+                                    <param name="pad">5</param>
+                                </include>
+                            </control>
+                            <control type="image">
+                                <texture border="20" colordiffuse="black">common/selectbox.png</texture>
+                            </control>
+                        </control>
+                    </include>
+
+                    <control type="group">
+                        <left>10</left>
+                        <right>10</right>
+                        <height>80</height>
+                        <bottom>10</bottom>
+                        <control type="group">
+                            <width>80</width>
+                            <right>0</right>
+                            <include content="Info_FooterItemIcon">
+                                <param name="icon">$VAR[Image_NowPlaying_PlayPause]</param>
+                                <param name="centered">true</param>
+                            </include>
+                            <control type="image">
+                                <bordersize>-4</bordersize>
+                                <texture colordiffuse="$VAR[ColorHighlight]">$INFO[Player.Progress,progress/circle/p,.png]</texture>
+                                <aspectratio align="center" aligny="center">keep</aspectratio>
+                            </control>
+                            <control type="image">
+                                <bordersize>-4</bordersize>
+                                <texture colordiffuse="$VAR[ColorGradient]">$INFO[Player.Progress,progress/circle/p,.png]</texture>
+                                <animation effect="fade" end="66" condition="true">Conditional</animation>
+                                <aspectratio align="center" aligny="center">keep</aspectratio>
+                                <include content="Defs_Progress_Colorfade">
+                                    <param name="id">933</param>
+                                </include>
+                            </control>
+                            <control type="progress" id="933">
+                                <height>1</height>
+                                <width>1</width>
+                                <left>-1000</left>
+                                <texturebg />
+                                <lefttexture />
+                                <midtexture />
+                                <righttexture />
+                                <info>Player.Progress</info>
+                                <visible>false</visible>
+                            </control>
+                        </control>
+                        <include content="Object_InfoCircle_Text_Top" condition="!Skin.HasSetting(Furniture.DisableNowPlaying)">
+                            <label>$VAR[Label_NowPlayingTitle]</label>
+                            <right>100</right>
+                            <left>20</left>
+                            <textcolor>panel_fg_90</textcolor>
+                            <shadowcolor>panel_bg_70</shadowcolor>
+                        </include>
+                        <include content="Object_InfoCircle_Text_Sub" condition="!Skin.HasSetting(Furniture.DisableNowPlaying)">
+                            <label>$INFO[Player.Time]$INFO[Player.Duration, / ,]</label>
+                            <right>100</right>
+                            <left>20</left>
+                            <textcolor>panel_fg_90</textcolor>
+                            <shadowcolor>panel_bg_70</shadowcolor>
+                        </include>
+                    </control>
+
+                </control>
+            </include>
+        </definition>
+    </include>
 </includes>
