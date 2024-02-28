@@ -295,7 +295,7 @@
 
     <include name="DialogInfo_VideoInfo">
         <include content="DialogInfo_VideoDetails">
-            <visible>String.IsEmpty(Window.Property(DetailsView))</visible>
+            <param name="visible">String.IsEmpty(Window.Property(DetailsView))</param>
         </include>
 
         <include content="List_Landscape_Row">
@@ -446,7 +446,6 @@
                 </control>
             </control>
 
-
         </include>
         <include content="Object_Control" condition="Skin.HasSetting(Info.UseLocalCast)">
             <param name="control">group</param>
@@ -519,26 +518,57 @@
 
         <control type="group">
             <left>200</left>
+            <right>880</right>
             <visible>String.IsEqual(Window.Property(DetailsView),Critics)</visible>
-            <control type="group">
-                <width>800</width>
-                <include content="Object_InfoCircle">
-                    <param name="icon">special://skin/extras/icons/trophy.png</param>
-                    <param name="role">$LOCALIZE[31064]</param>
-                    <param name="name">$INFO[Container(99950).ListItem.Property(Awards)]</param>
-                    <left>0</left>
-                    <top>-15</top>
-                </include>
-                <control type="textbox">
-                    <font>font_mini_plot</font>
-                    <textcolor>main_fg_70</textcolor>
-                    <label>$VAR[Label_Critics]</label>
-                    <aligny>top</aligny>
-                    <top>75</top>
-                    <bottom>-5</bottom>
-                </control>
+
+            <include content="Object_InfoCircle">
+                <param name="icon">special://skin/extras/icons/trophy.png</param>
+                <param name="role">$LOCALIZE[31064]</param>
+                <param name="name">$INFO[Container(99950).ListItem.Property(Awards)]</param>
+                <left>0</left>
+                <top>-15</top>
+            </include>
+            <control type="textbox">
+                <font>font_mini_plot</font>
+                <textcolor>main_fg_70</textcolor>
+                <label>$VAR[Label_Critics]</label>
+                <aligny>top</aligny>
+                <top>70</top>
+                <autoscroll>false</autoscroll>
+                <bottom>-5</bottom>
             </control>
         </control>
+
+        <control type="group">
+            <right>40</right>
+            <bottom>-40</bottom>
+            <height>view_poster_itemlayout_h</height>
+            <visible>String.IsEqual(Window.Property(DetailsView),Critics) | String.IsEmpty(Window.Property(DetailsView))</visible>
+            <control type="group">
+                <right>0</right>
+                <height>view_poster_itemlayout_h</height>
+                <width>view_board_itemlayout_w</width>
+                <include content="Layout_Poster">
+                    <param name="icon">$VAR[Image_DialogInfo_Landscape]</param>
+                    <param name="diffuse">diffuse/landscape_w520_h294.png</param>
+                    <param name="indicator">true</param>
+                    <param name="item_w">view_board_item_w</param>
+                    <param name="item_h">view_poster_item_h</param>
+                </include>
+            </control>
+            <control type="group">
+                <right>view_board_itemlayout_w</right>
+                <height>view_poster_itemlayout_h</height>
+                <width>view_poster_itemlayout_w</width>
+                <include content="Layout_Poster">
+                    <param name="icon">$VAR[Image_DialogInfo_Poster]</param>
+                    <param name="indicator">false</param>
+                    <param name="item_w">view_poster_item_w</param>
+                    <param name="item_h">view_poster_item_h</param>
+                </include>
+            </control>
+        </control>
+
 
         <include content="Widget_Busy">
             <param name="label">$INFO[Window.Property(DetailsView)]</param>
@@ -823,7 +853,7 @@
         <control type="group">
             <left>200</left>
 
-            <nested />
+            <visible>$PARAM[visible]</visible>
 
             <!-- Left Details -->
             <control type="grouplist">
@@ -832,7 +862,7 @@
                 <orientation>vertical</orientation>
                 <itemgap>0</itemgap>
                 <height>350</height>
-                <width>400</width>
+                <width>355</width>
                 <control type="group">
                     <top>25</top>
                 </control>
@@ -910,8 +940,8 @@
 
             <!-- Right Details -->
             <control type="grouplist">
-                <left>380</left>
-                <width>600</width>
+                <left>300</left>
+                <right>880</right>
                 <top>-40</top>
                 <orientation>vertical</orientation>
                 <itemgap>0</itemgap>
