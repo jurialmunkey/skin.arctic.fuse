@@ -50,7 +50,6 @@
         <param name="flipy">false</param>
         <param name="shadow">true</param>
         <param name="border">20</param>
-        <param name="outline">true</param>
         <definition>
             <control type="group">
                 <control type="image">
@@ -61,7 +60,7 @@
                 <control type="image">
                     <texture colordiffuse="dialog_overlay" border="20">common/dialog.png</texture>
                 </control>
-                <include content="Object_Control" condition="$PARAM[outline]">
+                <include content="Object_Control" condition="!Skin.HasSetting(Glass.DisableBorders)">
                     <param name="control">image</param>
                     <bordersize>0</bordersize>
                     <texture colordiffuse="dialog_fg_12" border="20">common/box-outline.png</texture>
@@ -84,7 +83,6 @@
     <include name="Dialog_Background_Blur_Adaptive">
         <param name="flipy">false</param>
         <param name="shadow">true</param>
-        <param name="outline">true</param>
         <param name="diffuse">diffuse/dialog_w1000_h1000.png</param>
         <definition>
             <control type="group">
@@ -97,7 +95,7 @@
                     <include condition="$PARAM[shadow]">Texture_Shadow_80</include>
                     <texture flipy="$PARAM[flipy]" diffuse="$PARAM[diffuse]" colordiffuse="$VAR[Dialog_Background_Blur_Adaptive_ColorDiffuse]">$VAR[Dialog_Background_Blur_Adaptive_Texture]</texture>
                 </control>
-                <include content="Object_Control" condition="$PARAM[outline]">
+                <include content="Object_Control" condition="!Skin.HasSetting(Glass.DisableBorders)">
                     <param name="control">image</param>
                     <bordersize>0</bordersize>
                     <texture colordiffuse="dialog_fg_12" border="20">common/box-outline.png</texture>
@@ -113,7 +111,6 @@
             <param name="flipy">$PARAM[flipy]</param>
             <param name="flipx">$PARAM[flipx]</param>
             <param name="diffuse">$PARAM[diffuse]</param>
-            <param name="outline">$PARAM[outline]</param>
             <param name="border">$PARAM[border]</param>
             <nested />
         </include>
@@ -122,7 +119,6 @@
             <param name="flipy">$PARAM[flipy]</param>
             <param name="flipx">$PARAM[flipx]</param>
             <param name="diffuse">$PARAM[diffuse]</param>
-            <param name="outline">$PARAM[outline]</param>
             <param name="border">$PARAM[border]</param>
             <nested />
         </include>
@@ -170,7 +166,8 @@
                 <control type="image">
                     <texture colordiffuse="dialog_fg_12" border="20" flipx="$PARAM[flipped]">common/dialog.png</texture>
                 </control>
-                <control type="image">
+                <include content="Object_Control" condition="!Skin.HasSetting(Glass.DisableBorders)">
+                    <param name="control">image</param>
                     <width>12</width>
                     <include content="Object_Right" condition="$PARAM[flipped]">
                         <param name="right">0</param>
@@ -179,7 +176,7 @@
                         <param name="left">0</param>
                     </include>
                     <texture colordiffuse="dialog_fg_12" border="6,20,6,20" flipx="$PARAM[flipped]">common/dialog-edge-outline.png</texture>
-                </control>
+                </include>
             </control>
 
         </definition>
@@ -196,7 +193,8 @@
                 </include>
                 <texture colordiffuse="dialog_fg_12" border="20" flipy="$PARAM[flipped]">common/dialog.png</texture>
             </control>
-            <control type="image">
+            <include content="Object_Control" condition="!Skin.HasSetting(Glass.DisableBorders)">
+                <param name="control">image</param>
                 <height>12</height>
                 <include content="Object_Top" condition="$PARAM[flipped]">
                     <param name="top">120</param>
@@ -205,7 +203,7 @@
                     <param name="bottom">120</param>
                 </include>
                 <texture colordiffuse="dialog_fg_12" border="20,6,20,6" flipy="$PARAM[flipped]">common/dialog-edge-outline-v.png</texture>
-            </control>
+            </include>
         </definition>
     </include>
 
@@ -509,7 +507,7 @@
                         <centerleft>60</centerleft>
                     </include>
                 </control>
-                <include content="Object_Control">
+                <include content="Object_Control" condition="!Skin.HasSetting(Glass.DisableBorders)">
                     <param name="control">image</param>
                     <texture colordiffuse="dialog_fg_12" border="40">common/menu-outline.png</texture>
                 </include>
@@ -654,9 +652,10 @@
     </include>
 
     <include name="Dialog_Outline">
-        <control type="image">
+        <include content="Object_Control" condition="!Skin.HasSetting(Glass.DisableBorders)">
+            <param name="control">image</param>
             <texture colordiffuse="dialog_fg_12" border="12">common/box-outline.png</texture>
-        </control>
+        </include>
     </include>
 
     <include name="Dialog_Box">
@@ -672,14 +671,13 @@
     </include>
 
     <include name="Dialog_Outline_Box">
-        <param name="outline">true</param>
         <definition>
             <control type="group">
                 <include content="Dialog_Box">
                     <param name="colordiffuse">$PARAM[colordiffuse]</param>
                 </include>
                 <nested />
-                <include condition="$PARAM[outline]">Dialog_Outline</include>
+                <include>Dialog_Outline</include>
             </control>
         </definition>
     </include>
