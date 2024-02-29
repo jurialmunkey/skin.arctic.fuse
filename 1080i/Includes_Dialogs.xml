@@ -50,6 +50,7 @@
         <param name="flipy">false</param>
         <param name="shadow">true</param>
         <param name="border">20</param>
+        <param name="outline">true</param>
         <definition>
             <control type="group">
                 <control type="image">
@@ -60,6 +61,11 @@
                 <control type="image">
                     <texture colordiffuse="dialog_overlay" border="20">common/dialog.png</texture>
                 </control>
+                <include content="Object_Control" condition="$PARAM[outline]">
+                    <param name="control">image</param>
+                    <bordersize>0</bordersize>
+                    <texture colordiffuse="dialog_fg_12" border="20">common/box-outline.png</texture>
+                </include>
                 <nested />
             </control>
         </definition>
@@ -152,56 +158,34 @@
         </include>
     </include>
 
-    <include name="Dialog_Overlay_Side_Panel_Adaptive">
-        <definition>
-            <control type="image">
-                <include content="Object_Right" condition="$PARAM[flipped]">
-                    <param name="right">120</param>
-                </include>
-                <include content="Object_Left" condition="![$PARAM[flipped]]">
-                    <param name="left">120</param>
-                </include>
-                <texture colordiffuse="dialog_fg_12" border="20" flipx="$PARAM[flipped]">common/dialog.png</texture>
-            </control>
-            <control type="image">
-                <width>12</width>
-                <include content="Object_Right" condition="$PARAM[flipped]">
-                    <param name="right">120</param>
-                </include>
-                <include content="Object_Left" condition="![$PARAM[flipped]]">
-                    <param name="left">120</param>
-                </include>
-                <texture colordiffuse="dialog_fg_12" border="6,20,6,20" flipx="$PARAM[flipped]">common/dialog-edge-outline.png</texture>
-            </control>
-        </definition>
-    </include>
-
-    <include name="Dialog_Overlay_Side_Panel_Standard">
-        <definition>
-            <control type="image">
-                <include content="Object_Right" condition="$PARAM[flipped]">
-                    <param name="right">120</param>
-                </include>
-                <include content="Object_Left" condition="![$PARAM[flipped]]">
-                    <param name="left">120</param>
-                </include>
-                <texture colordiffuse="dialog_fg_12" border="20" flipx="$PARAM[flipped]">common/dialog_overlay.png</texture>
-            </control>
-        </definition>
-    </include>
-
     <include name="Dialog_Overlay_Side_Panel">
         <definition>
-            <include content="Dialog_Overlay_Side_Panel_Standard" condition="![$EXP[Exp_DialogTheme_IsAdaptive]]">
-                <param name="flipped">$PARAM[flipped]</param>
-            </include>
-            <include content="Dialog_Overlay_Side_Panel_Adaptive" condition="$EXP[Exp_DialogTheme_IsAdaptive]">
-                <param name="flipped">$PARAM[flipped]</param>
-            </include>
+            <control type="group">
+                <include content="Object_Right" condition="$PARAM[flipped]">
+                    <param name="right">120</param>
+                </include>
+                <include content="Object_Left" condition="![$PARAM[flipped]]">
+                    <param name="left">120</param>
+                </include>
+                <control type="image">
+                    <texture colordiffuse="dialog_fg_12" border="20" flipx="$PARAM[flipped]">common/dialog.png</texture>
+                </control>
+                <control type="image">
+                    <width>12</width>
+                    <include content="Object_Right" condition="$PARAM[flipped]">
+                        <param name="right">0</param>
+                    </include>
+                    <include content="Object_Left" condition="![$PARAM[flipped]]">
+                        <param name="left">0</param>
+                    </include>
+                    <texture colordiffuse="dialog_fg_12" border="6,20,6,20" flipx="$PARAM[flipped]">common/dialog-edge-outline.png</texture>
+                </control>
+            </control>
+
         </definition>
     </include>
 
-    <include name="Dialog_Overlay_Mode_Panel_Adaptive">
+    <include name="Dialog_Overlay_Mode_Panel">
         <definition>
             <control type="image">
                 <include content="Object_Top" condition="$PARAM[flipped]">
@@ -222,31 +206,6 @@
                 </include>
                 <texture colordiffuse="dialog_fg_12" border="20,6,20,6" flipy="$PARAM[flipped]">common/dialog-edge-outline-v.png</texture>
             </control>
-        </definition>
-    </include>
-
-    <include name="Dialog_Overlay_Mode_Panel_Standard">
-        <definition>
-            <control type="image">
-                <include content="Object_Top" condition="$PARAM[flipped]">
-                    <param name="top">120</param>
-                </include>
-                <include content="Object_Bottom" condition="![$PARAM[flipped]]">
-                    <param name="bottom">120</param>
-                </include>
-                <texture colordiffuse="dialog_fg_12" border="20" flipy="$PARAM[flipped]">common/dialog_overlay_v.png</texture>
-            </control>
-        </definition>
-    </include>
-
-    <include name="Dialog_Overlay_Mode_Panel">
-        <definition>
-            <include content="Dialog_Overlay_Mode_Panel_Standard" condition="![$EXP[Exp_DialogTheme_IsAdaptive]]">
-                <param name="flipped">$PARAM[flipped]</param>
-            </include>
-            <include content="Dialog_Overlay_Mode_Panel_Adaptive" condition="$EXP[Exp_DialogTheme_IsAdaptive]">
-                <param name="flipped">$PARAM[flipped]</param>
-            </include>
         </definition>
     </include>
 
