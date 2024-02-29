@@ -47,8 +47,7 @@
                 <left>-580</left>
                 <right>620</right>
                 <control type="group">
-                    <include content="Dialog_Outline_Box">
-                        <param name="colordiffuse">dialog_bg_12</param>
+                    <include content="Dialog_Outline_InnerBox">
                         <control type="image">
                             <texture background="true" border="20" colordiffuse="panel_bg_70">common/box.png</texture>
                         </control>
@@ -1172,14 +1171,37 @@
         <param name="selected">false</param>
         <param name="misc">false</param>
         <definition>
-            <control type="image">
-                <texture colordiffuse="main_bg_30" border="40">common/menu.png</texture>
-                <visible>$PARAM[misc]</visible>
+            <control type="group">
+                <visible>$PARAM[selected] | $PARAM[misc]</visible>
+                <include content="Object_Control">
+                    <param name="control">image</param>
+                    <include>Texture_Menu_Highlight_H</include>
+                    <animation effect="fade" start="100" end="50" condition="$PARAM[misc] + ![$PARAM[selected]]">Conditional</animation>
+                </include>
+                <include content="_Layout_ChannelManager">
+                    <param name="detailed">$PARAM[detailed]</param>
+                    <param name="selected">true</param>
+                    <param name="misc">$PARAM[misc]</param>
+                    <param name="item_h">$PARAM[item_h]</param>
+                </include>
             </control>
-            <include content="Object_Control" condition="$PARAM[selected]">
-                <param name="control">image</param>
-                <include>Texture_Menu_Highlight_H</include>
-            </include>
+            <control type="group">
+                <visible>![$PARAM[selected] | $PARAM[misc]]</visible>
+                <include content="_Layout_ChannelManager">
+                    <param name="detailed">$PARAM[detailed]</param>
+                    <param name="selected">false</param>
+                    <param name="misc">$PARAM[misc]</param>
+                    <param name="item_h">$PARAM[item_h]</param>
+                </include>
+            </control>
+        </definition>
+    </include>
+
+    <include name="_Layout_ChannelManager">
+        <param name="detailed">false</param>
+        <param name="selected">false</param>
+        <param name="misc">false</param>
+        <definition>
             <control type="group">
                 <width>$PARAM[item_h]</width>
                 <include content="Object_Control" condition="$PARAM[detailed]">

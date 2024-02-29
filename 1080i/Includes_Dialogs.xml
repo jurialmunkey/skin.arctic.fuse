@@ -638,8 +638,7 @@
                 </control>
                 <control type="group">
                     <include>Dialog_Group</include>
-                    <include content="Dialog_Outline_Box">
-                        <param name="colordiffuse">dialog_bg_12</param>
+                    <include content="Dialog_Outline_InnerBox">
                         <control type="image">
                             <aspectratio scalediffuse="false">keep</aspectratio>
                             <texture diffuse="diffuse/square_w600_h600.png">$PARAM[icon]</texture>
@@ -661,11 +660,33 @@
     <include name="Dialog_Box">
         <param name="colordiffuse">dialog_fg_12</param>
         <definition>
-            <include content="Object_Shadow_40">
+            <include content="Object_Shadow_40" condition="Skin.HasSetting(Glass.EnableBorders)">
                 <param name="colordiffuse">shadow_soft</param>
             </include>
             <control type="image">
                 <texture colordiffuse="$PARAM[colordiffuse]" border="12">common/box.png</texture>
+            </control>
+        </definition>
+    </include>
+
+    <include name="Dialog_InnerBox">
+        <param name="colordiffuse">dialog_bg_12</param>
+        <definition>
+            <include content="Object_InnerShadow_40" condition="Skin.HasSetting(Glass.EnableBorders)">
+                <param name="colordiffuse">shadow_soft</param>
+            </include>
+            <control type="image">
+                <texture colordiffuse="$PARAM[colordiffuse]" border="12">common/box.png</texture>
+            </control>
+        </definition>
+    </include>
+
+    <include name="Dialog_Outline_InnerBox">
+        <definition>
+            <control type="group">
+                <include>Dialog_InnerBox</include>
+                <nested />
+                <include>Dialog_Outline</include>
             </control>
         </definition>
     </include>
@@ -691,7 +712,10 @@
                 <bottom>20</bottom>
                 <centerright>120</centerright>
                 <width>scrollbar_w</width>
-                <animation effect="fade" condition="!Control.HasFocus($PARAM[id])" start="100" end="0">Conditional</animation>
+                <texturesliderbackground colordiffuse="00ffffff" border="4">scrollbar/scrollv_line.png</texturesliderbackground>
+                <texturesliderbar colordiffuse="main_logo" border="4">scrollbar/scrollv.png</texturesliderbar>
+                <!-- <showonepage>true</showonepage> -->
+                <include>Texture_Scrollbar_V</include>
             </control>
         </definition>
     </include>
@@ -711,8 +735,7 @@
                     <include content="Dimension_Padding">
                         <param name="pad">10</param>
                     </include>
-                    <include content="Dialog_Outline_Box">
-                        <param name="colordiffuse">dialog_bg_12</param>
+                    <include content="Dialog_Outline_InnerBox">
                         <control type="image">
                             <texture border="20" colordiffuse="black">common/dialog.png</texture>
                         </control>
