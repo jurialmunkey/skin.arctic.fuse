@@ -201,6 +201,36 @@
             <visible>String.IsEqual(Window.Property(DetailsView),Albums)</visible>
         </include>
 
+        <control type="group">
+            <right>40</right>
+            <bottom>-40</bottom>
+            <height>view_poster_itemlayout_h</height>
+            <visible>String.IsEqual(Window.Property(DetailsView),Critics) | String.IsEmpty(Window.Property(DetailsView))</visible>
+            <control type="group">
+                <right>0</right>
+                <height>view_poster_itemlayout_h</height>
+                <width>view_board_itemlayout_w</width>
+                <include content="Layout_Poster">
+                    <param name="icon">$VAR[Image_DialogInfo_Landscape]</param>
+                    <param name="diffuse">diffuse/landscape_w520_h294.png</param>
+                    <param name="indicator">true</param>
+                    <param name="item_w">view_board_item_w</param>
+                    <param name="item_h">view_poster_item_h</param>
+                </include>
+            </control>
+            <control type="group">
+                <right>view_board_itemlayout_w</right>
+                <height>view_poster_itemlayout_h</height>
+                <width>view_poster_itemlayout_h</width>
+                <include content="Layout_Poster">
+                    <param name="icon">$INFO[ListItem.Icon]</param>
+                    <param name="indicator">false</param>
+                    <param name="item_w">view_poster_item_h</param>
+                    <param name="item_h">view_poster_item_h</param>
+                </include>
+            </control>
+        </control>
+
         <include content="Widget_Busy">
             <param name="label">$INFO[Window.Property(DetailsView)]</param>
             <param name="visible">[String.IsEqual(Window.Property(DetailsView),Trailer) + Container(5002).IsUpdating] | [String.IsEqual(Window.Property(DetailsView),Albums) + Container(5008).IsUpdating]</param>
@@ -1000,7 +1030,7 @@
                 <orientation>vertical</orientation>
                 <itemgap>0</itemgap>
                 <height>350</height>
-                <width>400</width>
+                <width>355</width>
                 <control type="group">
                     <top>25</top>
                 </control>
@@ -1035,8 +1065,8 @@
 
             <!-- Right Details -->
             <control type="grouplist">
-                <left>380</left>
-                <width>600</width>
+                <left>300</left>
+                <right>880</right>
                 <top>-40</top>
                 <orientation>vertical</orientation>
                 <itemgap>0</itemgap>
@@ -1099,8 +1129,7 @@
         <param name="landscape_icon">$VAR[Image_Landscape]</param>
         <param name="clearlogo_icon">$VAR[Image_Clearlogo]</param>
         <definition>
-            <include content="Dialog_Outline_Box">
-                <param name="colordiffuse">dialog_bg_12</param>
+            <include content="Dialog_Outline_InnerBox">
                 <width>436</width>
                 <right>20</right>
                 <top>-20</top>
@@ -1116,8 +1145,7 @@
                         <right>40</right>
                         <height>520</height>
                         <visible>$PARAM[poster_visible]</visible>
-                        <include content="Dialog_Outline_Box">
-                            <param name="colordiffuse">dialog_bg_12</param>
+                        <include content="Dialog_Outline_InnerBox">
                             <control type="image">
                                 <aspectratio scalediffuse="false">scale</aspectratio>
                                 <texture background="true" diffuse="diffuse/poster_w356_h520.png">$PARAM[poster_icon]</texture>
@@ -1129,8 +1157,7 @@
                         <left>40</left>
                         <right>40</right>
                         <visible>![$PARAM[poster_visible]]</visible>
-                        <include content="Dialog_Outline_Box">
-                            <param name="colordiffuse">dialog_bg_12</param>
+                        <include content="Dialog_Outline_InnerBox">
                             <control type="image">
                                 <aspectratio scalediffuse="false">keep</aspectratio>
                                 <texture background="true" diffuse="diffuse/square_w320_h320.png">$PARAM[square_icon]</texture>
@@ -1141,8 +1168,7 @@
                         <left>40</left>
                         <right>40</right>
                         <height>200</height>
-                        <include content="Dialog_Outline_Box">
-                            <param name="colordiffuse">dialog_bg_12</param>
+                        <include content="Dialog_Outline_InnerBox">
                             <control type="image">
                                 <aspectratio scalediffuse="false">scale</aspectratio>
                                 <texture background="true" diffuse="diffuse/landscape_w356_h200.png">$PARAM[landscape_icon]</texture>
@@ -1168,10 +1194,9 @@
     <include name="DialogInfo_PlotBox">
         <param name="visible">[Control.HasFocus(61)] + !Window.IsVisible(script-wikipedia.xml)</param>
         <definition>
-            <include content="Dialog_Overlay_Side">
-                <param name="lines_right">476</param>
+            <control type="group">
+                <include>Dimension_DialogFullMenu</include>
                 <visible allowhiddenfocus="true">$PARAM[visible]</visible>
-                <param name="dialog_size">Dimension_DialogFullMenu</param>
                 <include content="Animation_Slide_Out">
                     <param name="type">Hidden</param>
                     <param name="posx">320</param>
@@ -1183,58 +1208,75 @@
                     <param name="delay">400</param>
                     <param name="reversible">true</param>
                 </include>
-                <include content="Dialog_Head">
-                    <param name="label">$VAR[Label_Title]</param>
+                <include content="Dialog_Dim_Side">
+                    <param name="slide_condition">False</param>
                 </include>
-                <include content="Dialog_Body">
-                    <include content="Dialog_Body_Group">
-                        <include>DialogInfo_PlotBox_Artwork</include>
-                        <control type="textbox">
-                            <font>font_midi_plot</font>
-                            <textcolor>dialog_fg_70</textcolor>
-                            <pagecontrol>61</pagecontrol>
-                            <label>$VAR[Label_Overlay_PlotBox]</label>
-                            <autoscroll>false</autoscroll>
-                            <right>496</right>
-                            <include content="Dimension_Padding">
-                                <param name="pad">20</param>
-                            </include>
+
+                <!-- Bottom Layer -->
+                <include content="Dialog_Background_Side">
+                    <param name="slide_condition">False</param>
+                    <param name="dialog_size">Dimension_DialogFullMenu</param>
+                    <!-- Side Buttons -->
+                    <include content="Dialog_Body">
+                    </include>
+                </include>
+
+                <include content="Dialog_Foreground_Side">
+                    <param name="dialog_size">Dimension_DialogFullMenu</param>
+                    <param name="slide_condition">False</param>
+                    <param name="lines_right">476</param>
+                    <param name="topline">true</param>
+                    <param name="subline">true</param>
+
+                    <!-- Header -->
+                    <include content="Dialog_Head">
+                        <param name="label">$VAR[Label_Title]</param>
+                    </include>
+
+                    <!-- Content -->
+                    <include content="Dialog_Body">
+                        <include content="Dialog_Body_Group">
+                            <include>DialogInfo_PlotBox_Artwork</include>
+                            <control type="textbox">
+                                <font>font_midi_plot</font>
+                                <textcolor>dialog_fg_70</textcolor>
+                                <pagecontrol>61</pagecontrol>
+                                <label>$VAR[Label_Overlay_PlotBox]</label>
+                                <autoscroll>false</autoscroll>
+                                <right>496</right>
+                                <include content="Dimension_Padding">
+                                    <param name="pad">20</param>
+                                </include>
+                            </control>
+                        </include>
+                        <control type="scrollbar" id="61">
+                            <onright condition="String.IsEmpty(Window.Property(ReviewsActive)) + String.IsEmpty(Window.Property(ReturnFromPlot))">4000</onright>
+                            <onleft condition="String.IsEmpty(Window.Property(ReviewsActive)) + String.IsEmpty(Window.Property(ReturnFromPlot))">4000</onleft>
+                            <onback condition="String.IsEmpty(Window.Property(ReviewsActive))">4000</onback>
+
+                            <onright condition="String.IsEmpty(Window.Property(ReviewsActive)) + !String.IsEmpty(Window.Property(ReturnFromPlot))">SetFocus($INFO[Window.Property(ReturnFromPlot)])</onright>
+                            <onleft condition="String.IsEmpty(Window.Property(ReviewsActive)) + !String.IsEmpty(Window.Property(ReturnFromPlot))">SetFocus($INFO[Window.Property(ReturnFromPlot)])</onleft>
+                            <onback condition="String.IsEmpty(Window.Property(ReviewsActive)) + !String.IsEmpty(Window.Property(ReturnFromPlot))">AlarmClock(refocus,SetFocus($INFO[Window.Property(ReturnFromPlot)]),00:00,silent)</onback>
+
+                            <onright condition="String.IsEmpty(Window.Property(ReviewsActive)) + !String.IsEmpty(Window.Property(ReturnFromPlot))">ClearProperty(ReturnFromPlot)</onright>
+                            <onleft condition="String.IsEmpty(Window.Property(ReviewsActive)) + !String.IsEmpty(Window.Property(ReturnFromPlot))">ClearProperty(ReturnFromPlot)</onleft>
+                            <onback condition="String.IsEmpty(Window.Property(ReviewsActive)) + !String.IsEmpty(Window.Property(ReturnFromPlot))">ClearProperty(ReturnFromPlot)</onback>
+
+                            <onright condition="!String.IsEmpty(Window.Property(ReviewsActive))">5004</onright>
+                            <onleft condition="!String.IsEmpty(Window.Property(ReviewsActive))">5004</onleft>
+                            <onback condition="!String.IsEmpty(Window.Property(ReviewsActive))">5004</onback>
+
+                            <centerright>-20</centerright>
+                            <width>scrollbar_w</width>
+                            <showonepage>true</showonepage>
+                            <texturesliderbackground colordiffuse="main_fg_12" border="4">scrollbar/scrollv_line.png</texturesliderbackground>
+
+                            <include>Texture_Scrollbar_SliderBar_V</include>
                         </control>
                     </include>
-                    <control type="image">
-                        <top>20</top>
-                        <bottom>20</bottom>
-                        <centerright>60</centerright>
-                        <width>1</width>
-                        <texture colordiffuse="dialog_fg_12">common/white.png</texture>
-                    </control>
-                    <control type="scrollbar" id="61">
-                        <onright condition="String.IsEmpty(Window.Property(ReviewsActive)) + String.IsEmpty(Window.Property(ReturnFromPlot))">4000</onright>
-                        <onleft condition="String.IsEmpty(Window.Property(ReviewsActive)) + String.IsEmpty(Window.Property(ReturnFromPlot))">4000</onleft>
-                        <onback condition="String.IsEmpty(Window.Property(ReviewsActive))">4000</onback>
-
-                        <onright condition="String.IsEmpty(Window.Property(ReviewsActive)) + !String.IsEmpty(Window.Property(ReturnFromPlot))">SetFocus($INFO[Window.Property(ReturnFromPlot)])</onright>
-                        <onleft condition="String.IsEmpty(Window.Property(ReviewsActive)) + !String.IsEmpty(Window.Property(ReturnFromPlot))">SetFocus($INFO[Window.Property(ReturnFromPlot)])</onleft>
-                        <onback condition="String.IsEmpty(Window.Property(ReviewsActive)) + !String.IsEmpty(Window.Property(ReturnFromPlot))">AlarmClock(refocus,SetFocus($INFO[Window.Property(ReturnFromPlot)]),00:00,silent)</onback>
-
-                        <onright condition="String.IsEmpty(Window.Property(ReviewsActive)) + !String.IsEmpty(Window.Property(ReturnFromPlot))">ClearProperty(ReturnFromPlot)</onright>
-                        <onleft condition="String.IsEmpty(Window.Property(ReviewsActive)) + !String.IsEmpty(Window.Property(ReturnFromPlot))">ClearProperty(ReturnFromPlot)</onleft>
-                        <onback condition="String.IsEmpty(Window.Property(ReviewsActive)) + !String.IsEmpty(Window.Property(ReturnFromPlot))">ClearProperty(ReturnFromPlot)</onback>
-
-                        <onright condition="!String.IsEmpty(Window.Property(ReviewsActive))">5004</onright>
-                        <onleft condition="!String.IsEmpty(Window.Property(ReviewsActive))">5004</onleft>
-                        <onback condition="!String.IsEmpty(Window.Property(ReviewsActive))">5004</onback>
-
-                        <top>20</top>
-                        <bottom>20</bottom>
-                        <centerright>60</centerright>
-                        <width>scrollbar_w</width>
-                        <showonepage>true</showonepage>
-
-                        <include>Texture_Scrollbar_SliderBar_V</include>
-                    </control>
                 </include>
-            </include>
+
+            </control>
         </definition>
     </include>
 

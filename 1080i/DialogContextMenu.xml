@@ -7,80 +7,103 @@
     <zorder>4</zorder>
     <controls>
         <include>Defs_TMDbHelper_Loader</include>
-        <include content="Dialog_Overlay_Side">
-            <param name="dialog_size">Dimension_DialogSideMenu</param>
+
+        <control type="group">
+            <include>Dimension_DialogSideMenu</include>
             <include>Animation_Right_Delay</include>
-            <include content="Dialog_Head">
-                <param name="label">$LOCALIZE[10106]</param>
+            <include content="Dialog_Dim_Side">
+                <param name="slide_condition">ControlGroup(9000).HasFocus()</param>
             </include>
-            <include content="Dialog_Body">
-                <include content="Dialog_Body_Grouplist">
-                    <param name="id">996</param>
-                    <onright>9001</onright>
-                    <onleft>Close</onleft>
-                </include>
-                <include content="Dialog_Side_Grouplist">
-                    <param name="id">9000</param>
-                    <onleft>996</onleft>
-                    <onright>noop</onright>
-                    <include content="Dialog_Side_Button">
-                        <param name="id">01</param>
-                        <param name="label">$LOCALIZE[15067]</param>
-                        <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
-                        <onclick>Close</onclick>
-                    </include>
-                    <include content="Dialog_Side_Button" condition="!$EXP[Exp_InfoDialogs]">
-                        <param name="id">02</param>
-                        <param name="label">$LOCALIZE[207]</param>
-                        <param name="icon">special://skin/extras/icons/quote.png</param>
-                        <param name="visible">[!String.IsEmpty(Container(99950).ListItem.Property(base_plot))]</param>
-                        <onclick>Close</onclick>
-                        <onclick>ActivateWindow(1113)</onclick>
-                    </include>
-                    <include content="Dialog_Side_Button" condition="!$EXP[Exp_InfoDialogs]">
-                        <param name="id">03</param>
-                        <param name="label">$LOCALIZE[137]</param>
-                        <param name="icon">special://skin/extras/icons/search.png</param>
-                        <param name="visible">[!String.IsEmpty(Container(99950).ListItem.Property(base_title))]</param>
-                        <onclick>SetProperty(CustomSearchTerm,$ESCINFO[Container(99950).ListItem.Property(base_title)],Home)</onclick>
-                        <onclick>SetProperty(ReplaceWindow,1105,Home)</onclick>
-                        <onclick condition="!Window.IsActive(1105)">ActivateWindow(1105)</onclick>
-                        <onclick condition="Window.IsActive(1105)">ReplaceWindow(1197)</onclick>
-                    </include>
-                    <include content="Dialog_Side_Button" condition="!$EXP[Exp_InfoDialogs]">
-                        <param name="id">04</param>
-                        <param name="label">Wiki</param>
-                        <param name="icon">special://skin/extras/icons/globe.png</param>
-                        <param name="visible">[!String.IsEmpty(Container(99950).ListItem.Property(base_title))]</param>
-                        <onclick>runscript(script.wikipedia,wikipedia=$INFO[Container(99950).ListItem.Property(base_title)])</onclick>
-                    </include>
-                    <include content="Dialog_Side_Button" condition="!$EXP[Exp_InfoDialogs]">
-                        <param name="id">05</param>
-                        <param name="label">$LOCALIZE[31041]</param>
-                        <param name="icon">special://skin/extras/icons/fire2.png</param>
-                        <param name="visible">[String.IsEqual(Container(99950).ListItem.Property(base_dbtype),tvshow) | String.IsEqual(Container(99950).ListItem.Property(base_dbtype),season) | String.IsEqual(Container(99950).ListItem.Property(base_dbtype),episode) | String.IsEqual(Container(99950).ListItem.Property(base_dbtype),movie)]</param>
-                        <onclick>SetFocus(50)</onclick>
-                        <onclick>AlarmClock(DelayCommand,RunScript(plugin.video.themoviedb.helper,related_lists,query=$VAR[Path_ContextParams_Query],tmdb_type=$VAR[Path_ContextParams_TMDbType]),00:01,silent)</onclick>
-                    </include>
-                    <include content="Dialog_Side_Button" condition="!$EXP[Exp_InfoDialogs] + Window.IsMedia">
-                        <param name="id">07</param>
-                        <param name="label">$LOCALIZE[33061]</param>
-                        <param name="icon">special://skin/extras/icons/circle-plus.png</param>
-                        <param name="visible">ListItem.IsFolder</param>
-                        <onclick>SetFocus(50)</onclick>
-                        <onclick>AlarmClock(DelayCommand,RunScript(script.skinvariables,set_listitem_to_menunode=sidemenu||homemenu||1101menu||1102menu||1103menu||1104menu,skin=$VAR[Path_SkinVariables_SkinFolder]),00:01,silent)</onclick>
-                    </include>
-                    <include content="Dialog_Side_Button" condition="!$EXP[Exp_InfoDialogs] + Window.IsMedia">
-                        <param name="id">08</param>
-                        <param name="label">$LOCALIZE[5]</param>
-                        <param name="icon">special://skin/extras/icons/settings.png</param>
-                        <param name="visible">!String.IsEmpty(Container.PluginName)</param>
-                        <onclick>SetFocus(50)</onclick>
-                        <onclick>Addon.OpenSettings($INFO[Container.PluginName])</onclick>
+
+            <!-- Bottom Layer -->
+            <include content="Dialog_Background_Side">
+                <param name="slide_condition">ControlGroup(9000).HasFocus()</param>
+                <param name="dialog_size">Dimension_DialogSideMenu</param>
+
+                <!-- Side Buttons -->
+                <include content="Dialog_Body">
+                    <include content="Dialog_Side_Grouplist">
+                        <param name="id">9000</param>
+                        <onright>996</onright>
+                        <include content="Dialog_Side_Button">
+                            <param name="id">01</param>
+                            <param name="label">$LOCALIZE[15067]</param>
+                            <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
+                            <onclick>Close</onclick>
+                        </include>
+                        <include content="Dialog_Side_Button" condition="!$EXP[Exp_InfoDialogs]">
+                            <param name="id">02</param>
+                            <param name="label">$LOCALIZE[207]</param>
+                            <param name="icon">special://skin/extras/icons/quote.png</param>
+                            <param name="visible">[!String.IsEmpty(Container(99950).ListItem.Property(base_plot))]</param>
+                            <onclick>Close</onclick>
+                            <onclick>ActivateWindow(1113)</onclick>
+                        </include>
+                        <include content="Dialog_Side_Button" condition="!$EXP[Exp_InfoDialogs]">
+                            <param name="id">03</param>
+                            <param name="label">$LOCALIZE[137]</param>
+                            <param name="icon">special://skin/extras/icons/search.png</param>
+                            <param name="visible">[!String.IsEmpty(Container(99950).ListItem.Property(base_title))]</param>
+                            <onclick>SetProperty(CustomSearchTerm,$ESCINFO[Container(99950).ListItem.Property(base_title)],Home)</onclick>
+                            <onclick>SetProperty(ReplaceWindow,1105,Home)</onclick>
+                            <onclick condition="!Window.IsActive(1105)">ActivateWindow(1105)</onclick>
+                            <onclick condition="Window.IsActive(1105)">ReplaceWindow(1197)</onclick>
+                        </include>
+                        <include content="Dialog_Side_Button" condition="!$EXP[Exp_InfoDialogs]">
+                            <param name="id">04</param>
+                            <param name="label">Wiki</param>
+                            <param name="icon">special://skin/extras/icons/globe.png</param>
+                            <param name="visible">[!String.IsEmpty(Container(99950).ListItem.Property(base_title))]</param>
+                            <onclick>runscript(script.wikipedia,wikipedia=$INFO[Container(99950).ListItem.Property(base_title)])</onclick>
+                        </include>
+                        <include content="Dialog_Side_Button" condition="!$EXP[Exp_InfoDialogs]">
+                            <param name="id">05</param>
+                            <param name="label">$LOCALIZE[31041]</param>
+                            <param name="icon">special://skin/extras/icons/fire2.png</param>
+                            <param name="visible">[String.IsEqual(Container(99950).ListItem.Property(base_dbtype),tvshow) | String.IsEqual(Container(99950).ListItem.Property(base_dbtype),season) | String.IsEqual(Container(99950).ListItem.Property(base_dbtype),episode) | String.IsEqual(Container(99950).ListItem.Property(base_dbtype),movie)]</param>
+                            <onclick>SetFocus(50)</onclick>
+                            <onclick>AlarmClock(DelayCommand,RunScript(plugin.video.themoviedb.helper,related_lists,query=$VAR[Path_ContextParams_Query],tmdb_type=$VAR[Path_ContextParams_TMDbType]),00:01,silent)</onclick>
+                        </include>
+                        <include content="Dialog_Side_Button" condition="!$EXP[Exp_InfoDialogs] + Window.IsMedia">
+                            <param name="id">07</param>
+                            <param name="label">$LOCALIZE[33061]</param>
+                            <param name="icon">special://skin/extras/icons/circle-plus.png</param>
+                            <param name="visible">ListItem.IsFolder</param>
+                            <onclick>SetFocus(50)</onclick>
+                            <onclick>AlarmClock(DelayCommand,RunScript(script.skinvariables,set_listitem_to_menunode=sidemenu||homemenu||1101menu||1102menu||1103menu||1104menu,skin=$VAR[Path_SkinVariables_SkinFolder]),00:01,silent)</onclick>
+                        </include>
+                        <include content="Dialog_Side_Button" condition="!$EXP[Exp_InfoDialogs] + Window.IsMedia">
+                            <param name="id">08</param>
+                            <param name="label">$LOCALIZE[5]</param>
+                            <param name="icon">special://skin/extras/icons/settings.png</param>
+                            <param name="visible">!String.IsEmpty(Container.PluginName)</param>
+                            <onclick>SetFocus(50)</onclick>
+                            <onclick>Addon.OpenSettings($INFO[Container.PluginName])</onclick>
+                        </include>
                     </include>
                 </include>
             </include>
-        </include>
+
+            <include content="Dialog_Foreground_Side">
+                <param name="dialog_size">Dimension_DialogSideMenu</param>
+                <param name="topline">true</param>
+                <param name="subline">false</param>
+
+                <!-- Header -->
+                <include content="Dialog_Head">
+                    <param name="label">$LOCALIZE[10106]</param>
+                </include>
+
+                <!-- Content -->
+                <include content="Dialog_Body">
+                    <include content="Dialog_Body_Grouplist">
+                        <param name="id">996</param>
+                        <onleft>9001</onleft>
+                    </include>
+                </include>
+            </include>
+
+        </control>
 
         <include content="Settings_Button">
             <param name="id">1000</param>

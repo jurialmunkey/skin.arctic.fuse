@@ -2,56 +2,77 @@
 <window type="dialog" id="1152">
     <defaultcontrol always="true">8000</defaultcontrol>
     <controls>
-
-        <include content="Dialog_Overlay_Side">
-            <param name="dialog_size">Dimension_DialogSideMenu</param>
+        <control type="group">
+            <include>Dimension_DialogSideMenu</include>
             <include>Animation_Right_Delay</include>
-            <include content="Dialog_Head">
-                <param name="label">$LOCALIZE[15225]</param>
+            <include content="Dialog_Dim_Side">
+                <param name="slide_condition">ControlGroup(9000).HasFocus()</param>
             </include>
-            <include content="Dialog_Body">
-                <include content="List_DialogSelect">
-                    <param name="id">8000</param>
-                    <param name="misc">String.IsEqual(Window(1105).Property(SearchDiscover.ProviderLabel),ListItem.Label)</param>
-                    <include>Dimension_Dialog_Body_Group</include>
-                    <pagecontrol>61</pagecontrol>
-                    <onright>61</onright>
-                    <onleft>Close</onleft>
-                    <onclick condition="!String.IsEqual(Window(1105).Property(SearchDiscover.ProviderLabel),Container(8000).ListItem.Label)">SetProperty(SearchDiscover.ProviderLabel,$INFO[Container(8000).ListItem.Label],1105)</onclick>
-                    <onclick condition="!String.IsEqual(Window(1105).Property(SearchDiscover.ProviderLabel),Container(8000).ListItem.Label)">SetProperty(SearchDiscover.ProviderID,$INFO[Container(8000).ListItem.Property(TMDb_ID)]$INFO[Container(8000).ListItem.Property(item.watch_region),&amp;watch_region=,],1105)</onclick>
-                    <onclick condition="String.IsEqual(Window(1105).Property(SearchDiscover.ProviderLabel),Container(8000).ListItem.Label)">ClearProperty(SearchDiscover.ProviderLabel,1105)</onclick>
-                    <onclick condition="String.IsEqual(Window(1105).Property(SearchDiscover.ProviderLabel),Container(8000).ListItem.Label)">ClearProperty(SearchDiscover.ProviderID,1105)</onclick>
-                    <onclick>Close</onclick>
-                    <!-- <content>plugin://plugin.video.themoviedb.helper/?info=watch_providers&amp;tmdb_type=movie</content> -->
-                    <content>plugin://plugin.video.themoviedb.helper/?info=watch_providers&amp;tmdb_type=tv</content>
-                </include>
-                <include content="Dialog_Scrollbar">
-                    <param name="id">61</param>
-                    <onleft>8000</onleft>
-                    <onright>9000</onright>
-                </include>
-                <include content="Dialog_Side_Grouplist">
-                    <param name="id">9000</param>
-                    <onright>Close</onright>
-                    <onleft>8000</onleft>
-                    <include content="Dialog_Side_Button">
-                        <param name="id">01</param>
-                        <param name="label">$LOCALIZE[15067]</param>
-                        <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
-                        <onclick>Close</onclick>
-                    </include>
-                    <include content="Dialog_Side_Button">
-                        <param name="id">02</param>
-                        <param name="label">$LOCALIZE[192]</param>
-                        <param name="icon">special://skin/extras/icons/triangle-exclamation.png</param>
-                        <onclick>ClearProperty(SearchDiscover.ProviderLabel,1105)</onclick>
-                        <onclick>ClearProperty(SearchDiscover.ProviderID,1105)</onclick>
-                        <onclick>Close</onclick>
-                    </include>
-                </include>
-            </include>
-        </include>
 
+            <!-- Bottom Layer -->
+            <include content="Dialog_Background_Side">
+                <param name="slide_condition">ControlGroup(9000).HasFocus()</param>
+                <param name="dialog_size">Dimension_DialogSideMenu</param>
+                <!-- Side Buttons -->
+                <include content="Dialog_Body">
+                    <include content="Dialog_Side_Grouplist">
+                        <param name="id">9000</param>
+                        <onright>8000</onright>
+                        <include content="Dialog_Side_Button">
+                            <param name="id">01</param>
+                            <param name="label">$LOCALIZE[15067]</param>
+                            <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
+                            <onclick>Close</onclick>
+                        </include>
+                        <include content="Dialog_Side_Button">
+                            <param name="id">02</param>
+                            <param name="label">$LOCALIZE[192]</param>
+                            <param name="icon">special://skin/extras/icons/triangle-exclamation.png</param>
+                            <onclick>ClearProperty(SearchDiscover.ProviderLabel,1105)</onclick>
+                            <onclick>ClearProperty(SearchDiscover.ProviderID,1105)</onclick>
+                            <onclick>Close</onclick>
+                        </include>
+                    </include>
+                </include>
+            </include>
+
+            <include content="Dialog_Foreground_Side">
+                <param name="dialog_size">Dimension_DialogSideMenu</param>
+                <param name="slide_condition">ControlGroup(9000).HasFocus()</param>
+                <param name="lines_right">0</param>
+                <param name="topline">true</param>
+                <param name="subline">true</param>
+
+                <!-- Header -->
+                <include content="Dialog_Head">
+                    <param name="label">$LOCALIZE[15225]</param>
+                </include>
+
+                <!-- Content -->
+                <include content="Dialog_Body">
+                    <include content="List_DialogSelect">
+                        <param name="id">8000</param>
+                        <param name="misc">String.IsEqual(Window(1105).Property(SearchDiscover.ProviderLabel),ListItem.Label)</param>
+                        <include>Dimension_Dialog_Body_Group</include>
+                        <pagecontrol>61</pagecontrol>
+                        <onright>61</onright>
+                        <onleft>9000</onleft>
+                        <onclick condition="!String.IsEqual(Window(1105).Property(SearchDiscover.ProviderLabel),Container(8000).ListItem.Label)">SetProperty(SearchDiscover.ProviderLabel,$INFO[Container(8000).ListItem.Label],1105)</onclick>
+                        <onclick condition="!String.IsEqual(Window(1105).Property(SearchDiscover.ProviderLabel),Container(8000).ListItem.Label)">SetProperty(SearchDiscover.ProviderID,$INFO[Container(8000).ListItem.Property(TMDb_ID)]$INFO[Container(8000).ListItem.Property(item.watch_region),&amp;watch_region=,],1105)</onclick>
+                        <onclick condition="String.IsEqual(Window(1105).Property(SearchDiscover.ProviderLabel),Container(8000).ListItem.Label)">ClearProperty(SearchDiscover.ProviderLabel,1105)</onclick>
+                        <onclick condition="String.IsEqual(Window(1105).Property(SearchDiscover.ProviderLabel),Container(8000).ListItem.Label)">ClearProperty(SearchDiscover.ProviderID,1105)</onclick>
+                        <onclick>Close</onclick>
+                        <!-- <content>plugin://plugin.video.themoviedb.helper/?info=watch_providers&amp;tmdb_type=movie</content> -->
+                        <content>plugin://plugin.video.themoviedb.helper/?info=watch_providers&amp;tmdb_type=tv</content>
+                    </include>
+                    <include content="Dialog_Scrollbar">
+                        <param name="id">61</param>
+                        <onleft>8000</onleft>
+                    </include>
+                </include>
+            </include>
+
+        </control>
 
     </controls>
 </window>

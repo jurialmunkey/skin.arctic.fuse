@@ -4,96 +4,36 @@
     <defaultcontrol>450</defaultcontrol>
     <controls>
 
+        <include content="Object_Hidden_Button">
+            <param name="id">413</param>
+        </include>
+        <include content="Object_Hidden_Button">
+            <param name="id">414</param>
+        </include>
+        <include content="Object_Hidden_Button">
+            <param name="id">415</param>
+        </include>
+        <include content="Object_Hidden_Button">
+            <param name="id">416</param>
+        </include>
+
         <control type="group">
+            <include>Dimension_DialogWideMenu</include>
             <include>Animation_Right_Delay</include>
-
-            <control type="group">
-                <include>Dimension_DialogWideMenu</include>
-                <include content="Object_Dim_Side">
-                    <param name="flipx">true</param>
-                    <top>-200</top>
-                    <bottom>-200</bottom>
-                    <left>-320</left>
-                    <right>-320</right>
-                </include>
-            </control>
-
-            <include content="Dialog_Preview">
-                <param name="icon">$INFO[Container(451).ListItem.Icon]</param>
-                <visible>Control.IsVisible(451)</visible>
-                <visible>Control.HasFocus(451)</visible>
-                <visible>String.IsEqual(Control.GetLabel(411),$LOCALIZE[13511]) | String.IsEqual(Control.GetLabel(411),$LOCALIZE[20437])</visible>
-                <animation effect="slide" end="0,200" condition="Container(451).Row(2) | Container(451).Row(3)">Conditional</animation>
-                <!-- <control type="image">
-                    <centertop>110</centertop>
-                    <right>-16</right>
-                    <height>16</height>
-                    <width>16</width>
-                    <texture colordiffuse="dialog_nib" flipx="true">arrows/arrow-menu.png</texture>
-                    <animation effect="slide" end="0,200" condition="Container(451).Row(1) | Container(451).Row(2)">Conditional</animation>
-                    <animation effect="slide" end="0,400" condition="Container(451).Row(3)">Conditional</animation>
-                </control> -->
+            <include content="Dialog_Dim_Side">
+                <param name="slide_condition">ControlGroup(9000).HasFocus() | Control.IsVisible(450)</param>
             </include>
 
-            <include content="Dialog_Overlay_Side">
-                <param name="dim_visible">false</param>
+            <!-- Bottom Layer -->
+            <include content="Dialog_Background_Side">
+                <param name="slide_condition">ControlGroup(9000).HasFocus() | Control.IsVisible(450)</param>
                 <param name="dialog_size">Dimension_DialogWideMenu</param>
-                <include content="Dialog_Head">
-                    <param name="id">411</param>
-                </include>
-                <include content="Dialog_Head">
-                    <param name="id">9901</param>
-                    <visible>String.IsEmpty(Control.GetLabel(411))</visible>
-                    <label>$LOCALIZE[424]</label>
-                </include>
+                <!-- Side Buttons -->
                 <include content="Dialog_Body">
-
-                    <include content="Dialog_Body_Group">
-                        <include content="List_DialogSelect">
-                            <param name="id">450</param>
-                            <param name="detailed">True</param>
-                            <param name="item_height">100</param>
-                            <param name="textcolor">dialog_fg</param>
-                            <pagecontrol>61</pagecontrol>
-                            <onright>61</onright>
-                        </include>
-
-                        <include content="List_IconBrowser">
-                            <param name="id">451</param>
-                            <param name="item_h">160</param>
-                            <param name="itemlayout_h">200</param>
-                            <param name="item_w">150</param>
-                            <param name="itemlayout_w">190</param>
-                            <param name="detailed">true</param>
-                            <param name="textcolor">dialog_fg</param>
-                            <top>-20</top>
-                            <bottom>-20</bottom>
-                            <left>-20</left>
-                            <right>-20</right>
-                            <onright>62</onright>
-                            <pagecontrol>62</pagecontrol>
-                        </include>
-                    </include>
-
-                    <include content="Dialog_Scrollbar">
-                        <param name="id">61</param>
-                        <visible>Control.IsVisible(450)</visible>
-                        <onleft>450</onleft>
-                        <onright>9000</onright>
-                    </include>
-
-                    <include content="Dialog_Scrollbar">
-                        <param name="id">62</param>
-                        <visible>Control.IsVisible(451)</visible>
-                        <onleft>451</onleft>
-                        <onright>9000</onright>
-                    </include>
-
                     <include content="Dialog_Side_Grouplist">
                         <param name="id">9000</param>
-                        <onleft condition="Control.IsVisible(450)">61</onleft>
-                        <onleft condition="Control.IsVisible(451)">62</onleft>
-                        <onright>Close</onright>
+                        <onright condition="Control.IsVisible(450)">450</onright>
+                        <onright condition="Control.IsVisible(451)">451</onright>
                         <include content="Dialog_Side_Button">
                             <param name="id">01</param>
                             <param name="label">$LOCALIZE[186]</param>
@@ -118,19 +58,83 @@
                     </include>
                 </include>
             </include>
+
+            <include content="Dialog_Foreground_Side">
+                <param name="dialog_size">Dimension_DialogWideMenu</param>
+                <param name="slide_condition">ControlGroup(9000).HasFocus() | Control.IsVisible(450)</param>
+                <param name="lines_right">0</param>
+                <param name="topline">true</param>
+                <param name="subline">true</param>
+
+                <!-- Header -->
+                <include content="Dialog_Head">
+                    <param name="id">411</param>
+                </include>
+                <include content="Dialog_Head">
+                    <param name="id">9901</param>
+                    <visible>String.IsEmpty(Control.GetLabel(411))</visible>
+                    <label>$LOCALIZE[424]</label>
+                </include>
+
+                <!-- Content -->
+                <include content="Dialog_Body">
+                    <include content="Dialog_Body_Group">
+                        <include content="List_DialogSelect">
+                            <param name="id">450</param>
+                            <param name="detailed">True</param>
+                            <param name="item_height">100</param>
+                            <param name="textcolor">dialog_fg</param>
+                            <pagecontrol>61</pagecontrol>
+                            <onleft>9000</onleft>
+                            <onright>61</onright>
+                        </include>
+
+                        <include content="List_IconBrowser">
+                            <param name="id">451</param>
+                            <param name="item_h">160</param>
+                            <param name="itemlayout_h">200</param>
+                            <param name="item_w">150</param>
+                            <param name="itemlayout_w">190</param>
+                            <param name="detailed">true</param>
+                            <param name="textcolor">dialog_fg</param>
+                            <top>-20</top>
+                            <bottom>-20</bottom>
+                            <left>-20</left>
+                            <right>-20</right>
+                            <onleft>9000</onleft>
+                            <onright>62</onright>
+                            <pagecontrol>62</pagecontrol>
+                        </include>
+                    </include>
+
+                    <include content="Dialog_Scrollbar">
+                        <param name="id">61</param>
+                        <visible>Control.IsVisible(450)</visible>
+                        <onleft>450</onleft>
+                    </include>
+                    <include content="Dialog_Scrollbar">
+                        <param name="id">62</param>
+                        <visible>Control.IsVisible(451)</visible>
+                        <onleft>451</onleft>
+                    </include>
+                </include>
+            </include>
+
         </control>
 
-        <include content="Object_Hidden_Button">
-            <param name="id">413</param>
-        </include>
-        <include content="Object_Hidden_Button">
-            <param name="id">414</param>
-        </include>
-        <include content="Object_Hidden_Button">
-            <param name="id">415</param>
-        </include>
-        <include content="Object_Hidden_Button">
-            <param name="id">416</param>
-        </include>
+        <control type="group">
+            <left>120</left>
+            <right>-120</right>
+            <include>Animation_Right_Delay</include>
+            <include content="Animation_SlideIn_Dialog_Side">
+                <param name="slide_condition">ControlGroup(9000).HasFocus()</param>
+            </include>
+            <include content="Dialog_Preview">
+                <param name="icon">$INFO[Container(451).ListItem.Icon]</param>
+                <visible>Control.IsVisible(451)</visible>
+                <visible>String.IsEqual(Control.GetLabel(411),$LOCALIZE[13511]) | String.IsEqual(Control.GetLabel(411),$LOCALIZE[20437])</visible>
+                <animation effect="slide" end="0,200" condition="Container(451).Row(2) | Container(451).Row(3)">Conditional</animation>
+            </include>
+        </control>
     </controls>
 </window>

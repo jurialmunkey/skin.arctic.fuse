@@ -13,156 +13,179 @@
             <onclick>Close</onclick>
         </control>
 
-        <include content="Dialog_Overlay_Side">
-            <param name="dialog_size">Dimension_DialogSideMenu</param>
+        <control type="group">
+            <include>Dimension_DialogSideMenu</include>
             <include>Animation_Right_Delay</include>
-            <include content="Dialog_Head">
-                <param name="label">$LOCALIZE[563]</param>
+            <include content="Dialog_Dim_Side">
+                <param name="slide_condition">ControlGroup(9000).HasFocus()</param>
             </include>
-            <include content="Dialog_Body">
-                <control type="group">
-                    <include>Dimension_Dialog_Body_Group</include>
-                    <control type="group">
-                        <width>50%</width>
 
-                        <control type="image">
-                            <width>1</width>
-                            <right>0</right>
-                            <texture colordiffuse="main_fg_12">common/white.png</texture>
+            <!-- Bottom Layer -->
+            <include content="Dialog_Background_Side">
+                <param name="slide_condition">ControlGroup(9000).HasFocus()</param>
+                <param name="dialog_size">Dimension_DialogSideMenu</param>
+                <!-- Side Buttons -->
+                <include content="Dialog_Body">
+                    <include content="Dialog_Side_Grouplist">
+                        <param name="id">9000</param>
+
+                        <onright>8000</onright>
+                        <include content="Dialog_Side_Button">
+                            <param name="id">01</param>
+                            <param name="label">$LOCALIZE[15067]</param>
+                            <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
+                            <onclick>Close</onclick>
+                        </include>
+                        <include content="Dialog_Side_Button">
+                            <param name="id">02</param>
+                            <param name="label">$LOCALIZE[192]</param>
+                            <param name="icon">special://skin/extras/icons/triangle-exclamation.png</param>
+                            <onclick>ClearProperty(SearchDiscover.YearLow,1105)</onclick>
+                            <onclick>ClearProperty(SearchDiscover.YearHigh,1105)</onclick>
+                            <onclick>Close</onclick>
+                        </include>
+                    </include>
+                </include>
+            </include>
+
+            <include content="Dialog_Foreground_Side">
+                <param name="dialog_size">Dimension_DialogSideMenu</param>
+                <param name="slide_condition">ControlGroup(9000).HasFocus()</param>
+                <param name="lines_right">0</param>
+                <param name="topline">true</param>
+                <param name="subline">true</param>
+
+                <!-- Header -->
+                <include content="Dialog_Head">
+                    <param name="label">$LOCALIZE[563]</param>
+                </include>
+
+                <!-- Content -->
+                <include content="Dialog_Body">
+                    <control type="group">
+                        <include>Dimension_Dialog_Body_Group</include>
+                        <control type="group">
+                            <width>50%</width>
+
+                            <control type="image">
+                                <width>1</width>
+                                <right>0</right>
+                                <texture colordiffuse="main_fg_12">common/white.png</texture>
+                            </control>
+
+                            <include content="List_DialogSelect">
+                                <param name="id">8000</param>
+                                <param name="itemlayout_include">Layout_DialogSimple</param>
+                                <param name="control">fixedlist</param>
+                                <focusposition>4</focusposition>
+                                <movement>5</movement>
+                                <onright>8001</onright>
+                                <onleft>9000</onleft>
+                                <right>10</right>
+                                <onclick>SetProperty(SearchDiscover.RatingLow,$INFO[Container(8000).ListItem.Label],1105)</onclick>
+                                <onclick>Close</onclick>
+                                <content>
+                                    <item>
+                                        <label>9.0</label>
+                                        <property name="prefix">9.</property>
+                                    </item>
+                                    <item>
+                                        <label>8.0</label>
+                                        <property name="prefix">8.</property>
+                                    </item>
+                                    <item>
+                                        <label>7.0</label>
+                                        <property name="prefix">7.</property>
+                                    </item>
+                                    <item>
+                                        <label>6.0</label>
+                                        <property name="prefix">6.</property>
+                                    </item>
+                                    <item>
+                                        <label>5.0</label>
+                                        <property name="prefix">5.</property>
+                                    </item>
+                                    <item>
+                                        <label>4.0</label>
+                                        <property name="prefix">4.</property>
+                                    </item>
+                                    <item>
+                                        <label>3.0</label>
+                                        <property name="prefix">3.</property>
+                                    </item>
+                                    <item>
+                                        <label>2.0</label>
+                                        <property name="prefix">2.</property>
+                                    </item>
+                                    <item>
+                                        <label>1.0</label>
+                                        <property name="prefix">1.</property>
+                                    </item>
+                                    <item>
+                                        <label>0.0</label>
+                                        <property name="prefix">0.</property>
+                                    </item>
+                                </content>
+                            </include>
                         </control>
-
-                        <include content="List_DialogSelect">
-                            <param name="id">8000</param>
-                            <param name="itemlayout_include">Layout_DialogSimple</param>
-                            <param name="control">fixedlist</param>
-                            <focusposition>4</focusposition>
-                            <movement>5</movement>
-                            <onright>8001</onright>
-                            <onleft>Close</onleft>
-                            <right>10</right>
-                            <onclick>SetProperty(SearchDiscover.RatingLow,$INFO[Container(8000).ListItem.Label],1105)</onclick>
-                            <onclick>Close</onclick>
-                            <content>
-                                <item>
-                                    <label>9.0</label>
-                                    <property name="prefix">9.</property>
-                                </item>
-                                <item>
-                                    <label>8.0</label>
-                                    <property name="prefix">8.</property>
-                                </item>
-                                <item>
-                                    <label>7.0</label>
-                                    <property name="prefix">7.</property>
-                                </item>
-                                <item>
-                                    <label>6.0</label>
-                                    <property name="prefix">6.</property>
-                                </item>
-                                <item>
-                                    <label>5.0</label>
-                                    <property name="prefix">5.</property>
-                                </item>
-                                <item>
-                                    <label>4.0</label>
-                                    <property name="prefix">4.</property>
-                                </item>
-                                <item>
-                                    <label>3.0</label>
-                                    <property name="prefix">3.</property>
-                                </item>
-                                <item>
-                                    <label>2.0</label>
-                                    <property name="prefix">2.</property>
-                                </item>
-                                <item>
-                                    <label>1.0</label>
-                                    <property name="prefix">1.</property>
-                                </item>
-                                <item>
-                                    <label>0.0</label>
-                                    <property name="prefix">0.</property>
-                                </item>
-                            </content>
-                        </include>
+                        <control type="group">
+                            <width>50%</width>
+                            <right>0</right>
+                            <include content="List_DialogSelect">
+                                <param name="id">8001</param>
+                                <param name="itemlayout_include">Layout_DialogSimple</param>
+                                <param name="control">fixedlist</param>
+                                <focusposition>4</focusposition>
+                                <movement>5</movement>
+                                <pagecontrol>61</pagecontrol>
+                                <onright>61</onright>
+                                <onleft>8000</onleft>
+                                <left>10</left>
+                                <onclick>SetProperty(SearchDiscover.RatingLow,$INFO[Container(8001).ListItem.Label],1105)</onclick>
+                                <onclick>Close</onclick>
+                                <content>
+                                    <item>
+                                        <label>$INFO[Container(8000).ListItem.Property(prefix),,9]</label>
+                                    </item>
+                                    <item>
+                                        <label>$INFO[Container(8000).ListItem.Property(prefix),,8]</label>
+                                    </item>
+                                    <item>
+                                        <label>$INFO[Container(8000).ListItem.Property(prefix),,7]</label>
+                                    </item>
+                                    <item>
+                                        <label>$INFO[Container(8000).ListItem.Property(prefix),,6]</label>
+                                    </item>
+                                    <item>
+                                        <label>$INFO[Container(8000).ListItem.Property(prefix),,5]</label>
+                                    </item>
+                                    <item>
+                                        <label>$INFO[Container(8000).ListItem.Property(prefix),,4]</label>
+                                    </item>
+                                    <item>
+                                        <label>$INFO[Container(8000).ListItem.Property(prefix),,3]</label>
+                                    </item>
+                                    <item>
+                                        <label>$INFO[Container(8000).ListItem.Property(prefix),,2]</label>
+                                    </item>
+                                    <item>
+                                        <label>$INFO[Container(8000).ListItem.Property(prefix),,1]</label>
+                                    </item>
+                                    <item>
+                                        <label>$INFO[Container(8000).ListItem.Property(prefix),,0]</label>
+                                    </item>
+                                </content>
+                            </include>
+                        </control>
                     </control>
-                    <control type="group">
-                        <width>50%</width>
-                        <right>0</right>
-                        <include content="List_DialogSelect">
-                            <param name="id">8001</param>
-                            <param name="itemlayout_include">Layout_DialogSimple</param>
-                            <param name="control">fixedlist</param>
-                            <focusposition>4</focusposition>
-                            <movement>5</movement>
-                            <pagecontrol>61</pagecontrol>
-                            <onright>61</onright>
-                            <onleft>8000</onleft>
-                            <left>10</left>
-                            <onclick>SetProperty(SearchDiscover.RatingLow,$INFO[Container(8001).ListItem.Label],1105)</onclick>
-                            <onclick>Close</onclick>
-                            <content>
-                                <item>
-                                    <label>$INFO[Container(8000).ListItem.Property(prefix),,9]</label>
-                                </item>
-                                <item>
-                                    <label>$INFO[Container(8000).ListItem.Property(prefix),,8]</label>
-                                </item>
-                                <item>
-                                    <label>$INFO[Container(8000).ListItem.Property(prefix),,7]</label>
-                                </item>
-                                <item>
-                                    <label>$INFO[Container(8000).ListItem.Property(prefix),,6]</label>
-                                </item>
-                                <item>
-                                    <label>$INFO[Container(8000).ListItem.Property(prefix),,5]</label>
-                                </item>
-                                <item>
-                                    <label>$INFO[Container(8000).ListItem.Property(prefix),,4]</label>
-                                </item>
-                                <item>
-                                    <label>$INFO[Container(8000).ListItem.Property(prefix),,3]</label>
-                                </item>
-                                <item>
-                                    <label>$INFO[Container(8000).ListItem.Property(prefix),,2]</label>
-                                </item>
-                                <item>
-                                    <label>$INFO[Container(8000).ListItem.Property(prefix),,1]</label>
-                                </item>
-                                <item>
-                                    <label>$INFO[Container(8000).ListItem.Property(prefix),,0]</label>
-                                </item>
-                            </content>
-                        </include>
-                    </control>
-                </control>
-                <include content="Dialog_Scrollbar">
-                    <param name="id">61</param>
-                    <onleft>8001</onleft>
-                    <onright>9000</onright>
-                </include>
-                <include content="Dialog_Side_Grouplist">
-                    <param name="id">9000</param>
-                    <onright>Close</onright>
-                    <onleft>8001</onleft>
-                    <include content="Dialog_Side_Button">
-                        <param name="id">01</param>
-                        <param name="label">$LOCALIZE[15067]</param>
-                        <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
-                        <onclick>Close</onclick>
-                    </include>
-                    <include content="Dialog_Side_Button">
-                        <param name="id">02</param>
-                        <param name="label">$LOCALIZE[192]</param>
-                        <param name="icon">special://skin/extras/icons/triangle-exclamation.png</param>
-                        <onclick>ClearProperty(SearchDiscover.YearLow,1105)</onclick>
-                        <onclick>ClearProperty(SearchDiscover.YearHigh,1105)</onclick>
-                        <onclick>Close</onclick>
+                    <include content="Dialog_Scrollbar">
+                        <param name="id">61</param>
+                        <onleft>8001</onleft>
                     </include>
                 </include>
             </include>
-        </include>
 
+        </control>
 
     </controls>
 </window>

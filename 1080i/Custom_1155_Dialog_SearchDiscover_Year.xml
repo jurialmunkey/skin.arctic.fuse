@@ -14,105 +14,127 @@
             <onclick>Close</onclick>
         </control>
 
-        <include content="Dialog_Overlay_Side">
-            <param name="dialog_size">Dimension_DialogSideMenu</param>
+        <control type="group">
+            <include>Dimension_DialogSideMenu</include>
             <include>Animation_Right_Delay</include>
-            <include content="Dialog_Head">
-                <param name="id">0</param>
-                <param name="label">$LOCALIZE[345]: $LOCALIZE[31117] &gt;=</param>
-                <visible>!String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog))</visible>
+            <include content="Dialog_Dim_Side">
+                <param name="slide_condition">ControlGroup(9000).HasFocus()</param>
             </include>
-            <include content="Dialog_Head">
-                <param name="id">0</param>
-                <param name="label">$LOCALIZE[345]: $LOCALIZE[31119] &lt;=</param>
-                <visible>String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog))</visible>
-            </include>
-            <include content="Dialog_Body">
-                <control type="group">
-                    <include>Dimension_Dialog_Body_Group</include>
-                    <control type="group">
-                        <width>50%</width>
 
-                        <control type="image">
-                            <width>1</width>
-                            <right>0</right>
-                            <texture colordiffuse="main_fg_12">common/white.png</texture>
+            <!-- Bottom Layer -->
+            <include content="Dialog_Background_Side">
+                <param name="slide_condition">ControlGroup(9000).HasFocus()</param>
+                <param name="dialog_size">Dimension_DialogSideMenu</param>
+                <!-- Side Buttons -->
+                <include content="Dialog_Body">
+                    <include content="Dialog_Side_Grouplist">
+                        <param name="id">9000</param>
+                        <onright>8000</onright>
+                        <include content="Dialog_Side_Button">
+                            <param name="id">01</param>
+                            <param name="label">$LOCALIZE[15067]</param>
+                            <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
+                            <onclick>Close</onclick>
+                        </include>
+                        <include content="Dialog_Side_Button">
+                            <param name="id">02</param>
+                            <param name="label">$LOCALIZE[192]</param>
+                            <param name="icon">special://skin/extras/icons/triangle-exclamation.png</param>
+                            <onclick>ClearProperty(SearchDiscover.YearLow,1105)</onclick>
+                            <onclick>ClearProperty(SearchDiscover.YearHigh,1105)</onclick>
+                            <onclick>Close</onclick>
+                        </include>
+                    </include>
+                </include>
+            </include>
+
+            <include content="Dialog_Foreground_Side">
+                <param name="dialog_size">Dimension_DialogSideMenu</param>
+                <param name="slide_condition">ControlGroup(9000).HasFocus()</param>
+                <param name="lines_right">0</param>
+                <param name="topline">true</param>
+                <param name="subline">true</param>
+
+                <!-- Header -->
+                <include content="Dialog_Head">
+                    <param name="id">0</param>
+                    <param name="label">$LOCALIZE[345]: $LOCALIZE[31117] &gt;=</param>
+                    <visible>!String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog))</visible>
+                </include>
+                <include content="Dialog_Head">
+                    <param name="id">0</param>
+                    <param name="label">$LOCALIZE[345]: $LOCALIZE[31119] &lt;=</param>
+                    <visible>String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog))</visible>
+                </include>
+
+                <!-- Content -->
+                <include content="Dialog_Body">
+                    <control type="group">
+                        <include>Dimension_Dialog_Body_Group</include>
+                        <control type="group">
+                            <width>50%</width>
+
+                            <control type="image">
+                                <width>1</width>
+                                <right>0</right>
+                                <texture colordiffuse="main_fg_12">common/white.png</texture>
+                            </control>
+
+                            <include content="List_DialogSelect">
+                                <param name="id">8000</param>
+                                <param name="itemlayout_include">Layout_DialogSimple</param>
+                                <param name="control">fixedlist</param>
+                                <focusposition>4</focusposition>
+                                <movement>5</movement>
+                                <onright>8001</onright>
+                                <onleft>9000</onleft>
+                                <right>10</right>
+                                <onclick condition="!String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog))">SetProperty(SearchDiscover.YearLow,$INFO[Container(8000).ListItem.Label],1105)</onclick>
+                                <onclick condition="!String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog))">ClearProperty(SearchDiscover.YearLow.Dialog,1105)</onclick>
+                                <onclick condition="String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog))">SetProperty(SearchDiscover.YearHigh,$INFO[Container(8000).ListItem.Label],1105)</onclick>
+                                <onclick condition="String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog))">Close</onclick>
+
+                                <content>
+                                    <include content="Search_Filter_YearItems">
+                                        <param name="include">Search_Filter_DecadeItem</param>
+                                    </include>
+                                </content>
+                            </include>
                         </control>
+                        <control type="group">
+                            <width>50%</width>
+                            <right>0</right>
+                            <include content="List_DialogSelect">
+                                <param name="id">8001</param>
+                                <param name="itemlayout_include">Layout_DialogSimple</param>
+                                <param name="control">fixedlist</param>
+                                <focusposition>4</focusposition>
+                                <movement>5</movement>
+                                <pagecontrol>61</pagecontrol>
+                                <onright>61</onright>
+                                <onleft>8000</onleft>
+                                <left>10</left>
+                                <onclick condition="!String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog))">SetProperty(SearchDiscover.YearLow,$INFO[Container(8001).ListItem.Label],1105)</onclick>
+                                <onclick condition="!String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog))">ClearProperty(SearchDiscover.YearLow.Dialog,1105)</onclick>
+                                <onclick condition="String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog))">SetProperty(SearchDiscover.YearHigh,$INFO[Container(8001).ListItem.Label],1105)</onclick>
+                                <onclick condition="String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog))">Close</onclick>
 
-                        <include content="List_DialogSelect">
-                            <param name="id">8000</param>
-                            <param name="itemlayout_include">Layout_DialogSimple</param>
-                            <param name="control">fixedlist</param>
-                            <focusposition>4</focusposition>
-                            <movement>5</movement>
-                            <onright>8001</onright>
-                            <onleft>Close</onleft>
-                            <right>10</right>
-                            <onclick condition="!String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog))">SetProperty(SearchDiscover.YearLow,$INFO[Container(8000).ListItem.Label],1105)</onclick>
-                            <onclick condition="!String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog))">ClearProperty(SearchDiscover.YearLow.Dialog,1105)</onclick>
-                            <onclick condition="String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog))">SetProperty(SearchDiscover.YearHigh,$INFO[Container(8000).ListItem.Label],1105)</onclick>
-                            <onclick condition="String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog))">Close</onclick>
-
-                            <content>
-                                <include content="Search_Filter_YearItems">
-                                    <param name="include">Search_Filter_DecadeItem</param>
-                                </include>
-                            </content>
-                        </include>
+                                <content>
+                                    <include content="Search_Filter_YearItems">
+                                        <param name="include">Search_Filter_YearItem</param>
+                                    </include>
+                                </content>
+                            </include>
+                        </control>
                     </control>
-                    <control type="group">
-                        <width>50%</width>
-                        <right>0</right>
-                        <include content="List_DialogSelect">
-                            <param name="id">8001</param>
-                            <param name="itemlayout_include">Layout_DialogSimple</param>
-                            <param name="control">fixedlist</param>
-                            <focusposition>4</focusposition>
-                            <movement>5</movement>
-                            <pagecontrol>61</pagecontrol>
-                            <onright>61</onright>
-                            <onleft>8000</onleft>
-                            <left>10</left>
-                            <onclick condition="!String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog))">SetProperty(SearchDiscover.YearLow,$INFO[Container(8001).ListItem.Label],1105)</onclick>
-                            <onclick condition="!String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog))">ClearProperty(SearchDiscover.YearLow.Dialog,1105)</onclick>
-                            <onclick condition="String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog))">SetProperty(SearchDiscover.YearHigh,$INFO[Container(8001).ListItem.Label],1105)</onclick>
-                            <onclick condition="String.IsEmpty(Window(1105).Property(SearchDiscover.YearLow.Dialog))">Close</onclick>
-
-                            <content>
-                                <include content="Search_Filter_YearItems">
-                                    <param name="include">Search_Filter_YearItem</param>
-                                </include>
-                            </content>
-                        </include>
-                    </control>
-                </control>
-                <include content="Dialog_Scrollbar">
-                    <param name="id">61</param>
-                    <onleft>8001</onleft>
-                    <onright>9000</onright>
-                </include>
-                <include content="Dialog_Side_Grouplist">
-                    <param name="id">9000</param>
-                    <onright>Close</onright>
-                    <onleft>8001</onleft>
-                    <include content="Dialog_Side_Button">
-                        <param name="id">01</param>
-                        <param name="label">$LOCALIZE[15067]</param>
-                        <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
-                        <onclick>Close</onclick>
-                    </include>
-                    <include content="Dialog_Side_Button">
-                        <param name="id">02</param>
-                        <param name="label">$LOCALIZE[192]</param>
-                        <param name="icon">special://skin/extras/icons/triangle-exclamation.png</param>
-                        <onclick>ClearProperty(SearchDiscover.YearLow,1105)</onclick>
-                        <onclick>ClearProperty(SearchDiscover.YearHigh,1105)</onclick>
-                        <onclick>Close</onclick>
+                    <include content="Dialog_Scrollbar">
+                        <param name="id">61</param>
+                        <onleft>8001</onleft>
                     </include>
                 </include>
             </include>
-        </include>
 
+        </control>
 
     </controls>
 </window>

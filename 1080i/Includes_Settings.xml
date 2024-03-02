@@ -113,8 +113,8 @@
     <include name="Settings_Right_Grouplist">
         <control type="grouplist" id="$PARAM[id]">
             <nested />
-            <onright>61</onright>
-            <pagecontrol>61</pagecontrol>
+            <onright>60</onright>
+            <pagecontrol>60</pagecontrol>
             <top>-20</top>
             <left>0</left>
             <right>20</right>
@@ -289,46 +289,71 @@
     </include>
 
     <include name="Settings_Side_Switcher">
-        <include content="Dialog_Overlay_Side">
-            <param name="dialog_size">Dimension_DialogSideMenu</param>
+        <control type="group">
+            <include>Dimension_DialogSideMenu</include>
             <visible>ControlGroup(30040).HasFocus() | ControlGroup(30700).HasFocus()</visible>
             <include>Animation_Right_Delay</include>
-            <include content="Dialog_Head">
-                <param name="label">$LOCALIZE[5]</param>
+            <include content="Dialog_Dim_Side">
+                <param name="slide_condition">ControlGroup(30700).HasFocus()</param>
             </include>
-            <include content="Dialog_Body">
-                <include content="Dialog_Body_Grouplist">
-                    <param name="id">30040</param>
-                    <onleft condition="Window.IsVisible(settings)">50</onleft>
-                    <onleft condition="Window.IsVisible(addonbrowser)">6000</onleft>
-                    <onleft condition="Window.IsVisible(eventlog)">8000</onleft>
-                    <onleft condition="Window.IsVisible(filemanager)">20</onleft>
-                    <onleft condition="!Window.IsVisible(addonbrowser) + !Window.IsVisible(eventlog)">3</onleft>
-                    <onright>30700</onright>
-                    <include>Items_Settings_SideChanger</include>
-                </include>
-                <include content="Dialog_Side_Grouplist">
-                    <param name="id">30700</param>
-                    <onright condition="Window.IsVisible(settings)">50</onright>
-                    <onright condition="Window.IsVisible(addonbrowser)">6000</onright>
-                    <onright condition="Window.IsVisible(eventlog)">8000</onright>
-                    <onright condition="Window.IsVisible(filemanager)">20</onright>
-                    <onright condition="!Window.IsVisible(addonbrowser) + !Window.IsVisible(eventlog)">3</onright>
-                    <onleft>30040</onleft>
-                    <include content="Dialog_Side_Button">
-                        <param name="id">1</param>
-                        <param name="baseid">307</param>
-                        <param name="label">$LOCALIZE[15067]</param>
-                        <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
-                        <onclick condition="Window.IsVisible(settings)">SetFocus(50)</onclick>
-                        <onclick condition="Window.IsVisible(addonbrowser)">SetFocus(6000)</onclick>
-                        <onclick condition="Window.IsVisible(eventlog)">SetFocus(8000)</onclick>
-                        <onclick condition="Window.IsVisible(filemanager)">SetFocus(2)0</onclick>
-                        <onclick condition="!Window.IsVisible(addonbrowser) + !Window.IsVisible(eventlog)">SetFocus(3)</onclick>
+
+            <!-- Bottom Layer -->
+            <include content="Dialog_Background_Side">
+                <param name="slide_condition">ControlGroup(30700).HasFocus()</param>
+                <param name="dialog_size">Dimension_DialogSideMenu</param>
+                <!-- Side Buttons -->
+                <include content="Dialog_Body">
+                    <include content="Dialog_Side_Grouplist">
+                        <param name="id">30700</param>
+                        <onleft condition="Window.IsVisible(settings)">50</onleft>
+                        <onleft condition="Window.IsVisible(addonbrowser)">6000</onleft>
+                        <onleft condition="Window.IsVisible(eventlog)">8000</onleft>
+                        <onleft condition="Window.IsVisible(filemanager)">20</onleft>
+                        <onleft condition="!Window.IsVisible(addonbrowser) + !Window.IsVisible(eventlog)">3</onleft>
+                        <onright>30040</onright>
+                        <include content="Dialog_Side_Button">
+                            <param name="id">1</param>
+                            <param name="baseid">307</param>
+                            <param name="label">$LOCALIZE[15067]</param>
+                            <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
+                            <onclick condition="Window.IsVisible(settings)">SetFocus(50)</onclick>
+                            <onclick condition="Window.IsVisible(addonbrowser)">SetFocus(6000)</onclick>
+                            <onclick condition="Window.IsVisible(eventlog)">SetFocus(8000)</onclick>
+                            <onclick condition="Window.IsVisible(filemanager)">SetFocus(2)0</onclick>
+                            <onclick condition="!Window.IsVisible(addonbrowser) + !Window.IsVisible(eventlog)">SetFocus(3)</onclick>
+                        </include>
                     </include>
                 </include>
             </include>
-        </include>
+
+            <include content="Dialog_Foreground_Side">
+                <param name="dialog_size">Dimension_DialogSideMenu</param>
+                <param name="slide_condition">ControlGroup(30700).HasFocus()</param>
+                <param name="lines_right">0</param>
+                <param name="topline">true</param>
+                <param name="subline">true</param>
+
+                <!-- Header -->
+                <include content="Dialog_Head">
+                    <param name="label">$LOCALIZE[5]</param>
+                </include>
+
+                <!-- Content -->
+                <include content="Dialog_Body">
+                    <include content="Dialog_Body_Grouplist">
+                        <param name="id">30040</param>
+                        <!-- <onleft condition="Window.IsVisible(settings)">50</onleft>
+                        <onleft condition="Window.IsVisible(addonbrowser)">6000</onleft>
+                        <onleft condition="Window.IsVisible(eventlog)">8000</onleft>
+                        <onleft condition="Window.IsVisible(filemanager)">20</onleft>
+                        <onleft condition="!Window.IsVisible(addonbrowser) + !Window.IsVisible(eventlog)">3</onleft> -->
+                        <onleft>30700</onleft>
+                        <include>Items_Settings_SideChanger</include>
+                    </include>
+                </include>
+            </include>
+
+        </control>
         <include>TouchMode_Settings_Zones</include>
     </include>
 
