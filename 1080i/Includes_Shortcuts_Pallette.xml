@@ -66,101 +66,6 @@
                         <onleft>Action(Close)</onleft>
                         <onright>39000</onright>
 
-                        <control type="grouplist" id="3900">
-                            <orientation>horizontal</orientation>
-                            <top>-40</top>
-                            <left>-20</left>
-                            <right>-20</right>
-                            <height>120</height>
-                            <onup>3033</onup>
-                            <ondown>3008</ondown>
-                            <onleft>Action(Close)</onleft>
-                            <onright>39000</onright>
-
-
-                            <!-- ======= -->
-                            <!-- Disable -->
-                            <!-- ======= -->
-                            <include content="Shortcuts_Pallette_Iconic_Button">
-                                <param name="id">04</param>
-                                <param name="label">$LOCALIZE[24021]</param>
-                                <param name="icon">special://skin/extras/icons/circle-cancel.png</param>
-                                <param name="visible">!$EXP[Shortcuts_Pallette_Exp_IsAddItem] + String.IsEmpty(Window.Property(disabled))</param>
-                                <onclick condition="!$EXP[Exp_IsUpdatingNode]">RunPlugin($INFO[Window.Property(url),,&amp;func=do_toggle])</onclick>
-                                <onclick condition="!$EXP[Exp_IsUpdatingNode]">SetProperty(disabled,True)</onclick>
-                                <onclick condition="!$EXP[Exp_IsUpdatingNode]">SetFocus(3999)</onclick>
-                            </include>
-                            <!-- Disable: Enable -->
-                            <include content="Shortcuts_Pallette_Iconic_Button">
-                                <param name="id">05</param>
-                                <param name="label">$LOCALIZE[24022]</param>
-                                <param name="icon">special://skin/extras/icons/circle-check-regular.png</param>
-                                <param name="visible">!$EXP[Shortcuts_Pallette_Exp_IsAddItem] + !String.IsEmpty(Window.Property(disabled))</param>
-                                <onclick condition="!$EXP[Exp_IsUpdatingNode]">RunPlugin($INFO[Window.Property(url),,&amp;func=do_toggle])</onclick>
-                                <onclick condition="!$EXP[Exp_IsUpdatingNode]">ClearProperty(disabled)</onclick>
-                                <onclick condition="!$EXP[Exp_IsUpdatingNode]">SetFocus(3999)</onclick>
-                            </include>
-
-                            <!-- ====== -->
-                            <!-- Delete -->
-                            <!-- ====== -->
-                            <include content="Shortcuts_Pallette_Iconic_Button">
-                                <param name="id">06</param>
-                                <param name="label">$LOCALIZE[117]</param>
-                                <param name="icon">special://skin/extras/icons/trash-can.png</param>
-                                <param name="visible">String.IsEmpty(Window.Property(forced)) + !$EXP[Shortcuts_Pallette_Exp_IsAddItem]</param>
-                                <onclick condition="!$EXP[Exp_IsUpdatingNode]">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
-                                <onclick condition="!$EXP[Exp_IsUpdatingNode]">RunPlugin($INFO[Window.Property(url),,&amp;func=do_delete&amp;&amp;False])</onclick>
-                                <onclick condition="!$EXP[Exp_IsUpdatingNode]">SetFocus($INFO[Window.Property(list_id)])</onclick>
-                            </include>
-                            <!-- Delete: Submenu List -->
-                            <include content="Shortcuts_Pallette_Iconic_Button">
-                                <param name="id">07</param>
-                                <param name="label">$LOCALIZE[117]</param>
-                                <param name="icon">special://skin/extras/icons/trash-can.png</param>
-                                <param name="visible">Integer.IsEqual(Window.Property(list_id),302) + !String.IsEmpty(Container(300).ListItem.Property(submenulist_path))</param>
-                                <onclick condition="!$EXP[Exp_IsUpdatingNode]">RunPlugin($INFO[Container(300).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;submenulist_path])</onclick>
-                                <onclick condition="!$EXP[Exp_IsUpdatingNode]">SetFocus($INFO[Window.Property(list_id)])</onclick>
-                            </include>
-
-                            <!-- ======= -->
-                            <!-- Add New -->
-                            <!-- ======= -->
-                            <include content="Shortcuts_Pallette_Iconic_Button">
-                                <param name="id">03</param>
-                                <param name="label">$LOCALIZE[35261]</param>
-                                <param name="icon">special://skin/extras/icons/circle-plus.png</param>
-                                <param name="visible">!$EXP[Shortcuts_Pallette_Exp_IsAddItem]</param>
-                                <onclick condition="!$EXP[Exp_IsUpdatingNode]">SetFocus($INFO[Window.Property(list_id)])</onclick>
-                                <onclick condition="!$EXP[Exp_IsUpdatingNode] + !Integer.IsEqual(Window.Property(list_id),304)">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
-                                <onclick condition="!$EXP[Exp_IsUpdatingNode] + !Integer.IsEqual(Window.Property(list_id),304)">RunPlugin($INFO[Window.Property(url),,&amp;func=do_new])</onclick>
-                                <onclick condition="!$EXP[Exp_IsUpdatingNode] + Integer.IsEqual(Window.Property(list_id),304)">ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
-                                <onclick condition="!$EXP[Exp_IsUpdatingNode] + Integer.IsEqual(Window.Property(list_id),304)">RunPlugin($INFO[Window.Property(url),,&amp;func=do_new&amp;&amp;use_rawpath::True])</onclick>
-                            </include>
-
-                            <!-- ======= -->
-                            <!-- Move Up -->
-                            <!-- ======= -->
-                            <include content="Shortcuts_Pallette_Iconic_Button">
-                                <param name="id">01</param>
-                                <param name="label">$VAR[Shortcuts_Pallette_Up_Label]</param>
-                                <param name="icon">$VAR[Shortcuts_Pallette_Up_Icon]</param>
-                                <param name="visible">$EXP[Shortcuts_Pallette_Exp_HasMoreThanOne]</param>
-                                <onclick condition="!$EXP[Exp_IsUpdatingNode]">RunPlugin($INFO[Window.Property(url),,&amp;func=do_move&amp;&amp;move::-1&amp;&amp;window_prop::url])</onclick>
-                            </include>
-
-                            <!-- ========= -->
-                            <!-- Move Down -->
-                            <!-- ========= -->
-                            <include content="Shortcuts_Pallette_Iconic_Button">
-                                <param name="id">02</param>
-                                <param name="label">$VAR[Shortcuts_Pallette_Down_Label]</param>
-                                <param name="icon">$VAR[Shortcuts_Pallette_Down_Icon]</param>
-                                <param name="visible">$EXP[Shortcuts_Pallette_Exp_HasMoreThanOne]</param>
-                                <onclick condition="!$EXP[Exp_IsUpdatingNode]">RunPlugin($INFO[Window.Property(url),,&amp;func=do_move&amp;&amp;move::1&amp;&amp;window_prop::url])</onclick>
-                            </include>
-                        </control>
-
                         <include content="Shortcuts_Pallette_LabelDividerLine">
                             <param name="id">3901</param>
                             <param name="label">$LOCALIZE[31511] $LOCALIZE[33063]</param>
@@ -474,6 +379,103 @@
                         <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
                         <onclick>Action(Close)</onclick>
                         <include>Shortcuts_Pallette_OnBack</include>
+                    </include>
+
+                    <!-- ======= -->
+                    <!-- Move Up -->
+                    <!-- ======= -->
+                    <include content="Dialog_Side_Button">
+                        <param name="id">07</param>
+                        <param name="baseid">39</param>
+                        <param name="label">$VAR[Shortcuts_Pallette_Up_Label]</param>
+                        <param name="icon">$VAR[Shortcuts_Pallette_Up_Icon]</param>
+                        <param name="visible">$EXP[Shortcuts_Pallette_Exp_HasMoreThanOne]</param>
+                        <include>Shortcuts_Pallette_OnBack</include>
+                        <onclick condition="!$EXP[Exp_IsUpdatingNode]">RunPlugin($INFO[Window.Property(url),,&amp;func=do_move&amp;&amp;move::-1&amp;&amp;window_prop::url])</onclick>
+                    </include>
+
+                    <!-- ========= -->
+                    <!-- Move Down -->
+                    <!-- ========= -->
+                    <include content="Dialog_Side_Button">
+                        <param name="id">08</param>
+                        <param name="baseid">39</param>
+                        <param name="label">$VAR[Shortcuts_Pallette_Down_Label]</param>
+                        <param name="icon">$VAR[Shortcuts_Pallette_Down_Icon]</param>
+                        <param name="visible">$EXP[Shortcuts_Pallette_Exp_HasMoreThanOne]</param>
+                        <include>Shortcuts_Pallette_OnBack</include>
+                        <onclick condition="!$EXP[Exp_IsUpdatingNode]">RunPlugin($INFO[Window.Property(url),,&amp;func=do_move&amp;&amp;move::1&amp;&amp;window_prop::url])</onclick>
+                    </include>
+
+                    <!-- ======= -->
+                    <!-- Add New -->
+                    <!-- ======= -->
+                    <include content="Dialog_Side_Button">
+                        <param name="id">06</param>
+                        <param name="baseid">39</param>
+                        <param name="label">$LOCALIZE[35261]</param>
+                        <param name="icon">special://skin/extras/icons/circle-plus.png</param>
+                        <param name="visible">!$EXP[Shortcuts_Pallette_Exp_IsAddItem]</param>
+                        <include>Shortcuts_Pallette_OnBack</include>
+                        <onclick condition="!$EXP[Exp_IsUpdatingNode]">SetFocus($INFO[Window.Property(list_id)])</onclick>
+                        <onclick condition="!$EXP[Exp_IsUpdatingNode] + !Integer.IsEqual(Window.Property(list_id),304)">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
+                        <onclick condition="!$EXP[Exp_IsUpdatingNode] + !Integer.IsEqual(Window.Property(list_id),304)">RunPlugin($INFO[Window.Property(url),,&amp;func=do_new])</onclick>
+                        <onclick condition="!$EXP[Exp_IsUpdatingNode] + Integer.IsEqual(Window.Property(list_id),304)">ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
+                        <onclick condition="!$EXP[Exp_IsUpdatingNode] + Integer.IsEqual(Window.Property(list_id),304)">RunPlugin($INFO[Window.Property(url),,&amp;func=do_new&amp;&amp;use_rawpath::True])</onclick>
+                    </include>
+
+
+                    <!-- ======= -->
+                    <!-- Disable -->
+                    <!-- ======= -->
+                    <include content="Dialog_Side_Button">
+                        <param name="id">02</param>
+                        <param name="baseid">39</param>
+                        <param name="label">$LOCALIZE[24021]</param>
+                        <param name="icon">special://skin/extras/icons/circle-cancel.png</param>
+                        <param name="visible">!$EXP[Shortcuts_Pallette_Exp_IsAddItem] + String.IsEmpty(Window.Property(disabled))</param>
+                        <include>Shortcuts_Pallette_OnBack</include>
+                        <onclick condition="!$EXP[Exp_IsUpdatingNode]">RunPlugin($INFO[Window.Property(url),,&amp;func=do_toggle])</onclick>
+                        <onclick condition="!$EXP[Exp_IsUpdatingNode]">SetProperty(disabled,True)</onclick>
+                        <onclick condition="!$EXP[Exp_IsUpdatingNode]">SetFocus(3999)</onclick>
+                    </include>
+                    <!-- Disable: Enable -->
+                    <include content="Dialog_Side_Button">
+                        <param name="id">03</param>
+                        <param name="baseid">39</param>
+                        <param name="label">$LOCALIZE[24022]</param>
+                        <param name="icon">special://skin/extras/icons/circle-check-regular.png</param>
+                        <param name="visible">!$EXP[Shortcuts_Pallette_Exp_IsAddItem] + !String.IsEmpty(Window.Property(disabled))</param>
+                        <include>Shortcuts_Pallette_OnBack</include>
+                        <onclick condition="!$EXP[Exp_IsUpdatingNode]">RunPlugin($INFO[Window.Property(url),,&amp;func=do_toggle])</onclick>
+                        <onclick condition="!$EXP[Exp_IsUpdatingNode]">ClearProperty(disabled)</onclick>
+                        <onclick condition="!$EXP[Exp_IsUpdatingNode]">SetFocus(3999)</onclick>
+                    </include>
+
+                    <!-- ====== -->
+                    <!-- Delete -->
+                    <!-- ====== -->
+                    <include content="Dialog_Side_Button">
+                        <param name="id">04</param>
+                        <param name="baseid">39</param>
+                        <param name="label">$LOCALIZE[117]</param>
+                        <param name="icon">special://skin/extras/icons/trash-can.png</param>
+                        <param name="visible">String.IsEmpty(Window.Property(forced)) + !$EXP[Shortcuts_Pallette_Exp_IsAddItem]</param>
+                        <include>Shortcuts_Pallette_OnBack</include>
+                        <onclick condition="!$EXP[Exp_IsUpdatingNode]">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
+                        <onclick condition="!$EXP[Exp_IsUpdatingNode]">RunPlugin($INFO[Window.Property(url),,&amp;func=do_delete&amp;&amp;False])</onclick>
+                        <onclick condition="!$EXP[Exp_IsUpdatingNode]">SetFocus($INFO[Window.Property(list_id)])</onclick>
+                    </include>
+                    <!-- Delete: Submenu List -->
+                    <include content="Dialog_Side_Button">
+                        <param name="id">05</param>
+                        <param name="baseid">39</param>
+                        <param name="label">$LOCALIZE[117]</param>
+                        <param name="icon">special://skin/extras/icons/trash-can.png</param>
+                        <param name="visible">Integer.IsEqual(Window.Property(list_id),302) + !String.IsEmpty(Container(300).ListItem.Property(submenulist_path))</param>
+                        <include>Shortcuts_Pallette_OnBack</include>
+                        <onclick condition="!$EXP[Exp_IsUpdatingNode]">RunPlugin($INFO[Container(300).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;submenulist_path])</onclick>
+                        <onclick condition="!$EXP[Exp_IsUpdatingNode]">SetFocus($INFO[Window.Property(list_id)])</onclick>
                     </include>
                 </include>
             </include>
