@@ -2,58 +2,19 @@
 <window type="dialog" id="1116">
     <defaultcontrol always="true">22001</defaultcontrol>
     <controls>
-        <include content="Dialog_Overlay_Side">
-            <param name="dialog_size">Dimension_DialogHugeMenu</param>
+        <control type="group">
+            <include>Dimension_DialogHugeMenu</include>
             <include>Animation_Right_Delay</include>
-            <include content="Dialog_Head">
-                <param name="label">$LOCALIZE[111]</param>
-                <param name="sublabel">$VAR[Label_Shortcut_SubHeader_GroupName]$INFO[Container(22001).ListItem.Property(name), > ,]$VAR[Label_Shortcut_SubHeader_EditMode, > ,]</param>
-                <param name="sublabel_include">true</param>
+            <include content="Dialog_Dim_Side">
+                <param name="slide_condition">ControlGroup(9000).HasFocus()</param>
             </include>
-            <control type="group">
-                <right>view_side</right>
-                <height>view_bar</height>
-                <top>view_pad</top>
-                <left>view_pad</left>
-                <include content="Furniture_Gutters">
-                    <control type="label">
-                        <font>font_tiny</font>
-                        <align>right</align>
-                        <textcolor>dialog_fg_30</textcolor>
-                        <label>$INFO[Window(Home).Property(Shortcuts.EditMenu)]$INFO[Window(Home).Property(Shortcuts.EditMode), — ,]$INFO[Window(Home).Property(Shortcuts.EditGUID), — ,]</label>
-                        <top>40</top>
-                    </control>
-                    <include content="Furniture_Busy_Icon">
-                        <param name="hasspinner">true</param>
-                        <param name="spinspinner">true</param>
-                        <centerright>-100</centerright>
-                        <visible>Container(22001).IsUpdating</visible>
-                        <include content="Animation_Fade_In">
-                            <param name="type">visible</param>
-                            <param name="delay">400</param>
-                        </include>
-                    </include>
-                </include>
-            </control>
-            <include content="Dialog_Body">
-                <include content="Dialog_Body_Group">
-                    <control type="group">
-                        <include content="List_DialogSelect">
-                            <param name="id">22001</param>
-                            <param name="item_height">100</param>
-                            <param name="textcolor">dialog_fg_70</param>
-                            <param name="itemlayout_include">Layout_Shortcuts</param>
-                            <param name="altfocus">true</param>
-                            <param name="misc">0</param>
-                            <param name="detailed">$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</param>
-                            <content>plugin://script.skinvariables/?info=get_shortcuts_node&amp;edit=True&amp;skin=$VAR[Path_SkinVariables_SkinFolder]$INFO[Window(Home).Property(SkinVariables.ShortcutsNode.Reload),&amp;reload=,]$INFO[Window(Home).Property(Shortcuts.EditMenu),&amp;,]$INFO[Window(Home).Property(Shortcuts.EditMode),&amp;,]$INFO[Window(Home).Property(Shortcuts.EditGUID),&amp;,]</content>
-                            <onright>9000</onright>
-                            <onleft>Close</onleft>
-                            <onclick>SetFocus(23000)</onclick>
-                        </include>
-                    </control>
-                </include>
 
+            <!-- Bottom Layer -->
+            <include content="Dialog_Background_Side">
+                <param name="dialog_size">Dimension_DialogHugeMenu</param>
+            </include>
+            <!-- Side Buttons -->
+            <include content="Dialog_Body">
                 <include content="Dialog_Side_Grouplist">
                     <param name="id">9000</param>
                     <onleft>22001</onleft>
@@ -104,158 +65,85 @@
                     </include>
                 </include>
             </include>
-        </include>
+
+            <include content="Dialog_Foreground_Side">
+                <param name="dialog_size">Dimension_DialogHugeMenu</param>
+                <param name="slide_condition">ControlGroup(9000).HasFocus()</param>
+                <param name="lines_right">0</param>
+                <param name="topline">true</param>
+                <param name="subline">true</param>
+
+                <!-- Header -->
+                <include content="Dialog_Head">
+                    <param name="label">$LOCALIZE[111]</param>
+                    <param name="sublabel">$VAR[Label_Shortcut_SubHeader_GroupName]$INFO[Container(22001).ListItem.Property(name), > ,]$VAR[Label_Shortcut_SubHeader_EditMode, > ,]</param>
+                    <param name="sublabel_include">true</param>
+                </include>
+                <control type="group">
+                    <right>view_pad</right>
+                    <height>view_bar</height>
+                    <top>view_pad</top>
+                    <left>view_pad</left>
+                    <include content="Furniture_Gutters">
+                        <control type="label">
+                            <font>font_tiny</font>
+                            <align>right</align>
+                            <textcolor>dialog_fg_30</textcolor>
+                            <label>$INFO[Window(Home).Property(Shortcuts.EditMenu)]$INFO[Window(Home).Property(Shortcuts.EditMode), — ,]$INFO[Window(Home).Property(Shortcuts.EditGUID), — ,]</label>
+                            <top>40</top>
+                        </control>
+                        <include content="Furniture_Busy_Icon">
+                            <param name="hasspinner">true</param>
+                            <param name="spinspinner">true</param>
+                            <centerright>-100</centerright>
+                            <visible>Container(22001).IsUpdating</visible>
+                            <include content="Animation_Fade_In">
+                                <param name="type">visible</param>
+                                <param name="delay">400</param>
+                            </include>
+                        </include>
+                    </include>
+                </control>
+
+                <!-- Content -->
+                <include content="Dialog_Body">
+                    <include content="Dialog_Body_Group">
+                        <control type="group">
+                            <include content="List_DialogSelect">
+                                <param name="id">22001</param>
+                                <param name="item_height">100</param>
+                                <param name="textcolor">dialog_fg_70</param>
+                                <param name="itemlayout_include">Layout_Shortcuts</param>
+                                <param name="altfocus">true</param>
+                                <param name="misc">0</param>
+                                <param name="detailed">$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</param>
+                                <content>plugin://script.skinvariables/?info=get_shortcuts_node&amp;edit=True&amp;skin=$VAR[Path_SkinVariables_SkinFolder]$INFO[Window(Home).Property(SkinVariables.ShortcutsNode.Reload),&amp;reload=,]$INFO[Window(Home).Property(Shortcuts.EditMenu),&amp;,]$INFO[Window(Home).Property(Shortcuts.EditMode),&amp;,]$INFO[Window(Home).Property(Shortcuts.EditGUID),&amp;,]</content>
+                                <onright>9000</onright>
+                                <onleft>Close</onleft>
+                                <onclick>SetFocus(23000)</onclick>
+                            </include>
+                        </control>
+                    </include>
+                </include>
+            </include>
+
+        </control>
 
 
-        <include content="Dialog_Overlay_Side">
-            <param name="dialog_size">Dimension_DialogSideMenu</param>
+        <control type="group">
+            <include>Dimension_DialogSideMenu</include>
             <visible>ControlGroup(23000).HasFocus() | ControlGroup(29000).HasFocus()</visible>
             <include>Animation_Right_Delay</include>
-            <include content="Dialog_Head">
-                <param name="label">$INFO[Container(22001).ListItem.Label]</param>
-                <param name="sublabel">$INFO[Container(22001).ListItem.Property(path)]</param>
-                <param name="sublabel_include">true</param>
+            <include content="Dialog_Dim_Side">
+                <param name="slide_condition">ControlGroup(29000).HasFocus()</param>
             </include>
+
+            <!-- Bottom Layer -->
+            <include content="Dialog_Background_Side">
+                <param name="dialog_size">Dimension_DialogSideMenu</param>
+            </include>
+            <!-- Side Buttons -->
             <include content="Dialog_Body">
-                <include content="Dialog_Body_Group">
-                    <control type="grouplist" id="23000">
-                        <onleft>22001</onleft>
-                        <onright>29000</onright>
-                        <onup>23010</onup>
-                        <onback>22001</onback>
-                        <orientation>vertical</orientation>
-
-                        <include content="Shortcuts_Pallette_LabelDividerLine">
-                            <param name="id">23901</param>
-                            <param name="label">$LOCALIZE[31511] $LOCALIZE[33063]</param>
-                        </include>
-
-                        <!-- Enable Disable -->
-                        <!-- <include content="Settings_Button">
-                            <param name="dialog">true</param>
-                            <param name="id">23001</param>
-                            <param name="control">button</param>
-                            <label>$VAR[Label_Shortcut_EnableDisable]</label>
-                            <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle])</onclick>
-                        </include> -->
-
-                        <!-- Shortcuts -->
-                        <include content="Settings_Button">
-                            <param name="dialog">true</param>
-                            <param name="id">23002</param>
-                            <param name="control">button</param>
-                            <label>$LOCALIZE[31511]</label>
-                            <onclick condition="!$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
-                            <onclick condition="$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
-                            <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_choose]$VAR[Path_Shortcut_UseRawPath])</onclick>
-                            <visible>String.IsEmpty(Container(22001).ListItem.Property(forced))</visible>
-                            <onback>22001</onback>
-                        </include>
-
-                        <!-- Action -->
-                        <include content="Settings_Button">
-                            <param name="dialog">true</param>
-                            <param name="id">23003</param>
-                            <param name="control">button</param>
-                            <label>$LOCALIZE[15217]</label>
-                            <onclick condition="!$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
-                            <onclick condition="$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
-                            <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_action]$VAR[Path_Shortcut_UseRawPath])</onclick>
-                            <visible>String.IsEmpty(Container(22001).ListItem.Property(forced))</visible>
-                            <onback>22001</onback>
-                        </include>
-
-                        <!-- Rename -->
-                        <include content="Settings_Button">
-                            <param name="dialog">true</param>
-                            <param name="id">23004</param>
-                            <param name="control">button</param>
-                            <label>$LOCALIZE[118]</label>
-                            <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit])</onclick>
-                            <onback>22001</onback>
-                        </include>
-
-                        <!-- Icon -->
-                        <include content="Settings_Button">
-                            <param name="dialog">true</param>
-                            <param name="id">23005</param>
-                            <param name="control">button</param>
-                            <label>$LOCALIZE[31274]</label>
-                            <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_icon])</onclick>
-                            <onback>22001</onback>
-                        </include>
-
-                        <include content="Shortcuts_Pallette_LabelDividerLine">
-                            <param name="id">23902</param>
-                            <param name="label">$LOCALIZE[31282] $LOCALIZE[33063]</param>
-                            <param name="visible">$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</param>
-                            <onback>22001</onback>
-                        </include>
-
-                        <!-- Widgets: Style -->
-                        <include content="Settings_Button">
-                            <param name="dialog">true</param>
-                            <param name="id">23006</param>
-                            <param name="control">button</param>
-                            <label>$LOCALIZE[736]</label>
-                            <label2>$INFO[Container(22001).ListItem.Property(widget_style)]</label2>
-                            <onclick condition="!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)">RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;widget_style&amp;&amp;Poster&amp;Landscape&amp;Square&amp;Banner&amp;Card&amp;Board&amp;Apps&amp;Icon&amp;Text&amp;&amp;Style&amp;&amp;True])</onclick>
-                            <onclick condition="String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)">RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;widget_style&amp;&amp;Poster&amp;Landscape&amp;Square&amp;Banner&amp;Card&amp;Board&amp;&amp;Style&amp;&amp;True])</onclick>
-                            <visible>$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</visible>
-                            <onback>22001</onback>
-                        </include>
-
-                        <!-- Widgets: Sort by -->
-                        <include content="Settings_Button">
-                            <param name="dialog">true</param>
-                            <param name="id">23007</param>
-                            <param name="control">button</param>
-                            <label>$LOCALIZE[31016]</label>
-                            <label2>[CAPITALIZE]$INFO[Container(22001).ListItem.Property(widget_sortby)][/CAPITALIZE]</label2>
-                            <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;widget_sortby&amp;&amp;default&amp;label&amp;random&amp;dateadded&amp;lastplayed&amp;playcount&amp;year&amp;rating&amp;userrating&amp;votes&amp;genre&amp;country&amp;studio&amp;playlist&amp;episodenumber&amp;season&amp;totalepisodes&amp;watchedepisodes&amp;tvshowstatus&amp;tvshowtitle&amp;file&amp;title&amp;track&amp;time&amp;artist&amp;album&amp;lastupdated&amp;lastused&amp;date&amp;&amp;Sort by&amp;&amp;True])</onclick>
-                            <visible>$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</visible>
-                            <onback>22001</onback>
-                        </include>
-
-                        <!-- Widgets: Sort order -->
-                        <include content="Settings_Button">
-                            <param name="dialog">true</param>
-                            <param name="id">23008</param>
-                            <param name="control">radiobutton</param>
-                            <label>$LOCALIZE[31517]</label>
-                            <selected>!String.IsEmpty(Container(22001).ListItem.Property(widget_sortorder))</selected>
-                            <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;widget_sortorder])</onclick>
-                            <visible>!String.IsEmpty(Container(22001).ListItem.Property(widget_sortby))</visible>
-                            <visible>!String.IsEqual(Container(22001).ListItem.Property(widget_sortby),random)</visible>
-                            <visible>$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</visible>
-                            <onback>22001</onback>
-                        </include>
-
-                        <!-- Widgets: Limit -->
-                        <include content="Settings_Button">
-                            <param name="dialog">true</param>
-                            <param name="id">23009</param>
-                            <param name="control">button</param>
-                            <label>$LOCALIZE[31188]</label>
-                            <label2>$INFO[Container(22001).ListItem.Property(widget_limit)]</label2>
-                            <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_numeric&amp;&amp;widget_limit&amp;&amp;heading::Limit])</onclick>
-                            <visible>$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</visible>
-                            <onback>22001</onback>
-                        </include>
-
-                        <!-- Widgets: Autoscroll -->
-                        <include content="Settings_Button">
-                            <param name="dialog">true</param>
-                            <param name="id">23010</param>
-                            <param name="control">radiobutton</param>
-                            <label>$LOCALIZE[31185]</label>
-                            <selected>!String.IsEmpty(Container(22001).ListItem.Property(widget_autoscroll))</selected>
-                            <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;widget_autoscroll])</onclick>
-                            <visible>$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</visible>
-                            <onback>22001</onback>
-                        </include>
-                    </control>
-                </include>
                 <include content="Dialog_Side_Grouplist">
                     <param name="id">29000</param>
                     <onleft>23000</onleft>
@@ -268,6 +156,165 @@
                     </include>
                 </include>
             </include>
-        </include>
+
+            <include content="Dialog_Foreground_Side">
+                <param name="dialog_size">Dimension_DialogSideMenu</param>
+                <param name="slide_condition">ControlGroup(29000).HasFocus()</param>
+                <param name="lines_right">0</param>
+                <param name="topline">true</param>
+                <param name="subline">true</param>
+
+                <!-- Header -->
+                <include content="Dialog_Head">
+                    <param name="label">$INFO[Container(22001).ListItem.Label]</param>
+                    <param name="sublabel">$INFO[Container(22001).ListItem.Property(path)]</param>
+                    <param name="sublabel_include">true</param>
+                </include>
+
+                <!-- Content -->
+                <include content="Dialog_Body">
+                    <include content="Dialog_Body_Group">
+                        <control type="grouplist" id="23000">
+                            <onleft>22001</onleft>
+                            <onright>29000</onright>
+                            <onup>23010</onup>
+                            <onback>22001</onback>
+                            <orientation>vertical</orientation>
+
+                            <include content="Shortcuts_Pallette_LabelDividerLine">
+                                <param name="id">23901</param>
+                                <param name="label">$LOCALIZE[31511] $LOCALIZE[33063]</param>
+                            </include>
+
+                            <!-- Enable Disable -->
+                            <!-- <include content="Settings_Button">
+                                <param name="dialog">true</param>
+                                <param name="id">23001</param>
+                                <param name="control">button</param>
+                                <label>$VAR[Label_Shortcut_EnableDisable]</label>
+                                <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle])</onclick>
+                            </include> -->
+
+                            <!-- Shortcuts -->
+                            <include content="Settings_Button">
+                                <param name="dialog">true</param>
+                                <param name="id">23002</param>
+                                <param name="control">button</param>
+                                <label>$LOCALIZE[31511]</label>
+                                <onclick condition="!$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
+                                <onclick condition="$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
+                                <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_choose]$VAR[Path_Shortcut_UseRawPath])</onclick>
+                                <visible>String.IsEmpty(Container(22001).ListItem.Property(forced))</visible>
+                                <onback>22001</onback>
+                            </include>
+
+                            <!-- Action -->
+                            <include content="Settings_Button">
+                                <param name="dialog">true</param>
+                                <param name="id">23003</param>
+                                <param name="control">button</param>
+                                <label>$LOCALIZE[15217]</label>
+                                <onclick condition="!$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
+                                <onclick condition="$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
+                                <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_action]$VAR[Path_Shortcut_UseRawPath])</onclick>
+                                <visible>String.IsEmpty(Container(22001).ListItem.Property(forced))</visible>
+                                <onback>22001</onback>
+                            </include>
+
+                            <!-- Rename -->
+                            <include content="Settings_Button">
+                                <param name="dialog">true</param>
+                                <param name="id">23004</param>
+                                <param name="control">button</param>
+                                <label>$LOCALIZE[118]</label>
+                                <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit])</onclick>
+                                <onback>22001</onback>
+                            </include>
+
+                            <!-- Icon -->
+                            <include content="Settings_Button">
+                                <param name="dialog">true</param>
+                                <param name="id">23005</param>
+                                <param name="control">button</param>
+                                <label>$LOCALIZE[31274]</label>
+                                <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_icon])</onclick>
+                                <onback>22001</onback>
+                            </include>
+
+                            <include content="Shortcuts_Pallette_LabelDividerLine">
+                                <param name="id">23902</param>
+                                <param name="label">$LOCALIZE[31282] $LOCALIZE[33063]</param>
+                                <param name="visible">$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</param>
+                                <onback>22001</onback>
+                            </include>
+
+                            <!-- Widgets: Style -->
+                            <include content="Settings_Button">
+                                <param name="dialog">true</param>
+                                <param name="id">23006</param>
+                                <param name="control">button</param>
+                                <label>$LOCALIZE[736]</label>
+                                <label2>$INFO[Container(22001).ListItem.Property(widget_style)]</label2>
+                                <onclick condition="!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)">RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;widget_style&amp;&amp;Poster&amp;Landscape&amp;Square&amp;Banner&amp;Card&amp;Board&amp;Apps&amp;Icon&amp;Text&amp;&amp;Style&amp;&amp;True])</onclick>
+                                <onclick condition="String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)">RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;widget_style&amp;&amp;Poster&amp;Landscape&amp;Square&amp;Banner&amp;Card&amp;Board&amp;&amp;Style&amp;&amp;True])</onclick>
+                                <visible>$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</visible>
+                                <onback>22001</onback>
+                            </include>
+
+                            <!-- Widgets: Sort by -->
+                            <include content="Settings_Button">
+                                <param name="dialog">true</param>
+                                <param name="id">23007</param>
+                                <param name="control">button</param>
+                                <label>$LOCALIZE[31016]</label>
+                                <label2>[CAPITALIZE]$INFO[Container(22001).ListItem.Property(widget_sortby)][/CAPITALIZE]</label2>
+                                <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;widget_sortby&amp;&amp;default&amp;label&amp;random&amp;dateadded&amp;lastplayed&amp;playcount&amp;year&amp;rating&amp;userrating&amp;votes&amp;genre&amp;country&amp;studio&amp;playlist&amp;episodenumber&amp;season&amp;totalepisodes&amp;watchedepisodes&amp;tvshowstatus&amp;tvshowtitle&amp;file&amp;title&amp;track&amp;time&amp;artist&amp;album&amp;lastupdated&amp;lastused&amp;date&amp;&amp;Sort by&amp;&amp;True])</onclick>
+                                <visible>$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</visible>
+                                <onback>22001</onback>
+                            </include>
+
+                            <!-- Widgets: Sort order -->
+                            <include content="Settings_Button">
+                                <param name="dialog">true</param>
+                                <param name="id">23008</param>
+                                <param name="control">radiobutton</param>
+                                <label>$LOCALIZE[31517]</label>
+                                <selected>!String.IsEmpty(Container(22001).ListItem.Property(widget_sortorder))</selected>
+                                <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;widget_sortorder])</onclick>
+                                <visible>!String.IsEmpty(Container(22001).ListItem.Property(widget_sortby))</visible>
+                                <visible>!String.IsEqual(Container(22001).ListItem.Property(widget_sortby),random)</visible>
+                                <visible>$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</visible>
+                                <onback>22001</onback>
+                            </include>
+
+                            <!-- Widgets: Limit -->
+                            <include content="Settings_Button">
+                                <param name="dialog">true</param>
+                                <param name="id">23009</param>
+                                <param name="control">button</param>
+                                <label>$LOCALIZE[31188]</label>
+                                <label2>$INFO[Container(22001).ListItem.Property(widget_limit)]</label2>
+                                <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_numeric&amp;&amp;widget_limit&amp;&amp;heading::Limit])</onclick>
+                                <visible>$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</visible>
+                                <onback>22001</onback>
+                            </include>
+
+                            <!-- Widgets: Autoscroll -->
+                            <include content="Settings_Button">
+                                <param name="dialog">true</param>
+                                <param name="id">23010</param>
+                                <param name="control">radiobutton</param>
+                                <label>$LOCALIZE[31185]</label>
+                                <selected>!String.IsEmpty(Container(22001).ListItem.Property(widget_autoscroll))</selected>
+                                <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;widget_autoscroll])</onclick>
+                                <visible>$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</visible>
+                                <onback>22001</onback>
+                            </include>
+                        </control>
+                    </include>
+                </include>
+            </include>
+
+        </control>
     </controls>
 </window>

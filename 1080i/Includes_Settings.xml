@@ -289,24 +289,20 @@
     </include>
 
     <include name="Settings_Side_Switcher">
-        <include content="Dialog_Overlay_Side">
-            <param name="dialog_size">Dimension_DialogSideMenu</param>
+        <control type="group">
+            <include>Dimension_DialogSideMenu</include>
             <visible>ControlGroup(30040).HasFocus() | ControlGroup(30700).HasFocus()</visible>
             <include>Animation_Right_Delay</include>
-            <include content="Dialog_Head">
-                <param name="label">$LOCALIZE[5]</param>
+            <include content="Dialog_Dim_Side">
+                <param name="slide_condition">ControlGroup(30700).HasFocus()</param>
             </include>
+
+            <!-- Bottom Layer -->
+            <include content="Dialog_Background_Side">
+                <param name="dialog_size">Dimension_DialogSideMenu</param>
+            </include>
+            <!-- Side Buttons -->
             <include content="Dialog_Body">
-                <include content="Dialog_Body_Grouplist">
-                    <param name="id">30040</param>
-                    <onleft condition="Window.IsVisible(settings)">50</onleft>
-                    <onleft condition="Window.IsVisible(addonbrowser)">6000</onleft>
-                    <onleft condition="Window.IsVisible(eventlog)">8000</onleft>
-                    <onleft condition="Window.IsVisible(filemanager)">20</onleft>
-                    <onleft condition="!Window.IsVisible(addonbrowser) + !Window.IsVisible(eventlog)">3</onleft>
-                    <onright>30700</onright>
-                    <include>Items_Settings_SideChanger</include>
-                </include>
                 <include content="Dialog_Side_Grouplist">
                     <param name="id">30700</param>
                     <onright condition="Window.IsVisible(settings)">50</onright>
@@ -328,7 +324,35 @@
                     </include>
                 </include>
             </include>
-        </include>
+
+            <include content="Dialog_Foreground_Side">
+                <param name="dialog_size">Dimension_DialogSideMenu</param>
+                <param name="slide_condition">ControlGroup(30700).HasFocus()</param>
+                <param name="lines_right">0</param>
+                <param name="topline">true</param>
+                <param name="subline">true</param>
+
+                <!-- Header -->
+                <include content="Dialog_Head">
+                    <param name="label">$LOCALIZE[5]</param>
+                </include>
+
+                <!-- Content -->
+                <include content="Dialog_Body">
+                    <include content="Dialog_Body_Grouplist">
+                        <param name="id">30040</param>
+                        <onleft condition="Window.IsVisible(settings)">50</onleft>
+                        <onleft condition="Window.IsVisible(addonbrowser)">6000</onleft>
+                        <onleft condition="Window.IsVisible(eventlog)">8000</onleft>
+                        <onleft condition="Window.IsVisible(filemanager)">20</onleft>
+                        <onleft condition="!Window.IsVisible(addonbrowser) + !Window.IsVisible(eventlog)">3</onleft>
+                        <onright>30700</onright>
+                        <include>Items_Settings_SideChanger</include>
+                    </include>
+                </include>
+            </include>
+
+        </control>
         <include>TouchMode_Settings_Zones</include>
     </include>
 

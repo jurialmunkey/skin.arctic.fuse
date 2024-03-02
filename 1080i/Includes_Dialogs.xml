@@ -154,35 +154,7 @@
         </include>
     </include>
 
-    <include name="Dialog_Overlay_Side_Panel">
-        <definition>
-            <control type="group">
-                <include content="Object_Right" condition="$PARAM[flipped]">
-                    <param name="right">120</param>
-                </include>
-                <include content="Object_Left" condition="![$PARAM[flipped]]">
-                    <param name="left">120</param>
-                </include>
-                <control type="image">
-                    <texture colordiffuse="dialog_fg_12" border="20" flipx="$PARAM[flipped]">common/dialog.png</texture>
-                </control>
-                <include content="Object_Control" condition="Skin.HasSetting(Glass.EnableBorders)">
-                    <param name="control">image</param>
-                    <width>12</width>
-                    <include content="Object_Right" condition="$PARAM[flipped]">
-                        <param name="right">0</param>
-                    </include>
-                    <include content="Object_Left" condition="![$PARAM[flipped]]">
-                        <param name="left">0</param>
-                    </include>
-                    <texture colordiffuse="dialog_fg_12" border="6,20,6,20" flipx="$PARAM[flipped]">common/dialog-edge-outline.png</texture>
-                </include>
-            </control>
-
-        </definition>
-    </include>
-
-    <include name="Dialog_Overlay_Mode_Panel">
+    <include name="Dialog_Overlay_Mode_Glass">
         <definition>
             <control type="image">
                 <include content="Object_Top" condition="$PARAM[flipped]">
@@ -207,61 +179,78 @@
         </definition>
     </include>
 
-    <include name="Dialog_Overlay_Side">
+    <include name="Dialog_Dim_Side">
         <param name="flipx">true</param>
-        <param name="flipped">true</param>
-        <param name="topline">true</param>
-        <param name="subline">true</param>
         <param name="dim_top">-200</param>
         <param name="dim_bottom">-200</param>
         <param name="dim_visible">true</param>
+        <param name="slide_condition">ControlGroup(9000).HasFocus()</param>
+        <definition>
+            <include content="Object_Dim_Side">
+                <param name="flipx">$PARAM[flipx]</param>
+                <top>$PARAM[dim_top]</top>
+                <bottom>$PARAM[dim_bottom]</bottom>
+                <left>-320</left>
+                <right>-320</right>
+                <visible>$PARAM[dim_visible]</visible>
+                <animation effect="slide" start="0" end="-120" time="400" tween="quadratic" reversible="false" condition="$PARAM[slide_condition]">Conditional</animation>
+                <animation effect="slide" start="-120" end="0" time="400" tween="quadratic" reversible="false" condition="![$PARAM[slide_condition]]">Conditional</animation>
+            </include>
+        </definition>
+    </include>
+
+    <include name="Dialog_Background_Glass">
+        <control type="image">
+            <texture colordiffuse="dialog_fg_12" border="20">common/dialog.png</texture>
+        </control>
+    </include>
+
+    <include name="Dialog_Background_Side">
+        <param name="include_glass">false</param>
+        <definition>
+            <control type="group">
+                <include content="Dimension_Padding">
+                    <param name="pad">40</param>
+                </include>
+                <include condition="$EXP[Exp_DialogTheme_IsAdaptive]">Dialog_Background_Blur$PARAM[dialog_size]</include>
+                <include condition="!$EXP[Exp_DialogTheme_IsAdaptive]">Dialog_Background_Blur_Standard</include>
+                <include condition="$PARAM[include_glass]">Dialog_Background_Glass</include>
+            </control>
+        </definition>
+    </include>
+
+    <include name="Dialog_Foreground_Side">
+        <param name="slide_condition">ControlGroup(9000).HasFocus()</param>
+        <param name="topline">true</param>
+        <param name="subline">true</param>
         <param name="lines_right">0</param>
         <definition>
             <control type="group">
-                <include content="Object_Dim_Side">
-                    <param name="flipx">$PARAM[flipx]</param>
-                    <top>$PARAM[dim_top]</top>
-                    <bottom>$PARAM[dim_bottom]</bottom>
-                    <left>-320</left>
-                    <right>-320</right>
-                    <visible>$PARAM[dim_visible]</visible>
+                <animation effect="slide" start="0" end="-120" time="400" tween="quadratic" reversible="false" condition="$PARAM[slide_condition]">Conditional</animation>
+                <animation effect="slide" start="-120" end="0" time="400" tween="quadratic" reversible="false" condition="![$PARAM[slide_condition]]">Conditional</animation>
+                <include content="Dialog_Background_Side">
+                    <param name="include_glass">true</param>
+                    <param name="dialog_size">$PARAM[dialog_size]</param>
                 </include>
+                <nested />
                 <control type="group">
-                    <include content="Dimension_Padding">
-                        <param name="pad">40</param>
+                    <right>80</right>
+                    <left>80</left>
+                    <include content="Object_Control" condition="$PARAM[topline]">
+                        <param name="control">image</param>
+                        <top>160</top>
+                        <height>1</height>
+                        <texture colordiffuse="dialog_fg_12">common/white.png</texture>
+                        <right>$PARAM[lines_right]</right>
                     </include>
-                    <include condition="$EXP[Exp_DialogTheme_IsAdaptive]">Dialog_Background_Blur$PARAM[dialog_size]</include>
-                    <include condition="!$EXP[Exp_DialogTheme_IsAdaptive]">Dialog_Background_Blur_Standard</include>
-                    <control type="group">
-                        <include content="Object_Right" condition="$PARAM[flipped]">
-                            <param name="right">160</param>
-                        </include>
-                        <include content="Object_Left" condition="![$PARAM[flipped]]">
-                            <param name="left">160</param>
-                        </include>
-                        <right>40</right>
-                        <left>40</left>
-                        <include content="Object_Control" condition="$PARAM[topline]">
-                            <param name="control">image</param>
-                            <top>120</top>
-                            <height>1</height>
-                            <texture colordiffuse="dialog_fg_12">common/white.png</texture>
-                            <right>$PARAM[lines_right]</right>
-                        </include>
-                        <include content="Object_Control" condition="$PARAM[subline]">
-                            <param name="control">image</param>
-                            <bottom>40</bottom>
-                            <height>1</height>
-                            <texture colordiffuse="dialog_fg_12">common/white.png</texture>
-                            <right>$PARAM[lines_right]</right>
-                        </include>
-                    </control>
-                    <include content="Dialog_Overlay_Side_Panel">
-                        <param name="flipped">$PARAM[flipped]</param>
+                    <include content="Object_Control" condition="$PARAM[subline]">
+                        <param name="control">image</param>
+                        <bottom>80</bottom>
+                        <height>1</height>
+                        <texture colordiffuse="dialog_fg_12">common/white.png</texture>
+                        <right>$PARAM[lines_right]</right>
                     </include>
                 </control>
-                <nested />
-                <include>$PARAM[dialog_size]</include>
             </control>
         </definition>
     </include>
@@ -326,7 +315,7 @@
         <definition>
             <control type="group">
                 <nested />
-                <right>view_side</right>
+                <right>view_pad</right>
                 <height>view_bar</height>
                 <top>view_pad</top>
                 <left>view_pad</left>
@@ -710,7 +699,7 @@
                 <nested />
                 <top>20</top>
                 <bottom>20</bottom>
-                <centerright>120</centerright>
+                <centerright>0</centerright>
                 <width>scrollbar_w</width>
                 <texturesliderbackground colordiffuse="00ffffff" border="4">scrollbar/scrollv_line.png</texturesliderbackground>
                 <texturesliderbar colordiffuse="main_logo" border="4">scrollbar/scrollv.png</texturesliderbar>
@@ -729,7 +718,9 @@
                     <effect type="slide" start="0,-48" end="0" center="auto" tween="back" easing="out" time="400" />
                 </animation>
                 <include>$PARAM[include_dimensions]</include>
-                <include>Dialog_Overlay_Side_Panel</include>
+                <control type="image">
+                    <texture colordiffuse="dialog_fg_12" border="20">common/dialog.png</texture>
+                </control>
                 <visible>$PARAM[visible]</visible>
                 <control type="group">
                     <include content="Dimension_Padding">
