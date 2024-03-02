@@ -9,13 +9,14 @@
             </include>
 
             <!-- Bottom Layer -->
-            <include content="Dialog_Background_Group">
+            <include content="Dialog_Background_Side">
+                <param name="slide_condition">ControlGroup(9000).HasFocus()</param>
                 <param name="dialog_size">Dimension_DialogWideMenu</param>
-            </include>
-            <!-- Side Buttons -->
-            <include content="Dialog_Body">
-                <include condition="[Window.IsActive(gamevideofilter) | Window.IsActive(gamestretchmode) | Window.IsActive(gamesaves) | Window.IsActive(gamevideorotation) | Window.IsActive(ingamesaves)]">DialogSelect_SideButtons_Games</include>
-                <include condition="![Window.IsActive(gamevideofilter) | Window.IsActive(gamestretchmode) | Window.IsActive(gamesaves) | Window.IsActive(gamevideorotation) | Window.IsActive(ingamesaves)]">DialogSelect_SideButtons_Standard</include>
+                <!-- Side Buttons -->
+                <include content="Dialog_Body">
+                    <include condition="[Window.IsActive(gamevideofilter) | Window.IsActive(gamestretchmode) | Window.IsActive(gamesaves) | Window.IsActive(gamevideorotation) | Window.IsActive(ingamesaves)]">DialogSelect_SideButtons_Games</include>
+                    <include condition="![Window.IsActive(gamevideofilter) | Window.IsActive(gamestretchmode) | Window.IsActive(gamesaves) | Window.IsActive(gamevideorotation) | Window.IsActive(ingamesaves)]">DialogSelect_SideButtons_Standard</include>
+                </include>
             </include>
 
             <include content="Dialog_Foreground_Side">
@@ -44,7 +45,8 @@
                             <param name="textcolor">dialog_fg</param>
                             <pagecontrol>61</pagecontrol>
                             <onright>61</onright>
-                            <onleft>Close</onleft>
+                            <onleft>9000</onleft>
+                            <onback>9000</onback>
                         </include>
                         <include content="List_DialogSelect" condition="![[Window.IsActive(gamevideofilter) | Window.IsActive(gamestretchmode) | Window.IsActive(gamesaves) | Window.IsActive(gamevideorotation) | Window.IsActive(ingamesaves)]]">
                             <param name="id">6</param>
@@ -53,7 +55,8 @@
                             <param name="textcolor">dialog_fg</param>
                             <pagecontrol>62</pagecontrol>
                             <onright>62</onright>
-                            <onleft>Close</onleft>
+                            <onleft>9000</onleft>
+                            <onback>9000</onback>
                         </include>
                         <include content="List_DialogSelect" condition="[Window.IsActive(gamevideofilter) | Window.IsActive(gamestretchmode) | Window.IsActive(gamesaves) | Window.IsActive(gamevideorotation) | Window.IsActive(ingamesaves)]">
                             <param name="id">10811</param>
@@ -62,7 +65,8 @@
                             <param name="textcolor">dialog_fg</param>
                             <pagecontrol>63</pagecontrol>
                             <onright>63</onright>
-                            <onleft>Close</onleft>
+                            <onleft>9000</onleft>
+                            <onback>9000</onback>
                         </include>
                         <control type="group">
                             <height>40</height>
@@ -91,21 +95,18 @@
                         <param name="id">61</param>
                         <visible>Control.IsVisible(3)</visible>
                         <onleft>3</onleft>
-                        <onright>9000</onright>
                     </include>
 
                     <include content="Dialog_Scrollbar">
                         <param name="id">62</param>
                         <visible>Control.IsVisible(6)</visible>
                         <onleft>6</onleft>
-                        <onright>9000</onright>
                     </include>
 
                     <include content="Dialog_Scrollbar">
                         <param name="id">63</param>
                         <visible>Control.IsVisible(10811)</visible>
                         <onleft>10811</onleft>
-                        <onright>9000</onright>
                     </include>
                 </include>
             </include>
@@ -122,7 +123,7 @@
             <include content="Dialog_Preview">
                 <param name="icon">$INFO[Container(6).ListItem.Icon]</param>
                 <visible>Control.IsVisible(6)</visible>
-                <visible>Control.HasFocus(6)</visible>
+                <!-- <visible>Control.HasFocus(6)</visible> -->
                 <visible>String.IsEqual(Control.GetLabel(1),$LOCALIZE[13511]) | String.IsEqual(Control.GetLabel(1),$LOCALIZE[20437])</visible>
                 <animation effect="slide" end="0,200" condition="Container(6).Position(4) | Container(6).Position(5) | Container(6).Position(6) | Container(6).Position(7)">Conditional</animation>
             </include>
@@ -132,7 +133,7 @@
     <include name="DialogSelect_SideButtons_Games">
         <include content="Dialog_Side_Grouplist">
             <param name="id">9000</param>
-            <onleft>63</onleft>
+            <onright>10811</onright>
             <include content="Dialog_Side_Button">
                 <param name="id">01</param>
                 <param name="label">$LOCALIZE[15067]</param>
@@ -167,8 +168,8 @@
     <include name="DialogSelect_SideButtons_Standard">
         <include content="Dialog_Side_Grouplist">
             <param name="id">9000</param>
-            <onleft condition="Control.IsVisible(3)">61</onleft>
-            <onleft condition="Control.IsVisible(6)">62</onleft>
+            <onright condition="Control.IsVisible(3)">3</onright>
+            <onright condition="Control.IsVisible(6)">6</onright>
             <include>Items_DialogSelect_Standard</include>
         </include>
     </include>
@@ -202,15 +203,16 @@
                 </include>
 
                 <!-- Bottom Layer -->
-                <include content="Dialog_Background_Group">
+                <include content="Dialog_Background_Side">
+                    <param name="slide_condition">ControlGroup(9000).HasFocus()</param>
                     <param name="dialog_size">Dimension_DialogFullMenu</param>
-                </include>
-                <!-- Side Buttons -->
-                <include content="Dialog_Body">
-                    <include content="Dialog_Side_Grouplist">
-                        <param name="id">9000</param>
-                        <onleft>62</onleft>
-                        <include>$PARAM[include_sidegrouplist_items]</include>
+                    <!-- Side Buttons -->
+                    <include content="Dialog_Body">
+                        <include content="Dialog_Side_Grouplist">
+                            <param name="id">9000</param>
+                            <onright>7000</onright>
+                            <include>$PARAM[include_sidegrouplist_items]</include>
+                        </include>
                     </include>
                 </include>
 
@@ -248,8 +250,8 @@
                                         <param name="textcolor">dialog_fg</param>
                                         <param name="altfocus">true</param>
                                         <param name="itemlayout_include">Layout_DialogVersions</param>
-                                        <onright>9000</onright>
-                                        <onleft>Close</onleft>
+                                        <onleft>9000</onleft>
+                                        <onright>62</onright>
                                         <right>-20</right>
                                         <pagecontrol>62</pagecontrol>
                                     </include>
@@ -279,7 +281,6 @@
                         <include content="Dialog_Scrollbar">
                             <param name="id">62</param>
                             <onleft>7000</onleft>
-                            <onright>9000</onright>
                         </include>
                     </include>
                 </include>
