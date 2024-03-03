@@ -1,8 +1,199 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
+    <views>50</views>
+    <defaultcontrol always="true">50</defaultcontrol>
+    <menucontrol>303</menucontrol>
+    <include content="_Action_Blur_Onload">
+        <param name="sourceimage">Art(fanart)|Property(fanart)|Art(profile)|Icon</param>
+    </include>
     <controls>
 
-        <!-- TBD -->
+        <include>View_Bumper</include>
+        <include>Defs_TMDbHelper_Loader</include>
+        <include>Background_Main</include>
+        <include>Background_Transition</include>
 
+        <control type="group">
+            <control type="group">
+                <include>Animation_Group_Bumper</include>
+                <include>Animation_View_WindowChange</include>
+                <control type="group">
+                    <top>view_top</top>
+                    <bottom>view_pad</bottom>
+                    <left>view_side</left>
+                    <right>view_pad</right>
+
+                    <control type="group">
+                        <right>760</right>
+
+                        <control type="image">
+                            <texture colordiffuse="main_fg_12">common/white.png</texture>
+                            <height>1</height>
+                            <right>40</right>
+                            <top>-40</top>
+                        </control>
+                        <control type="image">
+                            <texture colordiffuse="main_fg_12">common/white.png</texture>
+                            <height>1</height>
+                            <right>40</right>
+                            <bottom>80</bottom>
+                        </control>
+
+
+                        <include content="List_DialogSelect">
+                            <param name="id">50</param>
+                            <param name="textcolor">main_fg</param>
+                            <param name="control">fixedlist</param>
+                            <param name="itemlayout_include">Layout_MediaList</param>
+                            <left>-20</left>
+                            <right>0</right>
+                            <top>-20</top>
+                            <bottom>100</bottom>
+
+                            <include content="Action_View_Movement_OnLeft">
+                                <param name="id">50</param>
+                                <param name="online">,2</param>
+                                <param name="onleft">64</param>
+                            </include>
+                            <include content="Action_View_Movement_OnBack">
+                                <param name="id">50</param>
+                                <param name="online">,2</param>
+                                <param name="onback">False</param>
+                                <param name="onleft">50</param>
+                            </include>
+                            <onright>SetFocus(65)</onright>
+                            <ondown>9001</ondown>
+                            <onup>9001</onup>
+
+                            <focusposition>4</focusposition>
+                            <movement>4</movement>
+                            <pagecontrol>65</pagecontrol>
+                        </include>
+                    </control>
+
+                    <control type="scrollbar" id="65">
+                        <centerright>-20</centerright>
+                        <bottom>100</bottom>
+                        <top>-20</top>
+                        <width>scrollbar_w</width>
+                        <orientation>vertical</orientation>
+                        <texturesliderbackground colordiffuse="main_fg_12" border="4">scrollbar/scrollv_line.png</texturesliderbackground>
+                        <texturesliderbar colordiffuse="main_logo" border="4">scrollbar/scrollv.png</texturesliderbar>
+                        <showonepage>true</showonepage>
+                        <include>Texture_Scrollbar_V</include>
+                        <onleft>50</onleft>
+                    </control>
+
+                    <control type="group">
+                        <bottom>80</bottom>
+                        <top>-40</top>
+                        <right>0</right>
+                        <width>760</width>
+                        <include>Settings_Box</include>
+
+                        <control type="image">
+                            <aspectratio scalediffuse="true">keep</aspectratio>
+                            <fadetime>300</fadetime>
+                            <bordersize>20</bordersize>
+                            <texture diffuse="diffuse/square_w600_h600.png">$INFO[ListItem.Icon]</texture>
+                        </control>
+                    </control>
+                </control>
+            </control>
+
+            <include>Home_Fade</include>
+            <control type="group">
+                <include>Animation_Group_Bumper</include>
+                <include>Animation_View_WindowChange</include>
+                <include>View_Row_Header</include>
+                <control type="group">
+                    <include>Animation_Half_WindowChange_02</include>
+                    <control type="group">
+                        <height>80</height>
+                        <left>view_side</left>
+                        <centerbottom>100</centerbottom>
+                        <width>settings_category_w</width>
+
+                        <control type="button" id="9001">
+                            <left>-20</left>
+                            <right>40</right>
+                            <onleft>Container.PreviousSortMethod</onleft>
+                            <onright>Container.NextSortMethod</onright>
+                            <onclick>Container.NextSortMethod</onclick>
+                            <ondown>SetFocus(50,0,absolute)</ondown>
+                            <onup>SetFocus(50,99999,absolute)</onup>
+                            <texturenofocus />
+                            <font />
+                        </control>
+
+                        <control type="group">
+                            <width>50</width>
+                            <height>50</height>
+                            <centertop>50%</centertop>
+                            <visible>Control.HasFocus(9001)</visible>
+                            <control type="image">
+                                <include content="Dimension_Padding"><param name="pad">-40</param></include>
+                                <bordersize>40</bordersize>
+                                <bordertexture colordiffuse="shadow_hard">shadows/circle_50-shadow-40.png</bordertexture>
+                                <texture colordiffuse="main_fg_100">diffuse/circle_50.png</texture>
+                            </control>
+                            <control type="image">
+                                <bordersize>2</bordersize>
+                                <texture colordiffuse="main_bg_100">diffuse/circle_50.png</texture>
+                            </control>
+                        </control>
+                        <include>Info_KodiLogo_Image</include>
+
+                        <control type="group">
+                            <left>80</left>
+                            <visible>!Control.HasFocus(9001)</visible>
+                            <include content="Object_InfoCircle_Text_Top">
+                                <width>auto</width>
+                                <label>$INFO[Container.SortMethod,$LOCALIZE[31371]: ,]</label>
+                            </include>
+                            <include content="Object_InfoCircle_Text_Sub">
+                                <label>$INFO[Container.NumItems,[COLOR=main_fg_90][B],[/B][/COLOR]] $LOCALIZE[31022] • $LOCALIZE[31135] $INFO[Container.CurrentPage,[COLOR=main_fg_90][B],[/B][/COLOR] $LOCALIZE[20163] ]$INFO[Container.NumPages,[COLOR=main_fg_90][B],[/B][/COLOR]]</label>
+                            </include>
+                        </control>
+
+                        <control type="group">
+                            <left>80</left>
+                            <visible>Control.HasFocus(9001)</visible>
+                            <include content="Object_InfoCircle_Text_Top">
+                                <width>auto</width>
+                                <label>$INFO[Container.SortMethod,$LOCALIZE[31371]: ,]</label>
+                                <textcolor>$VAR[ColorSelected]</textcolor>
+                            </include>
+                            <include content="Object_InfoCircle_Text_Sub">
+                                <label>$INFO[Container.NumItems,[COLOR=main_fg_90][B],[/B][/COLOR]] $LOCALIZE[31022] • $LOCALIZE[31135] $INFO[Container.CurrentPage,[COLOR=main_fg_90][B],[/B][/COLOR] $LOCALIZE[20163] ]$INFO[Container.NumPages,[COLOR=main_fg_90][B],[/B][/COLOR]]</label>
+                                <textcolor>$VAR[ColorSelected]</textcolor>
+                            </include>
+                        </control>
+                        <control type="group">
+                            <visible>Control.HasFocus(9001)</visible>
+                            <control type="image">
+                                <texture colordiffuse="main_fg_70">special://skin/extras/icons/angle-left.png</texture>
+                                <height>40</height>
+                                <width>40</width>
+                                <centerleft>-30</centerleft>
+                                <centertop>50%</centertop>
+                            </control>
+                            <control type="image">
+                                <texture colordiffuse="main_fg_70" flipx="true">special://skin/extras/icons/angle-left.png</texture>
+                                <height>40</height>
+                                <width>40</width>
+                                <centerright>30</centerright>
+                                <centertop>50%</centertop>
+                            </control>
+                        </control>
+                    </control>
+                </control>
+            </control>
+            <include content="Home_Menu">
+                <param name="onlist">50</param>
+            </include>
+        </control>
+
+        <include>View_Dialog_Plot</include>
     </controls>
 </window>
