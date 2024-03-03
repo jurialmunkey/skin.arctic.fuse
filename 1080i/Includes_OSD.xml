@@ -189,7 +189,7 @@
 
     <include name="OSD_Codecs_FPS">
         <control type="group">
-            <width>60</width>
+            <width>50</width>
             <height>48</height>
             <centertop>50%</centertop>
             <visible>!String.IsEmpty(Player.Process(VideoFPS)) + Integer.IsGreater(Player.Process(VideoFPS),0)</visible>
@@ -467,7 +467,7 @@
                 <orientation>vertical</orientation>
                 <itemgap>0</itemgap>
                 <height>350</height>
-                <width>400</width>
+                <width>355</width>
                 <control type="group">
                     <top>25</top>
                 </control>
@@ -521,8 +521,8 @@
 
             <!-- Right Details -->
             <control type="grouplist">
-                <left>380</left>
-                <width>800</width>
+                <left>300</left>
+                <right>800</right>
                 <top>-50</top>
                 <orientation>vertical</orientation>
                 <itemgap>0</itemgap>
@@ -564,24 +564,42 @@
             </control>
 
             <control type="group">
+                <right>-40</right>
+                <bottom>80</bottom>
+                <height>view_poster_itemlayout_h</height>
                 <visible>!VideoPlayer.Content(livetv)</visible>
-                <bottom>120</bottom>
-                <right>0</right>
-                <width>view_poster_item_w</width>
-                <height>view_poster_item_h</height>
-                <control type="image">
-                    <aspectratio scalediffuse="false">scale</aspectratio>
-                    <texture background="true" diffuse="diffuse/poster_w200_h294.png">$VAR[Image_OSD_PosterImage]</texture>
+                <control type="group">
+                    <right>0</right>
+                    <height>view_poster_itemlayout_h</height>
+                    <width>view_board_itemlayout_w</width>
+                    <include content="Layout_Poster">
+                        <param name="icon">$VAR[Image_OSD_Landscape]</param>
+                        <param name="diffuse">diffuse/landscape_w520_h294.png</param>
+                        <param name="indicator">true</param>
+                        <param name="item_w">view_board_item_w</param>
+                        <param name="item_h">view_poster_item_h</param>
+                    </include>
+                </control>
+                <control type="group">
+                    <right>view_board_itemlayout_w</right>
+                    <height>view_poster_itemlayout_h</height>
+                    <width>view_poster_itemlayout_w</width>
+                    <include content="Layout_Poster">
+                        <param name="icon">$VAR[Image_OSD_Poster]</param>
+                        <param name="indicator">false</param>
+                        <param name="item_w">view_poster_item_w</param>
+                        <param name="item_h">view_poster_item_h</param>
+                    </include>
                 </control>
             </control>
 
             <!-- Codecs -->
-            <control type="grouplist">
+            <control type="group">
                 <centerbottom>20</centerbottom>
-                <include content="OSD_Codecs">
-                    <param name="include_fps">false</param>
-                </include>
+                <height>80</height>
+                <include>OSD_Codecs</include>
             </control>
+
             <control type="image">
                 <right>0</right>
                 <centerbottom>20</centerbottom>
@@ -677,13 +695,10 @@
 
     <include name="OSD_Progress_Details">
         <control type="grouplist">
-            <visible>Skin.HasSetting(OSD.DetailsOnSeek) | Window.IsActive(videoosd) | Window.IsActive(musicosd) | Window.IsActive(script-cu-lrclyrics-main.xml) | Window.IsActive(DialogFullScreenInfo.xml) | $EXP[Exp_OSD_ExpandInfo] | Skin.HasSetting(OSD.DisplayTitleDetailsOnSeek)</visible>
-
+            <visible>Window.IsActive(musicosd) | Window.IsActive(script-cu-lrclyrics-main.xml) | Window.IsActive(DialogFullScreenInfo.xml) | $EXP[Exp_OSD_FullInfoPanel] | Skin.HasSetting(OSD.DisplayTitleDetailsOnSeek)</visible>
             <animation effect="fade" start="0" end="100" time="300" delay="200" condition="Window.IsVisible(DialogSeekBar.xml)">Visible</animation>
             <animation effect="fade" start="0" end="100" time="300" delay="0" condition="!Window.IsVisible(DialogSeekBar.xml)">Visible</animation>
             <animation effect="fade" end="0" start="100" time="300">Hidden</animation>
-
-
             <align>top</align>
             <left>view_side</left>
             <width>info_panel_w</width>
@@ -903,24 +918,50 @@
         </control>
     </include>
 
-
     <include name="OSD_Codecs">
+        <param name="anchor">true</param>
+        <param name="include_fps">true</param>
+        <param name="color">panel_fg</param>
+        <definition>
+            <control type="grouplist">
+                <centertop>50%</centertop>
+                <orientation>horizontal</orientation>
+                <align>left</align>
+                <itemgap>30</itemgap>
+                <height>80</height>
+                <usecontrolcoords>true</usecontrolcoords>
+                <left>-80</left>
+                <control type="group">
+                    <width>50</width>
+                </control>
+                <include content="OSD_Codecs_Icon" condition="[Skin.String(Furniture.CodecStyle,Colour) | Skin.String(Furniture.CodecStyle,Monochrome)]">
+                    <param name="include_fps">$PARAM[include_fps]</param>
+                    <param name="color">$PARAM[color]</param>
+                    <param name="anchor">$PARAM[anchor]</param>
+                </include>
+                <include content="Info_Codecs" condition="![Skin.String(Furniture.CodecStyle,Colour) | Skin.String(Furniture.CodecStyle,Monochrome)]">
+                    <param name="listitem">VideoPlayer</param>
+                    <param name="visible">true</param>
+                    <param name="top_textcolor">$PARAM[color]_90</param>
+                    <param name="sub_textcolor">$PARAM[color]_70</param>
+                    <param name="anchor">$PARAM[anchor]</param>
+                </include>
+            </control>
+        </definition>
+    </include>
+
+
+    <include name="OSD_Codecs_Icon">
         <param name="anchor">true</param>
         <param name="color">panel_fg</param>
         <param name="include_fps">true</param>
         <definition>
 
-            <orientation>horizontal</orientation>
-            <align>left</align>
-            <itemgap>20</itemgap>
-            <height>80</height>
-            <usecontrolcoords>true</usecontrolcoords>
-
-            <!-- <control type="group">
+            <control type="group">
                 <width>50</width>
                 <include>Info_KodiLogo_Image</include>
                 <visible>$PARAM[anchor]</visible>
-            </control> -->
+            </control>
 
             <include content="Info_Codecs_StackedText">
                 <param name="topcolor">$VAR[Info_Codecs_Resolution_Color_$PARAM[color]_90]</param>
@@ -928,7 +969,8 @@
                 <param name="toplabel">$VAR[Label_OSD_VideoQuality]</param>
                 <param name="bottomlabel">$VAR[Label_OSD_VideoResolution]</param>
                 <param name="visible">!String.IsEmpty(VideoPlayer.VideoResolution)</param>
-                <param name="width">50</param>
+                <param name="width">46</param>
+                <param name="left">-4</param>
             </include>
 
             <!-- Codec / Aspect -->
@@ -938,6 +980,7 @@
                 <param name="bottomlabel">[UPPERCASE]$INFO[VideoPlayer.VideoCodec][/UPPERCASE]</param>
                 <param name="toplabel">$INFO[VideoPlayer.VideoAspect]</param>
                 <param name="visible">!String.IsEmpty(VideoPlayer.VideoCodec) + !String.IsEmpty(VideoPlayer.VideoAspect)</param>
+                <param name="left">-10</param>
             </include>
 
             <!-- FPS -->
@@ -954,6 +997,7 @@
                 <param name="width">48</param>
                 <param name="iconwidth">64</param>
                 <param name="iconheight">56</param>
+                <param name="left">-10</param>
                 <param name="visible">VideoPlayer.IsStereoscopic</param>
             </include>
 
@@ -963,6 +1007,7 @@
                 <param name="channelscolor">$PARAM[color]_90</param>
                 <param name="iconcolor">$PARAM[color]_90</param>
                 <param name="imagecolor">$VAR[Info_Codecs_AudioChannels_Color_$PARAM[color]_90]</param>
+                <param name="left">-10</param>
             </include>
 
             <!-- AudioCodec -->
@@ -970,9 +1015,32 @@
                 <param name="icon">$VAR[Image_OSD_AudioCodec]</param>
                 <param name="colordiffuse">$PARAM[color]_90</param>
                 <param name="width">80</param>
-                <param name="iconwidth">100</param>
+                <param name="iconwidth">94</param>
                 <param name="iconheight">48</param>
+                <param name="left">-10</param>
                 <param name="visible">!String.IsEmpty(VideoPlayer.AudioCodec)</param>
+            </include>
+
+            <!-- HDRType -->
+            <include content="Info_Codecs_MonoIcon">
+                <param name="icon">$INFO[VideoPlayer.HdrType,hdr/,.png]</param>
+                <param name="colordiffuse">$PARAM[color]_90</param>
+                <param name="width">80</param>
+                <param name="iconwidth">64</param>
+                <param name="iconheight">64</param>
+                <param name="left">-10</param>
+                <param name="visible">!String.IsEmpty(VideoPlayer.HdrType)</param>
+            </include>
+
+            <!-- Other -->
+            <include content="Info_Codecs_MonoIcon">
+                <param name="icon">$INFO[VideoPlayer.VideoVersionName,version/,.png]</param>
+                <param name="colordiffuse">$PARAM[color]_90</param>
+                <param name="width">80</param>
+                <param name="iconwidth">48</param>
+                <param name="iconheight">48</param>
+                <param name="left">-22</param>
+                <param name="visible">!String.IsEmpty(VideoPlayer.VideoVersionName)</param>
             </include>
         </definition>
     </include>
@@ -1206,7 +1274,7 @@
                     <width>view_landscape_item_w</width>
                     <include>Object_ItemBack</include>
                     <control type="image">
-                        <texture background="true" diffuse="diffuse/landscape_w380_h214.png">$VAR[Image_OSD_PVR_Icon]</texture>
+                        <texture background="true" diffuse="diffuse/landscape_w380_h214.png">$VAR[Image_OSD_Landscape]</texture>
                         <aspectratio scalediffuse="false">keep</aspectratio>
                     </control>
                     <control type="group">

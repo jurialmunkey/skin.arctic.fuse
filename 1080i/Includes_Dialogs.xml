@@ -185,6 +185,7 @@
         <param name="dim_bottom">-200</param>
         <param name="dim_visible">true</param>
         <param name="slide_condition">ControlGroup(9000).HasFocus()</param>
+        <param name="slide_animation">true</param>
         <definition>
             <include content="Object_Dim_Side">
                 <param name="flipx">$PARAM[flipx]</param>
@@ -193,7 +194,7 @@
                 <left>-320</left>
                 <right>-320</right>
                 <visible>$PARAM[dim_visible]</visible>
-                <include content="Animation_SlideIn_Dialog_Side">
+                <include content="Animation_SlideIn_Dialog_Side" condition="$PARAM[slide_animation]">
                     <param name="slide_condition">$PARAM[slide_condition]</param>
                 </include>
             </include>
@@ -237,15 +238,16 @@
     </include>
 
     <include name="Dialog_Foreground_Side">
+        <param name="slide_animation">false</param>
         <param name="slide_condition">ControlGroup(9000).HasFocus()</param>
         <param name="topline">true</param>
         <param name="subline">true</param>
         <param name="lines_right">0</param>
         <definition>
             <control type="group">
-                <!-- <include content="Animation_SlideIn_Dialog_Side">
+                <include content="Animation_SlideIn_Dialog_Side" condition="$PARAM[slide_animation]">
                     <param name="slide_condition">$PARAM[slide_condition]</param>
-                </include> -->
+                </include>
                 <include content="Dialog_Background_Group">
                     <param name="include_glass">true</param>
                     <param name="dialog_size">$PARAM[dialog_size]</param>
@@ -516,7 +518,7 @@
                 </control>
                 <include content="Object_Control" condition="Skin.HasSetting(Glass.EnableBorders)">
                     <param name="control">image</param>
-                    <texture colordiffuse="dialog_fg_12" border="40">common/menu-outline.png</texture>
+                    <texture colordiffuse="panel_fg_12" border="40">common/menu-outline.png</texture>
                 </include>
             </control>
         </definition>
@@ -660,12 +662,12 @@
     <include name="Dialog_Outline">
         <include content="Object_Control" condition="Skin.HasSetting(Glass.EnableBorders)">
             <param name="control">image</param>
-            <texture colordiffuse="dialog_fg_12" border="12">common/box-outline.png</texture>
+            <texture colordiffuse="panel_fg_12" border="12">common/box-outline.png</texture>
         </include>
     </include>
 
     <include name="Dialog_Box">
-        <param name="colordiffuse">dialog_fg_12</param>
+        <param name="colordiffuse">panel_fg_12</param>
         <definition>
             <include content="Object_Shadow_40" condition="Skin.HasSetting(Glass.EnableBorders)">
                 <param name="colordiffuse">shadow_soft</param>
@@ -677,7 +679,7 @@
     </include>
 
     <include name="Dialog_InnerBox">
-        <param name="colordiffuse">dialog_bg_12</param>
+        <param name="colordiffuse">panel_bg_12</param>
         <definition>
             <include content="Object_InnerShadow_40" condition="Skin.HasSetting(Glass.EnableBorders)">
                 <param name="colordiffuse">shadow_soft</param>
@@ -691,7 +693,8 @@
     <include name="Dialog_Outline_InnerBox">
         <definition>
             <control type="group">
-                <include>Dialog_InnerBox</include>
+                <include condition="$EXP[Exp_DialogTheme_IsLight]">Dialog_Box</include>
+                <include condition="!$EXP[Exp_DialogTheme_IsLight]">Dialog_InnerBox</include>
                 <nested />
                 <include>Dialog_Outline</include>
             </control>
@@ -728,17 +731,19 @@
     </include>
 
     <include name="Dialog_VideoPIP">
-        <param name="include_dimensions">Dimension_Dialog_VideoPIP_Standard</param>
+        <param name="include_dimensions">Dimension_Dialog_VideoPIP_Smaller</param>
+        <param name="visible">true</param>
         <definition>
             <include content="Dialog_Background_Blur">
                 <param name="diffuse">diffuse/landscape_w720_h405.png</param>
-                <animation type="WindowOpen" reversible="false">
-                    <effect type="slide" start="0,-48" end="0" center="auto" tween="back" easing="out" time="400" />
-                </animation>
                 <include>$PARAM[include_dimensions]</include>
                 <control type="image">
                     <texture colordiffuse="dialog_fg_12" border="20">common/dialog.png</texture>
                 </control>
+                <include content="Animation_SlideIn_Dialog">
+                    <param name="windowopen_condition">false</param>
+                </include>
+                <visible>Player.HasVideo</visible>
                 <visible>$PARAM[visible]</visible>
                 <control type="group">
                     <include content="Dimension_Padding">
