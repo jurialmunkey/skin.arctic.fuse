@@ -5,7 +5,7 @@
     <onunload>ClearProperty(Shortcuts.Position,Home)</onunload>
     <controls>
         <control type="group">
-            <include>Dimension_DialogFullMenu</include>
+            <include>Dimension_DialogMainMenu</include>
             <include>Animation_Right_Delay</include>
             <include content="Dialog_Dim_Side">
                 <param name="slide_condition">True</param>
@@ -14,7 +14,7 @@
             <!-- Bottom Layer -->
             <include content="Dialog_Background_Side">
                 <param name="slide_condition">True</param>
-                <param name="dialog_size">Dimension_DialogFullMenu</param>
+                <param name="dialog_size">Dimension_DialogMainMenu</param>
                 <!-- Side Buttons -->
                 <include content="Dialog_Body">
                     <include content="Dialog_Side_Grouplist">
@@ -46,20 +46,14 @@
                             <onclick condition="$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
                             <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_new]$VAR[Path_Shortcut_UseRawPath])</onclick>
                         </include>
-                        <include content="Dialog_Side_Button">
-                            <param name="id">02</param>
-                            <param name="label">$LOCALIZE[21435]</param>
-                            <param name="icon">special://skin/extras/icons/pen-to-square.png</param>
-                            <onclick>SetFocus(29001)</onclick>
-                        </include>
                     </include>
                 </include>
             </include>
 
             <include content="Dialog_Foreground_Side">
-                <param name="dialog_size">Dimension_DialogFullMenu</param>
+                <param name="dialog_size">Dimension_DialogMainMenu</param>
                 <param name="slide_condition">True</param>
-                <param name="lines_right">0</param>
+                <param name="lines_right">600</param>
                 <param name="topline">true</param>
                 <param name="subline">true</param>
 
@@ -69,36 +63,21 @@
                     <param name="sublabel">$VAR[Label_Shortcut_SubHeader_GroupName]$INFO[Container(22001).ListItem.Property(name), > ,]$VAR[Label_Shortcut_SubHeader_EditMode, > ,]</param>
                     <param name="sublabel_include">true</param>
                 </include>
-                <control type="group">
-                    <right>view_pad</right>
-                    <height>view_bar</height>
-                    <top>view_pad</top>
+                <control type="label">
+                    <font>font_tiny</font>
+                    <align>left</align>
+                    <textcolor>dialog_fg_30</textcolor>
+                    <label>$INFO[Window(Home).Property(Shortcuts.EditMenu)]$INFO[Window(Home).Property(Shortcuts.EditMode), — ,]$INFO[Window(Home).Property(Shortcuts.EditGUID), — ,]</label>
+                    <bottom>40</bottom>
+                    <height>40</height>
                     <left>view_pad</left>
-                    <include content="Furniture_Gutters">
-                        <control type="label">
-                            <font>font_tiny</font>
-                            <align>right</align>
-                            <textcolor>dialog_fg_30</textcolor>
-                            <label>$INFO[Window(Home).Property(Shortcuts.EditMenu)]$INFO[Window(Home).Property(Shortcuts.EditMode), — ,]$INFO[Window(Home).Property(Shortcuts.EditGUID), — ,]</label>
-                            <top>40</top>
-                        </control>
-                        <include content="Furniture_Busy_Icon">
-                            <param name="hasspinner">true</param>
-                            <param name="spinspinner">true</param>
-                            <centerright>100</centerright>
-                            <visible>Container(22001).IsUpdating</visible>
-                            <include content="Animation_Fade_In">
-                                <param name="type">visible</param>
-                                <param name="delay">400</param>
-                            </include>
-                        </include>
-                    </include>
+                    <right>view_pad</right>
                 </control>
-
                 <!-- Content -->
                 <include content="Dialog_Body">
                     <include content="Dialog_Body_Group">
                         <control type="group">
+                            <right>600</right>
                             <include content="List_DialogSelect">
                                 <param name="id">22001</param>
                                 <param name="item_height">100</param>
@@ -111,6 +90,238 @@
                                 <onleft>9000</onleft>
                                 <onback>9000</onback>
                                 <onclick>SetFocus(29001)</onclick>
+                                <onright>23000</onright>
+                            </include>
+                        </control>
+                        <control type="group">
+                            <right>0</right>
+                            <width>600</width>
+                            <include content="Dialog_Outline_InnerBox">
+                                <top>-20</top>
+                                <bottom>-20</bottom>
+                                <left>20</left>
+                                <right>20</right>
+                                <control type="group">
+                                    <include content="Dimension_Padding">
+                                        <param name="pad">20</param>
+                                    </include>
+                                    <control type="grouplist" id="23000">
+                                        <onleft>22001</onleft>
+                                        <onup>23010</onup>
+                                        <onback>22001</onback>
+                                        <orientation>vertical</orientation>
+
+                                        <include content="Settings_Button">
+                                            <param name="dialog">true</param>
+                                            <param name="id">23001</param>
+                                            <param name="control">button</param>
+                                            <label>$VAR[Label_Shortcut_EnableDisable]</label>
+                                            <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle])</onclick>
+                                        </include>
+
+                                        <include content="Settings_Label">
+                                            <param name="dialog">true</param>
+                                            <param name="id">23901</param>
+                                            <label>$LOCALIZE[31025] $LOCALIZE[33063]</label>
+                                            <onback>22001</onback>
+                                            <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True) | String.IsEmpty(Container(22001).ListItem.Property(forced))</visible>
+                                        </include>
+
+                                        <control type="grouplist" id="29000">
+                                            <orientation>horizontal</orientation>
+                                            <top>-40</top>
+                                            <height>120</height>
+                                            <align>left</align>
+                                            <left>-20</left>
+                                            <onup>23001</onup>
+                                            <ondown>23006</ondown>
+                                            <!-- Shortcuts -->
+                                            <include content="Dialog_Side_Button">
+                                                <param name="dialog">true</param>
+                                                <param name="vertical">false</param>
+                                                <param name="itemgap">0</param>
+                                                <param name="baseid">29</param>
+                                                <param name="id">02</param>
+                                                <param name="control">button</param>
+                                                <param name="label">$LOCALIZE[31511]</param>
+                                                <param name="visible">String.IsEmpty(Container(22001).ListItem.Property(forced)) + !String.IsEqual(Container(22001).ListItem.Property(disabled),True)</param>
+                                                <param name="icon">special://skin/extras/icons/share.png</param>
+                                                <onclick condition="!$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
+                                                <onclick condition="$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
+                                                <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_choose]$VAR[Path_Shortcut_UseRawPath])</onclick>
+                                                <onback>22001</onback>
+                                                <onup>23001</onup>
+                                                <ondown>23006</ondown>
+                                            </include>
+
+                                            <!-- Action -->
+                                            <include content="Dialog_Side_Button">
+                                                <param name="dialog">true</param>
+                                                <param name="vertical">false</param>
+                                                <param name="itemgap">0</param>
+                                                <param name="baseid">29</param>
+                                                <param name="id">03</param>
+                                                <param name="control">button</param>
+                                                <param name="label">$LOCALIZE[15217]</param>
+                                                <param name="visible">String.IsEmpty(Container(22001).ListItem.Property(forced)) + !String.IsEqual(Container(22001).ListItem.Property(disabled),True)</param>
+                                                <param name="icon">special://skin/extras/icons/terminal.png</param>
+                                                <onclick condition="!$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
+                                                <onclick condition="$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
+                                                <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_action]$VAR[Path_Shortcut_UseRawPath])</onclick>
+                                                <onback>22001</onback>
+                                                <onup>23001</onup>
+                                                <ondown>23006</ondown>
+                                            </include>
+
+                                            <!-- Rename -->
+                                            <include content="Dialog_Side_Button">
+                                                <param name="dialog">true</param>
+                                                <param name="vertical">false</param>
+                                                <param name="itemgap">0</param>
+                                                <param name="baseid">29</param>
+                                                <param name="id">04</param>
+                                                <param name="control">button</param>
+                                                <param name="label">$LOCALIZE[118]</param>
+                                                <param name="icon">special://skin/extras/icons/i-cursor.png</param>
+                                                <param name="visible">!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</param>
+                                                <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit])</onclick>
+                                                <onback>22001</onback>
+                                                <onup>23001</onup>
+                                                <ondown>23006</ondown>
+                                            </include>
+
+                                            <!-- Icon -->
+                                            <include content="Dialog_Side_Button">
+                                                <param name="dialog">true</param>
+                                                <param name="vertical">false</param>
+                                                <param name="itemgap">0</param>
+                                                <param name="baseid">29</param>
+                                                <param name="id">05</param>
+                                                <param name="control">button</param>
+                                                <param name="label">$LOCALIZE[31274]</param>
+                                                <param name="icon">special://skin/extras/icons/image.png</param>
+                                                <param name="visible">!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</param>
+                                                <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_icon])</onclick>
+                                                <onback>22001</onback>
+                                                <onup>23001</onup>
+                                                <ondown>23006</ondown>
+                                            </include>
+
+                                            <!-- Delete -->
+                                            <include content="Dialog_Side_Button">
+                                                <param name="dialog">true</param>
+                                                <param name="vertical">false</param>
+                                                <param name="itemgap">0</param>
+                                                <param name="baseid">29</param>
+                                                <param name="id">07</param>
+                                                <param name="label">$LOCALIZE[117]</param>
+                                                <param name="icon">special://skin/extras/icons/trash-can.png</param>
+                                                <param name="visible">String.IsEmpty(Container(22001).ListItem.Property(forced))</param>
+                                                <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_delete&amp;&amp;False])</onclick>
+                                                <onback>22001</onback>
+                                                <onup>23001</onup>
+                                                <ondown>23006</ondown>
+                                            </include>
+                                        </control>
+
+                                        <include content="Settings_Label">
+                                            <param name="dialog">true</param>
+                                            <param name="id">23902</param>
+                                            <label>$LOCALIZE[31282] $LOCALIZE[33063]</label>
+                                            <visible>$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</visible>
+                                            <onback>22001</onback>
+                                            <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
+                                        </include>
+
+                                        <!-- Widgets: Style -->
+                                        <include content="Settings_Button">
+                                            <param name="dialog">true</param>
+                                            <param name="id">23006</param>
+                                            <param name="control">button</param>
+                                            <label>$LOCALIZE[736]</label>
+                                            <label2>$INFO[Container(22001).ListItem.Property(widget_style)]</label2>
+                                            <onclick condition="!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)">RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;widget_style&amp;&amp;Poster&amp;Landscape&amp;Square&amp;Banner&amp;Card&amp;Board&amp;Apps&amp;Icon&amp;Text&amp;&amp;Style&amp;&amp;True])</onclick>
+                                            <onclick condition="String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)">RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;widget_style&amp;&amp;Poster&amp;Landscape&amp;Square&amp;Banner&amp;Card&amp;Board&amp;&amp;Style&amp;&amp;True])</onclick>
+                                            <visible>$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</visible>
+                                            <onback>22001</onback>
+                                            <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
+                                        </include>
+
+                                        <!-- Widgets: Sort by -->
+                                        <include content="Settings_Button">
+                                            <param name="dialog">true</param>
+                                            <param name="id">23007</param>
+                                            <param name="control">button</param>
+                                            <label>$LOCALIZE[31016]</label>
+                                            <label2>[CAPITALIZE]$INFO[Container(22001).ListItem.Property(widget_sortby)][/CAPITALIZE]</label2>
+                                            <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;widget_sortby&amp;&amp;default&amp;label&amp;random&amp;dateadded&amp;lastplayed&amp;playcount&amp;year&amp;rating&amp;userrating&amp;votes&amp;genre&amp;country&amp;studio&amp;playlist&amp;episodenumber&amp;season&amp;totalepisodes&amp;watchedepisodes&amp;tvshowstatus&amp;tvshowtitle&amp;file&amp;title&amp;track&amp;time&amp;artist&amp;album&amp;lastupdated&amp;lastused&amp;date&amp;&amp;Sort by&amp;&amp;True])</onclick>
+                                            <visible>$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</visible>
+                                            <onback>22001</onback>
+                                            <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
+                                        </include>
+
+                                        <!-- Widgets: Sort order -->
+                                        <include content="Settings_Button">
+                                            <param name="dialog">true</param>
+                                            <param name="id">23008</param>
+                                            <param name="control">radiobutton</param>
+                                            <label>$LOCALIZE[31517]</label>
+                                            <selected>!String.IsEmpty(Container(22001).ListItem.Property(widget_sortorder))</selected>
+                                            <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;widget_sortorder])</onclick>
+                                            <visible>!String.IsEmpty(Container(22001).ListItem.Property(widget_sortby))</visible>
+                                            <visible>!String.IsEqual(Container(22001).ListItem.Property(widget_sortby),random)</visible>
+                                            <visible>$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</visible>
+                                            <onback>22001</onback>
+                                            <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
+                                        </include>
+
+                                        <!-- Widgets: Limit -->
+                                        <include content="Settings_Button">
+                                            <param name="dialog">true</param>
+                                            <param name="id">23009</param>
+                                            <param name="control">button</param>
+                                            <label>$LOCALIZE[31188]</label>
+                                            <label2>$INFO[Container(22001).ListItem.Property(widget_limit)]</label2>
+                                            <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_numeric&amp;&amp;widget_limit&amp;&amp;heading::Limit])</onclick>
+                                            <visible>$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</visible>
+                                            <onback>22001</onback>
+                                            <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
+                                        </include>
+
+                                        <!-- Widgets: Autoscroll -->
+                                        <include content="Settings_Button">
+                                            <param name="dialog">true</param>
+                                            <param name="id">23010</param>
+                                            <param name="control">radiobutton</param>
+                                            <label>$LOCALIZE[31185]</label>
+                                            <selected>!String.IsEmpty(Container(22001).ListItem.Property(widget_autoscroll))</selected>
+                                            <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;widget_autoscroll])</onclick>
+                                            <visible>$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</visible>
+                                            <onback>22001</onback>
+                                            <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
+                                        </include>
+
+
+                                        <!-- Side Menu Options -->
+                                        <include content="Settings_Label">
+                                            <param name="dialog">true</param>
+                                            <param name="id">23903</param>
+                                            <label>$LOCALIZE[31416] $LOCALIZE[33063]</label>
+                                            <visible>String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=sidemenu)</visible>
+                                            <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
+                                        </include>
+                                        <!-- Side Menu: Highlight Type -->
+                                        <include content="Settings_Button">
+                                            <param name="dialog">true</param>
+                                            <param name="id">23011</param>
+                                            <label>$LOCALIZE[467]$INFO[Container(22001).ListItem.Property(expression),: [CAPITALIZE],[/CAPITALIZE]]</label>
+                                            <visible>String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=sidemenu)</visible>
+                                            <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
+                                            <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;expression&amp;&amp;home&amp;movies&amp;tvshows&amp;music&amp;livetv&amp;addons&amp;pictures&amp;weather&amp;videos&amp;search&amp;none&amp;&amp;Highlight type&amp;&amp;True])</onclick>
+                                        </include>
+
+                                    </control>
+                                </control>
                             </include>
                         </control>
                     </include>
@@ -119,258 +330,16 @@
         </control>
 
 
-        <control type="group">
-            <include>Dimension_DialogSideMenu</include>
-            <visible>ControlGroup(23000).HasFocus() | ControlGroup(29000).HasFocus()</visible>
-            <include>Animation_Right_Delay</include>
-            <include content="Dialog_Dim_Side">
-                <param name="slide_condition">True</param>
+       <include content="Furniture_Busy_Icon">
+            <param name="hasspinner">true</param>
+            <param name="spinspinner">true</param>
+            <centerright>100</centerright>
+            <centertop>100</centertop>
+            <visible>Container(22001).IsUpdating</visible>
+            <include content="Animation_Fade_In">
+                <param name="type">visible</param>
+                <param name="delay">400</param>
             </include>
-
-            <!-- Bottom Layer -->
-            <include content="Dialog_Background_Side">
-                <param name="slide_condition">True</param>
-                <param name="dialog_size">Dimension_DialogSideMenu</param>
-                <!-- Side Buttons -->
-                <include content="Dialog_Body">
-                    <include content="Dialog_Side_Grouplist">
-                        <param name="id">29000</param>
-
-                        <onback>22001</onback>
-                        <onright>23000</onright>
-
-                        <!-- Close -->
-                        <include content="Dialog_Side_Button">
-                            <param name="dialog">true</param>
-                            <param name="baseid">29</param>
-                            <param name="id">01</param>
-                            <param name="control">button</param>
-                            <param name="label">$LOCALIZE[15067]</param>
-                            <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
-                            <onclick>SetFocus(22001)</onclick>
-                            <onback>22001</onback>
-                        </include>
-
-
-                        <!-- Shortcuts -->
-                        <include content="Dialog_Side_Button">
-                            <param name="dialog">true</param>
-                            <param name="baseid">29</param>
-                            <param name="id">02</param>
-                            <param name="control">button</param>
-                            <param name="label">$LOCALIZE[31511]</param>
-                            <param name="visible">String.IsEmpty(Container(22001).ListItem.Property(forced)) + !String.IsEqual(Container(22001).ListItem.Property(disabled),True)</param>
-                            <param name="icon">special://skin/extras/icons/share.png</param>
-                            <onclick condition="!$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
-                            <onclick condition="$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
-                            <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_choose]$VAR[Path_Shortcut_UseRawPath])</onclick>
-                            <onback>22001</onback>
-                        </include>
-
-                        <!-- Action -->
-                        <include content="Dialog_Side_Button">
-                            <param name="dialog">true</param>
-                            <param name="baseid">29</param>
-                            <param name="id">03</param>
-                            <param name="control">button</param>
-                            <param name="label">$LOCALIZE[15217]</param>
-                            <param name="visible">String.IsEmpty(Container(22001).ListItem.Property(forced)) + !String.IsEqual(Container(22001).ListItem.Property(disabled),True)</param>
-                            <param name="icon">special://skin/extras/icons/terminal.png</param>
-                            <onclick condition="!$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
-                            <onclick condition="$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
-                            <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_action]$VAR[Path_Shortcut_UseRawPath])</onclick>
-                            <onback>22001</onback>
-                        </include>
-
-                        <!-- Rename -->
-                        <include content="Dialog_Side_Button">
-                            <param name="dialog">true</param>
-                            <param name="baseid">29</param>
-                            <param name="id">04</param>
-                            <param name="control">button</param>
-                            <param name="label">$LOCALIZE[118]</param>
-                            <param name="icon">special://skin/extras/icons/i-cursor.png</param>
-                            <param name="visible">!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</param>
-                            <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit])</onclick>
-                            <onback>22001</onback>
-                        </include>
-
-                        <!-- Icon -->
-                        <include content="Dialog_Side_Button">
-                            <param name="dialog">true</param>
-                            <param name="baseid">29</param>
-                            <param name="id">05</param>
-                            <param name="control">button</param>
-                            <param name="label">$LOCALIZE[31274]</param>
-                            <param name="icon">special://skin/extras/icons/image.png</param>
-                            <param name="visible">!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</param>
-                            <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_icon])</onclick>
-                            <onback>22001</onback>
-                        </include>
-
-                        <!-- Enable Disable -->
-                        <!-- <include content="Dialog_Side_Button">
-                            <param name="dialog">true</param>
-                            <param name="baseid">29</param>
-                            <param name="id">06</param>
-                            <param name="label">$VAR[Label_Shortcut_EnableDisable]</param>
-                            <param name="icon">$VAR[Image_Shortcut_EnableDisable]</param>
-                            <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle])</onclick>
-                        </include> -->
-
-                        <!-- Delete -->
-                        <include content="Dialog_Side_Button">
-                            <param name="baseid">29</param>
-                            <param name="id">07</param>
-                            <param name="label">$LOCALIZE[117]</param>
-                            <param name="icon">special://skin/extras/icons/trash-can.png</param>
-                            <param name="visible">String.IsEmpty(Container(22001).ListItem.Property(forced))</param>
-                            <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_delete&amp;&amp;False])</onclick>
-                        </include>
-                    </include>
-                </include>
-            </include>
-
-            <include content="Dialog_Foreground_Side">
-                <param name="dialog_size">Dimension_DialogSideMenu</param>
-                <param name="lines_right">0</param>
-                <param name="topline">true</param>
-                <param name="subline">true</param>
-
-                <!-- Header -->
-                <include content="Dialog_Head">
-                    <param name="label">$INFO[Container(22001).ListItem.Label]</param>
-                    <param name="sublabel">$INFO[Container(22001).ListItem.Property(path)]</param>
-                    <param name="sublabel_include">true</param>
-                </include>
-
-                <control type="image">
-                    <width>40</width>
-                    <height>40</height>
-                    <centertop>100</centertop>
-                    <centerright>100</centerright>
-                    <bordersize>icon_home_bordersize</bordersize>
-                    <texture background="true" colordiffuse="dialog_fg_90">$INFO[Container(22001).ListItem.Icon]</texture>
-                </control>
-
-                <!-- Content -->
-                <include content="Dialog_Body">
-                    <include content="Dialog_Body_Group">
-                        <control type="grouplist" id="23000">
-                            <onleft>29000</onleft>
-                            <onup>23010</onup>
-                            <onback>22001</onback>
-                            <orientation>vertical</orientation>
-
-                            <include content="Settings_Button">
-                                <param name="dialog">true</param>
-                                <param name="id">23001</param>
-                                <param name="control">button</param>
-                                <label>$VAR[Label_Shortcut_EnableDisable]</label>
-                                <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle])</onclick>
-                            </include>
-
-                            <include content="Settings_Label">
-                                <param name="dialog">true</param>
-                                <param name="id">23902</param>
-                                <label>$LOCALIZE[31282] $LOCALIZE[33063]</label>
-                                <visible>$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</visible>
-                                <onback>22001</onback>
-                                <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
-                            </include>
-
-                            <!-- Widgets: Style -->
-                            <include content="Settings_Button">
-                                <param name="dialog">true</param>
-                                <param name="id">23006</param>
-                                <param name="control">button</param>
-                                <label>$LOCALIZE[736]</label>
-                                <label2>$INFO[Container(22001).ListItem.Property(widget_style)]</label2>
-                                <onclick condition="!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)">RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;widget_style&amp;&amp;Poster&amp;Landscape&amp;Square&amp;Banner&amp;Card&amp;Board&amp;Apps&amp;Icon&amp;Text&amp;&amp;Style&amp;&amp;True])</onclick>
-                                <onclick condition="String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)">RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;widget_style&amp;&amp;Poster&amp;Landscape&amp;Square&amp;Banner&amp;Card&amp;Board&amp;&amp;Style&amp;&amp;True])</onclick>
-                                <visible>$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</visible>
-                                <onback>22001</onback>
-                                <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
-                            </include>
-
-                            <!-- Widgets: Sort by -->
-                            <include content="Settings_Button">
-                                <param name="dialog">true</param>
-                                <param name="id">23007</param>
-                                <param name="control">button</param>
-                                <label>$LOCALIZE[31016]</label>
-                                <label2>[CAPITALIZE]$INFO[Container(22001).ListItem.Property(widget_sortby)][/CAPITALIZE]</label2>
-                                <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;widget_sortby&amp;&amp;default&amp;label&amp;random&amp;dateadded&amp;lastplayed&amp;playcount&amp;year&amp;rating&amp;userrating&amp;votes&amp;genre&amp;country&amp;studio&amp;playlist&amp;episodenumber&amp;season&amp;totalepisodes&amp;watchedepisodes&amp;tvshowstatus&amp;tvshowtitle&amp;file&amp;title&amp;track&amp;time&amp;artist&amp;album&amp;lastupdated&amp;lastused&amp;date&amp;&amp;Sort by&amp;&amp;True])</onclick>
-                                <visible>$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</visible>
-                                <onback>22001</onback>
-                                <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
-                            </include>
-
-                            <!-- Widgets: Sort order -->
-                            <include content="Settings_Button">
-                                <param name="dialog">true</param>
-                                <param name="id">23008</param>
-                                <param name="control">radiobutton</param>
-                                <label>$LOCALIZE[31517]</label>
-                                <selected>!String.IsEmpty(Container(22001).ListItem.Property(widget_sortorder))</selected>
-                                <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;widget_sortorder])</onclick>
-                                <visible>!String.IsEmpty(Container(22001).ListItem.Property(widget_sortby))</visible>
-                                <visible>!String.IsEqual(Container(22001).ListItem.Property(widget_sortby),random)</visible>
-                                <visible>$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</visible>
-                                <onback>22001</onback>
-                                <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
-                            </include>
-
-                            <!-- Widgets: Limit -->
-                            <include content="Settings_Button">
-                                <param name="dialog">true</param>
-                                <param name="id">23009</param>
-                                <param name="control">button</param>
-                                <label>$LOCALIZE[31188]</label>
-                                <label2>$INFO[Container(22001).ListItem.Property(widget_limit)]</label2>
-                                <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_numeric&amp;&amp;widget_limit&amp;&amp;heading::Limit])</onclick>
-                                <visible>$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</visible>
-                                <onback>22001</onback>
-                                <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
-                            </include>
-
-                            <!-- Widgets: Autoscroll -->
-                            <include content="Settings_Button">
-                                <param name="dialog">true</param>
-                                <param name="id">23010</param>
-                                <param name="control">radiobutton</param>
-                                <label>$LOCALIZE[31185]</label>
-                                <selected>!String.IsEmpty(Container(22001).ListItem.Property(widget_autoscroll))</selected>
-                                <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;widget_autoscroll])</onclick>
-                                <visible>$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</visible>
-                                <onback>22001</onback>
-                                <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
-                            </include>
-
-
-                            <!-- Side Menu Options -->
-                            <include content="Settings_Label">
-                                <param name="dialog">true</param>
-                                <param name="id">23903</param>
-                                <label>$LOCALIZE[31416] $LOCALIZE[33063]</label>
-                                <visible>String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=sidemenu)</visible>
-                                <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
-                            </include>
-                            <!-- Side Menu: Highlight Type -->
-                            <include content="Settings_Button">
-                                <param name="dialog">true</param>
-                                <param name="id">23011</param>
-                                <label>$LOCALIZE[467]$INFO[Container(22001).ListItem.Property(expression),: [CAPITALIZE],[/CAPITALIZE]]</label>
-                                <visible>String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=sidemenu)</visible>
-                                <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
-                                <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;expression&amp;&amp;home&amp;movies&amp;tvshows&amp;music&amp;livetv&amp;addons&amp;pictures&amp;weather&amp;videos&amp;search&amp;none&amp;&amp;Highlight type&amp;&amp;True])</onclick>
-                            </include>
-
-                        </control>
-                    </include>
-                </include>
-            </include>
-
-        </control>
+        </include>
     </controls>
 </window>
