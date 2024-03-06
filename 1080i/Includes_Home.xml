@@ -46,12 +46,11 @@
                     <ondown condition="!$EXP[Exp_HomeMenu_DontHide]">SetFocus($PARAM[onlist])</ondown>
 
                     <onfocus>CancelAlarm(SplashTimeOut,silent)</onfocus>
-
                     <onfocus>ClearProperty(WidgetGroup.Movement)</onfocus>
 
                     <onfocus condition="Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)">SetProperty(Slide.WidgetContainer,True,Home)</onfocus>
                     <onfocus condition="Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)">SetProperty($INFO[Container(303).ListItem.Property(widgets_tmdbh_id)],$INFO[Window.Property(TMDbHelper.WidgetContainer)],1198)</onfocus>
-                    <onfocus condition="Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)">SetProperty(TMDbHelper.WidgetContainer.UpdateLock,True,1198)</onfocus>
+                    <onfocus condition="Window.IsVisible(Home)">SetProperty(TMDbHelper.WidgetContainer.UpdateLock,True,1198)</onfocus>
 
                     <include content="Action_HomeMenu_OnRightLeft">
                         <param name="onlist">$PARAM[onlist]</param>
@@ -59,10 +58,15 @@
                     <orientation>vertical</orientation>
                     <scrolltime tween="quadratic">400</scrolltime>
 
-                    <include content="Home_Menu_List_ItemLayout">
+                    <include content="Home_Menu_List_ItemLayout" condition="Skin.HasSetting(Hub.Home.DisableSubmenu)">
                         <param name="id">$PARAM[id]</param>
                         <param name="hidden_button">Home_Menu_List_HiddenButton</param>
-                        <param name="hidden_button_enabled">Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)</param>
+                        <param name="hidden_button_enabled">Window.IsVisible(Home)</param>
+                    </include>
+                    <include content="Home_Menu_List_ItemLayout" condition="!Skin.HasSetting(Hub.Home.DisableSubmenu)">
+                        <param name="id">$PARAM[id]</param>
+                        <param name="hidden_button">Home_Menu_List_HiddenButton_Alt</param>
+                        <param name="hidden_button_enabled">Window.IsVisible(Home)</param>
                     </include>
 
                     <include>$PARAM[items_include]</include>
@@ -82,9 +86,22 @@
         </control>
     </include>
 
+    <include name="Home_Menu_List_HiddenButton_Alt">
+        <control type="button">
+            <visible allowhiddenfocus="true">false</visible>
+            <animation effect="fade" start="0" end="0" time="100" reversible="false">Focus</animation>
+            <onfocus condition="!String.IsEmpty(Window(1198).Property(TMDbHelper.WidgetContainer.UpdateLock))">ClearProperty(TMDbHelper.WidgetContainer.UpdateLock,1198)</onfocus>
+            <onfocus condition="String.IsEmpty(Window(1198).Property(TMDbHelper.WidgetContainer.UpdateLock))">SetProperty(List.ViewContainer,300)</onfocus>
+            <onfocus condition="String.IsEmpty(Window(1198).Property(TMDbHelper.WidgetContainer.UpdateLock))">ClearProperty(List.ViewContainer.Left)</onfocus>
+            <onfocus condition="String.IsEmpty(Window(1198).Property(TMDbHelper.WidgetContainer.UpdateLock))">SetProperty(TMDbHelper.WidgetContainer,301)</onfocus>
+            <onfocus condition="String.IsEmpty(Window(1198).Property(TMDbHelper.WidgetContainer.UpdateLock)) + Skin.HasSetting(Slide.WidgetContainer)">SetProperty(Slide.WidgetContainer,True)</onfocus>
+            <onfocus condition="String.IsEmpty(Window(1198).Property(TMDbHelper.WidgetContainer.UpdateLock)) + !Skin.HasSetting(Slide.WidgetContainer)">ClearProperty(Slide.WidgetContainer)</onfocus>
+        </control>
+    </include>
+
     <include name="Home_Menu_List_ItemLayout">
-        <param name="layoutnf">[![!Window.IsVisible(1105) + Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + $EXP[Exp_HomeMenu_DontHide]] + $EXP[Exp_HomeMenu_IsSelected]]</param>
-        <param name="layoutfo">[[![!Window.IsVisible(1105) + Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + $EXP[Exp_HomeMenu_DontHide]] + $EXP[Exp_HomeMenu_IsSelected]] | [!Window.IsVisible(1105) + Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + $EXP[Exp_HomeMenu_DontHide]]]</param>
+        <param name="layoutnf">[![!Window.IsVisible(1105) + Window.IsVisible(Home) + $EXP[Exp_HomeMenu_DontHide]] + $EXP[Exp_HomeMenu_IsSelected]]</param>
+        <param name="layoutfo">[[![!Window.IsVisible(1105) + Window.IsVisible(Home) + $EXP[Exp_HomeMenu_DontHide]] + $EXP[Exp_HomeMenu_IsSelected]] | [!Window.IsVisible(1105) + Window.IsVisible(Home) + $EXP[Exp_HomeMenu_DontHide]]]</param>
         <param name="altfocus">false</param>
         <definition>
             <itemlayout height="100" width="100">
