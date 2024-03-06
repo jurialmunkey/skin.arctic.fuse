@@ -1,23 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
 
+    <variable name="Shortcuts_Window_Content_1304_EditMode">
+        <value condition="!String.EndsWith(Container(304).ListItem.Property(menu),-widgetsonly) + !String.EndsWith(Container(304).ListItem.Property(menu),-globalwidgets)">$INFO[Container(304).ListItem.Property(mode),mode=,]</value>
+    </variable>
+
+    <variable name="Shortcuts_Window_Content_1304_EditGUID">
+        <value condition="String.IsEqual(Container(304).ListItem.Property(menu),sidemenu) + !String.EndsWith(Container(304).ListItem.Property(menu),-widgetsonly) + !String.EndsWith(Container(304).ListItem.Property(menu),-globalwidgets)">$INFO[Container(303).ListItem.Property(guid),guid=,]</value>
+        <value condition="!String.IsEqual(Container(304).ListItem.Property(menu),sidemenu) + !String.EndsWith(Container(304).ListItem.Property(menu),-widgetsonly) + !String.EndsWith(Container(304).ListItem.Property(menu),-globalwidgets)">$INFO[Container(300).ListItem.Property(guid),guid=,]</value>
+    </variable>
+
     <include name="Shortcuts_Window_Content">
+
+        <include content="Object_Hidden_Button">
+            <param name="id">1302</param>
+            <onfocus>SetFocus(302)</onfocus>
+            <onfocus>SetProperty(Shortcuts.Position,$INFO[Container(302).CurrentItem],Home)</onfocus>
+            <onfocus>SetProperty(Shortcuts.EditMenu,$INFO[Container(302).ListItem.Property(menu),menu=,],Home)</onfocus>
+            <onfocus>SetProperty(Shortcuts.EditMode,$INFO[Container(302).ListItem.Property(mode),mode=,],Home)</onfocus>
+            <onfocus>SetProperty(Shortcuts.EditGUID,$INFO[Container(300).ListItem.Property(guid),guid=,],Home)</onfocus>
+            <onfocus>AlarmClock(openwindow,ActivateWindow(1116),00:00,silent)</onfocus>
+        </include>
+
         <include content="Object_Hidden_Button">
             <param name="id">1304</param>
             <onfocus>SetFocus(304)</onfocus>
-            <onfocus>ClearProperty(Shortcuts.EditMode,Home)</onfocus>
-            <onfocus>ClearProperty(Shortcuts.EditGUID,Home)</onfocus>
             <onfocus>SetProperty(Shortcuts.Position,$INFO[Container(304).CurrentItem],Home)</onfocus>
             <onfocus>SetProperty(Shortcuts.EditMenu,$INFO[Container(304).ListItem.Property(menu),menu=,],Home)</onfocus>
-            <onfocus condition="!String.EndsWith(Container(304).ListItem.Property(menu),-widgetsonly) + !String.EndsWith(Container(304).ListItem.Property(menu),-globalwidgets)">SetProperty(Shortcuts.EditMode,$INFO[Container(304).ListItem.Property(mode),mode=,],Home)</onfocus>
-            <onfocus condition="!String.EndsWith(Container(304).ListItem.Property(menu),-widgetsonly) + !String.EndsWith(Container(304).ListItem.Property(menu),-globalwidgets)">SetProperty(Shortcuts.EditGUID,$INFO[Container(303).ListItem.Property(guid),guid=,],Home)</onfocus>
+            <onfocus>SetProperty(Shortcuts.EditMode,$VAR[Shortcuts_Window_Content_1304_EditMode],Home)</onfocus>
+            <onfocus>SetProperty(Shortcuts.EditGUID,$VAR[Shortcuts_Window_Content_1304_EditGUID],Home)</onfocus>
             <onfocus>AlarmClock(openwindow,ActivateWindow(1116),00:00,silent)</onfocus>
         </include>
+
         <control type="group" id="340">
             <include>Shortcuts_Window_Content_Spotlight</include>
             <include>Shortcuts_Window_Content_Categories</include>
             <include>Shortcuts_Window_Content_Widgets</include>
         </control>
+
         <include>Shortcuts_Window_Help</include>
     </include>
 
@@ -124,14 +144,21 @@
                 <onleft>303</onleft>
                 <ondown>302</ondown>
                 <animation effect="slide" end="-240" condition="Integer.IsLess(Container(300).NumItems,3)">Conditional</animation>
-                <include content="Shortcuts_Pallette_Open_OnClick">
+
+                <onclick>ClearProperty(Shortcuts.EditMode,Home)</onclick>
+                <onclick>ClearProperty(Shortcuts.EditGUID,Home)</onclick>
+                <onclick>SetProperty(Shortcuts.EditMenu,$INFO[Container(300).ListItem.Property(menu),menu=,],Home)</onclick>
+                <onclick>SetProperty(Shortcuts.Position,$INFO[Container(300).CurrentItem],Home)</onclick>
+                <onclick>ActivateWindow(1116)</onclick>
+
+                <!-- <include content="Shortcuts_Pallette_Open_OnClick">
                     <param name="list_id">300</param>
                     <param name="url">$INFO[Container(300).ListItem.Property(url)]</param>
                     <param name="forced">$INFO[Container(300).ListItem.Property(forced)]</param>
                     <param name="menu">$INFO[Window.Property(categories_menu)]</param>
                     <param name="guid" />
                     <param name="mode" />
-                </include>
+                </include> -->
                 <content>plugin://script.skinvariables/?info=get_shortcuts_node&amp;edit=True$INFO[Window.Property(categories_menu),&amp;,]$VAR[Path_SkinVariables_SkinFolder,&amp;skin=,]$INFO[Window(Home).Property(SkinVariables.ShortcutsNode.Reload),&amp;reload=,]</content>
                 <visible>!$EXP[Shortcuts_Window_Exp_WidgetsOnly]</visible>
             </include>
@@ -140,9 +167,10 @@
 
     <include name="Shortcuts_Window_Content_Categories_Submenu">
         <control type="group">
-            <top>80</top>
+            <top>60</top>
             <height>hub_categorieswidget_h</height>
             <visible>!$EXP[Shortcuts_Window_Exp_WidgetsOnly]</visible>
+
             <include content="List_ButtonMenu_Row">
                 <param name="id">302</param>
                 <param name="itemlayout_w">view_button_item_w</param>
@@ -162,29 +190,17 @@
                 <onup>300</onup>
                 <onleft>303</onleft>
                 <ondown>304</ondown>
-
                 <animation effect="slide" end="-240" condition="Integer.IsLess(Container(302).NumItems,3)">Conditional</animation>
-
-                <include content="Shortcuts_Pallette_Open_OnClick">
-                    <param name="list_id">302</param>
-                    <param name="url">$INFO[Container(302).ListItem.Property(url)]</param>
-                    <param name="forced">$INFO[Container(302).ListItem.Property(forced)]</param>
-                    <param name="menu">$INFO[Window.Property(categories_menu)]</param>
-                    <param name="guid">guid=$INFO[Container(300).ListItem.Property(guid)]</param>
-                    <param name="mode">mode=submenu</param>
-                </include>
-
+                <onclick>SetFocus(1302)</onclick>
                 <visible>String.IsEmpty(Container(300).ListItem.Property(submenulist_path))</visible>
                 <content>plugin://script.skinvariables/?info=get_shortcuts_node&amp;edit=True&amp;mode=submenu&amp;skin=$VAR[Path_SkinVariables_SkinFolder]$INFO[Container(300).ListItem.Property(menu),&amp;menu=,]$INFO[Container(300).ListItem.Property(guid),&amp;guid=,]$INFO[Window(Home).Property(SkinVariables.ShortcutsNode.Reload),&amp;reload=,]</content>
             </include>
 
-            <control type="togglebutton" id="302">
+            <control type="label">
                 <left>0</left>
                 <top>20</top>
                 <visible>!String.IsEmpty(Container(300).ListItem.Property(submenulist_path))</visible>
                 <label>$LOCALIZE[31003]$INFO[Container(300).ListItem.Property(submenulist_path),: ,]</label>
-                <altlabel>[COLOR=main_fg_100]$LOCALIZE[31003]$INFO[Container(300).ListItem.Property(submenulist_path),: ,][/COLOR]</altlabel>
-                <usealttexture>String.IsEqual(Window.Property(list_id),302)</usealttexture>
                 <width max="1080">auto</width>
                 <align>left</align>
                 <aligny>top</aligny>
@@ -193,21 +209,6 @@
                 <textoffsety>17</textoffsety>
                 <font>font_main</font>
                 <height>80</height>
-                <onup>300</onup>
-                <ondown>304</ondown>
-                <onleft>303</onleft>
-
-                <include content="Shortcuts_Pallette_Open_OnClick">
-                    <param name="list_id">302</param>
-                    <param name="url">$INFO[Container(300).ListItem.Property(url)]</param>
-                    <param name="forced">True</param>
-                    <param name="menu">$INFO[Window.Property(categories_menu)]</param>
-                    <param name="guid" />
-                    <param name="mode" />
-                </include>
-
-                <texturenofocus />
-                <alttexturenofocus />
             </control>
         </control>
     </include>
@@ -270,14 +271,16 @@
                 <bottom>60</bottom>
                 <animation effect="slide" end="0,-100" condition="Integer.IsLess(Container(304).NumItems,3)">Conditional</animation>
 
-                <include content="Shortcuts_Pallette_Open_OnClick">
+                <onclick>SetFocus(1304)</onclick>
+
+                <!-- <include content="Shortcuts_Pallette_Open_OnClick">
                     <param name="list_id">304</param>
                     <param name="url">$INFO[Container(304).ListItem.Property(url)]</param>
                     <param name="forced">$INFO[Container(304).ListItem.Property(forced)]</param>
                     <param name="menu">$INFO[Window.Property(categories_menu)]</param>
                     <param name="guid">guid=$INFO[Container(300).ListItem.Property(guid)]</param>
                     <param name="mode">mode=widgets</param>
-                </include>
+                </include> -->
 
                 <visible>!$EXP[Shortcuts_Window_Exp_WidgetsOnly]</visible>
 
