@@ -75,9 +75,9 @@
                                 <param name="groupid">33101</param>
                                 <param name="control">button</param>
                                 <param name="toplabel">$LOCALIZE[31005]</param>
-                                <param name="sublabel">$VAR[Label_Shortcut_HubSpotlight_Dialog_Path]</param>
+                                <param name="sublabel">$VAR[Label_Shortcut_HubSpotlight_Path]</param>
                                 <param name="sublabel_visible">!String.IsEmpty(Control.GetLabel(33001))</param>
-                                <param name="enable">String.IsEmpty(Container(300).ListItem.Property(spotlight_path))</param>
+                                <param name="enable">String.IsEmpty(Container(300).ListItem.Property(spotlight_path)) + String.IsEmpty(Container(303).ListItem.Property(spotlight_path))</param>
                                 <onclick>ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
                                 <onclick>RunScript(script.skinvariables,set_shortcut=Hub.$INFO[Window.Property(hub_prefix)].Spotlight,use_rawpath=True)</onclick>
                                 <visible>String.IsEqual(Window.Property(Options.Mode),Categories.Spotlight)</visible>
@@ -93,9 +93,72 @@
                                 <onclick>RunScript(script.skinvariables,run_dialog=select,heading=Sort method,separator=||,list=default||label||random||dateadded||lastplayed||playcount||year||rating||userrating||votes||genre||country||studio||playlist||episodenumber||season||totalepisodes||watchedepisodes||tvshowstatus||tvshowtitle||file||title||track||time||artist||album||lastupdated||lastused||date,"executebuiltin=Skin.SetString(Hub.$INFO[Window.Property(hub_prefix)].Spotlight.SortBy,{v})")</onclick>
                                 <visible>!String.IsEmpty(Control.GetLabel(33001))</visible>
                                 <visible>String.IsEmpty(Container(300).ListItem.Property(spotlight_path))</visible>
+                                <visible>String.IsEmpty(Container(303).ListItem.Property(spotlight_path))</visible>
                                 <visible>String.IsEqual(Window.Property(Options.Mode),Categories.Spotlight)</visible>
                                 <onback>23999</onback>
                             </include>
+
+                            <!-- Spotlight: SideMenu: Choose -->
+                            <include content="Settings_Stacked_Button">
+                                <param name="dialog">true</param>
+                                <param name="id">33021</param>
+                                <param name="groupid">33121</param>
+                                <param name="control">button</param>
+                                <param name="toplabel">Choose sidemenu spotlight</param>
+                                <param name="sublabel">$INFO[Container(303).ListItem.Property(spotlight_path)]</param>
+                                <param name="sublabel_visible">!String.ISEmpty(Container(303).ListItem.Property(spotlight_path))</param>
+                                <param name="enable">String.IsEmpty(Container(300).ListItem.Property(spotlight_path))</param>
+                                <onclick>ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
+                                <onclick condition="!String.IsEmpty(Container(303).ListItem.Property(spotlight_path))">RunPlugin($INFO[Container(303).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;spotlight_path])</onclick>
+                                <onclick condition="String.IsEmpty(Container(303).ListItem.Property(spotlight_path))">RunPlugin($INFO[Container(303).ListItem.Property(url),,&amp;func=do_choose&amp;&amp;prefix::spotlight&amp;&amp;use_rawpath::True])</onclick>
+                                <visible>String.IsEqual(Window.Property(Options.Mode),Categories.Spotlight)</visible>
+                                <onback>23999</onback>
+                            </include>
+                            <!-- Spotlight: SideMenu: Sort by -->
+                            <include content="Settings_Button">
+                                <param name="dialog">true</param>
+                                <param name="id">33022</param>
+                                <param name="control">button</param>
+                                <label> -- $LOCALIZE[31016]</label>
+                                <label2>[CAPITALIZE]$INFO[Container(303).ListItem.Property(spotlight_sortby)][/CAPITALIZE]</label2>
+                                <onclick>RunPlugin($INFO[Container(303).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;spotlight_sortby&amp;&amp;default&amp;label&amp;random&amp;dateadded&amp;lastplayed&amp;playcount&amp;year&amp;rating&amp;userrating&amp;votes&amp;genre&amp;country&amp;studio&amp;playlist&amp;episodenumber&amp;season&amp;totalepisodes&amp;watchedepisodes&amp;tvshowstatus&amp;tvshowtitle&amp;file&amp;title&amp;track&amp;time&amp;artist&amp;album&amp;lastupdated&amp;lastused&amp;date&amp;&amp;Sort by&amp;&amp;True])</onclick>
+                                <visible>!String.IsEmpty(Container(303).ListItem.Property(spotlight_path))</visible>
+                                <visible>String.IsEmpty(Container(300).ListItem.Property(spotlight_path))</visible>
+                                <visible>String.IsEqual(Window.Property(Options.Mode),Categories.Spotlight)</visible>
+                                <onback>23999</onback>
+                            </include>
+                            <!-- Spotlight: SideMenu: Sort order -->
+                            <include content="Settings_Button">
+                                <param name="dialog">true</param>
+                                <param name="id">33023</param>
+                                <param name="control">radiobutton</param>
+                                <label> -- $LOCALIZE[31517]</label>
+                                <selected>!String.IsEmpty(Container(303).ListItem.Property(spotlight_sortorder))</selected>
+                                <onclick>RunPlugin($INFO[Container(303).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;spotlight_sortorder])</onclick>
+                                <onback>13999</onback>
+                                <visible>!String.IsEmpty(Container(303).ListItem.Property(spotlight_sortby))</visible>
+                                <visible>!String.IsEqual(Container(303).ListItem.Property(spotlight_sortby),random)</visible>
+                                <visible>!String.IsEmpty(Container(303).ListItem.Property(spotlight_path))</visible>
+                                <visible>String.IsEmpty(Container(300).ListItem.Property(spotlight_path))</visible>
+                                <visible>String.IsEqual(Window.Property(Options.Mode),Categories.Spotlight)</visible>
+                                <onback>23999</onback>
+                            </include>
+                            <!-- Spotlight: SideMenu: Limit -->
+                            <include content="Settings_Button">
+                                <param name="dialog">true</param>
+                                <param name="id">33024</param>
+                                <param name="control">button</param>
+                                <label> -- $LOCALIZE[31188]</label>
+                                <label2>$INFO[Container(303).ListItem.Property(spotlight_limit)]</label2>
+                                <onclick>RunPlugin($INFO[Container(303).ListItem.Property(url),,&amp;func=do_numeric&amp;&amp;spotlight_limit&amp;&amp;heading::Limit])</onclick>
+                                <visible>!String.IsEmpty(Container(303).ListItem.Property(spotlight_path))</visible>
+                                <visible>String.IsEmpty(Container(300).ListItem.Property(spotlight_path))</visible>
+                                <visible>String.IsEqual(Window.Property(Options.Mode),Categories.Spotlight)</visible>
+                                <onback>23999</onback>
+                            </include>
+
+
+
                             <!-- Spotlight: Categories: Choose -->
                             <include content="Settings_Stacked_Button">
                                 <param name="dialog">true</param>
@@ -150,6 +213,8 @@
                                 <visible>String.IsEqual(Window.Property(Options.Mode),Categories.Spotlight)</visible>
                                 <onback>23999</onback>
                             </include>
+
+
                             <!-- Spotlight: Hubs: Fallback Image -->
                             <include content="Settings_Stacked_Button">
                                 <param name="dialog">true</param>
