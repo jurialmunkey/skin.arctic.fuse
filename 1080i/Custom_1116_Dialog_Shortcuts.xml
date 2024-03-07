@@ -3,6 +3,7 @@
     <defaultcontrol always="true">22001</defaultcontrol>
     <onload condition="!String.IsEmpty(Window(Home).Property(Shortcuts.Position))">RunScript(script.skinvariables,run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-refocuscustomwidgets.json,use_rules=True,attempts=5)</onload>
     <onunload>ClearProperty(Shortcuts.Position,Home)</onunload>
+    <onunload>ClearProperty(Shortcuts.Category,Home)</onunload>
     <controls>
 
         <include content="Object_Hidden_Button">
@@ -14,10 +15,19 @@
             <onfocus>SetProperty(Shortcuts.EditMenu,$INFO[Window(Home).Property(Shortcuts.EditMenu.Previous)],Home)</onfocus>
             <onfocus>SetProperty(Shortcuts.EditMode,$INFO[Window(Home).Property(Shortcuts.EditMode.Previous)],Home)</onfocus>
             <onfocus>SetProperty(Shortcuts.EditGUID,$INFO[Window(Home).Property(Shortcuts.EditGUID.Previous)],Home)</onfocus>
+            <onfocus>SetProperty(Shortcuts.Category,$INFO[Window(Home).Property(Shortcuts.Category.Previous)],Home)</onfocus>
 
             <onfocus>ClearProperty(Shortcuts.EditMenu.Previous,Home)</onfocus>
             <onfocus>ClearProperty(Shortcuts.EditMode.Previous,Home)</onfocus>
             <onfocus>ClearProperty(Shortcuts.EditGUID.Previous,Home)</onfocus>
+            <onfocus>ClearProperty(Shortcuts.Category.Previous,Home)</onfocus>
+        </include>
+
+        <include content="Object_Hidden_Button">
+            <param name="id">25998</param>
+            <onfocus>SetProperty(Shortcuts.Category,$INFO[Container(25001).ListItem.Property(guid)],Home)</onfocus>
+            <onfocus>SetFocus(23062)</onfocus>
+
         </include>
 
         <include content="Object_Hidden_Button">
@@ -26,7 +36,7 @@
             <onfocus condition="!String.IsEmpty(Container(25001).ListItem.Property(guid))">RunScript(script.skinvariables,run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-linkcategory.json,use_rules=True,guid=$INFO[Container(25001).ListItem.Property(guid)],url=$INFO[Container(22001).ListItem.Property(url)],name=$INFO[Container(25001).ListItem.Label])</onfocus>
             <onfocus condition="String.IsEmpty(Container(25001).ListItem.Property(guid)) + !String.IsEmpty(Container(22001).ListItem.Property(sidemenu_guid))">RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;sidemenu_guid])</onfocus>
 
-            <onfocus>SetFocus(22001)</onfocus>
+            <onfocus>SetFocus(23061)</onfocus>
 
         </include>
 
@@ -60,6 +70,7 @@
                             <param name="id">13</param>
                             <param name="label">$LOCALIZE[31007]</param>
                             <param name="icon">special://skin/extras/icons/circle-arrow-up.png</param>
+                            <onclick>ClearProperty(Shortcuts.Category,Home)</onclick>
                             <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_move&amp;&amp;move::-1&amp;&amp;window_prop::url])</onclick>
                             <onback>29999</onback>
                         </include>
@@ -67,6 +78,7 @@
                             <param name="id">14</param>
                             <param name="label">$LOCALIZE[31008]</param>
                             <param name="icon">special://skin/extras/icons/circle-arrow-down.png</param>
+                            <onclick>ClearProperty(Shortcuts.Category,Home)</onclick>
                             <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_move&amp;&amp;move::1&amp;&amp;window_prop::url])</onclick>
                             <onback>29999</onback>
                         </include>
@@ -74,6 +86,7 @@
                             <param name="id">12</param>
                             <param name="label">$LOCALIZE[35261]</param>
                             <param name="icon">special://skin/extras/icons/circle-plus.png</param>
+                            <onclick>ClearProperty(Shortcuts.Category,Home)</onclick>
                             <onclick condition="!$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
                             <onclick condition="$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
                             <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_new]$VAR[Path_Shortcut_UseRawPath])</onclick>
@@ -93,20 +106,24 @@
                             <param name="id">04</param>
                             <param name="label">$LOCALIZE[31533]</param>
                             <param name="icon">special://skin/extras/icons/list-ol.png</param>
-                            <param name="visible">[String.IsEqual(Window(Home).Property(Shortcuts.EditMode),mode=widgets) | String.IsEqual(Window(Home).Property(Shortcuts.EditMode),mode=submenu) | String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-widgetsonly) | String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-globalwidgets)]</param>
+                            <param name="visible">[String.IsEqual(Window(Home).Property(Shortcuts.EditMode),mode=widgets) | String.IsEqual(Window(Home).Property(Shortcuts.EditMode),mode=submenu) | String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-widgetsonly) | String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-globalwidgets) | [String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=homemenu) + String.IsEmpty(Window(Home).Property(Shortcuts.EditMode))]]</param>
+                            <onclick>ClearProperty(Shortcuts.Category,Home)</onclick>
                             <onclick>ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
                             <onclick condition="!$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_list_add&amp;&amp;item_limit::80])</onclick>
                             <onclick condition="$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_list_add&amp;&amp;item_limit::80&amp;&amp;use_rawpath::True])</onclick>
+                            <onback>29999</onback>
                         </include>
 
                         <include content="Dialog_Side_Button">
                             <param name="id">05</param>
                             <param name="label">$LOCALIZE[31534]</param>
                             <param name="icon">special://skin/extras/icons/trash-can.png</param>
-                            <param name="visible">[String.IsEqual(Window(Home).Property(Shortcuts.EditMode),mode=widgets) | String.IsEqual(Window(Home).Property(Shortcuts.EditMode),mode=submenu) | String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-widgetsonly) | String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-globalwidgets)]</param>
+                            <param name="visible">[String.IsEqual(Window(Home).Property(Shortcuts.EditMode),mode=widgets) | String.IsEqual(Window(Home).Property(Shortcuts.EditMode),mode=submenu) | String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-widgetsonly) | String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-globalwidgets) | [String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=homemenu) + String.IsEmpty(Window(Home).Property(Shortcuts.EditMode))]]</param>
+                            <onclick>ClearProperty(Shortcuts.Category,Home)</onclick>
                             <onclick>ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
                             <onclick condition="!$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_list_del])</onclick>
                             <onclick condition="$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_list_del&amp;&amp;use_rawpath::True])</onclick>
+                            <onback>29999</onback>
                         </include>
                     </include>
                 </include>
@@ -148,7 +165,7 @@
                                 <param name="altfocus">true</param>
                                 <param name="misc">0</param>
                                 <param name="detailed">$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</param>
-                                <content>plugin://script.skinvariables/?info=get_shortcuts_node&amp;edit=True&amp;skin=$VAR[Path_SkinVariables_SkinFolder]$INFO[Window(Home).Property(SkinVariables.ShortcutsNode.Reload),&amp;reload=,]$INFO[Window(Home).Property(Shortcuts.EditMenu),&amp;,]$INFO[Window(Home).Property(Shortcuts.EditMode),&amp;,]$INFO[Window(Home).Property(Shortcuts.EditGUID),&amp;,]</content>
+                                <content>$VAR[Path_SkinVariables_FilterPath]plugin://script.skinvariables/?info=get_shortcuts_node&amp;edit=True&amp;skin=$VAR[Path_SkinVariables_SkinFolder]$INFO[Window(Home).Property(SkinVariables.ShortcutsNode.Reload),&amp;reload=,]$INFO[Window(Home).Property(Shortcuts.EditMenu),&amp;,]$INFO[Window(Home).Property(Shortcuts.EditMode),&amp;,]$INFO[Window(Home).Property(Shortcuts.EditGUID),&amp;,]</content>
                                 <onleft>9000</onleft>
                                 <onback>29999</onback>
                                 <onclick condition="String.IsEmpty(Container(22001).ListItem.Property(forced)) + !String.IsEqual(Container(22001).ListItem.Property(disabled),True) + !$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
@@ -350,6 +367,21 @@
                                             <param name="sublabel_visible">!String.ISEmpty(Container(22001).ListItem.Property(sidemenu_guid))</param>
                                             <visible>[String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=homemenu) + String.IsEmpty(Window(Home).Property(Shortcuts.EditMode)) + String.IsEmpty(Window(Home).Property(Shortcuts.EditGUID))]</visible>
                                             <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
+                                            <onclick>ClearProperty(SideOptions.List)</onclick>
+                                            <onclick>SetFocus(25001)</onclick>
+                                            <onback>29999</onback>
+                                        </include>
+                                        <!-- Category: Link visibility to sidemenu -->
+                                        <include content="Settings_Stacked_Button">
+                                            <param name="dialog">true</param>
+                                            <param name="id">23062</param>
+                                            <param name="groupid">24062</param>
+                                            <param name="toplabel">$LOCALIZE[587]</param>
+                                            <param name="sublabel">$VAR[Label_SkinVariables_FilterPath]</param>
+                                            <param name="sublabel_visible">True</param>
+                                            <visible>[String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=homemenu) + String.IsEmpty(Window(Home).Property(Shortcuts.EditMode)) + String.IsEmpty(Window(Home).Property(Shortcuts.EditGUID))]</visible>
+                                            <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
+                                            <onclick>SetProperty(SideOptions.List,Filter)</onclick>
                                             <onclick>SetFocus(25001)</onclick>
                                             <onback>29999</onback>
                                         </include>
@@ -436,6 +468,7 @@
                                             <onclick>SetProperty(Shortcuts.EditMenu.Previous,$INFO[Window(Home).Property(Shortcuts.EditMenu)],Home)</onclick>
                                             <onclick>SetProperty(Shortcuts.EditMode.Previous,$INFO[Window(Home).Property(Shortcuts.EditMode)],Home)</onclick>
                                             <onclick>SetProperty(Shortcuts.EditGUID.Previous,$INFO[Window(Home).Property(Shortcuts.EditGUID)],Home)</onclick>
+                                            <onclick>SetProperty(Shortcuts.Category.Previous,$INFO[Window(Home).Property(Shortcuts.Category)],Home)</onclick>
 
                                             <onclick>SetProperty(Shortcuts.EditGUID,guid=$INFO[Container(22001).ListItem.Property(guid)],Home)</onclick>
                                             <onclick>SetProperty(Shortcuts.EditMenu,menu=$INFO[Container(22001).ListItem.Property(menu)],Home)</onclick>
@@ -459,6 +492,7 @@
                                             <onclick>SetProperty(Shortcuts.EditMenu.Previous,$INFO[Window(Home).Property(Shortcuts.EditMenu)],Home)</onclick>
                                             <onclick>SetProperty(Shortcuts.EditMode.Previous,$INFO[Window(Home).Property(Shortcuts.EditMode)],Home)</onclick>
                                             <onclick>SetProperty(Shortcuts.EditGUID.Previous,$INFO[Window(Home).Property(Shortcuts.EditGUID)],Home)</onclick>
+                                            <onclick>SetProperty(Shortcuts.Category.Previous,$INFO[Window(Home).Property(Shortcuts.Category)],Home)</onclick>
 
                                             <onclick>SetProperty(Shortcuts.EditGUID,guid=$INFO[Container(22001).ListItem.Property(guid)],Home)</onclick>
                                             <onclick>SetProperty(Shortcuts.EditMenu,menu=$INFO[Container(22001).ListItem.Property(menu)],Home)</onclick>
@@ -679,8 +713,8 @@
 
                 <!-- Header -->
                 <include content="Dialog_Head">
-                    <param name="label">$LOCALIZE[31315]</param>
-                    <param name="sublabel">$LOCALIZE[31314]</param>
+                    <param name="label">$VAR[Label_SkinVariables_FilterHeader]</param>
+                    <param name="sublabel">$VAR[Label_SkinVariables_FilterSublabel]</param>
                     <param name="sublabel_include">true</param>
                 </include>
                 <!-- Content -->
@@ -699,12 +733,31 @@
                                 <item>
                                     <label>$LOCALIZE[31313]</label>
                                     <icon>special://skin/extras/icons/eye2.png</icon>
+                                    <visible>String.IsEmpty(Window.Property(SideOptions.List))</visible>
+                                </item>
+                            </content>
+                            <content>
+                                <item>
+                                    <label>$LOCALIZE[593]</label>
+                                    <icon>special://skin/extras/icons/eye2.png</icon>
+                                    <visible>String.IsEqual(Window.Property(SideOptions.List),Filter)</visible>
+                                </item>
+                            </content>
+                            <content>
+                                <item>
+                                    <label>$LOCALIZE[31031]</label>
+                                    <icon>special://skin/extras/icons/world.png</icon>
+                                    <property name="guid">Global</property>
+                                    <visible>String.IsEqual(Window.Property(SideOptions.List),Filter)</visible>
                                 </item>
                             </content>
                             <content>plugin://script.skinvariables/?info=get_shortcuts_node&amp;edit=True&amp;skin=$VAR[Path_SkinVariables_SkinFolder]$INFO[Window(Home).Property(SkinVariables.ShortcutsNode.Reload),&amp;reload=,]&amp;menu=sidemenu</content>
-                            <onleft>22001</onleft>
-                            <onback>22001</onback>
-                            <onclick>SetFocus(25999)</onclick>
+                            <onleft condition="String.IsEqual(Window.Property(SideOptions.List),Filter)">23062</onleft>
+                            <onleft condition="String.IsEmpty(Window.Property(SideOptions.List))">23061</onleft>
+                            <onback condition="String.IsEqual(Window.Property(SideOptions.List),Filter)">23062</onback>
+                            <onback condition="String.IsEmpty(Window.Property(SideOptions.List))">23061</onback>
+                            <onclick condition="String.IsEqual(Window.Property(SideOptions.List),Filter)">SetFocus(25998)</onclick>
+                            <onclick condition="String.IsEmpty(Window.Property(SideOptions.List))">SetFocus(25999)</onclick>
                         </include>
                     </include>
                 </include>

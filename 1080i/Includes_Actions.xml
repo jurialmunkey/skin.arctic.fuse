@@ -211,13 +211,13 @@
             <onleft condition="$PARAM[c_bump]">331</onleft>
             <onleft condition="!$PARAM[c_bump] + $PARAM[c_left]">SetFocus($PARAM[i_left],99999,absolute)</onleft>
             <onleft condition="!$PARAM[c_bump] + !$PARAM[c_left] + $PARAM[c_view]">SetFocus($PARAM[i_view],99999,absolute)</onleft>
-            <onleft condition="!$PARAM[c_bump] + !$PARAM[c_view] + $PARAM[c_tmdb]">SetFocus($PARAM[i_tmdb],99999,absolute)</onleft>
-            <onleft condition="!$PARAM[c_bump] + $PARAM[c_wosf]">$PARAM[i_wosf]</onleft>
-            <onleft condition="!$PARAM[c_bump] + !$PARAM[c_view] + !$PARAM[c_tmdb] + !$PARAM[c_wosf]">$PARAM[onlist]</onleft>
+            <onleft condition="!$PARAM[c_bump] + !$PARAM[c_left] + !$PARAM[c_view] + $PARAM[c_tmdb]">SetFocus($PARAM[i_tmdb],99999,absolute)</onleft>
+            <onleft condition="!$PARAM[c_bump] + !$PARAM[c_left] + !$PARAM[c_view] + !$PARAM[c_tmdb] + $PARAM[c_wosf]">$PARAM[i_wosf]</onleft>
+            <onleft condition="!$PARAM[c_bump] + !$PARAM[c_left] + !$PARAM[c_view] + !$PARAM[c_tmdb] + !$PARAM[c_wosf]">$PARAM[onlist]</onleft>
 
             <onright condition="$PARAM[c_view]">SetFocus($PARAM[i_view],0,absolute)</onright>
             <onright condition="!$PARAM[c_view] + $PARAM[c_tmdb]">SetFocus($PARAM[i_tmdb],0,absolute)</onright>
-            <onright condition="!$PARAM[c_view] + $PARAM[c_wosf]">$PARAM[i_wosf]</onright>
+            <onright condition="!$PARAM[c_view] + !$PARAM[c_tmdb] + $PARAM[c_wosf]">$PARAM[i_wosf]</onright>
             <onright condition="!$PARAM[c_view] + !$PARAM[c_tmdb] + !$PARAM[c_wosf]">$PARAM[onlist]</onright>
 
             <onback condition="!Window.IsVisible(Home)">ClearProperty(List.ViewContainer)</onback>
@@ -380,12 +380,17 @@
         </definition>
     </include>
 
+    <variable name="Action_View_Movement_OnBack_MenuID">
+        <value condition="Window.IsVisible(Home) + Skin.String(Home.SideMenuCollapse,Topbar)">370</value>
+        <value>303</value>
+    </variable>
+
     <include name="Action_View_Movement_OnBack">
         <param name="onleft" />
         <param name="onback">False</param>
         <param name="onmenu">[Skin.String(Navigation.OnBack,Menu) | Window.IsVisible(Home)]</param>
         <param name="backid">62</param>
-        <param name="menuid">303</param>
+        <param name="menuid">$VAR[Action_View_Movement_OnBack_MenuID]</param>
         <param name="onbump">Skin.String(Navigation.OnLeftRight,Bump)</param>
         <param name="enable">True</param>
         <param name="always">False</param>
