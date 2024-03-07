@@ -15,6 +15,7 @@
                 </include>
                 <include>Widget_Transitions</include>
                 <include>Search_View_Widgets_NoResults</include>
+                <include>Search_Filter_Selector</include>
                 <include>Search_View_Footer</include>
             </control>
             <include>Search_View_Widgets_InfoPanel</include>
@@ -29,12 +30,13 @@
     <include name="Search_View_Widgets_Grouplist">
         <control type="grouplist" id="6000">
             <top>500</top>
-            <onup>5099</onup>
-            <ondown condition="!Skin.String(Navigation.OnUp,Search)">SetProperty(List.ViewContainer,6000)</ondown>
+            <onup>330</onup>
+            <ondown>5099</ondown>
+            <!-- <ondown condition="!Skin.String(Navigation.OnUp,Search)">SetProperty(List.ViewContainer,6000)</ondown>
             <ondown condition="!Skin.String(Navigation.OnUp,Search)">330</ondown>
             <ondown condition="Skin.String(Navigation.OnUp,Search)">SetProperty(TMDbHelper.ListItem.BlurImage.Original,$INFO[Backup.Blur.Original)],Home)</ondown>
             <ondown condition="Skin.String(Navigation.OnUp,Search)">SetProperty(TMDbHelper.ListItem.BlurImage,$INFO[Backup.Blur)],Home)</ondown>
-            <ondown condition="Skin.String(Navigation.OnUp,Search)">PreviousMenu</ondown>
+            <ondown condition="Skin.String(Navigation.OnUp,Search)">PreviousMenu</ondown> -->
             <orientation>vertical</orientation>
             <control type="group" id="6100">
                 <height>widgetsearch_tbump_h</height>
@@ -45,16 +47,11 @@
 
     <include name="Search_View_Widgets_InfoPanel">
         <include content="Home_Widgets_Infopanel">
-            <param name="visible">$EXP[Exp_Search_WidgetGroup_HasFocus]</param>
             <param name="conditional_fade">False</param>
             <include content="Info_Panel">
                 <param name="container">Container.</param>
             </include>
-            <!-- <include content="Animation_Fade_In">
-                <param name="type">Visible</param>
-                <param name="delay">200</param>
-            </include>
-            <animation effect="fade" start="100" end="0" time="150" tween="sine" easing="in" reversible="false">Hidden</animation> -->
+            <visible>!Integer.IsEqual(Container(6000).NumItems,0)</visible>
         </include>
     </include>
 
@@ -63,7 +60,7 @@
             <visible>Integer.IsEqual(Container(6000).NumItems,0)</visible>
             <left>view_side</left>
             <right>view_side</right>
-            <top>160</top>
+            <top>-240</top>
             <bottom>view_pad</bottom>
             <orientation>vertical</orientation>
             <align>center</align>
@@ -90,32 +87,10 @@
     </include>
 
     <include name="Search_View_Footer">
-        <control type="grouplist">
-            <visible>!$EXP[Exp_InfoDialogs]</visible>
-            <visible>!Integer.IsEqual(Container(5099).ListItem.Property(numitems),0)</visible>
-            <hitrect x="0" y="0" w="0" h="0" />
-            <orientation>horizontal</orientation>
-            <itemgap>30</itemgap>
-            <height>80</height>
-            <centerbottom>100</centerbottom>
-            <usecontrolcoords>true</usecontrolcoords>
-            <left>120</left>
-            <control type="group">
-                <width>50</width>
-            </control>
-            <control type="group">
-                <width>50</width>
-                <include>Info_KodiLogo_Image</include>
-            </control>
-            <control type="label">
-                <label>$INFO[Container(5099).ListItem.Property(numitems),[B],[/B]] $LOCALIZE[31022]</label>
-                <include>Defs_Label_FooterItem</include>
-            </control>
-        </control>
-        <control type="group">
+        <!-- <control type="group">
             <visible>!$EXP[Exp_InfoDialogs]</visible>
             <include>Furniture_Bottom_Right</include>
-        </control>
+        </control> -->
     </include>
 
     <include name="Search_View_Header_Icon">
@@ -124,6 +99,7 @@
             <width>40</width>
             <visible>!Skin.String(Home.SideMenuCollapse,Always)</visible>
             <visible>!Skin.String(Home.SideMenuCollapse,Library)</visible>
+            <visible>!Skin.String(Home.SideMenuCollapse,Topbar)</visible>
             <visible>!Skin.HasSetting(Home.SideMenu.DisableSearchOptions)</visible>
             <visible>!$EXP[Exp_InfoDialogs]</visible>
             <control type="group">
