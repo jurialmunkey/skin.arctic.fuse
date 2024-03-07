@@ -13,8 +13,20 @@
     <include name="Shortcuts_Window_Content">
 
         <include content="Object_Hidden_Button">
+            <param name="id">1300</param>
+            <onfocus>SetFocus(300)</onfocus>
+            <onfocus>SetProperty(Shortcuts.Category,$INFO[Container(303).ListItem.Property(guid)],Home)</onfocus>
+            <onfocus>SetProperty(Shortcuts.Position,$INFO[Container(300).CurrentItem],Home)</onfocus>
+            <onfocus>SetProperty(Shortcuts.EditMenu,$INFO[Container(300).ListItem.Property(menu),menu=,],Home)</onfocus>
+            <onfocus>ClearProperty(Shortcuts.EditMode,Home)</onfocus>
+            <onfocus>ClearProperty(Shortcuts.EditGUID,Home)</onfocus>
+            <onfocus>AlarmClock(openwindow,ActivateWindow(1116),00:00,silent)</onfocus>
+        </include>
+
+        <include content="Object_Hidden_Button">
             <param name="id">1302</param>
             <onfocus>SetFocus(302)</onfocus>
+            <onfocus>ClearProperty(Shortcuts.Category,Home)</onfocus>
             <onfocus>SetProperty(Shortcuts.Position,$INFO[Container(302).CurrentItem],Home)</onfocus>
             <onfocus>SetProperty(Shortcuts.EditMenu,$INFO[Container(302).ListItem.Property(menu),menu=,],Home)</onfocus>
             <onfocus>SetProperty(Shortcuts.EditMode,$INFO[Container(302).ListItem.Property(mode),mode=,],Home)</onfocus>
@@ -25,6 +37,7 @@
         <include content="Object_Hidden_Button">
             <param name="id">1304</param>
             <onfocus>SetFocus(304)</onfocus>
+            <onfocus>ClearProperty(Shortcuts.Category,Home)</onfocus>
             <onfocus>SetProperty(Shortcuts.Position,$INFO[Container(304).CurrentItem],Home)</onfocus>
             <onfocus>SetProperty(Shortcuts.EditMenu,$INFO[Container(304).ListItem.Property(menu),menu=,],Home)</onfocus>
             <onfocus>SetProperty(Shortcuts.EditMode,$VAR[Shortcuts_Window_Content_1304_EditMode],Home)</onfocus>
@@ -140,11 +153,7 @@
                 <ondown>302</ondown>
                 <animation effect="slide" end="-240" condition="Integer.IsLess(Container(300).NumItems,3)">Conditional</animation>
 
-                <onclick>ClearProperty(Shortcuts.EditMode,Home)</onclick>
-                <onclick>ClearProperty(Shortcuts.EditGUID,Home)</onclick>
-                <onclick>SetProperty(Shortcuts.EditMenu,$INFO[Container(300).ListItem.Property(menu),menu=,],Home)</onclick>
-                <onclick>SetProperty(Shortcuts.Position,$INFO[Container(300).CurrentItem],Home)</onclick>
-                <onclick>ActivateWindow(1116)</onclick>
+                <onclick>SetFocus(1300)</onclick>
 
                 <content>plugin://script.skinvariables/?info=get_filter_dir&amp;library=video&amp;exclude_key=sidemenu_guid&amp;exclude_value=guid&amp;&amp;plugin://script.skinvariables/?info=get_shortcuts_node&amp;edit=True$INFO[Window.Property(categories_menu),&amp;,]$VAR[Path_SkinVariables_SkinFolder,&amp;skin=,]$INFO[Window(Home).Property(SkinVariables.ShortcutsNode.Reload),&amp;reload=,]</content>
 
@@ -330,6 +339,8 @@
             <top>260</top>
             <bottom>260</bottom>
             <width>view_side</width>
+            <visible>String.IsEqual(Window.Property(categories_menu),menu=homemenu)</visible>
+
             <include content="Settings_Arrows">
                 <param name="arrow_prev_visible">Container(303).HasPrevious</param>
                 <param name="arrow_next_visible">Container(303).HasNext</param>
@@ -355,13 +366,27 @@
                     <param name="id">303</param>
                     <param name="hidden_button">Items_Null</param>
                     <param name="hidden_button_enabled">False</param>
-                    <param name="altfocus">[Integer.IsEqual(Window.Property(list_id),303) + [ControlGroup(3000).HasFocus() | ControlGroup(39000).HasFocus()]]</param>
-                    <param name="layoutnf">[[!Skin.HasSetting(Hub.Home.DisableSubmenu) | !String.IsEqual(Window.Property(categories_menu),menu=homemenu)] + [[[ControlGroup(3000).HasFocus() | ControlGroup(39000).HasFocus()] + String.IsEqual(Window.Property(url),ListItem.Property(url))] | [![ControlGroup(3000).HasFocus() | ControlGroup(39000).HasFocus()] + [[String.IsEqual(ListItem.Property(path),ActivateWindow(Home)) + String.IsEqual(Window.Property(hub_prefix),Home)] | [String.IsEqual(ListItem.Property(path),ActivateWindow(1101)) + String.IsEqual(Window.Property(hub_prefix),1101)] | [String.IsEqual(ListItem.Property(path),ActivateWindow(1102)) + String.IsEqual(Window.Property(hub_prefix),1102)] | [String.IsEqual(ListItem.Property(path),ActivateWindow(1103)) + String.IsEqual(Window.Property(hub_prefix),1103)] | [String.IsEqual(ListItem.Property(path),ActivateWindow(1104)) + String.IsEqual(Window.Property(hub_prefix),1104)] | [String.IsEqual(ListItem.Property(path),ActivateWindow(1105)) + String.IsEqual(Window.Property(hub_prefix),1105)] | [String.IsEqual(ListItem.Property(path),ActivateWindow(1106)) + String.IsEqual(Window.Property(hub_prefix),1106)] | [String.IsEqual(ListItem.Property(path),ActivateWindow(1107)) + String.IsEqual(Window.Property(hub_prefix),1107)] | [String.IsEqual(ListItem.Property(path),ActivateWindow(1108)) + String.IsEqual(Window.Property(hub_prefix),1108)] | [String.IsEqual(ListItem.Property(path),ActivateWindow(1109)) + String.IsEqual(Window.Property(hub_prefix),1109)]]]]]</param>
-                    <param name="layoutfo">[[[!Skin.HasSetting(Hub.Home.DisableSubmenu) | !String.IsEqual(Window.Property(categories_menu),menu=homemenu)] + [[[ControlGroup(3000).HasFocus() | ControlGroup(39000).HasFocus()] + String.IsEqual(Window.Property(url),ListItem.Property(url))] | [![ControlGroup(3000).HasFocus() | ControlGroup(39000).HasFocus()] + [[String.IsEqual(ListItem.Property(path),ActivateWindow(Home)) + String.IsEqual(Window.Property(hub_prefix),Home)] | [String.IsEqual(ListItem.Property(path),ActivateWindow(1101)) + String.IsEqual(Window.Property(hub_prefix),1101)] | [String.IsEqual(ListItem.Property(path),ActivateWindow(1102)) + String.IsEqual(Window.Property(hub_prefix),1102)] | [String.IsEqual(ListItem.Property(path),ActivateWindow(1103)) + String.IsEqual(Window.Property(hub_prefix),1103)] | [String.IsEqual(ListItem.Property(path),ActivateWindow(1104)) + String.IsEqual(Window.Property(hub_prefix),1104)] | [String.IsEqual(ListItem.Property(path),ActivateWindow(1105)) + String.IsEqual(Window.Property(hub_prefix),1105)] | [String.IsEqual(ListItem.Property(path),ActivateWindow(1106)) + String.IsEqual(Window.Property(hub_prefix),1106)] | [String.IsEqual(ListItem.Property(path),ActivateWindow(1107)) + String.IsEqual(Window.Property(hub_prefix),1107)] | [String.IsEqual(ListItem.Property(path),ActivateWindow(1108)) + String.IsEqual(Window.Property(hub_prefix),1108)] | [String.IsEqual(ListItem.Property(path),ActivateWindow(1109)) + String.IsEqual(Window.Property(hub_prefix),1109)]]]]] | [Skin.HasSetting(Hub.Home.DisableSubmenu) + String.IsEqual(Window.Property(categories_menu),menu=homemenu)]]</param>
+                    <param name="layoutnf">[False]</param>
+                    <param name="layoutfo">[String.IsEqual(Window.Property(categories_menu),menu=homemenu)]</param>
                 </include>
                 <content>plugin://script.skinvariables/?info=get_shortcuts_node&amp;edit=True&amp;skin=$VAR[Path_SkinVariables_SkinFolder]$INFO[Window(Home).Property(SkinVariables.ShortcutsNode.Reload),&amp;reload=,]&amp;menu=sidemenu</content>
             </control>
         </control>
+        <include content="Home_Menu_Button_Icon">
+            <param name="id">303</param>
+            <param name="icon">special://skin/extras/icons/bars.png</param>
+            <param name="label">$LOCALIZE[33063]</param>
+            <include content="Home_Menu_Button_Back">
+                <param name="id">303</param>
+                <onright>340</onright>
+                <onclick>SetProperty(CustomDialogSettingsTitle,[CAPITALIZE]$LOCALIZE[31086][/CAPITALIZE],Home)</onclick>
+                <onclick>SetProperty(CustomDialogSettingsItems,Items_Settings_PowerMenuConfigure,Home)</onclick>
+                <onclick>ActivateWindow(1118)</onclick>
+            </include>
+            <left>view_menu</left>
+            <centertop>340</centertop>
+            <visible>!String.IsEqual(Window.Property(categories_menu),menu=homemenu)</visible>
+        </include>
     </include>
 
     <include name="Shortcuts_Window_Side_Search">
@@ -381,6 +406,7 @@
             </include>
             <left>view_menu</left>
             <top>view_pad</top>
+            <visible>String.IsEqual(Window.Property(categories_menu),menu=homemenu)</visible>
         </include>
     </include>
 
@@ -400,6 +426,7 @@
             </include>
             <left>view_menu</left>
             <bottom>view_pad</bottom>
+            <visible>String.IsEqual(Window.Property(categories_menu),menu=homemenu)</visible>
         </include>
     </include>
 
@@ -458,36 +485,6 @@
             <orientation>horizontal</orientation>
             <height>160</height>
             <onup>340</onup>
-
-            <!-- <include content="Dialog_Side_Button">
-                <param name="vertical">false</param>
-                <param name="id">04</param>
-                <param name="baseid">35</param>
-                <param name="textcolor">main_fg</param>
-                <param name="nf_opacity">70</param>
-                <param name="db_opacity">12</param>
-                <param name="label">$LOCALIZE[31533]</param>
-                <param name="icon">special://skin/extras/icons/list-ol.png</param>
-                <onclick>ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
-                <onclick condition="!$EXP[Shortcuts_Window_Exp_WidgetsOnly]">RunScript(script.skinvariables,run_dialog=select,heading=Add item list to menu,separator=||,list=Categories||Submenu||Widgets,"executebuiltin_0=RunPlugin($INFO[Container(300).ListItem.Property(url),,&amp;func=do_list_add&amp;&amp;item_limit::80])","executebuiltin_1=RunPlugin($INFO[Container(302).ListItem.Property(url),,&amp;func=do_list_add&amp;&amp;item_limit::80])","executebuiltin_2=RunPlugin($INFO[Container(304).ListItem.Property(url),,&amp;func=do_list_add&amp;&amp;item_limit::80&amp;&amp;use_rawpath::True])")</onclick>
-
-                <onclick condition="$EXP[Shortcuts_Window_Exp_WidgetsOnly]">RunPlugin($INFO[Container(304).ListItem.Property(url),,&amp;func=do_list_add&amp;&amp;item_limit::80&amp;&amp;use_rawpath::True])</onclick>
-            </include>
-
-            <include content="Dialog_Side_Button">
-                <param name="vertical">false</param>
-                <param name="id">05</param>
-                <param name="baseid">35</param>
-                <param name="textcolor">main_fg</param>
-                <param name="nf_opacity">70</param>
-                <param name="db_opacity">12</param>
-                <param name="label">$LOCALIZE[31534]</param>
-                <param name="icon">special://skin/extras/icons/trash-can.png</param>
-                <onclick>ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
-                <onclick condition="!$EXP[Shortcuts_Window_Exp_WidgetsOnly]">RunScript(script.skinvariables,run_dialog=select,heading=Delete item list from menu,separator=||,list=Categories||Submenu||Widgets,"executebuiltin_0=RunPlugin($INFO[Container(300).ListItem.Property(url),,&amp;func=do_list_del])","executebuiltin_1=RunPlugin($INFO[Container(302).ListItem.Property(url),,&amp;func=do_list_del])","executebuiltin_2=RunPlugin($INFO[Container(304).ListItem.Property(url),,&amp;func=do_list_del&amp;&amp;use_rawpath::True])")</onclick>
-
-                <onclick condition="$EXP[Shortcuts_Window_Exp_WidgetsOnly]">RunPlugin($INFO[Container(304).ListItem.Property(url),,&amp;func=do_list_del&amp;&amp;use_rawpath::True])</onclick>
-            </include> -->
 
             <include content="Dialog_Side_Button">
                 <param name="vertical">false</param>
