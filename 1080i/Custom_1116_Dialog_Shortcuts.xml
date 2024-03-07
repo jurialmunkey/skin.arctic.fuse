@@ -198,8 +198,25 @@
                                         <onleft>22001</onleft>
                                         <onup>23003</onup>
                                         <onback>29999</onback>
+                                        <pagecontrol>61</pagecontrol>
+                                        <onright>61</onright>
                                         <orientation>vertical</orientation>
 
+                                        <!-- Filter Categories -->
+                                        <include content="Settings_Stacked_Button">
+                                            <param name="dialog">true</param>
+                                            <param name="id">23062</param>
+                                            <param name="groupid">24062</param>
+                                            <param name="toplabel">$LOCALIZE[587] [LOWERCASE]$LOCALIZE[31150][/LOWERCASE]</param>
+                                            <param name="sublabel">$VAR[Label_SkinVariables_FilterPath]</param>
+                                            <param name="sublabel_visible">True</param>
+                                            <visible>[String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=homemenu) + String.IsEmpty(Window(Home).Property(Shortcuts.EditMode)) + String.IsEmpty(Window(Home).Property(Shortcuts.EditGUID))]</visible>
+                                            <onclick>SetProperty(SideOptions.List,Filter)</onclick>
+                                            <onclick>SetFocus(25001)</onclick>
+                                            <onback>29999</onback>
+                                        </include>
+
+                                        <!-- Disable / Enable -->
                                         <include content="Settings_Button">
                                             <param name="dialog">true</param>
                                             <param name="id">23001</param>
@@ -375,21 +392,18 @@
                                             <onclick>SetFocus(25001)</onclick>
                                             <onback>29999</onback>
                                         </include>
-                                        <!-- Category: Link visibility to sidemenu -->
-                                        <include content="Settings_Stacked_Button">
+                                        <!-- Category: Use global widgets -->
+                                        <include content="Settings_Button">
                                             <param name="dialog">true</param>
-                                            <param name="id">23062</param>
-                                            <param name="groupid">24062</param>
-                                            <param name="toplabel">$LOCALIZE[587]</param>
-                                            <param name="sublabel">$VAR[Label_SkinVariables_FilterPath]</param>
-                                            <param name="sublabel_visible">True</param>
+                                            <param name="id">23063</param>
+                                            <param name="control">radiobutton</param>
+                                            <label>$LOCALIZE[31318]</label>
+                                            <selected>!String.IsEmpty(Container(22001).ListItem.Property(global_widgets))</selected>
                                             <visible>[String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=homemenu) + String.IsEmpty(Window(Home).Property(Shortcuts.EditMode)) + String.IsEmpty(Window(Home).Property(Shortcuts.EditGUID))]</visible>
                                             <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
-                                            <onclick>SetProperty(SideOptions.List,Filter)</onclick>
-                                            <onclick>SetFocus(25001)</onclick>
+                                            <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;global_widgets])</onclick>
                                             <onback>29999</onback>
                                         </include>
-
 
                                         <!-- =============== -->
                                         <!-- Submenu Options -->
@@ -492,6 +506,7 @@
                                             <visible>String.IsEmpty(Window(Home).Property(Shortcuts.EditGUID))</visible>
 
                                             <visible>String.IsEmpty(Container(22001).ListItem.Property(submenulist_path))</visible>
+                                            <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
 
                                             <onclick>SetProperty(Shortcuts.EditMenu.Previous,$INFO[Window(Home).Property(Shortcuts.EditMenu)],Home)</onclick>
                                             <onclick>SetProperty(Shortcuts.EditMode.Previous,$INFO[Window(Home).Property(Shortcuts.EditMode)],Home)</onclick>
@@ -514,7 +529,8 @@
                                             <visible>String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=homemenu) | String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=1101menu) | String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=1102menu) | String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=1103menu) | String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=1104menu) | String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=1106menu) | String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=1107menu) | String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=1108menu) | String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=1109menu)</visible>
                                             <visible>String.IsEmpty(Window(Home).Property(Shortcuts.EditMode))</visible>
                                             <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
-                                            <selected>String.IsEqual(Container(22001).ListItem.Property(use_as_widget),True)</selected>
+                                            <visible>String.IsEmpty(Container(22001).ListItem.Property(global_widgets))</visible>
+                                            <selected>[String.IsEqual(Container(22001).ListItem.Property(use_as_widget),True) + String.IsEmpty(Container(22001).ListItem.Property(global_widgets))]</selected>
                                             <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;use_as_widget])</onclick>
                                             <onback>29999</onback>
                                         </include>
@@ -527,7 +543,7 @@
                                             <param name="dialog">true</param>
                                             <param name="id">23902</param>
                                             <label>$LOCALIZE[31282] $LOCALIZE[33063]</label>
-                                            <visible>$EXP[Exp_Hubs_Shortcuts_IsWidgetMode] | String.IsEqual(Container(22001).ListItem.Property(use_as_widget),True)</visible>
+                                            <visible>$EXP[Exp_Hubs_Shortcuts_IsWidgetMode] | [String.IsEqual(Container(22001).ListItem.Property(use_as_widget),True) + String.IsEmpty(Container(22001).ListItem.Property(global_widgets))]</visible>
                                             <onback>29999</onback>
                                             <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
                                         </include>
@@ -611,7 +627,7 @@
                                             <param name="sublabel_visible">!String.ISEmpty(Container(22001).ListItem.Property(submenulist_path))</param>
                                             <param name="enable">String.IsEmpty(Container(22001).ListItem.Property(submenulist_path))</param>
                                             <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
-                                            <visible>String.IsEqual(Container(22001).ListItem.Property(use_as_widget),True)</visible>
+                                            <visible>[String.IsEqual(Container(22001).ListItem.Property(use_as_widget),True) + String.IsEmpty(Container(22001).ListItem.Property(global_widgets))]</visible>
                                             <selected>String.IsEqual(Container(22001).ListItem.Property(use_as_list),True) | !String.IsEmpty(Container(22001).ListItem.Property(submenulist_path))</selected>
                                             <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;use_as_list])</onclick>
                                             <onback>29999</onback>
@@ -623,7 +639,7 @@
                                             <param name="id">23049</param>
                                             <label> -- $LOCALIZE[736]</label>
                                             <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
-                                            <visible>String.IsEqual(Container(22001).ListItem.Property(use_as_widget),True)</visible>
+                                            <visible>[String.IsEqual(Container(22001).ListItem.Property(use_as_widget),True) + String.IsEmpty(Container(22001).ListItem.Property(global_widgets))]</visible>
                                             <label2>$INFO[Container(22001).ListItem.Property(widget_style)]</label2>
                                             <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;widget_style&amp;&amp;Poster&amp;Landscape&amp;Square&amp;Banner&amp;Card&amp;Board&amp;Apps&amp;Icon&amp;Text&amp;&amp;Style&amp;&amp;True])</onclick>
                                             <onback>29999</onback>
@@ -635,7 +651,7 @@
                                             <param name="id">23050</param>
                                             <label> -- $LOCALIZE[31016]</label>
                                             <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
-                                            <visible>String.IsEqual(Container(22001).ListItem.Property(use_as_widget),True)</visible>
+                                            <visible>[String.IsEqual(Container(22001).ListItem.Property(use_as_widget),True) + String.IsEmpty(Container(22001).ListItem.Property(global_widgets))]</visible>
                                             <label2>[CAPITALIZE]$INFO[Container(22001).ListItem.Property(widget_sortby)][/CAPITALIZE]</label2>
                                             <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;widget_sortby&amp;&amp;default&amp;label&amp;random&amp;dateadded&amp;lastplayed&amp;playcount&amp;year&amp;rating&amp;userrating&amp;votes&amp;genre&amp;country&amp;studio&amp;playlist&amp;episodenumber&amp;season&amp;totalepisodes&amp;watchedepisodes&amp;tvshowstatus&amp;tvshowtitle&amp;file&amp;title&amp;track&amp;time&amp;artist&amp;album&amp;lastupdated&amp;lastused&amp;date&amp;&amp;Sort by&amp;&amp;True])</onclick>
                                             <onback>29999</onback>
@@ -648,7 +664,7 @@
                                             <param name="id">23051</param>
                                             <label> -- $LOCALIZE[31517]</label>
                                             <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
-                                            <visible>String.IsEqual(Container(22001).ListItem.Property(use_as_widget),True)</visible>
+                                            <visible>[String.IsEqual(Container(22001).ListItem.Property(use_as_widget),True) + String.IsEmpty(Container(22001).ListItem.Property(global_widgets))]</visible>
                                             <visible>!String.IsEmpty(Container(22001).ListItem.Property(widget_sortby)) + !String.IsEqual(Container(22001).ListItem.Property(widget_sortby),random)</visible>
                                             <selected>!String.IsEmpty(Container(22001).ListItem.Property(widget_sortorder))</selected>
                                             <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;widget_sortorder])</onclick>
@@ -661,7 +677,7 @@
                                             <param name="id">23052</param>
                                             <label> -- $LOCALIZE[31188]</label>
                                             <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
-                                            <visible>String.IsEqual(Container(22001).ListItem.Property(use_as_widget),True)</visible>
+                                            <visible>[String.IsEqual(Container(22001).ListItem.Property(use_as_widget),True) + String.IsEmpty(Container(22001).ListItem.Property(global_widgets))]</visible>
                                             <label2>$INFO[Container(22001).ListItem.Property(widget_limit)]</label2>
                                             <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_numeric&amp;&amp;widget_limit&amp;&amp;heading::Limit])</onclick>
                                             <onback>29999</onback>
@@ -674,7 +690,7 @@
                                             <param name="id">23053</param>
                                             <label> -- $LOCALIZE[31185]</label>
                                             <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
-                                            <visible>String.IsEqual(Container(22001).ListItem.Property(use_as_widget),True)</visible>
+                                            <visible>[String.IsEqual(Container(22001).ListItem.Property(use_as_widget),True) + String.IsEmpty(Container(22001).ListItem.Property(global_widgets))]</visible>
                                             <selected>!String.IsEmpty(Container(22001).ListItem.Property(widget_autoscroll))</selected>
                                             <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;widget_autoscroll])</onclick>
                                             <onback>29999</onback>
@@ -696,6 +712,10 @@
                                 </control>
                             </include>
                         </control>
+                    </include>
+                    <include content="Dialog_Scrollbar">
+                        <param name="id">61</param>
+                        <onleft>23000</onleft>
                     </include>
                 </include>
             </include>
@@ -736,20 +756,20 @@
                             <content>
                                 <item>
                                     <label>$LOCALIZE[31313]</label>
-                                    <icon>special://skin/extras/icons/eye2.png</icon>
+                                    <icon>special://skin/extras/icons/world.png</icon>
                                     <visible>String.IsEmpty(Window.Property(SideOptions.List))</visible>
                                 </item>
                             </content>
                             <content>
                                 <item>
-                                    <label>$LOCALIZE[593]</label>
+                                    <label>$LOCALIZE[593] [LOWERCASE]$LOCALIZE[31150][/LOWERCASE]</label>
                                     <icon>special://skin/extras/icons/eye2.png</icon>
                                     <visible>String.IsEqual(Window.Property(SideOptions.List),Filter)</visible>
                                 </item>
                             </content>
                             <content>
                                 <item>
-                                    <label>$LOCALIZE[31031]</label>
+                                    <label>$LOCALIZE[31313]</label>
                                     <icon>special://skin/extras/icons/world.png</icon>
                                     <property name="guid">Global</property>
                                     <visible>String.IsEqual(Window.Property(SideOptions.List),Filter)</visible>
