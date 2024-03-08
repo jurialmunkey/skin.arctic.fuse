@@ -33,7 +33,7 @@
         <include content="Object_Hidden_Button">
             <param name="id">25999</param>
 
-            <onfocus condition="!String.IsEmpty(Container(25001).ListItem.Property(guid))">RunScript(script.skinvariables,run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-linkcategory.json,use_rules=True,guid=$INFO[Container(25001).ListItem.Property(guid)],url=$INFO[Container(22001).ListItem.Property(url)],name=$INFO[Container(25001).ListItem.Label])</onfocus>
+            <onfocus condition="!String.IsEmpty(Container(25001).ListItem.Property(guid))">RunPlugin($INFO[Container(22001).ListItem.Property(url)]&amp;func=do_edit&amp;&amp;sidemenu_guid&amp;&amp;$INFO[Container(25001).ListItem.Property(guid)])</onfocus>
             <onfocus condition="String.IsEmpty(Container(25001).ListItem.Property(guid)) + !String.IsEmpty(Container(22001).ListItem.Property(sidemenu_guid))">RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle&amp;&amp;sidemenu_guid])</onfocus>
 
             <onfocus>SetFocus(23061)</onfocus>
@@ -86,10 +86,9 @@
                             <param name="id">12</param>
                             <param name="label">$LOCALIZE[35261]</param>
                             <param name="icon">special://skin/extras/icons/circle-plus.png</param>
-                            <onclick>ClearProperty(Shortcuts.Category,Home)</onclick>
                             <onclick condition="!$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
                             <onclick condition="$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
-                            <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_new]$VAR[Path_Shortcut_UseRawPath])</onclick>
+                            <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_new]$VAR[Path_Shortcut_UseRawPath]$VAR[Path_Shortcut_UseCategory])</onclick>
                             <onback>29999</onback>
                         </include>
                     </include>
@@ -108,10 +107,8 @@
                             <param name="label">$LOCALIZE[31533]</param>
                             <param name="icon">special://skin/extras/icons/list-ol.png</param>
                             <param name="visible">[String.IsEqual(Window(Home).Property(Shortcuts.EditMode),mode=widgets) | String.IsEqual(Window(Home).Property(Shortcuts.EditMode),mode=submenu) | String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-widgetsonly) | String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-globalwidgets) | [String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=homemenu) + String.IsEmpty(Window(Home).Property(Shortcuts.EditMode))]]</param>
-                            <onclick>ClearProperty(Shortcuts.Category,Home)</onclick>
                             <onclick>ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
-                            <onclick condition="!$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_list_add&amp;&amp;item_limit::80])</onclick>
-                            <onclick condition="$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_list_add&amp;&amp;item_limit::80&amp;&amp;use_rawpath::True])</onclick>
+                            <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_list_add&amp;&amp;item_limit::80]$VAR[Path_Shortcut_UseRawPath]$VAR[Path_Shortcut_UseCategory])</onclick>
                             <onback>29999</onback>
                         </include>
 
@@ -122,8 +119,7 @@
                             <param name="visible">[String.IsEqual(Window(Home).Property(Shortcuts.EditMode),mode=widgets) | String.IsEqual(Window(Home).Property(Shortcuts.EditMode),mode=submenu) | String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-widgetsonly) | String.EndsWith(Window(Home).Property(Shortcuts.EditMenu),-globalwidgets) | [String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=homemenu) + String.IsEmpty(Window(Home).Property(Shortcuts.EditMode))]]</param>
                             <onclick>ClearProperty(Shortcuts.Category,Home)</onclick>
                             <onclick>ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
-                            <onclick condition="!$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_list_del])</onclick>
-                            <onclick condition="$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_list_del&amp;&amp;use_rawpath::True])</onclick>
+                            <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_list_del]$VAR[Path_Shortcut_UseRawPath])</onclick>
                             <onback>29999</onback>
                         </include>
                     </include>
@@ -169,7 +165,7 @@
 
                                 <content>$VAR[Path_SkinVariables_ExtraFilterPath]</content>
 
-                                <content>$VAR[Path_SkinVariables_FilterPath]plugin://script.skinvariables/?info=get_shortcuts_node&amp;edit=True&amp;skin=$VAR[Path_SkinVariables_SkinFolder]$INFO[Window(Home).Property(SkinVariables.ShortcutsNode.Reload),&amp;reload=,]$INFO[Window(Home).Property(Shortcuts.EditMenu),&amp;,]$INFO[Window(Home).Property(Shortcuts.EditMode),&amp;,]$INFO[Window(Home).Property(Shortcuts.EditGUID),&amp;,]</content>
+                                <content>plugin://script.skinvariables/?info=get_shortcuts_node&amp;edit=True&amp;skin=$VAR[Path_SkinVariables_SkinFolder]$INFO[Window(Home).Property(SkinVariables.ShortcutsNode.Reload),&amp;reload=,]$INFO[Window(Home).Property(Shortcuts.EditMenu),&amp;,]$INFO[Window(Home).Property(Shortcuts.EditMode),&amp;,]$INFO[Window(Home).Property(Shortcuts.EditGUID),&amp;,]$VAR[Path_SkinVariables_FilterPath]</content>
 
                                 <onleft>9000</onleft>
                                 <onback>29999</onback>
