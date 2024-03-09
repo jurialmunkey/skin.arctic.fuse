@@ -7,8 +7,11 @@
     </include>
 
     <include name="Hub_Slide_Spotlight_NoFocus">
-        <!-- <animation effect="slide" tween="quadratic" easing="out" reversible="false" start="0" end="0,hub_spotlight_s" time="200" condition="!ControlGroup(310).HasFocus()">Conditional</animation>
-        <animation effect="slide" tween="quadratic" easing="out" reversible="false" start="0,hub_spotlight_s" end="0" time="200" condition="ControlGroup(310).HasFocus()">Conditional</animation> -->
+        <animation effect="slide" start="0" end="0,360" time="400" tween="quadratic" reversible="false" condition="[[Control.HasFocus(370) | ControlGroup(310).HasFocus() | Control.HasFocus(333)] | [[Control.HasFocus(303) | Control.HasFocus(308) | Control.HasFocus(309)] + Integer.IsEqual(Window.Property(List.ViewContainer),311)]]">Conditional</animation>
+        <animation effect="slide" end="0" start="0,360" time="400" tween="quadratic" reversible="false" condition="![[Control.HasFocus(370) | ControlGroup(310).HasFocus() | Control.HasFocus(333)] | [[Control.HasFocus(303) | Control.HasFocus(308) | Control.HasFocus(309)] + Integer.IsEqual(Window.Property(List.ViewContainer),311)]]">Conditional</animation>
+
+        <animation effect="slide" start="0" end="0,-360" time="400" tween="quadratic" reversible="false" condition="[[Control.HasFocus(370) | ControlGroup(310).HasFocus() | Control.HasFocus(333)] | [[Control.HasFocus(303) | Control.HasFocus(308) | Control.HasFocus(309)] + Integer.IsEqual(Window.Property(List.ViewContainer),311)]]">WindowClose</animation>
+        <animation effect="slide" end="0" start="0,-360" time="400" tween="quadratic" reversible="false" condition="[[Control.HasFocus(370) | ControlGroup(310).HasFocus() | Control.HasFocus(333)] | [[Control.HasFocus(303) | Control.HasFocus(308) | Control.HasFocus(309)] + Integer.IsEqual(Window.Property(List.ViewContainer),311)]]">WindowOpen</animation>
     </include>
 
     <include name="Hub_Slide_Group_NoSpotlight">
@@ -164,6 +167,8 @@
             <include content="Hub_Main_Group">
                 <param name="widgets_only">[$PARAM[widgets_only]]</param>
 
+                <include condition="Window.IsVisible(Home) + Skin.String(Home.SideMenuCollapse,Topbar) + Skin.HasSetting(Background.EnableSpotlightFanart)">Hub_Slide_Spotlight_NoFocus</include>
+
                 <include content="Hub_Menu_Group" condition="![$PARAM[widgets_only]]">
                     <include content="Hub_Categories">
                         <param name="categories">$PARAM[categories]</param>
@@ -220,7 +225,21 @@
 
     <include name="Hub_TopBar_Categories">
         <control type="group">
-            <visible>!Control.HasFocus(370) + !Control.HasFocus(333)</visible>
+            <include content="Animation_ConditionalFade">
+                <param name="condition">![Control.HasFocus(370) | Control.HasFocus(333)]</param>
+            </include>
+            <include content="Animation_Fade_In">
+                <param name="type">WindowClose</param>
+            </include>
+            <include content="Animation_Fade_Out">
+                <param name="type">WindowOpen</param>
+            </include>
+            <include content="Furniture_Top">
+                <param name="label">$INFO[Container(370).ListItem.Label]</param>
+            </include>
+        </control>
+        <control type="group">
+            <visible>![Control.HasFocus(370) | Control.HasFocus(333)]</visible>
             <include content="Animation_Fade_In">
                 <param name="type">Visible</param>
             </include>
@@ -231,74 +250,83 @@
                 <param name="label">$INFO[Container(370).ListItem.Label]</param>
             </include>
         </control>
-        <control type="list" id="370">
-            <visible allowhiddenfocus="true">Control.HasFocus(370) | Control.HasFocus(333)</visible>
+        <control type="group">
             <include content="Animation_Fade_In">
-                <param name="type">Visible</param>
+                <param name="type">WindowOpen</param>
+                <param name="condition">Control.HasFocus(370)</param>
             </include>
             <include content="Animation_Fade_Out">
-                <param name="type">Hidden</param>
+                <param name="type">WindowClose</param>
+                <param name="condition">Control.HasFocus(370)</param>
             </include>
-
-            <include content="Action_Widget_Top">
-                <param name="id">370</param>
-            </include>
-            <ondown condition="!Integer.IsEqual(Container(301).NumItems,0)">311</ondown>
-            <ondown condition="Integer.IsEqual(Container(301).NumItems,0) + !Integer.IsEqual(Container(300).NumItems,0)">300</ondown>
-            <ondown condition="Integer.IsEqual(Container(301).NumItems,0) + Integer.IsEqual(Container(300).NumItems,0)">$INFO[Container(370).ListItem.Property(widgets_setfocus)]</ondown>
-            <top>20</top>
-            <left>120</left>
-            <height>200</height>
-            <width>440</width>
-            <orientation>horizontal</orientation>
-            <scrolltime tween="quadratic">400</scrolltime>
-            <include content="Home_Menu_List_ItemLayout">
-                <param name="id">370</param>
-                <param name="hidden_button">Home_Menu_List_HiddenButton</param>
-                <param name="hidden_button_enabled">[Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)]</param>
-                <param name="itemlayout_w">100</param>
-                <param name="vertical">false</param>
-                <param name="layoutnf">[False]</param>
-                <param name="layoutfo">[True]</param>
-            </include>
-            <content>
-                <include>skinvariables-sidemenu-staticitems</include>
-            </content>
-        </control>
-        <control type="group">
-            <top>80</top>
-            <left>160</left>
-            <height>40</height>
-            <width>420</width>
-            <control type="image">
-                <texture colordiffuse="main_fg_30">special://skin/extras/icons/angle-left.png</texture>
-                <height>40</height>
-                <width>40</width>
-                <left>-40</left>
-                <centertop>50%</centertop>
-                <visible>Container(370).HasPrevious</visible>
-                <visible>Control.HasFocus(370)</visible>
+            <control type="list" id="370">
+                <visible allowhiddenfocus="true">Control.HasFocus(370) | Control.HasFocus(333)</visible>
                 <include content="Animation_Fade_In">
                     <param name="type">Visible</param>
                 </include>
                 <include content="Animation_Fade_Out">
                     <param name="type">Hidden</param>
                 </include>
+                <include content="Action_Widget_Top">
+                    <param name="id">370</param>
+                </include>
+                <ondown condition="!Integer.IsEqual(Container(301).NumItems,0)">311</ondown>
+                <ondown condition="Integer.IsEqual(Container(301).NumItems,0) + !Integer.IsEqual(Container(300).NumItems,0)">300</ondown>
+                <ondown condition="Integer.IsEqual(Container(301).NumItems,0) + Integer.IsEqual(Container(300).NumItems,0)">$INFO[Container(370).ListItem.Property(widgets_setfocus)]</ondown>
+                <top>20</top>
+                <left>120</left>
+                <height>200</height>
+                <width>440</width>
+                <orientation>horizontal</orientation>
+                <scrolltime tween="quadratic">400</scrolltime>
+                <include content="Home_Menu_List_ItemLayout">
+                    <param name="id">370</param>
+                    <param name="hidden_button">Home_Menu_List_HiddenButton</param>
+                    <param name="hidden_button_enabled">[Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)]</param>
+                    <param name="itemlayout_w">100</param>
+                    <param name="vertical">false</param>
+                    <param name="layoutnf">[False]</param>
+                    <param name="layoutfo">[True]</param>
+                </include>
+                <content>
+                    <include>skinvariables-sidemenu-staticitems</include>
+                </content>
             </control>
-            <control type="image">
-                <texture colordiffuse="main_fg_30" flipx="true">special://skin/extras/icons/angle-left.png</texture>
+            <control type="group">
+                <top>80</top>
+                <left>160</left>
                 <height>40</height>
-                <width>40</width>
-                <right>-40</right>
-                <centertop>50%</centertop>
-                <visible>Container(370).HasNext</visible>
-                <visible>Control.HasFocus(370)</visible>
-                <include content="Animation_Fade_In">
-                    <param name="type">Visible</param>
-                </include>
-                <include content="Animation_Fade_Out">
-                    <param name="type">Hidden</param>
-                </include>
+                <width>420</width>
+                <control type="image">
+                    <texture colordiffuse="main_fg_30">special://skin/extras/icons/angle-left.png</texture>
+                    <height>40</height>
+                    <width>40</width>
+                    <left>-40</left>
+                    <centertop>50%</centertop>
+                    <visible>Container(370).HasPrevious</visible>
+                    <visible>Control.HasFocus(370)</visible>
+                    <include content="Animation_Fade_In">
+                        <param name="type">Visible</param>
+                    </include>
+                    <include content="Animation_Fade_Out">
+                        <param name="type">Hidden</param>
+                    </include>
+                </control>
+                <control type="image">
+                    <texture colordiffuse="main_fg_30" flipx="true">special://skin/extras/icons/angle-left.png</texture>
+                    <height>40</height>
+                    <width>40</width>
+                    <right>-40</right>
+                    <centertop>50%</centertop>
+                    <visible>Container(370).HasNext</visible>
+                    <visible>Control.HasFocus(370)</visible>
+                    <include content="Animation_Fade_In">
+                        <param name="type">Visible</param>
+                    </include>
+                    <include content="Animation_Fade_Out">
+                        <param name="type">Hidden</param>
+                    </include>
+                </control>
             </control>
         </control>
     </include>
