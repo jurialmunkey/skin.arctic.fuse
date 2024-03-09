@@ -7,13 +7,23 @@
     </include>
 
     <include name="Hub_Slide_Spotlight_NoFocus">
-        <animation effect="slide" tween="quadratic" easing="out" reversible="false" start="0" end="0,hub_spotlight_s" time="200" condition="!ControlGroup(310).HasFocus()">Conditional</animation>
-        <animation effect="slide" tween="quadratic" easing="out" reversible="false" start="0,hub_spotlight_s" end="0" time="200" condition="ControlGroup(310).HasFocus()">Conditional</animation>
+        <!-- <animation effect="slide" tween="quadratic" easing="out" reversible="false" start="0" end="0,hub_spotlight_s" time="200" condition="!ControlGroup(310).HasFocus()">Conditional</animation>
+        <animation effect="slide" tween="quadratic" easing="out" reversible="false" start="0,hub_spotlight_s" end="0" time="200" condition="ControlGroup(310).HasFocus()">Conditional</animation> -->
     </include>
 
     <include name="Hub_Slide_Group_NoSpotlight">
         <animation effect="slide" time="400" end="0" start="0,hub_group_nospotlight_s" tween="quadratic" easing="out" reversible="false" condition="![!$EXP[Exp_Hubs_Spotlight_HasItems] + $EXP[Exp_Hubs_Spotlight_IsVisible]]">Conditional</animation>
         <animation effect="slide" time="400" end="0,hub_group_nospotlight_s" start="0" tween="quadratic" easing="out" reversible="false" condition="!$EXP[Exp_Hubs_Spotlight_HasItems] + $EXP[Exp_Hubs_Spotlight_IsVisible]">Conditional</animation>
+    </include>
+
+    <include name="Hub_WindowTransition_WidgetsGroup">
+        <animation effect="slide" start="0" end="0,hub_group_widgetup_s" time="400" tween="quadratic" reversible="false" condition="$EXP[Exp_Hubs_Spotlight_HasItems] + $EXP[Exp_Hubs_Spotlight_IsVisible]">WindowClose</animation>
+        <animation effect="slide" end="0" start="0,hub_group_widgetup_s" time="400" tween="quadratic" reversible="false" condition="$EXP[Exp_Hubs_Spotlight_HasItems] + $EXP[Exp_Hubs_Spotlight_IsVisible]">WindowOpen</animation>
+    </include>
+
+    <include name="Hub_WindowTransition_CategoriesSpotlightGroup">
+        <animation effect="fade" start="100" end="0" time="200" tween="sine" easing="in" reversible="false" condition="$EXP[Exp_Hubs_Spotlight_HasItems] + $EXP[Exp_Hubs_Spotlight_IsVisible]">WindowClose</animation>
+        <animation effect="fade" end="100" start="0" time="400" tween="sine" easing="in" reversible="false" condition="$EXP[Exp_Hubs_Spotlight_HasItems] + $EXP[Exp_Hubs_Spotlight_IsVisible]">WindowOpen</animation>
     </include>
 
     <variable name="Hub_Submenu_Highlight">
@@ -55,8 +65,8 @@
                 <animation effect="slide" time="400" start="0,-20" end="0" tween="quadratic" easing="out" reversible="false" condition="![!Container(302).IsUpdating + Integer.IsEqual(Container(302).NumItems,0) + Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)]">Conditional</animation>
                 <animation effect="slide" time="400" start="0" end="0,-20" tween="quadratic" easing="out" reversible="false" condition="!Container(302).IsUpdating + Integer.IsEqual(Container(302).NumItems,0) + Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)">Conditional</animation>
 
-                <animation effect="slide" time="400" end="0" start="0,20" tween="quadratic" easing="out" reversible="false" condition="String.IsEmpty(Window.Property(Slide.WidgetContainer))">Conditional</animation>
-                <animation effect="slide" time="400" end="0,20" start="0" tween="quadratic" easing="out" reversible="false" condition="!String.IsEmpty(Window.Property(Slide.WidgetContainer))">Conditional</animation>
+                <animation effect="slide" time="400" end="0" start="0,20" tween="quadratic" easing="out" reversible="false" condition="![!String.IsEmpty(Window.Property(Slide.WidgetContainer)) | !$EXP[Exp_Hubs_Spotlight_HasItems]]">Conditional</animation>
+                <animation effect="slide" time="400" end="0,20" start="0" tween="quadratic" easing="out" reversible="false" condition="!String.IsEmpty(Window.Property(Slide.WidgetContainer)) | !$EXP[Exp_Hubs_Spotlight_HasItems]">Conditional</animation>
 
                 <nested />
             </include>
@@ -72,6 +82,7 @@
             <height>hub_submenuwidget_h</height>
             <left>view_button_left</left>
             <orientation>vertical</orientation>
+            <include>Hub_WindowTransition_CategoriesSpotlightGroup</include>
 
             <nested />
         </control>
@@ -152,6 +163,7 @@
 
             <include content="Hub_Main_Group">
                 <param name="widgets_only">[$PARAM[widgets_only]]</param>
+
                 <include content="Hub_Menu_Group" condition="![$PARAM[widgets_only]]">
                     <include content="Hub_Categories">
                         <param name="categories">$PARAM[categories]</param>
@@ -320,6 +332,7 @@
 
         <include content="Hub_Widgets_Group">
             <include>skinvariables-$PARAM[categories]-widgets</include>
+            <include>Hub_WindowTransition_WidgetsGroup</include>
         </include>
 
         <include content="Home_Widgets_Infopanel">
@@ -349,6 +362,7 @@
         <control type="group">
             <visible>!$EXP[Exp_InfoDialogs]</visible>
             <include>Animation_Transition_InfoPanel_Hide</include>
+            <include>Hub_WindowTransition_CategoriesSpotlightGroup</include>
             <include content="Spotlight_Main">
                 <param name="window_id">$PARAM[window_id]</param>
                 <param name="visible">$EXP[Exp_Hubs_Spotlight_HasItems]</param>
@@ -371,9 +385,10 @@
                 </include>
 
                 <onup condition="$EXP[Exp_Hubs_Spotlight_HasItems]">311</onup>
+                <onup condition="!$EXP[Exp_Hubs_Spotlight_HasItems] + [Window.IsVisible(Home) + Skin.String(Home.SideMenuCollapse,Topbar)]">370</onup>
                 <include content="Action_Widget_Top">
                     <param name="id">300</param>
-                    <param name="condition">!$EXP[Exp_Hubs_Spotlight_HasItems]</param>
+                    <param name="condition">!$EXP[Exp_Hubs_Spotlight_HasItems] + ![Window.IsVisible(Home) + Skin.String(Home.SideMenuCollapse,Topbar)]</param>
                 </include>
                 <ondown>302</ondown>
                 <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,$PARAM[window_id])</onfocus>
@@ -385,8 +400,8 @@
                 <animation effect="slide" time="400" start="0,20" end="0" tween="quadratic" easing="out" reversible="false" condition="![!Container(302).IsUpdating + Integer.IsEqual(Container(302).NumItems,0) + Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)]">Conditional</animation>
                 <animation effect="slide" time="400" start="0" end="0,20" tween="quadratic" easing="out" reversible="false" condition="!Container(302).IsUpdating + Integer.IsEqual(Container(302).NumItems,0) + Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)">Conditional</animation>
 
-                <animation effect="slide" time="400" end="0" start="0,20" tween="quadratic" easing="out" reversible="false" condition="String.IsEmpty(Window.Property(Slide.WidgetContainer))">Conditional</animation>
-                <animation effect="slide" time="400" end="0,20" start="0" tween="quadratic" easing="out" reversible="false" condition="!String.IsEmpty(Window.Property(Slide.WidgetContainer))">Conditional</animation>
+                <animation effect="slide" time="400" end="0" start="0,20" tween="quadratic" easing="out" reversible="false" condition="![!String.IsEmpty(Window.Property(Slide.WidgetContainer)) | !$EXP[Exp_Hubs_Spotlight_HasItems]]">Conditional</animation>
+                <animation effect="slide" time="400" end="0,20" start="0" tween="quadratic" easing="out" reversible="false" condition="!String.IsEmpty(Window.Property(Slide.WidgetContainer)) | !$EXP[Exp_Hubs_Spotlight_HasItems]">Conditional</animation>
 
             </include>
         </control>
