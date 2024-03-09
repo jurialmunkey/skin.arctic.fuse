@@ -79,12 +79,9 @@
                         <include>Search_Filter_Edit</include>
                         <onup>SetFocus(8000,99999,absolute)</onup>
                         <ondown>SetFocus(8000,0,absolute)</ondown>
-                        <onleft>6000</onleft>
-                        <onleft>AlarmClock(refocus,SetFocus($INFO[Window.Property(TMDbHelper.WidgetContainer)]),00:00,silent)</onleft>
-                        <onright>6000</onright>
-                        <onright>AlarmClock(refocus,SetFocus($INFO[Window.Property(TMDbHelper.WidgetContainer)]),00:00,silent)</onright>
-                        <onback>6000</onback>
-                        <onback>AlarmClock(refocus,SetFocus($INFO[Window.Property(TMDbHelper.WidgetContainer)]),00:00,silent)</onback>
+                        <onleft>5099</onleft>
+                        <onright>5099</onright>
+                        <onback>5099</onback>
                     </control>
 
                     <control type="image">
@@ -106,12 +103,9 @@
                         <orientation>vertical</orientation>
                         <onup>9502</onup>
                         <ondown>9099</ondown>
-                        <onleft>6000</onleft>
-                        <onleft>AlarmClock(refocus,SetFocus($INFO[Window.Property(TMDbHelper.WidgetContainer)]),00:00,silent)</onleft>
-                        <onright>6000</onright>
-                        <onright>AlarmClock(refocus,SetFocus($INFO[Window.Property(TMDbHelper.WidgetContainer)]),00:00,silent)</onright>
-                        <onback>6000</onback>
-                        <onback>AlarmClock(refocus,SetFocus($INFO[Window.Property(TMDbHelper.WidgetContainer)]),00:00,silent)</onback>
+                        <onleft>5099</onleft>
+                        <onright>5099</onright>
+                        <onback>5099</onback>
                         <content>
                             <item>
                                 <label>$LOCALIZE[192]</label>
@@ -323,20 +317,44 @@
     </include>
 
     <include name="Search_Filter_Selector">
+        <!-- <include content="OSD_CastInfo_HintText">
+            <param name="label">Click button to change search filters</param>
+            <param name="flipy">false</param>
+        </include> -->
         <control type="button" id="5098">
             <onleft>SetFocus(5099,9999,absolute)</onleft>
             <onright>SetFocus(5099,0,absolute)</onright>
             <onup>6000</onup>
-            <!-- <ondown>PreviousMenu</ondown> -->
-            <ondown condition="!Skin.String(Navigation.OnUp,Search)">333</ondown>
+            <ondown condition="Skin.String(Navigation.OnUp,Bump)">9501</ondown>
             <ondown condition="Skin.String(Navigation.OnUp,Search)">PreviousMenu</ondown>
-            <onclick>SetFocus(9502)</onclick>
+            <!-- <onclick>SetFocus(9502)</onclick> -->
+            <onclick>SetFocus(9099)</onclick>
+            <onclick>RunScript(script.skinvariables,set_editcontrol=9099,window_id=1105,setfocus=9502)</onclick>
+            <onclick>ClearProperty(SearchTerm)</onclick>
+            <onclick>ClearProperty(SearchDiscover.SortLabel)</onclick>
+            <onclick>ClearProperty(SearchDiscover.FilmSort)</onclick>
+            <onclick>ClearProperty(SearchDiscover.ShowSort)</onclick>
+            <onclick>ClearProperty(SearchDiscover.GenreLabel)</onclick>
+            <onclick>ClearProperty(SearchDiscover.GenreID)</onclick>
+            <onclick>ClearProperty(SearchDiscover.ProviderLabel)</onclick>
+            <onclick>ClearProperty(SearchDiscover.ProviderID)</onclick>
+            <onclick>ClearProperty(SearchDiscover.PeopleLabel)</onclick>
+            <onclick>ClearProperty(SearchDiscover.PeopleID)</onclick>
+            <onclick>ClearProperty(SearchDiscover.YearHigh)</onclick>
+            <onclick>ClearProperty(SearchDiscover.YearLow)</onclick>
+            <onclick>ClearProperty(SearchDiscover.RatingLow)</onclick>
+            <onclick>ClearProperty(SearchDiscover.StudioLabel)</onclick>
+            <onclick>ClearProperty(SearchDiscover.DirectorLabel)</onclick>
+            <onclick>ClearProperty(SearchDiscover.SortBy)</onclick>
+            <onclick>ClearProperty(SearchDiscover.SortOrder)</onclick>
+            <onclick>Skin.Reset(SearchDiscover.VoteLow)</onclick>
+            <onclick>Skin.Reset(SearchDiscover.ItemLimit)</onclick>
             <right>60</right>
             <centerbottom>100</centerbottom>
             <height>80</height>
             <width>240</width>
             <texturenofocus />
-            <label>$LOCALIZE[587]</label>
+            <label>$LOCALIZE[31332]</label>
             <textcolor>main_fg_30</textcolor>
         </control>
         <include content="Categories_Selector">
@@ -350,7 +368,7 @@
             <param name="hitrect_h">120</param>
             <param name="hidden_button">List_ButtonMenu_Row_HiddenButton_ERow</param>
             <onup>6000</onup>
-            <ondown condition="!Skin.String(Navigation.OnUp,Search)">333</ondown>
+            <ondown condition="Skin.String(Navigation.OnUp,Bump)">9501</ondown>
             <ondown condition="Skin.String(Navigation.OnUp,Search)">PreviousMenu</ondown>
             <!-- <ondown>PreviousMenu</ondown> -->
             <top>920</top>
@@ -358,11 +376,30 @@
             <onleft>5098</onleft>
             <onright>5098</onright>
 
+            <!-- <include content="Action_View_Movement_OnLeftRight" condition="$EXP[Exp_HomeMenu_DontHide]">
+                <param name="id">5099</param>
+                <param name="onback">![Integer.IsEqual(Container(5099).CurrentItem,1) | Skin.String(Navigation.OnBack,Parent)]</param>
+                <param name="menuid">309</param>
+            </include>
+            <include content="Action_View_Movement_OnLeftRight" condition="!$EXP[Exp_HomeMenu_DontHide]">
+                <param name="id">5099</param>
+                <param name="onback">![Integer.IsEqual(Container(5099).CurrentItem,1) | Skin.String(Navigation.OnBack,Parent)]</param>
+                <param name="menuid">303</param>
+            </include> -->
+
             <onclick>SetFocus(9502)</onclick>
 
-            <visible>!String.IsEmpty(Control.GetLabel(9099).index(1)) | Skin.HasSetting(Search.EnableDiscover)</visible>
+            <!-- <visible>!String.IsEmpty(Control.GetLabel(9099).index(1)) | Skin.HasSetting(Search.EnableDiscover)</visible> -->
 
             <content>
+                <item>
+                    <label>$LOCALIZE[31046]</label>
+                    <property name="target" />
+                    <property name="guid" />
+                    <property name="numitems" />
+                    <property name="onfocus_one" />
+                    <visible>Integer.IsEqual(Container(5099).NumItems,0) | [Integer.IsEqual(Container(5099).NumItems,1) + String.IsEqual(Container(5099).ListItemAbsolute(0).Label,$LOCALIZE[31046])]</visible>
+                </item>
                 <item>
                     <label>$LOCALIZE[31382]</label>
                     <property name="target">videos</property>
@@ -559,13 +596,6 @@
                 <itemgap>0</itemgap>
                 <left>30</left>
 
-                <include content="Action_View_Movement_OnLeftRight">
-                    <param name="id">9031</param>
-                    <param name="onleft">9047</param>
-                    <param name="backid">$PARAM[rowtwo]</param>
-                    <param name="onback">!Control.HasFocus(9031)</param>
-                </include>
-
                 <include content="Search_Filter_Letter">
                     <param name="letter">o</param>
                     <param name="id">1</param>
@@ -677,11 +707,6 @@
                     <param name="grouponup">2</param>
                     <param name="ondown">$PARAM[ondown]</param>
                     <param name="editid">$PARAM[editid]</param>
-                </include>
-
-                <include content="Object_Hidden_Looper">
-                    <param name="id">9047</param>
-                    <param name="grouplistid">$PARAM[rowtwo]</param>
                 </include>
             </control>
         </definition>
