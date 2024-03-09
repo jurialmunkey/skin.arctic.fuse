@@ -26,6 +26,57 @@
         </definition>
     </include>
 
+    <include name="View_PVR_GroupSwitcher_Text">
+        <control type="group">
+            <width>50</width>
+            <height>50</height>
+            <centertop>50%</centertop>
+            <visible>Control.HasFocus(28)</visible>
+            <control type="image">
+                <include content="Dimension_Padding"><param name="pad">-40</param></include>
+                <bordersize>40</bordersize>
+                <bordertexture colordiffuse="shadow_hard">shadows/circle_50-shadow-40.png</bordertexture>
+                <texture colordiffuse="main_fg_100">diffuse/circle_50.png</texture>
+            </control>
+            <control type="image">
+                <bordersize>2</bordersize>
+                <texture colordiffuse="main_bg_100">diffuse/circle_50.png</texture>
+            </control>
+        </control>
+        <include>Info_KodiLogo_Image</include>
+        <include content="View_PVR_GroupSwitcher_Labels">
+            <param name="selected">false</param>
+            <param name="visible">!Control.HasFocus(28)</param>
+        </include>
+        <include content="View_PVR_GroupSwitcher_Labels">
+            <param name="selected">true</param>
+            <param name="visible">Control.HasFocus(28)</param>
+        </include>
+    </include>
+
+    <include name="View_PVR_GroupSwitcher_Base">
+        <include content="Info_FooterItemIcon">
+            <param name="icon">special://skin/extras/icons/kodi.png</param>
+            <param name="centered">false</param>
+            <param name="size">50</param>
+            <param name="bordersize">1</param>
+            <!-- <param name="visible">Control.HasFocus(28)</param> -->
+        </include>
+        <control type="label">
+            <left>80</left>
+            <label>$INFO[Control.GetLabel(28)]</label>
+            <include>Defs_Label_FooterItem</include>
+            <visible>!Control.HasFocus(28)</visible>
+        </control>
+        <control type="label">
+            <left>80</left>
+            <label>$INFO[Control.GetLabel(28)]</label>
+            <textcolor>$VAR[ColorSelected]</textcolor>
+            <include>Defs_Label_FooterItem</include>
+            <visible>Control.HasFocus(28)</visible>
+        </control>
+    </include>
+
     <!-- Group Switcher -->
     <include name="View_PVR_GroupSwitcher">
         <include content="Object_Hidden_List">
@@ -52,31 +103,8 @@
                 <texturenofocus />
                 <font />
             </control>
-            <control type="group">
-                <width>50</width>
-                <height>50</height>
-                <centertop>50%</centertop>
-                <visible>Control.HasFocus(28)</visible>
-                <control type="image">
-                    <include content="Dimension_Padding"><param name="pad">-40</param></include>
-                    <bordersize>40</bordersize>
-                    <bordertexture colordiffuse="shadow_hard">shadows/circle_50-shadow-40.png</bordertexture>
-                    <texture colordiffuse="main_fg_100">diffuse/circle_50.png</texture>
-                </control>
-                <control type="image">
-                    <bordersize>2</bordersize>
-                    <texture colordiffuse="main_bg_100">diffuse/circle_50.png</texture>
-                </control>
-            </control>
-            <include>Info_KodiLogo_Image</include>
-            <include content="View_PVR_GroupSwitcher_Labels">
-                <param name="selected">false</param>
-                <param name="visible">!Control.HasFocus(28)</param>
-            </include>
-            <include content="View_PVR_GroupSwitcher_Labels">
-                <param name="selected">true</param>
-                <param name="visible">Control.HasFocus(28)</param>
-            </include>
+            <include condition="Skin.String(Furniture.CodecStyle,Basic)">View_PVR_GroupSwitcher_Base</include>
+            <include condition="!Skin.String(Furniture.CodecStyle,Basic)">View_PVR_GroupSwitcher_Text</include>
             <control type="group">
                 <visible>Control.HasFocus(28)</visible>
                 <control type="image">
@@ -109,6 +137,7 @@
                     <left>0</left>
                     <height>80</height>
                     <centertop>50%</centertop>
+                    <visible>!Skin.String(Furniture.CodecStyle,Basic)</visible>
                     <control type="grouplist">
                         <orientation>horizontal</orientation>
                         <include content="Object_InfoCircle_Text_Top">
@@ -169,6 +198,12 @@
 						<visible>!Skin.HasSetting(Views.UseHalfPVRGuide)</visible>
 						<autoscroll delay="3500" time="3500" repeat="3500">Window.IsVisible(10702)</autoscroll>
 					</control>
+                </control>
+                <control type="label">
+                    <visible>Skin.String(Furniture.CodecStyle,Basic)</visible>
+                    <centertop>50%</centertop>
+                    <label fallback="19055">$INFO[ListItem.Label,[CAPITALIZE],[/CAPITALIZE]]$INFO[ListItem.StartDate, • ,]$INFO[ListItem.StartTime, • ,]$INFO[ListItem.EndTime, - ,]</label>
+                    <include>Defs_Label_FooterItem</include>
                 </control>
             </control>
         </control>

@@ -1390,7 +1390,7 @@
                 <visible>$PARAM[visible]</visible>
                 <control type="image">
                     <include>Texture_Shadow_Provider</include>
-                    <texture colordiffuse="main_fg_100">diffuse/provider_circle.png</texture>
+                    <texture colordiffuse="main_fg_100">$PARAM[icon_diffuse]</texture>
                 </control>
                 <control type="image">
                     <aspectratio>keep</aspectratio>
@@ -1446,6 +1446,7 @@
         <param name="include">Defs_Label_AudioChannels</param>
         <param name="visible">true</param>
         <param name="prefix" />
+        <param name="itemgap">0</param>
         <definition>
             <control type="label">
                 <shadowcolor>$PARAM[shadowcolor]</shadowcolor>
@@ -1454,6 +1455,7 @@
                 <visible>Integer.IsEqual($PARAM[type].$PARAM[info],10)</visible>
                 <include>$PARAM[include]</include>
                 <visible>$PARAM[visible]</visible>
+                <left>$PARAM[itemgap]</left>
             </control>
             <control type="label">
                 <shadowcolor>$PARAM[shadowcolor]</shadowcolor>
@@ -1462,6 +1464,7 @@
                 <visible>Integer.IsEqual($PARAM[type].$PARAM[info],9)</visible>
                 <include>$PARAM[include]</include>
                 <visible>$PARAM[visible]</visible>
+                <left>$PARAM[itemgap]</left>
             </control>
             <control type="label">
                 <shadowcolor>$PARAM[shadowcolor]</shadowcolor>
@@ -1470,6 +1473,7 @@
                 <visible>Integer.IsEqual($PARAM[type].$PARAM[info],8)</visible>
                 <include>$PARAM[include]</include>
                 <visible>$PARAM[visible]</visible>
+                <left>$PARAM[itemgap]</left>
             </control>
             <control type="label">
                 <shadowcolor>$PARAM[shadowcolor]</shadowcolor>
@@ -1478,6 +1482,7 @@
                 <visible>Integer.IsEqual($PARAM[type].$PARAM[info],7)</visible>
                 <include>$PARAM[include]</include>
                 <visible>$PARAM[visible]</visible>
+                <left>$PARAM[itemgap]</left>
             </control>
             <control type="label">
                 <shadowcolor>$PARAM[shadowcolor]</shadowcolor>
@@ -1486,6 +1491,7 @@
                 <visible>Integer.IsEqual($PARAM[type].$PARAM[info],6)</visible>
                 <include>$PARAM[include]</include>
                 <visible>$PARAM[visible]</visible>
+                <left>$PARAM[itemgap]</left>
             </control>
             <control type="label">
                 <shadowcolor>$PARAM[shadowcolor]</shadowcolor>
@@ -1494,6 +1500,7 @@
                 <visible>Integer.IsEqual($PARAM[type].$PARAM[info],5)</visible>
                 <include>$PARAM[include]</include>
                 <visible>$PARAM[visible]</visible>
+                <left>$PARAM[itemgap]</left>
             </control>
             <control type="label">
                 <shadowcolor>$PARAM[shadowcolor]</shadowcolor>
@@ -1502,6 +1509,7 @@
                 <visible>Integer.IsEqual($PARAM[type].$PARAM[info],3)</visible>
                 <include>$PARAM[include]</include>
                 <visible>$PARAM[visible]</visible>
+                <left>$PARAM[itemgap]</left>
             </control>
             <control type="label">
                 <shadowcolor>$PARAM[shadowcolor]</shadowcolor>
@@ -1510,6 +1518,7 @@
                 <visible>![Integer.IsEqual($PARAM[type].$PARAM[info],10) | Integer.IsEqual($PARAM[type].$PARAM[info],9) | Integer.IsEqual($PARAM[type].$PARAM[info],8) | Integer.IsEqual($PARAM[type].$PARAM[info],7) | Integer.IsEqual($PARAM[type].$PARAM[info],6) | Integer.IsEqual($PARAM[type].$PARAM[info],5) | Integer.IsEqual($PARAM[type].$PARAM[info],3)]</visible>
                 <include>$PARAM[include]</include>
                 <visible>$PARAM[visible]</visible>
+                <left>$PARAM[itemgap]</left>
             </control>
         </definition>
     </include>
@@ -1629,16 +1638,32 @@
         </definition>
     </include>
 
-    <include name="Info_Providers">
+    <include name="Info_Providers_Base">
         <param name="visible">false</param>
-        <param name="itemgap">-30</param>
+        <definition>
+            <include content="Info_FooterItemIcon">
+                <param name="icon">special://skin/extras/icons/justwatch.png</param>
+                <param name="centered">false</param>
+                <param name="size">50</param>
+                <param name="bordersize">1</param>
+                <param name="visible">$PARAM[visible]</param>
+            </include>
+            <control type="label">
+                <label>$INFO[Container(99950).ListItem.Property(Provider.1.Name)]$INFO[Container(99950).ListItem.Property(Provider.2.Name), • ,]$INFO[Container(99950).ListItem.Property(Provider.3.Name), • ,]$INFO[Container(99950).ListItem.Property(Provider.4.Name), • ,]$INFO[Container(99950).ListItem.Property(Provider.5.Name), • ,]$INFO[Container(99950).ListItem.Property(Provider.6.Name), • ,]</label>
+                <include>Defs_Label_FooterItem</include>
+                <visible>$PARAM[visible]</visible>
+            </control>
+        </definition>
+    </include>
+
+    <include name="Info_Providers_Text">
+        <param name="visible">false</param>
         <definition>
             <control type="group">
                 <width>50</width>
                 <include>Info_KodiLogo_Image</include>
                 <visible>$PARAM[visible]</visible>
             </control>
-
             <control type="group">
                 <left>0</left>
                 <visible>$PARAM[visible]</visible>
@@ -1651,7 +1676,6 @@
                     <width>auto</width>
                 </include>
             </control>
-
         </definition>
     </include>
 
@@ -1702,6 +1726,21 @@
         </definition>
     </include>
 
+    <include name="Info_Providers">
+        <include content="Info_Providers_Base" condition="Skin.String(Furniture.CodecStyle,Basic)">
+            <param name="visible">$PARAM[visible]</param>
+            <param name="container">$PARAM[container]</param>
+        </include>
+        <include content="Info_Providers_Text" condition="!Skin.String(Furniture.CodecStyle,Colour) + !Skin.String(Furniture.CodecStyle,Basic)">
+            <param name="visible">$PARAM[visible]</param>
+            <param name="container">$PARAM[container]</param>
+        </include>
+        <include content="Info_Providers_Icon" condition="Skin.String(Furniture.CodecStyle,Colour) + !Skin.String(Furniture.CodecStyle,Basic)">
+            <param name="visible">$PARAM[visible]</param>
+            <param name="container">$PARAM[container]</param>
+        </include>
+    </include>
+
     <variable name="Info_Codecs_Resolution_Color_main_fg_90">
         <value condition="Skin.String(Furniture.CodecStyle,Colour)">fffc0a0a</value>
         <value>main_fg_90</value>
@@ -1747,7 +1786,182 @@
         <value>panel_fg_90</value>
     </variable>
 
-    <include name="Info_Codecs">
+    <include name="Info_Codecs_Base">
+        <param name="visible">false</param>
+        <param name="itemgap">-30</param>
+        <param name="listitem">ListItem</param>
+        <param name="top_textcolor">main_fg_90</param>
+        <param name="sub_textcolor">main_fg_70</param>
+        <param name="anchor">true</param>
+        <definition>
+            <include content="Info_FooterItemIcon">
+                <param name="icon">special://skin/extras/icons/film.png</param>
+                <param name="centered">false</param>
+                <param name="size">50</param>
+                <param name="bordersize">5</param>
+                <param name="visible">$PARAM[visible] + $PARAM[anchor]</param>
+            </include>
+
+            <control type="group">
+                <width>0</width>
+                <visible>$PARAM[visible]</visible>
+            </control>
+
+            <control type="label">
+                <textcolor>$PARAM[top_textcolor]</textcolor>
+                <left>$PARAM[itemgap]</left>
+                <label>4K</label>
+                <include>Defs_Label_FooterItem</include>
+                <visible>!String.IsEmpty($PARAM[container]$PARAM[listitem].VideoResolution)</visible>
+                <visible>String.IsEqual($PARAM[container]$PARAM[listitem].VideoResolution,4K)</visible>
+                <visible>$PARAM[visible]</visible>
+            </control>
+            <control type="label">
+                <textcolor>$PARAM[top_textcolor]</textcolor>
+                <left>$PARAM[itemgap]</left>
+                <label>HD</label>
+                <include>Defs_Label_FooterItem</include>
+                <visible>!String.IsEmpty($PARAM[container]$PARAM[listitem].VideoResolution)</visible>
+                <visible>!String.IsEqual($PARAM[container]$PARAM[listitem].VideoResolution,4K) + Integer.IsGreater($PARAM[container]$PARAM[listitem].VideoResolution,719)</visible>
+                <visible>$PARAM[visible]</visible>
+            </control>
+            <control type="label">
+                <textcolor>$PARAM[top_textcolor]</textcolor>
+                <left>$PARAM[itemgap]</left>
+                <label>SD</label>
+                <include>Defs_Label_FooterItem</include>
+                <visible>!String.IsEmpty($PARAM[container]$PARAM[listitem].VideoResolution)</visible>
+                <visible>!String.IsEqual($PARAM[container]$PARAM[listitem].VideoResolution,4K) + !Integer.IsGreater($PARAM[container]$PARAM[listitem].VideoResolution,719)</visible>
+                <visible>$PARAM[visible]</visible>
+            </control>
+            <control type="label">
+                <textcolor>$PARAM[top_textcolor]</textcolor>
+                <left>$PARAM[itemgap]</left>
+                <label>WEB</label>
+                <include>Defs_Label_FooterItem</include>
+                <visible>String.IsEmpty($PARAM[container]$PARAM[listitem].VideoResolution)</visible>
+                <visible>$PARAM[visible]</visible>
+            </control>
+            <control type="label">
+                <textcolor>$PARAM[top_textcolor]</textcolor>
+                <left>$PARAM[itemgap]</left>
+                <label> • $INFO[$PARAM[container]$PARAM[listitem].VideoResolution]</label>
+                <include>Defs_Label_FooterItem</include>
+                <visible>!String.IsEqual($PARAM[container]$PARAM[listitem].VideoResolution,4K)</visible>
+                <visible>!String.IsEmpty($PARAM[container]$PARAM[listitem].VideoResolution)</visible>
+                <visible>$PARAM[visible]</visible>
+            </control>
+            <control type="label">
+                <textcolor>$PARAM[top_textcolor]</textcolor>
+                <left>$PARAM[itemgap]</left>
+                <label> • $INFO[$PARAM[container]$PARAM[listitem].VideoCodec]</label>
+                <include>Defs_Label_FooterItem</include>
+                <visible>!String.IsEmpty($PARAM[container]$PARAM[listitem].VideoCodec)</visible>
+                <visible>$PARAM[visible]</visible>
+            </control>
+            <control type="label">
+                <textcolor>$PARAM[top_textcolor]</textcolor>
+                <left>$PARAM[itemgap]</left>
+                <label> • $INFO[$PARAM[container]$PARAM[listitem].VideoAspect]</label>
+                <include>Defs_Label_FooterItem</include>
+                <visible>!String.IsEmpty($PARAM[container]$PARAM[listitem].VideoAspect)</visible>
+                <visible>$PARAM[visible]</visible>
+            </control>
+            <control type="label">
+                <textcolor>$PARAM[top_textcolor]</textcolor>
+                <left>$PARAM[itemgap]</left>
+                <label> • 3D</label>
+                <include>Defs_Label_FooterItem</include>
+                <visible>!String.IsEmpty($PARAM[container]$PARAM[listitem].IsStereoscopic)</visible>
+                <visible>$PARAM[visible]</visible>
+            </control>
+            <control type="label">
+                <textcolor>$PARAM[top_textcolor]</textcolor>
+                <left>$PARAM[itemgap]</left>
+                <label> • $INFO[$PARAM[container]$PARAM[listitem].HdrType]</label>
+                <include>Defs_Label_FooterItem</include>
+                <visible>!String.IsEmpty($PARAM[container]$PARAM[listitem].HdrType)</visible>
+                <visible>$PARAM[visible]</visible>
+            </control>
+            <control type="label">
+                <textcolor>$PARAM[top_textcolor]</textcolor>
+                <left>$PARAM[itemgap]</left>
+                <label> • $INFO[$PARAM[container]$PARAM[listitem].VideoVersionName]</label>
+                <include>Defs_Label_FooterItem</include>
+                <visible>!String.IsEmpty($PARAM[container]$PARAM[listitem].VideoVersionName)</visible>
+                <visible>$PARAM[visible]</visible>
+            </control>
+
+            <control type="group">
+                <width>0</width>
+                <visible>$PARAM[visible]</visible>
+            </control>
+
+            <include content="Info_FooterItemIcon">
+                <param name="icon">special://skin/extras/icons/songs.png</param>
+                <param name="centered">false</param>
+                <param name="size">50</param>
+                <param name="bordersize">5</param>
+                <param name="visible">$PARAM[visible] + $PARAM[anchor]</param>
+            </include>
+
+            <control type="group">
+                <width>0</width>
+                <visible>$PARAM[visible]</visible>
+            </control>
+
+            <control type="label">
+                <textcolor>$PARAM[top_textcolor]</textcolor>
+                <left>$PARAM[itemgap]</left>
+                <label fallback="Unknown">$INFO[$PARAM[container]$PARAM[listitem].AudioCodec]</label>
+                <include>Defs_Label_FooterItem</include>
+                <visible>$PARAM[visible]</visible>
+            </control>
+            <include content="Info_Codec_AudioChannels_Labels">
+                <param name="include">Defs_Label_FooterItem</param>
+                <param name="channelscolor">$PARAM[top_textcolor]</param>
+                <param name="type">$PARAM[container]$PARAM[listitem]</param>
+                <param name="prefix"> • </param>
+                <param name="visible">$PARAM[visible]</param>
+                <param name="itemgap">$PARAM[itemgap]</param>
+            </include>
+            <control type="label">
+                <textcolor>$PARAM[top_textcolor]</textcolor>
+                <left>$PARAM[itemgap]</left>
+                <label> • Atmos</label>
+                <include>Defs_Label_FooterItem</include>
+                <visible>String.Contains($PARAM[container]$PARAM[listitem].FileNameAndPath,atmos)</visible>
+                <visible>$PARAM[visible]</visible>
+            </control>
+            <control type="label">
+                <textcolor>$PARAM[top_textcolor]</textcolor>
+                <left>$PARAM[itemgap]</left>
+                <label> • dts-x</label>
+                <include>Defs_Label_FooterItem</include>
+                <visible>!String.Contains($PARAM[container]$PARAM[listitem].FileNameAndPath,atmos) + [String.Contains($PARAM[container]$PARAM[listitem].FileNameAndPath,dtsx) | String.Contains($PARAM[container]$PARAM[listitem].FileNameAndPath,dts-x)]</visible>
+                <visible>$PARAM[visible]</visible>
+            </control>
+            <control type="label">
+                <textcolor>$PARAM[top_textcolor]</textcolor>
+                <left>$PARAM[itemgap]</left>
+                <label> • $INFO[$PARAM[container]$PARAM[listitem].Property(AudioLanguage.1)]$INFO[$PARAM[container]$PARAM[listitem].Property(AudioLanguage.2), | ,]$INFO[$PARAM[container]$PARAM[listitem].Property(AudioLanguage.3), | ,]$INFO[$PARAM[container]$PARAM[listitem].Property(AudioLanguage.4), | ,]$INFO[$PARAM[container]$PARAM[listitem].Property(AudioLanguage.5), | ,]</label>
+                <include>Defs_Label_FooterItem</include>
+                <visible>!String.IsEmpty($PARAM[container]$PARAM[listitem].Property(AudioLanguage.1))</visible>
+                <visible>$PARAM[visible]</visible>
+            </control>
+            <control type="label">
+                <textcolor>$PARAM[top_textcolor]</textcolor>
+                <left>$PARAM[itemgap]</left>
+                <label> • [ $INFO[$PARAM[container]$PARAM[listitem].Property(SubtitleLanguage.1)]$INFO[$PARAM[container]$PARAM[listitem].Property(SubtitleLanguage.2), | ,]$INFO[$PARAM[container]$PARAM[listitem].Property(SubtitleLanguage.3), | ,]$INFO[$PARAM[container]$PARAM[listitem].Property(SubtitleLanguage.4), | ,]$INFO[$PARAM[container]$PARAM[listitem].Property(SubtitleLanguage.5), | ,] ]</label>
+                <include>Defs_Label_FooterItem</include>
+                <visible>!String.IsEmpty($PARAM[container]$PARAM[listitem].Property(SubtitleLanguage.1))</visible>
+                <visible>$PARAM[visible]</visible>
+            </control>
+
+        </definition>
+    </include>
+
+    <include name="Info_Codecs_Text">
         <param name="visible">false</param>
         <param name="itemgap">-30</param>
         <param name="listitem">ListItem</param>
@@ -2066,6 +2280,21 @@
         </definition>
     </include>
 
+    <include name="Info_Codecs">
+        <include content="Info_Codecs_Base" condition="Skin.String(Furniture.CodecStyle,Basic)">
+            <param name="visible">$PARAM[visible]</param>
+            <param name="container">$PARAM[container]</param>
+        </include>
+        <include content="Info_Codecs_Text" condition="![Skin.String(Furniture.CodecStyle,Colour) | Skin.String(Furniture.CodecStyle,Monochrome)] + !Skin.String(Furniture.CodecStyle,Basic)">
+            <param name="visible">$PARAM[visible]</param>
+            <param name="container">$PARAM[container]</param>
+        </include>
+        <include content="Info_Codecs_Icon" condition="[Skin.String(Furniture.CodecStyle,Colour) | Skin.String(Furniture.CodecStyle,Monochrome)] + !Skin.String(Furniture.CodecStyle,Basic)">
+            <param name="visible">$PARAM[visible]</param>
+            <param name="container">$PARAM[container]</param>
+        </include>
+    </include>
+
     <variable name="Info_KodiLogo_Color">
 	    <!-- PVR005: value changed from $VAR[ColorHighlight] -->
         <value condition="!Skin.String(Furniture.CodecStyle,Monochrome)">ff30adde</value>
@@ -2095,7 +2324,7 @@
         </definition>
     </include>
 
-    <include name="Info_WatchedEpisodes">
+    <include name="Info_WatchedEpisodes_Text">
         <param name="visible">false</param>
         <definition>
             <control type="group">
@@ -2209,7 +2438,96 @@
         </definition>
     </include>
 
-    <include name="Info_PlayCount">
+    <include name="Info_WatchedEpisodes_Base">
+        <param name="visible">false</param>
+        <definition>
+            <include content="Info_FooterItemIcon">
+                <param name="icon">special://skin/extras/icons/database.png</param>
+                <param name="centered">false</param>
+                <param name="size">50</param>
+                <param name="bordersize">5</param>
+                <param name="visible">$PARAM[visible]</param>
+            </include>
+            <control type="grouplist">
+                <orientation>horizontal</orientation>
+                <itemgap>6</itemgap>
+                <visible>$PARAM[visible]</visible>
+                <control type="label">
+                    <label>$LOCALIZE[31283]</label>
+                    <include>Defs_Label_FooterItem</include>
+                </control>
+                <control type="label">
+                    <label>$NUMBER[0]</label>
+                    <include>Defs_Label_FooterItem</include>
+                    <visible>String.IsEmpty($PARAM[container]ListItem.Property(watchedepisodes))</visible>
+                </control>
+                <control type="label">
+                    <label>$INFO[$PARAM[container]ListItem.Property(watchedepisodes)]</label>
+                    <include>Defs_Label_FooterItem</include>
+                    <visible>!String.IsEmpty($PARAM[container]ListItem.Property(watchedepisodes))</visible>
+                </control>
+                <control type="label">
+                    <label>$LOCALIZE[1443]</label>
+                    <include>Defs_Label_FooterItem</include>
+                    <visible>!String.IsEmpty($PARAM[container]ListItem.Property(totalepisodes))</visible>
+                </control>
+                <control type="label">
+                    <label>$INFO[$PARAM[container]ListItem.Property(totalepisodes)]</label>
+                    <include>Defs_Label_FooterItem</include>
+                    <visible>!String.IsEmpty($PARAM[container]ListItem.Property(totalepisodes))</visible>
+                </control>
+                <control type="label">
+                    <label>$LOCALIZE[20453]</label>
+                    <include>Defs_Label_FooterItem</include>
+                </control>
+                <control type="label">
+                    <label>.</label>
+                    <include>Defs_Label_FooterItem</include>
+                    <left>-6</left>
+                    <visible>!String.IsEmpty($PARAM[container]ListItem.LastPlayed) | !String.IsEmpty($PARAM[container]ListItem.DateAdded)</visible>
+                </control>
+
+                <!-- Last Played -->
+                <control type="label">
+                    <label>$LOCALIZE[568]</label>
+                    <include>Defs_Label_FooterItem</include>
+                    <visible>!String.IsEmpty($PARAM[container]ListItem.LastPlayed)</visible>
+                </control>
+                <control type="label">
+                    <label>$INFO[$PARAM[container]ListItem.LastPlayed]</label>
+                    <include>Defs_Label_FooterItem</include>
+                    <visible>!String.IsEmpty($PARAM[container]ListItem.LastPlayed)</visible>
+                </control>
+
+                <!-- Date Added -->
+                <control type="label">
+                    <label>$LOCALIZE[31200]</label>
+                    <include>Defs_Label_FooterItem</include>
+                    <visible>String.IsEmpty($PARAM[container]ListItem.LastPlayed)</visible>
+                    <visible>!String.IsEmpty($PARAM[container]ListItem.DateAdded)</visible>
+                </control>
+                <control type="label">
+                    <label>$INFO[$PARAM[container]ListItem.DateAdded]</label>
+                    <include>Defs_Label_FooterItem</include>
+                    <visible>String.IsEmpty($PARAM[container]ListItem.LastPlayed)</visible>
+                    <visible>!String.IsEmpty($PARAM[container]ListItem.DateAdded)</visible>
+                </control>
+            </control>
+        </definition>
+    </include>
+
+    <include name="Info_WatchedEpisodes">
+        <include content="Info_WatchedEpisodes_Base" condition="Skin.String(Furniture.CodecStyle,Basic)">
+            <param name="visible">$PARAM[visible]</param>
+            <param name="container">$PARAM[container]</param>
+        </include>
+        <include content="Info_WatchedEpisodes_Text" condition="!Skin.String(Furniture.CodecStyle,Basic)">
+            <param name="visible">$PARAM[visible]</param>
+            <param name="container">$PARAM[container]</param>
+        </include>
+    </include>
+
+    <include name="Info_PlayCount_Text">
         <param name="visible">false</param>
         <definition>
             <control type="group">
@@ -2308,7 +2626,86 @@
         </definition>
     </include>
 
-    <include name="Info_MusicCodecs">
+    <include name="Info_PlayCount_Base">
+        <param name="visible">false</param>
+        <definition>
+            <include content="Info_FooterItemIcon">
+                <param name="icon">special://skin/extras/icons/database.png</param>
+                <param name="centered">false</param>
+                <param name="size">50</param>
+                <param name="bordersize">5</param>
+                <param name="visible">$PARAM[visible]</param>
+            </include>
+            <control type="grouplist">
+                <orientation>horizontal</orientation>
+                <itemgap>6</itemgap>
+                <visible>$PARAM[visible]</visible>
+                <control type="label">
+                    <label>$LOCALIZE[31283]</label>
+                    <include>Defs_Label_FooterItem</include>
+                </control>
+                <control type="label">
+                    <label>$NUMBER[0]</label>
+                    <include>Defs_Label_FooterItem</include>
+                    <visible>String.IsEmpty($PARAM[container]ListItem.PlayCount)</visible>
+                </control>
+                <control type="label">
+                    <label>$INFO[$PARAM[container]ListItem.PlayCount]</label>
+                    <include>Defs_Label_FooterItem</include>
+                    <visible>!String.IsEmpty($PARAM[container]ListItem.PlayCount)</visible>
+                </control>
+                <control type="label">
+                    <label>$LOCALIZE[31183]</label>
+                    <include>Defs_Label_FooterItem</include>
+                </control>
+                <control type="label">
+                    <label>.</label>
+                    <include>Defs_Label_FooterItem</include>
+                    <left>-6</left>
+                    <visible>!String.IsEmpty($PARAM[container]ListItem.LastPlayed) | !String.IsEmpty($PARAM[container]ListItem.DateAdded)</visible>
+                </control>
+
+                <!-- Last Played -->
+                <control type="label">
+                    <label>$LOCALIZE[568]</label>
+                    <include>Defs_Label_FooterItem</include>
+                    <visible>!String.IsEmpty($PARAM[container]ListItem.LastPlayed)</visible>
+                </control>
+                <control type="label">
+                    <label>$INFO[$PARAM[container]ListItem.LastPlayed]</label>
+                    <include>Defs_Label_FooterItem</include>
+                    <visible>!String.IsEmpty($PARAM[container]ListItem.LastPlayed)</visible>
+                </control>
+
+                <!-- Date Added -->
+                <control type="label">
+                    <label>$LOCALIZE[31200]</label>
+                    <include>Defs_Label_FooterItem</include>
+                    <visible>String.IsEmpty($PARAM[container]ListItem.LastPlayed)</visible>
+                    <visible>!String.IsEmpty($PARAM[container]ListItem.DateAdded)</visible>
+                </control>
+                <control type="label">
+                    <label>$INFO[$PARAM[container]ListItem.DateAdded]</label>
+                    <include>Defs_Label_FooterItem</include>
+                    <visible>String.IsEmpty($PARAM[container]ListItem.LastPlayed)</visible>
+                    <visible>!String.IsEmpty($PARAM[container]ListItem.DateAdded)</visible>
+                </control>
+            </control>
+        </definition>
+    </include>
+
+    <include name="Info_PlayCount">
+        <include content="Info_PlayCount_Base" condition="Skin.String(Furniture.CodecStyle,Basic)">
+            <param name="visible">$PARAM[visible]</param>
+            <param name="container">$PARAM[container]</param>
+        </include>
+        <include content="Info_PlayCount_Text" condition="!Skin.String(Furniture.CodecStyle,Basic)">
+            <param name="visible">$PARAM[visible]</param>
+            <param name="container">$PARAM[container]</param>
+        </include>
+    </include>
+
+    <include name="Info_MusicCodecs_Text">
         <param name="visible">false</param>
         <param name="itemgap">-30</param>
         <definition>
@@ -2404,45 +2801,71 @@
         </definition>
     </include>
 
-    <include name="Info_MusicCodecs">
+    <include name="Info_MusicCodecs_Base">
         <param name="visible">false</param>
+        <param name="itemgap">-30</param>
         <definition>
+            <include content="Info_FooterItemIcon">
+                <param name="icon">special://skin/extras/icons/songs.png</param>
+                <param name="centered">false</param>
+                <param name="size">50</param>
+                <param name="bordersize">5</param>
+                <param name="visible">$PARAM[visible]</param>
+            </include>
+
             <control type="group">
-                <width>50</width>
-                <include>Info_KodiLogo_Image</include>
+                <width>0</width>
                 <visible>$PARAM[visible]</visible>
             </control>
-            <include content="Info_Codecs_StackedText">
-                <param name="topcolor">$VAR[Info_Codecs_AspectRatio_Color_main_fg_90]</param>
-                <param name="bottomcolor">main_fg_70</param>
-                <param name="toplabel">$INFO[$PARAM[container]ListItem.SampleRate]</param>
-                <param name="bottomlabel">$INFO[$PARAM[container]ListItem.BitRate,, kbps]</param>
-                <param name="bottomwidth">80</param>
-                <param name="visible">$PARAM[visible]</param>
-                <param name="width">72</param>
-                <param name="left">-4</param>
-            </include>
-            <include content="Info_Codec_AudioChannels">
+
+            <control type="label">
+                <left>$PARAM[itemgap]</left>
+                <label fallback="Unknown">$INFO[$PARAM[container]ListItem.FileExtension]</label>
+                <include>Defs_Label_FooterItem</include>
+                <visible>$PARAM[visible]</visible>
+            </control>
+            <include content="Info_Codec_AudioChannels_Labels">
+                <param name="include">Defs_Label_FooterItem</param>
+                <param name="channelscolor">main_fg_90</param>
                 <param name="type">$PARAM[container]ListItem</param>
                 <param name="info">MusicChannels</param>
-                <param name="channelscolor">main_fg_90</param>
-                <param name="iconcolor">main_fg_90</param>
-                <param name="imagecolor">$VAR[Info_Codecs_AudioChannels_Color_main_fg_90]</param>
+                <param name="prefix"> • </param>
                 <param name="visible">$PARAM[visible]</param>
-                <param name="left">-10</param>
+                <param name="itemgap">$PARAM[itemgap]</param>
             </include>
-            <include content="Info_Codecs_MonoIcon">
-                <param name="icon">audio/$INFO[$PARAM[container]ListItem.FileExtension].png</param>
-                <param name="width">80</param>
-                <param name="iconwidth">94</param>
-                <param name="iconheight">48</param>
-                <param name="left">-10</param>
-                <param name="visible">$PARAM[visible] + !String.IsEmpty($PARAM[container]ListItem.FileExtension) + String.IsEqual($PARAM[container]ListItem.DBType,song)</param>
-            </include>
+            <control type="label">
+                <left>$PARAM[itemgap]</left>
+                <label> • $INFO[$PARAM[container]ListItem.SampleRate]</label>
+                <include>Defs_Label_FooterItem</include>
+                <visible>!String.IsEmpty($PARAM[container]ListItem.SampleRate)</visible>
+                <visible>$PARAM[visible]</visible>
+            </control>
+            <control type="label">
+                <left>$PARAM[itemgap]</left>
+                <label> • $INFO[$PARAM[container]ListItem.BitRate,, kbps]</label>
+                <include>Defs_Label_FooterItem</include>
+                <visible>!String.IsEmpty($PARAM[container]ListItem.BitRate)</visible>
+                <visible>$PARAM[visible]</visible>
+            </control>
         </definition>
     </include>
 
-    <include name="Info_MusicDuration">
+    <include name="Info_MusicCodecs">
+        <include content="Info_MusicCodecs_Base" condition="Skin.String(Furniture.CodecStyle,Basic)">
+            <param name="visible">$PARAM[visible]</param>
+            <param name="container">$PARAM[container]</param>
+        </include>
+        <include content="Info_MusicCodecs_Text" condition="!Skin.String(Furniture.CodecStyle,Colour) + !Skin.String(Furniture.CodecStyle,Basic)">
+            <param name="visible">$PARAM[visible]</param>
+            <param name="container">$PARAM[container]</param>
+        </include>
+        <include content="Info_MusicCodecs_Icon" condition="Skin.String(Furniture.CodecStyle,Colour) + !Skin.String(Furniture.CodecStyle,Basic)">
+            <param name="visible">$PARAM[visible]</param>
+            <param name="container">$PARAM[container]</param>
+        </include>
+    </include>
+
+    <include name="Info_MusicDuration_Text">
         <param name="visible">false</param>
         <definition>
             <control type="group">
@@ -2457,12 +2880,12 @@
                     <left>80</left>
                     <include content="Object_InfoCircle_Text_Top">
                         <width>auto</width>
-                        <label>Track</label>
+                        <label>$LOCALIZE[554]</label>
                         <visible>String.IsEqual($PARAM[container]ListItem.DBType,song)</visible>
                     </include>
                     <include content="Object_InfoCircle_Text_Top">
                         <width>auto</width>
-                        <label>Album</label>
+                        <label>$LOCALIZE[558]</label>
                         <visible>String.IsEqual($PARAM[container]ListItem.DBType,album)</visible>
                     </include>
 
@@ -2486,14 +2909,38 @@
         </definition>
     </include>
 
+    <include name="Info_MusicDuration_Base">
+        <param name="visible">false</param>
+        <definition>
+            <include content="Info_FooterItemIcon">
+                <param name="icon">special://skin/extras/icons/songs.png</param>
+                <param name="centered">false</param>
+                <param name="size">50</param>
+                <param name="bordersize">5</param>
+                <param name="visible">$PARAM[visible]</param>
+            </include>
+            <control type="label">
+                <label>$INFO[$PARAM[container]ListItem.Duration]</label>
+                <include>Defs_Label_FooterItem</include>
+                <visible>$PARAM[visible]</visible>
+            </control>
+        </definition>
+    </include>
+
+    <include name="Info_MusicDuration">
+        <include content="Info_MusicDuration_Base" condition="Skin.String(Furniture.CodecStyle,Basic)">
+            <param name="visible">$PARAM[visible]</param>
+            <param name="container">$PARAM[container]</param>
+        </include>
+        <include content="Info_MusicDuration_Text" condition="!Skin.String(Furniture.CodecStyle,Basic)">
+            <param name="visible">$PARAM[visible]</param>
+            <param name="container">$PARAM[container]</param>
+        </include>
+    </include>
+
     <include name="Info_KodiLogo">
         <param name="visible">true</param>
         <definition>
-			<!-- MISC017: Revert to previous version of Footer Kodi Logo -->
-            <!-- include content="Settings_KodiVersion">
-                <centerbottom>50%</centerbottom>
-                <visible>$PARAM[visible]</visible>
-            </include -->
 			<!-- MISC017: Revert to previous version of Footer Kodi Logo -->
             <control type="group">
                 <visible>$PARAM[visible]</visible>
@@ -2509,6 +2956,11 @@
                     <textoffsetx>0</textoffsetx>
                 </control>
             </control>
+       <!-- MISC017: Disable base Footer Kodi Logo -->
+            <!-- include content="Settings_KodiVersion">
+                <param name="visible">$PARAM[visible]</param>
+                <param name="centerbottom">50%</param>
+            </include -->
         </definition>
     </include>
 
@@ -2535,32 +2987,17 @@
                     <width>50</width>
                 </control>
 
-                <include content="Info_MusicCodecs_Icon" condition="[Skin.String(Furniture.CodecStyle,Colour) | Skin.String(Furniture.CodecStyle,Monochrome)]">
+                <include content="Info_MusicCodecs">
                     <param name="container">$PARAM[container]</param>
                     <param name="visible">$PARAM[info_musiccodecs]</param>
                 </include>
 
-                <include content="Info_Codecs_Icon" condition="[Skin.String(Furniture.CodecStyle,Colour) | Skin.String(Furniture.CodecStyle,Monochrome)]">
+                <include content="Info_Codecs">
                     <param name="container">$PARAM[container]</param>
                     <param name="visible">!$PARAM[info_musiccodecs] + $PARAM[info_codecs]</param>
                 </include>
 
-                <include content="Info_Providers_Icon" condition="[Skin.String(Furniture.CodecStyle,Colour)]">
-                    <param name="container">$PARAM[container]</param>
-                    <param name="visible">!$PARAM[info_musiccodecs] + !$PARAM[info_codecs] + $PARAM[info_providers]</param>
-                </include>
-
-                <include content="Info_MusicCodecs" condition="![Skin.String(Furniture.CodecStyle,Colour) | Skin.String(Furniture.CodecStyle,Monochrome)]">
-                    <param name="container">$PARAM[container]</param>
-                    <param name="visible">$PARAM[info_musiccodecs]</param>
-                </include>
-
-                <include content="Info_Codecs" condition="![Skin.String(Furniture.CodecStyle,Colour) | Skin.String(Furniture.CodecStyle,Monochrome)]">
-                    <param name="container">$PARAM[container]</param>
-                    <param name="visible">!$PARAM[info_musiccodecs] + $PARAM[info_codecs]</param>
-                </include>
-
-                <include content="Info_Providers" condition="![Skin.String(Furniture.CodecStyle,Colour)]">
+                <include content="Info_Providers">
                     <param name="container">$PARAM[container]</param>
                     <param name="visible">!$PARAM[info_musiccodecs] + !$PARAM[info_codecs] + $PARAM[info_providers]</param>
                 </include>

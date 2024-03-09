@@ -7,13 +7,26 @@
     </include>
 
     <include name="Hub_Slide_Spotlight_NoFocus">
-        <animation effect="slide" tween="quadratic" easing="out" reversible="false" start="0" end="0,hub_spotlight_s" time="200" condition="!ControlGroup(310).HasFocus()">Conditional</animation>
-        <animation effect="slide" tween="quadratic" easing="out" reversible="false" start="0,hub_spotlight_s" end="0" time="200" condition="ControlGroup(310).HasFocus()">Conditional</animation>
+        <animation effect="slide" start="0" end="0,360" time="400" tween="quadratic" reversible="false" condition="[[Control.HasFocus(370) | ControlGroup(310).HasFocus() | Control.HasFocus(333)] | [[Control.HasFocus(303) | Control.HasFocus(308) | Control.HasFocus(309)] + Integer.IsEqual(Window.Property(List.ViewContainer),311)]]">Conditional</animation>
+        <animation effect="slide" end="0" start="0,360" time="400" tween="quadratic" reversible="false" condition="![[Control.HasFocus(370) | ControlGroup(310).HasFocus() | Control.HasFocus(333)] | [[Control.HasFocus(303) | Control.HasFocus(308) | Control.HasFocus(309)] + Integer.IsEqual(Window.Property(List.ViewContainer),311)]]">Conditional</animation>
+
+        <animation effect="slide" start="0" end="0,-360" time="400" tween="quadratic" reversible="false" condition="[[Control.HasFocus(370) | ControlGroup(310).HasFocus() | Control.HasFocus(333)] | [[Control.HasFocus(303) | Control.HasFocus(308) | Control.HasFocus(309)] + Integer.IsEqual(Window.Property(List.ViewContainer),311)]]">WindowClose</animation>
+        <animation effect="slide" end="0" start="0,-360" time="400" tween="quadratic" reversible="false" condition="[[Control.HasFocus(370) | ControlGroup(310).HasFocus() | Control.HasFocus(333)] | [[Control.HasFocus(303) | Control.HasFocus(308) | Control.HasFocus(309)] + Integer.IsEqual(Window.Property(List.ViewContainer),311)]]">WindowOpen</animation>
     </include>
 
     <include name="Hub_Slide_Group_NoSpotlight">
         <animation effect="slide" time="400" end="0" start="0,hub_group_nospotlight_s" tween="quadratic" easing="out" reversible="false" condition="![!$EXP[Exp_Hubs_Spotlight_HasItems] + $EXP[Exp_Hubs_Spotlight_IsVisible]]">Conditional</animation>
         <animation effect="slide" time="400" end="0,hub_group_nospotlight_s" start="0" tween="quadratic" easing="out" reversible="false" condition="!$EXP[Exp_Hubs_Spotlight_HasItems] + $EXP[Exp_Hubs_Spotlight_IsVisible]">Conditional</animation>
+    </include>
+
+    <include name="Hub_WindowTransition_WidgetsGroup">
+        <animation effect="slide" start="0" end="0,hub_group_widgetup_s" time="400" tween="quadratic" reversible="false" condition="$EXP[Exp_Hubs_Spotlight_HasItems] + $EXP[Exp_Hubs_Spotlight_IsVisible]">WindowClose</animation>
+        <animation effect="slide" end="0" start="0,hub_group_widgetup_s" time="400" tween="quadratic" reversible="false" condition="$EXP[Exp_Hubs_Spotlight_HasItems] + $EXP[Exp_Hubs_Spotlight_IsVisible]">WindowOpen</animation>
+    </include>
+
+    <include name="Hub_WindowTransition_CategoriesSpotlightGroup">
+        <animation effect="fade" start="100" end="0" time="200" tween="sine" easing="in" reversible="false" condition="$EXP[Exp_Hubs_Spotlight_HasItems] + $EXP[Exp_Hubs_Spotlight_IsVisible]">WindowClose</animation>
+        <animation effect="fade" end="100" start="0" time="400" tween="sine" easing="in" reversible="false" condition="$EXP[Exp_Hubs_Spotlight_HasItems] + $EXP[Exp_Hubs_Spotlight_IsVisible]">WindowOpen</animation>
     </include>
 
     <variable name="Hub_Submenu_Highlight">
@@ -55,8 +68,8 @@
                 <animation effect="slide" time="400" start="0,-20" end="0" tween="quadratic" easing="out" reversible="false" condition="![!Container(302).IsUpdating + Integer.IsEqual(Container(302).NumItems,0) + Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)]">Conditional</animation>
                 <animation effect="slide" time="400" start="0" end="0,-20" tween="quadratic" easing="out" reversible="false" condition="!Container(302).IsUpdating + Integer.IsEqual(Container(302).NumItems,0) + Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)">Conditional</animation>
 
-                <animation effect="slide" time="400" end="0" start="0,20" tween="quadratic" easing="out" reversible="false" condition="String.IsEmpty(Window.Property(Slide.WidgetContainer))">Conditional</animation>
-                <animation effect="slide" time="400" end="0,20" start="0" tween="quadratic" easing="out" reversible="false" condition="!String.IsEmpty(Window.Property(Slide.WidgetContainer))">Conditional</animation>
+                <animation effect="slide" time="400" end="0" start="0,20" tween="quadratic" easing="out" reversible="false" condition="![!String.IsEmpty(Window.Property(Slide.WidgetContainer)) | !$EXP[Exp_Hubs_Spotlight_HasItems]]">Conditional</animation>
+                <animation effect="slide" time="400" end="0,20" start="0" tween="quadratic" easing="out" reversible="false" condition="!String.IsEmpty(Window.Property(Slide.WidgetContainer)) | !$EXP[Exp_Hubs_Spotlight_HasItems]">Conditional</animation>
 
                 <nested />
             </include>
@@ -67,11 +80,12 @@
         <control type="group" id="3000">
             <visible>!$EXP[Exp_InfoDialogs]</visible>
             <include>Animation_Transition_InfoPanel_Hide</include>
-            <include>Transitions_Down_Visibility</include>
+            <include>Transitions_Lower_Visibility</include>
             <top>hub_submenuwidget_t</top>
             <height>hub_submenuwidget_h</height>
             <left>view_button_left</left>
             <orientation>vertical</orientation>
+            <include>Hub_WindowTransition_CategoriesSpotlightGroup</include>
 
             <nested />
         </control>
@@ -152,6 +166,9 @@
 
             <include content="Hub_Main_Group">
                 <param name="widgets_only">[$PARAM[widgets_only]]</param>
+
+                <include condition="Window.IsVisible(Home) + Skin.String(Home.SideMenuCollapse,Topbar) + Skin.HasSetting(Background.EnableSpotlightFanart)">Hub_Slide_Spotlight_NoFocus</include>
+
                 <include content="Hub_Menu_Group" condition="![$PARAM[widgets_only]]">
                     <include content="Hub_Categories">
                         <param name="categories">$PARAM[categories]</param>
@@ -208,7 +225,21 @@
 
     <include name="Hub_TopBar_Categories">
         <control type="group">
-            <visible>!Control.HasFocus(370) + !Control.HasFocus(333)</visible>
+            <include content="Animation_ConditionalFade">
+                <param name="condition">![Control.HasFocus(370) | Control.HasFocus(333)]</param>
+            </include>
+            <include content="Animation_Fade_In">
+                <param name="type">WindowClose</param>
+            </include>
+            <include content="Animation_Fade_Out">
+                <param name="type">WindowOpen</param>
+            </include>
+            <include content="Furniture_Top">
+                <param name="label">$INFO[Container(370).ListItem.Label]</param>
+            </include>
+        </control>
+        <control type="group">
+            <visible>![Control.HasFocus(370) | Control.HasFocus(333)]</visible>
             <include content="Animation_Fade_In">
                 <param name="type">Visible</param>
             </include>
@@ -219,74 +250,83 @@
                 <param name="label">$INFO[Container(370).ListItem.Label]</param>
             </include>
         </control>
-        <control type="list" id="370">
-            <visible allowhiddenfocus="true">Control.HasFocus(370) | Control.HasFocus(333)</visible>
+        <control type="group">
             <include content="Animation_Fade_In">
-                <param name="type">Visible</param>
+                <param name="type">WindowOpen</param>
+                <param name="condition">Control.HasFocus(370)</param>
             </include>
             <include content="Animation_Fade_Out">
-                <param name="type">Hidden</param>
+                <param name="type">WindowClose</param>
+                <param name="condition">Control.HasFocus(370)</param>
             </include>
-
-            <include content="Action_Widget_Top">
-                <param name="id">370</param>
-            </include>
-            <ondown condition="!Integer.IsEqual(Container(301).NumItems,0)">311</ondown>
-            <ondown condition="Integer.IsEqual(Container(301).NumItems,0) + !Integer.IsEqual(Container(300).NumItems,0)">300</ondown>
-            <ondown condition="Integer.IsEqual(Container(301).NumItems,0) + Integer.IsEqual(Container(300).NumItems,0)">$INFO[Container(370).ListItem.Property(widgets_setfocus)]</ondown>
-            <top>20</top>
-            <left>120</left>
-            <height>200</height>
-            <width>440</width>
-            <orientation>horizontal</orientation>
-            <scrolltime tween="quadratic">400</scrolltime>
-            <include content="Home_Menu_List_ItemLayout">
-                <param name="id">370</param>
-                <param name="hidden_button">Home_Menu_List_HiddenButton</param>
-                <param name="hidden_button_enabled">[Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)]</param>
-                <param name="itemlayout_w">100</param>
-                <param name="vertical">false</param>
-                <param name="layoutnf">[False]</param>
-                <param name="layoutfo">[True]</param>
-            </include>
-            <content>
-                <include>skinvariables-sidemenu-staticitems</include>
-            </content>
-        </control>
-        <control type="group">
-            <top>80</top>
-            <left>160</left>
-            <height>40</height>
-            <width>420</width>
-            <control type="image">
-                <texture colordiffuse="main_fg_30">special://skin/extras/icons/angle-left.png</texture>
-                <height>40</height>
-                <width>40</width>
-                <left>-40</left>
-                <centertop>50%</centertop>
-                <visible>Container(370).HasPrevious</visible>
-                <visible>Control.HasFocus(370)</visible>
+            <control type="list" id="370">
+                <visible allowhiddenfocus="true">Control.HasFocus(370) | Control.HasFocus(333)</visible>
                 <include content="Animation_Fade_In">
                     <param name="type">Visible</param>
                 </include>
                 <include content="Animation_Fade_Out">
                     <param name="type">Hidden</param>
                 </include>
+                <include content="Action_Widget_Top">
+                    <param name="id">370</param>
+                </include>
+                <ondown condition="!Integer.IsEqual(Container(301).NumItems,0)">311</ondown>
+                <ondown condition="Integer.IsEqual(Container(301).NumItems,0) + !Integer.IsEqual(Container(300).NumItems,0)">300</ondown>
+                <ondown condition="Integer.IsEqual(Container(301).NumItems,0) + Integer.IsEqual(Container(300).NumItems,0)">$INFO[Container(370).ListItem.Property(widgets_setfocus)]</ondown>
+                <top>20</top>
+                <left>120</left>
+                <height>200</height>
+                <width>440</width>
+                <orientation>horizontal</orientation>
+                <scrolltime tween="quadratic">400</scrolltime>
+                <include content="Home_Menu_List_ItemLayout">
+                    <param name="id">370</param>
+                    <param name="hidden_button">Home_Menu_List_HiddenButton</param>
+                    <param name="hidden_button_enabled">[Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)]</param>
+                    <param name="itemlayout_w">100</param>
+                    <param name="vertical">false</param>
+                    <param name="layoutnf">[False]</param>
+                    <param name="layoutfo">[True]</param>
+                </include>
+                <content>
+                    <include>skinvariables-sidemenu-staticitems</include>
+                </content>
             </control>
-            <control type="image">
-                <texture colordiffuse="main_fg_30" flipx="true">special://skin/extras/icons/angle-left.png</texture>
+            <control type="group">
+                <top>80</top>
+                <left>160</left>
                 <height>40</height>
-                <width>40</width>
-                <right>-40</right>
-                <centertop>50%</centertop>
-                <visible>Container(370).HasNext</visible>
-                <visible>Control.HasFocus(370)</visible>
-                <include content="Animation_Fade_In">
-                    <param name="type">Visible</param>
-                </include>
-                <include content="Animation_Fade_Out">
-                    <param name="type">Hidden</param>
-                </include>
+                <width>420</width>
+                <control type="image">
+                    <texture colordiffuse="main_fg_30">special://skin/extras/icons/angle-left.png</texture>
+                    <height>40</height>
+                    <width>40</width>
+                    <left>-40</left>
+                    <centertop>50%</centertop>
+                    <visible>Container(370).HasPrevious</visible>
+                    <visible>Control.HasFocus(370)</visible>
+                    <include content="Animation_Fade_In">
+                        <param name="type">Visible</param>
+                    </include>
+                    <include content="Animation_Fade_Out">
+                        <param name="type">Hidden</param>
+                    </include>
+                </control>
+                <control type="image">
+                    <texture colordiffuse="main_fg_30" flipx="true">special://skin/extras/icons/angle-left.png</texture>
+                    <height>40</height>
+                    <width>40</width>
+                    <right>-40</right>
+                    <centertop>50%</centertop>
+                    <visible>Container(370).HasNext</visible>
+                    <visible>Control.HasFocus(370)</visible>
+                    <include content="Animation_Fade_In">
+                        <param name="type">Visible</param>
+                    </include>
+                    <include content="Animation_Fade_Out">
+                        <param name="type">Hidden</param>
+                    </include>
+                </control>
             </control>
         </control>
     </include>
@@ -320,6 +360,7 @@
 
         <include content="Hub_Widgets_Group">
             <include>skinvariables-$PARAM[categories]-widgets</include>
+            <include>Hub_WindowTransition_WidgetsGroup</include>
         </include>
 
         <include content="Home_Widgets_Infopanel">
@@ -349,11 +390,12 @@
         <control type="group">
             <visible>!$EXP[Exp_InfoDialogs]</visible>
             <include>Animation_Transition_InfoPanel_Hide</include>
+            <include>Hub_WindowTransition_CategoriesSpotlightGroup</include>
             <include content="Spotlight_Main">
                 <param name="window_id">$PARAM[window_id]</param>
                 <param name="visible">$EXP[Exp_Hubs_Spotlight_HasItems]</param>
             </include>
-            <include>Transitions_Down_Visibility</include>
+            <include>Transitions_Lower_Visibility</include>
             <include content="Categories_Selector">
                 <param name="window_id">$PARAM[window_id]</param>
                 <param name="hitrect_x">-40</param>
@@ -371,9 +413,10 @@
                 </include>
 
                 <onup condition="$EXP[Exp_Hubs_Spotlight_HasItems]">311</onup>
+                <onup condition="!$EXP[Exp_Hubs_Spotlight_HasItems] + [Window.IsVisible(Home) + Skin.String(Home.SideMenuCollapse,Topbar)]">370</onup>
                 <include content="Action_Widget_Top">
                     <param name="id">300</param>
-                    <param name="condition">!$EXP[Exp_Hubs_Spotlight_HasItems]</param>
+                    <param name="condition">!$EXP[Exp_Hubs_Spotlight_HasItems] + ![Window.IsVisible(Home) + Skin.String(Home.SideMenuCollapse,Topbar)]</param>
                 </include>
                 <ondown>302</ondown>
                 <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,$PARAM[window_id])</onfocus>
@@ -385,8 +428,8 @@
                 <animation effect="slide" time="400" start="0,20" end="0" tween="quadratic" easing="out" reversible="false" condition="![!Container(302).IsUpdating + Integer.IsEqual(Container(302).NumItems,0) + Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)]">Conditional</animation>
                 <animation effect="slide" time="400" start="0" end="0,20" tween="quadratic" easing="out" reversible="false" condition="!Container(302).IsUpdating + Integer.IsEqual(Container(302).NumItems,0) + Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)">Conditional</animation>
 
-                <animation effect="slide" time="400" end="0" start="0,20" tween="quadratic" easing="out" reversible="false" condition="String.IsEmpty(Window.Property(Slide.WidgetContainer))">Conditional</animation>
-                <animation effect="slide" time="400" end="0,20" start="0" tween="quadratic" easing="out" reversible="false" condition="!String.IsEmpty(Window.Property(Slide.WidgetContainer))">Conditional</animation>
+                <animation effect="slide" time="400" end="0" start="0,20" tween="quadratic" easing="out" reversible="false" condition="![!String.IsEmpty(Window.Property(Slide.WidgetContainer)) | !$EXP[Exp_Hubs_Spotlight_HasItems]]">Conditional</animation>
+                <animation effect="slide" time="400" end="0,20" start="0" tween="quadratic" easing="out" reversible="false" condition="!String.IsEmpty(Window.Property(Slide.WidgetContainer)) | !$EXP[Exp_Hubs_Spotlight_HasItems]">Conditional</animation>
 
             </include>
         </control>
