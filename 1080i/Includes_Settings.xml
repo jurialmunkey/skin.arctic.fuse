@@ -122,17 +122,45 @@
         </control>
     </include>
 
-    <include name="Settings_KodiVersion">
+    <include name="Settings_KodiVersion_Base">
         <param name="dialog">false</param>
         <param name="left">0</param>
+        <param name="centerbottom">20</param>
         <definition>
             <control type="group">
-                <nested />
                 <height>80</height>
-                <centerbottom>20</centerbottom>
+                <centerbottom>$PARAM[centerbottom]</centerbottom>
+                <left>$PARAM[left]</left>
+                <include content="Info_FooterItemIcon">
+                    <param name="icon">special://skin/extras/icons/kodi.png</param>
+                    <param name="centered">false</param>
+                    <param name="size">50</param>
+                    <param name="bordersize">1</param>
+                    <param name="visible">$PARAM[visible]</param>
+                </include>
+                <control type="label">
+                    <left>80</left>
+                    <label>$INFO[System.ProfileName]</label>
+                    <include content="Object_TextColor" condition="$PARAM[dialog]">
+                        <param name="textcolor">dialog_fg_90</param>
+                    </include>
+                    <include>Defs_Label_FooterItem</include>
+                    <visible>$PARAM[visible]</visible>
+                </control>
+            </control>
+        </definition>
+    </include>
+
+    <include name="Settings_KodiVersion_Text">
+        <param name="dialog">false</param>
+        <param name="left">0</param>
+        <param name="centerbottom">20</param>
+        <definition>
+            <control type="group">
+                <height>80</height>
+                <centerbottom>$PARAM[centerbottom]</centerbottom>
                 <left>$PARAM[left]</left>
                 <include>Info_KodiLogo_Image</include>
-
                 <control type="group">
                     <left>80</left>
                     <include content="Object_InfoCircle_Text_Top">
@@ -151,6 +179,21 @@
                 </control>
             </control>
         </definition>
+    </include>
+
+    <include name="Settings_KodiVersion">
+        <include content="Settings_KodiVersion_Base" condition="Skin.String(Furniture.CodecStyle,Basic)">
+            <param name="left">$PARAM[left]</param>
+            <param name="visible">$PARAM[visible]</param>
+            <param name="dialog">$PARAM[dialog]</param>
+            <param name="centerbottom">$PARAM[centerbottom]</param>
+        </include>
+        <include content="Settings_KodiVersion_Text" condition="!Skin.String(Furniture.CodecStyle,Basic)">
+            <param name="left">$PARAM[left]</param>
+            <param name="visible">$PARAM[visible]</param>
+            <param name="dialog">$PARAM[dialog]</param>
+            <param name="centerbottom">$PARAM[centerbottom]</param>
+        </include>
     </include>
 
     <include name="Settings_Dialog">
@@ -636,13 +679,13 @@
                 <visible>$PARAM[visible]</visible>
 
                 <control type="group">
-                    <include content="Object_InfoCircle_Text_Top" condition="![$PARAM[override]]">
+                    <include content="Object_InfoCircle_Text_Top" condition="![$PARAM[override]] + !Skin.String(Furniture.CodecStyle,Basic)">
                         <label fallback="19033">$VAR[Label_Settings_InfoText_Top]</label>
                         <include content="Object_TextColor" condition="$PARAM[dialog]">
                             <param name="textcolor">dialog_fg_90</param>
                         </include>
                     </include>
-                    <include content="Object_InfoCircle_Text_Top" condition="$PARAM[override]">
+                    <include content="Object_InfoCircle_Text_Top" condition="$PARAM[override] + !Skin.String(Furniture.CodecStyle,Basic)">
                         <label fallback="19033">$PARAM[heading]</label>
                         <include content="Object_TextColor" condition="$PARAM[dialog]">
                             <param name="textcolor">dialog_fg_90</param>
@@ -652,14 +695,14 @@
                         <param name="id">$PARAM[id]</param>
                         <param name="control">label</param>
                     </include>
-                    <include content="Object_InfoCircle_Text_Sub" condition="![$PARAM[override]]">
+                    <include content="Object_InfoCircle_Text_Sub" condition="![$PARAM[override]] + !Skin.String(Furniture.CodecStyle,Basic)">
                         <label fallback="19055">$VAR[Label_Settings_InfoText_Sub]</label>
                         <include content="Object_TextColor" condition="$PARAM[dialog]">
                             <param name="textcolor">dialog_fg_70</param>
                         </include>
                         <scroll>true</scroll>
                     </include>
-                    <include content="Object_InfoCircle_Text_Sub" condition="$PARAM[override]">
+                    <include content="Object_InfoCircle_Text_Sub" condition="$PARAM[override] + !Skin.String(Furniture.CodecStyle,Basic)">
                         <param name="id">$PARAM[id]</param>
                         <label fallback="19055">$PARAM[label]</label>
                         <include content="Object_TextColor" condition="$PARAM[dialog]">
@@ -667,12 +710,45 @@
                         </include>
                         <scroll>true</scroll>
                     </include>
-                    <include content="Object_InfoCircle_Text_Sub" condition="$PARAM[override]">
+                    <include content="Object_InfoCircle_Text_Sub" condition="$PARAM[override] + !Skin.String(Furniture.CodecStyle,Basic)">
                         <label>$LOCALIZE[19055]</label>
                         <scroll>true</scroll>
                         <include content="Object_TextColor" condition="$PARAM[dialog]">
                             <param name="textcolor">dialog_fg_70</param>
                         </include>
+                        <visible>String.IsEmpty(Control.GetLabel($PARAM[id]))</visible>
+                    </include>
+
+                    <include content="Object_Control" condition="![$PARAM[override]] + Skin.String(Furniture.CodecStyle,Basic)">
+                        <param name="control">label</param>
+                        <label fallback="19055">$VAR[Label_Settings_InfoText_Sub]</label>
+                        <include content="Object_TextColor" condition="$PARAM[dialog]">
+                            <param name="textcolor">dialog_fg_70</param>
+                        </include>
+                        <include>Defs_Label_FooterItem</include>
+                        <wrapmultiline>false</wrapmultiline>
+                        <scroll>true</scroll>
+                    </include>
+                    <include content="Object_Control" condition="$PARAM[override] + Skin.String(Furniture.CodecStyle,Basic)">
+                        <param name="control">label</param>
+                        <param name="id">$PARAM[id]</param>
+                        <label fallback="19055">$PARAM[label]</label>
+                        <include content="Object_TextColor" condition="$PARAM[dialog]">
+                            <param name="textcolor">dialog_fg_70</param>
+                        </include>
+                        <include>Defs_Label_FooterItem</include>
+                        <wrapmultiline>false</wrapmultiline>
+                        <scroll>true</scroll>
+                    </include>
+                    <include content="Object_Control" condition="$PARAM[override] + Skin.String(Furniture.CodecStyle,Basic)">
+                        <param name="control">label</param>
+                        <label>$LOCALIZE[19055]</label>
+                        <scroll>true</scroll>
+                        <include content="Object_TextColor" condition="$PARAM[dialog]">
+                            <param name="textcolor">dialog_fg_70</param>
+                        </include>
+                        <include>Defs_Label_FooterItem</include>
+                        <wrapmultiline>false</wrapmultiline>
                         <visible>String.IsEmpty(Control.GetLabel($PARAM[id]))</visible>
                     </include>
                 </control>
