@@ -120,7 +120,8 @@
     </include>
 
     <include name="Action_Widget_Top">
-        <param name="bump">Skin.String(Navigation.OnUp,Bump)</param>
+        <param name="bump">Skin.String(Navigation.OnUp,Bump) | [Skin.String(Navigation.OnUp,Home) + Window.ISVisible(Home)]</param>
+        <param name="home">[Skin.String(Navigation.OnUp,Home) + !Window.ISVisible(Home)]</param>
         <param name="move">Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + !String.IsEmpty(Container(303).ListItemNoWrap(-1).Property(guid)) + !Skin.HasSetting(Hub.Home.DisableMoveBetweenGroups)</param>
         <param name="condition">true</param>
         <definition>
@@ -132,7 +133,8 @@
             <onup condition="$PARAM[condition] + $PARAM[move]">Control.Move(303,-1)</onup>
 
             <!-- Go to search -->
-            <onup condition="$PARAM[condition] + ![$PARAM[move]] + ![$PARAM[bump]]">ActivateWindow(1105)</onup>
+            <onup condition="$PARAM[condition] + ![$PARAM[move]] + ![$PARAM[bump]] + ![$PARAM[home]]">ActivateWindow(1105)</onup>
+            <onup condition="$PARAM[condition] + ![$PARAM[move]] + ![$PARAM[bump]] + [$PARAM[home]]">ActivateWindow(Home)</onup>
 
             <!-- Bump -->
             <onup condition="$PARAM[condition] + ![$PARAM[move]] + $PARAM[bump]">SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</onup>
@@ -360,6 +362,7 @@
     </variable>
 
     <include name="Action_View_Movement_OnUp">
+        <onup condition="Skin.String(Navigation.OnUp,Home)">ActivateWindow(Home)</onup>
         <onup condition="Skin.String(Navigation.OnUp,Search)">ActivateWindow(1105)</onup>
         <onup condition="Skin.String(Navigation.OnUp,Bump)">SetProperty(List.ViewContainer,50)</onup>
         <onup condition="Skin.String(Navigation.OnUp,Bump)">333</onup>
