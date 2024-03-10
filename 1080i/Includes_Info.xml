@@ -412,26 +412,31 @@
             <include content="Info_Line_Rating" condition="![$PARAM[is_player]]">
                 <param name="icon">flags/$VAR[Info_Line_Rating_Style]/ratings/kodi.png</param>
                 <param name="label">$INFO[Container(99950).ListItem.Property(base_rating)]</param>
-                <param name="visible">[$PARAM[visible]] + !String.IsEmpty(Container(99950).ListItem.Property(base_rating)) + String.IsEmpty($PARAM[container]ListItem.Rating) + String.IsEmpty($PARAM[container]ListItem.UserRating) + !String.IsEmpty(Window.Property(TMDBHelper.WidgetContainer))</param>
+                <param name="visible">[$PARAM[visible]] + !String.IsEmpty(Container(99950).ListItem.Property(base_rating)) + String.IsEmpty($PARAM[container]ListItem.Rating) + !String.IsEmpty(Window.Property(TMDBHelper.WidgetContainer))</param>
             </include>
             <include content="Info_Line_Rating" condition="![$PARAM[is_player]]">
                 <param name="icon">flags/$VAR[Info_Line_Rating_Style]/ratings/kodi.png</param>
                 <param name="label">$INFO[$PARAM[container]ListItem.Rating]</param>
-                <param name="visible">[$PARAM[visible]] + !String.IsEmpty($PARAM[container]ListItem.Rating) + String.IsEmpty($PARAM[container]ListItem.UserRating)</param>
+                <param name="visible">[$PARAM[visible]] + !String.IsEmpty($PARAM[container]ListItem.Rating)</param>
             </include>
-            <include content="Info_Line_Rating" condition="![$PARAM[is_player]]">
-                <param name="icon">flags/$VAR[Info_Line_Rating_Style]/ratings/kodi.png</param>
-                <param name="label">$INFO[$PARAM[container]ListItem.UserRating,,.0]</param>
-                <param name="visible">[$PARAM[visible]] + !String.IsEmpty($PARAM[container]ListItem.UserRating)</param>
-            </include>
-
             <include content="Info_Line_Rating" condition="$PARAM[is_player]">
                 <param name="icon">flags/$VAR[Info_Line_Rating_Style]/ratings/kodi.png</param>
                 <param name="label">$INFO[VideoPlayer.Rating]</param>
-                <param name="visible">[$PARAM[visible]] + !String.IsEmpty(VideoPlayer.Rating) + String.IsEmpty(VideoPlayer.UserRating)</param>
+                <param name="visible">[$PARAM[visible]] + !String.IsEmpty(VideoPlayer.Rating)</param>
+            </include>
+        </definition>
+    </include>
+
+    <include name="Info_Line_Rating_User">
+        <param name="is_player">false</param>
+        <definition>
+            <include content="Info_Line_Rating" condition="![$PARAM[is_player]]">
+                <param name="icon">flags/$VAR[Info_Line_Rating_Style]/ratings/user.png</param>
+                <param name="label">$INFO[$PARAM[container]ListItem.UserRating,,.0]</param>
+                <param name="visible">[$PARAM[visible]] + !String.IsEmpty($PARAM[container]ListItem.UserRating)</param>
             </include>
             <include content="Info_Line_Rating" condition="$PARAM[is_player]">
-                <param name="icon">flags/$VAR[Info_Line_Rating_Style]/ratings/kodi.png</param>
+                <param name="icon">flags/$VAR[Info_Line_Rating_Style]/ratings/user.png</param>
                 <param name="label">$INFO[VideoPlayer.UserRating,,.0]</param>
                 <param name="visible">[$PARAM[visible]] + !String.IsEmpty(VideoPlayer.UserRating)</param>
             </include>
@@ -549,6 +554,11 @@
 
     <include name="Info_Ratings_Items">
         <include content="Info_Line_Rating_Kodi" condition="Skin.String(CustomRating.$PARAM[content].$PARAM[item],Kodi)">
+            <param name="visible">$PARAM[visible]</param>
+            <param name="container">$PARAM[container]</param>
+            <param name="is_player">$PARAM[is_player]</param>
+        </include>
+        <include content="Info_Line_Rating_User" condition="Skin.String(CustomRating.$PARAM[content].$PARAM[item],User)">
             <param name="visible">$PARAM[visible]</param>
             <param name="container">$PARAM[container]</param>
             <param name="is_player">$PARAM[is_player]</param>
