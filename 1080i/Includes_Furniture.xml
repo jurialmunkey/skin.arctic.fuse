@@ -112,14 +112,15 @@
             <visible>Player.HasMedia</visible>
             <visible>!Player.HasVideo | Skin.HasSetting(Background.EnableVideo)</visible>
             <right>-20</right>
-            <height>80</height>
+            <height>100</height>
             <centertop>50%</centertop>
             <control type="group">
-                <width>80</width>
+                <width>100</width>
                 <right>0</right>
                 <include content="Info_FooterItemIcon">
                     <param name="icon">$VAR[Image_NowPlaying_PlayPause]</param>
                     <param name="centered">true</param>
+                    <param name="size">50</param>
                 </include>
                 <control type="image">
                     <bordersize>-4</bordersize>
@@ -147,15 +148,19 @@
                     <visible>false</visible>
                 </control>
             </control>
-            <include content="Furniture_NowPlaying_Text">
-                <param name="title_w">240</param>
-                <param name="sublabel_music_w">115</param>
-                <param name="sublabel_video_w">62</param>
-                <visible>$EXP[Exp_ScrollbarVisible_H]</visible>
-            </include>
-            <include content="Furniture_NowPlaying_Text">
-                <visible>!$EXP[Exp_ScrollbarVisible_H]</visible>
-            </include>
+            <control type="group">
+                <height>80</height>
+                <centertop>50%</centertop>
+                <include content="Furniture_NowPlaying_Text">
+                    <param name="title_w">240</param>
+                    <param name="sublabel_music_w">115</param>
+                    <param name="sublabel_video_w">62</param>
+                    <visible>$EXP[Exp_ScrollbarVisible_H]</visible>
+                </include>
+                <include content="Furniture_NowPlaying_Text">
+                    <visible>!$EXP[Exp_ScrollbarVisible_H]</visible>
+                </include>
+            </control>
         </control>
     </include>
 
@@ -312,12 +317,24 @@
         <definition>
             <control type="group">
                 <description>Busy animation</description>
-                <height>80</height>
-                <width>80</width>
+                <include content="Object_Height" condition="Skin.HasSetting(ToastNotifications.Tabbed)">
+                    <param name="height">80</param>
+                </include>
+                <include content="Object_Width" condition="Skin.HasSetting(ToastNotifications.Tabbed)">
+                    <param name="width">80</param>
+                </include>
+                <height>100</height>
+                <width>100</width>
                 <nested />
-                <include content="Info_FooterItemIcon" condition="$PARAM[hasicon]">
+                <include content="Info_FooterItemIcon" condition="$PARAM[hasicon] + Skin.HasSetting(ToastNotifications.Tabbed)">
                     <param name="icon">$PARAM[icon]</param>
                     <param name="centered">true</param>
+                    <param name="size">40</param>
+                </include>
+                <include content="Info_FooterItemIcon" condition="$PARAM[hasicon] + !Skin.HasSetting(ToastNotifications.Tabbed)">
+                    <param name="icon">$PARAM[icon]</param>
+                    <param name="centered">true</param>
+                    <param name="size">50</param>
                 </include>
                 <include content="Furniture_Busy_Spinner" condition="$PARAM[hasspinner]">
                     <param name="spinnervisible">$PARAM[spinnervisible]</param>
@@ -502,6 +519,7 @@
                         <param name="icon">special://skin/extras/icons/_none.png</param>
                         <param name="bordersize">12</param>
                         <param name="centered">true</param>
+                        <param name="size">50</param>
                     </include>
                     <control type="group">
                         <centerleft>50%</centerleft>
