@@ -200,6 +200,7 @@
 
             <!-- Side Fade -->
             <include>Home_Fade</include>
+            <include>Hub_Widgets_Group_Furniture</include>
 
             <!-- Furniture -->
             <control type="group">
@@ -380,6 +381,43 @@
         </control>
     </include>
 
+    <include name="_Hub_Widgets_Group_Furniture">
+        <control type="group">
+            <include content="Animation_ConditionalFade" condition="$PARAM[include_conditionalfade]">
+                <param name="condition">$EXP[Exp_InfoDialogs]</param>
+            </include>
+            <include content="Animation_Fade_In">
+                <param name="type">Visible</param>
+                <param name="delay">200</param>
+            </include>
+            <visible>$PARAM[visible]</visible>
+            <!-- <include content="Animation_Fade_In">
+                <param name="type">Visible</param>
+                <param name="delay">100</param>
+                <param name="condition">Window.Next()</param>
+            </include>
+            <include content="Animation_Fade_In">
+                <param name="type">Visible</param>
+                <param name="delay">0</param>
+                <param name="condition">!Window.Next()</param>
+            </include>
+            <visible>$PARAM[visible] | !Window.Next()</visible> -->
+            <include condition="!Skin.HasSetting(Hubs.WidgetSelector)">Furniture_Bottom_Left</include>
+            <include>Furniture_Bottom_Right</include>
+        </control>
+    </include>
+
+    <include name="Hub_Widgets_Group_Furniture">
+        <param name="visible">[!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + !String.IsEmpty(Window.Property(TMDBHelper.WidgetContainer)) + !String.IsEmpty(Window.Property(Slide.WidgetContainer))]</param>
+        <param name="include_conditionalfade">true</param>
+        <definition>
+            <include condition="Skin.HasSetting(Hubs.EnableWidgetsFooter)" content="_Hub_Widgets_Group_Furniture">
+                <param name="visible">$PARAM[visible]</param>
+                <param name="include_conditionalfade">$PARAM[include_conditionalfade]</param>
+            </include>
+        </definition>
+    </include>
+
     <include name="Hub_Widgets_Group">
         <control type="group" id="340">
             <nested />
@@ -523,8 +561,8 @@
                     <visible>!Integer.IsEqual(Container($PARAM[id]).NumItems,1) | [!Control.HasFocus($PARAM[topid]) + !Control.HasFocus($PARAM[bottomid])]</visible>
                     <visible>!Integer.IsEqual(Container($PARAM[id]).NumItems,2) | ControlGroup($PARAM[id]).HasFocus()</visible>
                     <visible>!$EXP[Exp_InfoDialogs]</visible>
-                    <!-- <include condition="!Skin.HasSetting(Hubs.WidgetSelector)">Furniture_Bottom_Left</include> -->
-                    <!-- <include>Furniture_Bottom_Right</include> -->
+                    <!-- <include condition="!Skin.HasSetting(Hubs.WidgetSelector)">Furniture_Bottom_Left</include>
+                    <include>Furniture_Bottom_Right</include> -->
                     <include condition="!Skin.HasSetting(Hubs.WidgetSelector)">Furniture_Bottom_WidgetGroups</include>
                 </control>
             </control>

@@ -35,6 +35,11 @@
         <onunload>ClearProperty(MediaFilterBase)</onunload>
     </include>
 
+    <include name="Action_PreserveTransitionProp_Onload">
+        <onload>SetProperty(Transition.WidgetStyle.Previous,$INFO[Window(Home).Property(Transition.WidgetStyle)],Home)</onload>
+        <onunload>SetProperty(Transition.WidgetStyle,$INFO[Window(Home).Property(Transition.WidgetStyle.Previous)],Home)</onunload>
+    </include>
+
     <variable name="Action_OSD_Main_OnDown">
         <value condition="VideoPlayer.Content(livetv) + !Skin.HasSetting(OSD.OnDown.DisablePVROSDGuide)">pvrosdguide</value>
         <value condition="VideoPlayer.Content(livetv)">$VAR[Action_OSD_PVROSDGuide_OnDown]</value>
@@ -126,6 +131,7 @@
         <definition>
 
             <!-- Scroll classic home -->
+            <onup condition="$PARAM[condition] + $PARAM[move] + !String.IsEmpty(Container(303).ListItem.Property(widgets_tmdbh_id))">SetProperty($INFO[Container(303).ListItem.Property(widgets_tmdbh_id)],$INFO[Window.Property(TMDbHelper.WidgetContainer)],1198)</onup>
             <onup condition="$PARAM[condition] + $PARAM[move] + !Skin.HasSetting(Hubs.WidgetSelector)">$INFO[Container(303).ListItem(-1).Property(widgets_setfocus_bottom)]</onup>
             <onup condition="$PARAM[condition] + $PARAM[move] + Skin.HasSetting(Hubs.WidgetSelector)">$INFO[Container(303).ListItem(-1).Property(widgets_setfocus_top)]</onup>
             <onup condition="$PARAM[condition] + $PARAM[move]">SetProperty(WidgetGroup.Movement,Up)</onup>
@@ -157,6 +163,7 @@
             <ondown condition="$PARAM[condition] + !String.IsEmpty(Window.Property(EndRow.HasFocus))">Action(Up)</ondown>
 
             <!-- Scroll Classic Home -->
+            <ondown condition="$PARAM[condition] + $PARAM[move] + !String.IsEmpty(Container(303).ListItem.Property(widgets_tmdbh_id))">SetProperty($INFO[Container(303).ListItem.Property(widgets_tmdbh_id)],$INFO[Window.Property(TMDbHelper.WidgetContainer)],1198)</ondown>
             <ondown condition="$PARAM[condition] + $PARAM[move] + !Skin.HasSetting(Hubs.WidgetSelector)">$INFO[Container(303).ListItem(1).Property(widgets_setfocus_top)]</ondown>
             <ondown condition="$PARAM[condition] + $PARAM[move] + Skin.HasSetting(Hubs.WidgetSelector)">$INFO[Container(303).ListItem(1).Property(widgets_setfocus_bottom)]</ondown>
             <ondown condition="$PARAM[condition] + $PARAM[move]">SetProperty(WidgetGroup.Movement,Down)</ondown>
