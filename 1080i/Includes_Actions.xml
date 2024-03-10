@@ -145,29 +145,32 @@
     </include>
 
     <include name="Action_Widget_End">
-        <param name="bump">!Skin.String(Navigation.OnDown,Explore)</param>
+        <param name="condition">true</param>
+        <param name="bump_id">330</param>
+        <param name="bump">Skin.String(Navigation.OnDown,Bump)</param>
+        <param name="menu">Skin.String(Navigation.OnDown,Menu)</param>
         <param name="move">Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + !String.IsEmpty(Container(303).ListItemNoWrap(1).Property(guid)) + !Skin.HasSetting(Hub.Home.DisableMoveBetweenGroups)</param>
         <definition>
 
 
             <!-- EndRow Hack: Bump focus back up to widget first -->
-            <ondown condition="!String.IsEmpty(Window.Property(EndRow.HasFocus))">Action(Up)</ondown>
+            <ondown condition="$PARAM[condition] + !String.IsEmpty(Window.Property(EndRow.HasFocus))">Action(Up)</ondown>
 
             <!-- Scroll Classic Home -->
-            <ondown condition="$PARAM[move] + !Skin.HasSetting(Hubs.WidgetSelector)">$INFO[Container(303).ListItem(1).Property(widgets_setfocus_top)]</ondown>
-            <ondown condition="$PARAM[move] + Skin.HasSetting(Hubs.WidgetSelector)">$INFO[Container(303).ListItem(1).Property(widgets_setfocus_bottom)]</ondown>
-            <ondown condition="$PARAM[move]">SetProperty(WidgetGroup.Movement,Down)</ondown>
-            <ondown condition="$PARAM[move]">Control.Move(303,1)</ondown>
+            <ondown condition="$PARAM[condition] + $PARAM[move] + !Skin.HasSetting(Hubs.WidgetSelector)">$INFO[Container(303).ListItem(1).Property(widgets_setfocus_top)]</ondown>
+            <ondown condition="$PARAM[condition] + $PARAM[move] + Skin.HasSetting(Hubs.WidgetSelector)">$INFO[Container(303).ListItem(1).Property(widgets_setfocus_bottom)]</ondown>
+            <ondown condition="$PARAM[condition] + $PARAM[move]">SetProperty(WidgetGroup.Movement,Down)</ondown>
+            <ondown condition="$PARAM[condition] + $PARAM[move]">Control.Move(303,1)</ondown>
 
             <!-- Explore -->
             <include content="Action_View_Explore_OnDown">
-                <param name="condition">[![$PARAM[move]] + ![$PARAM[bump]]]</param>
+                <param name="condition">[$PARAM[condition] + ![$PARAM[move]] + Skin.String(Navigation.OnDown,Explore)]</param>
             </include>
 
             <!-- Bump -->
-            <ondown condition="![$PARAM[move]] + $PARAM[bump]">ActivateWindow(1171)</ondown>
-            <!-- <ondown condition="![$PARAM[move]] + $PARAM[bump]">SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</ondown>
-            <ondown condition="![$PARAM[move]] + $PARAM[bump]">330</ondown> -->
+            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + $PARAM[menu]">ActivateWindow(1171)</ondown>
+            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + $PARAM[bump]">SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</ondown>
+            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + $PARAM[bump]">$PARAM[bump_id]</ondown>
         </definition>
     </include>
 
@@ -342,8 +345,9 @@
     </include>
 
     <include name="Action_View_Filter_OnDown">
-        <ondown condition="!Skin.String(Navigation.OnDown,Explore)">SetProperty(List.ViewContainer,19)</ondown>
-        <ondown condition="!Skin.String(Navigation.OnDown,Explore)">330</ondown>
+        <ondown condition="Skin.String(Navigation.OnDown,Bump)">SetProperty(List.ViewContainer,19)</ondown>
+        <ondown condition="Skin.String(Navigation.OnDown,Bump)">330</ondown>
+        <ondown condition="Skin.String(Navigation.OnDown,Menu)">ActivateWindow(1171)</ondown>
         <ondown condition="Skin.String(Navigation.OnDown,Explore) + $EXP[Exp_FilterWall_IsActive]">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideOut,focus_id=$VAR[Action_View_ContentID],clear_prop_one=MediaFilterBase,clear_prop_two=MediaFilterWall,last_action=SetFocus(67))</ondown>
         <ondown condition="Skin.String(Navigation.OnDown,Explore) + ![$EXP[Exp_FilterWall_IsActive]]">SetFocus(67)</ondown>
     </include>
