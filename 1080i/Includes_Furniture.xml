@@ -114,29 +114,37 @@
             <visible>Player.HasMedia</visible>
             <visible>!Player.HasVideo | Skin.HasSetting(Background.EnableVideo)</visible>
             <right>-20</right>
-            <height>100</height>
+            <height>80</height>
             <centertop>50%</centertop>
             <control type="group">
-                <width>100</width>
-                <right>0</right>
+                <centertop>50%</centertop>
+                <height>50</height>
+                <width>50</width>
+                <right>20</right>
                 <include content="Info_FooterItemIcon">
                     <param name="icon">$VAR[Image_NowPlaying_PlayPause]</param>
                     <param name="centered">true</param>
                     <param name="size">50</param>
                 </include>
-                <control type="image">
-                    <bordersize>-4</bordersize>
-                    <texture colordiffuse="$VAR[ColorHighlight]">$INFO[Player.Progress,progress/circle/p,.png]</texture>
-                    <aspectratio align="center" aligny="center">keep</aspectratio>
-                </control>
-                <control type="image">
-                    <bordersize>-4</bordersize>
-                    <texture colordiffuse="$VAR[ColorGradient]">$INFO[Player.Progress,progress/circle/p,.png]</texture>
-                    <animation effect="fade" end="66" condition="true">Conditional</animation>
-                    <aspectratio align="center" aligny="center">keep</aspectratio>
-                    <include content="Defs_Progress_Colorfade">
-                        <param name="id">933</param>
-                    </include>
+                <control type="group">
+                    <centerleft>50%</centerleft>
+                    <centertop>50%</centertop>
+                    <height>100</height>
+                    <width>100</width>
+                    <control type="image">
+                        <bordersize>-4</bordersize>
+                        <texture colordiffuse="$VAR[ColorHighlight]">$INFO[Player.Progress,progress/circle/p,.png]</texture>
+                        <aspectratio align="center" aligny="center">keep</aspectratio>
+                    </control>
+                    <control type="image">
+                        <bordersize>-4</bordersize>
+                        <texture colordiffuse="$VAR[ColorGradient]">$INFO[Player.Progress,progress/circle/p,.png]</texture>
+                        <animation effect="fade" end="66" condition="true">Conditional</animation>
+                        <aspectratio align="center" aligny="center">keep</aspectratio>
+                        <include content="Defs_Progress_Colorfade">
+                            <param name="id">933</param>
+                        </include>
+                    </control>
                 </control>
                 <control type="progress" id="933">
                     <height>1</height>
@@ -319,54 +327,72 @@
         <definition>
             <control type="group">
                 <description>Busy animation</description>
-                <include content="Object_Height" condition="Skin.HasSetting(ToastNotifications.Tabbed)">
-                    <param name="height">80</param>
+                <include content="Object_Height" condition="!Skin.HasSetting(ToastNotifications.Tabbed)">
+                    <param name="height">50</param>
                 </include>
-                <include content="Object_Width" condition="Skin.HasSetting(ToastNotifications.Tabbed)">
-                    <param name="width">80</param>
+                <include content="Object_Width" condition="!Skin.HasSetting(ToastNotifications.Tabbed)">
+                    <param name="width">50</param>
                 </include>
-                <height>100</height>
-                <width>100</width>
+                <width>40</width>
+                <height>40</height>
+                <centertop>50%</centertop>
                 <nested />
-                <include content="Info_FooterItemIcon" condition="$PARAM[hasicon] + Skin.HasSetting(ToastNotifications.Tabbed)">
-                    <param name="icon">$PARAM[icon]</param>
-                    <param name="centered">true</param>
-                    <param name="size">40</param>
-                </include>
-                <include content="Info_FooterItemIcon" condition="$PARAM[hasicon] + !Skin.HasSetting(ToastNotifications.Tabbed)">
-                    <param name="icon">$PARAM[icon]</param>
-                    <param name="centered">true</param>
-                    <param name="size">50</param>
-                </include>
-                <include content="Furniture_Busy_Spinner" condition="$PARAM[hasspinner]">
-                    <param name="spinnervisible">$PARAM[spinnervisible]</param>
-                    <param name="spinspinner">$PARAM[spinspinner]</param>
-                </include>
-                <include content="Object_Control" condition="$PARAM[hasprogress]">
-                    <param name="control">group</param>
-                    <description>Busy animation</description>
-                    <animation effect="rotate" condition="$PARAM[spinspinner]" start="0" end="360" loop="true" time="2000" center="auto">Conditional</animation>
-                    <description>Busy animation</description>
-                    <visible>$PARAM[spinnervisible]</visible>
-                    <include content="Animation_Fade_Out">
-                        <param name="type">hidden</param>
-                        <param name="delay">200</param>
+
+                <control type="group">
+
+                    <include content="Info_FooterItemIcon" condition="$PARAM[hasicon] + Skin.HasSetting(ToastNotifications.Tabbed)">
+                        <param name="icon">$PARAM[icon]</param>
+                        <param name="centered">true</param>
+                        <param name="size">40</param>
                     </include>
-                    <control type="image">
-                        <bordersize>-4</bordersize>
-                        <texture colordiffuse="$VAR[ColorHighlight]">$INFO[$PARAM[progress],progress/circle/p,.png]</texture>
-                        <aspectratio align="center" aligny="center">keep</aspectratio>
-                    </control>
-                    <control type="image">
-                        <bordersize>-4</bordersize>
-                        <texture colordiffuse="$VAR[ColorGradient]">$INFO[$PARAM[progress],progress/circle/p,.png]</texture>
-                        <animation effect="fade" end="66" condition="true">Conditional</animation>
-                        <aspectratio align="center" aligny="center">keep</aspectratio>
-                        <include content="Defs_Progress_Colorfade">
-                            <param name="id">$PARAM[progress_id]</param>
+                    <include content="Info_FooterItemIcon" condition="$PARAM[hasicon] + !Skin.HasSetting(ToastNotifications.Tabbed)">
+                        <param name="icon">$PARAM[icon]</param>
+                        <param name="centered">true</param>
+                        <param name="size">50</param>
+                    </include>
+
+                    <control type="group">
+                        <centerleft>50%</centerleft>
+                        <centertop>50%</centertop>
+                        <include content="Object_Height" condition="!Skin.HasSetting(ToastNotifications.Tabbed)">
+                            <param name="height">100</param>
+                        </include>
+                        <include content="Object_Width" condition="!Skin.HasSetting(ToastNotifications.Tabbed)">
+                            <param name="width">100</param>
+                        </include>
+                        <width>80</width>
+                        <height>80</height>
+                        <include content="Furniture_Busy_Spinner" condition="$PARAM[hasspinner]">
+                            <param name="spinnervisible">$PARAM[spinnervisible]</param>
+                            <param name="spinspinner">$PARAM[spinspinner]</param>
+                        </include>
+                        <include content="Object_Control" condition="$PARAM[hasprogress]">
+                            <param name="control">group</param>
+                            <description>Busy animation</description>
+                            <animation effect="rotate" condition="$PARAM[spinspinner]" start="0" end="360" loop="true" time="2000" center="auto">Conditional</animation>
+                            <description>Busy animation</description>
+                            <visible>$PARAM[spinnervisible]</visible>
+                            <include content="Animation_Fade_Out">
+                                <param name="type">hidden</param>
+                                <param name="delay">200</param>
+                            </include>
+                            <control type="image">
+                                <bordersize>-4</bordersize>
+                                <texture colordiffuse="$VAR[ColorHighlight]">$INFO[$PARAM[progress],progress/circle/p,.png]</texture>
+                                <aspectratio align="center" aligny="center">keep</aspectratio>
+                            </control>
+                            <control type="image">
+                                <bordersize>-4</bordersize>
+                                <texture colordiffuse="$VAR[ColorGradient]">$INFO[$PARAM[progress],progress/circle/p,.png]</texture>
+                                <animation effect="fade" end="66" condition="true">Conditional</animation>
+                                <aspectratio align="center" aligny="center">keep</aspectratio>
+                                <include content="Defs_Progress_Colorfade">
+                                    <param name="id">$PARAM[progress_id]</param>
+                                </include>
+                            </control>
                         </include>
                     </control>
-                </include>
+                </control>
             </control>
         </definition>
     </include>
@@ -456,7 +482,7 @@
                     <param name="progress">$PARAM[progress]</param>
                     <param name="progress_id">$PARAM[progress_id]</param>
                     <param name="spinnervisible">$PARAM[spinnervisible]</param>
-                    <right>0</right>
+                    <right>20</right>
                 </include>
 
                 <nested />
@@ -507,15 +533,15 @@
                 <include content="Object_Right" condition="$PARAM[flipx]">
                     <param name="right">-20</param>
                 </include>
-                <height>80</height>
-                <centertop>50%</centertop>
                 <control type="group">
-                    <width>80</width>
+                    <centertop>50%</centertop>
+                    <height>50</height>
+                    <width>50</width>
                     <include content="Object_Left" condition="!$PARAM[flipx]">
-                        <param name="left">0</param>
+                        <param name="left">20</param>
                     </include>
                     <include content="Object_Right" condition="$PARAM[flipx]">
-                        <param name="right">0</param>
+                        <param name="right">20</param>
                     </include>
                     <include content="Info_FooterItemIcon">
                         <param name="icon">special://skin/extras/icons/_none.png</param>
@@ -545,6 +571,8 @@
 
                 </control>
                 <control type="group">
+                    <height>80</height>
+                    <centertop>50%</centertop>
                     <include content="Object_Left" condition="!$PARAM[flipx]">
                         <param name="left">100</param>
                     </include>
