@@ -22,7 +22,6 @@
                     <param name="item_condition">true</param>
                     <param name="item_count">$INFO[Container($PARAM[id]).NumItems]</param>
                     <param name="item_updating">Container($PARAM[id]).IsUpdating</param>
-                    <!-- <animation effect="fade" start="100" end="30" time="200" condition="![Control.HasFocus($PARAM[id]) | Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),$PARAM[id])]">Conditional</animation> -->
                     <top>20</top>
                     <left>0</left>
                     <visible>!Integer.IsEqual(Container($PARAM[id]).NumItems,0) | Container($PARAM[id]).IsUpdating</visible>
@@ -35,7 +34,6 @@
                     <param name="item_condition">true</param>
                     <param name="item_count">$INFO[Container($PARAM[id]).NumItems]</param>
                     <param name="item_updating">Container($PARAM[id]).IsUpdating</param>
-                    <!-- <animation effect="fade" start="100" end="30" time="200" condition="![Control.HasFocus($PARAM[id]) | Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),$PARAM[id])]">Conditional</animation> -->
                     <top>20</top>
                     <left>0</left>
                     <visible>!Integer.IsEqual(Container($PARAM[id]).NumItems,0) | Container($PARAM[id]).IsUpdating</visible>
@@ -63,6 +61,7 @@
         <param name="shortstack_enabled">false</param>
         <param name="shortstack_visible">true</param>
         <param name="conditional_fade">false</param>
+        <param name="widgetfade_include">[![[Skin.HasSetting(Hubs.WidgetSelector) + $EXP[Exp_Window_IsHub]] | Window.IsVisible(1105)]]</param>
         <definition>
             <include content="Widget_Label">
                 <param name="groupid">$PARAM[groupid]</param>
@@ -83,7 +82,7 @@
                 <include content="Animation_ConditionalFade">
                     <param name="condition">$PARAM[conditional_fade]</param>
                 </include>
-                <include content="Animation_Widget_FadeOut">
+                <include content="Animation_Widget_FadeOut" condition="$PARAM[widgetfade_include]">
                     <param name="condition">!Control.HasFocus($PARAM[id]) + !Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),$PARAM[id]) + !Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + !String.IsEmpty(Window.Property(TMDBHelper.WidgetContainer))</param>
                 </include>
             </include>
@@ -117,7 +116,7 @@
                 <visible>$PARAM[visible] + [Container($PARAM[id]).IsUpdating | !Integer.IsEqual(Container($PARAM[id]).NumItems,0) | $PARAM[altvisible]]</visible>
                 <onfocus>SetProperty(Slide.WidgetContainer,True)</onfocus>
 
-                <include content="Animation_Widget_FadeOut">
+                <include content="Animation_Widget_FadeOut" condition="$PARAM[widgetfade_include]">
                     <param name="condition">!Control.HasFocus($PARAM[id]) + !Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),$PARAM[id]) + !Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + !String.IsEmpty(Window.Property(TMDBHelper.WidgetContainer))</param>
                 </include>
 
