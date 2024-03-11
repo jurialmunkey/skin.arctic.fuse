@@ -22,192 +22,255 @@
         <onfocus condition="!String.StartsWith(Container.FolderPath,plugin://script.skinvariables/?info=get_filter_dir)">ClearProperty(MediaFilter.Artist)</onfocus>
     </include>
 
-    <include name="MediaFilter_Node_Buttons">
-        <include content="Dialog_Side_Button">
-            <param name="vertical">false</param>
-            <param name="id">04</param>
-            <param name="label">$LOCALIZE[587]</param>
-            <param name="icon">$VAR[Image_Filtered]</param>
-            <param name="textcolor">main_fg</param>
-            <param name="visible">Container.CanFilterAdvanced</param>
-            <onclick>Filter</onclick>
-        </include>
-        <include content="Dialog_Side_Button">
-            <param name="vertical">false</param>
-            <param name="id">05</param>
-            <param name="label">$LOCALIZE[192]</param>
-            <param name="icon">special://skin/extras/icons/triangle-exclamation.png</param>
-            <param name="textcolor">main_fg</param>
-            <param name="visible">!Container.CanFilterAdvanced</param>
-            <onclick>RunScript(script.skinvariables,set_editcontrol=19,window_id=1105,setfocus=9001)</onclick>
-            <onclick>ClearProperty(MediaFilter.Genre)</onclick>
-            <onclick>ClearProperty(MediaFilter.Studio)</onclick>
-            <onclick>ClearProperty(MediaFilter.Country)</onclick>
-            <onclick>ClearProperty(MediaFilter.MPAA)</onclick>
-            <onclick>ClearProperty(MediaFilter.Director)</onclick>
-            <onclick>ClearProperty(MediaFilter.Writer)</onclick>
-        </include>
-        <include content="Dialog_Side_Button">
-            <param name="vertical">false</param>
-            <param name="id">06</param>
-            <param name="label">$VAR[Label_Watched]</param>
-            <param name="icon">$VAR[Image_Watched]</param>
-            <param name="visible">Window.IsVisible(videos)</param>
-            <param name="textcolor">main_fg</param>
-            <onclick>SendClick(14)</onclick>
-        </include>
-        <include content="Dialog_Side_Button">
-            <param name="vertical">false</param>
-            <param name="id">07</param>
-            <param name="label">$VAR[Label_SortMethod]</param>
-            <param name="icon">special://skin/extras/icons/arrow-updown-short-wide.png</param>
-            <param name="visible">Window.IsMedia</param>
-            <param name="textcolor">main_fg</param>
-            <onclick>SetProperty(DialogSelectType,Menu,Home)</onclick>
-            <onclick condition="![Window.IsMedia + String.IsEqual(Container.FolderName,Skin Variables) + !String.IsEmpty(Window.Property(MediaFilter.BaseDir.Name))]">SendClick(3)</onclick>
-            <onclick condition="Window.IsMedia + String.IsEqual(Container.FolderName,Skin Variables) + !String.IsEmpty(Window.Property(MediaFilter.BaseDir.Name))">RunScript(script.skinvariables,run_dialog=select,heading=$LOCALIZE[581],separator=||,list=title||genre||year||rating||playcount||director||originaltitle||lastplayed||writer||studio||mpaa||country||premiered||top250||votes,"executebuiltin=SetProperty(MediaFilter.SortBy,{v})||route=run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json&amp;use_rules=True")</onclick>
-        </include>
-        <include content="Dialog_Side_Button">
-            <param name="vertical">false</param>
-            <param name="id">08</param>
-            <param name="label">$VAR[Label_SortDirection]</param>
-            <param name="icon">$VAR[Image_SortDirection]</param>
-            <param name="visible">Window.IsMedia</param>
-            <param name="textcolor">main_fg</param>
-            <onclick>SetProperty(DialogSelectType,Menu,Home)</onclick>
-            <onclick condition="![Window.IsMedia + String.IsEqual(Container.FolderName,Skin Variables) + !String.IsEmpty(Window.Property(MediaFilter.BaseDir.Name))]">SendClick(4)</onclick>
-
-            <onclick condition="!String.IsEqual(Window.Property(MediaFilter.SortHow),desc) + Window.IsMedia + String.IsEqual(Container.FolderName,Skin Variables) + !String.IsEmpty(Window.Property(MediaFilter.BaseDir.Name))">SetProperty(MediaFilter.SortHow,desc)</onclick>
-            <onclick condition="String.IsEqual(Window.Property(MediaFilter.SortHow),desc) + Window.IsMedia + String.IsEqual(Container.FolderName,Skin Variables) + !String.IsEmpty(Window.Property(MediaFilter.BaseDir.Name))">ClearProperty(MediaFilter.SortHow)</onclick>
-
-            <onclick condition="Window.IsMedia + String.IsEqual(Container.FolderName,Skin Variables) + !String.IsEmpty(Window.Property(MediaFilter.BaseDir.Name))">RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
-        </include>
-        <include content="Dialog_Side_Button">
-            <param name="vertical">false</param>
-            <param name="id">09</param>
-            <param name="label">$LOCALIZE[31319]</param>
-            <param name="icon">special://skin/extras/icons/object-group.png</param>
-            <param name="textcolor">main_fg</param>
-            <onclick>Runscript(script.skinvariables,action=buildviews,contentid=$VAR[Items_ViewMode_Switch],pluginname=$INFO[Container.PluginName])</onclick>
-        </include>
-    </include>
-
-    <include name="MediaFilter_Node_PlaylistButtons">
-        <include content="Dialog_Side_Button">
-            <param name="vertical">false</param>
-            <param name="control">button</param>
-            <param name="id">04</param>
-            <param name="label">$LOCALIZE[192]</param>
-            <param name="icon">special://skin/extras/icons/triangle-exclamation.png</param>
-            <param name="textcolor">main_fg</param>
-            <onclick>SendClick(22)</onclick>
-        </include>
-        <include content="Dialog_Side_Button_BuiltIn">
-            <param name="vertical">false</param>
-            <param name="control">button</param>
-            <param name="id">21</param>
-            <param name="groupid">9021</param>
-            <param name="label">$LOCALIZE[190]</param>
-            <param name="icon">special://skin/extras/icons/floppy-disk.png</param>
-            <param name="textcolor">main_fg</param>
-        </include>
-        <include content="Dialog_Side_Button_BuiltIn">
-            <param name="vertical">false</param>
-            <param name="control">button</param>
-            <param name="id">23</param>
-            <param name="groupid">9023</param>
-            <param name="label">$LOCALIZE[208]</param>
-            <param name="icon">special://skin/extras/icons/play3.png</param>
-            <param name="textcolor">main_fg</param>
-        </include>
-        <include content="Dialog_Side_Button_BuiltIn">
-            <param name="vertical">false</param>
-            <param name="control">radiobutton</param>
-            <param name="id">20</param>
-            <param name="groupid">9020</param>
-            <param name="label">$LOCALIZE[191]</param>
-            <param name="icon">$VAR[Image_OSD_Shuffle]</param>
-            <param name="textcolor">main_fg</param>
-        </include>
-        <include content="Dialog_Side_Button">
-            <param name="vertical">false</param>
-            <param name="control">button</param>
-            <param name="id">09</param>
-            <param name="label">Repeat</param>
-            <param name="icon">$VAR[Image_OSD_Repeat]</param>
-            <param name="textcolor">main_fg</param>
-            <onclick>SendClick(26)</onclick>
-        </include>
-    </include>
-
     <include name="MediaFilter_Node">
+
         <control type="group">
-            <visible>!$EXP[Exp_InfoDialogs]</visible>
-            <visible>!$EXP[Exp_ScrollbarVisible_H]</visible>
-            <visible>$EXP[Exp_MediaFilter_IsActive]</visible>
-            <include content="Animation_Fade_In">
-                <param name="delay">0</param>
-                <param name="type">Visible</param>
+            <include>Dimension_DialogSideMenu</include>
+            <include>Animation_Right</include>
+            <visible>ControlGroup(9000).HasFocus() | ControlGroup(9900).HasFocus() | $EXP[Exp_FilterWall_IsActive]</visible>
+            <include content="Dialog_Dim_Side">
+                <param name="slide_condition">ControlGroup(9900).HasFocus()</param>
             </include>
-            <control type="group">
-                <left>440</left>
-                <right>880</right>
-                <centerbottom>100</centerbottom>
-                <height>view_pad</height>
-                <include content="Object_Hidden_Button" condition="!Window.IsVisible(MyPlaylist.xml)">
-                    <param name="id">9001</param>
-                    <include>MediaFilter_Node_ClearAll</include>
-                    <onfocus>SetFocus(19)</onfocus>
+
+            <!-- Bottom Layer -->
+            <include content="Dialog_Background_Side">
+                <param name="slide_condition">ControlGroup(9900).HasFocus()</param>
+                <param name="dialog_size">Dimension_DialogSideMenu</param>
+
+                <!-- Side Buttons -->
+                <include content="Dialog_Body">
+                    <include content="Dialog_Side_Grouplist">
+                        <param name="id">9900</param>
+                        <onright>9000</onright>
+                        <onback>68</onback>
+
+                        <onleft condition="!Integer.IsEqual(Container.CurrentPage,1)">SetFocus(50)</onleft>
+                        <onleft condition="!Integer.IsEqual(Container.CurrentPage,1)">Action(pageup)</onleft>
+                        <onleft condition="Integer.IsEqual(Container.CurrentPage,1)">SetFocus($VAR[Action_View_ContentID],99999,absolute)</onleft>
+                        <onleft>SetFocus(9900)</onleft>
+
+                        <include content="Dialog_Side_Button">
+                            <param name="id">01</param>
+                            <param name="label">$LOCALIZE[15067]</param>
+                            <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
+                            <onclick>SetFocus(68)</onclick>
+                        </include>
+                    </include>
                 </include>
-                <!-- Edit Control -->
-                <control type="edit" id="19">
-                    <description>Filter</description>
-                    <font>font_midi_black</font>
-                    <textcolor>00ffffff</textcolor>
-                    <selectedcolor>00ffffff</selectedcolor>
-                    <disabledcolor>00ffffff</disabledcolor>
-                    <focusedcolor>$VAR[ColorSelected]</focusedcolor>
-                    <height>view_pad</height>
-                    <textoffsetx>40</textoffsetx>
-                    <align>left</align>
-                    <onup condition="!Window.IsVisible(MyPlaylist.xml)">SetFocus(68)</onup>
-                    <onup condition="Window.IsVisible(MyPlaylist.xml)">ClearProperty(MediaFilterBase)</onup>
-                    <onup condition="Window.IsVisible(MyPlaylist.xml)">ClearProperty(MediaFilterWall)</onup>
-                    <onup condition="Window.IsVisible(MyPlaylist.xml)">50</onup>
-                    <!-- <ondown>$VAR[Action_Var_ToMediaScrollbar]</ondown> -->
-                    <include>Action_View_Filter_OnDown</include>
-                    <onleft>9009</onleft>
-                    <onright>9004</onright>
-                </control>
-            </control>
-            <control type="grouplist" id="9000">
-                <right>300</right>
-                <align>right</align>
-                <centerbottom>100</centerbottom>
-                <itemgap>0</itemgap>
-                <orientation>horizontal</orientation>
-                <height>160</height>
-                <onleft>SetFocus(19)</onleft>
-                <onback>68</onback>
-                <onup condition="!Window.IsVisible(MyPlaylist.xml)">SetFocus(68)</onup>
-                <onup condition="Window.IsVisible(MyPlaylist.xml)">ClearProperty(MediaFilterBase)</onup>
-                <onup condition="Window.IsVisible(MyPlaylist.xml)">ClearProperty(MediaFilterWall)</onup>
-                <onup condition="Window.IsVisible(MyPlaylist.xml)">50</onup>
-                <!-- <ondown>$VAR[Action_Var_ToMediaScrollbar]</ondown> -->
-                <include>Action_View_Filter_OnDown</include>
+            </include>
 
-                <onleft>19</onleft>
-                <onright>19</onright>
+            <include content="Dialog_Foreground_Side">
+                <param name="dialog_size">Dimension_DialogSideMenu</param>
+                <param name="slide_animation">False</param>
+                <param name="topline">true</param>
+                <param name="subline">true</param>
 
-                <include condition="!Window.IsVisible(MyPlaylist.xml)">MediaFilter_Node_Buttons</include>
-                <include condition="Window.IsVisible(MyPlaylist.xml)">MediaFilter_Node_PlaylistButtons</include>
+                <include content="Dialog_Head">
+                    <param name="label">Options</param>
+                </include>
 
-                <control type="group" id="9999">
-                    <width>40</width>
-                </control>
+                <include content="Dialog_Body">
+                    <include content="Dialog_Body_Grouplist">
+                        <param name="id">9000</param>
+                        <bottom>-40</bottom>
 
-            </control>
+                        <!-- <onleft>9900</onleft> -->
+
+                        <onleft condition="!Integer.IsEqual(Container.CurrentPage,1)">SetFocus(50)</onleft>
+                        <onleft condition="!Integer.IsEqual(Container.CurrentPage,1)">Action(pageup)</onleft>
+                        <onleft condition="Integer.IsEqual(Container.CurrentPage,1)">SetFocus($VAR[Action_View_ContentID],99999,absolute)</onleft>
+                        <onleft>SetFocus(9000)</onleft>
+
+                        <onright condition="!Integer.IsEqual(Container.CurrentPage,Container.NumPages)">SetFocus(50)</onright>
+                        <onright condition="!Integer.IsEqual(Container.CurrentPage,Container.NumPages)">Action(pagedown)</onright>
+                        <onright condition="Integer.IsEqual(Container.CurrentPage,Container.NumPages)">SetFocus($VAR[Action_View_ContentID],0,absolute)</onright>
+                        <onright>SetFocus(9000)</onright>
+
+                        <onback>68</onback>
+
+                        <control type="edit" id="19">
+                            <description>Filter</description>
+                            <font>font_main</font>
+                            <textcolor>dialog_fg_70</textcolor>
+                            <selectedcolor>dialog_fg_70</selectedcolor>
+                            <disabledcolor>dialog_fg_30</disabledcolor>
+                            <focusedcolor>$VAR[ColorSelected]</focusedcolor>
+                            <height>view_pad</height>
+                            <textoffsetx>40</textoffsetx>
+                            <align>left</align>
+                        </control>
+
+                        <control type="group" id="9019">
+                            <height>40</height>
+                            <control type="image">
+                                <centertop>50%</centertop>
+                                <height>1</height>
+                                <texture colordiffuse="dialog_fg_12">common/white.png</texture>
+                                <left>20</left>
+                                <right>20</right>
+                            </control>
+                        </control>
+
+
+                        <include content="Settings_Button">
+                            <param name="id">9018</param>
+                            <param name="control">button</param>
+                            <param name="dialog">true</param>
+                            <label>$LOCALIZE[456]</label>
+                            <label2>$LOCALIZE[31167]</label2>
+                            <onclick>SetFocus(68)</onclick>
+                            <visible>$EXP[Exp_FilterWall_IsActive]</visible>
+                        </include>
+                        <include content="Settings_Button">
+                            <param name="id">9016</param>
+                            <param name="control">button</param>
+                            <param name="dialog">true</param>
+                            <label>$LOCALIZE[15067]</label>
+                            <onclick>SetFocus(50)</onclick>
+                            <visible>![$EXP[Exp_FilterWall_IsActive]]</visible>
+                        </include>
+
+
+                        <include content="Settings_Button">
+                            <param name="id">9007</param>
+                            <param name="control">button</param>
+                            <param name="dialog">true</param>
+                            <width>dialog_main_button_w</width>
+                            <label>$LOCALIZE[31048]</label>
+                            <label2>$VAR[Label_SortMethod]</label2>
+                            <onclick>SetProperty(DialogSelectType,Menu,Home)</onclick>
+                            <onclick condition="![Window.IsMedia + String.IsEqual(Container.FolderName,Skin Variables) + !String.IsEmpty(Window.Property(MediaFilter.BaseDir.Name))]">SendClick(3)</onclick>
+                            <onclick condition="Window.IsMedia + String.IsEqual(Container.FolderName,Skin Variables) + !String.IsEmpty(Window.Property(MediaFilter.BaseDir.Name))">RunScript(script.skinvariables,run_dialog=select,heading=$LOCALIZE[581],separator=||,list=title||genre||year||rating||playcount||director||originaltitle||lastplayed||writer||studio||mpaa||country||premiered||top250||votes,"executebuiltin=SetProperty(MediaFilter.SortBy,{v})||route=run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json&amp;use_rules=True")</onclick>
+                        </include>
+
+                        <include content="Settings_Button">
+                            <param name="id">9008</param>
+                            <param name="control">button</param>
+                            <param name="dialog">true</param>
+                            <width>dialog_main_button_w</width>
+                            <label>$LOCALIZE[31345]</label>
+                            <label2>$VAR[Label_SortDirection]</label2>
+                            <onclick>SetProperty(DialogSelectType,Menu,Home)</onclick>
+                            <onclick condition="![Window.IsMedia + String.IsEqual(Container.FolderName,Skin Variables) + !String.IsEmpty(Window.Property(MediaFilter.BaseDir.Name))]">SendClick(4)</onclick>
+
+                            <onclick condition="!String.IsEqual(Window.Property(MediaFilter.SortHow),desc) + Window.IsMedia + String.IsEqual(Container.FolderName,Skin Variables) + !String.IsEmpty(Window.Property(MediaFilter.BaseDir.Name))">SetProperty(MediaFilter.SortHow,desc)</onclick>
+                            <onclick condition="String.IsEqual(Window.Property(MediaFilter.SortHow),desc) + Window.IsMedia + String.IsEqual(Container.FolderName,Skin Variables) + !String.IsEmpty(Window.Property(MediaFilter.BaseDir.Name))">ClearProperty(MediaFilter.SortHow)</onclick>
+
+                            <onclick condition="Window.IsMedia + String.IsEqual(Container.FolderName,Skin Variables) + !String.IsEmpty(Window.Property(MediaFilter.BaseDir.Name))">RunScript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter.json",use_rules)</onclick>
+                        </include>
+
+                        <include content="Settings_Button">
+                            <param name="id">9004</param>
+                            <param name="control">radiobutton</param>
+                            <param name="dialog">true</param>
+                            <label>$LOCALIZE[587]</label>
+                            <selected>Container.Filtered | !String.IsEmpty(Control.GetLabel(19).index(1))</selected>
+                            <visible>Container.CanFilterAdvanced</visible>
+                            <onclick>Filter</onclick>
+                        </include>
+
+                        <include content="Settings_Button">
+                            <param name="id">9005</param>
+                            <param name="control">button</param>
+                            <param name="dialog">true</param>
+                            <label>$LOCALIZE[192]</label>
+                            <visible>!Container.CanFilterAdvanced</visible>
+                            <onclick>RunScript(script.skinvariables,set_editcontrol=19,window_id=1105,setfocus=9001)</onclick>
+                            <onclick>ClearProperty(MediaFilter.Genre)</onclick>
+                            <onclick>ClearProperty(MediaFilter.Studio)</onclick>
+                            <onclick>ClearProperty(MediaFilter.Country)</onclick>
+                            <onclick>ClearProperty(MediaFilter.MPAA)</onclick>
+                            <onclick>ClearProperty(MediaFilter.Director)</onclick>
+                            <onclick>ClearProperty(MediaFilter.Writer)</onclick>
+                        </include>
+
+                        <include content="Settings_Button">
+                            <param name="id">9006</param>
+                            <param name="control">radiobutton</param>
+                            <param name="dialog">true</param>
+                            <width>dialog_main_button_w</width>
+                            <label>$LOCALIZE[20367]</label>
+                            <onclick>SendClick(14)</onclick>
+                            <selected>System.Setting(hidewatched)</selected>
+                            <visible>Window.IsVisible(videos)</visible>
+                        </include>
+
+                        <include content="Settings_Button">
+                            <param name="id">9009</param>
+                            <param name="control">button</param>
+                            <param name="dialog">true</param>
+                            <width>dialog_main_button_w</width>
+                            <label>$LOCALIZE[31319]</label>
+                            <label2>$INFO[Container.ViewMode]</label2>
+                            <onclick>SetFocus(68)</onclick>
+                            <onclick>Runscript(script.skinvariables,action=buildviews,contentid=$VAR[Items_ViewMode_Switch],pluginname=$INFO[Container.PluginName])</onclick>
+                        </include>
+
+                        <!-- <include content="Settings_Label">
+                            <param name="id">9017</param>
+                            <param name="dialog">true</param>
+                            <label>$LOCALIZE[31173]</label>
+                            <height>40</height>
+                            <top>0</top>
+                        </include> -->
+                        <control type="group" id="9017">
+                            <height>40</height>
+                            <control type="image">
+                                <centertop>50%</centertop>
+                                <height>1</height>
+                                <texture colordiffuse="dialog_fg_12">common/white.png</texture>
+                                <left>20</left>
+                                <right>20</right>
+                            </control>
+                        </control>
+
+                        <include content="Settings_Button">
+                            <param name="id">9011</param>
+                            <param name="control">button</param>
+                            <param name="dialog">true</param>
+                            <label>$LOCALIZE[31344]</label>
+                            <label2>$INFO[ListItem.SortLetter]</label2>
+                            <onclick condition="!Integer.IsEqual(Container.CurrentPAge,Container.NumPages)">SetFocus(50)</onclick>
+                            <onclick condition="!Integer.IsEqual(Container.CurrentPAge,Container.NumPages)">Action(nextletter)</onclick>
+                            <onclick condition="Integer.IsEqual(Container.CurrentPAge,Container.NumPages)">SetFocus($VAR[Action_View_ContentID],0,absolute)</onclick>
+                            <onclick>SetFocus(9011)</onclick>
+                        </include>
+
+                        <include content="Settings_Button">
+                            <param name="id">9012</param>
+                            <param name="control">button</param>
+                            <param name="dialog">true</param>
+                            <label>$LOCALIZE[31135]</label>
+                            <label2>$INFO[Container.CurrentPage]$INFO[Container.NumPages, $LOCALIZE[1443] ,]</label2>
+                            <onclick condition="!Integer.IsEqual(Container.CurrentPAge,Container.NumPages)">SetFocus(50)</onclick>
+                            <onclick condition="!Integer.IsEqual(Container.CurrentPAge,Container.NumPages)">Action(pagedown)</onclick>
+                            <onclick condition="Integer.IsEqual(Container.CurrentPAge,Container.NumPages)">SetFocus($VAR[Action_View_ContentID],0,absolute)</onclick>
+                            <onclick>SetFocus(9012)</onclick>
+                        </include>
+
+                        <!-- <control type="scrollbar" id="60">
+                            <orientation>horizontal</orientation>
+                            <texturesliderbackground />
+                            <texturesliderbar colordiffuse="main_logo" border="4">scrollbar/scrollh.png</texturesliderbar>
+                            <showonepage>true</showonepage>
+                            <height>10</height>
+                            <centertop>60</centertop>
+                            <include>MediaFilter_Node_ClearAll</include>
+                            <left>40</left>
+                            <right>40</right>
+                        </control> -->
+
+
+
+                    </include>
+                </include>
+
+
+            </include>
+
         </control>
+
+
     </include>
 
     <include name="MediaFilter_Discover_Node">

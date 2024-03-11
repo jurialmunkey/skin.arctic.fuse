@@ -160,6 +160,7 @@
         <param name="bump_id">330</param>
         <param name="bump">Skin.String(Navigation.OnDown,Bump)</param>
         <param name="menu">Skin.String(Navigation.OnDown,Menu)</param>
+        <param name="home">Skin.String(Navigation.OnDown,Home)</param>
         <param name="move">Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + !String.IsEmpty(Container(303).ListItemNoWrap(1).Property(guid)) + !Skin.HasSetting(Hub.Home.DisableMoveBetweenGroups)</param>
         <definition>
 
@@ -181,6 +182,7 @@
 
             <!-- Bump -->
             <ondown condition="$PARAM[condition] + ![$PARAM[move]] + $PARAM[menu]">ActivateWindow(1171)</ondown>
+            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + $PARAM[home]">ActivateWindow(Home)</ondown>
             <ondown condition="$PARAM[condition] + ![$PARAM[move]] + $PARAM[bump]">SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</ondown>
             <ondown condition="$PARAM[condition] + ![$PARAM[move]] + $PARAM[bump]">$PARAM[bump_id]</ondown>
         </definition>
@@ -370,32 +372,52 @@
         <ondown condition="Skin.String(Navigation.OnDown,Explore) + ![$EXP[Exp_FilterWall_IsActive]]">SetFocus(67)</ondown>
     </include>
 
-    <variable name="Action_Var_ToMediaFilter">
-        <value>SetFocus(19)</value>
-    </variable>
-
     <variable name="Action_Var_ToMediaFilter_Vert">
-        <value condition="Window.IsVisible(MyPlaylist.xml) | !$EXP[Exp_FilterWall_IsViewtype] | !Skin.HasSetting(Navigation.MediaFilterWall) | Skin.HasSetting(Views.DisableItemPeek)">Runscript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter-setfocus.json",use_rules,id=$VAR[Action_View_ContentID],focus_id=19,clear_prop_one=Null,clear_prop_two=Null)</value>
-        <value>Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],use_mediafilter=True,win_prop=WallSlideIn,focus_id=19,clear_prop_one=Null,clear_prop_two=Null)</value>
+        <value condition="Window.IsVisible(MyPlaylist.xml) | !$EXP[Exp_FilterWall_IsViewtype] | !Skin.HasSetting(Navigation.MediaFilterWall) | Skin.HasSetting(Views.DisableItemPeek)">Runscript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter-setfocus.json",use_rules,id=$VAR[Action_View_ContentID],focus_id=9007,clear_prop_one=Null,clear_prop_two=Null)</value>
+        <value>Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],use_mediafilter=True,win_prop=WallSlideIn,focus_id=9007,clear_prop_one=Null,clear_prop_two=Null)</value>
     </variable>
 
-    <variable name="Action_Var_ToMediaScrollbar">
-        <value condition="Window.IsVisible(MyPlaylist.xml) | !$EXP[Exp_FilterWall_IsViewtype] | !Skin.HasSetting(Navigation.MediaFilterWall) | Skin.HasSetting(Views.DisableItemPeek)">Runscript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter-setfocus.json",use_rules,id=$VAR[Action_View_ContentID],focus_id=60,clear_prop_one=Null,clear_prop_two=Null)</value>
-        <value>Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],use_mediafilter=True,win_prop=WallSlideIn,focus_id=60,clear_prop_one=Null,clear_prop_two=Null)</value>
-        <!-- <value>SetFocus(60)</value> -->
+    <variable name="Action_Var_ToMediaFilter">
+        <value condition="Window.IsVisible(MyPlaylist.xml) | !$EXP[Exp_FilterWall_IsViewtype] | !Skin.HasSetting(Navigation.MediaFilterWall) | Skin.HasSetting(Views.DisableItemPeek)">Runscript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-mediafilter-setfocus.json",use_rules,id=$VAR[Action_View_ContentID],focus_id=9007,clear_prop_one=Null,clear_prop_two=Null)</value>
+        <value>Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],use_mediafilter=True,win_prop=WallSlideIn,focus_id=9007,clear_prop_one=Null,clear_prop_two=Null)</value>
     </variable>
 
     <include name="Action_View_Movement_OnUp">
+        <!-- <onup condition="Skin.String(Navigation.OnUp,Search)">ActivateWindow(1105)</onup>
         <onup condition="Skin.String(Navigation.OnUp,Home)">ActivateWindow(Home)</onup>
-        <onup condition="Skin.String(Navigation.OnUp,Search)">ActivateWindow(1105)</onup>
         <onup condition="Skin.String(Navigation.OnUp,Bump)">SetProperty(List.ViewContainer,50)</onup>
-        <onup condition="Skin.String(Navigation.OnUp,Bump)">333</onup>
+        <onup condition="Skin.String(Navigation.OnUp,Bump)">SetFocus(333)</onup> -->
+        <onup>SetFocus(303,9999,absolute)</onup>
     </include>
 
     <include name="Action_View_Movement_OnDown">
-        <param name="to_scrollbar">true</param>
+        <param name="condition">true</param>
+        <param name="bump_id">330</param>
+        <param name="bump">Skin.String(Navigation.OnDown,Bump)</param>
+        <param name="menu">Skin.String(Navigation.OnDown,Menu)</param>
+        <param name="home">Skin.String(Navigation.OnDown,Home)</param>
         <definition>
-            <ondown>$VAR[Action_Var_ToMediaScrollbar]</ondown>
+            <ondown>SetFocus(60)</ondown>
+        </definition>
+    </include>
+
+    <include name="Action_View_Scrollbar_Movement_OnDown">
+        <param name="condition">true</param>
+        <param name="bump_id">330</param>
+        <param name="bump">Skin.String(Navigation.OnDown,Bump)</param>
+        <param name="menu">Skin.String(Navigation.OnDown,Menu)</param>
+        <param name="home">Skin.String(Navigation.OnDown,Home)</param>
+        <definition>
+            <!-- Explore -->
+            <include content="Action_View_Explore_OnDown">
+                <param name="condition">[$PARAM[condition] + Skin.String(Navigation.OnDown,Explore)]</param>
+            </include>
+
+            <!-- Bump -->
+            <ondown condition="$PARAM[condition] + $PARAM[menu]">$VAR[Action_Var_ToMediaFilter]</ondown>
+            <ondown condition="$PARAM[condition] + $PARAM[bump]">SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</ondown>
+            <ondown condition="$PARAM[condition] + $PARAM[bump]">$PARAM[bump_id]</ondown>
+            <ondown condition="$PARAM[condition] + $PARAM[home]">ActivateWindow(Home)</ondown>
         </definition>
     </include>
 
