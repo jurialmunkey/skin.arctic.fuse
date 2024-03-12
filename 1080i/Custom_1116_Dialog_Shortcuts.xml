@@ -6,6 +6,17 @@
     <onunload>ClearProperty(Shortcuts.Category,Home)</onunload>
     <controls>
 
+        <include content="Object_Hidden_List">
+            <param name="id">29303</param>
+            <content>$VAR[Path_SkinVariables_Home29303FilterPath]</content>
+            <visible>String.StartsWith(Window(Home).Property(Shortcuts.Category),guid-)</visible>
+        </include>
+        <include content="Object_Hidden_List">
+            <param name="id">29313</param>
+            <content>$VAR[Path_SkinVariables_Home29313FilterPath]</content>
+            <visible>String.StartsWith(Container(22001).ListItem.Property(sidemenu_guid),guid-)</visible>
+        </include>
+
         <include content="Object_Hidden_Button">
             <param name="id">29999</param>
 
@@ -131,7 +142,53 @@
                 <param name="topline">true</param>
                 <param name="subline">true</param>
 
+                <!-- Categories Filter -->
+                <control type="group">
+                    <left>0</left>
+                    <right>600</right>
+                    <height>80</height>
+                    <centertop>100</centertop>
+                    <control type="grouplist" id="26062">
+                        <!-- <left>20</left>
+                        <right>-20</right> -->
+                        <right>60</right>
+                        <left>60</left>
+                        <!-- <left>40</left> -->
+                        <onup>SetFocus(22001,9999,absolute)</onup>
+                        <ondown>SetFocus(22001,0,absolute)</ondown>
+                        <orientation>vertical</orientation>
+                        <!-- Filter Categories -->
+                        <control type="grouplist" id="27062">
+                            <align>right</align>
+                            <orientation>horizontal</orientation>
+                            <height>80</height>
+                            <include content="Settings_Button">
+                                <param name="dialog">true</param>
+                                <param name="id">23062</param>
+                                <!-- <param name="groupid">24062</param>
+                                <param name="toplabel">$LOCALIZE[587] [LOWERCASE]$LOCALIZE[31150][/LOWERCASE]</param>
+                                <param name="sublabel">$VAR[Label_SkinVariables_FilterPath]</param>
+                                <param name="sublabel_visible">True</param> -->
+                                <label>$LOCALIZE[587]: $VAR[Label_SkinVariables_FilterPath]      </label>
+                                <visible>[String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=homemenu) + String.IsEmpty(Window(Home).Property(Shortcuts.EditMode)) + String.IsEmpty(Window(Home).Property(Shortcuts.EditGUID))]</visible>
+                                <onclick>SetProperty(SideOptions.List,Filter)</onclick>
+                                <onclick>SetFocus(25001)</onclick>
+                                <onback>29999</onback>
+                                <width>auto</width>
+                            </include>
+                        </control>
+                        <include content="Settings_Image">
+                            <param name="id">25062</param>
+                            <param name="buttonid">23062</param>
+                            <param name="icon">$VAR[Image_SkinVariables_FilterPath]</param>
+                            <visible>[String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=homemenu) + String.IsEmpty(Window(Home).Property(Shortcuts.EditMode)) + String.IsEmpty(Window(Home).Property(Shortcuts.EditGUID))]</visible>
+                            <height>83</height>
+                        </include>
+                    </control>
+                </control>
+
                 <!-- Header -->
+                <!-- $VAR[Label_Shortcut_SubHeader_CategoryFilterName, > ,] -->
                 <include content="Dialog_Head">
                     <param name="label">$VAR[Label_Shortcut_TopHeader]</param>
                     <param name="sublabel">$VAR[Label_Shortcut_SubHeader_GroupName]$INFO[Container(22001).ListItem.Property(name), > ,]$VAR[Label_Shortcut_SubHeader_EditMode, > ,]</param>
@@ -147,6 +204,9 @@
                     <left>view_pad</left>
                     <right>view_pad</right>
                 </control>
+
+
+
                 <!-- Content -->
                 <include content="Dialog_Body">
                     <include content="Dialog_Body_Group">
@@ -157,13 +217,16 @@
                                 <param name="item_height">100</param>
                                 <param name="textcolor">dialog_fg_70</param>
                                 <param name="itemlayout_include">Layout_Shortcuts</param>
-                                <param name="altfocus">true</param>
+                                <param name="altfocus">!Control.HasFocus(23062)</param>
                                 <param name="misc">0</param>
                                 <param name="detailed">$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</param>
 
                                 <content>$VAR[Path_SkinVariables_ExtraFilterPath]</content>
 
                                 <content>plugin://script.skinvariables/?info=get_shortcuts_node&amp;edit=True&amp;skin=$VAR[Path_SkinVariables_SkinFolder]$INFO[Window(Home).Property(SkinVariables.ShortcutsNode.Reload),&amp;reload=,]$INFO[Window(Home).Property(Shortcuts.EditMenu),&amp;,]$INFO[Window(Home).Property(Shortcuts.EditMode),&amp;,]$INFO[Window(Home).Property(Shortcuts.EditGUID),&amp;,]$VAR[Path_SkinVariables_FilterPath]</content>
+
+                                <onup>23062</onup>
+                                <ondown>23062</ondown>
 
                                 <onleft>9000</onleft>
                                 <onback>29999</onback>
@@ -196,20 +259,6 @@
                                         <pagecontrol>61</pagecontrol>
                                         <onright>61</onright>
                                         <orientation>vertical</orientation>
-
-                                        <!-- Filter Categories -->
-                                        <include content="Settings_Stacked_Button">
-                                            <param name="dialog">true</param>
-                                            <param name="id">23062</param>
-                                            <param name="groupid">24062</param>
-                                            <param name="toplabel">$LOCALIZE[587] [LOWERCASE]$LOCALIZE[31150][/LOWERCASE]</param>
-                                            <param name="sublabel">$VAR[Label_SkinVariables_FilterPath]</param>
-                                            <param name="sublabel_visible">True</param>
-                                            <visible>[String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=homemenu) + String.IsEmpty(Window(Home).Property(Shortcuts.EditMode)) + String.IsEmpty(Window(Home).Property(Shortcuts.EditGUID))]</visible>
-                                            <onclick>SetProperty(SideOptions.List,Filter)</onclick>
-                                            <onclick>SetFocus(25001)</onclick>
-                                            <onback>29999</onback>
-                                        </include>
 
                                         <!-- Disable / Enable -->
                                         <include content="Settings_Button">
@@ -387,6 +436,13 @@
                                             <onclick>ClearProperty(SideOptions.List)</onclick>
                                             <onclick>SetFocus(25001)</onclick>
                                             <onback>29999</onback>
+                                        </include>
+                                        <include content="Settings_Image">
+                                            <param name="id">25061</param>
+                                            <param name="buttonid">23061</param>
+                                            <param name="icon">$VAR[Image_SkinVariables_FilterName]</param>
+                                            <visible>[String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=homemenu) + String.IsEmpty(Window(Home).Property(Shortcuts.EditMode)) + String.IsEmpty(Window(Home).Property(Shortcuts.EditGUID))]</visible>
+                                            <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
                                         </include>
                                         <!-- Category: Edit widgets -->
                                         <include content="Settings_Button">
@@ -816,16 +872,20 @@
         </control>
 
 
-       <include content="Furniture_Busy_Icon">
-            <param name="hasspinner">true</param>
-            <param name="spinspinner">true</param>
+        <control type="group">
             <right>80</right>
             <centertop>100</centertop>
+            <height>40</height>
+            <width>40</width>
             <visible>Container(22001).IsUpdating</visible>
             <include content="Animation_Fade_In">
                 <param name="type">visible</param>
                 <param name="delay">400</param>
             </include>
-        </include>
+            <include content="Furniture_Busy_Icon">
+                <param name="hasspinner">true</param>
+                <param name="spinspinner">true</param>
+            </include>
+        </control>
     </controls>
 </window>
