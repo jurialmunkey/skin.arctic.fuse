@@ -57,8 +57,12 @@
                     <onfocus>ClearProperty(WidgetGroup.Movement)</onfocus>
 
                     <onfocus condition="Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)">SetProperty(Slide.WidgetContainer,True,Home)</onfocus>
-                    <onfocus condition="Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu)">SetProperty($INFO[Container(303).ListItem.Property(widgets_tmdbh_id)],$INFO[Window.Property(TMDbHelper.WidgetContainer)],1198)</onfocus>
+                    <onfocus condition="Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + !String.IsEmpty(Window.Property(TMDbHelper.WidgetContainer)) + !String.IsEmpty(Window(1198).Property(TMDbHelper.WidgetContainer.FirstSet))">SetProperty($INFO[Container(303).ListItem.Property(widgets_tmdbh_id)],$INFO[Window.Property(TMDbHelper.WidgetContainer)],1198)</onfocus>
+                    <onfocus condition="Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + String.IsEmpty(Window(1198).Property(TMDbHelper.WidgetContainer.FirstSet))">ClearProperty($INFO[Container(303).ListItem.Property(widgets_tmdbh_id)],1198)</onfocus>
+                    <onfocus condition="Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + String.IsEmpty(Window(1198).Property(TMDbHelper.WidgetContainer.FirstSet))">SetProperty(TMDbHelper.WidgetContainer,$INFO[ListItem.Property(widgets_first_id)])</onfocus>
+
                     <onfocus condition="Window.IsVisible(Home)">SetProperty(TMDbHelper.WidgetContainer.UpdateLock,True,1198)</onfocus>
+                    <onfocus condition="Window.IsVisible(Home)">SetProperty(TMDbHelper.WidgetContainer.FirstSet,True,1198)</onfocus>
 
                     <include content="Action_HomeMenu_OnRightLeft">
                         <param name="onlist">$PARAM[onlist]</param>
