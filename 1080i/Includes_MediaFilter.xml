@@ -27,7 +27,7 @@
         <control type="group">
             <include>Dimension_DialogSideMenu</include>
             <include>Animation_Right</include>
-            <visible>ControlGroup(9000).HasFocus() | ControlGroup(9900).HasFocus() | $EXP[Exp_FilterWall_IsActive]</visible>
+            <visible>Control.HasFocus(60) | ControlGroup(9000).HasFocus() | ControlGroup(9900).HasFocus() | $EXP[Exp_FilterWall_IsActive]</visible>
             <include content="Dialog_Dim_Side">
                 <param name="slide_condition">ControlGroup(9900).HasFocus()</param>
             </include>
@@ -38,30 +38,40 @@
                 <param name="dialog_size">Dimension_DialogSideMenu</param>
 
                 <!-- Side Buttons -->
-                <!-- <include content="Dialog_Body">
+                <include content="Dialog_Body">
                     <include content="Dialog_Side_Grouplist">
                         <param name="id">9900</param>
                         <onright>9000</onright>
                         <onback>68</onback>
+                        <onleft>68</onleft>
 
-                        <onleft condition="!Integer.IsEqual(Container.CurrentPage,1)">SetFocus(50)</onleft>
+                        <!-- <onleft condition="!Integer.IsEqual(Container.CurrentPage,1)">SetFocus(50)</onleft>
                         <onleft condition="!Integer.IsEqual(Container.CurrentPage,1)">Action(pageup)</onleft>
                         <onleft condition="Integer.IsEqual(Container.CurrentPage,1)">SetFocus($VAR[Action_View_ContentID],99999,absolute)</onleft>
-                        <onleft>SetFocus(9900)</onleft>
+                        <onleft>SetFocus(9900)</onleft> -->
 
                         <include content="Dialog_Side_Button">
                             <param name="id">01</param>
+                            <!-- <param name="label">$LOCALIZE[186]</param>
+                            <param name="icon">special://skin/extras/icons/circle-check.png</param> -->
                             <param name="label">$LOCALIZE[15067]</param>
                             <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
                             <onclick>SetFocus(68)</onclick>
                         </include>
+                        <include content="Dialog_Side_Button">
+                            <param name="id">02</param>
+                            <param name="label">$LOCALIZE[137]</param>
+                            <param name="icon">special://skin/extras/icons/search.png</param>
+                            <onclick>ClearProperty(MediaFilterBase)</onclick>
+                            <onclick>ClearProperty(MediaFilterWall)</onclick>
+                            <onclick>ActivateWindow(1105)</onclick>
+                        </include>
                     </include>
-                </include> -->
+                </include>
             </include>
 
             <include content="Dialog_Foreground_Side">
                 <param name="dialog_size">Dimension_DialogSideMenu</param>
-                <param name="slide_animation">False</param>
                 <param name="topline">true</param>
                 <param name="subline">true</param>
 
@@ -74,7 +84,7 @@
                         <param name="id">9000</param>
                         <bottom>-40</bottom>
 
-                        <onleft condition="!$EXP[Exp_FilterWall_IsActive]">68</onleft>
+                        <!-- <onleft condition="!$EXP[Exp_FilterWall_IsActive]">68</onleft>
 
                         <onleft condition="!Integer.IsEqual(Container.CurrentPage,1) + $EXP[Exp_FilterWall_IsActive]">SetFocus($VAR[Action_View_ContentID])</onleft>
                         <onleft condition="!Integer.IsEqual(Container.CurrentPage,1) + $EXP[Exp_FilterWall_IsActive]">Action(pageup)</onleft>
@@ -84,8 +94,11 @@
                         <onright condition="!Integer.IsEqual(Container.CurrentPage,Container.NumPages) + $EXP[Exp_FilterWall_IsActive]">SetFocus($VAR[Action_View_ContentID])</onright>
                         <onright condition="!Integer.IsEqual(Container.CurrentPage,Container.NumPages) + $EXP[Exp_FilterWall_IsActive]">Action(pagedown)</onright>
                         <onright condition="Integer.IsEqual(Container.CurrentPage,Container.NumPages) + $EXP[Exp_FilterWall_IsActive]">SetFocus($VAR[Action_View_ContentID],0,absolute)</onright>
-                        <onright condition="$EXP[Exp_FilterWall_IsActive]">SetFocus(9000)</onright>
+                        <onright condition="$EXP[Exp_FilterWall_IsActive]">SetFocus(9000)</onright> -->
 
+                        <onleft>68</onleft>
+                        <!-- <onleft>9900</onleft> -->
+                        <onright>60</onright>
                         <onback>68</onback>
 
                         <control type="edit" id="19">
@@ -112,7 +125,7 @@
                         </control>
 
 
-                        <include content="Settings_Button">
+                        <!-- <include content="Settings_Button">
                             <param name="id">9018</param>
                             <param name="control">button</param>
                             <param name="dialog">true</param>
@@ -128,6 +141,16 @@
                             <label>$LOCALIZE[15067]</label>
                             <onclick>SetFocus(50)</onclick>
                             <visible>![$EXP[Exp_FilterWall_IsActive]]</visible>
+                        </include> -->
+
+                        <include content="Settings_Button">
+                            <param name="id">9016</param>
+                            <param name="control">button</param>
+                            <param name="dialog">true</param>
+                            <label>$LOCALIZE[137]</label>
+                            <onclick>ClearProperty(MediaFilterBase)</onclick>
+                            <onclick>ClearProperty(MediaFilterWall)</onclick>
+                            <onclick>ActivateWindow(1105)</onclick>
                         </include>
 
 
@@ -202,7 +225,8 @@
                             <width>dialog_main_button_w</width>
                             <label>$LOCALIZE[31319]</label>
                             <label2>$INFO[Container.ViewMode]</label2>
-                            <onclick>SetFocus(68)</onclick>
+                            <onclick>ClearProperty(MediaFilterBase)</onclick>
+                            <onclick>ClearProperty(MediaFilterWall)</onclick>
                             <onclick>Runscript(script.skinvariables,action=buildviews,contentid=$VAR[Items_ViewMode_Switch],pluginname=$INFO[Container.PluginName])</onclick>
                         </include>
 
@@ -259,6 +283,12 @@
                             <left>40</left>
                             <right>40</right>
                         </control> -->
+                    </include>
+
+                    <include content="Dialog_Scrollbar">
+                        <param name="id">60</param>
+                        <onleft>9000</onleft>
+                        <onback>68</onback>
                     </include>
                 </include>
 
