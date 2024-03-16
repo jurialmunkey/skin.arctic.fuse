@@ -188,7 +188,6 @@
     <include name="Action_Widget_End">
         <param name="condition">true</param>
         <param name="bump_id">330</param>
-        <param name="bump">[!Skin.String(Navigation.OnDown,Explore) + !Skin.String(Navigation.OnDown,Options)]</param>
         <param name="move">Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + !String.IsEmpty(Container(303).ListItemNoWrap(1).Property(guid)) + !Skin.HasSetting(Hub.Home.DisableMoveBetweenGroups)</param>
         <definition>
 
@@ -205,15 +204,15 @@
 
             <!-- Explore -->
             <include content="Action_View_Explore_OnDown">
-                <param name="condition">[$PARAM[condition] + ![$PARAM[move]] + Skin.String(Navigation.OnDown,Explore)]</param>
+                <param name="condition">[$PARAM[condition] + ![$PARAM[move]] + Skin.String(Navigation.Hubs.OnDown,Explore)]</param>
             </include>
 
             <!-- Bump -->
-            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + $PARAM[bump]">SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</ondown>
-            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + $PARAM[bump]">$PARAM[bump_id]</ondown>
+            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + String.IsEmpty(Skin.String(Navigation.Hubs.OnDown))">SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</ondown>
+            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + String.IsEmpty(Skin.String(Navigation.Hubs.OnDown))">$PARAM[bump_id]</ondown>
 
             <!-- Options -->
-            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + Skin.String(Navigation.OnDown,Options)">ActivateWindow(1170)</ondown>
+            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + !String.IsEmpty(Skin.String(Navigation.Hubs.OnDown))">$INFO[Skin.String(Navigation.Hubs.OnDown)]</ondown>
         </definition>
     </include>
 
