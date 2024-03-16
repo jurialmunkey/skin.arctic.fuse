@@ -27,38 +27,9 @@
         <control type="group">
             <include>Dimension_DialogSideMenu</include>
             <include>Animation_Right</include>
-            <visible>Control.HasFocus(60) | ControlGroup(9000).HasFocus() | ControlGroup(9900).HasFocus() | $EXP[Exp_FilterWall_IsActive]</visible>
+            <visible>!String.IsEmpty(Window.Property(MediaFilterBase)) | $EXP[Exp_FilterWall_IsActive]</visible>
             <include content="Dialog_Dim_Side">
-                <param name="slide_condition">ControlGroup(9900).HasFocus()</param>
-            </include>
-
-            <!-- Bottom Layer -->
-            <include content="Dialog_Background_Side">
-                <param name="slide_condition">ControlGroup(9900).HasFocus()</param>
-                <param name="dialog_size">Dimension_DialogSideMenu</param>
-
-                <!-- Side Buttons -->
-                <include content="Dialog_Body">
-                    <include content="Dialog_Side_Grouplist">
-                        <param name="id">9900</param>
-                        <onright>9000</onright>
-                        <onback>68</onback>
-                        <include content="Dialog_Side_Button">
-                            <param name="id">01</param>
-                            <param name="label">$LOCALIZE[15067]</param>
-                            <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
-                            <onclick>SetFocus(68)</onclick>
-                        </include>
-                        <!-- <include content="Dialog_Side_Button">
-                            <param name="id">02</param>
-                            <param name="label">$LOCALIZE[137]</param>
-                            <param name="icon">special://skin/extras/icons/search.png</param>
-                            <onclick>ClearProperty(MediaFilterBase)</onclick>
-                            <onclick>ClearProperty(MediaFilterWall)</onclick>
-                            <onclick>ActivateWindow(1105)</onclick>
-                        </include> -->
-                    </include>
-                </include>
+                <param name="slide_animation">False</param>
             </include>
 
             <include content="Dialog_Foreground_Side">
@@ -69,13 +40,16 @@
                 <include content="Dialog_Head">
                     <param name="label">$LOCALIZE[31319]</param>
                 </include>
+                <include content="Dialog_Head_CloseButton">
+                    <param name="onclick">SetFocus(68)</param>
+                </include>
 
                 <include content="Dialog_Body">
                     <include content="Dialog_Body_Grouplist">
                         <param name="id">9000</param>
                         <bottom>-40</bottom>
 
-                        <onleft>9900</onleft>
+                        <onleft>68</onleft>
                         <onback>68</onback>
 
                         <control type="edit" id="19">
@@ -105,7 +79,7 @@
                             <param name="id">9018</param>
                             <param name="control">button</param>
                             <param name="dialog">true</param>
-                            <!-- <onleft condition="Integer.IsEqual(Container.CurrentPage,1)">9900</onleft> -->
+                            <!-- <onleft condition="Integer.IsEqual(Container.CurrentPage,1)">68</onleft> -->
                             <onclick>SetFocus(68)</onclick>
                             <onleft>SetFocus(50)</onleft>
                             <onleft>Action(prevletter)</onleft>
@@ -123,7 +97,7 @@
                             <param name="dialog">true</param>
                             <label>$LOCALIZE[31135]</label>
                             <label2>$INFO[Container.CurrentPage]$INFO[Container.NumPages, $LOCALIZE[1443] ,]</label2>
-                            <!-- <onleft condition="Integer.IsEqual(Container.CurrentPage,1)">9900</onleft> -->
+                            <!-- <onleft condition="Integer.IsEqual(Container.CurrentPage,1)">68</onleft> -->
                             <onclick>SetFocus(68)</onclick>
                             <onleft>SetFocus(50)</onleft>
                             <onleft>Action(pageup)</onleft>
