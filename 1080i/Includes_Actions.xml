@@ -150,7 +150,7 @@
             <onback condition="$PARAM[enable] + !Integer.IsEqual(Container($PARAM[id]).CurrentItem,1) + Skin.String(Navigation.OnBack,Previous)">SetFocus($PARAM[id],0,absolute)</onback>
 
             <onback condition="$PARAM[enable] + [Integer.IsEqual(Container($PARAM[id]).CurrentItem,1) | Skin.String(Navigation.OnBack,Parent)]">$PARAM[grouplistid]</onback>
-            <onback condition="$PARAM[enable] + [Integer.IsEqual(Container($PARAM[id]).CurrentItem,1) | Skin.String(Navigation.OnBack,Parent)]">AlarmClock(refocus1,SetFocus($PARAM[topwidgetid]),00:00,silent)</onback>
+            <onback condition="$PARAM[enable] + [Integer.IsEqual(Container($PARAM[id]).CurrentItem,1) | Skin.String(Navigation.OnBack,Parent)] + !Control.HasFocus($PARAM[topwidgetid])">AlarmClock(refocus1,SetFocus($PARAM[topwidgetid]),00:00,silent)</onback>
             <onback condition="$PARAM[enable] + [Integer.IsEqual(Container($PARAM[id]).CurrentItem,1) | Skin.String(Navigation.OnBack,Parent)]">AlarmClock(refocus2,$PARAM[refocus],00:00,silent)</onback>
 
             <onback condition="$PARAM[enable] + Skin.String(Navigation.OnBack,Menu) + ![Window.IsVisible(Home) + Skin.String(Home.SideMenuCollapse,Topbar)]">303</onback>
@@ -216,12 +216,6 @@
         </definition>
     </include>
 
-    <!-- TODO_SKINVARIABLES :: Positioned based upon widget stack positions -->
-    <variable name="Action_Menu_Position">
-        <value>SetFocus(303)</value>
-        <value>SetFocus(303,1,absolute)</value>
-    </variable>
-
     <include name="Action_UpdateSearchTerm">
         <onclick>AlarmClock(SetSearchTerm,SetProperty(SearchTerm,$INFO[Control.GetLabel(9099).index(1)]),00:01,silent)</onclick>
         <onfocus>AlarmClock(SetSearchTerm,SetProperty(SearchTerm,$INFO[Control.GetLabel(9099).index(1)]),00:01,silent)</onfocus>
@@ -267,9 +261,9 @@
             <onright>ClearProperty(List.ViewContainer.Left)</onright>
             <onright>ClearProperty(List.ViewContainer.Bump)</onright>
 
-            <onback condition="!Window.IsVisible(Home)">ClearProperty(List.ViewContainer)</onback>
-            <onback condition="!Window.IsVisible(Home)">ClearProperty(List.ViewContainer.Left)</onback>
-            <onback condition="!Window.IsVisible(Home)">ClearProperty(TMDbHelper.WidgetContainer)</onback>
+            <onback condition="!$EXP[Exp_Window_IsHub]">ClearProperty(List.ViewContainer)</onback>
+            <onback condition="!$EXP[Exp_Window_IsHub]">ClearProperty(List.ViewContainer.Left)</onback>
+            <onback condition="!$EXP[Exp_Window_IsHub]">ClearProperty(TMDbHelper.WidgetContainer)</onback>
             <onback condition="$EXP[Exp_FilterWall_IsActive]">68</onback>
 
         </definition>
@@ -520,25 +514,6 @@
     <include name="Action_OSD_Button_OnFocus">
         <onfocus condition="!String.IsEmpty(Skin.String(OSD_Timeout))">AlarmClock(osd_timeout,SetFocus(99997),$INFO[Skin.String(OSD_Timeout),00:,],silent)</onfocus>
         <onunfocus>CancelAlarm(osd_timeout,true)</onunfocus>
-    </include>
-
-    <include name="Action_OptionsMenu_Default">
-        <param name="id">50</param>
-        <definition>
-            <onleft>$PARAM[id]</onleft>
-            <onright>$PARAM[id]</onright>
-            <onback>$PARAM[id]</onback>
-        </definition>
-    </include>
-
-    <include name="Action_OptionsMenu_PVRGuide">
-        <onleft>10</onleft>
-        <onright>10</onright>
-    </include>
-
-    <include name="Action_OptionsMenu_ButtonMenu">
-        <onleft>Close</onleft>
-        <onright>Close</onright>
     </include>
 
     <include name="_Action_Blur_Onload">
