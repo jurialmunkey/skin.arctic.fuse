@@ -1,19 +1,10 @@
-<include content="Widget_Content">
+<include content="{widget_include}">
     <param name="id">{widget_id}</param>
-    <param name="groupid">{widget_group_id}</param>
-    <param name="label">{widget_label}</param>
-    <param name="visible">{widget_visible}</param>
-    <param name="altvisible">{widget_altvisible}</param>
-    <param name="include">{widget_include}</param>
-    <param name="detailed">{widget_detailed}</param>
-    <param name="widgettop">widgetsearch_items_t</param>
-    <param name="widgetheight">widgetsearch_items_h</param>
-    <param name="labeltop">widgetsearch_label_t</param>
-    <param name="labelheight">widgetsearch_label_h</param>
-    <param name="conditional_fade">{widget_conditional_fade}</param>
+    <height>divider_bottom</height>
+    <bottom>40</bottom>
 
-    <param name="transition_include">true</param>
-    <param name="transition_hidden">Control.HasFocus({widget_id})</param>
+    <visible>{widget_visible}</visible>
+    <onfocus>SetProperty(TMDbHelper.WidgetContainer,{widget_id})</onfocus>
 
     <include content="Object_ContentDynamic">
         <param name="sortby">{widget_sortby}</param>
@@ -28,19 +19,13 @@
         <param name="condition">[!Control.HasFocus({widget_id}) | System.IdleTime(3)]</param>
     </include>
 
+    <onup>SetFocus(303,9999,absolute)</onup>
+    <ondown condition="!Skin.String(Navigation.OnUp,Search)">SetFocus(9502)</ondown>
+    <ondown condition="Skin.String(Navigation.OnUp,Search)">PreviousMenu</ondown>
     <include content="Action_View_Movement_OnLeftRight">
         <param name="id">{widget_id}</param>
-        <param name="include_onback">False</param>
-    </include>
-    <include content="Action_View_Movement_OnBack">
-        <param name="id">{widget_id}</param>
         <param name="onback">[Integer.IsEqual(Container({widget_id}).CurrentItem,1)]</param>
-        <param name="backid">6000</param>
-        <param name="menuid">9501</param>
     </include>
+    <pagecontrol>60</pagecontrol>
 
-    <onfocus>SetProperty(TMDbHelper.WidgetContainer,{widget_id})</onfocus>
-
-    <onfocus>SetProperty(Transition.WidgetStyle,{widget_include},Home)</onfocus>
-    <onunfocus>ClearProperty(Transition.WidgetStyle,Home)</onunfocus>
 </include>
