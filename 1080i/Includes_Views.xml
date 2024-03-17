@@ -144,56 +144,104 @@
                         <left>200</left>
                     </include>
                 </control>
+
+                <control type="group">
+                    <visible>!$EXP[Exp_InfoDialogs]</visible>
+                    <include>Animation_Transition_InfoPanel_Hide</include>
+                    <control type="group">
+                        <animation type="Conditional" reversible="false" condition="[$EXP[Exp_FilterWall_IsActive] | $EXP[Exp_DiscoverWall_IsActive]]">
+                            <effect type="slide" end="0,-334" start="0" time="400" delay="0" tween="cubic" easing="out" />
+                        </animation>
+                        <animation type="Conditional" reversible="false" condition="![$EXP[Exp_FilterWall_IsActive] | $EXP[Exp_DiscoverWall_IsActive]]">
+                            <effect type="slide" start="0,-334" end="0" time="400" delay="0" tween="cubic" easing="out" />
+                        </animation>
+                        <include content="Info_Viewline">
+                            <param name="sort_condition">true</param>
+                            <param name="library_condition">true</param>
+                        </include>
+                    </control>
+                </control>
+
+                <include content="View_Furniture_Bottom_Group">
+                    <param name="include">View_Furniture_Bottom_Group_Explore</param>
+                </include>
+
             </control>
 
+
+        </control>
+    </include>
+
+    <include name="View_Furniture_Bottom_Group_Explore">
+        <control type="group">
+            <visible>$EXP[Exp_FurnitureFooter_Left_IsVisible]</visible>
+            <visible>[Skin.String(Navigation.OnDown,Explore) + ![[$EXP[Exp_View_502] + Control.HasFocus(503)] | [$EXP[Exp_View_512] + Control.HasFocus(513)] | [$EXP[Exp_View_522] + Control.HasFocus(523)]]]</visible>
+            <include content="Furniture_Bottombar_Group">
+                <include content="Furniture_Gutters">
+                    <control type="group">
+                        <animation effect="fade" start="100" end="30" condition="true">Conditional</animation>
+                        <control type="group">
+                            <top>10</top>
+                            <height>35</height>
+                            <include content="Info_Viewline">
+                                <param name="sort_condition">false</param>
+                                <param name="library_condition">false</param>
+                                <param name="label">$LOCALIZE[31148]</param>
+                                <!-- <param name="custom_condition">true</param>
+                                <param name="custom_icon">special://skin/extras/icons/arrow-down.png</param> -->
+                                <top>0</top>
+                                <left>0</left>
+                            </include>
+                        </control>
+                        <include>Furniture_Bottom_WidgetGroups_BlankItem</include>
+                    </control>
+                </include>
+            </include>
+        </control>
+    </include>
+
+    <include name="View_Furniture_Bottom_Group_Content">
+        <control type="group">
+            <visible>$EXP[Exp_FurnitureFooter_Left_IsVisible]</visible>
+            <visible>![Skin.String(Navigation.OnDown,Explore) + ![[$EXP[Exp_View_502] + Control.HasFocus(503)] | [$EXP[Exp_View_512] + Control.HasFocus(513)] | [$EXP[Exp_View_522] + Control.HasFocus(523)]]]</visible>
+            <include content="Furniture_Bottom_Left">
+                <visible>![[$EXP[Exp_View_502] + Control.HasFocus(503)] | [$EXP[Exp_View_512] + Control.HasFocus(513)] | [$EXP[Exp_View_522] + Control.HasFocus(523)]]</visible>
+            </include>
+            <include content="Furniture_Bottom_Left">
+                <param name="container">Container(503).</param>
+                <visible>[$EXP[Exp_View_502] + Control.HasFocus(503)]</visible>
+            </include>
+            <include content="Furniture_Bottom_Left">
+                <param name="container">Container(513).</param>
+                <visible>[$EXP[Exp_View_512] + Control.HasFocus(513)]</visible>
+            </include>
+            <include content="Furniture_Bottom_Left">
+                <param name="container">Container(523).</param>
+                <visible>[$EXP[Exp_View_522] + Control.HasFocus(523)]</visible>
+            </include>
+        </control>
+        <include>Furniture_Bottom_Right</include>
+    </include>
+
+    <include name="View_Furniture_Bottom_Group">
+        <control type="group">
+            <visible>!$EXP[Exp_InfoDialogs]</visible>
             <control type="group">
-                <visible>!$EXP[Exp_InfoDialogs]</visible>
-                <include>Animation_Transition_InfoPanel_Hide</include>
-                <control type="group">
-                    <animation type="Conditional" reversible="false" condition="[$EXP[Exp_FilterWall_IsActive] | $EXP[Exp_DiscoverWall_IsActive]]">
-                        <effect type="slide" end="0,-334" start="0" time="400" delay="0" tween="cubic" easing="out" />
-                    </animation>
-                    <animation type="Conditional" reversible="false" condition="![$EXP[Exp_FilterWall_IsActive] | $EXP[Exp_DiscoverWall_IsActive]]">
-                        <effect type="slide" start="0,-334" end="0" time="400" delay="0" tween="cubic" easing="out" />
-                    </animation>
-                    <include content="Info_Viewline">
-                        <param name="sort_condition">true</param>
-                        <param name="library_condition">true</param>
-                    </include>
-                </control>
+                <visible>![[Container.Scrolling + $EXP[Exp_FurnitureFooter_Left_IsVisible]] | !String.IsEmpty(Window.Property(MediaFilterBase)) | !String.IsEmpty(Window.Property(MediaFilterWall))]</visible>
+                <animation effect="fade" start="100" end="0" delay="400" time="1" reversible="true">Hidden</animation>
+                <animation effect="fade" start="0" end="100" delay="400" time="1" reversible="false">Visible</animation>
+                <include>$PARAM[include]</include>
             </control>
         </control>
     </include>
 
     <include name="View_Furniture_Bottom">
-        <control type="group">
-            <visible>!$EXP[Exp_InfoDialogs]</visible>
-            <!-- <visible>$EXP[Exp_FurnitureFooter_IsVisible]</visible> -->
-            <control type="group">
-                <visible>![[Container.Scrolling + $EXP[Exp_FurnitureFooter_Left_IsVisible]] | !String.IsEmpty(Window.Property(MediaFilterBase)) | !String.IsEmpty(Window.Property(MediaFilterWall))]</visible>
-                <animation effect="fade" start="100" end="0" delay="400" time="1" reversible="true">Hidden</animation>
-                <animation effect="fade" start="0" end="100" delay="400" time="1" reversible="false">Visible</animation>
-                <control type="group">
-                    <visible>$EXP[Exp_FurnitureFooter_Left_IsVisible]</visible>
-                    <include content="Furniture_Bottom_Left">
-                        <visible>![[$EXP[Exp_View_502] + Control.HasFocus(503)] | [$EXP[Exp_View_512] + Control.HasFocus(513)] | [$EXP[Exp_View_522] + Control.HasFocus(523)]]</visible>
-                    </include>
-                    <include content="Furniture_Bottom_Left">
-                        <param name="container">Container(503).</param>
-                        <visible>[$EXP[Exp_View_502] + Control.HasFocus(503)]</visible>
-                    </include>
-                    <include content="Furniture_Bottom_Left">
-                        <param name="container">Container(513).</param>
-                        <visible>[$EXP[Exp_View_512] + Control.HasFocus(513)]</visible>
-                    </include>
-                    <include content="Furniture_Bottom_Left">
-                        <param name="container">Container(523).</param>
-                        <visible>[$EXP[Exp_View_522] + Control.HasFocus(523)]</visible>
-                    </include>
-                </control>
-                <include>Furniture_Bottom_Right</include>
-            </control>
-        </control>
+
+
+        <include content="View_Furniture_Bottom_Group">
+            <param name="include">View_Furniture_Bottom_Group_Content</param>
+        </include>
+
         <control type="group">
             <visible>[[Container.Scrolling + $EXP[Exp_FurnitureFooter_Left_IsVisible]] | !String.IsEmpty(Window.Property(MediaFilterBase)) | !String.IsEmpty(Window.Property(MediaFilterWall))]</visible>
             <animation effect="fade" start="0" end="100" delay="400" time="1" reversible="true">Visible</animation>
@@ -205,13 +253,6 @@
             <control type="group">
                 <height>scrollbar_w</height>
                 <centertop>50%</centertop>
-                <!-- <include condition="!Skin.String(Furniture.CodecStyle,Basic)">Info_KodiLogo_Image</include>
-                <include content="Info_FooterItemIcon" condition="Skin.String(Furniture.CodecStyle,Basic)">
-                    <param name="icon">special://skin/extras/icons/kodi.png</param>
-                    <param name="centered">false</param>
-                    <param name="size">50</param>
-                    <param name="bordersize">1</param>
-                </include> -->
                 <control type="group">
                     <width>50</width>
                     <height>50</height>
