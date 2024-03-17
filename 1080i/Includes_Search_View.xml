@@ -2,6 +2,27 @@
 <includes>
 
     <include name="Search_View">
+
+        <include content="Object_Hidden_Button">
+            <param name="id">67</param>
+            <onfocus>$VAR[Action_Var_Search_ToMediaFilter]</onfocus>
+            <onleft>9502</onleft>
+            <onright>9502</onright>
+            <onback>9502</onback>
+            <onup>9502</onup>
+            <ondown>9502</ondown>
+        </include>
+
+        <include content="Object_Hidden_Button">
+            <param name="id">68</param>
+            <onfocus condition="![!String.IsEmpty(Window.Property(MediaFilterWall)) + $EXP[Exp_FilterWall_IsEnabled]]">SetFocus(6000)</onfocus>
+            <onfocus condition="![!String.IsEmpty(Window.Property(MediaFilterWall)) + $EXP[Exp_FilterWall_IsEnabled]]">ClearProperty(MediaFilterBase)</onfocus>
+            <onfocus condition="![!String.IsEmpty(Window.Property(MediaFilterWall)) + $EXP[Exp_FilterWall_IsEnabled]]">ClearProperty(MediaFilterWall)</onfocus>
+            <onfocus condition="![!String.IsEmpty(Window.Property(MediaFilterWall)) + $EXP[Exp_FilterWall_IsEnabled]]">$INFO[Window.Property(LastAction)]</onfocus>
+            <onfocus condition="!String.IsEmpty(Window.Property(MediaFilterWall)) + $EXP[Exp_FilterWall_IsEnabled]">Runscript(script.skinvariables,$VAR[MediaWall_Search_ScriptTypeDef],use_rules,id=$VAR[Action_Search_ContentID],win_prop=WallSlideOut,focus_id=$VAR[Action_Search_ContentID],clear_prop_one=MediaFilterBase,clear_prop_two=MediaFilterWall,last_action=$INFO[Window.Property(LastAction)])</onfocus>
+            <onfocus>ClearProperty(LastAction)</onfocus>
+        </include>
+
         <control type="group">
             <include>Animation_View_WindowChange</include>
             <include>Animation_Group_Bumper</include>
@@ -12,6 +33,9 @@
                 <include>Search_View_Widgets_NoResults</include>
                 <include>Search_View_Widgets_Footer</include>
             </control>
+            <include content="MediaWall_Main" condition="$EXP[Exp_FilterWall_IsEnabled]">
+                <param name="interchange_condition">[$EXP[Search_View_HasItems] + !$EXP[Search_View_IsUpdating]]</param>
+            </include>
             <include>Search_View_Widgets_InfoPanel</include>
         </control>
     </include>
@@ -21,13 +45,18 @@
     <expression name="Search_View_IsUpdating">[[Integer.IsEqual(Container(5099).ListItem.Property(listid),50) + Container(50).IsUpdating + Control.IsVisible(50)] | [Integer.IsEqual(Container(5099).ListItem.Property(listid),51) + Container(51).IsUpdating + Control.IsVisible(51)] | [Integer.IsEqual(Container(5099).ListItem.Property(listid),52) + Container(52).IsUpdating + Control.IsVisible(52)]]</expression>
 
     <include name="Search_View_Widgets_InfoPanel">
-        <include content="Home_Widgets_Infopanel">
-            <param name="visible">$EXP[Search_View_HasItems] + !$EXP[Search_View_IsUpdating]</param>
-            <param name="conditional_fade">False</param>
-            <include content="Info_Panel">
-                <param name="container">Container.</param>
+        <control type="group">
+            <include content="MediaWall_Info_Transition" condition="$EXP[Exp_FilterWall_IsEnabled]">
+                <param name="condition">$EXP[Exp_MediaFilter_IsActive]</param>
             </include>
-        </include>
+            <include content="Home_Widgets_Infopanel">
+                <param name="visible">$EXP[Search_View_HasItems] + !$EXP[Search_View_IsUpdating]</param>
+                <param name="conditional_fade">False</param>
+                <include content="Info_Panel">
+                    <param name="container">Container.</param>
+                </include>
+            </include>
+        </control>
     </include>
 
     <include name="Search_View_Widgets_NoResults">
@@ -128,11 +157,11 @@
             <visible>!$EXP[Exp_InfoDialogs]</visible>
             <include>Animation_Transition_InfoPanel_Hide</include>
             <control type="group">
-                <visible>$EXP[Search_View_HasItems] | $EXP[Search_View_IsUpdating]</visible>
-                <animation type="Conditional" reversible="false" condition="[$EXP[Exp_FilterWall_IsActive] | $EXP[Exp_DiscoverWall_IsActive]]">
+                <visible>$EXP[Search_View_HasItems] + !$EXP[Search_View_IsUpdating]</visible>
+                <animation type="Conditional" reversible="false" condition="[$EXP[Exp_FilterWall_IsActive]]">
                     <effect type="slide" end="0,-334" start="0" time="400" delay="0" tween="cubic" easing="out" />
                 </animation>
-                <animation type="Conditional" reversible="false" condition="![$EXP[Exp_FilterWall_IsActive] | $EXP[Exp_DiscoverWall_IsActive]]">
+                <animation type="Conditional" reversible="false" condition="![$EXP[Exp_FilterWall_IsActive]]">
                     <effect type="slide" start="0,-334" end="0" time="400" delay="0" tween="cubic" easing="out" />
                 </animation>
                 <include content="Info_Viewline">
@@ -146,6 +175,9 @@
             <include content="Animation_ConditionalFade">
                 <param name="condition">[!$EXP[Search_View_HasItems] | $EXP[Search_View_IsUpdating]]</param>
             </include>
+            <include content="MediaWall_View_Transition" condition="$EXP[Exp_FilterWall_IsEnabled]">
+                <param name="condition">$EXP[Exp_MediaFilter_IsActive]</param>
+            </include>
             <include content="Transitions_List_Group">
                 <include content="List_Poster_Row">
                     <param name="id">52</param>
@@ -154,7 +186,7 @@
                     <content target="videos" limit="$VAR[Path_DiscoverWidgets_ItemLimit]" sortby="$VAR[Path_DiscoverWidgets_SortBy]" sortorder="$VAR[Path_DiscoverWidgets_SortOrder]" browse="$VAR[Defs_BrowseLimitedLists]">$VAR[Path_DiscoverWidgets_Join]$VAR[Path_DiscoverWidgets_Film,&amp;&amp;,]$VAR[Path_DiscoverWidgets_Show,&amp;&amp;,]</content>
                     <visible>Skin.HasSetting(Search.EnableDiscover) + String.IsEqual(Container(5099).ListItem.Property(guid),guid-discoverall)</visible>
                     <onup>SetFocus(303,9999,absolute)</onup>
-                    <ondown condition="!Skin.String(Navigation.OnUp,Search)">SetFocus(9502)</ondown>
+                    <ondown condition="!Skin.String(Navigation.OnUp,Search)">SetFocus(67)</ondown>
                     <ondown condition="Skin.String(Navigation.OnUp,Search)">PreviousMenu</ondown>
                     <include content="Action_View_Movement_OnLeftRight">
                         <param name="id">52</param>
@@ -170,7 +202,7 @@
                     <content target="videos" limit="$VAR[Path_DiscoverWidgets_ItemLimit]" sortby="$VAR[Path_DiscoverWidgets_SortBy]" sortorder="$VAR[Path_DiscoverWidgets_SortOrder]" browse="$VAR[Defs_BrowseLimitedLists]">$VAR[Path_DiscoverWidgets_Join]$VAR[Path_DiscoverWidgets_Film,&amp;&amp;,]</content>
                     <visible>Skin.HasSetting(Search.EnableDiscover) + String.IsEqual(Container(5099).ListItem.Property(guid),guid-discovermovies)</visible>
                     <onup>SetFocus(303,9999,absolute)</onup>
-                    <ondown condition="!Skin.String(Navigation.OnUp,Search)">SetFocus(9502)</ondown>
+                    <ondown condition="!Skin.String(Navigation.OnUp,Search)">SetFocus(67)</ondown>
                     <ondown condition="Skin.String(Navigation.OnUp,Search)">PreviousMenu</ondown>
                     <include content="Action_View_Movement_OnLeftRight">
                         <param name="id">52</param>
@@ -186,7 +218,7 @@
                     <content target="videos" limit="$VAR[Path_DiscoverWidgets_ItemLimit]" sortby="$VAR[Path_DiscoverWidgets_SortBy]" sortorder="$VAR[Path_DiscoverWidgets_SortOrder]" browse="$VAR[Defs_BrowseLimitedLists]">$VAR[Path_DiscoverWidgets_Join]$VAR[Path_DiscoverWidgets_Show,&amp;&amp;,]</content>
                     <visible>Skin.HasSetting(Search.EnableDiscover) + String.IsEqual(Container(5099).ListItem.Property(guid),guid-discovertvshows)</visible>
                     <onup>SetFocus(303,9999,absolute)</onup>
-                    <ondown condition="!Skin.String(Navigation.OnUp,Search)">SetFocus(9502)</ondown>
+                    <ondown condition="!Skin.String(Navigation.OnUp,Search)">SetFocus(67)</ondown>
                     <ondown condition="Skin.String(Navigation.OnUp,Search)">PreviousMenu</ondown>
                     <include content="Action_View_Movement_OnLeftRight">
                         <param name="id">52</param>
