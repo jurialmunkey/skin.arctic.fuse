@@ -206,12 +206,17 @@
             <ondown condition="$PARAM[condition] + ![$PARAM[move]] + String.IsEmpty(Skin.String(Navigation.Hubs.OnDown))">SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</ondown>
             <ondown condition="$PARAM[condition] + ![$PARAM[move]] + String.IsEmpty(Skin.String(Navigation.Hubs.OnDown))">$PARAM[bump_id]</ondown>
 
-            <!-- Options -->
-            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + Skin.String(Navigation.Hubs.OnDown,ActivateWindow(1182)) + [Window.IsVisible(Home) + !Skin.String(Home.SideMenuCollapse,Topbar)] + String.IsEmpty(Container(303).ListItem.Property(global_widgets))">SetProperty(Hubs.ExtendedWidgetGUID,$INFO[Container(303).ListItem.Property(guid)],Home)</ondown>
-            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + Skin.String(Navigation.Hubs.OnDown,ActivateWindow(1182)) + [Window.IsVisible(Home) + Skin.String(Home.SideMenuCollapse,Topbar)] + String.IsEmpty(Container(370).ListItem.Property(global_widgets))">SetProperty(Hubs.ExtendedWidgetGUID,$INFO[Container(370).ListItem.Property(guid)],Home)</ondown>
-            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + Skin.String(Navigation.Hubs.OnDown,ActivateWindow(1182)) + [Window.IsVisible(Home) + !Skin.String(Home.SideMenuCollapse,Topbar)] + !String.IsEmpty(Container(303).ListItem.Property(global_widgets))">ClearProperty(Hubs.ExtendedWidgetGUID,Home)</ondown>
-            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + Skin.String(Navigation.Hubs.OnDown,ActivateWindow(1182)) + [Window.IsVisible(Home) + Skin.String(Home.SideMenuCollapse,Topbar)] + !String.IsEmpty(Container(370).ListItem.Property(global_widgets))">ClearProperty(Hubs.ExtendedWidgetGUID,Home)</ondown>
-            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + !String.IsEmpty(Skin.String(Navigation.Hubs.OnDown))">$INFO[Skin.String(Navigation.Hubs.OnDown)]</ondown>
+            <!-- Explore -->
+            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + Skin.String(Navigation.Hubs.OnDown,ActivateWindow(1182))">ClearProperty(Hubs.ExtendedWidgetGUID,Home)</ondown>
+            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + Skin.String(Navigation.Hubs.OnDown,ActivateWindow(1182)) + [Window.IsVisible(Home) + !Skin.String(Home.SideMenuCollapse,Topbar)] + String.IsEmpty(Container(303).ListItem.Property(global_widgets)) + !Skin.HasSetting(Hub.Home.DisableSubmenu)">SetProperty(Hubs.ExtendedWidgetGUID,$INFO[Container(303).ListItem.Property(guid)],Home)</ondown>
+            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + Skin.String(Navigation.Hubs.OnDown,ActivateWindow(1182)) + [Window.IsVisible(Home) + Skin.String(Home.SideMenuCollapse,Topbar)] + String.IsEmpty(Container(370).ListItem.Property(global_widgets)) + !Skin.HasSetting(Hub.Home.DisableSubmenu)">SetProperty(Hubs.ExtendedWidgetGUID,$INFO[Container(370).ListItem.Property(guid)],Home)</ondown>
+            <include content="Action_View_Explore_OnDown">
+                <param name="condition">$PARAM[condition] + ![$PARAM[move]] + Skin.String(Navigation.Hubs.OnDown,ActivateWindow(1182)) + [!Window.IsVisible(Home) | [Skin.HasSetting(Hub.Home.DisableSubmenu) + [[Skin.String(Home.SideMenuCollapse,Topbar) + !String.IsEmpty(Container(370).ListItem.Property(global_widgets))] | [!Skin.String(Home.SideMenuCollapse,Topbar) + !String.IsEmpty(Container(303).ListItem.Property(global_widgets))]]]]</param>
+            </include>
+            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + Skin.String(Navigation.Hubs.OnDown,ActivateWindow(1182)) + ![!Window.IsVisible(Home) | [Skin.HasSetting(Hub.Home.DisableSubmenu) + [[Skin.String(Home.SideMenuCollapse,Topbar) + !String.IsEmpty(Container(370).ListItem.Property(global_widgets))] | [!Skin.String(Home.SideMenuCollapse,Topbar) + !String.IsEmpty(Container(303).ListItem.Property(global_widgets))]]]]">ActivateWindow(1182)</ondown>
+
+            <!-- Action Window -->
+            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + !Skin.String(Navigation.Hubs.OnDown,ActivateWindow(1182))">$INFO[Skin.String(Navigation.Hubs.OnDown)]</ondown>
         </definition>
     </include>
 
