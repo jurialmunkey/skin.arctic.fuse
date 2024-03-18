@@ -9,28 +9,23 @@
         <include>Defs_TMDbHelper_Loader</include>
 
         <control type="group">
-            <include>Dimension_DialogSideMenu</include>
+            <include>Dimension_DialogWideMenu</include>
             <include>Animation_Right_Delay</include>
             <include content="Dialog_Dim_Side">
-                <param name="slide_condition">ControlGroup(9000).HasFocus()</param>
+                <param name="slide_condition">!Integer.IsEqual(Container(9000).NumItems,0)</param>
             </include>
 
             <!-- Bottom Layer -->
             <include content="Dialog_Background_Side">
-                <param name="slide_condition">ControlGroup(9000).HasFocus()</param>
-                <param name="dialog_size">Dimension_DialogSideMenu</param>
+                <param name="slide_condition">!Integer.IsEqual(Container(9000).NumItems,0)</param>
+                <param name="dialog_size">Dimension_DialogWideMenu</param>
 
                 <!-- Side Buttons -->
                 <include content="Dialog_Body">
                     <include content="Dialog_Side_Grouplist">
                         <param name="id">9000</param>
+                        <onleft>Close</onleft>
                         <onright>996</onright>
-                        <include content="Dialog_Side_Button">
-                            <param name="id">01</param>
-                            <param name="label">$LOCALIZE[15067]</param>
-                            <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
-                            <onclick>Close</onclick>
-                        </include>
                         <include content="Dialog_Side_Button" condition="!$EXP[Exp_InfoDialogs]">
                             <param name="id">02</param>
                             <param name="label">$LOCALIZE[207]</param>
@@ -64,6 +59,13 @@
                             <onclick>SetFocus(50)</onclick>
                             <onclick>AlarmClock(DelayCommand,RunScript(plugin.video.themoviedb.helper,related_lists,query=$VAR[Path_ContextParams_Query],tmdb_type=$VAR[Path_ContextParams_TMDbType]),00:01,silent)</onclick>
                         </include>
+                        <include content="Dialog_Side_Button" condition="!$EXP[Exp_InfoDialogs]">
+                            <param name="id">06</param>
+                            <param name="label">$LOCALIZE[20410]</param>
+                            <param name="icon">special://skin/extras/icons/video.png</param>
+                            <param name="visible">[!String.IsEmpty(Container(99950).ListItem.Trailer)]</param>
+                            <onclick>RunScript(script.skinvariables,run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-playtrailer.json,use_rules)</onclick>
+                        </include>
                         <include content="Dialog_Side_Button" condition="!$EXP[Exp_InfoDialogs] + Window.IsMedia">
                             <param name="id">07</param>
                             <param name="label">$LOCALIZE[33061]</param>
@@ -85,7 +87,7 @@
             </include>
 
             <include content="Dialog_Foreground_Side">
-                <param name="dialog_size">Dimension_DialogSideMenu</param>
+                <param name="dialog_size">Dimension_DialogWideMenu</param>
                 <param name="topline">true</param>
                 <param name="subline">false</param>
 
@@ -94,11 +96,13 @@
                     <param name="label">$LOCALIZE[10106]</param>
                 </include>
 
+                <include>Dialog_Head_CloseButton</include>
+
                 <!-- Content -->
                 <include content="Dialog_Body">
                     <include content="Dialog_Body_Grouplist">
                         <param name="id">996</param>
-                        <onleft>9001</onleft>
+                        <onleft>9000</onleft>
                         <onright>61</onright>
                         <pagecontrol>61</pagecontrol>
                     </include>
@@ -117,7 +121,8 @@
             <param name="id">1000</param>
             <param name="control">button</param>
             <param name="dialog">true</param>
-            <width>dialog_main_button_w</width>
+            <width>760</width>
+            <!-- <width>dialog_main_button_w</width> -->
         </include>
 
     </controls>

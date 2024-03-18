@@ -1,36 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window type="window" id="1105">
-    <defaultcontrol>9501</defaultcontrol>
+    <defaultcontrol always="true">9099</defaultcontrol>
     <menucontrol>303</menucontrol>
 
     <include>Action_Blur_Onload</include>
 
-    <onload condition="!String.IsEmpty(Window(Home).Property(CustomSearchTerm))">RunScript(script.skinvariables,set_editcontrol=9099,window_id=1105,setfocus=9501,text=$INFO[Window(Home).Property(CustomSearchTerm)])</onload>
-    <onload condition="!String.IsEmpty(Window(Home).Property(CustomSearchTerm))">ClearProperty(CustomSearchTerm,Home)</onload>
-    <onload condition="String.IsEmpty(Window(Home).Property(CustomSearchTerm))">AlarmClock(refocus,SetFocus(9501),00:00,silent)</onload>
+    <onload>Skin.Reset(Search.EnableDiscover)</onload>
 
+    <onload condition="!String.IsEmpty(Window(Home).Property(CustomSearchTerm))">AlarmClock(refocus,RunScript(script.skinvariables,set_editcontrol=9099,window_id=1105,setfocus=67,text=$INFO[Window(Home).Property(CustomSearchTerm)]),00:00,silent)</onload>
+    <onload condition="String.IsEmpty(Window(Home).Property(CustomSearchTerm))">AlarmClock(refocus,RunScript(script.skinvariables,set_editcontrol=9099,window_id=1105,setfocus=67),00:00,silent)</onload>
+
+    <onunload>ClearProperty(CustomSearchTerm,Home)</onunload>
     <onunload condition="!String.IsEmpty(Control.GetLabel(9099).index(1))">RunScript(script.skinvariables,add_skinstring_history=SearchHistory,value=$INFO[Control.GetLabel(9099).index(1)])</onunload>
+    <onunload>ClearProperty(SearchTerm,1105)</onunload>
+
+    <onunload>ClearProperty(MediaFilterBase,1105)</onunload>
+    <onunload>ClearProperty(MediaFilterWall,1105)</onunload>
 
     <controls>
         <include>Defs_TMDbHelper_Loader</include>
         <include>Background_Main</include>
         <include>Background_Transition</include>
-        <include>Search_View_Widgets_Group</include>
+        <include>Search_View</include>
         <include>Home_Fade</include>
-        <include>Search_Filter_Panel</include>
-        <!-- <include>Search_View_Header_Icon</include> -->
-        <include content="Furniture_Top">
-            <param name="label">$VAR[Label_Setting_SearchStyle][CAPITALIZE]$INFO[Control.GetLabel(9099).index(1),: ,][/CAPITALIZE]</param>
-            <include>Animation_Group_Bumper</include>
-            <include>Animation_View_WindowChange</include>
-        </include>
         <include content="Home_Menu">
             <param name="onlist">6000</param>
         </include>
         <include content="View_Bumper">
             <param name="groupid">5099</param>
         </include>
+        <include content="Furniture_Top">
+            <param name="label">$VAR[Label_Setting_SearchStyle][CAPITALIZE]$INFO[Control.GetLabel(9099).index(1),: ,][/CAPITALIZE]</param>
+            <include>Animation_Group_Bumper</include>
+            <include>Animation_View_WindowChange</include>
+            <visible>!$EXP[Exp_InfoDialogs]</visible>
+        </include>
         <include>View_Dialog_VideoPIP</include>
         <include>View_Dialog_Plot</include>
+        <include>Search_Filter</include>
     </controls>
 </window>

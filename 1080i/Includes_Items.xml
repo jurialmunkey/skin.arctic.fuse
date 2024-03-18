@@ -26,7 +26,6 @@
     <include name="Items_Settings_CustomDialog">
         <include condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_MusicVisualisation)">Items_Settings_MusicVisualisation</include>
         <include condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_PowerMenuConfigure)">Items_Settings_PowerMenuConfigure</include>
-        <include condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_AllMenuConfigure)">Items_Settings_AllMenuConfigure</include>
         <include condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_DialogInfo_ActorChoice)">Items_Settings_DialogInfo_ActorChoice</include>
         <include condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_GameOptions)">Items_Settings_GameOptions</include>
         <include condition="String.IsEqual(Window(Home).Property(CustomDialogSettingsItems),Items_Settings_ColourPresets)">Items_Settings_ColourPresets</include>
@@ -187,128 +186,7 @@
             <onclick>Skin.SetImage(OptionsTiles.0$PARAM[item].Icon,special://skin/extras/icons/)</onclick>
             <visible>Skin.String(OptionsTiles.0$PARAM[item].Include,Custom)</visible>
         </include>
-
-
     </include>
-
-    <include name="Items_Settings_AllMenuConfigure">
-        <param name="baseid">80</param>
-        <param name="visible">true</param>
-        <param name="dialog">true</param>
-        <definition>
-            <include content="Settings_Button" description="Setup Wizard">
-                <param name="id">$PARAM[baseid]01</param>
-                <param name="dialog">$PARAM[dialog]</param>
-                <param name="control">button</param>
-                <label>$LOCALIZE[31449]</label>
-                <onclick>Dialog.Close(1170,force)</onclick>
-                <onclick>Close</onclick>
-                <onclick>ActivateWindow(1180)</onclick>
-                <visible>$PARAM[visible]</visible>
-            </include>
-
-            <include content="Settings_Button" description="Customise Widgets">
-                <param name="id">$PARAM[baseid]02</param>
-                <param name="dialog">$PARAM[dialog]</param>
-                <label>$LOCALIZE[31496]</label>
-                <onclick>ActivateWindow(1115)</onclick>
-                <visible>$PARAM[visible]</visible>
-            </include>
-
-            <include content="Settings_Label" description="Label: Side Menu">
-                <param name="id">$PARAM[baseid]03</param>
-                <param name="dialog">$PARAM[dialog]</param>
-                <label>$LOCALIZE[31416]</label>
-                <visible>$PARAM[visible]</visible>
-            </include>
-            <include content="Settings_Button" description="Menu Style">
-                <param name="id">$PARAM[baseid]04</param>
-                <param name="dialog">$PARAM[dialog]</param>
-                <param name="control">button</param>
-                <label>$LOCALIZE[31416] > $LOCALIZE[13014]</label>
-                <label2>$INFO[Skin.String(Home.SideMenuCollapse)]</label2>
-                <onclick condition="Skin.String(Home.SideMenuCollapse,Library)">Skin.SetString(Home.SideMenuCollapse,Always)</onclick>
-                <onclick condition="Skin.String(Home.SideMenuCollapse,Always)">Skin.SetString(Home.SideMenuCollapse,Topbar)</onclick>
-                <onclick condition="!Skin.String(Home.SideMenuCollapse,Library) + !Skin.String(Home.SideMenuCollapse,Always)">Skin.SetString(Home.SideMenuCollapse,Library)</onclick>
-                <visible>$PARAM[visible]</visible>
-            </include>
-            <include content="Settings_Button" description="">
-                <param name="id">$PARAM[baseid]05</param>
-                <param name="dialog">$PARAM[dialog]</param>
-                <param name="control">radiobutton</param>
-                <label>$LOCALIZE[31416] > $LOCALIZE[31151]</label>
-                <onclick condition="Skin.HasSetting(Home.SideMenu.DisableSearchOptions)">Skin.Reset(Home.SideMenu.DisableSearchOptions)</onclick>
-                <onclick condition="!Skin.HasSetting(Home.SideMenu.DisableSearchOptions)">RunScript(script.skinvariables,run_dialog=yesno,heading=$LOCALIZE[31152],yeslabel=$LOCALIZE[1210],nolabel=$LOCALIZE[222],defaultbutton=10,message=[UPPERCASE][COLOR=red][B]$LOCALIZE[14117]: [/B][/COLOR][/UPPERCASE]$LOCALIZE[31153][CR]$LOCALIZE[31155],"executebuiltin=Skin.SetBool(Home.SideMenu.DisableSearchOptions)")</onclick>
-                <selected>!Skin.HasSetting(Home.SideMenu.DisableSearchOptions)</selected>
-                <visible>!Skin.String(Home.SideMenuCollapse,Topbar)</visible>
-                <visible>$PARAM[visible]</visible>
-            </include>
-            <include content="Settings_Button" description="Home group indicator">
-                <param name="id">$PARAM[baseid]06</param>
-                <param name="dialog">$PARAM[dialog]</param>
-                <param name="control">radiobutton</param>
-                <label>$LOCALIZE[31416] > $LOCALIZE[31347]</label>
-                <onclick>Skin.ToggleSetting(Home.SideMenu.DisableIndicator)</onclick>
-                <selected>!Skin.HasSetting(Home.SideMenu.DisableIndicator)</selected>
-                <visible>$PARAM[visible]</visible>
-                <visible>Skin.String(Home.SideMenuCollapse,Library)</visible>
-            </include>
-
-
-            <include content="Settings_Button" description="Expand side menu labels on focus">
-                <param name="id">$PARAM[baseid]07</param>
-                <param name="dialog">$PARAM[dialog]</param>
-                <param name="control">radiobutton</param>
-                <label>$LOCALIZE[31416] > $LOCALIZE[31304]</label>
-                <onclick>Skin.ToggleSetting(SideMenu.ExpandLabels)</onclick>
-                <selected>Skin.HasSetting(SideMenu.ExpandLabels)</selected>
-                <visible>$PARAM[visible]</visible>
-                <visible>Skin.String(Home.SideMenuCollapse,Library)</visible>
-            </include>
-
-
-            <include content="Settings_Label" description="SideMenu Label">
-                <param name="id">$PARAM[baseid]08</param>
-                <param name="dialog">$PARAM[dialog]</param>
-                <label>$LOCALIZE[31026] $LOCALIZE[33063]</label>
-                <visible>$PARAM[visible]</visible>
-            </include>
-
-            <include content="Settings_Button" description="Combined widget stack">
-                <param name="id">$PARAM[baseid]09</param>
-                <param name="dialog">$PARAM[dialog]</param>
-                <param name="control">radiobutton</param>
-                <label>$LOCALIZE[31103] > $LOCALIZE[31083]</label>
-                <onclick>Skin.ToggleSetting(Hubs.WidgetSelector)</onclick>
-                <onclick condition="Window.IsVisible(1118)">RunPlugin(plugin://script.skinvariables/?info=get_shortcuts_node&amp;skin=$VAR[Path_SkinVariables_SkinFolder]&amp;menu=sidemenu&amp;func=do_refresh&amp;&amp;False&amp;&amp;ActivateWindow(1118))</onclick>
-                <onclick condition="!Window.IsVisible(1118)">RunPlugin(plugin://script.skinvariables/?info=get_shortcuts_node&amp;skin=$VAR[Path_SkinVariables_SkinFolder]&amp;menu=sidemenu&amp;func=do_refresh&amp;&amp;False)</onclick>
-                <selected>Skin.HasSetting(Hubs.WidgetSelector)</selected>
-                <visible>$PARAM[visible]</visible>
-            </include>
-
-            <include content="Settings_Button" description="Categories slide up on focus">
-                <param name="id">$PARAM[baseid]10</param>
-                <param name="dialog">$PARAM[dialog]</param>
-                <param name="control">radiobutton</param>
-                <label>$LOCALIZE[31150] > $LOCALIZE[31305]</label>
-                <onclick>Skin.ToggleSetting(Slide.WidgetContainer)</onclick>
-                <selected>Skin.HasSetting(Slide.WidgetContainer)</selected>
-                <visible>$PARAM[visible]</visible>
-            </include>
-
-            <include content="Settings_Button" description="Categories focus second position">
-                <param name="id">$PARAM[baseid]11</param>
-                <param name="dialog">$PARAM[dialog]</param>
-                <param name="control">radiobutton</param>
-                <label>$LOCALIZE[31150] > $LOCALIZE[31306]</label>
-                <onclick>Skin.ToggleSetting(Categories.UseSecondPositionFocus)</onclick>
-                <selected>Skin.HasSetting(Categories.UseSecondPositionFocus)</selected>
-                <visible>$PARAM[visible]</visible>
-            </include>
-        </definition>
-
-    </include>
-
 
     <include name="Items_Settings_PowerMenuConfigure">
         <include content="Settings_Button">
@@ -364,7 +242,7 @@
             <onclick>ActivateWindow(1116)</onclick>
             <label>$LOCALIZE[31363]</label>
         </include>
-        <include content="Settings_Button">
+        <!-- <include content="Settings_Button">
             <param name="id">8002</param>
             <param name="control">button</param>
             <param name="dialog">true</param>
@@ -374,7 +252,7 @@
             <onclick>Close</onclick>
             <onclick>ActivateWindow(1116)</onclick>
             <label>$LOCALIZE[31362]</label>
-        </include>
+        </include> -->
 
     </include>
 

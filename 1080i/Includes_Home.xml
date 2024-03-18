@@ -73,7 +73,7 @@
                     <include content="Home_Menu_List_ItemLayout" condition="!Skin.HasSetting(Hub.Home.DisableSubmenu)">
                         <param name="id">$PARAM[id]</param>
                         <param name="hidden_button">Home_Menu_List_HiddenButton_Alt</param>
-                        <param name="hidden_button_enabled">Window.IsVisible(Home)</param>
+                        <param name="hidden_button_enabled">[Window.IsVisible(Home) + Skin.String(Home.SideMenuCollapse,Library)]</param>
                     </include>
 
                     <include>$PARAM[items_include]</include>
@@ -98,7 +98,7 @@
             <visible allowhiddenfocus="true">false</visible>
             <animation effect="fade" start="0" end="0" time="100" reversible="false">Focus</animation>
             <onfocus condition="!String.IsEmpty(Window(1198).Property(TMDbHelper.WidgetContainer.UpdateLock))">ClearProperty(TMDbHelper.WidgetContainer.UpdateLock,1198)</onfocus>
-            <onfocus condition="String.IsEmpty(Window(1198).Property(TMDbHelper.WidgetContainer.UpdateLock))">SetProperty(List.ViewContainer,300)</onfocus>
+            <onfocus condition="String.IsEmpty(Window(1198).Property(TMDbHelper.WidgetContainer.UpdateLock))">SetProperty(List.ViewContainer,311)</onfocus>
             <onfocus condition="String.IsEmpty(Window(1198).Property(TMDbHelper.WidgetContainer.UpdateLock))">ClearProperty(List.ViewContainer.Left)</onfocus>
             <onfocus condition="String.IsEmpty(Window(1198).Property(TMDbHelper.WidgetContainer.UpdateLock))">SetProperty(TMDbHelper.WidgetContainer,301)</onfocus>
             <onfocus condition="String.IsEmpty(Window(1198).Property(TMDbHelper.WidgetContainer.UpdateLock)) + Skin.HasSetting(Slide.WidgetContainer)">SetProperty(Slide.WidgetContainer,True)</onfocus>
@@ -108,7 +108,7 @@
 
     <include name="Home_Menu_List_ItemLayout">
         <param name="layoutnf">[False]</param>
-        <param name="layoutfo">[$EXP[Exp_HomeMenu_DontHide] + !Skin.HasSetting(Home.SideMenu.DisableIndicator)]</param>
+        <param name="layoutfo">[$EXP[Exp_HomeMenu_DontHide] + !Skin.HasSetting(Home.SideMenu.DisableIndicator) + !Window.IsVisible(1172)]</param>
         <param name="altfocus">false</param>
         <definition>
             <itemlayout height="100" width="100">
@@ -213,6 +213,16 @@
                 <param name="type">Hidden</param>
                 <param name="posx">-80</param>
             </include>
+
+            <include content="Animation_Slide_In" condition="Window.IsActive(1172)">
+                <param name="type">WindowOpen</param>
+                <param name="posx">-80</param>
+            </include>
+            <include content="Animation_Slide_Out" condition="Window.IsActive(1172)">
+                <param name="type">WindowClose</param>
+                <param name="posx">-80</param>
+            </include>
+
             <include content="Object_Dim_Side">
                 <param name="flipx">false</param>
                 <left>-320</left>
@@ -325,7 +335,7 @@
                     <include content="Layout_Home_Menu_Label" condition="Skin.HasSetting(SideMenu.ExpandLabels)">
                         <param name="detailed">true</param>
                         <param name="selected">Control.HasFocus(309)</param>
-                        <param name="label">$LOCALIZE[5]</param>
+                        <param name="label">$LOCALIZE[33063]</param>
                     </include>
                 </include>
 

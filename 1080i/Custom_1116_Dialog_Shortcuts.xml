@@ -69,12 +69,14 @@
                         <onright>22001</onright>
                         <onback>29999</onback>
                         <onup>9005</onup>
-                        <ondown>9004</ondown>
+                        <ondown>9003</ondown>
                         <include content="Dialog_Side_Button">
-                            <param name="id">01</param>
-                            <param name="label">$LOCALIZE[15067]</param>
-                            <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
-                            <onclick>SetFocus(29999)</onclick>
+                            <param name="id">12</param>
+                            <param name="label">$LOCALIZE[35261]</param>
+                            <param name="icon">special://skin/extras/icons/circle-plus.png</param>
+                            <onclick condition="!$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
+                            <onclick condition="$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
+                            <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_new]$VAR[Path_Shortcut_UseRawPath]$VAR[Path_Shortcut_UseCategory])</onclick>
                             <onback>29999</onback>
                         </include>
                         <include content="Dialog_Side_Button">
@@ -91,25 +93,26 @@
                             <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_move&amp;&amp;move::1&amp;&amp;window_prop::url]$INFO[Container(22001).ListItem(1).Property(item),&amp;&amp;offset::,])</onclick>
                             <onback>29999</onback>
                         </include>
-                        <include content="Dialog_Side_Button">
-                            <param name="id">12</param>
-                            <param name="label">$LOCALIZE[35261]</param>
-                            <param name="icon">special://skin/extras/icons/circle-plus.png</param>
-                            <onclick condition="!$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
-                            <onclick condition="$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
-                            <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_new]$VAR[Path_Shortcut_UseRawPath]$VAR[Path_Shortcut_UseCategory])</onclick>
-                            <onback>29999</onback>
-                        </include>
                     </include>
                     <include content="Dialog_Side_Grouplist">
                         <param name="id">39000</param>
                         <onright>22001</onright>
                         <onback>29999</onback>
-                        <onup>9012</onup>
-                        <ondown>9001</ondown>
+                        <onup>9014</onup>
+                        <ondown>9012</ondown>
 
-                        <top>610</top>
+                        <align>bottom</align>
+
+                        <top>530</top>
                         <bottom>-80</bottom>
+
+                        <include content="Dialog_Side_Button">
+                            <param name="id">03</param>
+                            <param name="label">$LOCALIZE[409]</param>
+                            <param name="icon">special://skin/extras/icons/triangle-exclamation.png</param>
+                            <onclick>RunPlugin(plugin://script.skinvariables/?info=get_shortcuts_node&amp;edit=True&amp;skin=$VAR[Path_SkinVariables_SkinFolder]$INFO[Window(Home).Property(Shortcuts.EditMenu),&amp;,]$INFO[Window(Home).Property(Shortcuts.EditMode),&amp;,]$INFO[Window(Home).Property(Shortcuts.EditGUID),&amp;,]&amp;func=do_refresh&amp;&amp;restore::True&amp;&amp;executebuiltin::ActivateWindow(1116))</onclick>
+                            <onback>29999</onback>
+                        </include>
 
                         <include content="Dialog_Side_Button">
                             <param name="id">04</param>
@@ -131,6 +134,10 @@
                             <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_list_del]$VAR[Path_Shortcut_UseRawPath])</onclick>
                             <onback>29999</onback>
                         </include>
+
+                        <control type="group" id="9006">
+                            <height>90</height>
+                        </control>
                     </include>
                 </include>
             </include>
@@ -194,6 +201,7 @@
                     <param name="sublabel">$VAR[Label_Shortcut_SubHeader_GroupName]$INFO[Container(22001).ListItem.Property(name), > ,]$VAR[Label_Shortcut_SubHeader_EditMode, > ,]</param>
                     <param name="sublabel_include">true</param>
                 </include>
+                <include>Dialog_Head_CloseButton</include>
                 <control type="label">
                     <font>font_tiny</font>
                     <align>left</align>
@@ -228,14 +236,14 @@
 
                                 <onleft>9000</onleft>
                                 <onback>29999</onback>
-                                <onclick condition="String.IsEmpty(Container(22001).ListItem.Property(forced)) + !String.IsEqual(Container(22001).ListItem.Property(disabled),True) + !$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
-                                <onclick condition="String.IsEmpty(Container(22001).ListItem.Property(forced)) + !String.IsEqual(Container(22001).ListItem.Property(disabled),True) + $EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
-                                <onclick condition="String.IsEmpty(Container(22001).ListItem.Property(forced)) + !String.IsEqual(Container(22001).ListItem.Property(disabled),True)">RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_choose]$VAR[Path_Shortcut_UseRawPath]$VAR[Path_Shortcut_UseCategory])</onclick>
+                                <onclick condition="!String.IsEqual(Container(22001).ListItem.Property(disabled),True) + !$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
+                                <onclick condition="!String.IsEqual(Container(22001).ListItem.Property(disabled),True) + $EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
+                                <onclick condition="!String.IsEqual(Container(22001).ListItem.Property(disabled),True)">RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_choose]$VAR[Path_Shortcut_UseRawPath]$VAR[Path_Shortcut_UseCategory])</onclick>
                                 <onright>23000</onright>
 
                                 <onclick condition="String.IsEqual(Container(22001).ListItem.Property(disabled),True)">RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_toggle])</onclick>
 
-                                <onclick condition="!String.IsEqual(Container(22001).ListItem.Property(disabled),True) + !String.IsEmpty(Container(22001).ListItem.Property(forced))">noop</onclick>
+                                <onclick condition="!String.IsEqual(Container(22001).ListItem.Property(disabled),True)">noop</onclick>
                             </include>
                         </control>
                         <control type="group">
@@ -273,7 +281,7 @@
                                             <param name="id">23901</param>
                                             <label>$LOCALIZE[31025] $LOCALIZE[33063]</label>
                                             <onback>29999</onback>
-                                            <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True) | String.IsEmpty(Container(22001).ListItem.Property(forced))</visible>
+                                            <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
                                         </include>
 
                                         <control type="grouplist" id="29000">
@@ -295,7 +303,7 @@
                                                 <param name="id">02</param>
                                                 <param name="control">button</param>
                                                 <param name="label">$LOCALIZE[31511]</param>
-                                                <param name="visible">String.IsEmpty(Container(22001).ListItem.Property(forced)) + !String.IsEqual(Container(22001).ListItem.Property(disabled),True)</param>
+                                                <param name="visible">!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</param>
                                                 <param name="icon">special://skin/extras/icons/share.png</param>
                                                 <onclick condition="!$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
                                                 <onclick condition="$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
@@ -314,7 +322,7 @@
                                                 <param name="id">03</param>
                                                 <param name="control">button</param>
                                                 <param name="label">$LOCALIZE[15217]</param>
-                                                <param name="visible">String.IsEmpty(Container(22001).ListItem.Property(forced)) + !String.IsEqual(Container(22001).ListItem.Property(disabled),True)</param>
+                                                <param name="visible">!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</param>
                                                 <param name="icon">special://skin/extras/icons/terminal.png</param>
                                                 <onclick condition="!$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">SetProperty(Shortcuts.Groupings.Links,Links,Home)</onclick>
                                                 <onclick condition="$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">ClearProperty(Shortcuts.Groupings.Links,Home)</onclick>
@@ -367,7 +375,7 @@
                                                 <param name="id">07</param>
                                                 <param name="label">$LOCALIZE[117]</param>
                                                 <param name="icon">special://skin/extras/icons/trash-can.png</param>
-                                                <param name="visible">String.IsEmpty(Container(22001).ListItem.Property(forced))</param>
+                                                <param name="visible">true</param>
                                                 <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_delete&amp;&amp;False])</onclick>
                                                 <onback>29999</onback>
                                                 <onup>23001</onup>
@@ -383,32 +391,6 @@
                                             <visible>False</visible>
                                             <onback>29999</onback>
                                         </include>
-
-                                        <!-- ================ -->
-                                        <!-- SideMenu Options -->
-                                        <!-- ================ -->
-                                        <include content="Settings_Label">
-                                            <param name="dialog">true</param>
-                                            <param name="id">23903</param>
-                                            <label>$LOCALIZE[31416] $LOCALIZE[33063]</label>
-                                            <visible>String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=sidemenu)</visible>
-                                            <visible>String.IsEmpty(Window(Home).Property(Shortcuts.EditMode))</visible>
-                                            <visible>String.IsEmpty(Window(Home).Property(Shortcuts.EditGUID))</visible>
-                                            <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
-                                            <onback>29999</onback>
-                                        </include>
-                                        <!-- Side Menu: Highlight Type -->
-                                        <!-- <include content="Settings_Button">
-                                            <param name="dialog">true</param>
-                                            <param name="id">23031</param>
-                                            <label>$LOCALIZE[467]$INFO[Container(22001).ListItem.Property(expression),: [CAPITALIZE],[/CAPITALIZE]]</label>
-                                            <visible>String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=sidemenu)</visible>
-                                            <visible>String.IsEmpty(Window(Home).Property(Shortcuts.EditMode))</visible>
-                                            <visible>String.IsEmpty(Window(Home).Property(Shortcuts.EditGUID))</visible>
-                                            <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
-                                            <onclick>RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;expression&amp;&amp;home&amp;movies&amp;tvshows&amp;music&amp;livetv&amp;addons&amp;pictures&amp;weather&amp;videos&amp;search&amp;none&amp;&amp;Highlight type&amp;&amp;True])</onclick>
-                                            <onback>29999</onback>
-                                        </include> -->
 
                                         <!-- ================ -->
                                         <!-- Category Options -->
@@ -637,7 +619,7 @@
                                             <label>$LOCALIZE[736]</label>
                                             <label2>$INFO[Container(22001).ListItem.Property(widget_style)]</label2>
                                             <onclick condition="!String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)">RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;widget_style&amp;&amp;Poster&amp;Landscape&amp;Square&amp;Banner&amp;Card&amp;Board&amp;Apps&amp;Icon&amp;Text&amp;&amp;Style&amp;&amp;True])</onclick>
-                                            <onclick condition="String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)">RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;widget_style&amp;&amp;Poster&amp;Landscape&amp;Square&amp;Banner&amp;Card&amp;Board&amp;&amp;Style&amp;&amp;True])</onclick>
+                                            <onclick condition="String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)">RunPlugin($INFO[Container(22001).ListItem.Property(url),,&amp;func=do_edit&amp;&amp;widget_style&amp;&amp;Poster&amp;Landscape&amp;Square&amp;&amp;Style&amp;&amp;True])</onclick>
                                             <visible>$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]</visible>
                                             <onback>29999</onback>
                                             <visible>!String.IsEqual(Container(22001).ListItem.Property(disabled),True)</visible>
@@ -822,6 +804,7 @@
                     <param name="sublabel">$VAR[Label_SkinVariables_FilterSublabel]</param>
                     <param name="sublabel_include">true</param>
                 </include>
+                <include>Dialog_Head_CloseButton</include>
                 <!-- Content -->
                 <include content="Dialog_Body">
                     <include content="Dialog_Body_Group">
@@ -871,7 +854,7 @@
 
 
         <control type="group">
-            <right>80</right>
+            <right>90</right>
             <centertop>100</centertop>
             <height>40</height>
             <width>40</width>

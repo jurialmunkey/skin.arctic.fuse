@@ -198,6 +198,28 @@
         </include>
     </include>
 
+    <include name="Settings_Standard_Buttons">
+        <include content="Settings_Side_Button" condition="!Skin.HasSetting(SideMenu.EnableMenuButton)">
+            <param name="id">01</param>
+            <param name="label">$LOCALIZE[15067]</param>
+            <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
+            <onclick>SetFocus(50)</onclick>
+            <onclick>PreviousMenu</onclick>
+        </include>
+        <include content="Settings_Side_Button" condition="Skin.HasSetting(SideMenu.EnableMenuButton)">
+            <param name="id">01</param>
+            <param name="label">$LOCALIZE[33061]</param>
+            <param name="icon">special://skin/extras/icons/bars-progress.png</param>
+            <onclick>ActivateWindow(1172)</onclick>
+        </include>
+        <include content="Settings_Side_Button">
+            <param name="id">02</param>
+            <param name="label">$LOCALIZE[5]</param>
+            <param name="icon">special://skin/extras/icons/toolbox.png</param>
+            <onclick>SetFocus(30040)</onclick>
+        </include>
+    </include>
+
     <include name="Settings_Dialog">
         <include>Home_Fade</include>
         <control type="group">
@@ -337,44 +359,14 @@
         <include>View_Dialog_VideoPIP</include>
         <control type="group">
             <include>Dimension_DialogSideMenu</include>
-            <visible>ControlGroup(30040).HasFocus() | ControlGroup(30700).HasFocus()</visible>
+            <visible>ControlGroup(30040).HasFocus()</visible>
             <include>Animation_Right_Delay</include>
             <include content="Dialog_Dim_Side">
-                <param name="slide_condition">ControlGroup(30700).HasFocus()</param>
-            </include>
-
-            <!-- Bottom Layer -->
-            <include content="Dialog_Background_Side">
-                <param name="slide_condition">ControlGroup(30700).HasFocus()</param>
-                <param name="dialog_size">Dimension_DialogSideMenu</param>
-                <!-- Side Buttons -->
-                <include content="Dialog_Body">
-                    <include content="Dialog_Side_Grouplist">
-                        <param name="id">30700</param>
-                        <onleft condition="Window.IsVisible(settings)">50</onleft>
-                        <onleft condition="Window.IsVisible(addonbrowser)">6000</onleft>
-                        <onleft condition="Window.IsVisible(eventlog)">8000</onleft>
-                        <onleft condition="Window.IsVisible(filemanager)">20</onleft>
-                        <onleft condition="!Window.IsVisible(addonbrowser) + !Window.IsVisible(eventlog)">3</onleft>
-                        <onright>30040</onright>
-                        <include content="Dialog_Side_Button">
-                            <param name="id">1</param>
-                            <param name="baseid">307</param>
-                            <param name="label">$LOCALIZE[15067]</param>
-                            <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
-                            <onclick condition="Window.IsVisible(settings)">SetFocus(50)</onclick>
-                            <onclick condition="Window.IsVisible(addonbrowser)">SetFocus(6000)</onclick>
-                            <onclick condition="Window.IsVisible(eventlog)">SetFocus(8000)</onclick>
-                            <onclick condition="Window.IsVisible(filemanager)">SetFocus(2)0</onclick>
-                            <onclick condition="!Window.IsVisible(addonbrowser) + !Window.IsVisible(eventlog)">SetFocus(3)</onclick>
-                        </include>
-                    </include>
-                </include>
+                <param name="slide_animation">false</param>
             </include>
 
             <include content="Dialog_Foreground_Side">
                 <param name="dialog_size">Dimension_DialogSideMenu</param>
-                <param name="slide_condition">ControlGroup(30700).HasFocus()</param>
                 <param name="lines_right">0</param>
                 <param name="topline">true</param>
                 <param name="subline">true</param>
@@ -383,17 +375,24 @@
                 <include content="Dialog_Head">
                     <param name="label">$LOCALIZE[5]</param>
                 </include>
+                <include content="Dialog_Head_CloseButton">
+                    <param name="onclick">SetFocus(303)</param>
+                </include>
 
                 <!-- Content -->
                 <include content="Dialog_Body">
                     <include content="Dialog_Body_Grouplist">
                         <param name="id">30040</param>
-                        <!-- <onleft condition="Window.IsVisible(settings)">50</onleft>
+                        <onleft condition="Window.IsVisible(settings)">50</onleft>
                         <onleft condition="Window.IsVisible(addonbrowser)">6000</onleft>
                         <onleft condition="Window.IsVisible(eventlog)">8000</onleft>
                         <onleft condition="Window.IsVisible(filemanager)">20</onleft>
-                        <onleft condition="!Window.IsVisible(addonbrowser) + !Window.IsVisible(eventlog)">3</onleft> -->
-                        <onleft>30700</onleft>
+                        <onleft condition="!Window.IsVisible(addonbrowser) + !Window.IsVisible(eventlog)">3</onleft>
+                        <onback condition="Window.IsVisible(settings)">50</onback>
+                        <onback condition="Window.IsVisible(addonbrowser)">6000</onback>
+                        <onback condition="Window.IsVisible(eventlog)">8000</onback>
+                        <onback condition="Window.IsVisible(filemanager)">20</onback>
+                        <onback condition="!Window.IsVisible(addonbrowser) + !Window.IsVisible(eventlog)">3</onback>
                         <include>Items_Settings_SideChanger</include>
                     </include>
                 </include>

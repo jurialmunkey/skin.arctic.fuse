@@ -1,53 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
 
-    <include name="Search_View_Widgets_Group">
+    <include name="Search_View">
+
+        <include content="Object_Hidden_Button">
+            <param name="id">67</param>
+            <onfocus>$VAR[Action_Var_Search_ToMediaFilter]</onfocus>
+        </include>
+
+        <include content="Object_Hidden_Button">
+            <param name="id">68</param>
+            <onfocus condition="String.IsEmpty(Window.Property(MediaFilterWall))">ClearProperty(MediaFilterBase)</onfocus>
+            <onfocus condition="String.IsEmpty(Window.Property(MediaFilterWall))">ClearProperty(MediaFilterWall)</onfocus>
+            <onfocus condition="String.IsEmpty(Window.Property(MediaFilterWall))">SetFocus($VAR[Action_Search_ContentID])</onfocus>
+            <onfocus condition="!String.IsEmpty(Window.Property(MediaFilterWall))">Runscript(script.skinvariables,$VAR[MediaWall_Search_ScriptTypeDef],use_rules,id=$VAR[Action_Search_ContentID],win_prop=WallSlideOut,focus_id=$VAR[Action_Search_ContentID],clear_prop_one=MediaFilterBase,clear_prop_two=MediaFilterWall)</onfocus>
+        </include>
+
         <control type="group">
             <include>Animation_View_WindowChange</include>
             <include>Animation_Group_Bumper</include>
             <control type="group">
                 <description>Lower Half Widgets</description>
                 <include>Animation_Half_WindowChange_UpDown</include>
-                <include content="Search_View_Widgets_Grouplist">
-                    <include>skinvariables-searchmenu-widgets</include>
-                    <include>Search_View_DiscoverWidgets</include>
-                </include>
-                <include>Widget_Transitions</include>
+                <include>Search_View_Widgets_Group</include>
                 <include>Search_View_Widgets_NoResults</include>
-                <include>Search_Filter_Selector</include>
-                <include>Search_View_Footer</include>
+                <include>Search_View_Widgets_Footer</include>
             </control>
+            <include content="MediaWall_Main" condition="$EXP[Exp_FilterWall_IsEnabled]">
+                <param name="interchange_condition">[$EXP[Search_View_HasItems] + !$EXP[Search_View_IsUpdating]]</param>
+            </include>
             <include>Search_View_Widgets_InfoPanel</include>
         </control>
     </include>
 
-    <include name="Search_View_Widgets_Grouplist">
-        <control type="grouplist" id="6000">
-            <top>500</top>
-            <include>Action_Search_Movement_OnUp</include>
-            <!-- <onup>SetFocus(303,9999,absolute)</onup> -->
-            <ondown>5099</ondown>
-            <orientation>vertical</orientation>
-            <control type="group" id="6100">
-                <height>widgetsearch_tbump_h</height>
-            </control>
-            <nested />
+    <expression name="Search_View_HasItems">[[Integer.IsEqual(Container(5099).ListItem.Property(listid),50) + !Integer.IsEqual(Container(50).NumItems,0) + Control.IsVisible(50)] | [Integer.IsEqual(Container(5099).ListItem.Property(listid),51) + !Integer.IsEqual(Container(51).NumItems,0) + Control.IsVisible(51)] | [Integer.IsEqual(Container(5099).ListItem.Property(listid),52) + !Integer.IsEqual(Container(52).NumItems,0) + Control.IsVisible(52)]]</expression>
+
+    <expression name="Search_View_IsUpdating">[[Integer.IsEqual(Container(5099).ListItem.Property(listid),50) + Container(50).IsUpdating + Control.IsVisible(50)] | [Integer.IsEqual(Container(5099).ListItem.Property(listid),51) + Container(51).IsUpdating + Control.IsVisible(51)] | [Integer.IsEqual(Container(5099).ListItem.Property(listid),52) + Container(52).IsUpdating + Control.IsVisible(52)]]</expression>
+
+    <include name="Search_View_Widgets_InfoPanel">
+        <control type="group">
+            <include content="MediaWall_Info_Transition" condition="$EXP[Exp_FilterWall_IsEnabled]">
+                <param name="condition">$EXP[Exp_MediaFilter_IsActive]</param>
+            </include>
+            <include content="Home_Widgets_Infopanel">
+                <param name="visible">$EXP[Search_View_HasItems] + !$EXP[Search_View_IsUpdating]</param>
+                <param name="conditional_fade">False</param>
+                <include content="Info_Panel">
+                    <param name="container">Container.</param>
+                </include>
+            </include>
         </control>
     </include>
 
-    <include name="Search_View_Widgets_InfoPanel">
-        <include content="Home_Widgets_Infopanel">
-            <param name="conditional_fade">False</param>
-            <include content="Info_Panel">
-                <param name="container">Container.</param>
-            </include>
-            <visible>!Integer.IsEqual(Container(6000).NumItems,0)</visible>
-        </include>
-    </include>
-
     <include name="Search_View_Widgets_NoResults">
+        <control type="group">
+            <include content="Widget_Busy">
+                <param name="label">$INFO[Container(5099).ListItem.Label]</param>
+                <param name="visible">[$EXP[Search_View_IsUpdating]]</param>
+                <height>divider_bottom</height>
+                <bottom>46</bottom>
+                <left>200</left>
+            </include>
+        </control>
         <control type="grouplist">
-            <visible>Integer.IsEqual(Container(6000).NumItems,0)</visible>
+            <visible>!$EXP[Search_View_HasItems] | $EXP[Search_View_IsUpdating]</visible>
             <left>view_side</left>
             <right>view_side</right>
             <top>-240</top>
@@ -56,10 +72,11 @@
             <align>center</align>
             <control type="label">
                 <font>font_midi_black</font>
-                <label>$LOCALIZE[31046]</label>
+                <label>$LOCALIZE[31046]$INFO[Container(5099).ListItem.Label,: ,]</label>
                 <align>left</align>
                 <height>30</height>
                 <textcolor>main_fg_100</textcolor>
+                <visible>!$EXP[Search_View_IsUpdating]</visible>
             </control>
             <control type="textbox">
                 <top>20</top>
@@ -69,6 +86,25 @@
                 <aligny>center</aligny>
                 <height>90</height>
                 <textcolor>main_fg_30</textcolor>
+                <visible>!$EXP[Search_View_IsUpdating]</visible>
+            </control>
+            <control type="label">
+                <font>font_midi_black</font>
+                <label>Searching...</label>
+                <align>left</align>
+                <height>30</height>
+                <textcolor>main_fg_100</textcolor>
+                <visible>$EXP[Search_View_IsUpdating]</visible>
+            </control>
+            <control type="textbox">
+                <top>20</top>
+                <font>font_main_plot</font>
+                <label>$LOCALIZE[31368] "[CAPITALIZE]$VAR[Label_Search_HeadingFilter][/CAPITALIZE]"$INFO[Container(5099).ListItem.Label, $LOCALIZE[1405] ,].</label>
+                <align>left</align>
+                <aligny>center</aligny>
+                <height>90</height>
+                <textcolor>main_fg_30</textcolor>
+                <visible>$EXP[Search_View_IsUpdating]</visible>
             </control>
             <control type="group">
                 <height>-25</height>
@@ -76,11 +112,11 @@
         </control>
     </include>
 
-    <include name="Search_View_Footer">
-        <!-- <control type="group">
+    <include name="Search_View_Widgets_Footer">
+        <control type="group">
             <visible>!$EXP[Exp_InfoDialogs]</visible>
-            <include>Furniture_Bottom_Right</include>
-        </control> -->
+            <include>Furniture_Bottom</include>
+        </control>
     </include>
 
     <include name="Search_View_Header_Icon">
@@ -109,121 +145,86 @@
         </control>
     </include>
 
-    <include name="Search_View_DiscoverWidgets">
-
-        <include content="_Widget_Row">
-            <param name="groupid">5181</param>
-            <param name="id">5081</param>
-            <param name="label">$LOCALIZE[31066] $LOCALIZE[593]</param>
-            <param name="sort_condition">True</param>
-            <param name="sort_descending">True</param>
-            <param name="visible">[Skin.HasSetting(Search.LibraryDiscover) + Skin.HasSetting(Search.EnableDiscover) + [String.IsEqual(Container(5099).ListItem.Property(guid),guid-discoverall) | [!ControlGroup(6000).HasFocus() + !Control.HasFocus(5099)]]]</param>
-            <param name="altvisible">[Skin.HasSetting(Search.LibraryDiscover) + Skin.HasSetting(Search.EnableDiscover) + !ControlGroup(6000).HasFocus() + !Control.HasFocus(5099)]</param>
-            <param name="include">List_Poster_Row</param>
-            <param name="transition_include">true</param>
-            <param name="transition_hidden">Control.HasFocus(5081)</param>
-            <param name="conditional_fade">!String.IsEqual(Container(5099).ListItem.Property(guid),guid-discoverall)</param>
-
-            <param name="detailed">false</param>
-            <param name="widgettop">widgetsearch_items_t</param>
-            <param name="widgetheight">widgetsearch_items_h</param>
-            <param name="labeltop">widgetsearch_label_t</param>
-            <param name="labelheight">widgetsearch_label_h</param>
-
-            <content target="videos" limit="$VAR[Path_DiscoverWidgets_ItemLimit]" sortby="$VAR[Path_DiscoverWidgets_SortBy]" sortorder="$VAR[Path_DiscoverWidgets_SortOrder]" browse="$VAR[Defs_BrowseLimitedLists]">$VAR[Path_DiscoverWidgets_Join]$VAR[Path_DiscoverWidgets_Film,&amp;&amp;,]$VAR[Path_DiscoverWidgets_Show,&amp;&amp;,]</content>
-
-            <include content="Action_View_Movement_OnLeftRight">
-                <param name="id">5081</param>
-                <param name="include_onback">False</param>
+    <include name="Search_View_Widgets_Group">
+        <control type="group">
+            <visible>!$EXP[Exp_InfoDialogs]</visible>
+            <include>Animation_Transition_InfoPanel_Hide</include>
+            <control type="group">
+                <visible>$EXP[Search_View_HasItems] + !$EXP[Search_View_IsUpdating]</visible>
+                <animation type="Conditional" reversible="false" condition="[$EXP[Exp_FilterWall_IsActive]]">
+                    <effect type="slide" end="0,-334" start="0" time="400" delay="0" tween="cubic" easing="out" />
+                </animation>
+                <animation type="Conditional" reversible="false" condition="![$EXP[Exp_FilterWall_IsActive]]">
+                    <effect type="slide" start="0,-334" end="0" time="400" delay="0" tween="cubic" easing="out" />
+                </animation>
+                <include content="Info_Viewline">
+                    <param name="sort_condition">false</param>
+                    <param name="library_condition">false</param>
+                    <param name="label">$INFO[Container(5099).ListItem.Label]</param>
+                </include>
+            </control>
+        </control>
+        <control type="group" id="6000">
+            <include content="Animation_ConditionalFade">
+                <param name="condition">[!$EXP[Search_View_HasItems] | $EXP[Search_View_IsUpdating]]</param>
             </include>
-            <include content="Action_View_Movement_OnBack">
-                <param name="id">5081</param>
-                <param name="menuid">303</param>
-                <param name="onback">[Integer.IsEqual(Container(5081).CurrentItem,1)]</param>
-                <param name="backid">6000</param>
+            <include content="MediaWall_View_Transition" condition="$EXP[Exp_FilterWall_IsEnabled]">
+                <param name="condition">$EXP[Exp_MediaFilter_IsActive]</param>
             </include>
-
-            <onfocus>SetProperty(TMDbHelper.WidgetContainer,5081)</onfocus>
-            <onfocus>SetProperty(Transition.WidgetStyle,List_Poster_Row,Home)</onfocus>
-            <onunfocus>ClearProperty(Transition.WidgetStyle,Home)</onunfocus>
-
-        </include>
-
-        <include content="_Widget_Row">
-            <param name="groupid">5182</param>
-            <param name="id">5082</param>
-            <param name="label">$LOCALIZE[31066] $LOCALIZE[342]</param>
-            <param name="sort_condition">True</param>
-            <param name="sort_descending">True</param>
-            <param name="visible">[Skin.HasSetting(Search.EnableDiscover) + [String.IsEqual(Container(5099).ListItem.Property(guid),guid-discovermovies) | [!ControlGroup(6000).HasFocus() + !Control.HasFocus(5099)]]]</param>
-            <param name="altvisible">[Skin.HasSetting(Search.EnableDiscover) + !ControlGroup(6000).HasFocus() + !Control.HasFocus(5099)]</param>
-            <param name="include">List_Poster_Row</param>
-            <param name="transition_include">true</param>
-            <param name="transition_hidden">Control.HasFocus(5082)</param>
-            <param name="conditional_fade">!String.IsEqual(Container(5099).ListItem.Property(guid),guid-discovermovies)</param>
-
-            <param name="detailed">false</param>
-            <param name="widgettop">widgetsearch_items_t</param>
-            <param name="widgetheight">widgetsearch_items_h</param>
-            <param name="labeltop">widgetsearch_label_t</param>
-            <param name="labelheight">widgetsearch_label_h</param>
-
-            <content target="videos" limit="$VAR[Path_DiscoverWidgets_ItemLimit]" sortby="$VAR[Path_DiscoverWidgets_SortBy]" sortorder="$VAR[Path_DiscoverWidgets_SortOrder]" browse="$VAR[Defs_BrowseLimitedLists]">$VAR[Path_DiscoverWidgets_Join]$VAR[Path_DiscoverWidgets_Film,&amp;&amp;,]</content>
-
-            <include content="Action_View_Movement_OnLeftRight">
-                <param name="id">5082</param>
-                <param name="include_onback">False</param>
+            <include content="Transitions_List_Group">
+                <include content="List_Poster_Row">
+                    <param name="id">52</param>
+                    <height>divider_bottom</height>
+                    <bottom>40</bottom>
+                    <content target="videos" limit="$VAR[Path_DiscoverWidgets_ItemLimit]" sortby="$VAR[Path_DiscoverWidgets_SortBy]" sortorder="$VAR[Path_DiscoverWidgets_SortOrder]" browse="$VAR[Defs_BrowseLimitedLists]">$VAR[Path_DiscoverWidgets_Join]$VAR[Path_DiscoverWidgets_Film,&amp;&amp;,]$VAR[Path_DiscoverWidgets_Show,&amp;&amp;,]</content>
+                    <visible>Skin.HasSetting(Search.EnableDiscover) + String.IsEqual(Container(5099).ListItem.Property(guid),guid-discoverall)</visible>
+                    <onup>SetFocus(303,9999,absolute)</onup>
+                    <ondown condition="!Skin.String(Navigation.OnUp,Search)">SetFocus(67)</ondown>
+                    <ondown condition="Skin.String(Navigation.OnUp,Search)">PreviousMenu</ondown>
+                    <include content="Action_View_Movement_OnLeftRight">
+                        <param name="id">52</param>
+                        <param name="onback">[Integer.IsEqual(Container(52).CurrentItem,1)]</param>
+                    </include>
+                    <pagecontrol>60</pagecontrol>
+                    <onfocus>SetProperty(TMDbHelper.WidgetContainer,52)</onfocus>
+                </include>
+                <include content="List_Poster_Row">
+                    <param name="id">52</param>
+                    <height>divider_bottom</height>
+                    <bottom>40</bottom>
+                    <content target="videos" limit="$VAR[Path_DiscoverWidgets_ItemLimit]" sortby="$VAR[Path_DiscoverWidgets_SortBy]" sortorder="$VAR[Path_DiscoverWidgets_SortOrder]" browse="$VAR[Defs_BrowseLimitedLists]">$VAR[Path_DiscoverWidgets_Join]$VAR[Path_DiscoverWidgets_Film,&amp;&amp;,]</content>
+                    <visible>Skin.HasSetting(Search.EnableDiscover) + String.IsEqual(Container(5099).ListItem.Property(guid),guid-discovermovies)</visible>
+                    <onup>SetFocus(303,9999,absolute)</onup>
+                    <ondown condition="!Skin.String(Navigation.OnUp,Search)">SetFocus(67)</ondown>
+                    <ondown condition="Skin.String(Navigation.OnUp,Search)">PreviousMenu</ondown>
+                    <include content="Action_View_Movement_OnLeftRight">
+                        <param name="id">52</param>
+                        <param name="onback">[Integer.IsEqual(Container(52).CurrentItem,1)]</param>
+                    </include>
+                    <pagecontrol>60</pagecontrol>
+                    <onfocus>SetProperty(TMDbHelper.WidgetContainer,52)</onfocus>
+                </include>
+                <include content="List_Poster_Row">
+                    <param name="id">52</param>
+                    <height>divider_bottom</height>
+                    <bottom>40</bottom>
+                    <content target="videos" limit="$VAR[Path_DiscoverWidgets_ItemLimit]" sortby="$VAR[Path_DiscoverWidgets_SortBy]" sortorder="$VAR[Path_DiscoverWidgets_SortOrder]" browse="$VAR[Defs_BrowseLimitedLists]">$VAR[Path_DiscoverWidgets_Join]$VAR[Path_DiscoverWidgets_Show,&amp;&amp;,]</content>
+                    <visible>Skin.HasSetting(Search.EnableDiscover) + String.IsEqual(Container(5099).ListItem.Property(guid),guid-discovertvshows)</visible>
+                    <onup>SetFocus(303,9999,absolute)</onup>
+                    <ondown condition="!Skin.String(Navigation.OnUp,Search)">SetFocus(67)</ondown>
+                    <ondown condition="Skin.String(Navigation.OnUp,Search)">PreviousMenu</ondown>
+                    <include content="Action_View_Movement_OnLeftRight">
+                        <param name="id">52</param>
+                        <param name="onback">[Integer.IsEqual(Container(52).CurrentItem,1)]</param>
+                    </include>
+                    <pagecontrol>60</pagecontrol>
+                    <onfocus>SetProperty(TMDbHelper.WidgetContainer,52)</onfocus>
+                </include>
+                <include>skinvariables-searchmenu-widgets</include>
             </include>
-            <include content="Action_View_Movement_OnBack">
-                <param name="id">5082</param>
-                <param name="menuid">303</param>
-                <param name="onback">[Integer.IsEqual(Container(5082).CurrentItem,1)]</param>
-                <param name="backid">6000</param>
-            </include>
+            <include>Transitions_List_Poster_Row</include>
+        </control>
 
-            <onfocus>SetProperty(TMDbHelper.WidgetContainer,5082)</onfocus>
-
-            <onfocus>SetProperty(Transition.WidgetStyle,List_Poster_Row,Home)</onfocus>
-            <onunfocus>ClearProperty(Transition.WidgetStyle,Home)</onunfocus>
-        </include>
-
-        <include content="_Widget_Row">
-            <param name="groupid">5183</param>
-            <param name="id">5083</param>
-            <param name="label">$LOCALIZE[31066] $LOCALIZE[20343]</param>
-            <param name="sort_condition">True</param>
-            <param name="sort_descending">True</param>
-            <param name="visible">[Skin.HasSetting(Search.EnableDiscover) + [String.IsEqual(Container(5099).ListItem.Property(guid),guid-discovertvshows) | [!ControlGroup(6000).HasFocus() + !Control.HasFocus(5099)]]]</param>
-            <param name="altvisible">[Skin.HasSetting(Search.EnableDiscover) + !ControlGroup(6000).HasFocus() + !Control.HasFocus(5099)]</param>
-            <param name="include">List_Poster_Row</param>
-            <param name="transition_include">true</param>
-            <param name="transition_hidden">Control.HasFocus(5083)</param>
-            <param name="conditional_fade">!String.IsEqual(Container(5099).ListItem.Property(guid),guid-discovertvshows)</param>
-
-            <param name="detailed">false</param>
-            <param name="widgettop">widgetsearch_items_t</param>
-            <param name="widgetheight">widgetsearch_items_h</param>
-            <param name="labeltop">widgetsearch_label_t</param>
-            <param name="labelheight">widgetsearch_label_h</param>
-
-            <content target="videos" limit="$VAR[Path_DiscoverWidgets_ItemLimit]" sortby="$VAR[Path_DiscoverWidgets_SortBy]" sortorder="$VAR[Path_DiscoverWidgets_SortOrder]" browse="$VAR[Defs_BrowseLimitedLists]">$VAR[Path_DiscoverWidgets_Join]$VAR[Path_DiscoverWidgets_Show,&amp;&amp;,]</content>
-
-            <include content="Action_View_Movement_OnLeftRight">
-                <param name="id">5083</param>
-                <param name="include_onback">False</param>
-            </include>
-            <include content="Action_View_Movement_OnBack">
-                <param name="id">5083</param>
-                <param name="menuid">303</param>
-                <param name="onback">[Integer.IsEqual(Container(5083).CurrentItem,1)]</param>
-                <param name="backid">6000</param>
-            </include>
-
-            <onfocus>SetProperty(TMDbHelper.WidgetContainer,5083)</onfocus>
-
-            <onfocus>SetProperty(Transition.WidgetStyle,List_Poster_Row,Home)</onfocus>
-            <onunfocus>ClearProperty(Transition.WidgetStyle,Home)</onunfocus>
-        </include>
     </include>
 
 

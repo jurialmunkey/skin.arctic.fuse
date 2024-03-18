@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
 
-    <expression name="Exp_DialogSelect_SlideOut">[ControlGroup(9000).HasFocus() | [Control.IsVisible(8) + [String.IsEqual(Control.GetLabel(8),$LOCALIZE[186])]] | [Control.IsVisible(5) + [String.IsEqual(Control.GetLabel(5),$LOCALIZE[186]) | String.IsEqual(Control.GetLabel(5),$LOCALIZE[21452])]] | String.IsEqual(Control.GetLabel(1),$LOCALIZE[13511]) | String.IsEqual(Control.GetLabel(1),$LOCALIZE[20437]) | String.IsEqual(Control.GetLabel(1),$LOCALIZE[13521])]</expression>
-
     <include name="DialogSelect_Standard">
         <control type="group">
             <include>Dimension_DialogWideMenu</include>
             <include>Animation_Right_Delay</include>
             <include content="Dialog_Dim_Side">
-                <param name="slide_condition">$EXP[Exp_DialogSelect_SlideOut]</param>
+                <param name="slide_condition">True</param>
             </include>
 
             <!-- Bottom Layer -->
             <include content="Dialog_Background_Side">
-                <param name="slide_condition">$EXP[Exp_DialogSelect_SlideOut]</param>
+                <param name="slide_condition">True</param>
                 <param name="dialog_size">Dimension_DialogWideMenu</param>
                 <!-- Side Buttons -->
                 <include content="Dialog_Body">
@@ -24,7 +22,7 @@
 
             <include content="Dialog_Foreground_Side">
                 <param name="dialog_size">Dimension_DialogWideMenu</param>
-                <param name="slide_condition">$EXP[Exp_DialogSelect_SlideOut]</param>
+                <param name="slide_condition">True</param>
                 <param name="lines_right">0</param>
                 <param name="topline">true</param>
                 <param name="subline">true</param>
@@ -39,6 +37,7 @@
                     <param name="label">$INFO[Control.GetLabel(1)]</param>
                     <visible>Control.IsVisible(6)</visible>
                 </include>
+                <include>Dialog_Head_CloseButton</include>
 
                 <!-- Content -->
                 <include content="Dialog_Body">
@@ -118,7 +117,7 @@
             <right>-120</right>
             <include>Animation_Right_Delay</include>
             <include content="Animation_SlideIn_Dialog_Side">
-                <param name="slide_condition">$EXP[Exp_DialogSelect_SlideOut]</param>
+                <param name="slide_condition">True</param>
             </include>
             <include content="Dialog_Preview">
                 <param name="icon">$INFO[Container(6).ListItem.Icon]</param>
@@ -169,6 +168,7 @@
     <include name="DialogSelect_SideButtons_Standard">
         <include content="Dialog_Side_Grouplist">
             <param name="id">9000</param>
+            <onleft>Close</onleft>
             <onright condition="Control.IsVisible(3)">3</onright>
             <onright condition="Control.IsVisible(6)">6</onright>
             <include>Items_DialogSelect_Standard</include>
@@ -211,6 +211,7 @@
                     <include content="Dialog_Body">
                         <include content="Dialog_Side_Grouplist">
                             <param name="id">9000</param>
+                            <onleft>Close</onleft>
                             <onright>7000</onright>
                             <include>$PARAM[include_sidegrouplist_items]</include>
                         </include>
