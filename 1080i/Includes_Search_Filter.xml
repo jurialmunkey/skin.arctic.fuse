@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
-    <include name="Search_Filter_Edit">
-        <control type="edit" id="9099">
-            <description>Search</description>
-            <font>font_main_black</font>
-            <textcolor>dialog_fg_90</textcolor>
-            <focusedcolor>$VAR[ColorSelected]</focusedcolor>
-            <height>80</height>
-            <textoffsetx>40</textoffsetx>
-            <align>left</align>
-            <!-- TO KEYBOARD -->
-            <ondown>SetProperty(SearchTerm,$INFO[Control.GetLabel(9099).index(1)])</ondown>
-            <ondown>9002</ondown>
-        </control>
+    <include name="Search_Filter_Content">
         <include content="Search_Filter_Alphabet">
             <param name="editid">9099</param>
             <param name="ondown">9502</param>
@@ -47,10 +35,22 @@
     </include>
 
     <include name="Search_Filter">
+        <control type="button" id="9968">
+            <onclick condition="$EXP[Search_View_HasItems] + !$EXP[Search_View_IsUpdating]">SetFocus(68)</onclick>
+            <onclick condition="![$EXP[Search_View_HasItems] + !$EXP[Search_View_IsUpdating]]">PreviousMenu</onclick>
+            <onleft>SetFocus(9502)</onleft>
+            <onright>SetFocus(9502)</onright>
+            <onup>SetFocus(9502)</onup>
+            <ondown>SetFocus(9502)</ondown>
+            <texturenofocus />
+            <texturefocus />
+            <visible>!String.IsEmpty(Window.Property(MediaFilterWall)) | !String.IsEmpty(Window.Property(MediaFilterBase))</visible>
+        </control>
         <control type="group">
             <include>Dimension_DialogSideMenu</include>
             <include>Animation_Right</include>
-            <visible allowhiddenfocus="true">Control.HasFocus(8000) | ControlGroup(8100).HasFocus() | Control.HasFocus(8900) | Control.HasFocus(8900) | ControlGroup(89000).HasFocus() | Control.HasFocus(89999) | ControlGroup(89099).HasFocus() | Control.HasFocus(5099) | Control.HasFocus(9501)</visible>
+            <visible>!String.IsEmpty(Window.Property(MediaFilterBase))</visible>
+
             <include content="Dialog_Dim_Side">
                 <param name="slide_animation">False</param>
             </include>
@@ -71,20 +71,41 @@
                 <!-- Content -->
                 <include content="Dialog_Body">
 
-
-                    <control type="grouplist" id="89099">
-                        <orientation>vertical</orientation>
+                    <control type="edit" id="9099">
+                        <description>Search</description>
+                        <font>font_main_black</font>
+                        <textcolor>dialog_fg_90</textcolor>
+                        <focusedcolor>$VAR[ColorSelected]</focusedcolor>
                         <top>20</top>
                         <left>20</left>
                         <right>20</right>
-                        <bottom>80</bottom>
-                        <include>Search_Filter_Edit</include>
+                        <height>80</height>
+                        <textoffsetx>40</textoffsetx>
+                        <align>left</align>
+                        <onup>SetProperty(SearchTerm,$INFO[Control.GetLabel(9099).index(1)])</onup>
+                        <onleft>SetProperty(SearchTerm,$INFO[Control.GetLabel(9099).index(1)])</onleft>
+                        <onright>SetProperty(SearchTerm,$INFO[Control.GetLabel(9099).index(1)])</onright>
+                        <ondown>SetProperty(SearchTerm,$INFO[Control.GetLabel(9099).index(1)])</ondown>
+                        <ondown>9002</ondown>
                         <onup>SetFocus(8000,99999,absolute)</onup>
+                        <!-- <onleft condition="$EXP[Search_View_HasItems] + !$EXP[Search_View_IsUpdating]">68</onleft>
+                        <onright condition="$EXP[Search_View_HasItems] + !$EXP[Search_View_IsUpdating]">68</onright>
+                        <onback condition="$EXP[Search_View_HasItems] + !$EXP[Search_View_IsUpdating]">68</onback> -->
+                    </control>
+
+
+                    <control type="grouplist" id="89099">
+                        <orientation>vertical</orientation>
+                        <top>100</top>
+                        <left>20</left>
+                        <right>20</right>
+                        <bottom>80</bottom>
+                        <include>Search_Filter_Content</include>
+                        <onup>9099</onup>
                         <ondown>SetFocus(8000,0,absolute)</ondown>
-                        <onleft>68</onleft>
-                        <onright>68</onright>
-                        <onback>SetProperty(LastAction,Action(PreviousMenu))</onback>
-                        <onback>68</onback>
+                        <onleft condition="$EXP[Search_View_HasItems] + !$EXP[Search_View_IsUpdating]">68</onleft>
+                        <onright condition="$EXP[Search_View_HasItems] + !$EXP[Search_View_IsUpdating]">68</onright>
+                        <onback condition="$EXP[Search_View_HasItems] + !$EXP[Search_View_IsUpdating]">68</onback>
                     </control>
 
                     <control type="image">
@@ -107,10 +128,9 @@
                         <orientation>vertical</orientation>
                         <onup>9502</onup>
                         <ondown>9099</ondown>
-                        <onleft>68</onleft>
-                        <onright>68</onright>
-                        <onback>SetProperty(LastAction,Action(PreviousMenu))</onback>
-                        <onback>68</onback>
+                        <onleft condition="$EXP[Search_View_HasItems] + !$EXP[Search_View_IsUpdating]">68</onleft>
+                        <onright condition="$EXP[Search_View_HasItems] + !$EXP[Search_View_IsUpdating]">68</onright>
+                        <onback condition="$EXP[Search_View_HasItems] + !$EXP[Search_View_IsUpdating]">68</onback>
                         <content>
                             <item>
                                 <label>$LOCALIZE[192]</label>
