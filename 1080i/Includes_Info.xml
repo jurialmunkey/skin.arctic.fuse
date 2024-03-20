@@ -148,14 +148,16 @@
         <param name="L03" />
         <param name="L04" />
         <param name="L05" />
+        <param name="L06" />
         <param name="C01" />
         <param name="C02" />
         <param name="C03" />
         <param name="C04" />
         <param name="C05" />
+        <param name="C06" />
         <param name="altvisible">false</param>
         <definition>
-            <visible>[$PARAM[L01]$PARAM[L02]$PARAM[L03]$PARAM[L04]$PARAM[L05] | [$PARAM[altvisible]]] | [String.IsEmpty($PARAM[container]ListItem.DBType) + [$PARAM[C01]$PARAM[C02]$PARAM[C03]$PARAM[C04]$PARAM[C05]]]</visible>
+            <visible>[$PARAM[L01]$PARAM[L02]$PARAM[L03]$PARAM[L04]$PARAM[L05]$PARAM[L06] | [$PARAM[altvisible]]] | [String.IsEmpty($PARAM[container]ListItem.DBType) + [$PARAM[C01]$PARAM[C02]$PARAM[C03]$PARAM[C04]$PARAM[C05]$PARAM[C06]]]</visible>
         </definition>
     </include>
     <include name="Info_Line_Visible_01">
@@ -225,6 +227,26 @@
                 <param name="C03"> | String.IsEqual(Container(99950).ListItem.DBType,$PARAM[dbtype_03])</param>
                 <param name="C04"> | String.IsEqual(Container(99950).ListItem.DBType,$PARAM[dbtype_04])</param>
                 <param name="C05"> | String.IsEqual(Container(99950).ListItem.DBType,$PARAM[dbtype_05])</param>
+            </include>
+        </definition>
+    </include>
+    <include name="Info_Line_Visible_06">
+        <definition>
+            <include content="_Info_Line_Visible">
+                <param name="altvisible">$PARAM[altvisible]</param>
+                <param name="container">$PARAM[container]</param>
+                <param name="L01">String.IsEqual($PARAM[container]ListItem.DBType,$PARAM[dbtype_01])</param>
+                <param name="L02"> | String.IsEqual($PARAM[container]ListItem.DBType,$PARAM[dbtype_02])</param>
+                <param name="L03"> | String.IsEqual($PARAM[container]ListItem.DBType,$PARAM[dbtype_03])</param>
+                <param name="L04"> | String.IsEqual($PARAM[container]ListItem.DBType,$PARAM[dbtype_04])</param>
+                <param name="L05"> | String.IsEqual($PARAM[container]ListItem.DBType,$PARAM[dbtype_05])</param>
+                <param name="L06"> | String.IsEqual($PARAM[container]ListItem.DBType,$PARAM[dbtype_06])</param>
+                <param name="C01">String.IsEqual(Container(99950).ListItem.DBType,$PARAM[dbtype_01])</param>
+                <param name="C02"> | String.IsEqual(Container(99950).ListItem.DBType,$PARAM[dbtype_02])</param>
+                <param name="C03"> | String.IsEqual(Container(99950).ListItem.DBType,$PARAM[dbtype_03])</param>
+                <param name="C04"> | String.IsEqual(Container(99950).ListItem.DBType,$PARAM[dbtype_04])</param>
+                <param name="C05"> | String.IsEqual(Container(99950).ListItem.DBType,$PARAM[dbtype_05])</param>
+                <param name="C06"> | String.IsEqual(Container(99950).ListItem.DBType,$PARAM[dbtype_06])</param>
             </include>
         </definition>
     </include>
@@ -1130,13 +1152,14 @@
                     <param name="textcolor">$PARAM[colordiffuse]_90</param>
                 </include>
                 <include content="Info_Line_Items">
-                    <include content="Info_Line_Visible_05">
+                    <include content="Info_Line_Visible_06">
                         <param name="container">$PARAM[container]</param>
                         <param name="dbtype_01">movie</param>
                         <param name="dbtype_02">tvshow</param>
                         <param name="dbtype_03">set</param>
                         <param name="dbtype_04">album</param>
                         <param name="dbtype_05">song</param>
+                        <param name="dbtype_06">season</param>
                     </include>
                     <param name="items_03">true</param>
                     <param name="label_01">$INFO[Container(99950).ListItem.Property(Set.Years)]</param>
@@ -1150,10 +1173,11 @@
 
                 <!-- MPAA -->
                 <include content="Info_Line_Items">
-                    <include content="Info_Line_Visible_02" condition="Skin.HasSetting(InfoLine.EndTime)">
+                    <include content="Info_Line_Visible_03" condition="Skin.HasSetting(InfoLine.EndTime)">
                         <param name="container">$PARAM[container]</param>
                         <param name="dbtype_01">movie</param>
                         <param name="dbtype_02">tvshow</param>
+                        <param name="dbtype_03">season</param>
                     </include>
                     <param name="items_02">true</param>
                     <param name="label_01">$INFO[$PARAM[container]ListItem.MPAA]</param>
@@ -1165,10 +1189,11 @@
 
                 <!-- Genres -->
                 <include content="Info_Line_Items" condition="!Skin.HasSetting(InfoLine.EndTime)">
-                    <include content="Info_Line_Visible_02">
+                    <include content="Info_Line_Visible_03">
                         <param name="container">$PARAM[container]</param>
                         <param name="dbtype_01">movie</param>
                         <param name="dbtype_02">tvshow</param>
+                        <param name="dbtype_03">season</param>
                     </include>
                     <param name="items_03">true</param>
                     <param name="label_01">$INFO[$PARAM[container]ListItem.Property(Genre.1.Name)]</param>
@@ -1204,13 +1229,14 @@
 
                 <!-- Duration Info -->
                 <include content="Info_Line_Items">
-                    <include content="Info_Line_Visible_04">
+                    <include content="Info_Line_Visible_05">
                         <param name="altvisible">!String.IsEmpty($PARAM[container]ListItem.ChannelNumberLabel)</param>
                         <param name="container">$PARAM[container]</param>
                         <param name="dbtype_01">movie</param>
                         <param name="dbtype_02">tvshow</param>
                         <param name="dbtype_03">video</param>
                         <param name="dbtype_04">episode</param>
+                        <param name="dbtype_05">season</param>
                     </include>
                     <param name="items_06">true</param>
                     <param name="label_01">$INFO[$PARAM[container]ListItem.Duration(h),, $LOCALIZE[31074] ]$INFO[$PARAM[container]ListItem.Duration(m),, $LOCALIZE[31073]]</param>
