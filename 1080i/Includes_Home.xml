@@ -40,6 +40,9 @@
                     <onup condition="$EXP[Exp_HomeMenu_SearchOptions_DontHide] + [Window.IsVisible(Home) + Skin.String(Home.SideMenuCollapse,Library)]">$PARAM[id]</onup>
 
                     <onup condition="!$EXP[Exp_HomeMenu_SearchOptions_DontHide] + ![Window.IsVisible(Home) + Skin.String(Home.SideMenuCollapse,Library)] + Skin.String(Navigation.OnUp,Search)">ActivateWindow(1105)</onup>
+
+                    <onup condition="!$EXP[Exp_HomeMenu_SearchOptions_DontHide] + ![Window.IsVisible(Home) + Skin.String(Home.SideMenuCollapse,Library)] + !Skin.String(Navigation.OnUp,Search)">SetProperty(List.ViewContainer.Prev,$INFO[Window.Property(List.ViewContainer)])</onup>
+
                     <onup condition="!$EXP[Exp_HomeMenu_SearchOptions_DontHide] + ![Window.IsVisible(Home) + Skin.String(Home.SideMenuCollapse,Library)] + !Skin.String(Navigation.OnUp,Search)">SetProperty(List.ViewContainer,$PARAM[id])</onup>
                     <onup condition="!$EXP[Exp_HomeMenu_SearchOptions_DontHide] + ![Window.IsVisible(Home) + Skin.String(Home.SideMenuCollapse,Library)] + !Skin.String(Navigation.OnUp,Search)">SetFocus(333)</onup>
 
@@ -58,6 +61,9 @@
 
                     <onfocus condition="Window.IsVisible(Home)">SetProperty(TMDbHelper.WidgetContainer.UpdateLock,True,1198)</onfocus>
                     <onfocus condition="Window.IsVisible(Home)">SetProperty(TMDbHelper.WidgetContainer.FirstSet,True,1198)</onfocus>
+
+                    <onfocus condition="!String.IsEmpty(Window.Property(List.ViewContainer.Prev))">SetProperty(List.ViewContainer,$INFO[Window.Property(List.ViewContainer.Prev)])</onfocus>
+                    <onfocus condition="!String.IsEmpty(Window.Property(List.ViewContainer.Prev))">ClearProperty(List.ViewContainer.Prev)</onfocus>
 
                     <include content="Action_HomeMenu_OnRightLeft">
                         <param name="onlist">$PARAM[onlist]</param>

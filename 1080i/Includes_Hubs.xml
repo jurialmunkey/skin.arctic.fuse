@@ -7,11 +7,11 @@
     </include>
 
     <include name="Hub_Slide_Spotlight_NoFocus">
-        <animation effect="slide" start="0" end="0,380" time="400" tween="quadratic" reversible="false" condition="[[Control.HasFocus(370) | ControlGroup(310).HasFocus() | Control.HasFocus(333)] | [[Control.HasFocus(303) | Control.HasFocus(308) | Control.HasFocus(309)] + Integer.IsEqual(Window.Property(List.ViewContainer),311)]]">Conditional</animation>
-        <animation effect="slide" end="0" start="0,380" time="400" tween="quadratic" reversible="false" condition="![[Control.HasFocus(370) | ControlGroup(310).HasFocus() | Control.HasFocus(333)] | [[Control.HasFocus(303) | Control.HasFocus(308) | Control.HasFocus(309)] + Integer.IsEqual(Window.Property(List.ViewContainer),311)]]">Conditional</animation>
+        <animation effect="slide" start="0" end="0,380" time="400" tween="quadratic" reversible="false" condition="[[Control.HasFocus(370) | ControlGroup(310).HasFocus() | Control.HasFocus(333)] | [[Control.HasFocus(303) | Control.HasFocus(308) | Control.HasFocus(309)] + !Integer.IsEqual(Window.Property(List.ViewContainer),300) + !Integer.IsEqual(Window.Property(List.ViewContainer),302) + Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)]]">Conditional</animation>
+        <animation effect="slide" end="0" start="0,380" time="400" tween="quadratic" reversible="false" condition="![[Control.HasFocus(370) | ControlGroup(310).HasFocus() | Control.HasFocus(333)] | [[Control.HasFocus(303) | Control.HasFocus(308) | Control.HasFocus(309)] + !Integer.IsEqual(Window.Property(List.ViewContainer),300) + !Integer.IsEqual(Window.Property(List.ViewContainer),302) + Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)]]">Conditional</animation>
 
-        <animation effect="slide" start="0" end="0,-380" time="400" tween="quadratic" reversible="false" condition="[[Control.HasFocus(370) | ControlGroup(310).HasFocus() | Control.HasFocus(333)] | [[Control.HasFocus(303) | Control.HasFocus(308) | Control.HasFocus(309)] + Integer.IsEqual(Window.Property(List.ViewContainer),311)]]">WindowClose</animation>
-        <animation effect="slide" end="0" start="0,-380" time="400" tween="quadratic" reversible="false" condition="[[Control.HasFocus(370) | ControlGroup(310).HasFocus() | Control.HasFocus(333)] | [[Control.HasFocus(303) | Control.HasFocus(308) | Control.HasFocus(309)] + Integer.IsEqual(Window.Property(List.ViewContainer),311)]]">WindowOpen</animation>
+        <animation effect="slide" start="0" end="0,-380" time="400" tween="quadratic" reversible="false" condition="[[Control.HasFocus(370) | ControlGroup(310).HasFocus() | Control.HasFocus(333)] | [[Control.HasFocus(303) | Control.HasFocus(308) | Control.HasFocus(309)] + !Integer.IsEqual(Window.Property(List.ViewContainer),300) + !Integer.IsEqual(Window.Property(List.ViewContainer),302) + Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)]]">WindowClose</animation>
+        <animation effect="slide" end="0" start="0,-380" time="400" tween="quadratic" reversible="false" condition="[[Control.HasFocus(370) | ControlGroup(310).HasFocus() | Control.HasFocus(333)] | [[Control.HasFocus(303) | Control.HasFocus(308) | Control.HasFocus(309)] + !Integer.IsEqual(Window.Property(List.ViewContainer),300) + !Integer.IsEqual(Window.Property(List.ViewContainer),302) + Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)]]">WindowOpen</animation>
     </include>
 
     <include name="Hub_Slide_Group_NoSpotlight">
@@ -143,6 +143,7 @@
             <animation effect="fade" start="0" end="100" time="background_fadetime" delay="background_fadetime">Visible</animation>
             <animation effect="fade" start="100" end="0" time="background_fadetime" delay="background_fadetime">Hidden</animation>
             <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + !Integer.IsEqual(Container(301).NumItems,0) + Skin.HasSetting(Background.EnableSpotlightFanart)</visible>
+            <visible>[[Control.HasFocus(370) | ControlGroup(310).HasFocus() | Control.HasFocus(333)] | [[Control.HasFocus(303) | Control.HasFocus(308) | Control.HasFocus(309)] + !Integer.IsEqual(Window.Property(List.ViewContainer),300) + !Integer.IsEqual(Window.Property(List.ViewContainer),302) + Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)]]</visible>
         </control>
     </include>
 
@@ -167,7 +168,7 @@
             <include content="Hub_Main_Group">
                 <param name="widgets_only">[$PARAM[widgets_only]]</param>
 
-                <include condition="Window.IsVisible(Home) + Skin.String(Home.SideMenuCollapse,Topbar) + Skin.HasSetting(Background.EnableSpotlightFanart) + !Skin.HasSetting(Hub.Home.DisableSubmenu)">Hub_Slide_Spotlight_NoFocus</include>
+                <include condition="Window.IsVisible(Home) + Skin.HasSetting(Background.EnableSpotlightFanart) + !Skin.HasSetting(Hub.Home.DisableSubmenu)">Hub_Slide_Spotlight_NoFocus</include>
 
                 <include content="Hub_Menu_Group" condition="![$PARAM[widgets_only]]">
                     <include content="Hub_Categories">
