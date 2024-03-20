@@ -9,7 +9,7 @@
         <include>Defs_TMDbHelper_Loader</include>
 
         <control type="group">
-            <include>Dimension_DialogWideMenu</include>
+            <include>Dimension_DialogHugeMenu</include>
             <include>Animation_Right_Delay</include>
             <include content="Dialog_Dim_Side">
                 <param name="slide_condition">!Integer.IsEqual(Container(9000).NumItems,0)</param>
@@ -18,7 +18,7 @@
             <!-- Bottom Layer -->
             <include content="Dialog_Background_Side">
                 <param name="slide_condition">!Integer.IsEqual(Container(9000).NumItems,0)</param>
-                <param name="dialog_size">Dimension_DialogWideMenu</param>
+                <param name="dialog_size">Dimension_DialogHugeMenu</param>
 
                 <!-- Side Buttons -->
                 <include content="Dialog_Body">
@@ -87,22 +87,35 @@
             </include>
 
             <include content="Dialog_Foreground_Side">
-                <param name="dialog_size">Dimension_DialogWideMenu</param>
+                <param name="dialog_size">Dimension_DialogHugeMenu</param>
                 <param name="topline">true</param>
-                <param name="subline">false</param>
+                <param name="subline">true</param>
+                <param name="lines_right">476</param>
 
                 <!-- Header -->
                 <include content="Dialog_Head">
-                    <param name="label">$LOCALIZE[10106]</param>
+                    <param name="sublabel">$LOCALIZE[10106]</param>
+                    <param name="label">$VAR[Label_ContextMenu_Title]</param>
+                    <param name="sublabel_include">true</param>
                 </include>
 
                 <include>Dialog_Head_CloseButton</include>
 
                 <!-- Content -->
                 <include content="Dialog_Body">
+                    <include content="Dialog_Body_Group">
+                        <include content="DialogInfo_PlotBox_Artwork">
+                            <param name="poster_visible">[!String.IsEmpty(ListItem.Art(poster)) | !String.IsEmpty(Window(Home).Property(TMDbHelper.ListItem.base_poster))]</param>
+                            <param name="poster_icon">$VAR[Image_ContextPoster]</param>
+                            <param name="landscape_icon">$VAR[Image_ContextFanart]</param>
+                            <param name="square_icon">$VAR[Image_ContextIcon]</param>
+                            <param name="clearlogo_icon">$VAR[Image_ContextClearLogo]</param>
+                        </include>
+                    </include>
                     <include content="Dialog_Body_Grouplist">
                         <param name="id">996</param>
                         <onleft>9000</onleft>
+                        <right>476</right>
                         <onright>61</onright>
                         <pagecontrol>61</pagecontrol>
                     </include>
@@ -121,7 +134,7 @@
             <param name="id">1000</param>
             <param name="control">button</param>
             <param name="dialog">true</param>
-            <width>760</width>
+            <width>764</width>
             <!-- <width>dialog_main_button_w</width> -->
         </include>
 
