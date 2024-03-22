@@ -838,7 +838,8 @@
                 <onclick condition="!String.IsEmpty(Window(Home).Property(TMDbHelper.TraktIsAuth)) + String.IsEmpty(ListItem.Property(tmdb_id)) + !String.IsEmpty(Container(99950).ListItem.Property(tmdb_id)) + [String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,season)]">RunScript(plugin.video.themoviedb.helper,sync_trakt,tmdb_id=$INFO[Container(99950).ListItem.Property(tmdb_id)],$VAR[Path_Param_Type],cache_refresh)</onclick>
                 <onclick condition="!String.IsEmpty(Window(Home).Property(TMDbHelper.TraktIsAuth)) + !String.IsEmpty(ListItem.Property(tmdb_id)) + String.IsEqual(ListItem.DBType,episode)">RunScript(plugin.video.themoviedb.helper,sync_trakt,tmdb_id=$INFO[ListItem.Property(tmdb_id)],$VAR[Path_Param_Type],season=$INFO[ListItem.Season],episode=$INFO[ListItem.Episode],cache_refresh)</onclick>
                 <onclick condition="!String.IsEmpty(Window(Home).Property(TMDbHelper.TraktIsAuth)) + String.IsEmpty(ListItem.Property(tmdb_id)) + !String.IsEmpty(Container(99950).ListItem.Property(tmdb_id)) + String.IsEqual(ListItem.DBType,episode)">RunScript(plugin.video.themoviedb.helper,sync_trakt,tmdb_id=$INFO[Container(99950).ListItem.Property(tmdb_id)],$VAR[Path_Param_Type],season=$INFO[ListItem.Season],episode=$INFO[ListItem.Episode],cache_refresh)</onclick>
-                <onclick condition="String.IsEmpty(Window(Home).Property(TMDbHelper.TraktIsAuth))">SendClick(12003,7)</onclick>
+                <!-- <onclick condition="String.IsEmpty(Window(Home).Property(TMDbHelper.TraktIsAuth))">SendClick(12003,7)</onclick> -->
+                <onclick condition="String.IsEmpty(Window(Home).Property(TMDbHelper.TraktIsAuth))">runscript(script.wikipedia,wikipedia=$VAR[Path_Wikipedia_Title],tmdb_type=$VAR[Path_Wikipedia_Type])</onclick>
                 <onfocus>SetProperty(DetailsView,Reviews)</onfocus>
                 <onfocus>ClearProperty(ReviewsActive)</onfocus>
                 <include content="DialogInfo_Button_HintLabel">
@@ -852,15 +853,22 @@
                 <param name="id">4005</param>
                 <param name="groupid">4105</param>
                 <param name="sliceid">4205</param>
-                <param name="label">Wiki</param>
-                <param name="icon">special://skin/extras/icons/globe.png</param>
+                <param name="label">$LOCALIZE[39123]</param>
+                <param name="icon">special://skin/extras/icons/image.png</param>
+                <!-- <param name="label">Wiki</param>
+                <param name="icon">special://skin/extras/icons/globe.png</param> -->
                 <param name="zoom_in_delay">240</param>
                 <param name="zoom_in_include">$PARAM[zoom_in_include]</param>
-                <onclick>runscript(script.wikipedia,wikipedia=$VAR[Path_Wikipedia_Title],tmdb_type=$VAR[Path_Wikipedia_Type])</onclick>
-                <onfocus>SetProperty(DetailsView,Critics)</onfocus>
+                <!-- <onclick>runscript(script.wikipedia,wikipedia=$VAR[Path_Wikipedia_Title],tmdb_type=$VAR[Path_Wikipedia_Type])</onclick> -->
+                <!-- <onfocus>SetProperty(DetailsView,Critics)</onfocus> -->
+                <onleft>Control.Move(7003,-1)</onleft>
+                <onright>Control.Move(7003,1)</onright>
+                <onclick condition="Window.IsVisible(DialogVideoInfo.xml) | Window.IsVisible(DialogMusicInfo.xml)">SendClick(10)</onclick>
+                <onfocus>SetProperty(DetailsView,Artwork)</onfocus>
                 <onfocus>ClearProperty(ReviewsActive)</onfocus>
                 <include content="DialogInfo_Button_HintLabel">
-                    <param name="label">Wiki</param>
+                    <param name="label">$LOCALIZE[39123]</param>
+                    <!-- <param name="label">Wiki</param> -->
                 </include>
             </include>
         </definition>
