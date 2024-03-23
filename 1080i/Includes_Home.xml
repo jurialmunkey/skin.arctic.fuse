@@ -13,6 +13,44 @@
         </definition>
     </include>
 
+    <include name="Home_Menu_ProfileButton">
+        <definition>
+            <control type="group">
+                <centertop>100</centertop>
+                <centerleft>100</centerleft>
+                <height>50</height>
+                <width>50</width>
+                <control type="button" id="308">
+                    <texturenofocus />
+                    <include>Texture_KeyboardButton</include>
+                    <ondown>SetFocus(303,0,absolute)</ondown>
+                    <onup>309</onup>
+                    <onleft>Close</onleft>
+                    <onright>Close</onright>
+                    <onclick>Close</onclick>
+                    <onclick condition="Skin.HasSetting(SkinUserLogin.Disabled)">System.LogOff</onclick>
+                    <onclick condition="!Skin.HasSetting(SkinUserLogin.Disabled)">ActivateWindow(1195)</onclick>
+                    <width>80</width>
+                    <height>80</height>
+                    <centerleft>50%</centerleft>
+                    <centertop>50%</centertop>
+                </control>
+                <control type="image">
+                    <include content="Dimension_Padding">
+                        <param name="pad">-40</param>
+                    </include>
+                    <bordersize>40</bordersize>
+                    <bordertexture colordiffuse="shadow_soft">shadows/circle_50-shadow-40.png</bordertexture>
+                    <texture colordiffuse="panel_fg_100">diffuse/circle_50.png</texture>
+                </control>
+                <include content="Object_InfoCircle_Image">
+                    <param name="colordiffuse">white</param>
+                    <param name="icon">$VAR[Image_ProfileThumb]</param>
+                </include>
+            </control>
+        </definition>
+    </include>
+
     <include name="Home_Menu_List">
         <param name="items_include">Home_Menu_Content</param>
         <param name="onlist">320</param>
@@ -39,12 +77,10 @@
                     <onup condition="$EXP[Exp_HomeMenu_SearchOptions_DontHide]">308</onup>
                     <onup condition="$EXP[Exp_HomeMenu_SearchOptions_DontHide] + [Window.IsVisible(Home) + Skin.String(Home.SideMenuCollapse,Library)]">$PARAM[id]</onup>
 
-                    <onup condition="!$EXP[Exp_HomeMenu_SearchOptions_DontHide] + ![Window.IsVisible(Home) + Skin.String(Home.SideMenuCollapse,Library)] + Skin.String(Navigation.OnUp,Search)">ActivateWindow(1105)</onup>
+                    <onup condition="!$EXP[Exp_HomeMenu_SearchOptions_DontHide] + ![Window.IsVisible(Home) + Skin.String(Home.SideMenuCollapse,Library)]">SetProperty(List.ViewContainer.Prev,$INFO[Window.Property(List.ViewContainer)])</onup>
 
-                    <onup condition="!$EXP[Exp_HomeMenu_SearchOptions_DontHide] + ![Window.IsVisible(Home) + Skin.String(Home.SideMenuCollapse,Library)] + !Skin.String(Navigation.OnUp,Search)">SetProperty(List.ViewContainer.Prev,$INFO[Window.Property(List.ViewContainer)])</onup>
-
-                    <onup condition="!$EXP[Exp_HomeMenu_SearchOptions_DontHide] + ![Window.IsVisible(Home) + Skin.String(Home.SideMenuCollapse,Library)] + !Skin.String(Navigation.OnUp,Search)">SetProperty(List.ViewContainer,$PARAM[id])</onup>
-                    <onup condition="!$EXP[Exp_HomeMenu_SearchOptions_DontHide] + ![Window.IsVisible(Home) + Skin.String(Home.SideMenuCollapse,Library)] + !Skin.String(Navigation.OnUp,Search)">SetFocus(333)</onup>
+                    <onup condition="!$EXP[Exp_HomeMenu_SearchOptions_DontHide] + ![Window.IsVisible(Home) + Skin.String(Home.SideMenuCollapse,Library)]">SetProperty(List.ViewContainer,$PARAM[id])</onup>
+                    <onup condition="!$EXP[Exp_HomeMenu_SearchOptions_DontHide] + ![Window.IsVisible(Home) + Skin.String(Home.SideMenuCollapse,Library)]">SetFocus(333)</onup>
 
                     <ondown condition="$EXP[Exp_HomeMenu_SearchOptions_DontHide]">309</ondown>
                     <ondown condition="!$EXP[Exp_HomeMenu_SearchOptions_DontHide] + [Window.IsVisible(Home) + Skin.String(Home.SideMenuCollapse,Library)]">$PARAM[id]</ondown>
@@ -225,7 +261,6 @@
                 <param name="type">Hidden</param>
                 <param name="posx">-80</param>
             </include>
-
             <include content="Animation_Slide_In" condition="Window.IsActive(1172)">
                 <param name="type">WindowOpen</param>
                 <param name="posx">-80</param>
@@ -235,16 +270,19 @@
                 <param name="posx">-80</param>
             </include>
 
-            <include content="Object_Dim_Side">
+            <!-- <include content="Object_Dim_Side">
                 <param name="flipx">false</param>
                 <left>-320</left>
-                <right>-160</right>
-            </include>
-            <include content="Object_Dim_Side">
-                <param name="flipx">false</param>
-                <left>-320</left>
-                <right>-640</right>
-            </include>
+                <right>-240</right>
+            </include> -->
+            <control type="image">
+                <right>-1080</right>
+                <texture colordiffuse="$VAR[ColorBackgroundFade]">common/dim-thick-side-full.png</texture>
+            </control>
+            <control type="image">
+                <right>-540</right>
+                <texture colordiffuse="$VAR[ColorBackgroundFade]">common/dim-thick-side-full.png</texture>
+            </control>
         </control>
         <control type="grouplist">
             <top>320</top>
@@ -298,41 +336,20 @@
     <include name="Home_Menu">
         <control type="group">
             <visible>!$EXP[Exp_InfoDialogs]</visible>
-
-            <include condition="$EXP[Exp_HomeMenu_DontHide] + Skin.HasSetting(SideMenu.ExpandLabels)">Home_Menu_Fade_Labels</include>
-
             <control type="group">
-                <!-- Search -->
-                <include content="Home_Menu_Button_Icon" condition="$EXP[Exp_HomeMenu_SearchOptions_DontHide]">
-                    <param name="id">308</param>
-                    <param name="icon">special://skin/extras/icons/search.png</param>
-                    <param name="label">$LOCALIZE[137]</param>
-                    <include content="Home_Menu_Button_Back">
-                        <param name="id">308</param>
-                        <ondown>SetFocus(303,0,absolute)</ondown>
-                        <onup>309</onup>
-                        <onclick condition="!Window.IsVisible(1105)">Action(Right)</onclick>
-                        <onclick condition="!Window.IsVisible(1105)">ActivateWindow(1105)</onclick>
-                        <onclick condition="Window.IsVisible(1105)">SetFocus(9099)</onclick>
 
-                        <include content="Action_HomeMenu_OnRightLeft">
-                            <param name="onlist">$PARAM[onlist]</param>
-                        </include>
-                    </include>
-                    <left>view_menu</left>
-                    <top>view_pad</top>
-                    <include content="Layout_Home_Menu_Label" condition="Skin.HasSetting(SideMenu.ExpandLabels)">
-                        <param name="detailed">true</param>
-                        <param name="selected">Control.HasFocus(308)</param>
-                        <param name="label">$LOCALIZE[137]</param>
-                    </include>
+                <!-- <include>Home_Menu_ProfileButton</include> -->
+
+                <include content="Home_Menu_List">
+                    <param name="onlist">$PARAM[onlist]</param>
                 </include>
 
-                <!-- Settings -->
-                <include content="Home_Menu_Button_Icon" condition="$EXP[Exp_HomeMenu_SearchOptions_DontHide]">
+                <!-- <include content="Home_Menu_Button_Icon">
                     <param name="id">309</param>
                     <param name="icon">special://skin/extras/icons/bars.png</param>
-                    <param name="label">$LOCALIZE[33063]</param>
+                    <param name="color_nf">main_fg_70</param>
+                    <centerbottom>100</centerbottom>
+                    <left>view_menu</left>
                     <include content="Home_Menu_Button_Back">
                         <param name="id">309</param>
                         <onup>SetFocus(303,9999,absolute)</onup>
@@ -342,18 +359,7 @@
                             <param name="onlist">$PARAM[onlist]</param>
                         </include>
                     </include>
-                    <left>view_menu</left>
-                    <bottom>view_pad</bottom>
-                    <include content="Layout_Home_Menu_Label" condition="Skin.HasSetting(SideMenu.ExpandLabels)">
-                        <param name="detailed">true</param>
-                        <param name="selected">Control.HasFocus(309)</param>
-                        <param name="label">$LOCALIZE[33063]</param>
-                    </include>
-                </include>
-
-                <include content="Home_Menu_List">
-                    <param name="onlist">$PARAM[onlist]</param>
-                </include>
+                </include> -->
             </control>
         </control>
     </include>

@@ -12,19 +12,22 @@
                 <param name="windowclose_down">!$EXP[Exp_SettingsDialogs_Next]</param>
             </include>
             <onup>PreviousMenu</onup>
-            <ondown>330</ondown>
+            <ondown>ActivateWindow(1171)</ondown>
             <control type="group" id="5999">
                 <height>widget_tbump_h</height>
             </control>
-            <!-- <control type="button" id="5098">
-                <height>0</height>
-                <texturefocus />
-                <texturenofocus />
-                <onfocus>Action(Down)</onfocus>
-                <animation effect="fade" time="400" start="0" end="0">Focus</animation>
-                <visible>!ControlGroup(5000).HasFocus() | Control.HasFocus(5098)</visible>
-            </control> -->
             <nested />
+            <control type="group" id="5099">
+                <height>0</height>
+                <control type="group">
+                    <visible>!Integer.IsEqual(Container(5000).NumItems,0)</visible>
+                    <visible>!Integer.IsEqual(Container(5000).NumItems,1) | !Control.HasFocus(5098) | ControlGroup(5000).HasFocus()</visible>
+                    <visible>!$EXP[Exp_InfoDialogs]</visible>
+                    <include content="Furniture_Bottom_WidgetGroups">
+                        <param name="label">$LOCALIZE[33063]</param>
+                    </include>
+                </control>
+            </control>
         </control>
     </include>
 
@@ -48,32 +51,26 @@
         <include>Background_Transition</include>
 
         <control type="group" id="320">
-
             <include>Animation_View_WindowChange</include>
-
             <animation type="Conditional" condition="Control.IsVisible(330)" reversible="false">
                 <effect type="slide" end="0,-20" time="60" tween="sine" />
                 <effect type="slide" end="0,20" time="180" tween="sine" delay="80" />
             </animation>
-
             <nested />
-
         </control>
-
+        <include>View_Bumper</include>
         <include>Widget_Transitions</include>
         <include>Home_Fade</include>
+        <include>Home_Menu</include>
 
         <control type="group">
             <visible>!$EXP[Exp_InfoDialogs]</visible>
             <include>Furniture_Top</include>
+            <include>Animation_View_WindowChange</include>
+            <include content="Hub_Widgets_Group_Furniture">
+                <param name="visible">true</param>
+            </include>
         </control>
-
-        <include>View_Bumper</include>
-        <include>Home_Menu</include>
-
-        <include content="Hub_Widgets_Group_Furniture">
-            <param name="visible">true</param>
-        </include>
 
         <include>View_Dialog_VideoPIP</include>
         <include>View_Dialog_Plot</include>
