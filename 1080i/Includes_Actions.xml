@@ -66,6 +66,7 @@
     </variable>
 
     <include name="Action_Media_Onload">
+        <onload condition="String.IsEmpty(Skin.String(Navigation.Library.OnDown))">Skin.SetString(Navigation.Library.OnDown,Options)</onload>
         <onload>RunScript(script.skinvariables,action=buildviews)</onload>
         <onload>ClearProperty(MediaFilterBase)</onload>
         <onunload>ClearProperty(MediaFilterBase)</onunload>
@@ -418,11 +419,14 @@
         <definition>
             <!-- Explore -->
             <include content="Action_View_Explore_OnDown">
-                <param name="condition">[$PARAM[condition] + Skin.String(Navigation.Media.OnDown,Explore)]</param>
+                <param name="condition">[$PARAM[condition] + Skin.String(Navigation.Library.OnDown,Explore)]</param>
             </include>
 
+            <!-- Filter -->
+            <ondown condition="$PARAM[condition] + Skin.String(Navigation.Library.OnDown,Filter)">SetFocus(64)</ondown>
+
             <!-- Options -->
-            <ondown condition="$PARAM[condition] + !Skin.String(Navigation.Media.OnDown,Explore)">SetFocus(64)</ondown>
+            <ondown condition="$PARAM[condition] + Skin.String(Navigation.Library.OnDown,Options)">ActivateWindow(1171)</ondown>
         </definition>
     </include>
 
