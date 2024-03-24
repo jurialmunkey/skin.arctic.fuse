@@ -161,21 +161,19 @@
                         </include>
                     </control>
                 </control>
-
                 <include content="View_Furniture_Bottom_Group">
-                    <param name="include">View_Furniture_Bottom_Group_Explore</param>
+                    <param name="include">View_Furniture_Bottom_Group_NextLabel</param>
                 </include>
-
             </control>
 
 
         </control>
     </include>
 
-    <include name="View_Furniture_Bottom_Group_Explore">
+    <include name="View_Furniture_Bottom_Group_NextLabel">
         <control type="group">
             <visible>$EXP[Exp_FurnitureFooter_Left_IsVisible]</visible>
-            <visible>[Skin.String(Navigation.Media.OnDown,Explore) + ![[$EXP[Exp_View_502] + Control.HasFocus(503)] | [$EXP[Exp_View_512] + Control.HasFocus(513)] | [$EXP[Exp_View_522] + Control.HasFocus(523)]]]</visible>
+            <visible>![Skin.String(Furniture.BottomLeft.Enable,Library) | Skin.String(Furniture.BottomLeft.Enable,Always)]</visible>
             <include content="Furniture_Bottombar_Group">
                 <include content="Furniture_Gutters">
                     <control type="group">
@@ -185,7 +183,7 @@
                             <height>35</height>
                             <include content="Info_Viewline">
                                 <param name="library_condition">false</param>
-                                <param name="label">$LOCALIZE[31148]</param>
+                                <param name="label">$VAR[Label_NextMedia]</param>
                                 <param name="custom_condition">true</param>
                                 <param name="custom_icon">special://skin/extras/icons/arrow-down.png</param>
                                 <top>0</top>
@@ -201,7 +199,7 @@
     <include name="View_Furniture_Bottom_Group_Content">
         <control type="group">
             <visible>$EXP[Exp_FurnitureFooter_Left_IsVisible]</visible>
-            <visible>![Skin.String(Navigation.Media.OnDown,Explore) + ![[$EXP[Exp_View_502] + Control.HasFocus(503)] | [$EXP[Exp_View_512] + Control.HasFocus(513)] | [$EXP[Exp_View_522] + Control.HasFocus(523)]]]</visible>
+            <visible>[Skin.String(Furniture.BottomLeft.Enable,Library) | Skin.String(Furniture.BottomLeft.Enable,Always)]</visible>
             <include content="Furniture_Bottom_Left">
                 <visible>![[$EXP[Exp_View_502] + Control.HasFocus(503)] | [$EXP[Exp_View_512] + Control.HasFocus(513)] | [$EXP[Exp_View_522] + Control.HasFocus(523)]]</visible>
             </include>
@@ -233,24 +231,20 @@
     </include>
 
     <include name="View_Furniture_Bottom">
-
-
         <include content="View_Furniture_Bottom_Group">
             <param name="include">View_Furniture_Bottom_Group_Content</param>
         </include>
-        <include>Furniture_Bottom_Right</include>
-
         <control type="group">
-            <visible>[[Container.Scrolling + $EXP[Exp_FurnitureFooter_Left_IsVisible]] | !String.IsEmpty(Window.Property(MediaFilterBase)) | !String.IsEmpty(Window.Property(MediaFilterWall))]</visible>
-            <animation effect="fade" start="0" end="100" delay="400" time="1" reversible="true">Visible</animation>
-            <animation effect="fade" start="100" end="0" delay="400" time="1" reversible="false">Hidden</animation>
-            <height>scrollbar_w</height>
-            <centerbottom>100</centerbottom>
-            <left>view_side</left>
-            <right>view_pad</right>
+            <include>Furniture_Bottom_Right</include>
+            <visible>!$EXP[Exp_InfoDialogs]</visible>
             <control type="group">
+                <visible>[[Container.Scrolling + $EXP[Exp_FurnitureFooter_Left_IsVisible]] | !String.IsEmpty(Window.Property(MediaFilterBase)) | !String.IsEmpty(Window.Property(MediaFilterWall))]</visible>
+                <animation effect="fade" start="0" end="100" delay="400" time="1" reversible="true">Visible</animation>
+                <animation effect="fade" start="100" end="0" delay="400" time="1" reversible="false">Hidden</animation>
                 <height>scrollbar_w</height>
-                <centertop>50%</centertop>
+                <centerbottom>100</centerbottom>
+                <left>view_side</left>
+                <right>view_pad</right>
                 <control type="group">
                     <width>50</width>
                     <height>50</height>
@@ -274,18 +268,9 @@
                 </control>
                 <control type="label">
                     <label>$LOCALIZE[31135] $INFO[Container.CurrentPage,[COLOR=main_fg_90][B],[/B][/COLOR] $LOCALIZE[20163] ]$INFO[Container.NumPages,[COLOR=main_fg_90][B],[/B][/COLOR]]</label>
-                    <!-- <label>$INFO[Container.NumItems,[COLOR=main_fg_90][B],[/B][/COLOR]] $LOCALIZE[31022]</label> -->
                     <left>80</left>
                     <include>Defs_Label_FooterItem</include>
                 </control>
-                <!-- <control type="label">
-                    <label>$LOCALIZE[31135] $INFO[Container.CurrentPage,[COLOR=main_fg_90][B],[/B][/COLOR] $LOCALIZE[20163] ]$INFO[Container.NumPages,[COLOR=main_fg_90][B],[/B][/COLOR]]</label>
-                    <right>0</right>
-                    <width>320</width>
-                    <align>right</align>
-                    <include>Defs_Label_FooterItem</include>
-                </control> -->
-
             </control>
         </control>
     </include>
@@ -345,10 +330,8 @@
             <include>Animation_Group_Bumper</include>
             <include>Animation_View_WindowChange</include>
             <include>View_Row_Header</include>
-            <control type="group">
-                <include>View_Furniture_Bottom</include>
-                <include>View_Hidden_Buttons</include>
-            </control>
+            <include>View_Furniture_Bottom</include>
+            <include>View_Hidden_Buttons</include>
         </control>
         <include content="Home_Menu">
             <param name="onlist">50</param>

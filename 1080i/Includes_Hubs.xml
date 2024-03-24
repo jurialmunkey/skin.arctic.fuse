@@ -388,34 +388,31 @@
         </control>
     </include>
 
-    <include name="_Hub_Widgets_Group_Furniture">
-        <control type="group">
-            <include content="Animation_ConditionalFade" condition="$PARAM[include_conditionalfade]">
-                <param name="condition">$EXP[Exp_InfoDialogs]</param>
-            </include>
-            <include content="Animation_Fade_In">
-                <param name="type">Visible</param>
-                <param name="delay">200</param>
-            </include>
-            <visible>$PARAM[visible]</visible>
-            <control type="group">
-                <include content="Animation_ConditionalFade">
-                    <param name="condition">Window.IsVisible(1171)</param>
-                </include>
-                <include condition="!Skin.HasSetting(Hubs.WidgetSelector)">Furniture_Bottom_Left</include>
-            </control>
-            <include>Furniture_Bottom_Right</include>
-        </control>
-    </include>
-
     <include name="Hub_Widgets_Group_Furniture">
         <param name="visible">[!Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + !String.IsEmpty(Window.Property(TMDBHelper.WidgetContainer)) + !String.IsEmpty(Window.Property(Slide.WidgetContainer))]</param>
         <param name="include_conditionalfade">true</param>
         <definition>
-            <include content="_Hub_Widgets_Group_Furniture" condition="Skin.HasSetting(Hubs.EnableWidgetsFooter)">
-                <param name="visible">$PARAM[visible]</param>
-                <param name="include_conditionalfade">$PARAM[include_conditionalfade]</param>
-            </include>
+            <control type="group">
+                <include content="Animation_ConditionalFade" condition="$PARAM[include_conditionalfade]">
+                    <param name="condition">$EXP[Exp_InfoDialogs]</param>
+                </include>
+
+                <control type="group">
+                    <include content="Animation_Fade_In">
+                        <param name="type">Visible</param>
+                        <param name="delay">200</param>
+                    </include>
+                    <visible>$PARAM[visible]</visible>
+                    <include content="Animation_ConditionalFade">
+                        <param name="condition">Window.IsVisible(1171)</param>
+                    </include>
+                    <include condition="[[!Skin.HasSetting(Hubs.WidgetSelector) + Skin.String(Furniture.BottomLeft.Enable,Always) + $EXP[Exp_Window_IsHub]] | [[Skin.String(Furniture.BottomLeft.Enable,Always) | Skin.String(Furniture.BottomLeft.Enable,Library)] + !$EXP[Exp_Window_IsHub]]]">Furniture_Bottom_Left</include>
+                </control>
+
+                <include>Furniture_Bottom_Right</include>
+
+            </control>
+
         </definition>
     </include>
 
