@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
     <include name="Search_Filter_Content">
+
+
+        <control type="group" id="9521">
+            <left>20</left>
+            <right>20</right>
+            <height>10</height>
+            <top>20</top>
+            <control type="image">
+                <height>1</height>
+                <texture colordiffuse="dialog_fg_12">common/white.png</texture>
+            </control>
+        </control>
+
         <include content="Search_Filter_Alphabet">
             <param name="editid">9099</param>
             <param name="ondown">9502</param>
@@ -10,7 +23,7 @@
             <left>20</left>
             <right>20</right>
             <height>20</height>
-            <top>50</top>
+            <top>10</top>
             <control type="image">
                 <height>1</height>
                 <texture colordiffuse="dialog_fg_12">common/white.png</texture>
@@ -84,7 +97,9 @@
                         <align>left</align>
                         <onup>SetProperty(SearchTerm,$INFO[Control.GetLabel(9099).index(1)])</onup>
                         <onleft>SetProperty(SearchTerm,$INFO[Control.GetLabel(9099).index(1)])</onleft>
+                        <onleft>SetFocus(9002)</onleft>
                         <onright>SetProperty(SearchTerm,$INFO[Control.GetLabel(9099).index(1)])</onright>
+                        <onright>SetFocus(9002)</onright>
                         <ondown>SetProperty(SearchTerm,$INFO[Control.GetLabel(9099).index(1)])</ondown>
                         <ondown>9002</ondown>
                         <onup>SetFocus(8000,99999,absolute)</onup>
@@ -377,6 +392,9 @@
                         </include>
                         <onup>SetFocus(5099,9999,absolute)</onup>
                         <ondown>SetFocus(5099,0,absolute)</ondown>
+                        <onleft>9502</onleft>
+                        <onright>9502</onright>
+                        <onback>9502</onback>
                     </include>
                     <control type="image">
                         <left>40</left>
@@ -431,35 +449,10 @@
         </control>
     </include>
 
-    <include name="Search_Filter_Letter">
-        <param name="textcolor_fo">main_fg_100</param>
-        <param name="textcolor_nf">main_fg_70</param>
-        <param name="editid">9099</param>
-        <definition>
-            <control type="button" id="90$PARAM[groupid]$PARAM[id]">
-                <width>33</width>
-                <height>50</height>
-                <textoffsety>-5</textoffsety>
-                <textoffsetx>-20</textoffsetx>
-                <centertop>50%</centertop>
-                <include>Texture_Highlight_Underline_H</include>
-                <align>center</align>
-                <font>font_main_black</font>
-                <textcolor>$PARAM[textcolor_nf]</textcolor>
-                <focusedcolor>$PARAM[textcolor_fo]</focusedcolor>
-                <label>[UPPERCASE]$PARAM[letter][/UPPERCASE]</label>
-                <onclick>SetFocus($PARAM[editid])</onclick>
-                <include>Object_SearchLetter_Click_$PARAM[letter]</include>
-                <onclick>SetFocus(90$PARAM[groupid]$PARAM[id])</onclick>
-                <include>Action_UpdateSearchTerm</include>
-                <onup>$PARAM[onup]</onup>
-                <onup>90$PARAM[grouponup]$PARAM[id]</onup>
-                <ondown>$PARAM[ondown]</ondown>
-                <ondown>90$PARAM[groupondown]$PARAM[id]</ondown>
-                <nested />
-            </control>
-        </definition>
-    </include>
+    <variable name="Search_Filter_AutoComplete">
+        <value condition="$EXP[Exp_AutoCompletion_IsEnabled] + !String.IsEmpty(Control.GetLabel(9099).index(1))">plugin://plugin.program.autocompletion?info=autocomplete&amp;&amp;id=$VAR[Path_SearchTerm]&amp;&amp;limit=9</value>
+        <value>plugin://script.skinvariables/?info=get_split_string&amp;infolabel=Skin.String(SearchHistory)&amp;reload=$INFO[Skin.String(SearchHistory)]</value>
+    </variable>
 
     <include name="Search_Filter_Alphabet">
         <param name="editid">9099</param>
@@ -467,247 +460,318 @@
         <param name="rowone">9002</param>
         <param name="rowtwo">9003</param>
         <definition>
-            <!-- First Row -->
-            <control type="grouplist" id="$PARAM[rowone]">
+            <control type="fixedlist" id="$PARAM[rowone]">
                 <orientation>horizontal</orientation>
-                <itemgap>0</itemgap>
-                <height>view_pad</height>
-                <left>30</left>
+                <height>80</height>
+                <focusposition>5</focusposition>
+                <movement>5</movement>
+                <width>462</width>
+                <centerleft>50%</centerleft>
 
-                <include content="Search_Filter_Letter">
-                    <param name="letter">a</param>
-                    <param name="id">1</param>
-                    <param name="groupid">1</param>
-                    <param name="groupondown">3</param>
-                    <param name="onup">$PARAM[editid]</param>
-                    <param name="editid">$PARAM[editid]</param>
-                </include>
-                <include content="Search_Filter_Letter">
-                    <param name="letter">b</param>
-                    <param name="id">2</param>
-                    <param name="groupid">1</param>
-                    <param name="groupondown">3</param>
-                    <param name="onup">$PARAM[editid]</param>
-                    <param name="editid">$PARAM[editid]</param>
-                </include>
-                <include content="Search_Filter_Letter">
-                    <param name="letter">c</param>
-                    <param name="id">3</param>
-                    <param name="groupid">1</param>
-                    <param name="groupondown">3</param>
-                    <param name="onup">$PARAM[editid]</param>
-                    <param name="editid">$PARAM[editid]</param>
-                </include>
-                <include content="Search_Filter_Letter">
-                    <param name="letter">d</param>
-                    <param name="id">4</param>
-                    <param name="groupid">1</param>
-                    <param name="groupondown">3</param>
-                    <param name="onup">$PARAM[editid]</param>
-                    <param name="editid">$PARAM[editid]</param>
-                </include>
-                <include content="Search_Filter_Letter">
-                    <param name="letter">e</param>
-                    <param name="id">5</param>
-                    <param name="groupid">1</param>
-                    <param name="groupondown">3</param>
-                    <param name="onup">$PARAM[editid]</param>
-                    <param name="editid">$PARAM[editid]</param>
-                </include>
-                <include content="Search_Filter_Letter">
-                    <param name="letter">f</param>
-                    <param name="id">6</param>
-                    <param name="groupid">1</param>
-                    <param name="groupondown">3</param>
-                    <param name="onup">$PARAM[editid]</param>
-                    <param name="editid">$PARAM[editid]</param>
-                </include>
-                <include content="Search_Filter_Letter">
-                    <param name="letter">g</param>
-                    <param name="id">7</param>
-                    <param name="groupid">1</param>
-                    <param name="groupondown">3</param>
-                    <param name="onup">$PARAM[editid]</param>
-                    <param name="editid">$PARAM[editid]</param>
-                </include>
-                <include content="Search_Filter_Letter">
-                    <param name="letter">h</param>
-                    <param name="id">8</param>
-                    <param name="groupid">1</param>
-                    <param name="groupondown">3</param>
-                    <param name="onup">$PARAM[editid]</param>
-                    <param name="editid">$PARAM[editid]</param>
-                </include>
-                <include content="Search_Filter_Letter">
-                    <param name="letter">i</param>
-                    <param name="id">9</param>
-                    <param name="groupid">1</param>
-                    <param name="groupondown">3</param>
-                    <param name="onup">$PARAM[editid]</param>
-                    <param name="editid">$PARAM[editid]</param>
-                </include>
-                <include content="Search_Filter_Letter">
-                    <param name="letter">j</param>
-                    <param name="id">1</param>
-                    <param name="groupid">2</param>
-                    <param name="groupondown">4</param>
-                    <param name="onup">$PARAM[editid]</param>
-                    <param name="editid">$PARAM[editid]</param>
-                </include>
-                <include content="Search_Filter_Letter">
-                    <param name="letter">k</param>
-                    <param name="id">2</param>
-                    <param name="groupid">2</param>
-                    <param name="groupondown">4</param>
-                    <param name="onup">$PARAM[editid]</param>
-                    <param name="editid">$PARAM[editid]</param>
-                </include>
-                <include content="Search_Filter_Letter">
-                    <param name="letter">l</param>
-                    <param name="id">3</param>
-                    <param name="groupid">2</param>
-                    <param name="groupondown">4</param>
-                    <param name="onup">$PARAM[editid]</param>
-                    <param name="editid">$PARAM[editid]</param>
-                </include>
-                <include content="Search_Filter_Letter">
-                    <param name="letter">m</param>
-                    <param name="id">4</param>
-                    <param name="groupid">2</param>
-                    <param name="groupondown">4</param>
-                    <param name="onup">$PARAM[editid]</param>
-                    <param name="editid">$PARAM[editid]</param>
-                </include>
-                <include content="Search_Filter_Letter">
-                    <param name="letter">n</param>
-                    <param name="id">5</param>
-                    <param name="groupid">2</param>
-                    <param name="groupondown">4</param>
-                    <param name="onup">$PARAM[editid]</param>
-                    <param name="editid">$PARAM[editid]</param>
-                </include>
+                <onup>$PARAM[editid]</onup>
+                <ondown>$PARAM[rowtwo]</ondown>
+                <onleft>$PARAM[rowone]</onleft>
+                <onright>$PARAM[rowone]</onright>
+
+                <!-- <onback>$PARAM[editid]</onback>
+                <onback>Backspace</onback>
+                <onback>SetFocus($PARAM[rowone])</onback> -->
+                <!-- <include>Action_UpdateSearchTerm</include> -->
+
+                <itemlayout width="42">
+                    <control type="label">
+                        <font>font_main</font>
+                        <label>$INFO[ListItem.Label]</label>
+                        <textcolor>dialog_fg_70</textcolor>
+                        <align>center</align>
+                    </control>
+                </itemlayout>
+
+                <focusedlayout width="42">
+
+                    <control type="group">
+                        <visible>Control.HasFocus($PARAM[rowone])</visible>
+                        <control type="label">
+                            <font>font_main_black</font>
+                            <label>$INFO[ListItem.Label]</label>
+                            <textcolor>$VAR[ColorSelected]</textcolor>
+                            <align>center</align>
+                        </control>
+                        <control type="image">
+                            <include>Texture_Highlight_Scrollbar_H</include>
+                            <height>scrollbar_w</height>
+                            <centerbottom>12</centerbottom>
+                            <width>75%</width>
+                            <centerleft>50%</centerleft>
+                        </control>
+                    </control>
+                    <control type="label">
+                        <font>font_main</font>
+                        <label>$INFO[ListItem.Label]</label>
+                        <textcolor>dialog_fg_70</textcolor>
+                        <align>center</align>
+                        <visible>![Control.HasFocus($PARAM[rowone])]</visible>
+                    </control>
+                </focusedlayout>
+
+                <content>
+                    <item>
+                        <label>A</label>
+                        <onclick>SetFocus($PARAM[editid])</onclick>
+                        <include>Object_SearchLetter_Click_a</include>
+                        <onclick>SetFocus($PARAM[rowone])</onclick>
+                        <include>Action_UpdateSearchTerm</include>
+                    </item>
+                    <item>
+                        <label>B</label>
+                        <onclick>SetFocus($PARAM[editid])</onclick>
+                        <include>Object_SearchLetter_Click_b</include>
+                        <onclick>SetFocus($PARAM[rowone])</onclick>
+                        <include>Action_UpdateSearchTerm</include>
+                    </item>
+                    <item>
+                        <label>C</label>
+                        <onclick>SetFocus($PARAM[editid])</onclick>
+                        <include>Object_SearchLetter_Click_c</include>
+                        <onclick>SetFocus($PARAM[rowone])</onclick>
+                        <include>Action_UpdateSearchTerm</include>
+                    </item>
+                    <item>
+                        <label>D</label>
+                        <onclick>SetFocus($PARAM[editid])</onclick>
+                        <include>Object_SearchLetter_Click_d</include>
+                        <onclick>SetFocus($PARAM[rowone])</onclick>
+                        <include>Action_UpdateSearchTerm</include>
+                    </item>
+                    <item>
+                        <label>E</label>
+                        <onclick>SetFocus($PARAM[editid])</onclick>
+                        <include>Object_SearchLetter_Click_e</include>
+                        <onclick>SetFocus($PARAM[rowone])</onclick>
+                        <include>Action_UpdateSearchTerm</include>
+                    </item>
+                    <item>
+                        <label>F</label>
+                        <onclick>SetFocus($PARAM[editid])</onclick>
+                        <include>Object_SearchLetter_Click_f</include>
+                        <onclick>SetFocus($PARAM[rowone])</onclick>
+                        <include>Action_UpdateSearchTerm</include>
+                    </item>
+                    <item>
+                        <label>G</label>
+                        <onclick>SetFocus($PARAM[editid])</onclick>
+                        <include>Object_SearchLetter_Click_g</include>
+                        <onclick>SetFocus($PARAM[rowone])</onclick>
+                        <include>Action_UpdateSearchTerm</include>
+                    </item>
+                    <item>
+                        <label>H</label>
+                        <onclick>SetFocus($PARAM[editid])</onclick>
+                        <include>Object_SearchLetter_Click_h</include>
+                        <onclick>SetFocus($PARAM[rowone])</onclick>
+                        <include>Action_UpdateSearchTerm</include>
+                    </item>
+                    <item>
+                        <label>I</label>
+                        <onclick>SetFocus($PARAM[editid])</onclick>
+                        <include>Object_SearchLetter_Click_i</include>
+                        <onclick>SetFocus($PARAM[rowone])</onclick>
+                        <include>Action_UpdateSearchTerm</include>
+                    </item>
+                    <item>
+                        <label>J</label>
+                        <onclick>SetFocus($PARAM[editid])</onclick>
+                        <include>Object_SearchLetter_Click_j</include>
+                        <onclick>SetFocus($PARAM[rowone])</onclick>
+                        <include>Action_UpdateSearchTerm</include>
+                    </item>
+                    <item>
+                        <label>K</label>
+                        <onclick>SetFocus($PARAM[editid])</onclick>
+                        <include>Object_SearchLetter_Click_k</include>
+                        <onclick>SetFocus($PARAM[rowone])</onclick>
+                        <include>Action_UpdateSearchTerm</include>
+                    </item>
+                    <item>
+                        <label>L</label>
+                        <onclick>SetFocus($PARAM[editid])</onclick>
+                        <include>Object_SearchLetter_Click_l</include>
+                        <onclick>SetFocus($PARAM[rowone])</onclick>
+                        <include>Action_UpdateSearchTerm</include>
+                    </item>
+                    <item>
+                        <label>M</label>
+                        <onclick>SetFocus($PARAM[editid])</onclick>
+                        <include>Object_SearchLetter_Click_m</include>
+                        <onclick>SetFocus($PARAM[rowone])</onclick>
+                        <include>Action_UpdateSearchTerm</include>
+                    </item>
+                    <item>
+                        <label>N</label>
+                        <onclick>SetFocus($PARAM[editid])</onclick>
+                        <include>Object_SearchLetter_Click_n</include>
+                        <onclick>SetFocus($PARAM[rowone])</onclick>
+                        <include>Action_UpdateSearchTerm</include>
+                    </item>
+                    <item>
+                        <label>O</label>
+                        <onclick>SetFocus($PARAM[editid])</onclick>
+                        <include>Object_SearchLetter_Click_o</include>
+                        <onclick>SetFocus($PARAM[rowone])</onclick>
+                        <include>Action_UpdateSearchTerm</include>
+                    </item>
+                    <item>
+                        <label>P</label>
+                        <onclick>SetFocus($PARAM[editid])</onclick>
+                        <include>Object_SearchLetter_Click_p</include>
+                        <onclick>SetFocus($PARAM[rowone])</onclick>
+                        <include>Action_UpdateSearchTerm</include>
+                    </item>
+                    <item>
+                        <label>Q</label>
+                        <onclick>SetFocus($PARAM[editid])</onclick>
+                        <include>Object_SearchLetter_Click_q</include>
+                        <onclick>SetFocus($PARAM[rowone])</onclick>
+                        <include>Action_UpdateSearchTerm</include>
+                    </item>
+                    <item>
+                        <label>R</label>
+                        <onclick>SetFocus($PARAM[editid])</onclick>
+                        <include>Object_SearchLetter_Click_r</include>
+                        <onclick>SetFocus($PARAM[rowone])</onclick>
+                        <include>Action_UpdateSearchTerm</include>
+                    </item>
+                    <item>
+                        <label>S</label>
+                        <onclick>SetFocus($PARAM[editid])</onclick>
+                        <include>Object_SearchLetter_Click_s</include>
+                        <onclick>SetFocus($PARAM[rowone])</onclick>
+                        <include>Action_UpdateSearchTerm</include>
+                    </item>
+                    <item>
+                        <label>T</label>
+                        <onclick>SetFocus($PARAM[editid])</onclick>
+                        <include>Object_SearchLetter_Click_t</include>
+                        <onclick>SetFocus($PARAM[rowone])</onclick>
+                        <include>Action_UpdateSearchTerm</include>
+                    </item>
+                    <item>
+                        <label>U</label>
+                        <onclick>SetFocus($PARAM[editid])</onclick>
+                        <include>Object_SearchLetter_Click_u</include>
+                        <onclick>SetFocus($PARAM[rowone])</onclick>
+                        <include>Action_UpdateSearchTerm</include>
+                    </item>
+                    <item>
+                        <label>V</label>
+                        <onclick>SetFocus($PARAM[editid])</onclick>
+                        <include>Object_SearchLetter_Click_v</include>
+                        <onclick>SetFocus($PARAM[rowone])</onclick>
+                        <include>Action_UpdateSearchTerm</include>
+                    </item>
+                    <item>
+                        <label>W</label>
+                        <onclick>SetFocus($PARAM[editid])</onclick>
+                        <include>Object_SearchLetter_Click_w</include>
+                        <onclick>SetFocus($PARAM[rowone])</onclick>
+                        <include>Action_UpdateSearchTerm</include>
+                    </item>
+                    <item>
+                        <label>X</label>
+                        <onclick>SetFocus($PARAM[editid])</onclick>
+                        <include>Object_SearchLetter_Click_x</include>
+                        <onclick>SetFocus($PARAM[rowone])</onclick>
+                        <include>Action_UpdateSearchTerm</include>
+                    </item>
+                    <item>
+                        <label>Y</label>
+                        <onclick>SetFocus($PARAM[editid])</onclick>
+                        <include>Object_SearchLetter_Click_y</include>
+                        <onclick>SetFocus($PARAM[rowone])</onclick>
+                        <include>Action_UpdateSearchTerm</include>
+                    </item>
+                    <item>
+                        <label>Z</label>
+                        <onclick>SetFocus($PARAM[editid])</onclick>
+                        <include>Object_SearchLetter_Click_z</include>
+                        <onclick>SetFocus($PARAM[rowone])</onclick>
+                        <include>Action_UpdateSearchTerm</include>
+                    </item>
+                    <item>
+                        <label>_</label>
+                        <onclick>SetFocus($PARAM[editid])</onclick>
+                        <include>Object_SearchLetter_Click__</include>
+                        <onclick>SetFocus($PARAM[rowone])</onclick>
+                        <include>Action_UpdateSearchTerm</include>
+                    </item>
+                    <item>
+                        <label>&lt;</label>
+                        <onclick>SetFocus($PARAM[editid])</onclick>
+                        <include>Object_SearchLetter_Click_&lt;</include>
+                        <onclick>SetFocus($PARAM[rowone])</onclick>
+                        <include>Action_UpdateSearchTerm</include>
+                    </item>
+                </content>
+
             </control>
 
-            <!-- Second Row -->
-            <control type="grouplist" id="$PARAM[rowtwo]">
-                <top>-30</top>
-                <height>view_pad</height>
+            <control type="wraplist" id="$PARAM[rowtwo]">
                 <orientation>horizontal</orientation>
-                <itemgap>0</itemgap>
-                <left>30</left>
+                <top>-20</top>
+                <height>80</height>
+                <focusposition>1</focusposition>
+                <movement>1</movement>
+                <width>462</width>
+                <centerleft>50%</centerleft>
 
-                <include content="Search_Filter_Letter">
-                    <param name="letter">o</param>
-                    <param name="id">1</param>
-                    <param name="groupid">3</param>
-                    <param name="grouponup">1</param>
-                    <param name="ondown">$PARAM[ondown]</param>
-                    <param name="editid">$PARAM[editid]</param>
-                </include>
-                <include content="Search_Filter_Letter">
-                    <param name="letter">p</param>
-                    <param name="id">2</param>
-                    <param name="groupid">3</param>
-                    <param name="grouponup">1</param>
-                    <param name="ondown">$PARAM[ondown]</param>
-                    <param name="editid">$PARAM[editid]</param>
-                </include>
-                <include content="Search_Filter_Letter">
-                    <param name="letter">q</param>
-                    <param name="id">3</param>
-                    <param name="groupid">3</param>
-                    <param name="grouponup">1</param>
-                    <param name="ondown">$PARAM[ondown]</param>
-                    <param name="editid">$PARAM[editid]</param>
-                </include>
-                <include content="Search_Filter_Letter">
-                    <param name="letter">r</param>
-                    <param name="id">4</param>
-                    <param name="groupid">3</param>
-                    <param name="grouponup">1</param>
-                    <param name="ondown">$PARAM[ondown]</param>
-                    <param name="editid">$PARAM[editid]</param>
-                </include>
-                <include content="Search_Filter_Letter">
-                    <param name="letter">s</param>
-                    <param name="id">5</param>
-                    <param name="groupid">3</param>
-                    <param name="grouponup">1</param>
-                    <param name="ondown">$PARAM[ondown]</param>
-                    <param name="editid">$PARAM[editid]</param>
-                </include>
-                <include content="Search_Filter_Letter">
-                    <param name="letter">t</param>
-                    <param name="id">6</param>
-                    <param name="groupid">3</param>
-                    <param name="grouponup">1</param>
-                    <param name="ondown">$PARAM[ondown]</param>
-                    <param name="editid">$PARAM[editid]</param>
-                </include>
-                <include content="Search_Filter_Letter">
-                    <param name="letter">u</param>
-                    <param name="id">7</param>
-                    <param name="groupid">3</param>
-                    <param name="grouponup">1</param>
-                    <param name="ondown">$PARAM[ondown]</param>
-                    <param name="editid">$PARAM[editid]</param>
-                </include>
-                <include content="Search_Filter_Letter">
-                    <param name="letter">v</param>
-                    <param name="id">8</param>
-                    <param name="groupid">3</param>
-                    <param name="grouponup">1</param>
-                    <param name="ondown">$PARAM[ondown]</param>
-                    <param name="editid">$PARAM[editid]</param>
-                </include>
-                <include content="Search_Filter_Letter">
-                    <param name="letter">w</param>
-                    <param name="id">9</param>
-                    <param name="groupid">3</param>
-                    <param name="grouponup">1</param>
-                    <param name="ondown">$PARAM[ondown]</param>
-                    <param name="editid">$PARAM[editid]</param>
-                </include>
-                <include content="Search_Filter_Letter">
-                    <param name="letter">x</param>
-                    <param name="id">1</param>
-                    <param name="groupid">4</param>
-                    <param name="grouponup">2</param>
-                    <param name="ondown">$PARAM[ondown]</param>
-                    <param name="editid">$PARAM[editid]</param>
-                </include>
-                <include content="Search_Filter_Letter">
-                    <param name="letter">y</param>
-                    <param name="id">2</param>
-                    <param name="groupid">4</param>
-                    <param name="grouponup">2</param>
-                    <param name="ondown">$PARAM[ondown]</param>
-                    <param name="editid">$PARAM[editid]</param>
-                </include>
-                <include content="Search_Filter_Letter">
-                    <param name="letter">z</param>
-                    <param name="id">3</param>
-                    <param name="groupid">4</param>
-                    <param name="grouponup">2</param>
-                    <param name="ondown">$PARAM[ondown]</param>
-                    <param name="editid">$PARAM[editid]</param>
-                </include>
-                <include content="Search_Filter_Letter">
-                    <param name="letter">_</param>
-                    <param name="id">4</param>
-                    <param name="groupid">4</param>
-                    <param name="grouponup">2</param>
-                    <param name="ondown">$PARAM[ondown]</param>
-                    <param name="editid">$PARAM[editid]</param>
-                </include>
-                <include content="Search_Filter_Letter">
-                    <param name="letter">&lt;</param>
-                    <param name="id">5</param>
-                    <param name="groupid">4</param>
-                    <param name="grouponup">2</param>
-                    <param name="ondown">$PARAM[ondown]</param>
-                    <param name="editid">$PARAM[editid]</param>
-                </include>
+                <onup>$PARAM[rowone]</onup>
+                <ondown>$PARAM[ondown]</ondown>
+                <onleft>$PARAM[rowtwo]</onleft>
+                <onright>$PARAM[rowtwo]</onright>
+
+                <onclick>SetFocus(9099)</onclick>
+                <onclick>SetProperty(SearchTerm,$INFO[Container($PARAM[rowtwo]).ListItem.Label])</onclick>
+                <onclick>RunScript(script.skinvariables,set_editcontrol=9099,window_id=1105,setfocus=9099,text=$INFO[Container($PARAM[rowtwo]).ListItem.Label])</onclick>
+                <onclick>SetFocus($PARAM[rowtwo])</onclick>
+
+                <itemlayout width="134">
+                    <control type="label">
+                        <font>font_main</font>
+                        <label>$INFO[ListItem.Label]</label>
+                        <textcolor>dialog_fg_70</textcolor>
+                        <align>center</align>
+                        <left>10</left>
+                        <right>10</right>
+                    </control>
+                </itemlayout>
+
+                <focusedlayout width="194">
+
+                    <control type="group">
+                        <visible>Control.HasFocus($PARAM[rowtwo])</visible>
+                        <control type="label">
+                            <font>font_main_black</font>
+                            <label>$INFO[ListItem.Label]</label>
+                            <textcolor>$VAR[ColorSelected]</textcolor>
+                            <align>center</align>
+                        </control>
+                        <control type="image">
+                            <include>Texture_Highlight_Scrollbar_H</include>
+                            <height>scrollbar_w</height>
+                            <centerbottom>12</centerbottom>
+                            <width>75%</width>
+                            <centerleft>50%</centerleft>
+                        </control>
+                    </control>
+                    <control type="label">
+                        <font>font_main</font>
+                        <label>$INFO[ListItem.Label]</label>
+                        <textcolor>dialog_fg_70</textcolor>
+                        <align>center</align>
+                        <visible>![Control.HasFocus($PARAM[rowtwo])]</visible>
+                    </control>
+                </focusedlayout>
+                <content>$VAR[Search_Filter_AutoComplete]</content>
             </control>
         </definition>
     </include>
