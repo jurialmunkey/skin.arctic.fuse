@@ -34,15 +34,24 @@
             <param name="dialog">true</param>
             <param name="id">9502</param>
             <param name="control">button</param>
-            <label>$LOCALIZE[31324]</label>
-            <label2>$VAR[Label_Setting_SearchStyle]$INFO[Container(5099).ListItem.Label,: ,]</label2>
-            <onclick condition="!String.IsEmpty(Container(5099).ListItem(1).Property(onfocus_one))">AlarmClock(onfocus_one,$INFO[Container(5099).ListItem(1).Property(onfocus_one)],00:01,silent)</onclick>
-            <onclick condition="!String.IsEmpty(Container(5099).ListItem(1).Property(onfocus_two))">AlarmClock(onfocus_two,$INFO[Container(5099).ListItem(1).Property(onfocus_two)],00:01,silent)</onclick>
-            <!-- <onclick>Control.Move(5099,1)</onclick> -->
-            <onclick>SetFocus(5099)</onclick>
-            <include content="List_ButtonMenu_Row_HiddenButton_Search_OnFocus">
-                <param name="container">Container(5099).</param>
-            </include>
+            <label>$LOCALIZE[456]</label>
+            <label2>$VAR[Label_Setting_SearchStyle]</label2>
+            <onfocus>ClearProperty(SearchDiscover.FilterLabel)</onfocus>
+            <onclick>Skin.ToggleSetting(Search.EnableDiscover)</onclick>
+            <!-- <onclick condition="!Skin.HasSetting(Search.EnableDiscover)">Skin.Reset(Search.LibraryDiscover)</onclick>
+            <onclick condition="!Skin.HasSetting(Search.EnableDiscover)">Skin.SetBool(Search.EnableDiscover)</onclick>
+            <onclick condition="Skin.HasSetting(Search.EnableDiscover) + !String.IsEmpty(Container(5099).ListItem.Property(discover))">Skin.SetBool(Search.EnableDiscover)</onclick>
+            <onclick condition="Skin.HasSetting(Search.EnableDiscover) + !String.IsEmpty(Container(5099).ListItem.Property(discover))">Skin.SetBool(Search.LibraryDiscover)</onclick>
+            <onclick condition="Skin.HasSetting(Search.EnableDiscover) + String.IsEmpty(Container(5099).ListItem.Property(discover))">Skin.Reset(Search.EnableDiscover)</onclick>
+            <onclick condition="Skin.HasSetting(Search.EnableDiscover) + String.IsEmpty(Container(5099).ListItem.Property(discover))">Skin.Reset(Search.LibraryDiscover)</onclick> -->
+        </include>
+
+        <include content="Settings_Button">
+            <param name="dialog">true</param>
+            <param name="id">9501</param>
+            <param name="control">button</param>
+            <label>$LOCALIZE[587]</label>
+            <onclick>SetFocus(8000)</onclick>
         </include>
 
     </include>
@@ -102,7 +111,7 @@
                         <onright>SetFocus(9002)</onright>
                         <ondown>SetProperty(SearchTerm,$INFO[Control.GetLabel(9099).index(1)])</ondown>
                         <ondown>9002</ondown>
-                        <onup>SetFocus(8000,99999,absolute)</onup>
+                        <onup>SetFocus(5098,99999,absolute)</onup>
                         <!-- <onleft condition="$EXP[Search_View_HasItems] + !$EXP[Search_View_IsUpdating]">68</onleft>
                         <onright condition="$EXP[Search_View_HasItems] + !$EXP[Search_View_IsUpdating]">68</onright>
                         <onback condition="$EXP[Search_View_HasItems] + !$EXP[Search_View_IsUpdating]">68</onback> -->
@@ -117,7 +126,7 @@
                         <bottom>80</bottom>
                         <include>Search_Filter_Content</include>
                         <onup>9099</onup>
-                        <ondown>SetFocus(8000,0,absolute)</ondown>
+                        <ondown>SetFocus(5098,0,absolute)</ondown>
                         <onleft condition="$EXP[Search_View_HasItems] + !$EXP[Search_View_IsUpdating]">68</onleft>
                         <onright condition="$EXP[Search_View_HasItems] + !$EXP[Search_View_IsUpdating]">68</onright>
                         <onback condition="$EXP[Search_View_HasItems] + !$EXP[Search_View_IsUpdating]">68</onback>
@@ -127,25 +136,129 @@
                         <left>40</left>
                         <right>40</right>
                         <height>1</height>
-                        <top>400</top>
+                        <top>480</top>
                         <texture colordiffuse="dialog_fg_12">common/white.png</texture>
                     </control>
 
+                    <include content="List_DialogSelect">
+                        <param name="id">5098</param>
+                        <param name="textcolor">dialog_fg</param>
+                        <param name="misc">String.IsEqual(ListItem.Property(main_guid),ListItem.Property(guid))</param>
+                        <param name="control">fixedlist</param>
+                        <focusposition>1</focusposition>
+                        <movement>2</movement>
+                        <top>500</top>
+                        <left>20</left>
+                        <right>20</right>
+                        <bottom>0</bottom>
+                        <orientation>vertical</orientation>
+                        <onup>9501</onup>
+                        <ondown>9099</ondown>
+                        <onleft condition="$EXP[Search_View_HasItems] + !$EXP[Search_View_IsUpdating]">68</onleft>
+                        <onright condition="$EXP[Search_View_HasItems] + !$EXP[Search_View_IsUpdating]">68</onright>
+                        <onback condition="$EXP[Search_View_HasItems] + !$EXP[Search_View_IsUpdating]">68</onback>
+                        <onclick>SetFocus(5099,$INFO[Container(5098).ListItem.CurrentItem],absolute)</onclick>
+                        <onclick condition="!Integer.IsEqual(Container(5098).NumItems,Container(5098).ListItem.CurrentItem)">Action(Left)</onclick>
+                        <onclick>SetFocus(5098)</onclick>
+                        <content>
+                            <!-- <item>
+                                <label>$LOCALIZE[31382]</label>
+                                <property name="target">videos</property>
+                                <property name="guid">guid-libraryall</property>
+                                <property name="listid">$NUMBER[52]</property>
+                                <property name="onfocus_one">SetProperty(TMDbHelper.WidgetContainer,52)</property>
+                                <property name="main_guid">$INFO[Container(5099).ListItem.Property(guid)]</property>
+                                <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+                            </item> -->
+                            <item>
+                                <label>$LOCALIZE[342]</label>
+                                <property name="target">videos</property>
+                                <property name="guid">guid-librarymovies</property>
+                                <property name="listid">$NUMBER[52]</property>
+                                <property name="onfocus_one">SetProperty(TMDbHelper.WidgetContainer,52)</property>
+                                <property name="main_guid">$INFO[Container(5099).ListItem.Property(guid)]</property>
+                                <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+                            </item>
+                            <item>
+                                <label>$LOCALIZE[20343]</label>
+                                <property name="target">videos</property>
+                                <property name="guid">guid-librarytvshows</property>
+                                <property name="listid">$NUMBER[52]</property>
+                                <property name="onfocus_one">SetProperty(TMDbHelper.WidgetContainer,52)</property>
+                                <property name="main_guid">$INFO[Container(5099).ListItem.Property(guid)]</property>
+                                <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+                            </item>
+                            <item>
+                                <label>$LOCALIZE[342] (TMDb)</label>
+                                <property name="target">videos</property>
+                                <property name="guid">guid-discovermovies</property>
+                                <property name="listid">$NUMBER[52]</property>
+                                <property name="onfocus_one">SetProperty(TMDbHelper.WidgetContainer,52)</property>
+                                <property name="main_guid">$INFO[Container(5099).ListItem.Property(guid)]</property>
+                                <property name="discover">true</property>
+                                <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+                            </item>
+                            <item>
+                                <label>$LOCALIZE[20343] (TMDb)</label>
+                                <property name="target">videos</property>
+                                <property name="guid">guid-discovertvshows</property>
+                                <property name="listid">$NUMBER[52]</property>
+                                <property name="onfocus_one">SetProperty(TMDbHelper.WidgetContainer,52)</property>
+                                <property name="main_guid">$INFO[Container(5099).ListItem.Property(guid)]</property>
+                                <property name="discover">true</property>
+                                <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+                            </item>
+                            <include>skinvariables-searchmenu-rowitems</include>
+                        </content>
+                    </include>
+
+
+                </include>
+            </include>
+
+        </control>
+
+
+
+        <include>Search_Filter_Selector</include>
+        <include>Search_Filter_Discover</include>
+
+    </include>
+
+    <include name="Search_Filter_Selector">
+        <control type="group">
+            <include>Dimension_DialogSideMenu</include>
+            <include>Animation_Right_Delay</include>
+            <visible>!$EXP[Exp_InfoDialogs]</visible>
+            <visible>Control.HasFocus(8900) | Control.HasFocus(8000)</visible>
+
+            <include content="Dialog_Dim_Side">
+                <param name="slide_animation">false</param>
+            </include>
+
+            <include content="Dialog_Foreground_Side">
+                <param name="dialog_size">Dimension_DialogSideMenu</param>
+                <param name="lines_right">0</param>
+                <param name="topline">true</param>
+                <param name="subline">true</param>
+
+                <!-- Header -->
+                <include content="Dialog_Head">
+                    <param name="id">0</param>
+                    <param name="label">$LOCALIZE[31324]</param>
+                </include>
+
+                <!-- Content -->
+                <include content="Dialog_Body">
                     <include content="List_DialogSelect">
                         <param name="id">8000</param>
                         <param name="textcolor">dialog_fg</param>
                         <param name="itemlayout_include">Layout_MenuList</param>
                         <param name="detailed">true</param>
-                        <top>420</top>
-                        <left>20</left>
-                        <right>20</right>
-                        <bottom>0</bottom>
-                        <orientation>vertical</orientation>
-                        <onup>9502</onup>
-                        <ondown>9099</ondown>
-                        <onleft condition="$EXP[Search_View_HasItems] + !$EXP[Search_View_IsUpdating]">68</onleft>
-                        <onright condition="$EXP[Search_View_HasItems] + !$EXP[Search_View_IsUpdating]">68</onright>
-                        <onback condition="$EXP[Search_View_HasItems] + !$EXP[Search_View_IsUpdating]">68</onback>
+                        <onleft>9501</onleft>
+                        <onright>9501</onright>
+                        <onback>9501</onback>
+                        <include>Dimension_Dialog_Body_Group</include>
                         <content>
                             <item>
                                 <label>$LOCALIZE[192]</label>
@@ -176,7 +289,7 @@
                                 <label2>$INFO[Window.Property(SearchDiscover.GenreLabel)]</label2>
                                 <onclick>SetProperty(SearchDiscover.FilterLabel,Genre)</onclick>
                                 <onclick>SetFocus(8900)</onclick>
-                                <visible>Skin.HasSetting(Search.LibraryDiscover)</visible>
+                                <visible>String.IsEmpty(Container(5099).ListItem.Property(discover))</visible>
                                 <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
                             </item>
                             <item>
@@ -184,7 +297,7 @@
                                 <label2>$INFO[Window.Property(SearchDiscover.StudioLabel)]</label2>
                                 <onclick>SetProperty(SearchDiscover.FilterLabel,Studio)</onclick>
                                 <onclick>SetFocus(8900)</onclick>
-                                <visible>Skin.HasSetting(Search.LibraryDiscover)</visible>
+                                <visible>String.IsEmpty(Container(5099).ListItem.Property(discover))</visible>
                                 <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
                             </item>
                             <item>
@@ -192,7 +305,7 @@
                                 <label2>$INFO[Window.Property(SearchDiscover.DirectorLabel)]</label2>
                                 <onclick>SetProperty(SearchDiscover.FilterLabel,Director)</onclick>
                                 <onclick>SetFocus(8900)</onclick>
-                                <visible>Skin.HasSetting(Search.LibraryDiscover)</visible>
+                                <visible>String.IsEmpty(Container(5099).ListItem.Property(discover))</visible>
                                 <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
                             </item>
                             <item>
@@ -202,7 +315,7 @@
                                 <onclick>ClearProperty(SearchDiscover.YearLow)</onclick>
                                 <onclick>ClearProperty(SearchDiscover.YearHigh)</onclick>
                                 <onclick>ActivateWindow(1155)</onclick>
-                                <visible>Skin.HasSetting(Search.LibraryDiscover)</visible>
+                                <visible>String.IsEmpty(Container(5099).ListItem.Property(discover))</visible>
                                 <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
                             </item>
                             <item>
@@ -210,7 +323,7 @@
                                 <label2>$INFO[Window.Property(SearchDiscover.RatingLow), &gt; ,]</label2>
                                 <onclick>ClearProperty(SearchDiscover.RatingLow,1105)</onclick>
                                 <onclick>ActivateWindow(1156)</onclick>
-                                <visible>Skin.HasSetting(Search.LibraryDiscover)</visible>
+                                <visible>String.IsEmpty(Container(5099).ListItem.Property(discover))</visible>
                                 <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
                             </item>
 
@@ -219,14 +332,14 @@
                                 <label>$LOCALIZE[515]</label>
                                 <label2>$INFO[Window.Property(SearchDiscover.GenreLabel)]</label2>
                                 <onclick>ActivateWindow(1151)</onclick>
-                                <visible>!Skin.HasSetting(Search.LibraryDiscover)</visible>
+                                <visible>!String.IsEmpty(Container(5099).ListItem.Property(discover))</visible>
                                 <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
                             </item>
                             <item>
                                 <label>$LOCALIZE[15225]</label>
                                 <label2>$INFO[Window.Property(SearchDiscover.ProviderLabel)]</label2>
                                 <onclick>ActivateWindow(1152)</onclick>
-                                <visible>!Skin.HasSetting(Search.LibraryDiscover)</visible>
+                                <visible>!String.IsEmpty(Container(5099).ListItem.Property(discover))</visible>
                                 <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
                             </item>
                             <item>
@@ -234,14 +347,14 @@
                                 <label2>$INFO[Window.Property(SearchDiscover.PeopleLabel)]</label2>
                                 <onclick>SetProperty(SearchDiscover.PersonSearch,People)</onclick>
                                 <onclick>ActivateWindow(1153)</onclick>
-                                <visible>!Skin.HasSetting(Search.LibraryDiscover)</visible>
+                                <visible>!String.IsEmpty(Container(5099).ListItem.Property(discover))</visible>
                                 <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
                             </item>
                             <item>
                                 <label>$LOCALIZE[31179]</label>
                                 <label2>$INFO[Window.Property(SearchDiscover.KeywordLabel)]</label2>
                                 <onclick>ActivateWindow(1157)</onclick>
-                                <visible>!Skin.HasSetting(Search.LibraryDiscover)</visible>
+                                <visible>!String.IsEmpty(Container(5099).ListItem.Property(discover))</visible>
                                 <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
                             </item>
                             <item>
@@ -251,7 +364,7 @@
                                 <onclick>ClearProperty(SearchDiscover.YearLow)</onclick>
                                 <onclick>ClearProperty(SearchDiscover.YearHigh)</onclick>
                                 <onclick>ActivateWindow(1155)</onclick>
-                                <visible>!Skin.HasSetting(Search.LibraryDiscover)</visible>
+                                <visible>!String.IsEmpty(Container(5099).ListItem.Property(discover))</visible>
                                 <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
                             </item>
                             <item>
@@ -259,26 +372,27 @@
                                 <label2>$INFO[Window.Property(SearchDiscover.RatingLow), &gt; ,]</label2>
                                 <onclick>ClearProperty(SearchDiscover.RatingLow,1105)</onclick>
                                 <onclick>ActivateWindow(1156)</onclick>
-                                <visible>!Skin.HasSetting(Search.LibraryDiscover)</visible>
+                                <visible>!String.IsEmpty(Container(5099).ListItem.Property(discover))</visible>
                                 <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
                             </item>
                         </content>
                     </include>
                 </include>
             </include>
-
         </control>
+    </include>
 
+    <include name="Search_Filter_Discover">
         <!-- Library Filtering -->
         <control type="button" id="89999">
             <texturenofocus />
             <texturefocus />
-            <onleft>9500</onleft>
-            <onright>9500</onright>
-            <onup>9500</onup>
-            <ondown>9500</ondown>
-            <onback>9500</onback>
-            <onclick>SetFocus(9500)</onclick>
+            <onleft>8000</onleft>
+            <onright>8000</onright>
+            <onup>8000</onup>
+            <ondown>8000</ondown>
+            <onback>8000</onback>
+            <onclick>SetFocus(8000)</onclick>
             <visible>[Control.HasFocus(8900) | Control.HasFocus(89999)]</visible>
         </control>
         <control type="group">
@@ -310,8 +424,8 @@
                         <param name="id">8900</param>
                         <param name="misc">[[String.IsEqual(Window.Property(SearchDiscover.FilterLabel),Genre) + !String.IsEmpty(Window.Property(SearchDiscover.GenreLabel)) + String.Contains(Window.Property(SearchDiscover.GenreLabel),ListItem.Label)] | [String.IsEqual(Window.Property(SearchDiscover.FilterLabel),Studio) + !String.IsEmpty(Window.Property(SearchDiscover.StudioLabel)) + String.Contains(Window.Property(SearchDiscover.StudioLabel),ListItem.Label)] | [String.IsEqual(Window.Property(SearchDiscover.FilterLabel),Director) + !String.IsEmpty(Window.Property(SearchDiscover.DirectorLabel)) + String.Contains(Window.Property(SearchDiscover.DirectorLabel),ListItem.Label)] | [String.IsEqual(Window.Property(SearchDiscover.FilterLabel),Country) + !String.IsEmpty(Window.Property(SearchDiscover.CountryLabel)) + String.Contains(Window.Property(SearchDiscover.CountryLabel),ListItem.Label)]]</param>
                         <include>Dimension_Dialog_Body_Group</include>
-                        <onleft>9500</onleft>
-                        <onback>9500</onback>
+                        <onleft>8000</onleft>
+                        <onback>8000</onback>
                         <!-- Genre -->
                         <include content="Action_SearchLibrary_Filter_Onclick">
                             <param name="type">Genre</param>
@@ -343,109 +457,6 @@
                 </include>
             </include>
 
-        </control>
-
-        <include>Search_Filter_Selector</include>
-
-    </include>
-
-    <include name="Search_Filter_Selector">
-        <control type="group">
-            <include>Dimension_DialogSideMenu</include>
-            <include>Animation_Right_Delay</include>
-            <visible>!$EXP[Exp_InfoDialogs]</visible>
-            <visible>Control.HasFocus(5099) | Control.HasFocus(9501)</visible>
-
-            <include content="Dialog_Dim_Side">
-                <param name="slide_animation">false</param>
-            </include>
-
-            <include content="Dialog_Foreground_Side">
-                <param name="dialog_size">Dimension_DialogSideMenu</param>
-                <param name="lines_right">0</param>
-                <param name="topline">true</param>
-                <param name="subline">true</param>
-
-                <!-- Header -->
-                <include content="Dialog_Head">
-                    <param name="id">0</param>
-                    <param name="label">$LOCALIZE[31324]</param>
-                </include>
-
-                <!-- Content -->
-                <include content="Dialog_Body">
-                    <include content="Settings_Button">
-                        <param name="dialog">true</param>
-                        <param name="id">9501</param>
-                        <param name="control">button</param>
-                        <label>$LOCALIZE[456]</label>
-                        <label2>$VAR[Label_Setting_SearchStyle]</label2>
-                        <onfocus>ClearProperty(SearchDiscover.FilterLabel)</onfocus>
-                        <onclick condition="!Skin.HasSetting(Search.EnableDiscover)">Skin.Reset(Search.LibraryDiscover)</onclick>
-                        <onclick condition="!Skin.HasSetting(Search.EnableDiscover)">Skin.SetBool(Search.EnableDiscover)</onclick>
-                        <onclick condition="Skin.HasSetting(Search.EnableDiscover) + !Skin.HasSetting(Search.LibraryDiscover)">Skin.SetBool(Search.EnableDiscover)</onclick>
-                        <onclick condition="Skin.HasSetting(Search.EnableDiscover) + !Skin.HasSetting(Search.LibraryDiscover)">Skin.SetBool(Search.LibraryDiscover)</onclick>
-                        <onclick condition="Skin.HasSetting(Search.EnableDiscover) + Skin.HasSetting(Search.LibraryDiscover)">Skin.Reset(Search.EnableDiscover)</onclick>
-                        <onclick condition="Skin.HasSetting(Search.EnableDiscover) + Skin.HasSetting(Search.LibraryDiscover)">Skin.Reset(Search.LibraryDiscover)</onclick>
-                        <include content="Dimension_Padding">
-                            <param name="pad">20</param>
-                        </include>
-                        <onup>SetFocus(5099,9999,absolute)</onup>
-                        <ondown>SetFocus(5099,0,absolute)</ondown>
-                        <onleft>9502</onleft>
-                        <onright>9502</onright>
-                        <onback>9502</onback>
-                    </include>
-                    <control type="image">
-                        <left>40</left>
-                        <right>40</right>
-                        <height>1</height>
-                        <top>120</top>
-                        <texture colordiffuse="dialog_fg_12">common/white.png</texture>
-                    </control>
-                    <include content="List_DialogSelect">
-                        <param name="id">5099</param>
-                        <param name="textcolor">dialog_fg</param>
-                        <param name="hidden_button">List_ButtonMenu_Row_HiddenButton_Search</param>
-                        <param name="hidden_button_enabled">true</param>
-                        <onclick>SetFocus(9502)</onclick>
-                        <onup>9501</onup>
-                        <ondown>9501</ondown>
-                        <onleft>9502</onleft>
-                        <onright>9502</onright>
-                        <onback>9502</onback>
-                        <top>140</top>
-                        <include>Dimension_Dialog_Body_Group</include>
-                        <content>
-                            <item>
-                                <label>$LOCALIZE[31382]</label>
-                                <property name="target">videos</property>
-                                <property name="guid">guid-discoverall</property>
-                                <property name="listid">$NUMBER[52]</property>
-                                <property name="onfocus_one">SetProperty(TMDbHelper.WidgetContainer,52)</property>
-                                <visible>Skin.HasSetting(Search.LibraryDiscover) + Skin.HasSetting(Search.EnableDiscover)</visible>
-                            </item>
-                            <item>
-                                <label>$LOCALIZE[342]</label>
-                                <property name="target">videos</property>
-                                <property name="guid">guid-discovermovies</property>
-                                <property name="listid">$NUMBER[52]</property>
-                                <property name="onfocus_one">SetProperty(TMDbHelper.WidgetContainer,52)</property>
-                                <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
-                            </item>
-                            <item>
-                                <label>$LOCALIZE[20343]</label>
-                                <property name="target">videos</property>
-                                <property name="guid">guid-discovertvshows</property>
-                                <property name="listid">$NUMBER[52]</property>
-                                <property name="onfocus_one">SetProperty(TMDbHelper.WidgetContainer,52)</property>
-                                <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
-                            </item>
-                            <include>skinvariables-searchmenu-rowitems</include>
-                        </content>
-                    </include>
-                </include>
-            </include>
         </control>
     </include>
 
