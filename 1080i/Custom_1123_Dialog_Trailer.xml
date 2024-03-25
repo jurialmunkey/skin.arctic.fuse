@@ -5,7 +5,7 @@
     <onload condition="!String.IsEmpty(Window.Property(Trailer)) + !Player.HasVideo">PlayMedia($ESCINFO[Window.Property(Trailer)],False,1)</onload>
     <onunload>ClearProperty(TrailerFullscreen,1123)</onunload>
     <onunload>ClearProperty(Trailer,1123)</onunload>
-    <onunload condition="Player.HasMedia">Action(Stop)</onunload>
+    <onunload condition="Player.HasVideo">Action(Stop)</onunload>
 
     <controls>
 
@@ -24,21 +24,21 @@
                 <include content="Dialog_Body">
                     <include content="Dialog_Side_Grouplist">
                         <param name="id">9000</param>
-                        <onleft condition="!Player.HasMedia">Close</onleft>
-                        <onleft condition="Player.HasMedia">Seek(-10)</onleft>
-                        <onright condition="Player.HasMedia">Seek(10)</onright>
+                        <onleft condition="!Player.HasVideo">Close</onleft>
+                        <onleft condition="Player.HasVideo">Seek(-10)</onleft>
+                        <onright condition="Player.HasVideo">Seek(10)</onright>
                         <include content="Dialog_Side_Button">
                             <param name="id">02</param>
                             <param name="label">$LOCALIZE[31485]</param>
                             <param name="icon">special://skin/extras/icons/stop.png</param>
-                            <param name="visible">Player.HasMedia</param>
+                            <param name="visible">Player.HasVideo</param>
                             <onclick>Close</onclick>
                         </include>
                         <include content="Dialog_Side_Button">
                             <param name="id">03</param>
                             <param name="label">$VAR[Label_Trailer_PlayPause]</param>
                             <param name="icon">$VAR[Image_Trailer_PlayPause]</param>
-                            <param name="visible">Player.HasMedia</param>
+                            <param name="visible">Player.HasVideo</param>
                             <onclick>PlayerControl(Play)</onclick>
                         </include>
                         <include content="Dialog_Side_Button">
@@ -52,7 +52,9 @@
                             <param name="id">05</param>
                             <param name="label">Fullscreen</param>
                             <param name="icon">special://skin/extras/icons/fullscreen.png</param>
-                            <param name="visible">Player.HasMedia</param>
+                            <param name="visible">Player.HasVideo</param>
+                            <onback condition="!String.IsEmpty(Window.Property(TrailerFullscreen)) + Player.HasVideo">ClearProperty(TrailerFullscreen,1123)</onback>
+                            <onback condition="!String.IsEmpty(Window.Property(TrailerFullscreen)) + Player.HasVideo">9000</onback>
                             <onclick condition="String.IsEmpty(Window.Property(TrailerFullscreen))">SetProperty(TrailerFullscreen,True,1123)</onclick>
                             <onclick condition="!String.IsEmpty(Window.Property(TrailerFullscreen))">ClearProperty(TrailerFullscreen,1123)</onclick>
                             <onunfocus>ClearProperty(TrailerFullscreen,1123)</onunfocus>
@@ -94,7 +96,7 @@
                                     <width>100%</width>
                                     <height>12</height>
                                     <info>Player.Progress</info>
-                                    <visible>Player.HasMedia</visible>
+                                    <visible>Player.HasVideo</visible>
                                     <texturebg colordiffuse="00ffffff" border="4">progress/progress-bg.png</texturebg>
                                 </control>
                                 <control type="progress">
@@ -109,7 +111,7 @@
                                     <include content="Defs_Progress_Colorfade">
                                         <param name="id">499</param>
                                     </include>
-                                    <visible>Player.HasMedia</visible>
+                                    <visible>Player.HasVideo</visible>
                                 </control>
                             </control>
                         </control>
@@ -120,7 +122,7 @@
         </control>
 
         <control type="group">
-            <visible>Player.HasMedia</visible>
+            <visible>Player.HasVideo</visible>
             <visible>!String.IsEmpty(Window.Property(TrailerFullscreen))</visible>
             <control type="image">
                 <texture colordiffuse="black">common/white.png</texture>
