@@ -8,11 +8,30 @@
                 <template>generator/data/parts/endrow_item.xmltemplate</template>
                 <datafile>generator/data/setup/search_path.xml</datafile>
                 <value name="item_path">$VAR[Path_SearchTerm,{widget_path},{widget_path_end}]</value>
+                <value name="item_target">{widget_target}</value>
                 <value name="parts_onclick">
-                    <template>&lt;onclick&gt;ActivateWindow({item_target},$VAR[Path_SearchTerm,{widget_path},{widget_path_end}],return)&lt;/onclick&gt;</template>
+                    <template>&lt;onclick&gt;ActivateWindow({widget_target},$VAR[Path_SearchTerm,{widget_path},{widget_path_end}],return)&lt;/onclick&gt;</template>
                 </value>
-                <value name="endrow_widget_id">$MATH[5000 + {item_x} + 1]</value>
-                <value name="parts_visible">!Skin.HasSetting(Search.EnableDiscover) + [!Integer.IsEqual(Container($MATH[5000 + {item_x} + 1]).NumItems,0) | Container($MATH[5000 + {item_x} + 1]).IsUpdating]</value>
+                <rules name="endrow_widget_id">
+                    <rule>
+                        <condition>{item_widget_style}==Landscape</condition>
+                        <value>51</value>
+                    </rule>
+                    <rule>
+                        <condition>{item_widget_style}==Poster</condition>
+                        <value>52</value>
+                    </rule>
+                    <rule>
+                        <condition>{item_widget_style}==Square</condition>
+                        <value>50</value>
+                    </rule>
+                    <rule>
+                        <condition>True</condition>
+                        <value>51</value>
+                    </rule>
+                </rules>
+                <value name="parts_visible">!Skin.HasSetting(Search.EnableDiscover)</value>
+                <value name="parts_additional">&lt;property name="main_guid"&gt;$INFO[Container(5099).ListItem.Property(guid)]&lt;/property&gt;</value>
                 <condition>{item_path}!=</condition>
                 <condition>{item_disabled}!=True</condition>
             </item>

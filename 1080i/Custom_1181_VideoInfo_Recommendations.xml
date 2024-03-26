@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window type="window" id="1181">
-    <defaultcontrol always="true">5098</defaultcontrol>
-    <onload>SetFocus(5098)</onload>
+    <defaultcontrol>5000</defaultcontrol>
+    <include>Action_PreserveTransitionProp_Onload</include>
     <controls>
         <include>DialogInfo_Recommendations_BackgroundLoader</include>
         <include>Background_Main</include>
@@ -12,14 +12,7 @@
                 <include>Animation_Transition_InfoPanel_Hide</include>
             </include>
             <include content="DialogInfo_Recommendations_Widgets_Grouplist">
-                <control type="button" id="5098">
-                    <height>0</height>
-                    <texturefocus />
-                    <texturenofocus />
-                    <onfocus>Action(Down)</onfocus>
-                    <animation effect="fade" time="400" start="0" end="0">Focus</animation>
-                    <visible>!ControlGroup(5000).HasFocus() | Control.HasFocus(5098)</visible>
-                </control>
+                <param name="ondown">ActivateWindow(1171)</param>
                 <include content="DialogInfo_Recommendations_Widgets" condition="![Window.Previous(music) | Window.Previous(1103)]">
                     <param name="include_onclick">false</param>
                     <param name="transition_include">true</param>
@@ -95,11 +88,11 @@
                         <visible>!Integer.IsEqual(Container(5000).NumItems,0)</visible>
                         <visible>!Integer.IsEqual(Container(5000).NumItems,1) | !Control.HasFocus(5098) | ControlGroup(5000).HasFocus()</visible>
                         <visible>!$EXP[Exp_InfoDialogs]</visible>
-                        <include>Furniture_Bottom_Left</include>
-                        <include>Furniture_Bottom_Right</include>
+                        <include content="Furniture_Bottom_WidgetGroups">
+                            <param name="label">$LOCALIZE[33063]</param>
+                        </include>
                     </control>
                 </control>
-
             </include>
             <include>Widget_Transitions</include>
         </include>
@@ -107,5 +100,6 @@
             <visible>!$EXP[Exp_InfoDialogs]</visible>
             <include>DialogInfo_Recommendations_Furniture</include>
         </control>
+        <include>TouchMode_Recs_Zones</include>
     </controls>
 </window>

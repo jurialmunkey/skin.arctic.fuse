@@ -17,13 +17,9 @@
 
                 <include content="Info_Viewline" condition="$PARAM[labelvisible] + ![$PARAM[usewidgetlabel]]">
                     <param name="label">$PARAM[label]</param>
-                    <param name="secondary_label">$PARAM[secondary_label]</param>
-                    <param name="sort_condition">$PARAM[sort_condition]</param>
-                    <param name="sort_descending">$PARAM[sort_descending]</param>
                     <param name="item_condition">true</param>
                     <param name="item_count">$INFO[Container($PARAM[id]).NumItems]</param>
                     <param name="item_updating">Container($PARAM[id]).IsUpdating</param>
-                    <animation effect="fade" start="100" end="30" time="200" condition="!Control.HasFocus($PARAM[id])">Conditional</animation>
                     <top>20</top>
                     <left>0</left>
                     <visible>!Integer.IsEqual(Container($PARAM[id]).NumItems,0) | Container($PARAM[id]).IsUpdating</visible>
@@ -31,13 +27,9 @@
 
                 <include content="Info_Viewline" condition="$PARAM[labelvisible] + [$PARAM[usewidgetlabel]]">
                     <param name="label">[CAPITALIZE]$INFO[Container($PARAM[id]).ListItem.Property(widget)][/CAPITALIZE]</param>
-                    <param name="secondary_label">$PARAM[secondary_label]</param>
-                    <param name="sort_condition">$PARAM[sort_condition]</param>
-                    <param name="sort_descending">$PARAM[sort_descending]</param>
                     <param name="item_condition">true</param>
                     <param name="item_count">$INFO[Container($PARAM[id]).NumItems]</param>
                     <param name="item_updating">Container($PARAM[id]).IsUpdating</param>
-                    <animation effect="fade" start="100" end="30" time="200" condition="!Control.HasFocus($PARAM[id])">Conditional</animation>
                     <top>20</top>
                     <left>0</left>
                     <visible>!Integer.IsEqual(Container($PARAM[id]).NumItems,0) | Container($PARAM[id]).IsUpdating</visible>
@@ -65,11 +57,11 @@
         <param name="shortstack_enabled">false</param>
         <param name="shortstack_visible">true</param>
         <param name="conditional_fade">false</param>
+        <param name="widgetfade_include">[![[Skin.HasSetting(Hubs.WidgetSelector) + $EXP[Exp_Window_IsHub]] | Window.IsVisible(1105)]]</param>
         <definition>
             <include content="Widget_Label">
                 <param name="groupid">$PARAM[groupid]</param>
                 <param name="label">$PARAM[label]</param>
-                <param name="secondary_label">$PARAM[secondary_label]</param>
                 <param name="id">$PARAM[id]</param>
                 <param name="visible">[Container($PARAM[id]).IsUpdating | !Integer.IsEqual(Container($PARAM[id]).NumItems,0) | $PARAM[altvisible]] + $PARAM[visible]</param>
                 <param name="busy_visible">[Container($PARAM[id]).IsUpdating | $PARAM[busy_isupdating]] + $PARAM[busy_visible]</param>
@@ -77,14 +69,15 @@
                 <param name="labelvisible">$PARAM[labelvisible]</param>
                 <param name="labeltop">$PARAM[labeltop]</param>
                 <param name="labelheight">$PARAM[labelheight]</param>
-                <param name="sort_condition">$PARAM[sort_condition]</param>
-                <param name="sort_descending">$PARAM[sort_descending]</param>
                 <include condition="$PARAM[transition_include]">Animation_Transition_InfoPanel_Cond</include>
-                <include content="Transitions_Down_Visibility" condition="$PARAM[transition_include]">
+                <include content="Transitions_Lower_Visibility" condition="$PARAM[transition_include]">
                     <param name="hidden">![$PARAM[transition_hidden]]</param>
                 </include>
                 <include content="Animation_ConditionalFade">
                     <param name="condition">$PARAM[conditional_fade]</param>
+                </include>
+                <include content="Animation_Widget_FadeOut" condition="$PARAM[widgetfade_include]">
+                    <param name="condition">!Control.HasFocus($PARAM[id]) + !Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),$PARAM[id]) + !Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + !String.IsEmpty(Window.Property(TMDBHelper.WidgetContainer))</param>
                 </include>
             </include>
             <include content="$PARAM[include]">
@@ -107,7 +100,7 @@
                 <include content="Transitions_List_Visibility" condition="$PARAM[transition_include]">
                     <param name="hidden">$PARAM[transition_hidden]</param>
                 </include>
-                <include content="Transitions_Down_Visibility" condition="$PARAM[transition_include]">
+                <include content="Transitions_Lower_Visibility" condition="$PARAM[transition_include]">
                     <param name="hidden">![$PARAM[transition_hidden]]</param>
                 </include>
 
@@ -116,6 +109,10 @@
                 <animation effect="fade" start="100" end="0" time="0" condition="[Container($PARAM[id]).IsUpdating | $PARAM[busy_isupdating]] + $PARAM[busy_visible]">Conditional</animation>
                 <visible>$PARAM[visible] + [Container($PARAM[id]).IsUpdating | !Integer.IsEqual(Container($PARAM[id]).NumItems,0) | $PARAM[altvisible]]</visible>
                 <onfocus>SetProperty(Slide.WidgetContainer,True)</onfocus>
+
+                <include content="Animation_Widget_FadeOut" condition="$PARAM[widgetfade_include]">
+                    <param name="condition">!Control.HasFocus($PARAM[id]) + !Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),$PARAM[id]) + !Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + !String.IsEmpty(Window.Property(TMDBHelper.WidgetContainer))</param>
+                </include>
 
                 <include content="Animation_ConditionalFade">
                     <param name="condition">$PARAM[conditional_fade]</param>
@@ -150,7 +147,7 @@
                         <texture>dialog/loading-back.png</texture>
                         <colordiffuse>main_fg_90</colordiffuse>
                     </control>
-                    <include content="Generator_Object_BusySpinner">
+                    <include content="Object_BusySpinner_Image">
                         <param name="spinspinner">$PARAM[busy_visible]</param>
                     </include>
                     <control type="image">
@@ -193,6 +190,7 @@
                         <height>$PARAM[item_h]</height>
                         <include content="Object_ItemBack">
                             <param name="shadow_colordiffuse">shadow_soft</param>
+                            <param name="colordiffuse">$PARAM[colordiffuse]</param>
                         </include>
                     </control>
                     <control type="group">
@@ -204,6 +202,7 @@
                             <width>85%</width>
                             <include content="Object_ItemBack">
                                 <param name="shadow_colordiffuse">shadow_soft</param>
+                                <param name="colordiffuse">$PARAM[colordiffuse]</param>
                             </include>
                         </control>
                         <control type="group">
@@ -213,6 +212,7 @@
                             <width>70%</width>
                             <include content="Object_ItemBack">
                                 <param name="shadow_colordiffuse">shadow_soft</param>
+                                <param name="colordiffuse">$PARAM[colordiffuse]</param>
                             </include>
                         </control>
                     </control>
@@ -227,17 +227,19 @@
             <param name="item_h">view_landscape_item_h</param>
             <param name="itemlayout_w">view_landscape_itemlayout_w</param>
             <param name="itemlayout_h">view_poster_itemlayout_h</param>
+            <param name="colordiffuse">$PARAM[colordiffuse]</param>
         </include>
     </include>
 
     <include name="Widget_Busy_BlankItem_Apps">
         <include content="Widget_Busy_BlankItem">
-            <param name="item_w">view_icon_item_h</param>
+            <param name="item_w">view_icon_item_w</param>
             <param name="item_h">view_icon_item_h</param>
-            <param name="itemlayout_w">view_icon_itemlayout_h</param>
+            <param name="itemlayout_w">view_icon_itemlayout_w</param>
             <param name="itemlayout_h">view_icon_itemlayout_h</param>
             <param name="second_row">false</param>
             <param name="first_row">false</param>
+            <param name="colordiffuse">$PARAM[colordiffuse]</param>
         </include>
     </include>
 
@@ -251,6 +253,9 @@
                 <right>-40</right>
                 <orientation>horizontal</orientation>
                 <visible>$PARAM[visible]</visible>
+                <animation type="Visible" reversible="false">
+                    <effect type="fade" start="0" end="100" time="200" delay="200" />
+                </animation>
                 <include>Widget_Busy_BlankItem_Landscape</include>
                 <include>Widget_Busy_BlankItem_Landscape</include>
                 <include>Widget_Busy_BlankItem_Landscape</include>
@@ -461,8 +466,8 @@
             <param name="affix">_LIP_C$PARAM[id]</param>
             <param name="content">Layout_Poster</param>
             <param name="icon_base_var">Image_Poster</param>
-            <param name="itemlayout_w">240</param>
-            <param name="item_w">200</param>
+            <param name="itemlayout_w">view_poster_itemlayout_w</param>
+            <param name="item_w">view_poster_itemlayout_w</param>
             <param name="item_h">view_poster_item_h</param>
             <param name="prefix">transition_poster</param>
             <param name="overhang_visible">$PARAM[overhang_visible]</param>
@@ -476,9 +481,9 @@
             <param name="affix">_LIP_C$PARAM[id]</param>
             <param name="content">Layout_Square</param>
             <param name="icon_base_var">Image_Icon</param>
-            <param name="itemlayout_w">240</param>
-            <param name="item_w">200</param>
-            <param name="item_h">view_poster_item_h</param>
+            <param name="itemlayout_w">view_poster_itemlayout_w</param>
+            <param name="item_w">view_poster_item_w</param>
+            <param name="item_h">view_poster_item_w</param>
             <param name="prefix">transition_poster</param>
             <param name="overhang_visible">$PARAM[overhang_visible]</param>
             <nested />
@@ -491,8 +496,8 @@
             <param name="affix">_LIP_C$PARAM[id]</param>
             <param name="content">Layout_Landscape</param>
             <param name="icon_base_var">Image_Landscape</param>
-            <param name="itemlayout_w">420</param>
-            <param name="item_w">380</param>
+            <param name="itemlayout_w">view_landscape_itemlayout_w</param>
+            <param name="item_w">view_landscape_item_w</param>
             <param name="item_h">view_landscape_item_h</param>
             <param name="prefix">transition_landscape</param>
             <param name="overhang_visible">$PARAM[overhang_visible]</param>
@@ -510,9 +515,6 @@
                 <param name="id">$PARAM[id]</param>
                 <param name="groupid">$PARAM[groupid]</param>
                 <param name="label">$PARAM[label]</param>
-                <param name="secondary_label">$PARAM[secondary_label]</param>
-                <param name="sort_condition">$PARAM[sort_condition]</param>
-                <param name="sort_descending">$PARAM[sort_descending]</param>
                 <param name="usewidgetlabel">$PARAM[usewidgetlabel]</param>
                 <param name="labelvisible">true</param>
                 <param name="infowidget">true</param>
@@ -540,15 +542,11 @@
     <include name="Widget_Row">
         <param name="grouplistid">5000</param>
         <param name="topwidgetid">5001</param>
-        <param name="refocus">SetFocus(393)</param>
         <definition>
             <include content="_Widget_Row">
                 <param name="id">$PARAM[id]</param>
                 <param name="groupid">$PARAM[groupid]</param>
                 <param name="label">$PARAM[label]</param>
-                <param name="secondary_label">$PARAM[secondary_label]</param>
-                <param name="sort_condition">$PARAM[sort_condition]</param>
-                <param name="sort_descending">$PARAM[sort_descending]</param>
                 <param name="usewidgetlabel">$PARAM[usewidgetlabel]</param>
                 <param name="include">$PARAM[include]</param>
                 <param name="visible">$PARAM[visible]</param>
@@ -590,7 +588,6 @@
                 <param name="id">$PARAM[baseid]$PARAM[id]</param>
                 <param name="groupid">$PARAM[basegroupid]$PARAM[id]</param>
                 <param name="label">$PARAM[label]</param>
-                <param name="secondary_label">$PARAM[secondary_label]</param>
                 <param name="include">$PARAM[include]</param>
                 <param name="visible">$PARAM[visible]</param>
                 <param name="altvisible">$PARAM[altvisible]</param>
@@ -609,14 +606,14 @@
                     <param name="id">$PARAM[baseid]$PARAM[id]</param>
                     <param name="backid">$PARAM[backid]</param>
                     <param name="menuid">$PARAM[menuid]</param>
-                    <param name="onback">!Integer.IsEqual(Container($PARAM[baseid]$PARAM[id]).CurrentItem,1)</param>
+                    <param name="onback">[Integer.IsEqual(Container($PARAM[baseid]$PARAM[id]).CurrentItem,1)]</param>
                 </include>
 
                 <onfocus condition="$PARAM[set_imageoverride]">SetProperty(TMDbHelper.Image.Override,1,Home)</onfocus>
                 <onunfocus condition="$PARAM[set_imageoverride]">ClearProperty(TMDbHelper.Image.Override,Home)</onunfocus>
                 <onfocus condition="$PARAM[set_widgetcontainer]">SetProperty(TMDbHelper.WidgetContainer,$PARAM[baseid]$PARAM[id])</onfocus>
 
-                <onfocus condition="$PARAM[set_transitionstyle]">SetProperty(Transition.WidgetStyle,List_Poster_Row,Home)</onfocus>
+                <onfocus condition="$PARAM[set_transitionstyle]">SetProperty(Transition.WidgetStyle,$PARAM[include],Home)</onfocus>
                 <onunfocus condition="$PARAM[set_transitionstyle]">ClearProperty(Transition.WidgetStyle,Home)</onunfocus>
 
                 <nested />
@@ -684,16 +681,19 @@
 
                 <include content="Action_View_Movement_OnLeftRight" condition="$EXP[Exp_HomeMenu_DontHide]">
                     <param name="id">$PARAM[id]</param>
-                    <param name="onback">!Integer.IsEqual(Container($PARAM[id]).CurrentItem,1)</param>
+                    <param name="onback">[Integer.IsEqual(Container($PARAM[id]).CurrentItem,1)]</param>
                     <param name="backid">$PARAM[grouplistid]</param>
                     <param name="menuid">309</param>
                 </include>
                 <include content="Action_View_Movement_OnLeftRight" condition="![$EXP[Exp_HomeMenu_DontHide]]">
                     <param name="id">$PARAM[id]</param>
-                    <param name="onback">!Integer.IsEqual(Container($PARAM[id]).CurrentItem,1)</param>
+                    <param name="onback">[Integer.IsEqual(Container($PARAM[id]).CurrentItem,1)]</param>
                     <param name="backid">$PARAM[grouplistid]</param>
                 </include>
 
+                <include content="Animation_ConditionalFade">
+                    <param name="condition">Window.IsVisible(1171)</param>
+                </include>
                 <include content="Animation_Fade_Out">
                     <param name="condition">$EXP[Exp_InfoDialogs]</param>
                     <param name="delay">200</param>

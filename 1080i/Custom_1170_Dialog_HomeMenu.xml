@@ -2,99 +2,90 @@
 <window type="dialog" id="1170">
     <defaultcontrol>7000</defaultcontrol>
     <onload>SetFocus(7021)</onload>
-    <onunload>ClearProperty(DialogHomeMenu.UseButtonMenu,Home)</onunload>
     <include>Action_ButtonMenu_Onload</include>
+
     <controls>
 
-        <include content="Dialog_Overlay_Side">
-            <param name="dialog_size">Dimension_DialogSideMenu</param>
+        <control type="group">
+            <include>Dimension_DialogSideMenu</include>
             <include>Animation_Right_Delay</include>
-            <include content="Dialog_Head" condition="String.IsEmpty(Window(Home).Property(DialogHomeMenu.UseButtonMenu))">
-                <param name="label">$LOCALIZE[33061]</param>
+            <include content="Dialog_Dim_Side">
+                <param name="slide_animation">false</param>
+                <!-- <param name="slide_condition">!Integer.IsEqual(Container(9000).NumItems,0)</param> -->
             </include>
-            <include content="Dialog_Head" condition="!String.IsEmpty(Window(Home).Property(DialogHomeMenu.UseButtonMenu))">
-                <param name="label">$LOCALIZE[33063]</param>
-            </include>
-            <include content="Dialog_Body">
 
-                <include content="Dialog_Body_Group">
-                    <param name="id">7000</param>
-
-                    <include content="ButtonMenu_Layout" condition="Skin.String(OptionsTiles.Layout,$NUMBER[2])">
-                        <param name="layout_include">ButtonMenu_Layout_Two</param>
-                    </include>
-                    <include content="ButtonMenu_Layout" condition="Skin.String(OptionsTiles.Layout,$NUMBER[3])">
-                        <param name="layout_include">ButtonMenu_Layout_Three</param>
-                    </include>
-                    <include content="ButtonMenu_Layout" condition="Skin.String(OptionsTiles.Layout,$NUMBER[4])">
-                        <param name="layout_include">ButtonMenu_Layout_Four</param>
-                    </include>
-
-                    <control type="image">
-                        <top>300</top>
-                        <left>20</left>
-                        <right>20</right>
-                        <height>1</height>
-                        <texture colordiffuse="dialog_fg_12">common/white.png</texture>
-                    </control>
-
-                    <include content="List_DialogSelect" condition="String.IsEmpty(Window(Home).Property(DialogHomeMenu.UseButtonMenu))">
-                        <param name="id">8000</param>
-                        <param name="textcolor">dialog_fg</param>
-                        <param name="itemlayout_include">Layout_MenuList</param>
-                        <top>320</top>
-                        <bottom>160</bottom>
-                        <orientation>vertical</orientation>
+            <!-- Bottom Layer -->
+            <!-- <include content="Dialog_Background_Side">
+                <param name="slide_condition">!Integer.IsEqual(Container(9000).NumItems,0)</param>
+                <param name="dialog_size">Dimension_DialogSideMenu</param>
+                <include content="Dialog_Body">
+                    <include content="Dialog_Side_Grouplist">
+                        <param name="id">9000</param>
                         <onleft>Close</onleft>
-                        <onright>9000</onright>
-                        <onup>7020</onup>
-                        <ondown>6000</ondown>
-                        <content>
-                            <item>
-                                <label>$LOCALIZE[137]</label>
-                                <icon>special://skin/extras/icons/search.png</icon>
-                                <property name="path">ActivateWindow(1105)</property>
-                                <property name="expression">search</property>
-                                <onclick>Close</onclick>
-                                <onclick>ActivateWindow(1105)</onclick>
-                            </item>
-                        </content>
-                        <include content="Home_Menu_Content">
-                            <param name="condition">[True]</param>
+                        <onright>7000</onright>
+                        <include>skinvariables-powersidemenu-staticitems</include>
+                    </include>
+                </include>
+            </include> -->
+
+            <include content="Dialog_Foreground_Side">
+                <param name="dialog_size">Dimension_DialogSideMenu</param>
+                <param name="topline">true</param>
+                <param name="subline">false</param>
+
+                <!-- Header -->
+                <include content="Dialog_Head">
+                    <param name="label">$LOCALIZE[33063]</param>
+                </include>
+                <include>Dialog_Head_CloseButton</include>
+
+                <!-- Content -->
+                <include content="Dialog_Body">
+
+                    <include content="Dialog_Body_Group">
+                        <param name="id">7000</param>
+
+                        <include content="ButtonMenu_Layout" condition="Skin.String(OptionsTiles.Layout,$NUMBER[2])">
+                            <param name="layout_include">ButtonMenu_Layout_Two</param>
                         </include>
-                    </include>
+                        <include content="ButtonMenu_Layout" condition="Skin.String(OptionsTiles.Layout,$NUMBER[3])">
+                            <param name="layout_include">ButtonMenu_Layout_Three</param>
+                        </include>
+                        <include content="ButtonMenu_Layout" condition="Skin.String(OptionsTiles.Layout,$NUMBER[4])">
+                            <param name="layout_include">ButtonMenu_Layout_Four</param>
+                        </include>
 
-                    <include content="Object_Control" condition="!String.IsEmpty(Window(Home).Property(DialogHomeMenu.UseButtonMenu))">
-                        <param name="control">grouplist</param>
-                        <param name="id">8000</param>
-                        <top>320</top>
-                        <bottom>160</bottom>
-                        <orientation>vertical</orientation>
-                        <onup>7020</onup>
-                        <ondown>6000</ondown>
-                        <onright>9000</onright>
-                        <onleft>Close</onleft>
-                        <include>skinvariables-powermainmenu-staticitems</include>
-                    </include>
+                        <control type="image">
+                            <top>300</top>
+                            <left>20</left>
+                            <right>20</right>
+                            <height>1</height>
+                            <texture colordiffuse="dialog_fg_12">common/white.png</texture>
+                        </control>
 
-                    <include>ButtonMenu_NowPlaying</include>
+                        <include content="Object_Control">
+                            <param name="control">grouplist</param>
+                            <param name="id">8000</param>
+                            <top>320</top>
+                            <bottom>80</bottom>
+                            <orientation>vertical</orientation>
+                            <onup>7020</onup>
+                            <ondown>6000</ondown>
+                            <onleft>Close</onleft>
+                            <onright>-</onright>
+                            <include>skinvariables-powermainmenu-staticitems</include>
+                        </include>
+
+                        <include>ButtonMenu_PlayerControls</include>
+                    </include>
                 </include>
 
-
-                <include content="Dialog_Side_Grouplist">
-                    <param name="id">9000</param>
-                    <onright>Close</onright>
-                    <onleft>7000</onleft>
-                    <include content="Dialog_Side_Button">
-                        <param name="id">01</param>
-                        <param name="label">$LOCALIZE[15067]</param>
-                        <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
-                        <onclick>Close</onclick>
-                    </include>
-                    <include>skinvariables-powersidemenu-staticitems</include>
-                </include>
             </include>
-        </include>
+
+
+
+        </control>
+
 
     </controls>
 </window>

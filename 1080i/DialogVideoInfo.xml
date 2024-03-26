@@ -6,27 +6,36 @@
     </include>
     <menucontrol>4000</menucontrol>
     <include>DialogInfo_Onload</include>
+    <onload condition="!Player.HasVideo + !String.IsEmpty(ListItem.Trailer) + !Skin.HasSetting(Background.DisableVideo) + Skin.HasSetting(Trailers.EnableAutoPlayback.Info)">PlayMedia($ESCINFO[ListItem.Trailer],False,1)</onload>
+    <onload condition="!Player.HasVideo + !String.IsEmpty(ListItem.Trailer) + !Skin.HasSetting(Background.DisableVideo) + Skin.HasSetting(Trailers.EnableAutoPlayback.Info)">SetProperty(Trailer,$ESCINFO[ListItem.Trailer],1123)</onload>
+    <onunload condition="Player.HasVideo + String.IsEqual(Window(1123).Property(Trailer),Player.FileNameAndPath)">Stop</onunload>
+
     <controls>
 
 
         <include>Defs_TMDbHelper_Loader</include>
 
-        <include content="DialogInfo_Main_Group">
-            <include content="DialogInfo_Body_Group">
-                <include content="DialogInfo_InfoPanel_Group">
-                    <include content="DialogInfo_InfoDetails_Group">
+        <control type="group">
+            <include>DialogInfo_Main_Group</include>
+            <control type="group">
+                <include>DialogInfo_Body_Group</include>
+                <control type="group">
+                    <include>DialogInfo_InfoPanel_Group</include>
+                    <control type="group">
+                        <include>DialogInfo_InfoDetails_Group</include>
                         <include>DialogInfo_VideoInfo</include>
-                    </include>
-                </include>
+                    </control>
+                </control>
                 <include>DialogInfo_ArtworkGallery</include>
-            </include>
+            </control>
 
             <include content="DialogInfo_ButtonGroup">
                 <param name="include">Items_DialogVideoInfo_MenuBar</param>
             </include>
             <include>DialogInfo_Furniture</include>
-        </include>
+        </control>
 
+        <include>TouchMode_Info_Zones</include>
         <include>DialogInfo_PlotBox</include>
 
     </controls>

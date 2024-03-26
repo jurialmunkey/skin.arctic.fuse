@@ -6,14 +6,47 @@
         <value>winter</value>
     </variable>
 
+    <variable name="Path_SkinVariables_FilterPath">
+        <value condition="String.IsEqual(Window(Home).Property(Shortcuts.Category),Global)">&amp;exclude_key=sidemenu_guid&amp;exclude_value=guid</value>
+        <value condition="String.StartsWith(Window(Home).Property(Shortcuts.Category),guid-)">&amp;filter_key=sidemenu_guid&amp;filter_value=$INFO[Window(Home).Property(Shortcuts.Category)]&amp;filter_empty=true</value>
+    </variable>
+
+    <variable name="Path_SkinVariables_Home29303FilterPath">
+        <value condition="String.StartsWith(Window(Home).Property(Shortcuts.Category),guid-)">plugin://script.skinvariables/?info=get_shortcuts_node&amp;edit=False&amp;skin=$VAR[Path_SkinVariables_SkinFolder]$INFO[Window(Home).Property(SkinVariables.ShortcutsNode.Reload),&amp;reload=,]&amp;menu=sidemenu&amp;filter_key=guid&amp;filter_value=$INFO[Window(Home).Property(Shortcuts.Category)]</value>
+        <value>noop</value>
+    </variable>
+
+    <variable name="Path_SkinVariables_Home29313FilterPath">
+        <value condition="String.StartsWith(Container(22001).ListItem.Property(sidemenu_guid),guid-)">plugin://script.skinvariables/?info=get_shortcuts_node&amp;edit=False&amp;skin=$VAR[Path_SkinVariables_SkinFolder]$INFO[Window(Home).Property(SkinVariables.ShortcutsNode.Reload),&amp;reload=,]&amp;menu=sidemenu&amp;filter_key=guid&amp;filter_value=$INFO[Container(22001).ListItem.Property(sidemenu_guid)]</value>
+        <value>noop</value>
+    </variable>
+
+    <variable name="Path_SkinVariables_1304_EditMode">
+        <value condition="!String.EndsWith(Container(304).ListItem.Property(menu),-widgetsonly) + !String.EndsWith(Container(304).ListItem.Property(menu),-globalwidgets)">$INFO[Container(304).ListItem.Property(mode),mode=,]</value>
+    </variable>
+
+    <variable name="Path_SkinVariables_1304_EditGUID">
+        <value condition="String.IsEqual(Container(304).ListItem.Property(menu),sidemenu) + !String.EndsWith(Container(304).ListItem.Property(menu),-widgetsonly) + !String.EndsWith(Container(304).ListItem.Property(menu),-globalwidgets)">$INFO[Container(303).ListItem.Property(guid),guid=,]</value>
+        <value condition="!String.IsEqual(Container(304).ListItem.Property(menu),sidemenu) + !String.EndsWith(Container(304).ListItem.Property(menu),-widgetsonly) + !String.EndsWith(Container(304).ListItem.Property(menu),-globalwidgets)">$INFO[Container(300).ListItem.Property(guid),guid=,]</value>
+    </variable>
+
     <variable name="Path_SkinVariables_SkinFolder">
         <value condition="!String.IsEmpty(Skin.String(SkinVariables.SkinUser))">skin.arctic.fuse$INFO[Skin.String(SkinVariables.SkinUser),-,]</value>
         <value>skin.arctic.fuse</value>
     </variable>
 
+    <variable name="Path_SkinVariables_SkinUserSlug">
+        <value condition="!String.IsEmpty(Skin.String(SkinVariables.SkinUser))">$INFO[Skin.String(SkinVariables.SkinUser)]</value>
+        <value>defaultuser</value>
+    </variable>
+
+    <variable name="Path_Shortcut_UseCategory">
+        <value condition="String.StartsWith(Window(Home).Property(Shortcuts.Category),guid-)">&amp;&amp;sidemenu_guid::$INFO[Window(Home).Property(Shortcuts.Category)]</value>
+    </variable>
+
     <variable name="Path_Shortcut_UseRawPath">
-        <value condition="String.IsEqual(Window(Home).Property(Shortcuts.EditMode),mode=widgets)">&amp;&amp;use_rawpath::True</value>
         <value condition="String.IsEqual(Window(Home).Property(Shortcuts.EditMenu),menu=searchmenu)">&amp;&amp;grouping::grouping://shortcuts/search/&amp;&amp;use_rawpath::True</value>
+        <value condition="$EXP[Exp_Hubs_Shortcuts_IsWidgetMode]">&amp;&amp;use_rawpath::True</value>
     </variable>
 
     <variable name="Path_Shortcut_EditMenu">
@@ -38,8 +71,8 @@
     </variable>
 
     <variable name="Path_SearchFilter_Node">
-        <value condition="[String.IsEqual(Window.Property(SearchDiscover.FilterLabel),Genre) + String.IsEmpty(Window.Property(SearchDiscover.GenreLabel))] | [String.IsEqual(Window.Property(SearchDiscover.FilterLabel),Studio) + String.IsEmpty(Window.Property(SearchDiscover.StudioLabel))] | [String.IsEqual(Window.Property(SearchDiscover.FilterLabel),Director) + String.IsEmpty(Window.Property(SearchDiscover.DirectorLabel))]">plugin://script.skinvariables/?info=get_container_labels&amp;containers=5081&amp;infolabel=$INFO[Window.Property(SearchDiscover.FilterLabel)]&amp;numitems=$INFO[Container(5081).NumItems]</value>
-        <value>plugin://script.skinvariables/?info=get_container_labels&amp;containers=5081&amp;infolabel=$INFO[Window.Property(SearchDiscover.FilterLabel)]&amp;numitems=0</value>
+        <value condition="[String.IsEqual(Window.Property(SearchDiscover.FilterLabel),Genre) + String.IsEmpty(Window.Property(SearchDiscover.GenreLabel))] | [String.IsEqual(Window.Property(SearchDiscover.FilterLabel),Studio) + String.IsEmpty(Window.Property(SearchDiscover.StudioLabel))] | [String.IsEqual(Window.Property(SearchDiscover.FilterLabel),Director) + String.IsEmpty(Window.Property(SearchDiscover.DirectorLabel))]">plugin://script.skinvariables/?info=get_container_labels&amp;containers=52&amp;infolabel=$INFO[Window.Property(SearchDiscover.FilterLabel)]&amp;numitems=$INFO[Container(52).NumItems]</value>
+        <value>plugin://script.skinvariables/?info=get_container_labels&amp;containers=52&amp;infolabel=$INFO[Window.Property(SearchDiscover.FilterLabel)]&amp;numitems=$INFO[Container(52).NumItems]</value>
     </variable>
 
     <variable name="Path_Spotlight_SlideShow_Content">
@@ -52,7 +85,6 @@
         <value condition="Window.IsVisible(1107) + !String.IsEmpty(Skin.String(Hub.1107.Spotlight.Fallback))">$INFO[Skin.String(Hub.1107.Spotlight.Fallback)]</value>
         <value condition="Window.IsVisible(1108) + !String.IsEmpty(Skin.String(Hub.1108.Spotlight.Fallback))">$INFO[Skin.String(Hub.1108.Spotlight.Fallback)]</value>
         <value condition="Window.IsVisible(1109) + !String.IsEmpty(Skin.String(Hub.1109.Spotlight.Fallback))">$INFO[Skin.String(Hub.1109.Spotlight.Fallback)]</value>
-        <value>$VAR[Image_SimpleBackground]</value>
     </variable>
 
     <variable name="Path_Spotlight_Fallback_Content">
@@ -82,6 +114,8 @@
 
     <variable name="Path_Spotlight_Target">
         <value condition="!String.IsEmpty(Container(300).ListItem.Property(spotlight_path)) + !String.IsEmpty(Container(300).ListItem.Property(spotlight_target))">$INFO[Container(300).ListItem.Property(spotlight_target)]</value>
+        <value condition="!String.IsEmpty(Container(370).ListItem.Property(spotlight_path)) + !String.IsEmpty(Container(370).ListItem.Property(spotlight_target))">$INFO[Container(370).ListItem.Property(spotlight_target)]</value>
+        <value condition="!String.IsEmpty(Container(303).ListItem.Property(spotlight_path)) + !String.IsEmpty(Container(303).ListItem.Property(spotlight_target))">$INFO[Container(303).ListItem.Property(spotlight_target)]</value>
         <value>$VAR[Path_Spotlight_Fallback_Target]</value>
     </variable>
 
@@ -131,28 +165,28 @@
     </variable>
 
     <variable name="Path_DiscoverWidgets_SortBy">
-        <value condition="Skin.HasSetting(Search.LibraryDiscover) + !String.IsEmpty(Window.Property(SearchDiscover.SortBy))">$INFO[Window.Property(SearchDiscover.SortBy)]</value>
-        <value condition="Skin.HasSetting(Search.LibraryDiscover)">title</value>
+        <value condition="String.IsEmpty(Container(5099).ListItem.Property(discover)) + !String.IsEmpty(Window.Property(SearchDiscover.SortBy))">$INFO[Window.Property(SearchDiscover.SortBy)]</value>
+        <value condition="String.IsEmpty(Container(5099).ListItem.Property(discover))">title</value>
     </variable>
     <variable name="Path_DiscoverWidgets_SortOrder">
-        <value condition="Skin.HasSetting(Search.LibraryDiscover)">$INFO[Window.Property(SearchDiscover.SortOrder)]</value>
+        <value condition="String.IsEmpty(Container(5099).ListItem.Property(discover))">$INFO[Window.Property(SearchDiscover.SortOrder)]</value>
     </variable>
     <variable name="Path_DiscoverWidgets_ItemLimit">
-        <value condition="Skin.HasSetting(Search.LibraryDiscover)">$INFO[Skin.String(SearchDiscover.ItemLimit)]</value>
+        <value condition="String.IsEmpty(Container(5099).ListItem.Property(discover))">$INFO[Skin.String(SearchDiscover.ItemLimit)]</value>
     </variable>
 
     <variable name="Path_DiscoverWidgets_Join">
-        <value condition="!Skin.HasSetting(Search.LibraryDiscover)">plugin://script.skinvariables/?info=get_filter_dir&amp;library=video$VAR[Path_DiscoverWidgets_JoinSort,&amp;sort_by=,&amp;sort_how=desc]</value>
+        <value condition="!String.IsEmpty(Container(5099).ListItem.Property(discover))">plugin://script.skinvariables/?info=get_filter_dir&amp;library=video$VAR[Path_DiscoverWidgets_JoinSort,&amp;sort_by=,&amp;sort_how=desc]</value>
         <value>plugin://script.skinvariables/?info=get_filter_dir&amp;library=video$INFO[Control.GetLabel(9099).index(1),&amp;filter_key__title=title&amp;filter_value__title=,]$INFO[Window.Property(SearchDiscover.GenreLabel),&amp;filter_key__genre=genre&amp;filter_value__genre=,]$INFO[Window.Property(SearchDiscover.StudioLabel),&amp;filter_key__studio=studio&amp;filter_value__studio=,]$INFO[Window.Property(SearchDiscover.DirectorLabel),&amp;filter_key__director=director&amp;filter_value__director=,]$INFO[Window.Property(SearchDiscover.WriterLabel),&amp;filter_key__writer=writer&amp;filter_value__writer=,]$INFO[Window.Property(SearchDiscover.CountryLabel),&amp;filter_key__country=country&amp;filter_value__country=,]$INFO[Window.Property(SearchDiscover.YearLow),&amp;filter_key__yearlow=year&amp;filter_operator__yearlow=ge&amp;filter_value__yearlow=,]$INFO[Window.Property(SearchDiscover.YearHigh),&amp;filter_key__yearhigh=year&amp;filter_operator__yearhigh=le&amp;filter_value__yearhigh=,]$INFO[Window.Property(SearchDiscover.RatingLow),&amp;filter_key__ratinglow=rating&amp;filter_operator__ratinglow=ge&amp;filter_value__ratinglow=,]$INFO[Window.Property(SearchDiscover.RatingHigh),&amp;filter_key__ratinghigh=rating&amp;filter_operator__ratinghigh=le&amp;filter_value__ratinghigh=,]</value>
     </variable>
 
     <variable name="Path_DiscoverWidgets_Film">
-        <value condition="!Skin.HasSetting(Search.LibraryDiscover)">$VAR[Path_DiscoverWidgets_Base,,&amp;tmdb_type=movie&amp;length=2]$VAR[Path_DiscoverWidgets_FilmSort,&amp;sort_by=,]$VAR[Path_DiscoverWidgets_YearLow,&amp;primary_release_date.gte=,]$VAR[Path_DiscoverWidgets_YearHigh,&amp;primary_release_date.lte=,]$INFO[Window.Property(SearchDiscover.FilmGenreID),&amp;with_genres=,]</value>
+        <value condition="!String.IsEmpty(Container(5099).ListItem.Property(discover))">$VAR[Path_DiscoverWidgets_Base,,&amp;tmdb_type=movie&amp;length=2]$VAR[Path_DiscoverWidgets_FilmSort,&amp;sort_by=,]$VAR[Path_DiscoverWidgets_YearLow,&amp;primary_release_date.gte=,]$VAR[Path_DiscoverWidgets_YearHigh,&amp;primary_release_date.lte=,]$INFO[Window.Property(SearchDiscover.FilmGenreID),&amp;with_genres=,]</value>
         <value>videodb://movies/titles</value>
     </variable>
 
     <variable name="Path_DiscoverWidgets_Show">
-        <value condition="!Skin.HasSetting(Search.LibraryDiscover) + String.IsEmpty(Window.Property(SearchDiscover.CastID)) + String.IsEmpty(Window.Property(SearchDiscover.CrewID))">$VAR[Path_DiscoverWidgets_Base,,&amp;tmdb_type=tv&amp;length=2]$VAR[Path_DiscoverWidgets_ShowSort,&amp;sort_by=,]$VAR[Path_DiscoverWidgets_YearLow,&amp;first_air_date.gte=,]$VAR[Path_DiscoverWidgets_YearHigh,&amp;first_air_date.lte=,]$INFO[Window.Property(SearchDiscover.ShowGenreID),&amp;with_genres=,]</value>
+        <value condition="!String.IsEmpty(Container(5099).ListItem.Property(discover)) + String.IsEmpty(Window.Property(SearchDiscover.CastID)) + String.IsEmpty(Window.Property(SearchDiscover.CrewID))">$VAR[Path_DiscoverWidgets_Base,,&amp;tmdb_type=tv&amp;length=2]$VAR[Path_DiscoverWidgets_ShowSort,&amp;sort_by=,]$VAR[Path_DiscoverWidgets_YearLow,&amp;first_air_date.gte=,]$VAR[Path_DiscoverWidgets_YearHigh,&amp;first_air_date.lte=,]$INFO[Window.Property(SearchDiscover.ShowGenreID),&amp;with_genres=,]</value>
         <value>videodb://tvshows/titles</value>
     </variable>
 
@@ -167,8 +201,10 @@
     </variable>
 
     <variable name="Path_SearchTerm">
-        <value condition="!Control.HasFocus(9099) + !String.IsEmpty(Window.Property(SearchTerm))">$INFO[Window.Property(SearchTerm)]</value>
-        <value>$INFO[Control.GetLabel(9099).index(1)]</value>
+        <value condition="Control.HasFocus(9099)">$INFO[Control.GetLabel(9099).index(1)]</value>
+        <value condition="!String.IsEmpty(Window.Property(SearchTerm))">$INFO[Window.Property(SearchTerm)]</value>
+        <value condition="!String.IsEmpty(Control.GetLabel(9099).index(1))">$INFO[Control.GetLabel(9099).index(1)]</value>
+        <value>•••</value>
     </variable>
 
     <variable name="Path_Search_Filter">
@@ -180,6 +216,27 @@
         <value condition="String.IsEqual(Container(55).ListItemAbsolute(0).FolderPath,plugin://plugin.video.themoviedb.helper/?info=discover&amp;tmdb_type=movie&amp;with_id=True)">plugin://plugin.video.themoviedb.helper/?info=discover&amp;tmdb_type=movie&amp;with_id=True&amp;sort_by=popularity.desc</value>
         <value condition="String.IsEqual(Container(55).ListItemAbsolute(0).FolderPath,plugin://plugin.video.themoviedb.helper/?info=discover&amp;tmdb_type=tv&amp;with_id=True)">plugin://plugin.video.themoviedb.helper/?info=discover&amp;tmdb_type=tv&amp;with_id=True&amp;sort_by=popularity.desc</value>
         <value>$INFO[Container(55).ListItemAbsolute(0).FolderPath]</value>
+    </variable>
+
+    <variable name="Path_VideoOSD_PersonCredits">
+        <value condition="String.IsEmpty(Window.Property(TMDb_ID))">plugin://plugin.video.themoviedb.helper/</value>
+        <value condition="Skin.String(VideoOSD.PersonCredits.WidgetInfo,crew)">plugin://plugin.video.themoviedb.helper/?info=crew_in_both&amp;tmdb_type=person&amp;limit=50$INFO[Window.Property(TMDb_ID),&amp;tmdb_id=,]$VAR[Path_Param_Widget]</value>
+        <value condition="Skin.String(VideoOSD.PersonCredits.WidgetInfo,films)">plugin://plugin.video.themoviedb.helper/?info=stars_in_movies&amp;tmdb_type=person&amp;limit=50$INFO[Window.Property(TMDb_ID),&amp;tmdb_id=,]$VAR[Path_Param_VideoOSD_SortKey_MovieCredits]$VAR[Path_Param_Widget]</value>
+        <value condition="Skin.String(VideoOSD.PersonCredits.WidgetInfo,shows)">plugin://plugin.video.themoviedb.helper/?info=stars_in_tvshows&amp;tmdb_type=person&amp;limit=50$INFO[Window.Property(TMDb_ID),&amp;tmdb_id=,]$VAR[Path_Param_VideoOSD_SortKey_TVShowCredits]$VAR[Path_Param_Widget]</value>
+    </variable>
+
+    <variable name="Path_Param_VideoOSD_SortKey_MovieCredits">
+        <value condition="Skin.String(VideoOSD.PersonCredits.SortKey,popular)">&amp;sort_key=popularity</value>
+        <value condition="Skin.String(VideoOSD.PersonCredits.SortKey,rating)">&amp;sort_key=vote_average</value>
+        <value condition="Skin.String(VideoOSD.PersonCredits.SortKey,votes)">&amp;sort_key=vote_count</value>
+        <value condition="Skin.String(VideoOSD.PersonCredits.SortKey,date)">&amp;sort_key=release_date</value>
+    </variable>
+
+    <variable name="Path_Param_VideoOSD_SortKey_TVShowCredits">
+        <value condition="Skin.String(VideoOSD.PersonCredits.SortKey,popular)">&amp;sort_key=popularity</value>
+        <value condition="Skin.String(VideoOSD.PersonCredits.SortKey,rating)">&amp;sort_key=vote_average</value>
+        <value condition="Skin.String(VideoOSD.PersonCredits.SortKey,votes)">&amp;sort_key=vote_count</value>
+        <value condition="Skin.String(VideoOSD.PersonCredits.SortKey,date)">&amp;sort_key=first_air_date</value>
     </variable>
 
     <variable name="Path_Param_Widget">
@@ -228,19 +285,21 @@
     <variable name="Path_OSD_Episodes">
         <value condition="!Integer.IsEqual(VideoPlayer.PlaylistLength,1) + !Integer.IsEqual(VideoPlayer.PlaylistLength,0) + Integer.IsLess(VideoPlayer.PlaylistPosition,VideoPlayer.PlaylistLength)">playlistvideo://?reload=$INFO[VideoPlayer.Season,,_]$INFO[VideoPlayer.Episode]</value>
         <value condition="VideoPlayer.Content(episodes) + !String.IsEmpty(VideoPlayer.TvShowDBID) + !String.IsEmpty(VideoPlayer.Season)">videodb://tvshows/titles/$INFO[VideoPlayer.TvShowDBID]/$INFO[VideoPlayer.Season]/?tvshowid=$INFO[VideoPlayer.TvShowDBID]</value>
-        <value condition="VideoPlayer.Content(episodes)">plugin://plugin.video.themoviedb.helper/?info=episodes&amp;type=tv$INFO[VideoPlayer.TVShowTitle,&amp;query=,]$INFO[VideoPlayer.Season,&amp;season=,]$VAR[Path_Param_Widget]</value>
+        <value condition="VideoPlayer.Content(episodes)">plugin://plugin.video.themoviedb.helper/?info=episodes&amp;type=tv$INFO[Window(Home).Property(TMDbHelper.Player.TVShow.TMDb_ID),&amp;tmdb_id=,]$INFO[VideoPlayer.TVShowTitle,&amp;query=,]$INFO[VideoPlayer.Season,&amp;season=,]$VAR[Path_Param_Widget]</value>
     </variable>
 
     <variable name="Path_OSD_Cast">
-        <value condition="VideoPlayer.Content(movies) + !String.IsEmpty(VideoPlayer.IMDBNumber) + String.StartsWith(VideoPlayer.IMDBNumber,tt)">plugin://plugin.video.themoviedb.helper/?info=cast&amp;type=movie$INFO[VideoPlayer.IMDBNumber,&amp;imdb_id=,]</value>
-        <value condition="VideoPlayer.Content(movies)">plugin://plugin.video.themoviedb.helper/?info=cast&amp;type=movie$INFO[Player.Title,&amp;query=,]$INFO[VideoPlayer.Year,&amp;year=,]</value>
-        <value condition="VideoPlayer.Content(episodes)">plugin://plugin.video.themoviedb.helper/?info=cast&amp;type=tv$INFO[VideoPlayer.TVShowTitle,&amp;query=,]$INFO[VideoPlayer.Season,&amp;season=,]$INFO[VideoPlayer.Episode,&amp;episode=,]$INFO[VideoPlayer.Year,&amp;episode_year=,]</value>
+        <value condition="VideoPlayer.Content(movies) + !String.IsEmpty(VideoPlayer.IMDBNumber) + String.StartsWith(VideoPlayer.IMDBNumber,tt)">plugin://plugin.video.themoviedb.helper/?info=$INFO[Skin.String(VideoOSD.PersonCredits.CastCrew)]&amp;type=movie$INFO[VideoPlayer.IMDBNumber,&amp;imdb_id=,]</value>
+
+        <value condition="VideoPlayer.Content(movies)">plugin://plugin.video.themoviedb.helper/?info=$INFO[Skin.String(VideoOSD.PersonCredits.CastCrew)]&amp;type=movie$INFO[Window(Home).Property(TMDbHelper.Player.TMDb_ID),&amp;tmdb_id=,]$INFO[Player.Title,&amp;query=,]$INFO[VideoPlayer.Year,&amp;year=,]</value>
+
+        <value condition="VideoPlayer.Content(episodes)">plugin://plugin.video.themoviedb.helper/?info=$INFO[Skin.String(VideoOSD.PersonCredits.CastCrew)]&amp;type=tv$INFO[Window(Home).Property(TMDbHelper.Player.TVShow.TMDb_ID),&amp;tmdb_id=,]$INFO[VideoPlayer.TVShowTitle,&amp;query=,]$INFO[VideoPlayer.Season,&amp;season=,]$INFO[VideoPlayer.Episode,&amp;episode=,]$INFO[VideoPlayer.Year,&amp;episode_year=,]</value>
     </variable>
 
     <variable name="Path_OSD_NextRecommendation">
         <value condition="VideoPlayer.Content(movies) + !String.IsEmpty(VideoPlayer.IMDBNumber) + String.StartsWith(VideoPlayer.IMDBNumber,tt)">plugin://plugin.video.themoviedb.helper/?info=next_recommendation&amp;type=movie$INFO[VideoPlayer.IMDBNumber,&amp;imdb_id=,]</value>
-        <value condition="VideoPlayer.Content(movies)">plugin://plugin.video.themoviedb.helper/?info=next_recommendation&amp;type=movie$INFO[Player.Title,&amp;query=,]$INFO[VideoPlayer.Year,&amp;year=,]</value>
-        <value condition="VideoPlayer.Content(episodes)">plugin://plugin.video.themoviedb.helper/?info=next_recommendation&amp;type=tv$INFO[VideoPlayer.TVShowTitle,&amp;query=,]$INFO[VideoPlayer.Season,&amp;season=,]$INFO[VideoPlayer.Episode,&amp;episode=,]$INFO[VideoPlayer.Year,&amp;episode_year=,]</value>
+        <value condition="VideoPlayer.Content(movies)">plugin://plugin.video.themoviedb.helper/?info=next_recommendation&amp;type=movie$INFO[Window(Home).Property(TMDbHelper.Player.TMDb_ID),&amp;tmdb_id=,]$INFO[Player.Title,&amp;query=,]$INFO[VideoPlayer.Year,&amp;year=,]</value>
+        <value condition="VideoPlayer.Content(episodes)">plugin://plugin.video.themoviedb.helper/?info=next_recommendation&amp;type=tv$INFO[Window(Home).Property(TMDbHelper.Player.TVShow.TMDb_ID),&amp;tmdb_id=,]$INFO[VideoPlayer.TVShowTitle,&amp;query=,]$INFO[VideoPlayer.Season,&amp;season=,]$INFO[VideoPlayer.Episode,&amp;episode=,]$INFO[VideoPlayer.Year,&amp;episode_year=,]</value>
     </variable>
 
     <variable name="Path_FromStudio">
@@ -368,6 +427,11 @@
         <value condition="!String.IsEmpty(Container(99950).ListItem.Property(TMDb_ID)) + String.IsEqual(Container(99950).ListItem.DBType,tvshow)">plugin://plugin.video.themoviedb.helper?tmdb_id=$INFO[Container(99950).ListItem.Property(TMDb_ID)]&amp;tmdb_type=tv$VAR[Path_Param_Widget]</value>
         <value condition="!String.IsEmpty(Container(99950).ListItem.Property(TVShow.TMDb_ID)) + String.IsEqual(Container(99950).ListItem.DBType,season)">plugin://plugin.video.themoviedb.helper?tmdb_id=$INFO[Container(99950).ListItem.Property(TVShow.TMDb_ID)]&amp;tmdb_type=tv$INFO[Container(99950).ListItem.Season,&amp;season=,]$VAR[Path_Param_Widget]</value>
         <value condition="!String.IsEmpty(Container(99950).ListItem.Property(TVShow.TMDb_ID)) + String.IsEqual(Container(99950).ListItem.DBType,episode)">plugin://plugin.video.themoviedb.helper?tmdb_id=$INFO[Container(99950).ListItem.Property(TVShow.TMDb_ID)]&amp;tmdb_type=tv$INFO[Container(99950).ListItem.Season,&amp;season=,]$INFO[Container(99950).ListItem.Episode,&amp;episode=,]$VAR[Path_Param_Widget]</value>
+    </variable>
+
+    <variable name="Path_MusicInfo_ArtistFolder">
+        <value condition="String.IsEmpty(ListItem.DBID)">$ESCINFO[ListItem.FolderPath]</value>
+        <value condition="!String.IsEmpty(ListItem.DBID)">musicdb://artists/$INFO[ListItem.DBID]/?albumartistsonly=true</value>
     </variable>
 
 </includes>

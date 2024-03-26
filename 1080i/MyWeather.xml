@@ -26,7 +26,7 @@
             <control type="list" id="8000">
                 <orientation>vertical</orientation>
                 <autoscroll delay="0" time="20000" repeat="0">true</autoscroll>
-                <onclick>ActivateWindow(1161)</onclick>
+                <onclick>Weather.LocationNext</onclick>
                 <onleft>303</onleft>
                 <onright>ActivateWindow(1161)</onright>
                 <itemlayout />
@@ -36,7 +36,6 @@
 
             <include content="Info_Viewline">
                 <param name="label">$INFO[System.AddonTitle(Weather.Plugin)]</param>
-                <param name="secondary_include">false</param>
             </include>
 
             <include content="Weather_InfoPanel">
@@ -134,29 +133,43 @@
                 </control>
             </include>
 
-        </control>
+            <control type="grouplist">
+                <hitrect x="0" y="0" w="0" h="0" />
+                <orientation>horizontal</orientation>
+                <itemgap>30</itemgap>
+                <height>80</height>
+                <centerbottom>100</centerbottom>
+                <usecontrolcoords>true</usecontrolcoords>
+                <left>120</left>
+                <control type="group">
+                    <width>50</width>
+                </control>
+                <control type="group">
+                    <width>50</width>
+                    <include>Info_KodiLogo_Image</include>
+                </control>
 
-        <control type="grouplist">
-            <hitrect x="0" y="0" w="0" h="0" />
-            <orientation>horizontal</orientation>
-            <itemgap>30</itemgap>
-            <height>80</height>
-            <centerbottom>100</centerbottom>
-            <usecontrolcoords>true</usecontrolcoords>
-            <left>120</left>
-            <control type="group">
-                <width>50</width>
+                <control type="group">
+                    <left>0</left>
+                    <include content="Object_InfoCircle_Text_Top">
+                        <width>auto</width>
+                        <label>$LOCALIZE[15225]</label>
+                    </include>
+                    <include content="Object_InfoCircle_Text_Sub">
+                        <label>$INFO[Window(Weather).Property(WeatherProvider)]</label>
+                        <width>auto</width>
+                    </include>
+                </control>
             </control>
-            <include content="Info_Codec_Label">
-                <param name="icon">special://skin/extras/icons/sun2.png</param>
-                <param name="label">$INFO[Window(Weather).Property(WeatherProvider)]</param>
-            </include>
-        </control>
+            <include>Furniture_Bottom_Right</include>
 
+        </control>
 
         <include>Home_Menu</include>
-        <include>Furniture_Top</include>
-        <include>Furniture_Bottom_Right</include>
+        <include content="Furniture_Top">
+            <include>Animation_View_WindowChange</include>
+        </include>
+
 
         <include content="Furniture_Busy">
             <param name="hasspinner">true</param>
@@ -167,7 +180,6 @@
             <param name="spinnervisible">Skin.HasSetting(ToastNotifications.Tabbed) | [!Window.IsActive(DialogVolumeBar.xml) | Player.Muted]</param>
             <visible>!Skin.HasSetting(ToastNotifications.Tabbed) | [!Window.IsActive(DialogVolumeBar.xml) | Player.Muted]</visible>
             <visible>!Weather.IsFetched</visible>
-            <include condition="!Skin.HasSetting(ToastNotifications.Tabbed)">Dimension_FurnitureBusy_Mini</include>
         </include>
 
     </controls>

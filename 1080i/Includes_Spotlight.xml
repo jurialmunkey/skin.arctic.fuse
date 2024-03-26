@@ -5,7 +5,7 @@
         <include content="Object_Hidden_List">
             <param name="id">99971</param>
             <include content="Defs_AutoScroll">
-                <param name="condition">[Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + !$EXP[Exp_Hubs_Spotlight_HasItems] + !$EXP[Exp_InfoDialogs]]</param>
+                <param name="condition">[Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + ![!Integer.IsEqual(Container(301).NumItems,0) | Container(301).IsUpdating]]</param>
             </include>
             <content sortby="random">$VAR[Path_Spotlight_SlideShow_Content]</content>
             <visible>[Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301) + !$EXP[Exp_Hubs_Spotlight_HasItems]]</visible>
@@ -35,19 +35,6 @@
                 <param name="details_include">Spotlight_Info_Animation</param>
                 <param name="visible">Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)</param>
             </include>
-            <!-- <include content="Info_Viewline">
-                <param name="label">$VAR[Label_Hub_Spotlight]</param>
-                <param name="secondary_label">$LOCALIZE[31371] $LOCALIZE[13278]</param>
-                <param name="sort_condition">True</param>
-                <param name="sort_descending">False</param>
-                <param name="item_condition">true</param>
-                <param name="item_count">$INFO[Container(301).NumItems]</param>
-                <param name="item_updating">Container(301).IsUpdating</param>
-                <left>0</left>
-                <top>320</top>
-                <visible>Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)</visible>
-                <include>Spotlight_Info_Animation</include>
-            </include> -->
         </include>
     </include>
 
@@ -57,9 +44,10 @@
             <control type="wraplist" id="301">
                 <preloaditems>2</preloaditems>
                 <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,$PARAM[window_id])</onfocus>
-                <onup>SetFocus(300)</onup>
-                <ondown>SetFocus(300)</ondown>
-                <onback>300</onback>
+                <onup>SetFocus(311)</onup>
+                <ondown>SetFocus(311)</ondown>
+                <onfocus>SetFocus(311)</onfocus>
+                <onback>311</onback>
                 <orientation>horizontal</orientation>
                 <scrolltime tween="quadratic">400</scrolltime>
                 <hitrect x="0" y="0" w="0" h="0" />
@@ -69,7 +57,7 @@
                 <left>-1920</left>
 
                 <include content="Defs_AutoScroll">
-                    <param name="condition">[!ControlGroup(310).HasFocus() + !System.HasAlarm(playtrailer) + !Player.HasMedia + !Window.IsVisible(DialogVideoInfo.xml) + !Window.IsVisible(DialogMusicInfo.xml)]</param>
+                    <param name="condition">[[!ControlGroup(310).HasFocus() | System.IdleTime(3)] + !System.HasAlarm(playtrailer) + !Player.HasMedia + !Window.IsVisible(DialogVideoInfo.xml) + !Window.IsVisible(DialogMusicInfo.xml)]</param>
                 </include>
 
                 <itemlayout />
@@ -117,6 +105,68 @@
         </include>
     </include>
 
+    <include name="Spotlight_Scrubber">
+        <control type="group" id="314">
+            <left>40</left>
+            <width>80</width>
+            <height>80</height>
+            <centertop>50%</centertop>
+            <visible>!Integer.IsEqual(Container(301).NumItems,0)</visible>
+            <control type="image">
+                <include>Texture_Circle_Highlight_H</include>
+                <visible>Control.HasFocus(315) | Control.HasFocus(316)</visible>
+            </control>
+        </control>
+
+        <control type="grouplist" id="318">
+            <left>-20</left>
+            <width>80</width>
+            <height>48</height>
+            <centertop>50%</centertop>
+            <orientation>vertical</orientation>
+            <onup>Action(Select)</onup>
+            <ondown>Action(Select)</ondown>
+            <control type="togglebutton" id="315">
+                <width>24</width>
+                <height>24</height>
+                <centerleft>50%</centerleft>
+                <visible>!Integer.IsEqual(Container(301).NumItems,0)</visible>
+                <onclick>Control.Move(301,-1)</onclick>
+                <include content="Action_AutoTrailer_OnClick" condition="Skin.HasSetting(Trailers.EnableAutoPlayback)">
+                    <param name="id">301</param>
+                </include>
+                <usealttexture>Control.HasFocus(315) | Control.HasFocus(316)</usealttexture>
+                <texturenofocus colordiffuse="main_fg_30" flipy="true">buttons/triangle-down.png</texturenofocus>
+                <texturefocus colordiffuse="$VAR[ColorSelected]" flipy="true">buttons/triangle-down.png</texturefocus>
+                <alttexturenofocus colordiffuse="main_fg_70" flipy="true">buttons/triangle-down.png</alttexturenofocus>
+                <alttexturefocus colordiffuse="$VAR[ColorSelected]" flipy="true">buttons/triangle-down.png</alttexturefocus>
+                <include content="Spotlight_Main_Button_Standard">
+                    <param name="id">315</param>
+                    <param name="window_id">$PARAM[window_id]</param>
+                </include>
+            </control>
+            <control type="togglebutton" id="316">
+                <width>24</width>
+                <height>24</height>
+                <centerleft>50%</centerleft>
+                <visible>!Integer.IsEqual(Container(301).NumItems,0)</visible>
+                <onclick>Control.Move(301,1)</onclick>
+                <include content="Action_AutoTrailer_OnClick" condition="Skin.HasSetting(Trailers.EnableAutoPlayback)">
+                    <param name="id">301</param>
+                </include>
+                <usealttexture>Control.HasFocus(315) | Control.HasFocus(316)</usealttexture>
+                <texturenofocus colordiffuse="main_fg_30" flipy="false">buttons/triangle-down.png</texturenofocus>
+                <texturefocus colordiffuse="$VAR[ColorSelected]" flipy="false">buttons/triangle-down.png</texturefocus>
+                <alttexturenofocus colordiffuse="main_fg_70" flipy="false">buttons/triangle-down.png</alttexturenofocus>
+                <alttexturefocus colordiffuse="$VAR[ColorSelected]" flipy="false">buttons/triangle-down.png</alttexturefocus>
+                <include content="Spotlight_Main_Button_Standard">
+                    <param name="id">316</param>
+                    <param name="window_id">$PARAM[window_id]</param>
+                </include>
+            </control>
+        </control>
+    </include>
+
     <include name="Spotlight_Main">
         <param name="window_id">Home</param>
         <param name="visible">True</param>
@@ -133,24 +183,37 @@
                     <param name="condition">![$EXP[Exp_Hubs_Spotlight_IsVisible] + $PARAM[visible]]</param>
                 </include>
 
-                <include>Hub_Slide_Spotlight_NoFocus</include>
-
                 <control type="grouplist" id="310">
                     <orientation>horizontal</orientation>
 
-                    <include content="Action_Widget_Top">
+                    <include content="Action_Widget_Top" condition="!Skin.String(Home.SideMenuCollapse,Topbar)">
                         <param name="id">311</param>
                     </include>
+                    <onup condition="Skin.String(Home.SideMenuCollapse,Topbar)">SetFocus(303,9999,absolute)</onup>
 
-                    <include content="Action_View_Movement_OnLeftRight">
+                    <include content="Action_View_Movement_OnLeftRight" condition="Skin.HasSetting(Spotlight.EnableSpinControl)">
                         <param name="id">311</param>
                         <param name="onleft">316</param>
                         <param name="backid">311</param>
-                        <param name="onback">!Control.HasFocus(311)</param>
-                        <param name="online">,2</param>
+                        <param name="onback">Control.HasFocus(311)</param>
                     </include>
 
-                    <ondown>300</ondown>
+                    <include content="Action_View_Movement_OnLeftRight" condition="!Skin.HasSetting(Spotlight.EnableSpinControl)">
+                        <param name="id">311</param>
+                        <param name="onleft">312</param>
+                        <param name="backid">311</param>
+                        <param name="onback">Control.HasFocus(311)</param>
+                    </include>
+
+                    <include content="Action_Widget_End">
+                        <param name="condition">Integer.IsEqual(Container(300).NumItems,0)</param>
+                        <param name="id">311</param>
+                        <param name="bump_id">333</param>
+                    </include>
+
+                    <ondown condition="!Integer.IsEqual(Container(300).NumItems,0)">300</ondown>
+                    <!-- <ondown condition="Integer.IsEqual(Container(300).NumItems,0)">SetProperty(List.ViewContainer,$NUMBER[311])</ondown>
+                    <ondown condition="Integer.IsEqual(Container(300).NumItems,0)">333</ondown> -->
                     <centertop>180</centertop>
                     <left>140</left>
                     <height>256</height>
@@ -232,65 +295,11 @@
                         </include>
                     </include>
 
-                    <control type="group" id="314">
-                        <left>40</left>
-                        <width>80</width>
-                        <height>80</height>
-                        <centertop>50%</centertop>
-                        <visible>!Integer.IsEqual(Container(301).NumItems,0)</visible>
-                        <control type="image">
-                            <include>Texture_Circle_Highlight_H</include>
-                            <visible>Control.HasFocus(315) | Control.HasFocus(316)</visible>
-                        </control>
-                    </control>
+                    <include content="Spotlight_Scrubber" condition="Skin.HasSetting(Spotlight.EnableSpinControl)">
+                        <param name="window_id">$PARAM[window_id]</param>
+                    </include>
 
-                    <control type="grouplist" id="318">
-                        <left>-20</left>
-                        <width>80</width>
-                        <height>48</height>
-                        <centertop>50%</centertop>
-                        <orientation>vertical</orientation>
-                        <onup>Action(Select)</onup>
-                        <ondown>Action(Select)</ondown>
-                        <control type="togglebutton" id="315">
-                            <width>24</width>
-                            <height>24</height>
-                            <centerleft>50%</centerleft>
-                            <visible>!Integer.IsEqual(Container(301).NumItems,0)</visible>
-                            <onclick>Control.Move(301,-1)</onclick>
-                            <include content="Action_AutoTrailer_OnClick" condition="Skin.HasSetting(Trailers.EnableAutoPlayback)">
-                                <param name="id">301</param>
-                            </include>
-                            <usealttexture>Control.HasFocus(315) | Control.HasFocus(316)</usealttexture>
-                            <texturenofocus colordiffuse="main_fg_30" flipy="true">buttons/triangle-down.png</texturenofocus>
-                            <texturefocus colordiffuse="$VAR[ColorSelected]" flipy="true">buttons/triangle-down.png</texturefocus>
-                            <alttexturenofocus colordiffuse="main_fg_70" flipy="true">buttons/triangle-down.png</alttexturenofocus>
-                            <alttexturefocus colordiffuse="$VAR[ColorSelected]" flipy="true">buttons/triangle-down.png</alttexturefocus>
-                            <include content="Spotlight_Main_Button_Standard">
-                                <param name="id">315</param>
-                                <param name="window_id">$PARAM[window_id]</param>
-                            </include>
-                        </control>
-                        <control type="togglebutton" id="316">
-                            <width>24</width>
-                            <height>24</height>
-                            <centerleft>50%</centerleft>
-                            <visible>!Integer.IsEqual(Container(301).NumItems,0)</visible>
-                            <onclick>Control.Move(301,1)</onclick>
-                            <include content="Action_AutoTrailer_OnClick" condition="Skin.HasSetting(Trailers.EnableAutoPlayback)">
-                                <param name="id">301</param>
-                            </include>
-                            <usealttexture>Control.HasFocus(315) | Control.HasFocus(316)</usealttexture>
-                            <texturenofocus colordiffuse="main_fg_30" flipy="false">buttons/triangle-down.png</texturenofocus>
-                            <texturefocus colordiffuse="$VAR[ColorSelected]" flipy="false">buttons/triangle-down.png</texturefocus>
-                            <alttexturenofocus colordiffuse="main_fg_70" flipy="false">buttons/triangle-down.png</alttexturenofocus>
-                            <alttexturefocus colordiffuse="$VAR[ColorSelected]" flipy="false">buttons/triangle-down.png</alttexturefocus>
-                            <include content="Spotlight_Main_Button_Standard">
-                                <param name="id">316</param>
-                                <param name="window_id">$PARAM[window_id]</param>
-                            </include>
-                        </control>
-                    </control>
+
                 </control>
             </control>
         </definition>

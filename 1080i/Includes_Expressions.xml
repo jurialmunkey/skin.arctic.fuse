@@ -5,8 +5,7 @@
     <!-- Colour Schemes -->
     <!-- ============== -->
     <expression name="Exp_DialogTheme_IsLight">[String.IsEqual(Skin.CurrentColourTheme,Skin default - Light dialogs) | String.IsEqual(Skin.CurrentColourTheme,Dark Grey - Light dialogs)]</expression>
-    <expression name="Exp_DialogTheme_Adaptive_IsEnabled">[Skin.HasSetting(TMDbHelper.EnableBlur) + !Skin.String(Background.ArtworkStyle,Fanart)]</expression>
-    <expression name="Exp_DialogTheme_IsAdaptive">[Skin.String(Background.DialogImage,Adaptive) + $EXP[Exp_DialogTheme_Adaptive_IsEnabled] + !$EXP[Exp_DialogTheme_IsLight]]</expression>
+    <expression name="Exp_DialogTheme_IsAdaptive">[Skin.String(Background.DialogImage,Adaptive) + !$EXP[Exp_DialogTheme_IsLight]]</expression>
 
     <variable name="Exp_Var_DialogTheme_IsLight">
         <value condition="$EXP[Exp_DialogTheme_IsLight]">True</value>
@@ -65,27 +64,12 @@
     <expression name="Exp_IsWindow_Movies">[Container.Content(movies) | Container.Content(sets) | String.StartsWith(Container.FolderPath,videodb://movies/) | String.StartsWith(Container.FolderPath,library://video/movies/)]</expression>
     <expression name="Exp_IsWindow_TVShows">[Container.Content(tvshows) | Container.Content(seasons) | Container.Content(episodes) | String.StartsWith(Container.FolderPath,videodb://tvshows/) | String.StartsWith(Container.FolderPath,library://video/tvshows/) | Window.IsVisible(1130) | Window.IsVisible(1131)]</expression>
     <expression name="Exp_IsWindow_Music">[Window.IsVisible(MyMusicNav.xml) | Container.Content(musicvideos)]</expression>
-    <expression name="Exp_HomeMenu_home">[String.IsEqual(ListItem.Property(expression),home) + Window.IsVisible(Home)]</expression>
-    <expression name="Exp_HomeMenu_movies">[String.IsEqual(ListItem.Property(expression),movies) + $EXP[Exp_IsWindow_Movies]]</expression>
-    <expression name="Exp_HomeMenu_tvshows">[String.IsEqual(ListItem.Property(expression),tvshows) + $EXP[Exp_IsWindow_TVShows]]</expression>
-    <expression name="Exp_HomeMenu_music">[String.IsEqual(ListItem.Property(expression),music) + $EXP[Exp_IsWindow_Music]]</expression>
-    <expression name="Exp_HomeMenu_livetv">[String.IsEqual(ListItem.Property(expression),livetv) + $EXP[Exp_PVRWindows]]</expression>
-    <expression name="Exp_HomeMenu_addons">[String.IsEqual(ListItem.Property(expression),addons) + [Container.Content(addons) | Window.IsVisible(1132) | [Container.Content() + !String.IsEmpty(Container.PluginName)]]]</expression>
-    <expression name="Exp_HomeMenu_pictures">[String.IsEqual(ListItem.Property(expression),pictures) + [Container.Content(images) | Window.IsVisible(MyPics.xml)]]</expression>
-    <expression name="Exp_HomeMenu_weather">[String.IsEqual(ListItem.Property(expression),weather) + Window.IsVisible(MyWeather.xml)]</expression>
-    <expression name="Exp_HomeMenu_videos">[String.IsEqual(ListItem.Property(expression),videos) + [Container.Content(videos) | [[Container.Content(playlists) | Container.Content(files) | [Container.Content() + String.IsEmpty(Container.PluginName)]] + Window.IsVisible(MyVideoNav.xml)]]]</expression>
-    <expression name="Exp_HomeMenu_search">[String.IsEqual(ListItem.Property(expression),search) + Window.IsVisible(1105)]</expression>
-    <expression name="Exp_HomeMenu_settings">[String.IsEqual(ListItem.Property(expression),settings) + $EXP[Exp_SettingsDialogs]]</expression>
 
-    <expression name="Exp_HomeMenu_hubs">[[Window.IsVisible(1101) + String.IsEqual(ListItem.Property(path),ActivateWindow(1101))] | [Window.IsVisible(1102) + String.IsEqual(ListItem.Property(path),ActivateWindow(1102))] | [Window.IsVisible(1103) + String.IsEqual(ListItem.Property(path),ActivateWindow(1103))] | [Window.IsVisible(1104) + String.IsEqual(ListItem.Property(path),ActivateWindow(1104))] | [Window.IsVisible(1106) + String.IsEqual(ListItem.Property(path),ActivateWindow(1106))] | [Window.IsVisible(1107) + String.IsEqual(ListItem.Property(path),ActivateWindow(1107))] | [Window.IsVisible(1108) + String.IsEqual(ListItem.Property(path),ActivateWindow(1108))] | [Window.IsVisible(1109) + String.IsEqual(ListItem.Property(path),ActivateWindow(1109))]]</expression>
+    <expression name="Exp_HomeMenu_HasFocus">[[Control.HasFocus(303) | Control.HasFocus(308) | Control.HasFocus(309) | Control.HasFocus(331) | Window.IsVisible(1172)] + !Window.IsVisible(1170)]</expression>
 
-    <expression name="Exp_HomeMenu_IsSelected">[[!Window.IsVisible(1105) + [$EXP[Exp_HomeMenu_home] | $EXP[Exp_HomeMenu_movies] | $EXP[Exp_HomeMenu_tvshows] | $EXP[Exp_HomeMenu_music] | $EXP[Exp_HomeMenu_livetv] | $EXP[Exp_HomeMenu_addons] | $EXP[Exp_HomeMenu_pictures] | $EXP[Exp_HomeMenu_weather] | $EXP[Exp_HomeMenu_videos] | $EXP[Exp_HomeMenu_settings] | $EXP[Exp_HomeMenu_hubs]]] | $EXP[Exp_HomeMenu_search]]</expression>
+    <expression name="Exp_HomeMenu_DontHide">[!Skin.String(Home.SideMenuCollapse,Always) + !Skin.String(Home.SideMenuCollapse,Topbar) + Window.IsVisible(Home)]</expression>
 
-    <expression name="Exp_HomeMenu_HasFocus">[Control.HasFocus(303) | Control.HasFocus(308) | Control.HasFocus(309) | Control.HasFocus(331)]</expression>
-
-    <expression name="Exp_HomeMenu_DontHide">[Skin.String(Home.SideMenuCollapse,Never) | Skin.String(Home.SideMenuCollapse,Expand) | [Skin.String(Home.SideMenuCollapse,Library) + Window.IsVisible(Home)] | [Skin.String(Home.SideMenuCollapse,Library) + !Skin.HasSetting(Hub.Home.DisableSubmenu) + $EXP[Exp_Window_IsHub]]]</expression>
-
-    <expression name="Exp_Window_IsHub">[Window.IsVisible(Home) | Window.IsVisible(1101) | Window.IsVisible(1102) | Window.IsVisible(1103) | Window.IsVisible(1104) | Window.IsVisible(1106) | Window.IsVisible(1107) | Window.IsVisible(1108) | Window.IsVisible(1109) | Window.IsVisible(1130) | Window.IsVisible(1131) | Window.IsVisible(1132)]</expression>
+    <expression name="Exp_Window_IsHub">[Window.IsVisible(Home) | Window.IsVisible(1101) | Window.IsVisible(1102) | Window.IsVisible(1103) | Window.IsVisible(1104) | Window.IsVisible(1106) | Window.IsVisible(1107) | Window.IsVisible(1108) | Window.IsVisible(1109)]</expression>
 
     <!-- ==== -->
     <!-- Hubs -->
@@ -109,27 +93,33 @@
     <expression name="Exp_View_513">$EXP[Exp_View_512]</expression>
     <expression name="Exp_View_523">$EXP[Exp_View_522]</expression>
 
+    <expression name="Exp_Views_UseAltCombined">[Skin.HasSetting(Views.UseAltCombined)]</expression>
+
     <!-- Scrollbar -->
     <expression name="Exp_ScrollbarVisible_H">[Control.HasFocus(60) | [Control.HasFocus(330) + Integer.IsEqual(Window.Property(List.ViewContainer),60)]]</expression>
     <expression name="Exp_ScrollbarVisible_V">[Control.HasFocus(61) | Control.HasFocus(65)]</expression>
 
-    <expression name="Exp_FurnitureFooter_IsVisible">[!$EXP[Exp_ScrollbarVisible_H] + !$EXP[Exp_ScrollbarVisible_V] + String.IsEmpty(Window.Property(MediaFilterBase)) + String.IsEmpty(Window.Property(MediaFilterWall))]</expression>
-
-    <expression name="Exp_FurnitureFooter_Left_IsVisible">[![$EXP[Exp_View_502] | $EXP[Exp_View_512] | $EXP[Exp_View_522]] | Skin.HasSetting(Views.UseAltCombined)]</expression>
+    <expression name="Exp_FurnitureFooter_Left_IsVisible">[![$EXP[Exp_View_502] | $EXP[Exp_View_512] | $EXP[Exp_View_522]] | $EXP[Exp_Views_UseAltCombined]]</expression>
 
 
     <!-- Filter Walls -->
-    <expression name="Exp_DiscoverWall_IsActive">[Control.IsVisible(55) + !Integer.IsEqual(Container(553).NumItems,0) + Skin.HasSetting(Navigation.MediaFilterWall)]</expression>
+    <expression name="Exp_DiscoverWall_IsActive">[Control.IsVisible(55) + !Integer.IsEqual(Container(553).NumItems,0) + Skin.HasSetting(Navigation.MediaFilterWall) + !Skin.HasSetting(Views.DisableItemPeek)]</expression>
 
     <expression name="Exp_FilterWall_IsActive">[!String.IsEmpty(Window.Property(MediaFilterWall)) + $EXP[Exp_FilterWall_IsEnabled] + $EXP[Exp_FilterWall_IsViewtype]]</expression>
 
-    <expression name="Exp_FilterWall_IsEnabled">[Window.IsMedia + [Skin.HasSetting(Navigation.MediaFilterWall) | Skin.HasSetting(Navigation.MediaFilterWall.Scrollbar)]]</expression>
+    <expression name="Exp_FilterWall_IsEnabled">[[Window.IsMedia | Window.IsVisible(1105)] + Skin.HasSetting(Navigation.MediaFilterWall) + !Skin.HasSetting(Views.DisableItemPeek)]</expression>
 
-    <expression name="Exp_FilterWall_IsViewtype">[Control.IsVisible(50) | Control.IsVisible(51) | Control.IsVisible(52) | [[Control.IsVisible(502) | Control.IsVisible(512) | Control.IsVisible(522)] + !Skin.HasSetting(Views.UseAltCombined)]]</expression>
+    <expression name="Exp_FilterWall_IsViewtype">[Control.IsVisible(50) | Control.IsVisible(51) | Control.IsVisible(52) | [[Control.IsVisible(502) | Control.IsVisible(512) | Control.IsVisible(522)] + !$EXP[Exp_Views_UseAltCombined]]]</expression>
 
-    <expression name="Exp_BackgroundArtwork_IsHidden">[$EXP[Exp_MediaFilter_IsActive] | $EXP[Exp_FilterWall_IsActive]]</expression>
+    <expression name="Exp_BackgroundArtwork_IsHidden">[$EXP[Exp_FilterWall_IsActive] | Window.IsVisible(favouritesbrowser)]</expression>
 
-    <expression name="Exp_MediaFilter_IsActive">[!String.IsEmpty(Window.Property(MediaFilterBase)) | [Window.IsVisible(1105) + !$EXP[Exp_Search_WidgetGroup_HasFocus]]]</expression>
+    <expression name="Exp_MediaFilter_IsActive">[!String.IsEmpty(Window.Property(MediaFilterBase))]</expression>
+
+    <expression name="Exp_FilterItems_Keyboard">[Window.IsVisible(DialogKeyboard.xml) + Skin.HasSetting(Keyboard.FullSized) + ![$EXP[Exp_FilterWall_IsActive] | $EXP[Exp_DiscoverWall_IsActive]]]</expression>
+
+
+    <expression name="Exp_Footer_BottomLeft_IsVisible">[[[!Skin.HasSetting(Hubs.WidgetSelector) + Skin.String(Furniture.BottomLeft.Enable,Always) + !Window.IsMedia] | [[Skin.String(Furniture.BottomLeft.Enable,Always) | Skin.String(Furniture.BottomLeft.Enable,Library)] + Window.IsMedia]]]</expression>
+
 
 
     <!-- ================= -->
@@ -137,7 +127,7 @@
     <!-- ================= -->
     <expression name="Exp_PVRWindows">[Window.IsVisible(MyPVRGuide.xml) | Window.IsVisible(MyPVRChannels.xml) | Window.IsVisible(MyPVRTimers.xml) | Window.IsVisible(MyPVRRecordings.xml) | Window.IsVisible(MyPVRSearch.xml)]</expression>
 
-    <expression name="Exp_InfoDialogs">[Window.IsVisible(DialogVideoInfo.xml) | Window.IsVisible(DialogMusicInfo.xml) | Window.IsVisible(script-wikipedia.xml)]</expression>
+    <expression name="Exp_InfoDialogs">[Window.IsVisible(DialogVideoInfo.xml) | Window.IsVisible(DialogMusicInfo.xml)]</expression>
 
     <expression name="Exp_SettingsDialogs">[Window.IsVisible(settings) | Window.IsVisible(filemanager) | Window.IsVisible(addonbrowser) | Window.IsVisible(SettingsCategory.xml) | Window.IsVisible(SkinSettings.xml) | Window.IsVisible(SettingsProfile.xml) | Window.IsVisible(SettingsSystemInfo.xml) | Window.IsVisible(EventLog.xml) | Window.IsVisible(1180)]</expression>
 
@@ -145,6 +135,17 @@
 
     <expression name="Exp_SettingsDialogs_Prev">[Window.Previous(settings) | Window.Previous(filemanager) | Window.Previous(addonbrowser) | Window.Previous(SettingsCategory.xml) | Window.Previous(SkinSettings.xml) | Window.Previous(SettingsProfile.xml) | Window.Previous(SettingsSystemInfo.xml) | Window.Previous(EventLog.xml) | Window.Previous(1197)]</expression>
 
+    <expression name="Exp_InfoPanelWindows">[Window.IsVisible(Home) | Window.IsVisible(Programs) | Window.IsVisible(Pictures) | Window.IsVisible(Videos) | Window.IsVisible(Music) | Window.IsVisible(VideoPlaylist) | Window.IsVisible(MusicPlaylist) | Window.IsVisible(Games) | Window.IsVisible(1101) | Window.IsVisible(1102) | Window.IsVisible(1103) | Window.IsVisible(1104) | Window.IsVisible(1105) | Window.IsVisible(1106) | Window.IsVisible(1107) | Window.IsVisible(1108) | Window.IsVisible(1109) | Window.IsVisible(1130) | Window.IsVisible(1131) | Window.IsVisible(1132) | Window.IsVisible(1133) | Window.IsVisible(1181) | Window.IsVisible(1182)]</expression>
+
+    <expression name="Exp_InfoPanelWindows_Next">[$EXP[Exp_InfoPanelWindows_Next_01] | $EXP[Exp_InfoPanelWindows_Next_02] | $EXP[Exp_InfoPanelWindows_Next_03]]</expression>
+    <expression name="Exp_InfoPanelWindows_Next_01">[False]</expression>
+    <expression name="Exp_InfoPanelWindows_Next_02">[Window.Next(Programs) | Window.Next(Pictures) | Window.Next(Videos) | Window.Next(Music) | Window.Next(VideoPlaylist) | Window.Next(MusicPlaylist) | Window.Next(Games) | Window.Next(Home) | Window.Next(1101) | Window.Next(1102) | Window.Next(1103) | Window.Next(1104) | Window.Next(1105) | Window.Next(1106) | Window.Next(1107) | Window.Next(1108) | Window.Next(1109)]</expression>
+    <expression name="Exp_InfoPanelWindows_Next_03">[Window.Next(1181) | Window.Next(1182) | Window.Next(1130) | Window.Next(1131) | Window.Next(1132) | Window.Next(1133)]</expression>
+
+    <expression name="Exp_InfoPanelWindows_Prev">[$EXP[Exp_InfoPanelWindows_Prev_01] | $EXP[Exp_InfoPanelWindows_Prev_02] | $EXP[Exp_InfoPanelWindows_Prev_03]]</expression>
+    <expression name="Exp_InfoPanelWindows_Prev_01">[False]</expression>
+    <expression name="Exp_InfoPanelWindows_Prev_02">[Window.Previous(Programs) | Window.Previous(Pictures) | Window.Previous(Videos) | Window.Previous(Music) | Window.Previous(VideoPlaylist) | Window.Previous(MusicPlaylist) | Window.Previous(Games) | Window.Previous(Home) | Window.Previous(1101) | Window.Previous(1102) | Window.Previous(1103) | Window.Previous(1104) | Window.Previous(1105) | Window.Previous(1106) | Window.Previous(1107) | Window.Previous(1108) | Window.Previous(1109)]</expression>
+    <expression name="Exp_InfoPanelWindows_Prev_03">[Window.Previous(1181) | Window.Previous(1182) | Window.Previous(1130) | Window.Previous(1131) | Window.Previous(1132) | Window.Previous(1133)]</expression>
 
     <!-- =============== -->
     <!-- ListItem Status -->
@@ -173,9 +174,9 @@
 
     <expression name="Exp_OSD_QuickInfo">[[$EXP[Exp_OSD_PVRChannelSwitch] | Window.IsVisible(fullscreeninfo) | $EXP[Exp_OSD_DelayInfo]] + !Window.IsActive(videoosd)]</expression>
 
-    <expression name="Exp_OSD_ExpandInfo">[Window.IsVisible(videobookmarks) | Window.IsVisible(pvrchannelguide) | Window.IsVisible(1140) | Window.IsVisible(1141) | Window.IsVisible(1142) | $EXP[Exp_OSD_FullScreenInfo] | Window.IsVisible(DialogPVRChannelsOSD.xml)]</expression>
+    <expression name="Exp_OSD_ExpandInfo">[Window.IsVisible(videobookmarks) | Window.IsVisible(pvrchannelguide) | Window.IsVisible(1140) | Window.IsVisible(1141) | Window.IsVisible(1142) | Window.IsVisible(1143) | Window.IsVisible(DialogPVRChannelsOSD.xml)]</expression>
 
-    <expression name="Exp_OSD_FullScreenInfo">[Window.IsVisible(1143)]</expression>
+    <expression name="Exp_OSD_FullInfoPanel">[Window.IsVisible(1143) | Skin.HasSetting(OSD.DisplayPlotWithTitle)]</expression>
 
 
     <!-- ==== -->
@@ -183,13 +184,9 @@
     <!-- ==== -->
     <expression name="Exp_AutoCompletion_IsEnabled">[System.HasAddon(plugin.program.autocompletion) + System.AddonIsEnabled(plugin.program.autocompletion) + !Skin.HasSetting(Keyboard.DisableAutoCompletion)]</expression>
 
-    <expression name="Exp_Video_IsNotPlaying">[!Player.HasVideo | Player.Paused | Skin.HasSetting(Background.VideoDisabled) | Window.IsVisible(1123)]</expression>
+    <expression name="Exp_Video_IsNotPlaying">[!Player.HasVideo | Player.Paused | Skin.HasSetting(Background.DisableVideo) | Window.IsVisible(1123)]</expression>
 
     <expression name="Exp_Furniture_PVR">[[Window.IsVisible(MyPVRGuide.xml) | Window.IsVisible(MyPVRChannels.xml)] + !Window.IsVisible(DialogPVRInfo.xml)]</expression>
-
-    <expression name="Exp_Group_Bumper_HasFocus">[Control.HasFocus(330) | Control.HasFocus(332) | Control.HasFocus(333)]</expression>
-
-    <expression name="Exp_Search_WidgetGroup_HasFocus">[ControlGroup(6000).HasFocus() | [Control.HasFocus(330) + !Integer.ISEqual(Container(6000).NumItems,0)] | [$EXP[Exp_HomeMenu_HasFocus] + !Integer.IsEqual(Window.Property(List.ViewContainer),9501) + !Integer.IsEqual(Window.Property(List.ViewContainer),9600) + !Integer.IsEqual(Window.Property(List.ViewContainer),5099) + !Integer.IsEqual(Window.Property(List.ViewContainer),9011) + !Integer.IsEqual(Window.Property(List.ViewContainer),9031) + !Integer.IsEqual(Window.Property(List.ViewContainer),9099) + !Integer.IsEqual(Window.Property(List.ViewContainer),9098)]]</expression>
 
     <expression name="Exp_Christmas_Theme">[System.Date(12-01,01-07) + Skin.HasSetting(EnableHolidayTheme) + [[!Window.IsVisible(visualisation) + !VideoPlayer.IsFullscreen] | Window.IsActive(fullscreeninfo)]]</expression>
 
@@ -201,10 +198,10 @@
     <!-- Wizard -->
     <!-- ====== -->
     <variable name="Exp_Var_Layout_IsCategories">
-        <value condition="!Skin.HasSetting(Hub.Home.DisableSubmenu) + !Skin.HasSetting(Hubs.WidgetSelector) + Skin.String(Home.SideMenuCollapse,Never)">True</value>
+        <value condition="!Skin.HasSetting(Hub.Home.DisableSubmenu) + !Skin.HasSetting(Hubs.WidgetSelector) + Skin.String(Home.SideMenuCollapse,Library)">True</value>
     </variable>
     <variable name="Exp_Var_Layout_IsClassic">
-        <value condition="Skin.HasSetting(Hub.Home.DisableSubmenu) + !Skin.HasSetting(Hubs.WidgetSelector) + Skin.String(Home.SideMenuCollapse,Never)">True</value>
+        <value condition="Skin.HasSetting(Hub.Home.DisableSubmenu) + !Skin.HasSetting(Hubs.WidgetSelector) + Skin.String(Home.SideMenuCollapse,Library)">True</value>
     </variable>
     <variable name="Exp_Var_Layout_IsCombined">
         <value condition="Skin.HasSetting(Hub.Home.DisableSubmenu) + Skin.HasSetting(Hubs.WidgetSelector) + Skin.String(Home.SideMenuCollapse,Always)">True</value>

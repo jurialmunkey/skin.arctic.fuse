@@ -11,9 +11,8 @@
     <onload>SetProperty(categories_menu,menu=homemenu)</onload>
     <onload>SetProperty(hub_prefix,Home)</onload>
     <onload>SetProperty(TMDbHelper.WidgetContainer,50)</onload>
-    <onload>ClearProperty(SkinVariables.Shortcuts.Refresh,Home)</onload>
     <include>Action_Blur_Onload</include>
-    <onunload condition="String.IsEmpty(Window(Home).Property(SkinVariables.Shortcuts.Refresh))">AlarmClock(Shortcuts.Rebuild,RunPlugin(plugin://script.skinvariables/?info=get_shortcuts_node&amp;skin=$VAR[Path_SkinVariables_SkinFolder]&amp;menu=sidemenu&amp;func=do_rebuild),00:00,silent)</onunload>
+    <onunload>Skin.SetString(Shortcuts.RebuildDateTime,$INFO[System.Date(yyyy-mm-dd)]_$INFO[System.Time(hh:mm:ss)])</onunload>
     <controls>
 
         <include>Defs_TMDbHelper_Loader</include>
@@ -28,18 +27,10 @@
 
         <include>Shortcuts_Window_Spinner_List</include>
         <include>Shortcuts_Window_Spinner_Button</include>
-        <include>Shortcuts_Window_Side_Search</include>
         <include>Shortcuts_Window_Side_Groups</include>
-        <include>Shortcuts_Window_Side_Option</include>
         <include>Shortcuts_Window_Content</include>
         <include>Shortcuts_Window_Tray</include>
-        <include>Shortcuts_Pallette</include>
         <include>Shortcuts_Options</include>
-
-        <!-- <include content="Overlay_InfoLabel">
-            <label>URI: $INFO[Window.Property(url)]</label>
-            <textcolor>yellowgreen</textcolor>
-        </include> -->
 
         <include content="Furniture_Busy">
             <param name="hasspinner">true</param>
@@ -48,14 +39,11 @@
             <param name="hasbackground">Skin.HasSetting(ToastNotifications.Tabbed)</param>
             <param name="haslabel">Skin.HasSetting(ToastNotifications.Tabbed)</param>
             <param name="spinnervisible">Skin.HasSetting(ToastNotifications.Tabbed) | [!Window.IsActive(DialogVolumeBar.xml) | Player.Muted]</param>
+            <param name="visible_delay">1200</param>
+            <param name="windowopen_condition">False</param>
             <visible>!Skin.HasSetting(ToastNotifications.Tabbed) | [!Window.IsActive(DialogVolumeBar.xml) | Player.Muted]</visible>
-            <visible>Container(300).IsUpdating | Container(302).IsUpdating | Container(303).IsUpdating | Container(304).IsUpdating</visible>
-            <include condition="!Skin.HasSetting(ToastNotifications.Tabbed)">Dimension_FurnitureBusy_Mini</include>
+            <visible>[[Container(300).IsUpdating | [Container(302).IsUpdating + Control.IsVisible(302)]] + !$EXP[Shortcuts_Window_Exp_WidgetsOnly]] | Container(303).IsUpdating | Container(304).IsUpdating</visible>
         </include>
 
-        <include content="Object_Hidden_List">
-            <param name="id">50</param>
-            <content>$VAR[Label_Shortcut_HubSpotlight_Window_Path]</content>
-        </include>
     </controls>
 </window>

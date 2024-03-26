@@ -8,10 +8,7 @@
             <top>view_top</top>
             <bottom>view_pad</bottom>
             <right>view_pad</right>
-            <include content="Animation_Settings_WindowChange">
-                <param name="windowopen">$PARAM[windowopen_condition]</param>
-                <param name="windowclose">$PARAM[windowclose_condition]</param>
-            </include>
+            <include>Animation_Settings_WindowChange</include>
         </control>
     </include>
 
@@ -83,13 +80,20 @@
         </definition>
     </include>
 
+    <include name="Settings_Box">
+        <control type="image">
+            <texture border="20" colordiffuse="main_fg_12">common/dialog.png</texture>
+        </control>
+        <include>Object_ItemBack_Outline</include>
+    </include>
+
     <include name="Settings_Right_Group">
         <param name="arrow_prev_visible">false</param>
         <param name="arrow_next_visible">false</param>
         <definition>
             <control type="group">
-                <control type="image">
-                    <texture border="20" colordiffuse="main_fg_12">common/dialog.png</texture>
+                <control type="group">
+                    <include>Settings_Box</include>
                     <bottom>80</bottom>
                     <top>-40</top>
                     <left>-20</left>
@@ -109,8 +113,8 @@
     <include name="Settings_Right_Grouplist">
         <control type="grouplist" id="$PARAM[id]">
             <nested />
-            <onright>61</onright>
-            <pagecontrol>61</pagecontrol>
+            <onright>60</onright>
+            <pagecontrol>60</pagecontrol>
             <top>-20</top>
             <left>0</left>
             <right>20</right>
@@ -118,22 +122,95 @@
         </control>
     </include>
 
-    <include name="Settings_KodiVersion">
+    <include name="Settings_KodiVersion_Base">
         <param name="dialog">false</param>
+        <param name="left">0</param>
+        <param name="centerbottom">20</param>
+        <param name="visible">true</param>
         <definition>
-            <control type="label">
-                <nested />
-                <include content="Object_TextColor" condition="$PARAM[dialog]">
-                    <param name="textcolor">dialog_fg_30</param>
-                </include>
-                <label>$INFO[System.FriendlyName][CR]$INFO[System.ProfileName]</label>
-                <textcolor>main_fg_30</textcolor>
+            <control type="group">
                 <height>80</height>
-                <centerbottom>20</centerbottom>
-                <left>0</left>
-                <font>font_mini</font>
+                <centerbottom>$PARAM[centerbottom]</centerbottom>
+                <left>$PARAM[left]</left>
+                <visible>$PARAM[visible]</visible>
+                <include content="Info_FooterItemIcon">
+                    <param name="icon">special://skin/extras/icons/kodi.png</param>
+                    <param name="centered">false</param>
+                    <param name="size">50</param>
+                    <param name="bordersize">1</param>
+                </include>
+                <control type="label">
+                    <left>80</left>
+                    <label>$INFO[System.ProfileName]</label>
+                    <include content="Object_TextColor" condition="$PARAM[dialog]">
+                        <param name="textcolor">dialog_fg_90</param>
+                    </include>
+                    <include>Defs_Label_FooterItem</include>
+                </control>
             </control>
         </definition>
+    </include>
+
+    <include name="Settings_KodiVersion_Text">
+        <param name="dialog">false</param>
+        <param name="left">0</param>
+        <param name="centerbottom">20</param>
+        <param name="visible">true</param>
+        <definition>
+            <control type="group">
+                <height>80</height>
+                <visible>$PARAM[visible]</visible>
+                <centerbottom>$PARAM[centerbottom]</centerbottom>
+                <left>$PARAM[left]</left>
+                <include>Info_KodiLogo_Image</include>
+                <control type="group">
+                    <left>80</left>
+                    <include content="Object_InfoCircle_Text_Top">
+                        <width>auto</width>
+                        <label>$INFO[System.ProfileName]</label>
+                        <include content="Object_TextColor" condition="$PARAM[dialog]">
+                            <param name="textcolor">dialog_fg_90</param>
+                        </include>
+                    </include>
+                    <include content="Object_InfoCircle_Text_Sub">
+                        <label fallback="19055">$INFO[System.FriendlyName]</label>
+                        <include content="Object_TextColor" condition="$PARAM[dialog]">
+                            <param name="textcolor">dialog_fg_70</param>
+                        </include>
+                    </include>
+                </control>
+            </control>
+        </definition>
+    </include>
+
+    <include name="Settings_KodiVersion">
+        <include content="Settings_KodiVersion_Base" condition="Skin.String(Furniture.CodecStyle,Basic)">
+            <param name="left">$PARAM[left]</param>
+            <param name="visible">$PARAM[visible]</param>
+            <param name="dialog">$PARAM[dialog]</param>
+            <param name="centerbottom">$PARAM[centerbottom]</param>
+        </include>
+        <include content="Settings_KodiVersion_Text" condition="!Skin.String(Furniture.CodecStyle,Basic)">
+            <param name="left">$PARAM[left]</param>
+            <param name="visible">$PARAM[visible]</param>
+            <param name="dialog">$PARAM[dialog]</param>
+            <param name="centerbottom">$PARAM[centerbottom]</param>
+        </include>
+    </include>
+
+    <include name="Settings_Standard_Buttons">
+        <include content="Settings_Side_Button">
+            <param name="id">02</param>
+            <param name="label">$LOCALIZE[5]</param>
+            <param name="icon">special://skin/extras/icons/toolbox.png</param>
+            <onclick>SetFocus(30040)</onclick>
+        </include>
+        <include content="Settings_Side_Button">
+            <param name="id">01</param>
+            <param name="label">$LOCALIZE[33061]</param>
+            <param name="icon">special://skin/extras/icons/bars-progress.png</param>
+            <onclick>ActivateWindow(1172)</onclick>
+        </include>
     </include>
 
     <include name="Settings_Dialog">
@@ -147,15 +224,18 @@
         <include content="Dialog_Head">
             <param name="id">0</param>
             <param name="label">$VAR[Label_Header_Mini]</param>
-            <top>view_pad</top>
-            <left>view_side</left>
+            <param name="left">view_side</param>
         </include>
     </include>
 
     <include name="Settings_Changer">
-        <include content="Furniture_Top">
-            <param name="label">$VAR[Label_Header_Mini]</param>
-        </include>
+        <control type="group">
+            <include>Animation_Settings_WindowChange</include>
+            <include content="Furniture_Top">
+                <param name="label">$VAR[Label_Header_Mini]</param>
+            </include>
+            <include>Furniture_Bottom_Right</include>
+        </control>
         <include>Settings_Side_Switcher</include>
     </include>
 
@@ -271,46 +351,50 @@
     </include>
 
     <include name="Settings_Side_Switcher">
-        <include content="Dialog_Overlay_Side">
-            <param name="dialog_size">Dimension_DialogSideMenu</param>
-            <visible>ControlGroup(30040).HasFocus() | ControlGroup(30700).HasFocus()</visible>
+        <include>View_Dialog_VideoPIP</include>
+        <control type="group">
+            <include>Dimension_DialogSideMenu</include>
+            <visible>ControlGroup(30040).HasFocus()</visible>
             <include>Animation_Right_Delay</include>
-            <include content="Dialog_Head">
-                <param name="label">$LOCALIZE[5]</param>
+            <include content="Dialog_Dim_Side">
+                <param name="slide_animation">false</param>
             </include>
-            <include content="Dialog_Body">
-                <include content="Dialog_Body_Grouplist">
-                    <param name="id">30040</param>
-                    <onleft condition="Window.IsVisible(settings)">50</onleft>
-                    <onleft condition="Window.IsVisible(addonbrowser)">6000</onleft>
-                    <onleft condition="Window.IsVisible(eventlog)">8000</onleft>
-                    <onleft condition="Window.IsVisible(filemanager)">20</onleft>
-                    <onleft condition="!Window.IsVisible(addonbrowser) + !Window.IsVisible(eventlog)">3</onleft>
-                    <onright>30700</onright>
-                    <include>Items_Settings_SideChanger</include>
+
+            <include content="Dialog_Foreground_Side">
+                <param name="dialog_size">Dimension_DialogSideMenu</param>
+                <param name="lines_right">0</param>
+                <param name="topline">true</param>
+                <param name="subline">true</param>
+
+                <!-- Header -->
+                <include content="Dialog_Head">
+                    <param name="label">$LOCALIZE[5]</param>
                 </include>
-                <include content="Dialog_Side_Grouplist">
-                    <param name="id">30700</param>
-                    <onright condition="Window.IsVisible(settings)">50</onright>
-                    <onright condition="Window.IsVisible(addonbrowser)">6000</onright>
-                    <onright condition="Window.IsVisible(eventlog)">8000</onright>
-                    <onright condition="Window.IsVisible(filemanager)">20</onright>
-                    <onright condition="!Window.IsVisible(addonbrowser) + !Window.IsVisible(eventlog)">3</onright>
-                    <onleft>30040</onleft>
-                    <include content="Dialog_Side_Button">
-                        <param name="id">1</param>
-                        <param name="baseid">307</param>
-                        <param name="label">$LOCALIZE[15067]</param>
-                        <param name="icon">special://skin/extras/icons/circle-xmark.png</param>
-                        <onclick condition="Window.IsVisible(settings)">SetFocus(50)</onclick>
-                        <onclick condition="Window.IsVisible(addonbrowser)">SetFocus(6000)</onclick>
-                        <onclick condition="Window.IsVisible(eventlog)">SetFocus(8000)</onclick>
-                        <onclick condition="Window.IsVisible(filemanager)">SetFocus(2)0</onclick>
-                        <onclick condition="!Window.IsVisible(addonbrowser) + !Window.IsVisible(eventlog)">SetFocus(3)</onclick>
+                <include content="Dialog_Head_CloseButton">
+                    <param name="onclick">SetFocus(303)</param>
+                </include>
+
+                <!-- Content -->
+                <include content="Dialog_Body">
+                    <include content="Dialog_Body_Grouplist">
+                        <param name="id">30040</param>
+                        <onleft condition="Window.IsVisible(settings)">50</onleft>
+                        <onleft condition="Window.IsVisible(addonbrowser)">6000</onleft>
+                        <onleft condition="Window.IsVisible(eventlog)">8000</onleft>
+                        <onleft condition="Window.IsVisible(filemanager)">20</onleft>
+                        <onleft condition="!Window.IsVisible(addonbrowser) + !Window.IsVisible(eventlog)">3</onleft>
+                        <onback condition="Window.IsVisible(settings)">50</onback>
+                        <onback condition="Window.IsVisible(addonbrowser)">6000</onback>
+                        <onback condition="Window.IsVisible(eventlog)">8000</onback>
+                        <onback condition="Window.IsVisible(filemanager)">20</onback>
+                        <onback condition="!Window.IsVisible(addonbrowser) + !Window.IsVisible(eventlog)">3</onback>
+                        <include>Items_Settings_SideChanger</include>
                     </include>
                 </include>
             </include>
-        </include>
+
+        </control>
+        <include>TouchMode_Settings_Zones</include>
     </include>
 
     <include name="Settings_Side_Button">
@@ -463,7 +547,7 @@
             <visible>Control.IsVisible($PARAM[buttonid])</visible>
             <control type="group">
                 <centertop>50%</centertop>
-                <right>30</right>
+                <right>40</right>
                 <width>40</width>
                 <height>40</height>
                 <control type="image">
@@ -478,6 +562,39 @@
                 </control>
             </control>
         </control>
+    </include>
+
+    <include name="Settings_Divider_Label">
+        <param name="dialog">false</param>
+        <param name="color">main_fg</param>
+        <definition>
+            <control type="grouplist" id="$PARAM[id]">
+                <height>40</height>
+                <left>20</left>
+                <right>20</right>
+                <orientation>horizontal</orientation>
+                <control type="image">
+                    <height>1</height>
+                    <centertop>20</centertop>
+                    <width>40</width>
+                    <texture colordiffuse="$PARAM[color]_12">common/white.png</texture>
+                </control>
+                <control type="label">
+                    <left>20</left>
+                    <width>auto</width>
+                    <label>$PARAM[label]</label>
+                    <font>font_hint_black</font>
+                    <textcolor>$PARAM[color]_70</textcolor>
+                </control>
+                <control type="image">
+                    <left>20</left>
+                    <height>1</height>
+                    <centertop>20</centertop>
+                    <width>1000</width>
+                    <texture colordiffuse="$PARAM[color]_12">common/white.png</texture>
+                </control>
+            </control>
+        </definition>
     </include>
 
     <include name="Settings_Label">
@@ -544,56 +661,102 @@
         <param name="font">font_mini_plot</param>
         <param name="icon">buttons/info.png</param>
         <param name="dialog">false</param>
+        <param name="override">false</param>
+        <param name="heading">$VAR[Label_Settings_InfoText_Top]</param>
+        <param name="align">left</param>
         <definition>
             <control type="group">
                 <nested />
                 <bottom>-20</bottom>
                 <left>0</left>
-                <right>40</right>
+                <right>320</right>
                 <height>80</height>
                 <animation effect="fade" start="0" end="100" time="400" delay="200">Visible</animation>
                 <animation effect="fade" start="100" end="0" time="400">Hidden</animation>
                 <visible>$PARAM[visible]</visible>
 
                 <control type="group">
-                    <width>40</width>
-                    <height>40</height>
-                    <centertop>50%</centertop>
-                    <left>0</left>
-                    <control type="image">
-                        <bordersize>4</bordersize>
-                        <aspectratio align="left">keep</aspectratio>
-                        <colordiffuse>dialog_fg_70</colordiffuse>
-                        <texture>$PARAM[icon]</texture>
-                    </control>
-                </control>
-
-                <control type="textbox" id="$PARAM[id]">
-                    <include content="Object_TextColor" condition="$PARAM[dialog]">
-                        <param name="textcolor">dialog_fg_70</param>
+                    <include content="Object_InfoCircle_Text_Top" condition="![$PARAM[override]] + !Skin.String(Furniture.CodecStyle,Basic)">
+                        <label fallback="19033">$VAR[Label_Settings_InfoText_Top]</label>
+                        <include content="Object_TextColor" condition="$PARAM[dialog]">
+                            <param name="textcolor">dialog_fg_90</param>
+                        </include>
+                        <align>$PARAM[align]</align>
                     </include>
-                    <left>60</left>
-                    <height>80</height>
-                    <centertop>50%</centertop>
-                    <textcolor>main_fg_70</textcolor>
-                    <font>$PARAM[font]</font>
-                    <aligny>center</aligny>
-                    <label>$PARAM[label]</label>
-                </control>
-                <control type="textbox">
-                    <include content="Object_TextColor" condition="$PARAM[dialog]">
-                        <param name="textcolor">dialog_fg_70</param>
+                    <include content="Object_InfoCircle_Text_Top" condition="$PARAM[override] + !Skin.String(Furniture.CodecStyle,Basic)">
+                        <label fallback="19033">$PARAM[heading]</label>
+                        <include content="Object_TextColor" condition="$PARAM[dialog]">
+                            <param name="textcolor">dialog_fg_90</param>
+                        </include>
+                        <align>$PARAM[align]</align>
                     </include>
-                    <left>60</left>
-                    <height>80</height>
-                    <centertop>50%</centertop>
-                    <textcolor>main_fg_70</textcolor>
-                    <font>$PARAM[font]</font>
-                    <aligny>center</aligny>
-                    <label>$LOCALIZE[19055]</label>
-                    <visible>String.IsEmpty(Control.GetLabel($PARAM[id]))</visible>
-                </control>
+                    <include content="Object_Hidden_Button" condition="![$PARAM[override]]">
+                        <param name="id">$PARAM[id]</param>
+                        <param name="control">label</param>
+                    </include>
+                    <include content="Object_InfoCircle_Text_Sub" condition="![$PARAM[override]] + !Skin.String(Furniture.CodecStyle,Basic)">
+                        <label fallback="19055">$VAR[Label_Settings_InfoText_Sub]</label>
+                        <include content="Object_TextColor" condition="$PARAM[dialog]">
+                            <param name="textcolor">dialog_fg_70</param>
+                        </include>
+                        <scroll>true</scroll>
+                        <align>$PARAM[align]</align>
+                    </include>
+                    <include content="Object_InfoCircle_Text_Sub" condition="$PARAM[override] + !Skin.String(Furniture.CodecStyle,Basic)">
+                        <param name="id">$PARAM[id]</param>
+                        <label fallback="19055">$PARAM[label]</label>
+                        <include content="Object_TextColor" condition="$PARAM[dialog]">
+                            <param name="textcolor">dialog_fg_70</param>
+                        </include>
+                        <scroll>true</scroll>
+                        <align>$PARAM[align]</align>
+                    </include>
+                    <include content="Object_InfoCircle_Text_Sub" condition="$PARAM[override] + !Skin.String(Furniture.CodecStyle,Basic)">
+                        <label>$LOCALIZE[19055]</label>
+                        <scroll>true</scroll>
+                        <include content="Object_TextColor" condition="$PARAM[dialog]">
+                            <param name="textcolor">dialog_fg_70</param>
+                        </include>
+                        <visible>String.IsEmpty(Control.GetLabel($PARAM[id]))</visible>
+                        <align>$PARAM[align]</align>
+                    </include>
 
+                    <include content="Object_Control" condition="![$PARAM[override]] + Skin.String(Furniture.CodecStyle,Basic)">
+                        <param name="control">label</param>
+                        <label fallback="19055">$VAR[Label_Settings_InfoText_Sub]</label>
+                        <include content="Object_TextColor" condition="$PARAM[dialog]">
+                            <param name="textcolor">dialog_fg_70</param>
+                        </include>
+                        <include>Defs_Label_FooterItem</include>
+                        <wrapmultiline>false</wrapmultiline>
+                        <scroll>true</scroll>
+                        <align>$PARAM[align]</align>
+                    </include>
+                    <include content="Object_Control" condition="$PARAM[override] + Skin.String(Furniture.CodecStyle,Basic)">
+                        <param name="control">label</param>
+                        <param name="id">$PARAM[id]</param>
+                        <label fallback="19055">$PARAM[label]</label>
+                        <include content="Object_TextColor" condition="$PARAM[dialog]">
+                            <param name="textcolor">dialog_fg_70</param>
+                        </include>
+                        <include>Defs_Label_FooterItem</include>
+                        <wrapmultiline>false</wrapmultiline>
+                        <scroll>true</scroll>
+                        <align>$PARAM[align]</align>
+                    </include>
+                    <include content="Object_Control" condition="$PARAM[override] + Skin.String(Furniture.CodecStyle,Basic)">
+                        <param name="control">label</param>
+                        <label>$LOCALIZE[19055]</label>
+                        <scroll>true</scroll>
+                        <include content="Object_TextColor" condition="$PARAM[dialog]">
+                            <param name="textcolor">dialog_fg_70</param>
+                        </include>
+                        <include>Defs_Label_FooterItem</include>
+                        <wrapmultiline>false</wrapmultiline>
+                        <visible>String.IsEmpty(Control.GetLabel($PARAM[id]))</visible>
+                        <align>$PARAM[align]</align>
+                    </include>
+                </control>
             </control>
         </definition>
     </include>

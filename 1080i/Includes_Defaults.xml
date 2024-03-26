@@ -37,7 +37,7 @@
         <textcolor>dialog_fg_70</textcolor>
         <selectedcolor>dialog_fg_70</selectedcolor>
         <disabledcolor>dialog_fg_30</disabledcolor>
-        <texturenofocus colordiffuse="dialog_fg_12" border="40">common/menu.png</texturenofocus>
+        <texturenofocus colordiffuse="panel_fg_12" border="40">common/menu.png</texturenofocus>
     </include>
 
     <default type="colorbutton">
@@ -391,6 +391,14 @@
         </include>
     </include>
 
+    <include name="Defs_AutoSample_MultiImage">
+        <onload condition="$PARAM[condition]">AlarmClock(ResampleMultiImage,RunScript(script.skinvariables,run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-blurfallback.json,use_rules),$PARAM[alarm],silent,loop)</onload>
+    </include>
+
+    <include name="Defs_AutoSample_ExtraFanart">
+        <onload condition="$PARAM[condition]">AlarmClock(ResampleExtraFanart,RunScript(script.skinvariables,run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-blurextrafanart.json,use_rules),$PARAM[alarm],silent,loop)</onload>
+    </include>
+
     <include name="Defs_AutoScroll_Value">
         <autoscroll time="$PARAM[time]">$PARAM[condition]</autoscroll>
     </include>
@@ -400,38 +408,47 @@
         <definition>
             <include content="$PARAM[include]" condition="String.IsEqual(Skin.String(AutoScrollTime),5s)">
                 <param name="time">5000</param>
+                <param name="alarm">00:05</param>
                 <param name="condition">$PARAM[condition]</param>
             </include>
             <include content="$PARAM[include]" condition="String.IsEqual(Skin.String(AutoScrollTime),8s)">
                 <param name="time">8000</param>
+                <param name="alarm">00:08</param>
                 <param name="condition">$PARAM[condition]</param>
             </include>
             <include content="$PARAM[include]" condition="String.IsEqual(Skin.String(AutoScrollTime),10s)">
                 <param name="time">10000</param>
+                <param name="alarm">00:10</param>
                 <param name="condition">$PARAM[condition]</param>
             </include>
             <include content="$PARAM[include]" condition="String.IsEqual(Skin.String(AutoScrollTime),12s) | String.IsEmpty(Skin.String(AutoScrollTime))">
                 <param name="time">12000</param>
+                <param name="alarm">00:12</param>
                 <param name="condition">$PARAM[condition]</param>
             </include>
             <include content="$PARAM[include]" condition="String.IsEqual(Skin.String(AutoScrollTime),15s)">
                 <param name="time">15000</param>
+                <param name="alarm">00:15</param>
                 <param name="condition">$PARAM[condition]</param>
             </include>
             <include content="$PARAM[include]" condition="String.IsEqual(Skin.String(AutoScrollTime),20s)">
                 <param name="time">20000</param>
+                <param name="alarm">00:20</param>
                 <param name="condition">$PARAM[condition]</param>
             </include>
             <include content="$PARAM[include]" condition="String.IsEqual(Skin.String(AutoScrollTime),30s)">
                 <param name="time">30000</param>
+                <param name="alarm">00:30</param>
                 <param name="condition">$PARAM[condition]</param>
             </include>
             <include content="$PARAM[include]" condition="String.IsEqual(Skin.String(AutoScrollTime),60s)">
                 <param name="time">60000</param>
+                <param name="alarm">01:00</param>
                 <param name="condition">$PARAM[condition]</param>
             </include>
             <include content="$PARAM[include]" condition="String.IsEqual(Skin.String(AutoScrollTime),10m)">
                 <param name="time">600000</param>
+                <param name="alarm">10:00</param>
                 <param name="condition">$PARAM[condition]</param>
             </include>
         </definition>
@@ -441,6 +458,52 @@
         <definition>
             <include content="Object_Hidden_List">
                 <param name="id">99950</param>
+            </include>
+            <include content="Object_Hidden_List" condition="!String.IsEmpty(Skin.String(Background.MultiImage))">
+                <param name="id">99972</param>
+                <content sortby="random">$INFO[Skin.String(Background.MultiImage)]</content>
+                <include content="Defs_AutoScroll">
+                    <param name="condition">true</param>
+                </include>
+            </include>
+            <include content="Object_Control" condition="Skin.HasSetting(Background.ExtraFanart)">
+                <param name="control">fadelabel</param>
+                <param name="id">99973</param>
+                <description>Randomizer for plugin-free multiple fanart</description>
+                <font>font_tiny</font>
+                <height>1</height>
+                <width>1</width>
+                <top>-1000</top>
+
+                <info>ListItem.Art(fanart1)</info>
+                <info>ListItem.Art(fanart2)</info>
+                <info>ListItem.Art(fanart3)</info>
+                <info>ListItem.Art(fanart4)</info>
+                <info>ListItem.Art(fanart5)</info>
+                <info>ListItem.Art(fanart6)</info>
+                <info>ListItem.Art(fanart7)</info>
+                <info>ListItem.Art(fanart8)</info>
+                <info>ListItem.Art(fanart9)</info>
+                <info>ListItem.Art(fanart)</info>
+                <info>ListItem.Art(tvshow.fanart1)</info>
+                <info>ListItem.Art(tvshow.fanart2)</info>
+                <info>ListItem.Art(tvshow.fanart3)</info>
+                <info>ListItem.Art(tvshow.fanart4)</info>
+                <info>ListItem.Art(tvshow.fanart5)</info>
+                <info>ListItem.Art(tvshow.fanart6)</info>
+                <info>ListItem.Art(tvshow.fanart7)</info>
+                <info>ListItem.Art(tvshow.fanart8)</info>
+                <info>ListItem.Art(tvshow.fanart9)</info>
+                <info>ListItem.Art(tvshow.fanart)</info>
+
+                <randomize>true</randomize>
+                <include condition="!Skin.HasSetting(TMDbHelper.EnableBlur) | Skin.String(Background.ArtworkStyle,Fanart)">Defs_PauseAtEnd</include>
+                <include condition="Skin.HasSetting(TMDbHelper.EnableBlur) + !Skin.String(Background.ArtworkStyle,Fanart)" content="Defs_PauseAtEnd_Value">
+                    <param name="time">4000</param>
+                </include>
+                <scroll>false</scroll>
+                <scrollout>false</scrollout>
+                <resetonlabelchange>true</resetonlabelchange>
             </include>
         </definition>
     </include>
@@ -458,6 +521,44 @@
         <value condition="Skin.HasSetting(Widgets.DisableShowMore)">never</value>
         <value>auto</value>
     </variable>
+
+    <include name="Defs_Label_AudioChannels">
+        <font>font_videocodec_bold</font>
+        <align>center</align>
+        <height>16</height>
+        <width>64</width>
+        <left>20</left>
+        <top>0</top>
+    </include>
+
+    <include name="Defs_Label_FooterItem">
+        <centertop>50%</centertop>
+        <width>auto</width>
+        <aligny>top</aligny>
+        <height>40</height>
+        <textcolor>main_fg_90</textcolor>
+        <font>font_mini</font>
+        <textoffsetx>0</textoffsetx>
+    </include>
+
+    <include name="Defs_OSD_Button">
+        <param name="autoclose">true</param>
+        <param name="back_colordiffuse">00ffffff</param>
+        <definition>
+            <height>80</height>
+            <width>80</width>
+            <include>Texture_Circle_Highlight_Focus_V</include>
+            <texturenofocus colordiffuse="$PARAM[back_colordiffuse]">common/circle.png</texturenofocus>
+            <include condition="$PARAM[autoclose]">Action_OSD_Button_OnFocus</include>
+            <textcolor>panel_fg_70</textcolor>
+            <focusedcolor>$VAR[ColorSelected]</focusedcolor>
+            <font>font_hint</font>
+            <align>center</align>
+            <aligny>top</aligny>
+            <textoffsety>45</textoffsety>
+            <textoffsetx>0</textoffsetx>
+        </definition>
+    </include>
 
 
 </includes>

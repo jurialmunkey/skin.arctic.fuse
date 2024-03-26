@@ -19,18 +19,19 @@
                 <control type="group">
                     <height>80</height>
                     <centertop>100</centertop>
-                    <include content="OSD_Button">
-                        <param name="autoclose">true</param>
-                        <param name="visible">true</param>
+                    <control type="button" id="6030">
+                        <include>Defs_OSD_Button</include>
+                        <onclick>Dialog.Close(musicosd,true)</onclick>
+                        <onclick>Action(FullScreen)</onclick>
+                        <ondown>6020</ondown>
+                        <onright>6020</onright>
+                    </control>
+                    <include content="OSD_Button_Icon_Overlay">
                         <param name="icon">special://skin/extras/icons/arrow-left.png</param>
                         <param name="id">6030</param>
                         <param name="groupid">6130</param>
                         <param name="grouplist">false</param>
                         <param name="icon_colordiffuse">00ffffff</param>
-                        <onclick>Dialog.Close(musicosd,true)</onclick>
-                        <onclick>Action(FullScreen)</onclick>
-                        <ondown>6020</ondown>
-                        <onright>6020</onright>
                     </include>
                 </control>
 
@@ -38,19 +39,20 @@
                     <height>80</height>
                     <centerbottom>180</centerbottom>
                     <include>Animation_OSD_Seekbar_Expand</include>
-                    <include content="OSD_Button">
-                        <param name="autoclose">true</param>
-                        <param name="visible">true</param>
-                        <param name="icon">$VAR[Image_OSD_PlayPause]</param>
-                        <param name="id">6020</param>
-                        <param name="groupid">6120</param>
-                        <param name="grouplist">false</param>
-                        <param name="icon_colordiffuse">00ffffff</param>
+                    <control type="button" id="6020">
+                        <include>Defs_OSD_Button</include>
                         <onclick>PlayerControl(Play)</onclick>
                         <onleft>6008</onleft>
                         <onright>6001</onright>
                         <onup>6030</onup>
                         <ondown condition="!Window.IsVisible(script-cu-lrclyrics-main.xml)">ActivateWindow(1142)</ondown>
+                    </control>
+                    <include content="OSD_Button_Icon_Overlay">
+                        <param name="icon">$VAR[Image_OSD_PlayPause]</param>
+                        <param name="id">6020</param>
+                        <param name="groupid">6120</param>
+                        <param name="grouplist">false</param>
+                        <param name="icon_colordiffuse">00ffffff</param>
                     </include>
                 </control>
             </control>
@@ -72,57 +74,69 @@
                     <onup>8200</onup>
                     <include>Animation_OSD_Seekbar_Expand</include>
                     <ondown condition="!Window.IsVisible(script-cu-lrclyrics-main.xml)">ActivateWindow(1142)</ondown>
-                    <include content="OSD_Button">
-                        <param name="autoclose">true</param>
-                        <param name="visible">true</param>
-                        <param name="icon">special://skin/extras/icons/list-ol.png</param>
-                        <param name="id">6001</param>
-                        <param name="groupid">6101</param>
-                        <param name="itemgap">osd_itemgap</param>
+
+                    <!-- Button 1 -->
+                    <control type="button" id="6001">
+                        <include>Defs_OSD_Button</include>
                         <onclick>Close</onclick>
                         <onclick>ActivateWindow(musicplaylist)</onclick>
                         <onfocus>ClearProperty(OSDArtistDetails,Home)</onfocus>
                         <onfocus condition="String.IsEmpty(Window(Home).Property(ResetScroll))">SetProperty(ResetScroll," ",home)</onfocus>
                         <onfocus condition="!String.IsEmpty(Window(Home).Property(ResetScroll))">ClearProperty(ResetScroll,home)</onfocus>
+                    </control>
+                    <include content="OSD_Button_Icon_Overlay">
+                        <param name="icon">special://skin/extras/icons/list-ol.png</param>
+                        <param name="id">6001</param>
+                        <param name="groupid">6101</param>
+                        <param name="itemgap">osd_itemgap</param>
                     </include>
-                    <include content="OSD_Button">
-                        <param name="autoclose">true</param>
-                        <param name="visible">true</param>
+
+                    <!-- Button 2 -->
+                    <control type="button" id="6002">
+                        <include>Defs_OSD_Button</include>
+                        <onclick>PlayerControl(Previous)</onclick>
+                        <onfocus>ClearProperty(OSDArtistDetails,Home)</onfocus>
+                        <onfocus condition="String.IsEmpty(Window(Home).Property(ResetScroll))">SetProperty(ResetScroll," ",home)</onfocus>
+                        <onfocus condition="!String.IsEmpty(Window(Home).Property(ResetScroll))">ClearProperty(ResetScroll,home)</onfocus>
+                    </control>
+                    <include content="OSD_Button_Icon_Overlay">
                         <param name="icon">special://skin/extras/icons/forward-step.png</param>
                         <param name="id">6002</param>
                         <param name="groupid">6102</param>
                         <param name="flipx">true</param>
                         <param name="itemgap">osd_itemgap</param>
-                        <onclick>PlayerControl(Previous)</onclick>
+                    </include>
+
+                    <!-- Button 3 -->
+                    <control type="button" id="6003">
+                        <include>Defs_OSD_Button</include>
+                        <onclick>PlayerControl(Next)</onclick>
                         <onfocus>ClearProperty(OSDArtistDetails,Home)</onfocus>
                         <onfocus condition="String.IsEmpty(Window(Home).Property(ResetScroll))">SetProperty(ResetScroll," ",home)</onfocus>
                         <onfocus condition="!String.IsEmpty(Window(Home).Property(ResetScroll))">ClearProperty(ResetScroll,home)</onfocus>
-                    </include>
-                    <include content="OSD_Button">
-                        <param name="autoclose">true</param>
-                        <param name="visible">true</param>
+                    </control>
+                    <include content="OSD_Button_Icon_Overlay">
                         <param name="icon">special://skin/extras/icons/forward-step.png</param>
                         <param name="id">6003</param>
                         <param name="groupid">6103</param>
                         <param name="flipx">false</param>
                         <param name="itemgap">osd_itemgap</param>
-                        <onclick>PlayerControl(Next)</onclick>
+                    </include>
+
+                    <!-- Button 4 -->
+                    <control type="button" id="6004">
+                        <include>Defs_OSD_Button</include>
+                        <onclick>PlayerControl(Stop)</onclick>
                         <onfocus>ClearProperty(OSDArtistDetails,Home)</onfocus>
                         <onfocus condition="String.IsEmpty(Window(Home).Property(ResetScroll))">SetProperty(ResetScroll," ",home)</onfocus>
                         <onfocus condition="!String.IsEmpty(Window(Home).Property(ResetScroll))">ClearProperty(ResetScroll,home)</onfocus>
-                    </include>
-                    <include content="OSD_Button">
-                        <param name="autoclose">true</param>
-                        <param name="visible">true</param>
+                    </control>
+                    <include content="OSD_Button_Icon_Overlay">
                         <param name="icon">special://skin/extras/icons/stop.png</param>
                         <param name="id">6004</param>
                         <param name="groupid">6104</param>
                         <param name="flipx">false</param>
                         <param name="itemgap">osd_itemgap</param>
-                        <onclick>PlayerControl(Stop)</onclick>
-                        <onfocus>ClearProperty(OSDArtistDetails,Home)</onfocus>
-                        <onfocus condition="String.IsEmpty(Window(Home).Property(ResetScroll))">SetProperty(ResetScroll," ",home)</onfocus>
-                        <onfocus condition="!String.IsEmpty(Window(Home).Property(ResetScroll))">ClearProperty(ResetScroll,home)</onfocus>
                     </include>
                 </control>
 
@@ -139,48 +153,60 @@
                     <onup>SetFocus(9802)</onup>
                     <include>Animation_OSD_Seekbar_Expand</include>
                     <ondown condition="!Window.IsVisible(script-cu-lrclyrics-main.xml)">ActivateWindow(1142)</ondown>
-                    <include content="OSD_Button">
-                        <param name="autoclose">true</param>
-                        <param name="visible">true</param>
+
+                    <!-- Button 5 -->
+                    <control type="button" id="6005">
+                        <include>Defs_OSD_Button</include>
+                        <onclick>Close</onclick>
+                        <onclick>runscript(script.cu.lrclyrics)</onclick>
+                        <onfocus>SetProperty(OSDArtistDetails,1,Home)</onfocus>
+                    </control>
+                    <include content="OSD_Button_Icon_Overlay">
                         <param name="icon">special://skin/extras/icons/microphone.png</param>
                         <param name="id">6005</param>
                         <param name="groupid">6105</param>
                         <param name="itemgap">osd_itemgap</param>
-                        <onclick>Close</onclick>
-                        <onclick>runscript(script.cu.lrclyrics)</onclick>
-                        <onfocus>SetProperty(OSDArtistDetails,1,Home)</onfocus>
                     </include>
-                    <include content="OSD_Button">
-                        <param name="autoclose">true</param>
-                        <param name="visible">true</param>
+
+                    <!-- Button 6 -->
+                    <control type="button" id="6001">
+                        <include>Defs_OSD_Button</include>
+                        <onclick>PlayerControl(Repeat)</onclick>
+                        <onfocus>SetProperty(OSDArtistDetails,1,Home)</onfocus>
+                    </control>
+                    <include content="OSD_Button_Icon_Overlay">
                         <param name="icon">$VAR[Image_OSD_Repeat]</param>
                         <param name="id">6006</param>
                         <param name="groupid">6106</param>
                         <param name="itemgap">osd_itemgap</param>
-                        <onclick>PlayerControl(Repeat)</onclick>
-                        <onfocus>SetProperty(OSDArtistDetails,1,Home)</onfocus>
                     </include>
-                    <include content="OSD_Button">
-                        <param name="autoclose">true</param>
-                        <param name="visible">true</param>
+
+                    <!-- Button 7 -->
+                    <control type="button" id="6007">
+                        <include>Defs_OSD_Button</include>
+                        <onclick>PlayerControl(Random)</onclick>
+                        <onfocus>SetProperty(OSDArtistDetails,1,Home)</onfocus>
+                    </control>
+                    <include content="OSD_Button_Icon_Overlay">
                         <param name="icon">$VAR[Image_OSD_Shuffle]</param>
                         <param name="id">6007</param>
                         <param name="groupid">6107</param>
                         <param name="itemgap">osd_itemgap</param>
-                        <onclick>PlayerControl(Random)</onclick>
-                        <onfocus>SetProperty(OSDArtistDetails,1,Home)</onfocus>
                     </include>
-                    <include content="OSD_Button">
-                        <param name="autoclose">true</param>
-                        <param name="visible">true</param>
-                        <param name="icon">special://skin/extras/icons/settings.png</param>
-                        <param name="id">6008</param>
-                        <param name="groupid">6108</param>
-                        <param name="itemgap">osd_itemgap</param>
+
+                    <!-- Button 8 -->
+                    <control type="button" id="6008">
+                        <include>Defs_OSD_Button</include>
                         <onclick>SetProperty(CustomDialogSettingsTitle,[CAPITALIZE]$LOCALIZE[31460][/CAPITALIZE],Home)</onclick>
                         <onclick>SetProperty(CustomDialogSettingsItems,Items_Settings_MusicVisualisation,Home)</onclick>
                         <onclick>ActivateWindow(1118)</onclick>
                         <onfocus>SetProperty(OSDArtistDetails,1,Home)</onfocus>
+                    </control>
+                    <include content="OSD_Button_Icon_Overlay">
+                        <param name="icon">special://skin/extras/icons/settings.png</param>
+                        <param name="id">6008</param>
+                        <param name="groupid">6108</param>
+                        <param name="itemgap">osd_itemgap</param>
                     </include>
 
                 </control>
@@ -222,8 +248,7 @@
 
         <include content="OSD_CastInfo_HintText">
             <param name="label">$LOCALIZE[31346]</param>
-            <visible>!Window.IsVisible(1142)</visible>
-            <visible>!Window.IsVisible(script-cu-lrclyrics-main.xml)</visible>
+            <param name="visible">!Window.IsVisible(1142) + !Window.IsVisible(script-cu-lrclyrics-main.xml)</param>
         </include>
 
         <control type="group">

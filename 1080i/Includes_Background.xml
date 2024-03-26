@@ -33,9 +33,10 @@
                 <width>$PARAM[flixart_size_w]</width>
                 <aspectratio scalediffuse="false" align="$PARAM[align]" aligny="$PARAM[aligny]">$PARAM[aspectratio]</aspectratio>
                 <texture background="true" diffuse="$PARAM[diffuse]">$VAR[Image_Foreground]</texture>
-                <animation effect="fade" start="100" end="0" reversible="false" time="400" condition="$EXP[Exp_BackgroundArtwork_IsHidden]">Conditional</animation>
-                <animation effect="fade" start="0" end="100" reversible="false" delay="200" time="800" condition="!$EXP[Exp_BackgroundArtwork_IsHidden]">Conditional</animation>
+                <animation effect="fade" start="100" end="0" reversible="false" time="300" condition="[$EXP[Exp_BackgroundArtwork_IsHidden]">Conditional</animation>
+                <animation effect="fade" start="0" end="100" reversible="false" delay="300" time="background_fadetime" condition="![$EXP[Exp_BackgroundArtwork_IsHidden]">Conditional</animation>
                 <include>Background_NotVideo</include>
+                <include>Animation_Flix_WindowChange</include>
             </control>
         </definition>
     </include>
@@ -49,7 +50,6 @@
                 <aspectratio scalediffuse="false">scale</aspectratio>
                 <texture background="true">$PARAM[texture]</texture>
                 <include>Background_NotVideo</include>
-                <nested />
             </control>
         </definition>
     </include>
@@ -161,7 +161,6 @@
                 <timeperimage>5000</timeperimage>
                 <fadetime>2000</fadetime>
                 <aspectratio>scale</aspectratio>
-                <nested />
             </control>
         </definition>
     </include>
@@ -170,6 +169,7 @@
         <param name="texture">$VAR[Image_SimpleBackground]</param>
         <definition>
             <control type="image">
+                <fadetime>$PARAM[fadetime]</fadetime>
                 <aspectratio align="left">scale</aspectratio>
                 <texture background="true">$PARAM[texture]</texture>
                 <include>Background_NotVideo</include>
@@ -193,12 +193,6 @@
         </definition>
     </include>
 
-    <include name="Background_VideoStandard">
-        <control type="videowindow">
-            <nested />
-        </control>
-    </include>
-
     <include name="Background_Video">
         <control type="group">
             <description>On-screen videowindow for background video</description>
@@ -206,10 +200,10 @@
                 <top>0</top>
                 <height>flixart_size_h</height>
                 <visible>![$EXP[Exp_Video_IsNotPlaying]]</visible>
-                <include content="Background_VideoStandard">
+                <control type="videowindow">
                     <right>0</right>
                     <width>flixart_size_w</width>
-                </include>
+                </control>
                 <control type="image">
                     <right>0</right>
                     <width>flixart_size_w</width>
@@ -257,13 +251,10 @@
 
     <include name="Background_Main_Standard">
         <control type="group">
-            <control type="group">
-                <animation effect="fade" start="0" end="100" time="background_fadetime">Visible</animation>
-                <animation effect="fade" start="100" end="0" time="background_fadetime">Hidden</animation>
-                <include condition="!Skin.String(Background.ArtworkStyle,Simple)">Background_Blur</include>
-                <include>Background_Artwork</include>
-            </control>
-            <nested />
+            <animation effect="fade" start="0" end="100" time="background_fadetime">Visible</animation>
+            <animation effect="fade" start="100" end="0" time="background_fadetime">Hidden</animation>
+            <include condition="!Skin.String(Background.ArtworkStyle,Simple)">Background_Blur</include>
+            <include>Background_Artwork</include>
         </control>
     </include>
 
@@ -317,24 +308,26 @@
         </control>
     </include>
 
+    <include name="Background_HolidayTheme_FrostOverlay">
+        <control type="image">
+            <texture background="true">holiday/winter/frost.png</texture>
+            <aspectratio>stretch</aspectratio>
+            <visible>$EXP[Exp_Christmas_Theme]</visible>
+            <visible>!Skin.HasSetting(HolidayMode.Australia)</visible>
+        </control>
+    </include>
+
     <include name="Background_Main">
         <param name="plain_background">false</param>
-        <param name="video_background">!Skin.HasSetting(Background.VideoDisabled)</param>
+        <param name="video_background">!Skin.HasSetting(Background.DisableVideo)</param>
+        <param name="include_layer">Items_Null</param>
         <definition>
             <include condition="$PARAM[video_background]">Background_Video</include>
             <include condition="$PARAM[plain_background]">Background_Main_Plain</include>
             <include condition="!$PARAM[plain_background]">Background_Main_Standard</include>
-            <nested />
+            <include>$PARAM[include_layer]</include>
             <include>Background_Main_Overlay</include>
-
-            <include content="Object_Control" condition="Skin.HasSetting(EnableHolidayTheme) + Skin.HasSetting(HolidayMode.Frost)">
-                <param name="control">image</param>
-                <texture background="true">holiday/winter/frost.png</texture>
-                <aspectratio>stretch</aspectratio>
-                <visible>$EXP[Exp_Christmas_Theme]</visible>
-                <visible>!Skin.HasSetting(HolidayMode.Australia)</visible>
-            </include>
-
+            <include condition="Skin.HasSetting(EnableHolidayTheme) + Skin.HasSetting(HolidayMode.Frost)">Background_HolidayTheme_FrostOverlay</include>
         </definition>
     </include>
 

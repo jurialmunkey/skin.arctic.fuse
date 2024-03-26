@@ -1,218 +1,117 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
 
-    <include name="ButtonMenu_NowPlaying">
+    <include name="ButtonMenu_PlayerControls">
         <control type="image">
-            <bottom>140</bottom>
+            <bottom>60</bottom>
             <left>20</left>
             <right>20</right>
             <height>1</height>
             <texture colordiffuse="dialog_fg_12">common/white.png</texture>
         </control>
+        <control type="grouplist" id="6000">
+            <orientation>horizontal</orientation>
+            <height>80</height>
+            <bottom>-40</bottom>
+            <itemgap>20</itemgap>
+            <align>center</align>
+            <onup condition="Window.IsVisible(1170)">SetFocus(8000,9999,absolute)</onup>
+            <onup condition="!Window.IsVisible(1170)">9009</onup>
+            <ondown condition="!Window.IsVisible(1170)">19</ondown>
+            <onback condition="!Window.IsVisible(1170)">68</onback>
+            <!-- Button 1 -->
+            <control type="button" id="6001">
+                <include>Defs_OSD_Button</include>
+                <onclick>Close</onclick>
+                <onclick condition="Integer.IsGreater(Playlist.Length(video),0) + [Player.HasVideo | Integer.IsEqual(Playlist.Length(music),0)]">ActivateWindow(videoplaylist)</onclick>
+                <onclick condition="Integer.IsGreater(Playlist.Length(music),0) + !Player.HasVideo">ActivateWindow(musicplaylist)</onclick>
+                <enable>[Integer.IsGreater(Playlist.Length(video),0) + [Player.HasVideo | Integer.IsEqual(Playlist.Length(music),0)]] | [Integer.IsGreater(Playlist.Length(music),0) + !Player.HasVideo]</enable>
+            </control>
+            <include content="OSD_Button_Icon_Overlay">
+                <param name="icon">special://skin/extras/icons/playlist.png</param>
+                <param name="id">6001</param>
+                <param name="groupid">6101</param>
+                <param name="icon_colordiffuse">dialog_fg_70</param>
+                <param name="itemgap">20</param>
+                <param name="bordersize">12</param>
+            </include>
 
-        <control type="group">
-            <bottom>0</bottom>
-            <height>130</height>
-            <left>20</left>
-            <right>20</right>
-            <control type="group">
-                <height>80</height>
-                <control type="group">
-                    <centerright>40</centerright>
-                    <width>50</width>
-                    <height>50</height>
-                    <centertop>50%</centertop>
-                    <control type="group">
-                        <visible>!Player.HasVideo</visible>
-                        <control type="image">
-                            <include content="Dimension_Padding"><param name="pad">-40</param></include>
-                            <bordersize>40</bordersize>
-                            <bordertexture colordiffuse="shadow_hard">shadows/circle_50-shadow-40.png</bordertexture>
-                            <texture colordiffuse="dialog_fg_100">diffuse/circle_50.png</texture>
-                        </control>
-                        <include content="Object_InfoCircle_Image">
-                            <param name="colordiffuse">white</param>
-                            <param name="icon">$VAR[Image_OSD_Thumb]</param>
-                        </include>
-                    </control>
-                    <control type="group">
-                        <visible>Player.HasVideo</visible>
-                        <height>80</height>
-                        <width>80</width>
-                        <centertop>50%</centertop>
-                        <centerleft>50%</centerleft>
-                        <include content="Info_Codec_LabelIcon">
-                            <param name="icon">$VAR[Image_NowPlaying_PlayPause]</param>
-                            <centerleft>50%</centerleft>
-                        </include>
-                        <control type="image">
-                            <bordersize>-4</bordersize>
-                            <texture colordiffuse="$VAR[ColorHighlight]">$INFO[Player.Progress,progress/circle/p,.png]</texture>
-                            <aspectratio align="center" aligny="center">keep</aspectratio>
-                        </control>
-                        <control type="image">
-                            <bordersize>-4</bordersize>
-                            <texture colordiffuse="$VAR[ColorGradient]">$INFO[Player.Progress,progress/circle/p,.png]</texture>
-                            <animation effect="fade" end="66" condition="true">Conditional</animation>
-                            <aspectratio align="center" aligny="center">keep</aspectratio>
-                            <include content="Defs_Progress_Colorfade">
-                                <param name="id">933</param>
-                            </include>
-                        </control>
-                        <control type="progress" id="933">
-                            <height>1</height>
-                            <width>1</width>
-                            <left>-1000</left>
-                            <texturebg />
-                            <lefttexture />
-                            <midtexture />
-                            <righttexture />
-                            <info>Player.Progress</info>
-                            <visible>false</visible>
-                        </control>
-                    </control>
-                    <control type="group">
-                        <visible>!Player.HasMedia</visible>
-                        <centerleft>50%</centerleft>
-                        <centertop>50%</centertop>
-                        <width>40</width>
-                        <height>40</height>
-                        <control type="image">
-                            <texture diffuse="clock/minute_diffuse.png" colordiffuse="dialog_bg_100">$INFO[System.Time(mm),clock/minutes/,.png]</texture>
-                        </control>
-                        <control type="image">
-                            <texture diffuse="clock/hour_diffuse.png" colordiffuse="dialog_bg_100">$INFO[System.Time(h),clock/hours/,.png]</texture>
-                        </control>
-                        <control type="image">
-                            <centerleft>50%</centerleft>
-                            <centertop>50%</centertop>
-                            <width>8</width>
-                            <height>8</height>
-                            <texture colordiffuse="dialog_bg_100">common/circle.png</texture>
-                        </control>
-                    </control>
-                </control>
-                <control type="group">
-                    <left>20</left>
-                    <right>90</right>
-                    <visible>!Player.HasMedia</visible>
-                    <include content="Object_InfoCircle_Text_Top">
-                        <label>$INFO[System.Time]</label>
-                        <textcolor>dialog_fg_90</textcolor>
-                    </include>
-                    <include content="Object_InfoCircle_Text_Sub">
-                        <label>$INFO[System.Date]</label>
-                        <textcolor>dialog_fg_70</textcolor>
-                    </include>
-                </control>
-                <control type="group">
-                    <left>20</left>
-                    <right>90</right>
-                    <visible>Player.HasMedia</visible>
-                    <include content="Object_InfoCircle_Text_Top">
-                        <right>40</right>
-                        <label>$VAR[Label_NowPlayingTitle]</label>
-                        <textcolor>dialog_fg_90</textcolor>
-                    </include>
-                    <include content="Object_InfoCircle_Text_Sub">
-                        <label>$VAR[Label_NowPlayingSubLabel]</label>
-                        <textcolor>dialog_fg_70</textcolor>
-                    </include>
-                    <include content="Object_InfoCircle_Text_Top">
-                        <label>$INFO[MusicPlayer.TrackNumber,#,]</label>
-                        <align>right</align>
-                        <font>font_tiny</font>
-                        <textcolor>dialog_fg_70</textcolor>
-                    </include>
-                    <include content="Object_InfoCircle_Text_Sub">
-                        <label>$INFO[Player.Time]$INFO[Player.Duration, / ,]</label>
-                        <align>right</align>
-                        <textcolor>dialog_fg_70</textcolor>
-                    </include>
-                </control>
+            <!-- Button 2 -->
+            <control type="button" id="6002">
+                <include>Defs_OSD_Button</include>
+                <onclick condition="Player.HasMedia">PlayerControl(Play)</onclick>
+                <onclick condition="!Player.HasMedia">Close</onclick>
+                <onclick condition="!Player.HasMedia + Integer.IsGreater(Playlist.Length(music),0)">PlayMedia(playlistmusic://,isdir,playlist_type_hint=0)</onclick>
+                <onclick condition="!Player.HasMedia + !Integer.IsGreater(Playlist.Length(music),0)">PlayMedia(playlistvideo://,isdir,playlist_type_hint=1)</onclick>
+                <enable>Player.HasMedia | Integer.IsGreater(Playlist.Length(video),0) | Integer.IsGreater(Playlist.Length(music),0)</enable>
             </control>
-            <control type="grouplist" id="6000">
-                <orientation>horizontal</orientation>
-                <left>15</left>
-                <right>15</right>
-                <height>50</height>
-                <bottom>0</bottom>
-                <itemgap>50</itemgap>
-                <align>center</align>
-                <onup>SetFocus(8000,9999,absolute)</onup>
-                <include content="OSD_Button">
-                    <param name="visible">true</param>
-                    <param name="size">50</param>
-                    <param name="icon">special://skin/extras/icons/playlist.png</param>
-                    <param name="flipx">false</param>
-                    <param name="id">6001</param>
-                    <param name="groupid">6101</param>
-                    <param name="grouplist">true</param>
-                    <param name="icon_colordiffuse">dialog_fg_70</param>
-                    <param name="itemgap">50</param>
-                    <param name="bordersize">5</param>
-                    <onclick>Close</onclick>
-                    <onclick condition="Integer.IsGreater(Playlist.Length(video),0) + Player.HasVideo">ActivateWindow(videoplaylist)</onclick>
-                    <onclick condition="Integer.IsGreater(Playlist.Length(music),0) + Player.HasAudio">ActivateWindow(musicplaylist)</onclick>
-                    <enable>[Integer.IsGreater(Playlist.Length(video),0) + Player.HasVideo] | [Integer.IsGreater(Playlist.Length(music),0) + Player.HasAudio]</enable>
-                </include>
-                <include content="OSD_Button">
-                    <param name="visible">true</param>
-                    <param name="size">50</param>
-                    <param name="icon">special://skin/extras/icons/forward-step.png</param>
-                    <param name="flipx">true</param>
-                    <param name="id">6002</param>
-                    <param name="groupid">6102</param>
-                    <param name="grouplist">true</param>
-                    <param name="icon_colordiffuse">dialog_fg_70</param>
-                    <param name="itemgap">50</param>
-                    <param name="bordersize">5</param>
-                    <onclick>PlayerControl(Previous)</onclick>
-                    <enable>Player.HasMedia</enable>
-                </include>
-                <include content="OSD_Button">
-                    <param name="visible">true</param>
-                    <param name="size">50</param>
-                    <param name="icon">$VAR[Image_OSD_PausePlay]</param>
-                    <param name="id">6003</param>
-                    <param name="groupid">6103</param>
-                    <param name="grouplist">true</param>
-                    <param name="icon_colordiffuse">dialog_fg_70</param>
-                    <param name="itemgap">50</param>
-                    <param name="bordersize">5</param>
-                    <onclick>PlayerControl(Play)</onclick>
-                    <enable>Player.HasMedia</enable>
-                </include>
-                <include content="OSD_Button">
-                    <param name="visible">true</param>
-                    <param name="size">50</param>
-                    <param name="icon">special://skin/extras/icons/forward-step.png</param>
-                    <param name="flipx">false</param>
-                    <param name="id">6004</param>
-                    <param name="groupid">6104</param>
-                    <param name="grouplist">true</param>
-                    <param name="icon_colordiffuse">dialog_fg_70</param>
-                    <param name="itemgap">50</param>
-                    <param name="bordersize">5</param>
-                    <onclick>PlayerControl(Next)</onclick>
-                    <enable>Player.HasMedia</enable>
-                </include>
-                <include content="OSD_Button">
-                    <param name="visible">true</param>
-                    <param name="size">50</param>
-                    <param name="icon">special://skin/extras/icons/fullscreen.png</param>
-                    <param name="flipx">false</param>
-                    <param name="id">6005</param>
-                    <param name="groupid">6105</param>
-                    <param name="grouplist">true</param>
-                    <param name="icon_colordiffuse">dialog_fg_70</param>
-                    <param name="itemgap">50</param>
-                    <param name="bordersize">5</param>
-                    <onclick>Close</onclick>
-                    <onclick>Fullscreen</onclick>
-                    <enable>Player.HasMedia</enable>
-                </include>
+            <include content="OSD_Button_Icon_Overlay">
+                <param name="icon">$VAR[Image_OSD_PausePlay]</param>
+                <param name="id">6002</param>
+                <param name="groupid">6102</param>
+                <param name="icon_colordiffuse">dialog_fg_70</param>
+                <param name="itemgap">20</param>
+                <param name="bordersize">12</param>
+            </include>
+
+            <!-- Button 3 -->
+            <control type="button" id="6003">
+                <include>Defs_OSD_Button</include>
+                <onclick condition="!Player.HasVideo">PlayerControl(Previous)</onclick>
+                <onclick condition="Player.HasVideo">PlayerControl(Stop)</onclick>
+                <enable>Player.HasMedia</enable>
             </control>
+            <include content="OSD_Button_Icon_Overlay">
+                <param name="visible">[!Player.HasVideo]</param>
+                <param name="icon">special://skin/extras/icons/forward-step.png</param>
+                <param name="flipx">true</param>
+                <param name="id">6003</param>
+                <param name="groupid">6103</param>
+                <param name="icon_colordiffuse">dialog_fg_70</param>
+                <param name="itemgap">20</param>
+                <param name="bordersize">12</param>
+            </include>
+            <include content="OSD_Button_Icon_Overlay">
+                <param name="visible">[Player.HasVideo]</param>
+                <param name="icon">special://skin/extras/icons/stop.png</param>
+                <param name="id">6003</param>
+                <param name="groupid">6203</param>
+                <param name="icon_colordiffuse">dialog_fg_70</param>
+                <param name="itemgap">20</param>
+                <param name="bordersize">12</param>
+            </include>
+
+            <!-- Button 4 -->
+            <control type="button" id="6004">
+                <include>Defs_OSD_Button</include>
+                <onclick>PlayerControl(Next)</onclick>
+                <enable>Player.HasMedia</enable>
+            </control>
+            <include content="OSD_Button_Icon_Overlay">
+                <param name="icon">special://skin/extras/icons/forward-step.png</param>
+                <param name="id">6004</param>
+                <param name="groupid">6104</param>
+                <param name="icon_colordiffuse">dialog_fg_70</param>
+                <param name="itemgap">20</param>
+                <param name="bordersize">12</param>
+            </include>
+
+            <!-- Button 5 -->
+            <control type="button" id="6005">
+                <include>Defs_OSD_Button</include>
+                <onclick>Dialog.Close(all,true)</onclick>
+                <onclick>Fullscreen</onclick>
+                <enable>Player.HasMedia</enable>
+            </control>
+            <include content="OSD_Button_Icon_Overlay">
+                <param name="icon">special://skin/extras/icons/fullscreen.png</param>
+                <param name="flipx">false</param>
+                <param name="id">6005</param>
+                <param name="groupid">6105</param>
+                <param name="icon_colordiffuse">dialog_fg_70</param>
+                <param name="itemgap">20</param>
+                <param name="bordersize">12</param>
+            </include>
         </control>
     </include>
 
@@ -255,6 +154,27 @@
         </control>
     </include>
 
+    <include name="ButtonMenu_NowPlayingClock">
+        <include content="Dialog_Special_Button">
+            <param name="id">$PARAM[id]</param>
+            <param name="sublabel">$VAR[Label_ButtonMenu_NowPlayingSubLabel]</param>
+            <param name="toplabel">$VAR[Label_ButtonMenu_NowPlayingTitle]</param>
+            <param name="icon">$VAR[Image_ButtonMenu_NowPlayingThumb]</param>
+            <param name="icon_bordersize">10</param>
+            <param name="icon_colordiffuse">ffffffff</param>
+            <nested />
+            <control type="button" id="$PARAM[id]">
+                <onup>$PARAM[onup]</onup>
+                <ondown>$PARAM[ondown]</ondown>
+                <onright>$PARAM[onright]</onright>
+                <onleft>$PARAM[onleft]</onleft>
+                <onclick>Dialog.Close(all,true)</onclick>
+                <onclick>Fullscreen</onclick>
+                <include>defs_dialog_button</include>
+            </control>
+        </include>
+    </include>
+
     <include name="ButtonMenu_Profile">
         <include content="Dialog_Special_Button">
             <param name="id">$PARAM[id]</param>
@@ -270,13 +190,10 @@
                 <onright>$PARAM[onright]</onright>
                 <onleft>$PARAM[onleft]</onleft>
                 <onclick>Close</onclick>
-                <onclick condition="!Skin.HasSetting(SkinUserLogin.Enabled)">System.LogOff</onclick>
-                <onclick condition="Skin.HasSetting(SkinUserLogin.Enabled)">ActivateWindow(1195)</onclick>
+                <onclick condition="Skin.HasSetting(SkinUserLogin.Disabled)">System.LogOff</onclick>
+                <onclick condition="!Skin.HasSetting(SkinUserLogin.Disabled)">ActivateWindow(1195)</onclick>
                 <include>defs_dialog_button</include>
             </control>
-
-
-
         </include>
     </include>
 
@@ -532,6 +449,18 @@
             <nested />
         </include>
 
+        <include content="ButtonMenu_NowPlayingClock" condition="Skin.String($PARAM[include],NowPlaying)">
+            <param name="id">$PARAM[id]</param>
+            <param name="onup">$PARAM[onup]</param>
+            <param name="ondown">$PARAM[ondown]</param>
+            <param name="onleft">$PARAM[onleft]</param>
+            <param name="onright">$PARAM[onright]</param>
+            <param name="onclick">$PARAM[onclick]</param>
+            <param name="label">$PARAM[label]</param>
+            <param name="icon">$PARAM[icon]</param>
+            <nested />
+        </include>
+
         <include content="ButtonMenu_Settings" condition="Skin.String($PARAM[include],Settings)">
             <param name="id">$PARAM[id]</param>
             <param name="onup">$PARAM[onup]</param>
@@ -551,7 +480,7 @@
             <param name="onup">$PARAM[onup]</param>
             <param name="ondown">$PARAM[ondown]</param>
             <param name="onleft">Close</param>
-            <param name="onright">9000</param>
+            <param name="onright">-</param>
             <param name="onclick">$PARAM[button_one_onclick]</param>
             <param name="label">$PARAM[button_one_label]</param>
             <param name="icon">$PARAM[button_one_icon]</param>
@@ -584,7 +513,7 @@
                 <param name="onup">$PARAM[onup]</param>
                 <param name="ondown">$PARAM[ondown]</param>
                 <param name="onleft">70$PARAM[groupid]1</param>
-                <param name="onright">9000</param>
+                <param name="onright">-</param>
                 <param name="onclick">$PARAM[button_two_onclick]</param>
                 <param name="label">$PARAM[button_two_label]</param>
                 <param name="icon">$PARAM[button_two_icon]</param>

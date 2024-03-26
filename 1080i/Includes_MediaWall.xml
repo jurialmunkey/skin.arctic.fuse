@@ -436,14 +436,15 @@
         </definition>
     </include>
 
-    <include name="MediaWall_All">
+    <include name="MediaWall_Main">
         <include content="MediaWall">
             <param name="id">50</param>
             <param name="icon_base_var">Image_Icon</param>
             <param name="layout_include">Layout_Square</param>
             <param name="item_w">view_poster_item_w</param>
-            <param name="item_h">view_poster_item_h</param>
+            <param name="item_h">view_poster_item_w</param>
             <param name="prefix">mf_wp</param>
+            <param name="interchange_condition">$PARAM[interchange_condition]</param>
         </include>
         <include content="MediaWall">
             <param name="id">51</param>
@@ -455,6 +456,7 @@
             <param name="enable_7">false</param>
             <param name="enable_8">false</param>
             <param name="enable_9">false</param>
+            <param name="interchange_condition">$PARAM[interchange_condition]</param>
         </include>
         <include content="MediaWall">
             <param name="id">52</param>
@@ -463,7 +465,12 @@
             <param name="item_w">view_poster_item_w</param>
             <param name="item_h">view_poster_item_h</param>
             <param name="prefix">mf_wp</param>
+            <param name="interchange_condition">$PARAM[interchange_condition]</param>
         </include>
+    </include>
+
+    <include name="MediaWall_All">
+        <include>MediaWall_Main</include>
 
         <include content="MediaWall">
             <param name="id">503</param>
@@ -499,6 +506,11 @@
 
     <variable name="MediaWall_ScriptTypeDef">
         <value condition="$EXP[Exp_View_512] | $EXP[Exp_View_51]">"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-animation-wall-landscape.json"</value>
+        <value>"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-animation-wall.json"</value>
+    </variable>
+
+    <variable name="MediaWall_Search_ScriptTypeDef">
+        <value condition="Integer.IsEqual(Container(5099).ListItem.Property(listid),51)">"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-animation-wall-landscape.json"</value>
         <value>"run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-animation-wall.json"</value>
     </variable>
 
@@ -732,7 +744,7 @@
     </include>
 
     <include name="MediaWall_Discover">
-        <include content="MediaWall" condition="Skin.HasSetting(Navigation.MediaFilterWall)">
+        <include content="MediaWall" condition="Skin.HasSetting(Navigation.MediaFilterWall) + !Skin.HasSetting(Views.DisableItemPeek)">
             <param name="id">553</param>
             <param name="visible">$EXP[Exp_DiscoverWall_IsActive]</param>
             <param name="interchange_condition">[!Container(553).IsUpdating]</param>

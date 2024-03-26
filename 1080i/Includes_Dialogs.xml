@@ -60,15 +60,29 @@
                 <control type="image">
                     <texture colordiffuse="dialog_overlay" border="20">common/dialog.png</texture>
                 </control>
+                <include content="Object_Control" condition="Skin.HasSetting(Glass.EnableBorders)">
+                    <param name="control">image</param>
+                    <bordersize>0</bordersize>
+                    <texture colordiffuse="dialog_fg_12" border="20">common/box-outline.png</texture>
+                </include>
                 <nested />
             </control>
         </definition>
     </include>
 
+    <variable name="Dialog_Background_Blur_Adaptive_ColorDiffuse">
+        <value condition="!Skin.HasSetting(TMDbHelper.EnableBlur)">12ededed</value>
+        <value>dialog_fg_30</value>
+    </variable>
+
+    <variable name="Dialog_Background_Blur_Adaptive_Texture">
+        <value condition="!Skin.HasSetting(TMDbHelper.EnableBlur)">special://skin/extras/icons/_none.png</value>
+        <value>$VAR[Image_Background_Blur]</value>
+    </variable>
+
     <include name="Dialog_Background_Blur_Adaptive">
         <param name="flipy">false</param>
         <param name="shadow">true</param>
-        <param name="outline">true</param>
         <param name="diffuse">diffuse/dialog_w1000_h1000.png</param>
         <definition>
             <control type="group">
@@ -79,9 +93,9 @@
                     <fadetime>background_fadetime</fadetime>
                     <aspectratio scalediffuse="false" align="left">scale</aspectratio>
                     <include condition="$PARAM[shadow]">Texture_Shadow_80</include>
-                    <texture flipy="$PARAM[flipy]" diffuse="$PARAM[diffuse]" colordiffuse="dialog_fg_30">$VAR[Image_Background_Blur]</texture>
+                    <texture flipy="$PARAM[flipy]" diffuse="$PARAM[diffuse]" colordiffuse="$VAR[Dialog_Background_Blur_Adaptive_ColorDiffuse]">$VAR[Dialog_Background_Blur_Adaptive_Texture]</texture>
                 </control>
-                <include content="Object_Control" condition="$PARAM[outline]">
+                <include content="Object_Control" condition="Skin.HasSetting(Glass.EnableBorders)">
                     <param name="control">image</param>
                     <bordersize>0</bordersize>
                     <texture colordiffuse="dialog_fg_12" border="20">common/box-outline.png</texture>
@@ -97,7 +111,6 @@
             <param name="flipy">$PARAM[flipy]</param>
             <param name="flipx">$PARAM[flipx]</param>
             <param name="diffuse">$PARAM[diffuse]</param>
-            <param name="outline">$PARAM[outline]</param>
             <param name="border">$PARAM[border]</param>
             <nested />
         </include>
@@ -106,7 +119,6 @@
             <param name="flipy">$PARAM[flipy]</param>
             <param name="flipx">$PARAM[flipx]</param>
             <param name="diffuse">$PARAM[diffuse]</param>
-            <param name="outline">$PARAM[outline]</param>
             <param name="border">$PARAM[border]</param>
             <nested />
         </include>
@@ -118,9 +130,9 @@
         </include>
     </include>
 
-    <include name="Dialog_Background_BlurDimension_DialogHomeMenu">
+    <include name="Dialog_Background_BlurDimension_DialogMainMenu">
         <include content="Dialog_Background_Blur">
-            <param name="diffuse">diffuse/dialog_w760_h1000.png</param>
+            <param name="diffuse">diffuse/dialog_w1480_h1000.png</param>
         </include>
     </include>
 
@@ -142,159 +154,124 @@
         </include>
     </include>
 
-    <include name="Dialog_Overlay_Side_Panel_Adaptive">
+    <include name="Dialog_Overlay_Mode_Glass">
         <definition>
             <control type="image">
-                <include content="Object_Right" condition="$PARAM[flipside]">
-                    <param name="right">120</param>
-                </include>
-                <include content="Object_Left" condition="![$PARAM[flipside]]">
-                    <param name="left">120</param>
-                </include>
-                <texture colordiffuse="dialog_fg_12" border="20" flipx="$PARAM[flipside]">common/dialog.png</texture>
-            </control>
-            <control type="image">
-                <width>12</width>
-                <include content="Object_Right" condition="$PARAM[flipside]">
-                    <param name="right">120</param>
-                </include>
-                <include content="Object_Left" condition="![$PARAM[flipside]]">
-                    <param name="left">120</param>
-                </include>
-                <texture colordiffuse="dialog_fg_12" border="6,20,6,20" flipx="$PARAM[flipside]">common/dialog-edge-outline.png</texture>
-            </control>
-        </definition>
-    </include>
-
-    <include name="Dialog_Overlay_Side_Panel_Standard">
-        <definition>
-            <control type="image">
-                <include content="Object_Right" condition="$PARAM[flipside]">
-                    <param name="right">120</param>
-                </include>
-                <include content="Object_Left" condition="![$PARAM[flipside]]">
-                    <param name="left">120</param>
-                </include>
-                <texture colordiffuse="dialog_fg_12" border="20" flipx="$PARAM[flipside]">common/dialog_overlay.png</texture>
-            </control>
-        </definition>
-    </include>
-
-    <include name="Dialog_Overlay_Side_Panel">
-        <definition>
-            <include content="Dialog_Overlay_Side_Panel_Standard" condition="![$EXP[Exp_DialogTheme_IsAdaptive]]">
-                <param name="flipside">$PARAM[flipside]</param>
-            </include>
-            <include content="Dialog_Overlay_Side_Panel_Adaptive" condition="$EXP[Exp_DialogTheme_IsAdaptive]">
-                <param name="flipside">$PARAM[flipside]</param>
-            </include>
-        </definition>
-    </include>
-
-    <include name="Dialog_Overlay_Mode_Panel_Adaptive">
-        <definition>
-            <control type="image">
-                <include content="Object_Top" condition="$PARAM[flipside]">
+                <include content="Object_Top" condition="$PARAM[flipped]">
                     <param name="top">120</param>
                 </include>
-                <include content="Object_Bottom" condition="![$PARAM[flipside]]">
+                <include content="Object_Bottom" condition="![$PARAM[flipped]]">
                     <param name="bottom">120</param>
                 </include>
-                <texture colordiffuse="dialog_fg_12" border="20" flipy="$PARAM[flipside]">common/dialog.png</texture>
+                <texture colordiffuse="dialog_fg_12" border="20" flipy="$PARAM[flipped]">common/dialog.png</texture>
             </control>
-            <control type="image">
+            <include content="Object_Control" condition="Skin.HasSetting(Glass.EnableBorders)">
+                <param name="control">image</param>
                 <height>12</height>
-                <include content="Object_Top" condition="$PARAM[flipside]">
+                <include content="Object_Top" condition="$PARAM[flipped]">
                     <param name="top">120</param>
                 </include>
-                <include content="Object_Bottom" condition="![$PARAM[flipside]]">
+                <include content="Object_Bottom" condition="![$PARAM[flipped]]">
                     <param name="bottom">120</param>
                 </include>
-                <texture colordiffuse="dialog_fg_12" border="20,6,20,6" flipy="$PARAM[flipside]">common/dialog-edge-outline-v.png</texture>
-            </control>
-        </definition>
-    </include>
-
-    <include name="Dialog_Overlay_Mode_Panel_Standard">
-        <definition>
-            <control type="image">
-                <include content="Object_Top" condition="$PARAM[flipside]">
-                    <param name="top">120</param>
-                </include>
-                <include content="Object_Bottom" condition="![$PARAM[flipside]]">
-                    <param name="bottom">120</param>
-                </include>
-                <texture colordiffuse="dialog_fg_12" border="20" flipy="$PARAM[flipside]">common/dialog_overlay_v.png</texture>
-            </control>
-        </definition>
-    </include>
-
-    <include name="Dialog_Overlay_Mode_Panel">
-        <definition>
-            <include content="Dialog_Overlay_Mode_Panel_Standard" condition="![$EXP[Exp_DialogTheme_IsAdaptive]]">
-                <param name="flipside">$PARAM[flipside]</param>
-            </include>
-            <include content="Dialog_Overlay_Mode_Panel_Adaptive" condition="$EXP[Exp_DialogTheme_IsAdaptive]">
-                <param name="flipside">$PARAM[flipside]</param>
+                <texture colordiffuse="dialog_fg_12" border="20,6,20,6" flipy="$PARAM[flipped]">common/dialog-edge-outline-v.png</texture>
             </include>
         </definition>
     </include>
 
-    <include name="Dialog_Overlay_Side">
+    <include name="Dialog_Dim_Side">
         <param name="flipx">true</param>
-        <param name="flipside">true</param>
+        <param name="dim_top">-480</param>
+        <param name="dim_bottom">-480</param>
+        <param name="dim_visible">true</param>
+        <param name="slide_condition">ControlGroup(9000).HasFocus()</param>
+        <param name="slide_animation">true</param>
+        <definition>
+            <include content="Object_Dim_Side">
+                <param name="flipx">$PARAM[flipx]</param>
+                <top>$PARAM[dim_top]</top>
+                <bottom>$PARAM[dim_bottom]</bottom>
+                <left>-280</left>
+                <right>-280</right>
+                <visible>$PARAM[dim_visible]</visible>
+                <include content="Animation_SlideIn_Dialog_Side" condition="$PARAM[slide_animation]">
+                    <param name="slide_condition">$PARAM[slide_condition]</param>
+                </include>
+            </include>
+        </definition>
+    </include>
+
+    <include name="Dialog_Background_Glass">
+        <control type="image">
+            <texture colordiffuse="dialog_fg_12" border="20">common/dialog.png</texture>
+        </control>
+    </include>
+
+    <include name="Dialog_Background_Group">
+        <param name="include_glass">false</param>
+        <definition>
+            <control type="group">
+                <include content="Dimension_Padding">
+                    <param name="pad">40</param>
+                </include>
+                <include condition="$EXP[Exp_DialogTheme_IsAdaptive]">Dialog_Background_Blur$PARAM[dialog_size]</include>
+                <include condition="!$EXP[Exp_DialogTheme_IsAdaptive]">Dialog_Background_Blur_Standard</include>
+                <include condition="$PARAM[include_glass]">Dialog_Background_Glass</include>
+            </control>
+        </definition>
+    </include>
+
+    <include name="Dialog_Background_Side">
+        <param name="slide_animation">true</param>
+        <param name="slide_condition">ControlGroup(9000).HasFocus()</param>
+        <definition>
+            <control type="group">
+                <include content="Animation_SlideIn_Dialog_Side" condition="$PARAM[slide_animation]">
+                    <param name="slide_condition">$PARAM[slide_condition]</param>
+                </include>
+                <include content="Dialog_Background_Group">
+                    <param name="include_glass">false</param>
+                    <param name="dialog_size">$PARAM[dialog_size]</param>
+                </include>
+                <nested />
+            </control>
+        </definition>
+    </include>
+
+    <include name="Dialog_Foreground_Side">
+        <param name="slide_animation">false</param>
+        <param name="slide_condition">ControlGroup(9000).HasFocus()</param>
         <param name="topline">true</param>
         <param name="subline">true</param>
-        <param name="dim_top">-200</param>
-        <param name="dim_bottom">-200</param>
-        <param name="dim_visible">true</param>
         <param name="lines_right">0</param>
         <definition>
             <control type="group">
-                <include content="Object_Dim_Side">
-                    <param name="flipx">$PARAM[flipx]</param>
-                    <top>$PARAM[dim_top]</top>
-                    <bottom>$PARAM[dim_bottom]</bottom>
-                    <left>-320</left>
-                    <right>-320</right>
-                    <visible>$PARAM[dim_visible]</visible>
+                <include content="Animation_SlideIn_Dialog_Side" condition="$PARAM[slide_animation]">
+                    <param name="slide_condition">$PARAM[slide_condition]</param>
                 </include>
+                <include content="Dialog_Background_Group">
+                    <param name="include_glass">true</param>
+                    <param name="dialog_size">$PARAM[dialog_size]</param>
+                </include>
+                <nested />
                 <control type="group">
-                    <include content="Dimension_Padding">
-                        <param name="pad">40</param>
+                    <right>80</right>
+                    <left>80</left>
+                    <include content="Object_Control" condition="$PARAM[topline]">
+                        <param name="control">image</param>
+                        <top>160</top>
+                        <height>1</height>
+                        <texture colordiffuse="dialog_fg_12">common/white.png</texture>
+                        <right>$PARAM[lines_right]</right>
                     </include>
-                    <include condition="$EXP[Exp_DialogTheme_IsAdaptive]">Dialog_Background_Blur$PARAM[dialog_size]</include>
-                    <include condition="!$EXP[Exp_DialogTheme_IsAdaptive]">Dialog_Background_Blur_Standard</include>
-                    <control type="group">
-                        <include content="Object_Right" condition="$PARAM[flipside]">
-                            <param name="right">160</param>
-                        </include>
-                        <include content="Object_Left" condition="![$PARAM[flipside]]">
-                            <param name="left">160</param>
-                        </include>
-                        <right>40</right>
-                        <left>40</left>
-                        <include content="Object_Control" condition="$PARAM[topline]">
-                            <param name="control">image</param>
-                            <top>120</top>
-                            <height>1</height>
-                            <texture colordiffuse="dialog_fg_12">common/white.png</texture>
-                            <right>$PARAM[lines_right]</right>
-                        </include>
-                        <include content="Object_Control" condition="$PARAM[subline]">
-                            <param name="control">image</param>
-                            <bottom>40</bottom>
-                            <height>1</height>
-                            <texture colordiffuse="dialog_fg_12">common/white.png</texture>
-                            <right>$PARAM[lines_right]</right>
-                        </include>
-                    </control>
-                    <include content="Dialog_Overlay_Side_Panel">
-                        <param name="flipside">$PARAM[flipside]</param>
+                    <include content="Object_Control" condition="$PARAM[subline]">
+                        <param name="control">image</param>
+                        <bottom>80</bottom>
+                        <height>1</height>
+                        <texture colordiffuse="dialog_fg_12">common/white.png</texture>
+                        <right>$PARAM[lines_right]</right>
                     </include>
                 </control>
-                <nested />
-                <include>$PARAM[dialog_size]</include>
             </control>
         </definition>
     </include>
@@ -303,100 +280,113 @@
         <param name="nib_pos">70</param>
         <param name="use_side_nib">false</param>
         <definition>
-            <include content="Dialog_Nib_T" condition="![$PARAM[use_side_nib]]">
+            <!-- <include content="Dialog_Nib_T" condition="![$PARAM[use_side_nib]]">
                 <param name="nib_pos">$PARAM[nib_pos]</param>
             </include>
             <include content="Dialog_Nib_L" condition="$PARAM[use_side_nib]">
                 <param name="nib_pos">$PARAM[nib_pos]</param>
-            </include>
+            </include> -->
         </definition>
     </include>
 
     <include name="Dialog_Nib_T">
         <param name="nib_pos">70</param>
         <definition>
-            <control type="image">
+            <!-- <control type="image">
                 <top>-16</top>
                 <centerright>$PARAM[nib_pos]</centerright>
                 <height>16</height>
                 <width>16</width>
                 <texture colordiffuse="main_fg_100">arrows/arrow-menu-up.png</texture>
-            </control>
+            </control> -->
         </definition>
     </include>
 
     <include name="Dialog_Nib_L">
         <param name="nib_pos">70</param>
         <definition>
-            <control type="image">
+            <!-- <control type="image">
                 <left>-16</left>
                 <centertop>$PARAM[nib_pos]</centertop>
                 <height>16</height>
                 <width>16</width>
                 <texture colordiffuse="main_fg_100">arrows/arrow-menu.png</texture>
-            </control>
+            </control> -->
         </definition>
     </include>
 
     <include name="Dialog_Group">
-        <param name="control">group</param>
+        <param name="left">40</param>
+        <param name="right">40</param>
+        <param name="bottom">40</param>
+        <param name="top">40</param>
         <definition>
-            <control type="$PARAM[control]" id="$PARAM[id]">
-                <nested />
-                <left>40</left>
-                <right>40</right>
-                <bottom>40</bottom>
-                <top>40</top>
-            </control>
+            <left>$PARAM[left]</left>
+            <right>$PARAM[right]</right>
+            <bottom>$PARAM[bottom]</bottom>
+            <top>$PARAM[top]</top>
         </definition>
-    </include>
-
-    <include name="Dialog_Head_Toast">
-        <control type="group">
-            <nested />
-            <height>70</height>
-            <centertop>50%</centertop>
-            <left>30</left>
-            <right>30</right>
-            <control type="label">
-                <label>$PARAM[toplabel]</label>
-                <font>font_main_bold</font>
-                <textcolor>dialog_fg_90</textcolor>
-                <height>40</height>
-                <top>0</top>
-            </control>
-            <control type="label">
-                <label>$PARAM[sublabel]</label>
-                <font>font_tiny</font>
-                <height>40</height>
-                <bottom>0</bottom>
-                <textcolor>dialog_fg_70</textcolor>
-                <bottom>0</bottom>
-            </control>
-        </control>
     </include>
 
     <include name="Dialog_Head">
         <param name="id">1</param>
         <param name="textcolor">dialog_fg_90</param>
-        <param name="enabled">true</param>
+        <param name="sublabel_visible">true</param>
+        <param name="sublabel_include">false</param>
+        <param name="sublabel_textcolor">dialog_fg_70</param>
+        <param name="visible">true</param>
+        <param name="left">view_pad</param>
+        <param name="top">view_pad</param>
+        <param name="height">view_bar</param>
+        <param name="right">view_pad</param>
         <definition>
-            <include content="Object_Control" condition="$PARAM[enabled]">
-                <param name="control">group</param>
-                <nested />
-                <right>view_side</right>
-                <height>view_bar</height>
-                <top>view_pad</top>
-                <left>view_pad</left>
+            <control type="group">
+                <right>$PARAM[right]</right>
+                <height>$PARAM[height]</height>
+                <top>$PARAM[top]</top>
+                <left>$PARAM[left]</left>
+                <visible>$PARAM[visible]</visible>
                 <include content="Furniture_Gutters">
+                    <animation effect="slide" start="0" end="0,-15" condition="$PARAM[sublabel_visible] + $PARAM[sublabel_include]">Conditional</animation>
                     <include content="Furniture_MainLabel">
                         <param name="id">$PARAM[id]</param>
                         <param name="textcolor">$PARAM[textcolor]</param>
                         <aligny>center</aligny>
                         <label>$PARAM[label]</label>
                     </include>
+                    <include content="Furniture_DateLabel" condition="$PARAM[sublabel_include]">
+                        <param name="label">$PARAM[sublabel]</param>
+                        <param name="textcolor">$PARAM[sublabel_textcolor]</param>
+                        <param name="visible">$PARAM[sublabel_visible]</param>
+                    </include>
                 </include>
-            </include>
+            </control>
+        </definition>
+    </include>
+
+    <include name="Dialog_Head_CloseButton">
+        <param name="id">90001</param>
+        <param name="groupid">90101</param>
+        <param name="onclick">Close</param>
+        <definition>
+            <control type="group">
+                <right>60</right>
+                <centertop>100</centertop>
+                <height>80</height>
+                <width>80</width>
+                <control type="button" id="$PARAM[id]">
+                    <include>Texture_Circle_Highlight_Focus_V</include>
+                    <texturenofocus />
+                    <onclick>$PARAM[onclick]</onclick>
+                </control>
+                <include content="OSD_Button_Icon_Overlay">
+                    <param name="icon">special://skin/extras/icons/xmark.png</param>
+                    <param name="id">$PARAM[id]</param>
+                    <param name="groupid">$PARAM[groupid]</param>
+                    <param name="itemgap">0</param>
+                    <param name="grouplist">false</param>
+                </include>
+            </control>
         </definition>
     </include>
 
@@ -441,7 +431,7 @@
                 <itemgap>0</itemgap>
                 <orientation>vertical</orientation>
                 <width>160</width>
-                <right>-20</right>
+                <left>-20</left>
             </control>
         </definition>
     </include>
@@ -509,49 +499,59 @@
     <include name="_Dialog_Special_Button">
         <definition>
             <control type="group">
-                <nested />
-                <control type="label">
-                    <font>font_main_bold</font>
-                    <height>40</height>
-                    <include content="Object_Left" condition="$PARAM[icon_withtext]">
-                        <param name="left">100</param>
-                    </include>
-                    <left>40</left>
-                    <right>40</right>
-                    <top>25</top>
-                    <textcolor>$PARAM[textcolor]</textcolor>
-                    <label>$PARAM[toplabel]</label>
-                </control>
-                <control type="label">
-                    <font>font_main</font>
-                    <height>40</height>
-                    <left>40</left>
-                    <right>40</right>
-                    <bottom>25</bottom>
-                    <textcolor>$PARAM[textcolor]</textcolor>
-                    <label>$PARAM[sublabel]</label>
-                </control>
-                <include content="Object_Control" condition="!$PARAM[icon_withtext]">
-                    <param name="control">image</param>
-                    <bordersize>$PARAM[icon_bordersize]</bordersize>
-                    <texture colordiffuse="$PARAM[icon_colordiffuse]" diffuse="diffuse/circle_120.png">$PARAM[icon]</texture>
-                    <width>80</width>
-                    <height>80</height>
-                    <right>20</right>
+                <visible>$PARAM[visible]</visible>
+                <control type="group">
                     <centertop>50%</centertop>
-                </include>
-                <include content="Object_Control" condition="$PARAM[icon_withtext]">
-                    <param name="control">image</param>
-                    <bordersize>$PARAM[icon_bordersize]</bordersize>
-                    <texture colordiffuse="$PARAM[icon_colordiffuse]" diffuse="diffuse/circle_120.png">$PARAM[icon]</texture>
-                    <width>80</width>
                     <height>80</height>
-                    <left>20</left>
-                    <top>5</top>
-                </include>
-                <include content="Object_Control" condition="$EXP[Exp_DialogTheme_IsAdaptive]">
+                    <control type="label">
+                        <font>font_main_bold</font>
+                        <height>40</height>
+                        <include content="Object_Left" condition="$PARAM[icon_withtext]">
+                            <param name="left">100</param>
+                        </include>
+                        <include content="Object_Right" condition="![$PARAM[icon_withtext]]">
+                            <param name="right">100</param>
+                        </include>
+                        <left>40</left>
+                        <right>40</right>
+                        <top>0</top>
+                        <textcolor>$PARAM[textcolor]</textcolor>
+                        <label>$PARAM[toplabel]</label>
+                    </control>
+                    <control type="label">
+                        <font>font_main</font>
+                        <height>40</height>
+                        <include content="Object_Right" condition="![$PARAM[icon_withtext]]">
+                            <param name="right">100</param>
+                        </include>
+                        <left>40</left>
+                        <right>40</right>
+                        <bottom>0</bottom>
+                        <textcolor>$PARAM[textcolor]</textcolor>
+                        <label>$PARAM[sublabel]</label>
+                    </control>
+                    <include content="Object_Control" condition="!$PARAM[icon_withtext]">
+                        <param name="control">image</param>
+                        <bordersize>$PARAM[icon_bordersize]</bordersize>
+                        <texture colordiffuse="$PARAM[icon_colordiffuse]" diffuse="diffuse/circle_120.png">$PARAM[icon]</texture>
+                        <width>80</width>
+                        <height>80</height>
+                        <right>20</right>
+                        <centertop>50%</centertop>
+                    </include>
+                    <include content="Object_Control" condition="$PARAM[icon_withtext]">
+                        <param name="control">image</param>
+                        <bordersize>$PARAM[icon_bordersize]</bordersize>
+                        <texture colordiffuse="$PARAM[icon_colordiffuse]" diffuse="diffuse/circle_120.png">$PARAM[icon]</texture>
+                        <width>80</width>
+                        <height>80</height>
+                        <centertop>20</centertop>
+                        <centerleft>60</centerleft>
+                    </include>
+                </control>
+                <include content="Object_Control" condition="Skin.HasSetting(Glass.EnableBorders)">
                     <param name="control">image</param>
-                    <texture colordiffuse="dialog_fg_12" border="40">common/menu-outline.png</texture>
+                    <texture colordiffuse="panel_fg_12" border="40">common/menu-outline.png</texture>
                 </include>
             </control>
         </definition>
@@ -575,7 +575,7 @@
                     <param name="icon_colordiffuse">$PARAM[icon_colordiffuse]</param>
                     <param name="icon_bordersize">$PARAM[icon_bordersize]</param>
                     <param name="icon_withtext">$PARAM[icon_withtext]</param>
-                    <visible>!Control.HasFocus($PARAM[id])</visible>
+                    <param name="visible">!Control.HasFocus($PARAM[id])</param>
                 </include>
 
                 <include content="_Dialog_Special_Button">
@@ -586,7 +586,7 @@
                     <param name="icon_colordiffuse">$VAR[ColorSelected]</param>
                     <param name="icon_bordersize">$PARAM[icon_bordersize]</param>
                     <param name="icon_withtext">$PARAM[icon_withtext]</param>
-                    <visible>Control.HasFocus($PARAM[id])</visible>
+                    <param name="visible">Control.HasFocus($PARAM[id])</param>
                 </include>
 
             </control>
@@ -678,29 +678,31 @@
                 <control type="image">
                     <texture colordiffuse="main_fg_12" border="20">common/dialog.png</texture>
                 </control>
-                <include content="Dialog_Group">
-                    <include content="Dialog_Outline_Box">
+                <control type="group">
+                    <include>Dialog_Group</include>
+                    <include content="Dialog_Outline_InnerBox">
                         <control type="image">
                             <aspectratio scalediffuse="false">keep</aspectratio>
                             <texture diffuse="diffuse/square_w600_h600.png">$PARAM[icon]</texture>
                         </control>
                     </include>
-                </include>
+                </control>
             </include>
             <nested />
         </control>
     </include>
 
     <include name="Dialog_Outline">
-        <control type="image">
-            <texture colordiffuse="dialog_fg_12" border="12">common/box-outline.png</texture>
-        </control>
+        <include content="Object_Control" condition="Skin.HasSetting(Glass.EnableBorders)">
+            <param name="control">image</param>
+            <texture colordiffuse="panel_fg_12" border="12">common/box-outline.png</texture>
+        </include>
     </include>
 
     <include name="Dialog_Box">
-        <param name="colordiffuse">dialog_fg_12</param>
+        <param name="colordiffuse">panel_fg_12</param>
         <definition>
-            <include content="Object_Shadow_40">
+            <include content="Object_Shadow_40" condition="Skin.HasSetting(Glass.EnableBorders)">
                 <param name="colordiffuse">shadow_soft</param>
             </include>
             <control type="image">
@@ -709,15 +711,37 @@
         </definition>
     </include>
 
+    <include name="Dialog_InnerBox">
+        <param name="colordiffuse">panel_bg_12</param>
+        <definition>
+            <include content="Object_InnerShadow_40" condition="Skin.HasSetting(Glass.EnableBorders)">
+                <param name="colordiffuse">shadow_soft</param>
+            </include>
+            <control type="image">
+                <texture colordiffuse="$PARAM[colordiffuse]" border="12">common/box.png</texture>
+            </control>
+        </definition>
+    </include>
+
+    <include name="Dialog_Outline_InnerBox">
+        <definition>
+            <control type="group">
+                <include condition="$EXP[Exp_DialogTheme_IsLight]">Dialog_Box</include>
+                <include condition="!$EXP[Exp_DialogTheme_IsLight]">Dialog_InnerBox</include>
+                <nested />
+                <include>Dialog_Outline</include>
+            </control>
+        </definition>
+    </include>
+
     <include name="Dialog_Outline_Box">
-        <param name="outline">true</param>
         <definition>
             <control type="group">
                 <include content="Dialog_Box">
                     <param name="colordiffuse">$PARAM[colordiffuse]</param>
                 </include>
                 <nested />
-                <include condition="$PARAM[outline]">Dialog_Outline</include>
+                <include>Dialog_Outline</include>
             </control>
         </definition>
     </include>
@@ -727,12 +751,120 @@
         <definition>
             <control type="scrollbar" id="$PARAM[id]">
                 <nested />
-                <top>20</top>
-                <bottom>20</bottom>
-                <centerright>120</centerright>
+                <top>0</top>
+                <bottom>0</bottom>
+                <centerright>-20</centerright>
                 <width>scrollbar_w</width>
-                <animation effect="fade" condition="!Control.HasFocus($PARAM[id])" start="100" end="0">Conditional</animation>
+                <texturesliderbackground colordiffuse="main_fg_12" border="4">scrollbar/scrollv_line.png</texturesliderbackground>
+                <texturesliderbar colordiffuse="main_logo" border="4">scrollbar/scrollv.png</texturesliderbar>
+                <include>Texture_Scrollbar_V</include>
             </control>
+        </definition>
+    </include>
+
+    <include name="Dialog_VideoPIP">
+        <param name="include_dimensions">Dimension_Dialog_VideoPIP_Smaller</param>
+        <param name="visible">true</param>
+        <definition>
+            <include content="Dialog_Background_Blur">
+                <param name="diffuse">diffuse/landscape_w720_h405.png</param>
+                <include>$PARAM[include_dimensions]</include>
+                <control type="image">
+                    <texture colordiffuse="dialog_fg_12" border="20">common/dialog.png</texture>
+                </control>
+                <include content="Animation_SlideIn_Dialog">
+                    <param name="windowopen_condition">false</param>
+                </include>
+                <visible>Player.HasVideo</visible>
+                <visible>$PARAM[visible]</visible>
+                <control type="group">
+                    <include content="Dimension_Padding">
+                        <param name="pad">10</param>
+                    </include>
+                    <include content="Dialog_Outline_InnerBox">
+                        <control type="image">
+                            <texture border="20" colordiffuse="black">common/dialog.png</texture>
+                        </control>
+                        <control type="group">
+                            <include content="Dimension_Padding">
+                                <param name="pad">0</param>
+                            </include>
+                            <control type="videowindow">
+                                <include content="Dimension_Padding">
+                                    <param name="pad">5</param>
+                                </include>
+                            </control>
+                            <control type="image">
+                                <texture border="20" colordiffuse="black">common/selectbox.png</texture>
+                            </control>
+                        </control>
+                    </include>
+
+                    <control type="group">
+                        <left>10</left>
+                        <right>10</right>
+                        <height>80</height>
+                        <bottom>10</bottom>
+                        <control type="group">
+                            <centertop>50%</centertop>
+                            <height>50</height>
+                            <width>50</width>
+                            <right>20</right>
+                            <include content="Info_FooterItemIcon">
+                                <param name="icon">$VAR[Image_NowPlaying_PlayPause]</param>
+                                <param name="centered">true</param>
+                                <param name="size">50</param>
+                            </include>
+                            <control type="group">
+                                <centerleft>50%</centerleft>
+                                <centertop>50%</centertop>
+                                <height>100</height>
+                                <width>100</width>
+                                <control type="image">
+                                    <bordersize>-4</bordersize>
+                                    <texture colordiffuse="$VAR[ColorHighlight]">$INFO[Player.Progress,progress/circle/p,.png]</texture>
+                                    <aspectratio align="center" aligny="center">keep</aspectratio>
+                                </control>
+                                <control type="image">
+                                    <bordersize>-4</bordersize>
+                                    <texture colordiffuse="$VAR[ColorGradient]">$INFO[Player.Progress,progress/circle/p,.png]</texture>
+                                    <animation effect="fade" end="66" condition="true">Conditional</animation>
+                                    <aspectratio align="center" aligny="center">keep</aspectratio>
+                                    <include content="Defs_Progress_Colorfade">
+                                        <param name="id">933</param>
+                                    </include>
+                                </control>
+                            </control>
+                            <control type="progress" id="933">
+                                <height>1</height>
+                                <width>1</width>
+                                <left>-1000</left>
+                                <texturebg />
+                                <lefttexture />
+                                <midtexture />
+                                <righttexture />
+                                <info>Player.Progress</info>
+                                <visible>false</visible>
+                            </control>
+                        </control>
+                        <include content="Object_InfoCircle_Text_Top" condition="!Skin.HasSetting(Furniture.DisableNowPlaying)">
+                            <label>$VAR[Label_NowPlayingTitle]</label>
+                            <right>100</right>
+                            <left>20</left>
+                            <textcolor>panel_fg_90</textcolor>
+                            <shadowcolor>panel_bg_70</shadowcolor>
+                        </include>
+                        <include content="Object_InfoCircle_Text_Sub" condition="!Skin.HasSetting(Furniture.DisableNowPlaying)">
+                            <label>$INFO[Player.Time]$INFO[Player.Duration, / ,]</label>
+                            <right>100</right>
+                            <left>20</left>
+                            <textcolor>panel_fg_90</textcolor>
+                            <shadowcolor>panel_bg_70</shadowcolor>
+                        </include>
+                    </control>
+
+                </control>
+            </include>
         </definition>
     </include>
 </includes>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window type="window" id="1198">
-    <onload condition="Skin.HasSetting(SkinUserLogin.StartupLoginScreen) + Skin.HasSetting(SkinUserLogin.Enabled) + String.IsEmpty(Window(Home).Property(StartupReplaceWindow))">SetProperty(StartupReplaceWindow,1195,Home)</onload>
+    <onload condition="Skin.HasSetting(SkinUserLogin.StartupLoginScreen) + !Skin.HasSetting(SkinUserLogin.Disabled) + String.IsEmpty(Window(Home).Property(StartupReplaceWindow))">SetProperty(StartupReplaceWindow,1195,Home)</onload>
 
     <onload>AlarmClock(RepWin,SetFocus(9002),00:01,silent)</onload>
     <onload>AlarmClock(SplashTimeOut,noop,00:59,silent)</onload>
@@ -18,11 +18,11 @@
 
     <!-- Set Default Config -->
     <include>Action_ButtonMenu_Onload</include>
-    <onload condition="String.IsEmpty(Skin.String(Navigation.OnUp))">Skin.SetString(Navigation.OnUp,Search)</onload>
-    <onload condition="String.IsEmpty(Skin.String(Navigation.OnDown))">Skin.SetString(Navigation.OnDown,Bump)</onload>
+    <onload>Skin.SetString(SkinVariables.SkinUser.ExecuteBuiltIn,"RunScript($VAR[Action_Var_BuildTextures],get_values=true,reload=Home)")</onload>
+    <onload condition="String.IsEmpty(Skin.String(Navigation.Library.OnDown))">Skin.SetString(Navigation.Library.OnDown,Options)</onload>
     <onload condition="String.IsEmpty(Skin.String(Navigation.OnLeftRight))">Skin.SetString(Navigation.OnLeftRight,Loop)</onload>
-    <onload condition="String.IsEmpty(Skin.String(Navigation.OnBack))">Skin.SetString(Navigation.OnBack,Previous)</onload>
-    <onload condition="String.IsEmpty(Skin.String(Home.SideMenuCollapse))">Skin.SetString(Home.SideMenuCollapse,Never)</onload>
+    <onload condition="String.IsEmpty(Skin.String(Navigation.OnBack))">Skin.SetString(Navigation.OnBack,Parent)</onload>
+    <onload condition="String.IsEmpty(Skin.String(Home.SideMenuCollapse)) | Skin.String(Home.SideMenuCollapse,Expand)">Skin.SetString(Home.SideMenuCollapse,Library)</onload>
     <onload>Skin.SetString(SkinConstant.Numeric.00,$NUMBER[0])</onload>
     <onload>Skin.SetString(SkinConstant.Numeric.01,$NUMBER[1])</onload>
     <onload>Skin.SetString(SkinConstant.Numeric.02,$NUMBER[2])</onload>
@@ -67,19 +67,18 @@
     <onload condition="String.IsEmpty(Skin.String(CustomRating.TVShows.Item04))">Skin.SetString(CustomRating.TVShows.Item04,Awards)</onload>
 
     <!-- Set Default Containers -->
-    <onload condition="String.IsEmpty(Window.Property(ReloadDone))">SetProperty(TMDbHelper.widgetContainer,301,Home)</onload>
+    <!-- <onload condition="String.IsEmpty(Window.Property(ReloadDone))">SetProperty(TMDbHelper.widgetContainer,301,Home)</onload>
     <onload condition="String.IsEmpty(Window.Property(ReloadDone))">SetProperty(TMDbHelper.widgetContainer,301,1101)</onload>
     <onload condition="String.IsEmpty(Window.Property(ReloadDone))">SetProperty(TMDbHelper.widgetContainer,301,1102)</onload>
     <onload condition="String.IsEmpty(Window.Property(ReloadDone))">SetProperty(TMDbHelper.widgetContainer,301,1103)</onload>
-    <onload condition="String.IsEmpty(Window.Property(ReloadDone))">SetProperty(TMDbHelper.widgetContainer,301,1104)</onload>
+    <onload condition="String.IsEmpty(Window.Property(ReloadDone))">SetProperty(TMDbHelper.widgetContainer,301,1104)</onload> -->
 
     <!-- Build includes for textures / views / menus -->
-    <onload condition="String.IsEmpty(Window.Property(ReloadDone))">RunScript($VAR[Action_Var_BuildTextures],no_reload)</onload>
-    <!-- <onload condition="String.IsEmpty(Window.Property(ReloadDone))">RunScript(script.skinvariables,action=buildviews)</onload> -->
+    <onload condition="String.IsEmpty(Window.Property(ReloadDone)) + ![Skin.HasSetting(SkinUserLogin.StartupLoginScreen) + !Skin.HasSetting(SkinUserLogin.Disabled) + String.IsEmpty(Window(Home).Property(StartupReplaceWindow))]">RunScript($VAR[Action_Var_BuildTextures],get_values=true)</onload>
+    <onload condition="String.IsEmpty(Window.Property(ReloadDone))">RunScript(script.skinvariables,action=buildviews,no_reload)</onload>
     <onload condition="!String.IsEmpty(Window.Property(ReloadDone))">SetProperty(InitStatus,$LOCALIZE[31248])</onload>
     <onload>SetProperty(ReloadDone,1)</onload>
     <onload>SetProperty(ReloadDone,1,Home)</onload>
-    <onload>SetProperty(TMDbHelper.WidgetContainer,301,Home)</onload>
     <onunload>ClearProperty(StartupReplaceWindow,Home)</onunload>
     <controls>
 

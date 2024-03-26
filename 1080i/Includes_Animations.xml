@@ -98,6 +98,27 @@
         </definition>
     </include>
 
+    <include name="_Animation_Widget_FadeOut">
+        <param name="end">30</param>
+        <definition>
+            <animation effect="fade" start="100" end="$PARAM[end]" time="200" condition="$PARAM[condition]">Conditional</animation>
+        </definition>
+    </include>
+
+    <include name="Animation_Widget_FadeOut">
+        <param name="condition">true</param>
+        <definition>
+            <include content="_Animation_Widget_FadeOut" condition="!$EXP[Exp_Footer_BottomLeft_IsVisible]">
+                <param name="end">30</param>
+                <param name="condition">$PARAM[condition]</param>
+            </include>
+            <include content="_Animation_Widget_FadeOut" condition="$EXP[Exp_Footer_BottomLeft_IsVisible]">
+                <param name="end">0</param>
+                <param name="condition">$PARAM[condition]</param>
+            </include>
+        </definition>
+    </include>
+
     <!-- Slide Animations -->
     <include name="Animation_Slide_In">
         <param name="type">Conditional</param>
@@ -276,25 +297,32 @@
 
     <!-- Window Transition For Views -->
     <include name="Animation_View_WindowChange">
-        <include content="Animation_Fade_Out">
-            <param name="condition">[Window.Next(fullscreenvideo) | Window.Next(visualisation) | $EXP[Exp_SettingsDialogs_Next] | Window.Next(weather) | Window.IsVisible(weather) | [[Window.IsVisible(MyPVRChannels.xml) | Window.IsVisible(MyPVRGuide.xml) | Window.Next(MyPVRChannels.xml) | Window.Next(MyPVRGuide.xml)] + !Skin.HasSetting(Views.UseHalfPVRGuide)]]</param>
-            <param name="type">WindowClose</param>
-        </include>
-        <include content="Animation_Slide_In">
-            <param name="condition">[Window.Previous(fullscreenvideo) | Window.Previous(visualisation) | $EXP[Exp_SettingsDialogs_Prev] | Window.Previous(weather) | Window.IsVisible(weather) | [[Window.IsVisible(MyPVRChannels.xml) | Window.IsVisible(MyPVRGuide.xml) | Window.Previous(MyPVRChannels.xml) | Window.Previous(MyPVRGuide.xml)] + !Skin.HasSetting(Views.UseHalfPVRGuide)]]</param>
-            <param name="type">WindowOpen</param>
-            <param name="posx">320</param>
-            <param name="delay">0</param>
-        </include>
+        <definition>
+            <include content="Animation_Fade_Out">
+                <param name="condition">[!$EXP[Exp_InfoPanelWindows] | !$EXP[Exp_InfoPanelWindows_Next]]</param>
+                <param name="type">WindowClose</param>
+            </include>
+            <include content="Animation_Slide_In">
+                <param name="condition">[!$EXP[Exp_InfoPanelWindows] | !$EXP[Exp_InfoPanelWindows_Prev]]</param>
+                <param name="type">WindowOpen</param>
+                <param name="posx">320</param>
+                <param name="delay">0</param>
+            </include>
+        </definition>
+    </include>
+
+    <include name="Animation_Flix_WindowChange">
+        <animation effect="fade" start="100" end="0" reversible="false" time="400" tween="sine" easing="out" condition="[!$EXP[Exp_InfoPanelWindows] | !$EXP[Exp_InfoPanelWindows_Next]]">WindowClose</animation>
+        <animation effect="fade" start="0" end="100" reversible="false" time="400" tween="sine" easing="out" delay="400" condition="[!$EXP[Exp_InfoPanelWindows] | !$EXP[Exp_InfoPanelWindows_Prev]]">WindowOpen</animation>
     </include>
 
     <!-- Window Transition For Views -->
     <include name="Animation_Half_WindowChange">
         <param name="posy">220</param>
-        <param name="windowopen_up">Window.Previous(1181)</param>
-        <param name="windowopen_down">Window.Previous(1105)</param>
-        <param name="windowclose_up">Window.Next(1181)</param>
-        <param name="windowclose_down">Window.Next(1105)</param>
+        <param name="windowopen_down">[False]</param>
+        <param name="windowclose_down">[False]</param>
+        <param name="windowopen_up">[False]</param>
+        <param name="windowclose_up">[False]</param>
         <definition>
             <include content="Animation_Widgets_Grouplist_Slide_Out">
                 <param name="condition">$PARAM[windowclose_down]</param>
@@ -335,6 +363,15 @@
         </definition>
     </include>
 
+    <include name="Animation_Half_WindowChange_UpDown">
+        <include content="Animation_Half_WindowChange">
+            <param name="windowopen_down">[$EXP[Exp_InfoPanelWindows_Prev_01]]</param>
+            <param name="windowclose_down">[$EXP[Exp_InfoPanelWindows_Next_01]]</param>
+            <param name="windowopen_up">$EXP[Exp_InfoPanelWindows_Prev_03]</param>
+            <param name="windowclose_up">$EXP[Exp_InfoPanelWindows_Next_03]</param>
+        </include>
+    </include>
+
     <!-- Home Slide In -->
     <include name="Animation_Home_Menu">
         <include content="Animation_Slide_In">
@@ -360,6 +397,13 @@
         <animation type="Focus" reversible="false">
             <effect type="zoom" start="96.5" end="100" time="150" tween="sine" easing="inout" center="auto"/>
             <effect type="fade" start="20" end="100" time="150" tween="back" easing="out"/>
+        </animation>
+    </include>
+
+    <include name="Animation_DialogInfoButton_ZoomIn">
+        <animation type="WindowOpen" reversible="false">
+            <effect type="zoom" start="20" end="100" delay="$PARAM[delay]" time="400" tween="back" easing="out" center="auto"/>
+            <effect type="fade" start="0" end="100" delay="$PARAM[delay]" time="200" />
         </animation>
     </include>
 
@@ -431,6 +475,11 @@
         </definition>
     </include>
 
+    <include name="Animation_SlideIn_Dialog_Side">
+        <animation effect="slide" start="0" end="-120" time="400" tween="quadratic" reversible="false" condition="$PARAM[slide_condition]">Conditional</animation>
+        <animation effect="slide" start="-120" end="0" time="400" tween="quadratic" reversible="false" condition="![$PARAM[slide_condition]]">Conditional</animation>
+    </include>
+
     <include name="Animation_Overlay_FadeIn">
         <param name="delay">0</param>
         <definition>
@@ -440,18 +489,12 @@
     </include>
 
     <include name="Animation_Settings_WindowChange">
-        <param name="windowopen">!$EXP[Exp_SettingsDialogs_Prev]</param>
-        <param name="windowclose">!$EXP[Exp_SettingsDialogs_Next]</param>
-        <param name="windowopen_delay">400</param>
+
         <definition>
-            <animation type="WindowOpen" reversible="false" condition="$PARAM[windowopen]">
-                <effect type="fade" start="0" end="100" time="300" delay="$PARAM[windowopen_delay]" tween="sine" easing="out"/>
-                <effect type="slide" start="320" end="0" time="400" delay="$PARAM[windowopen_delay]" tween="cubic" easing="out" />
-            </animation>
-            <animation type="WindowClose" reversible="false"  condition="$PARAM[windowclose]">
-                <effect type="fade" start="100" end="0" time="300" delay="0" tween="sine" easing="out" />
-                <effect type="slide" start="0" end="320" time="300" delay="0" tween="cubic" easing="out" />
-            </animation>
+            <include content="Animation_View_WindowChange">
+                <param name="windowopen_condition">!$EXP[Exp_SettingsDialogs_Prev]</param>
+                <param name="windowclose_condition">!$EXP[Exp_SettingsDialogs_Next]</param>
+            </include>
         </definition>
     </include>
 
@@ -465,7 +508,7 @@
     </include>
 
     <include name="Animation_Group_Bumper">
-        <animation type="Conditional" condition="Control.IsVisible(330)" reversible="false">
+        <animation type="Conditional" condition="Control.IsVisible(330) | !String.IsEmpty(Window(Home).Property(Bumpers.OnDown))" reversible="false">
             <effect type="slide" end="0,-20" time="60" tween="sine" />
             <effect type="slide" end="0,20" time="180" tween="sine" delay="80" />
         </animation>
@@ -481,6 +524,25 @@
             <effect type="slide" end="0,20" time="60" tween="sine" />
             <effect type="slide" end="0,-20" time="180" tween="sine" delay="80" />
         </animation>
+    </include>
+
+    <include name="Animation_Home_Menu_Label">
+        <include content="Animation_Slide_In">
+            <param name="type">Visible</param>
+            <param name="posx">-40</param>
+        </include>
+        <include content="Animation_Slide_Out">
+            <param name="type">Hidden</param>
+            <param name="posx">-40</param>
+        </include>
+        <include content="Animation_Slide_In" condition="Window.IsVisible(1172)">
+            <param name="type">WindowOpen</param>
+            <param name="posx">-40</param>
+        </include>
+        <include content="Animation_Slide_Out" condition="Window.IsVisible(1172)">
+            <param name="type">WindowClose</param>
+            <param name="posx">-40</param>
+        </include>
     </include>
 
 </includes>

@@ -1,11 +1,8 @@
-<include content="Widget_Row">
+<include content="Widget_Row" condition="{widget_include_condition}">
     <param name="id">{widget_id}</param>
     <param name="groupid">{widget_group_id}</param>
     <param name="label">{widget_label}</param>
-    <param name="secondary_label">$LOCALIZE[31371] {widget_sortlabel}</param>
     <param name="usewidgetlabel">{widget_usewidgetlabel}</param>
-    <param name="sort_condition">True</param>
-    <param name="sort_descending">{widget_sort_descending}</param>
     <param name="include">{widget_include}</param>
     <param name="transition_include">true</param>
     <param name="transition_hidden">Control.HasFocus({widget_id})</param>
@@ -24,7 +21,7 @@
     <content sortby="{widget_sortby}" sortorder="{widget_sortorder}" target="{widget_target}" limit="{widget_limit}" browse="$VAR[Defs_BrowseLimitedLists]">{widget_path}</content>
 
     <include content="Defs_AutoScroll" condition="{widget_isautoscroll}">
-        <param name="condition">!Control.HasFocus({widget_id})</param>
+        <param name="condition">[!Control.HasFocus({widget_id}) | System.IdleTime(3)]</param>
     </include>
 
     <include content="Action_View_Movement_OnLeft">
@@ -33,4 +30,7 @@
     <include content="Action_View_Movement_OnRight">
         <param name="id">{widget_id}</param>
     </include>
+
+    {widget_custom_onclick}
+
 </include>

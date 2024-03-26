@@ -12,9 +12,6 @@
                 <visible>!Window.IsVisible(DialogGameControllers.xml)</visible>
                 <visible>!Window.IsVisible(DialogPVRChannelManager.xml)</visible>
                 <visible>!Window.IsVisible(DialogPVRGroupManager.xml)</visible>
-                <include content="Animation_ConditionalFade">
-                    <param name="condition">Control.HasFocus(19)</param>
-                </include>
                 <include content="Furniture_Top">
                     <param name="label">$PARAM[label]</param>
                 </include>
@@ -66,7 +63,7 @@
         </definition>
     </include>
 
-    <include name="View_Scrollbars">
+    <include name="View_Hidden_Buttons">
         <!-- Wall Action -->
         <include content="Object_Hidden_Button">
             <param name="id">68</param>
@@ -75,7 +72,6 @@
             <onfocus condition="![$EXP[Exp_FilterWall_IsActive]]">ClearProperty(MediaFilterWall)</onfocus>
             <onfocus condition="$EXP[Exp_FilterWall_IsActive]">Runscript(script.skinvariables,$VAR[MediaWall_ScriptTypeDef],use_rules,id=$VAR[Action_View_ContentID],win_prop=WallSlideOut,focus_id=$VAR[Action_View_ContentID],clear_prop_one=MediaFilterBase,clear_prop_two=MediaFilterWall)</onfocus>
         </include>
-
         <!-- Dummy for bouncing focus back to view on back -->
         <include content="Object_Hidden_Button">
             <param name="id">62</param>
@@ -85,112 +81,23 @@
             <param name="id">63</param>
             <onfocus>SetFocus(50)</onfocus>
         </include>
-
-        <!-- Scrollbar H -->
-        <control type="group">
-            <height>scrollbar_w</height>
-            <centerbottom>100</centerbottom>
-            <left>view_side</left>
-            <right>view_pad</right>
-            <visible>$EXP[Exp_ScrollbarVisible_H] | $EXP[Exp_ScrollbarVisible_V] | !String.IsEmpty(Window.Property(MediaFilterBase))</visible>
-            <control type="group">
-                <height>scrollbar_w</height>
-                <centertop>50%</centertop>
-                <include content="Info_Codec_LabelIcon">
-                    <param name="icon">$VAR[Image_Scrollbar_Content]</param>
-                    <visible>!Container.Scrolling</visible>
-                    <animation effect="fade" start="0" end="100" delay="400" reversible="false">Visible</animation>
-                </include>
-                <control type="group">
-                    <visible>Container.Scrolling</visible>
-                    <animation effect="fade" start="100" end="0" delay="400" time="1" reversible="false">Hidden</animation>
-                    <include content="Info_Codec_LabelIcon">
-                        <param name="icon">special://skin/extras/icons/_none.png</param>
-                    </include>
-                    <control type="label">
-                        <centertop>50%</centertop>
-                        <align>center</align>
-                        <aligny>center</aligny>
-                        <width>40</width>
-                        <height>40</height>
-                        <textcolor>main_bg_90</textcolor>
-                        <font>font_mini_black</font>
-                        <label>$INFO[ListItem.SortLetter]</label>
-                    </control>
-                </control>
-                <include content="Info_Codec_LabelLabel">
-                    <param name="label">$INFO[Container.NumItems,[COLOR=main_fg_90][B],[/B][/COLOR]] $VAR[Label_Scrollbar_Content,[CAPITALIZE],[/CAPITALIZE]]</param>
-                    <left>70</left>
-                </include>
-                <include content="Info_Codec_LabelLabel">
-                    <param name="label">$LOCALIZE[31135] $INFO[Container.CurrentPage,[COLOR=main_fg_90][B],[/B][/COLOR] $LOCALIZE[20163] ]$INFO[Container.NumPages,[COLOR=main_fg_90][B],[/B][/COLOR]]</param>
-                    <right>0</right>
-                    <width>320</width>
-                    <align>right</align>
-                </include>
-                <control type="group">
-                    <left>340</left>
-                    <right>340</right>
-                    <visible>$EXP[Exp_ScrollbarVisible_H]</visible>
-                    <control type="image">
-                        <texture colordiffuse="main_fg_12">common/white.png</texture>
-                        <height>1</height>
-                        <centertop>50%</centertop>
-                    </control>
-                    <control type="scrollbar" id="60">
-                        <orientation>horizontal</orientation>
-                        <texturesliderbackground />
-                        <texturesliderbar colordiffuse="main_back" border="4">scrollbar/scrollh.png</texturesliderbar>
-                        <include>Texture_Scrollbar_H</include>
-                        <showonepage>true</showonepage>
-                        <include>MediaFilter_Node_ClearAll</include>
-                        <onup>SetFocus(68)</onup>
-                        <onback>68</onback>
-                        <ondown condition="!Skin.String(Navigation.OnDown,Explore)">SetProperty(List.ViewContainer,60)</ondown>
-                        <ondown condition="!Skin.String(Navigation.OnDown,Explore)">330</ondown>
-                        <include condition="Skin.String(Navigation.OnDown,Explore)">Action_View_Explore_OnDown</include>
-                    </control>
-                </control>
-            </control>
-        </control>
-
-        <!-- Scrollbar V -->
-        <!-- <include>View_Scrollbars_Vert</include> -->
-    </include>
-
-    <include name="View_Scrollbars_Vert">
-        <control type="group">
-            <bottom>view_top</bottom>
-            <height>view_poster_item_h</height>
-            <width>scrollbar_w</width>
-            <centerright>40</centerright>
-            <visible>$EXP[Exp_ScrollbarVisible_V]</visible>
-            <control type="image">
-                <texture colordiffuse="main_fg_12">common/white.png</texture>
-                <width>1</width>
-                <centerleft>50%</centerleft>
-            </control>
-            <control type="scrollbar" id="65">
-                <onleft>SetFocus(50)</onleft>
-                <orientation>vertical</orientation>
-                <texturesliderbackground />
-                <include>Texture_Scrollbar_SliderBar_V</include>
-                <include>Texture_Scrollbar_V</include>
-                <showonepage>true</showonepage>
-                <include content="Action_View_Movement_OnRight">
-                    <param name="id">50</param>
-                    <param name="onleft">65</param>
-                    <param name="online">,2</param>
-                </include>
-                <onback>50</onback>
-            </control>
-        </control>
+        <include content="Object_Hidden_Button">
+            <param name="id">64</param>
+            <onfocus>$VAR[Action_Var_ToMediaFilter]</onfocus>
+        </include>
+        <include content="Object_Hidden_Button">
+            <param name="id">67</param>
+            <onfocus condition="Skin.String(Navigation.Library.OnDown,Explore)">Action(Down)</onfocus>
+            <include condition="Skin.String(Navigation.Library.OnDown,Explore)">Action_View_Explore_OnDown</include>
+        </include>
     </include>
 
     <include name="View_Row_Info">
         <control type="group">
             <visible>!$EXP[Exp_InfoDialogs]</visible>
             <include>Animation_Transition_InfoPanel_Hide</include>
+
+            <animation effect="fade" start="100" end="0" delay="400" reversible="false" time="400" condition="$EXP[Exp_FilterItems_Keyboard]">Conditional</animation>
 
             <control type="group">
                 <include>MediaWall_Info_Transition</include>
@@ -210,73 +117,165 @@
 
     <include name="View_Row_Items">
         <control type="group">
-            <include>Animation_Half_WindowChange</include>
 
-            <include condition="$EXP[Exp_View_502_Include]">View_502_Square_Combined_Row</include>
-            <include condition="$EXP[Exp_View_512_Include]">View_512_Landscape_Combined_Row</include>
-            <include condition="$EXP[Exp_View_522_Include]">View_522_Poster_Combined_Row</include>
+            <animation effect="slide" end="0,-320" delay="600" reversible="false" time="400" tween="cubic" easing="out" condition="$EXP[Exp_FilterItems_Keyboard]">Conditional</animation>
 
             <control type="group">
-                <include>MediaWall_View_Transition</include>
-                <include condition="$EXP[Exp_View_50_Include]">View_050_Square_Row</include>
-                <include condition="$EXP[Exp_View_51_Include]">View_051_Landscape_Row</include>
-                <include condition="$EXP[Exp_View_52_Include]">View_052_Poster_Row</include>
-                <include condition="$EXP[Exp_View_56_Include]">View_056_MediaList</include>
-                <include condition="$EXP[Exp_View_506_Include]">View_506_Square_MediaList</include>
-                <include condition="$EXP[Exp_View_516_Include]">View_516_Landscape_MediaList</include>
-                <include condition="$EXP[Exp_View_500_Include]">View_500_Square_List</include>
+                <include>Animation_Half_WindowChange_UpDown</include>
+                <include condition="$EXP[Exp_View_502_Include]">View_502_Square_Combined_Row</include>
+                <include condition="$EXP[Exp_View_512_Include]">View_512_Landscape_Combined_Row</include>
+                <include condition="$EXP[Exp_View_522_Include]">View_522_Poster_Combined_Row</include>
 
-                <include content="Widget_Busy">
-                    <param name="label">$VAR[Label_Section_Main]</param>
-                    <param name="visible">Container.Content() + Integer.IsEqual(Container.NumItems,0)</param>
-                    <height>divider_bottom</height>
-                    <bottom>46</bottom>
-                    <left>200</left>
+                <control type="group">
+                    <include>MediaWall_View_Transition</include>
+                    <include condition="$EXP[Exp_View_50_Include]">View_050_Square_Row</include>
+                    <include condition="$EXP[Exp_View_51_Include]">View_051_Landscape_Row</include>
+                    <include condition="$EXP[Exp_View_52_Include]">View_052_Poster_Row</include>
+                    <include condition="$EXP[Exp_View_56_Include]">View_056_MediaList</include>
+                    <include condition="$EXP[Exp_View_506_Include]">View_506_Square_MediaList</include>
+                    <include condition="$EXP[Exp_View_516_Include]">View_516_Landscape_MediaList</include>
+                    <include condition="$EXP[Exp_View_500_Include]">View_500_Square_List</include>
+
+                    <include content="Widget_Busy">
+                        <param name="label">$VAR[Label_Section_Main]</param>
+                        <param name="visible">Container.Content() + Integer.IsEqual(Container.NumItems,0)</param>
+                        <height>divider_bottom</height>
+                        <bottom>46</bottom>
+                        <left>200</left>
+                    </include>
+                </control>
+
+                <control type="group">
+                    <visible>!$EXP[Exp_InfoDialogs]</visible>
+                    <include>Animation_Transition_InfoPanel_Hide</include>
+                    <control type="group">
+                        <animation type="Conditional" reversible="false" condition="[$EXP[Exp_FilterWall_IsActive] | $EXP[Exp_DiscoverWall_IsActive]]">
+                            <effect type="slide" end="0,-334" start="0" time="400" delay="0" tween="cubic" easing="out" />
+                        </animation>
+                        <animation type="Conditional" reversible="false" condition="![$EXP[Exp_FilterWall_IsActive] | $EXP[Exp_DiscoverWall_IsActive]]">
+                            <effect type="slide" start="0,-334" end="0" time="400" delay="0" tween="cubic" easing="out" />
+                        </animation>
+                        <include content="Info_Viewline">
+                            <param name="item_condition">true</param>
+                            <param name="library_condition">true</param>
+                        </include>
+                    </control>
+                </control>
+                <include content="View_Furniture_Bottom_Group">
+                    <param name="include">View_Furniture_Bottom_Group_NextLabel</param>
                 </include>
             </control>
 
+
+        </control>
+    </include>
+
+    <include name="View_Furniture_Bottom_Group_NextLabel">
+        <control type="group">
+            <visible>$EXP[Exp_FurnitureFooter_Left_IsVisible]</visible>
+            <visible>![Skin.String(Furniture.BottomLeft.Enable,Library) | Skin.String(Furniture.BottomLeft.Enable,Always)]</visible>
+            <include content="Furniture_Bottombar_Group">
+                <include content="Furniture_Gutters">
+                    <control type="group">
+                        <animation effect="fade" start="100" end="30" condition="true">Conditional</animation>
+                        <control type="group">
+                            <top>10</top>
+                            <height>35</height>
+                            <include content="Info_Viewline">
+                                <param name="library_condition">false</param>
+                                <param name="label">$VAR[Label_NextMedia]</param>
+                                <param name="custom_condition">true</param>
+                                <param name="custom_icon">$VAR[Image_NextMedia_Icon]</param>
+                                <top>0</top>
+                                <left>0</left>
+                            </include>
+                        </control>
+                    </control>
+                </include>
+            </include>
+        </control>
+    </include>
+
+    <include name="View_Furniture_Bottom_Group_Content">
+        <control type="group">
+            <visible>$EXP[Exp_FurnitureFooter_Left_IsVisible]</visible>
+            <visible>[Skin.String(Furniture.BottomLeft.Enable,Library) | Skin.String(Furniture.BottomLeft.Enable,Always)]</visible>
+            <include content="Furniture_Bottom_Left">
+                <visible>![[$EXP[Exp_View_502] + Control.HasFocus(503)] | [$EXP[Exp_View_512] + Control.HasFocus(513)] | [$EXP[Exp_View_522] + Control.HasFocus(523)]]</visible>
+            </include>
+            <include content="Furniture_Bottom_Left">
+                <param name="container">Container(503).</param>
+                <visible>[$EXP[Exp_View_502] + Control.HasFocus(503)]</visible>
+            </include>
+            <include content="Furniture_Bottom_Left">
+                <param name="container">Container(513).</param>
+                <visible>[$EXP[Exp_View_512] + Control.HasFocus(513)]</visible>
+            </include>
+            <include content="Furniture_Bottom_Left">
+                <param name="container">Container(523).</param>
+                <visible>[$EXP[Exp_View_522] + Control.HasFocus(523)]</visible>
+            </include>
+        </control>
+    </include>
+
+    <include name="View_Furniture_Bottom_Group">
+        <control type="group">
+            <visible>!$EXP[Exp_InfoDialogs]</visible>
+            <visible>!Window.IsVisible(1171)</visible>
             <control type="group">
-                <visible>!$EXP[Exp_InfoDialogs]</visible>
-                <include>Animation_Transition_InfoPanel_Hide</include>
-                <control type="group">
-                    <animation type="Conditional" reversible="false" condition="[$EXP[Exp_FilterWall_IsActive] | $EXP[Exp_DiscoverWall_IsActive]]">
-                        <effect type="slide" end="0,-334" start="0" time="400" delay="0" tween="cubic" easing="out" />
-                    </animation>
-                    <animation type="Conditional" reversible="false" condition="![$EXP[Exp_FilterWall_IsActive] | $EXP[Exp_DiscoverWall_IsActive]]">
-                        <effect type="slide" start="0,-334" end="0" time="400" delay="0" tween="cubic" easing="out" />
-                    </animation>
-                    <include content="Info_Viewline">
-                        <param name="sort_condition">true</param>
-                        <param name="library_condition">true</param>
-                    </include>
-                </control>
+                <visible>![[Container.Scrolling + $EXP[Exp_FurnitureFooter_Left_IsVisible]] | !String.IsEmpty(Window.Property(MediaFilterBase)) | !String.IsEmpty(Window.Property(MediaFilterWall))]</visible>
+                <animation effect="fade" start="100" end="0" delay="400" time="1" reversible="true">Hidden</animation>
+                <animation effect="fade" start="0" end="100" delay="400" time="1" reversible="false">Visible</animation>
+                <include>$PARAM[include]</include>
             </control>
         </control>
     </include>
 
-    <include name="View_Row_Gutter">
+    <include name="View_Furniture_Bottom">
+        <include content="View_Furniture_Bottom_Group">
+            <param name="include">View_Furniture_Bottom_Group_Content</param>
+        </include>
         <control type="group">
-            <visible>!$EXP[Exp_InfoDialogs]</visible>
-            <visible>$EXP[Exp_FurnitureFooter_IsVisible]</visible>
-            <control type="group">
-                <visible>$EXP[Exp_FurnitureFooter_Left_IsVisible]</visible>
-                <include content="Furniture_Bottom_Left">
-                    <visible>![$EXP[Exp_View_502] | $EXP[Exp_View_512] | $EXP[Exp_View_522]]</visible>
-                </include>
-                <include content="Furniture_Bottom_Left">
-                    <param name="container">Container(503).</param>
-                    <visible>$EXP[Exp_View_502]</visible>
-                </include>
-                <include content="Furniture_Bottom_Left">
-                    <param name="container">Container(513).</param>
-                    <visible>$EXP[Exp_View_512]</visible>
-                </include>
-                <include content="Furniture_Bottom_Left">
-                    <param name="container">Container(523).</param>
-                    <visible>$EXP[Exp_View_522]</visible>
-                </include>
-            </control>
             <include>Furniture_Bottom_Right</include>
+            <visible>!$EXP[Exp_InfoDialogs]</visible>
+            <control type="group">
+                <visible>!Window.IsVisible(1171)</visible>
+                <control type="group">
+                    <visible>[[Container.Scrolling + $EXP[Exp_FurnitureFooter_Left_IsVisible]] | !String.IsEmpty(Window.Property(MediaFilterBase)) | !String.IsEmpty(Window.Property(MediaFilterWall))]</visible>
+                    <animation effect="fade" start="0" end="100" delay="400" time="1" reversible="true">Visible</animation>
+                    <animation effect="fade" start="100" end="0" delay="400" time="1" reversible="false">Hidden</animation>
+                    <height>scrollbar_w</height>
+                    <centerbottom>100</centerbottom>
+                    <left>view_side</left>
+                    <right>view_pad</right>
+                    <control type="group">
+                        <width>50</width>
+                        <height>50</height>
+                        <centertop>50%</centertop>
+                        <include content="Info_FooterItemIcon">
+                            <param name="icon">special://skin/extras/icons/_none.png</param>
+                            <param name="centered">true</param>
+                            <param name="size">50</param>
+                        </include>
+                        <control type="label">
+                            <centerleft>50%</centerleft>
+                            <centertop>50%</centertop>
+                            <align>center</align>
+                            <aligny>center</aligny>
+                            <width>50</width>
+                            <height>50</height>
+                            <textcolor>main_bg_90</textcolor>
+                            <font>font_mini_black</font>
+                            <label>$INFO[ListItem.SortLetter]</label>
+                        </control>
+                    </control>
+                    <control type="label">
+                        <label>$LOCALIZE[31135] $INFO[Container.CurrentPage,[COLOR=main_fg_90][B],[/B][/COLOR] $LOCALIZE[20163] ]$INFO[Container.NumPages,[COLOR=main_fg_90][B],[/B][/COLOR]]</label>
+                        <left>80</left>
+                        <include>Defs_Label_FooterItem</include>
+                    </control>
+                </control>
+            </control>
         </control>
     </include>
 
@@ -289,6 +288,7 @@
                 <height>1</height>
                 <left>-1000</left>
                 <onfocus condition="!String.IsEmpty(Window.Property(List.ViewContainer))">SetFocus($INFO[Window.Property(List.ViewContainer)])</onfocus>
+                <onfocus condition="!String.IsEmpty(Window.Property(List.ViewContainer))">ClearProperty(List.ViewContainer)</onfocus>
                 <onfocus condition="String.IsEmpty(Window.Property(List.ViewContainer))">SetFocus($PARAM[groupid])</onfocus>
                 <onclick>SetFocus($PARAM[groupid])</onclick>
                 <visible allowhiddenfocus="true">Control.HasFocus(330)</visible>
@@ -308,6 +308,7 @@
                 <height>1</height>
                 <left>-1000</left>
                 <onfocus condition="!String.IsEmpty(Window.Property(List.ViewContainer))">SetFocus($INFO[Window.Property(List.ViewContainer)])</onfocus>
+                <onfocus condition="!String.IsEmpty(Window.Property(List.ViewContainer))">ClearProperty(List.ViewContainer)</onfocus>
                 <onfocus condition="String.IsEmpty(Window.Property(List.ViewContainer))">SetFocus($PARAM[groupid])</onfocus>
                 <onclick>SetFocus($PARAM[groupid])</onclick>
                 <visible allowhiddenfocus="true">Control.HasFocus(332)</visible>
@@ -318,48 +319,42 @@
                 <height>1</height>
                 <left>-1000</left>
                 <onfocus condition="!String.IsEmpty(Window.Property(List.ViewContainer))">SetFocus($INFO[Window.Property(List.ViewContainer)])</onfocus>
+                <onfocus condition="!String.IsEmpty(Window.Property(List.ViewContainer))">ClearProperty(List.ViewContainer)</onfocus>
                 <onfocus condition="String.IsEmpty(Window.Property(List.ViewContainer))">SetFocus($PARAM[groupid])</onfocus>
                 <onclick>SetFocus($PARAM[groupid])</onclick>
                 <visible allowhiddenfocus="true">Control.HasFocus(333)</visible>
                 <animation effect="fade" time="300" start="0" end="0">Focus</animation>
             </control>
-            <include content="Object_Hidden_Button">
-                <param name="id">393</param>
-                <onfocus condition="Skin.HasSetting(Hub.Home.DisableSubmenu)">$VAR[Action_Menu_Position]</onfocus>
-                <onfocus condition="!Skin.HasSetting(Hub.Home.DisableSubmenu)">SetFocus(300)</onfocus>
-            </include>
         </definition>
     </include>
 
     <include name="View_Furniture_Edges">
         <include>Home_Fade</include>
         <control type="group">
-            <include>View_Row_Header</include>
-            <control type="group">
-                <include>Animation_Half_WindowChange</include>
-                <include>View_Row_Gutter</include>
-                <include condition="!Window.IsVisible(MyPlaylist.xml)">View_Scrollbars</include>
-            </control>
-            <!-- <include condition="!Window.IsVisible(MyPlaylist.xml)">View_Scrollbars</include> -->
-            <include condition="!Window.IsVisible(MyPlaylist.xml)">View_Scrollbars_Vert</include>
             <include>Animation_Group_Bumper</include>
+            <include>Animation_View_WindowChange</include>
+            <include>View_Row_Header</include>
+            <include>View_Furniture_Bottom</include>
+            <include>View_Hidden_Buttons</include>
         </control>
         <include content="Home_Menu">
             <param name="onlist">50</param>
         </include>
+        <include condition="Window.IsVisible(MyVideoNav.xml)">MediaFilter_Discover_Node</include>
+        <include>MediaFilter_Node</include>
     </include>
 
     <include name="View_MediaWall">
         <control type="group">
-            <include>Animation_Half_WindowChange</include>
             <include condition="Window.IsVisible(MyVideoNav.xml)">MediaWall_Discover</include>
             <include condition="$EXP[Exp_FilterWall_IsEnabled]">MediaWall_All</include>
         </control>
     </include>
 
-    <include name="View_MediaFilter_Node">
-        <include>MediaFilter_Node</include>
-        <include>MediaFilter_Discover_Node</include>
+    <include name="View_Dialog_VideoPIP">
+        <include content="Dialog_VideoPIP" condition="Skin.HasSetting(Background.DisableVideo)">
+            <param name="visible">[!$EXP[Exp_InfoDialogs] + String.IsEmpty(Window.Property(MediaFilterBase)) + !$EXP[Exp_FilterWall_IsActive]]</param>
+        </include>
     </include>
 
     <include name="View_Main">
@@ -372,23 +367,16 @@
             <include>Background_Transition</include>
 
             <control type="group">
-                <control type="group">
-                    <include>Animation_Group_Bumper</include>
-                    <include>View_MediaWall</include>
-                    <control type="group">
-                        <include>Animation_View_WindowChange</include>
-                        <include>View_Row_Items</include>
-                        <include>View_Row_Info</include>
-                    </control>
-                </control>
-                <include>View_Furniture_Edges</include>
-                <control type="group">
-                    <include>Animation_Group_Bumper</include>
-                    <include>View_MediaFilter_Node</include>
-                </control>
+                <include>Animation_Group_Bumper</include>
+                <include>Animation_View_WindowChange</include>
+                <include>View_MediaWall</include>
+                <include>View_Row_Items</include>
+                <include>View_Row_Info</include>
             </control>
-
+            <include>View_Furniture_Edges</include>
+            <include>View_Dialog_VideoPIP</include>
             <include>View_Dialog_Plot</include>
+            <include>TouchMode_Media_Zones</include>
 
         </definition>
     </include>

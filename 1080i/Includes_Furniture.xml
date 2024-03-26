@@ -19,7 +19,7 @@
         <param name="label">[CAPITALIZE]$VAR[Label_Header_Main][/CAPITALIZE]</param>
         <param name="enabled">true</param>
         <param name="clock">Skin.HasSetting(Furniture.EnableClock.TopLeft)</param>
-        <param name="textcolor">main_fg_100</param>
+        <param name="textcolor">main_fg_90</param>
         <param name="textcolor_sublabel">main_fg_70</param>
         <param name="shadowcolor_sublabel">main_bg_12</param>
         <definition>
@@ -27,7 +27,7 @@
                 <nested />
                 <include content="Furniture_Gutters">
                     <control type="group">
-                        <animation effect="slide" start="0" end="0,-15" condition="!Skin.HasSetting(Furniture.EnableClock) + !$EXP[Exp_MediaFilter_IsActive] + [Window.IsVisible(MyPVRGuide.xml) | Window.IsVisible(MyPVRChannels.xml) | $PARAM[clock]]">Conditional</animation>
+                        <animation effect="slide" start="0" end="0,-15" condition="!Skin.HasSetting(Furniture.EnableClock) + [Window.IsVisible(MyPVRGuide.xml) | Window.IsVisible(MyPVRChannels.xml) | $PARAM[clock]]">Conditional</animation>
                         <include content="Furniture_MainLabel">
                             <param name="id">$PARAM[id]</param>
                             <param name="textcolor">$PARAM[textcolor]</param>
@@ -37,7 +37,7 @@
                         <include content="Furniture_DateLabel">
                             <param name="textcolor">$PARAM[textcolor_sublabel]</param>
                             <param name="shadowcolor">$PARAM[shadowcolor_sublabel]</param>
-                            <visible>!Skin.HasSetting(Furniture.EnableClock) + !$EXP[Exp_MediaFilter_IsActive] + [Window.IsVisible(MyPVRGuide.xml) | Window.IsVisible(MyPVRChannels.xml) | $PARAM[clock]]</visible>
+                            <param name="visible">!Skin.HasSetting(Furniture.EnableClock) + [Window.IsVisible(MyPVRGuide.xml) | Window.IsVisible(MyPVRChannels.xml) | $PARAM[clock]]</param>
                         </include>
                     </control>
                 </include>
@@ -68,32 +68,68 @@
         </definition>
     </include>
 
+    <include name="Furniture_Bottom_WidgetGroups">
+        <param name="label">$VAR[Label_NextWidget]</param>
+        <definition>
+            <include content="Furniture_Bottombar_Group">
+                <include content="Furniture_Gutters">
+                    <control type="group">
+                        <visible>!Window.IsVisible(1171)</visible>
+                        <include>Animation_Widget_FadeOut</include>
+                        <control type="group">
+                            <top>10</top>
+                            <height>35</height>
+                            <include content="Info_Viewline">
+                                <param name="library_condition">false</param>
+                                <param name="label">$PARAM[label]</param>
+                                <param name="custom_condition">true</param>
+                                <param name="custom_icon">special://skin/extras/icons/arrow-down.png</param>
+                                <top>0</top>
+                                <left>0</left>
+                            </include>
+                        </control>
+                    </control>
+                </include>
+            </include>
+        </definition>
+    </include>
+
     <include name="Furniture_NowPlaying">
         <control type="group">
             <visible>Player.HasMedia</visible>
+            <visible>!Player.HasVideo | !Skin.HasSetting(Background.DisableVideo)</visible>
             <right>-20</right>
             <height>80</height>
             <centertop>50%</centertop>
             <control type="group">
-                <width>80</width>
-                <right>0</right>
-                <include content="Info_Codec_LabelIcon">
+                <centertop>50%</centertop>
+                <height>50</height>
+                <width>50</width>
+                <right>20</right>
+                <include content="Info_FooterItemIcon">
                     <param name="icon">$VAR[Image_NowPlaying_PlayPause]</param>
-                    <centerleft>50%</centerleft>
+                    <param name="centered">true</param>
+                    <param name="size">50</param>
                 </include>
-                <control type="image">
-                    <bordersize>-4</bordersize>
-                    <texture colordiffuse="$VAR[ColorHighlight]">$INFO[Player.Progress,progress/circle/p,.png]</texture>
-                    <aspectratio align="center" aligny="center">keep</aspectratio>
-                </control>
-                <control type="image">
-                    <bordersize>-4</bordersize>
-                    <texture colordiffuse="$VAR[ColorGradient]">$INFO[Player.Progress,progress/circle/p,.png]</texture>
-                    <animation effect="fade" end="66" condition="true">Conditional</animation>
-                    <aspectratio align="center" aligny="center">keep</aspectratio>
-                    <include content="Defs_Progress_Colorfade">
-                        <param name="id">933</param>
-                    </include>
+                <control type="group">
+                    <centerleft>50%</centerleft>
+                    <centertop>50%</centertop>
+                    <height>100</height>
+                    <width>100</width>
+                    <control type="image">
+                        <bordersize>-4</bordersize>
+                        <texture colordiffuse="$VAR[ColorHighlight]">$INFO[Player.Progress,progress/circle/p,.png]</texture>
+                        <aspectratio align="center" aligny="center">keep</aspectratio>
+                    </control>
+                    <control type="image">
+                        <bordersize>-4</bordersize>
+                        <texture colordiffuse="$VAR[ColorGradient]">$INFO[Player.Progress,progress/circle/p,.png]</texture>
+                        <animation effect="fade" end="66" condition="true">Conditional</animation>
+                        <aspectratio align="center" aligny="center">keep</aspectratio>
+                        <include content="Defs_Progress_Colorfade">
+                            <param name="id">933</param>
+                        </include>
+                    </control>
                 </control>
                 <control type="progress" id="933">
                     <height>1</height>
@@ -107,15 +143,19 @@
                     <visible>false</visible>
                 </control>
             </control>
-            <include content="Furniture_NowPlaying_Text">
-                <param name="title_w">240</param>
-                <param name="sublabel_music_w">115</param>
-                <param name="sublabel_video_w">62</param>
-                <visible>$EXP[Exp_ScrollbarVisible_H]</visible>
-            </include>
-            <include content="Furniture_NowPlaying_Text">
-                <visible>!$EXP[Exp_ScrollbarVisible_H]</visible>
-            </include>
+            <control type="group">
+                <height>80</height>
+                <centertop>50%</centertop>
+                <include content="Furniture_NowPlaying_Text">
+                    <param name="title_w">240</param>
+                    <param name="sublabel_music_w">115</param>
+                    <param name="sublabel_video_w">62</param>
+                    <visible>$EXP[Exp_ScrollbarVisible_H]</visible>
+                </include>
+                <include content="Furniture_NowPlaying_Text">
+                    <visible>!$EXP[Exp_ScrollbarVisible_H]</visible>
+                </include>
+            </control>
         </control>
     </include>
 
@@ -126,7 +166,7 @@
         <definition>
             <control type="group">
                 <nested />
-                <right>90</right>
+                <right>100</right>
                 <control type="grouplist">
                     <orientation>horizontal</orientation>
                     <align>right</align>
@@ -185,36 +225,21 @@
     </include>
 
     <include name="Furniture_DateLabel">
-        <control type="grouplist">
-            <nested />
-            <orientation>horizontal</orientation>
-            <bottom>-30</bottom>
-            <height>50</height>
-            <itemgap>10</itemgap>
+        <param name="label">$INFO[System.Date] [COLOR=main_fg_30]•[/COLOR] $INFO[System.Time]</param>
+        <param name="font">font_tiny</param>
+        <definition>
             <control type="label">
                 <aligny>center</aligny>
                 <width>auto</width>
-                <font>font_tiny_bold</font>
-                <label>$INFO[System.Date]</label>
+                <font>$PARAM[font]</font>
+                <label>$PARAM[label]</label>
                 <textcolor>$PARAM[textcolor]</textcolor>
                 <shadowcolor>$PARAM[shadowcolor]</shadowcolor>
+                <bottom>-30</bottom>
+                <height>50</height>
+                <visible>$PARAM[visible]</visible>
             </control>
-            <control type="label">
-                <aligny>center</aligny>
-                <width>auto</width>
-                <font>font_tiny_bold</font>
-                <label>$LOCALIZE[19107]</label>
-                <textcolor>main_fg_30</textcolor>
-            </control>
-            <control type="label">
-                <aligny>center</aligny>
-                <width>auto</width>
-                <font>font_tiny_bold</font>
-                <label>$INFO[System.Time]</label>
-                <textcolor>$PARAM[textcolor]</textcolor>
-                <shadowcolor>$PARAM[shadowcolor]</shadowcolor>
-            </control>
-        </control>
+        </definition>
     </include>
 
     <include name="Furniture_Bottom">
@@ -263,6 +288,20 @@
         </definition>
     </include>
 
+    <include name="Furniture_Busy_Spinner">
+        <control type="image">
+            <visible>$PARAM[spinnervisible]</visible>
+            <bordersize>-4</bordersize>
+            <include content="Animation_Fade_Out">
+                <param name="type">hidden</param>
+                <param name="delay">200</param>
+            </include>
+            <include content="Defs_BusySpinner_Image">
+                <param name="spinspinner">$PARAM[spinspinner]</param>
+            </include>
+        </control>
+    </include>
+
     <include name="Furniture_Busy_Icon">
         <param name="hasspinner">false</param>
         <param name="hasprogress">false</param>
@@ -273,80 +312,87 @@
         <definition>
             <control type="group">
                 <description>Busy animation</description>
-                <height>80</height>
-                <width>80</width>
+                <include content="Object_Height" condition="!Skin.HasSetting(ToastNotifications.Tabbed)">
+                    <param name="height">50</param>
+                </include>
+                <include content="Object_Width" condition="!Skin.HasSetting(ToastNotifications.Tabbed)">
+                    <param name="width">50</param>
+                </include>
+                <width>40</width>
+                <height>40</height>
+                <centertop>50%</centertop>
                 <nested />
-                <include content="Info_Codec_LabelIcon" condition="$PARAM[hasicon]">
-                    <param name="icon">$PARAM[icon]</param>
-                    <centerleft>50%</centerleft>
-                </include>
-                <include content="Generator_Object_BusySpinner" condition="$PARAM[hasspinner]">
-                    <param name="spinspinner">$PARAM[spinspinner]</param>
-                    <visible>$PARAM[spinnervisible]</visible>
-                    <bordersize>-4</bordersize>
-                    <include content="Animation_Fade_Out">
-                        <param name="type">hidden</param>
-                        <param name="delay">200</param>
+
+                <control type="group">
+
+                    <include content="Info_FooterItemIcon" condition="$PARAM[hasicon] + Skin.HasSetting(ToastNotifications.Tabbed)">
+                        <param name="icon">$PARAM[icon]</param>
+                        <param name="centered">true</param>
+                        <param name="size">40</param>
                     </include>
-                </include>
-                <include content="Object_Control" condition="$PARAM[hasprogress]">
-                    <param name="control">group</param>
-                    <description>Busy animation</description>
-                    <animation effect="rotate" condition="$PARAM[spinspinner]" start="0" end="360" loop="true" time="2000" center="auto">Conditional</animation>
-                    <description>Busy animation</description>
-                    <visible>$PARAM[spinnervisible]</visible>
-                    <include content="Animation_Fade_Out">
-                        <param name="type">hidden</param>
-                        <param name="delay">200</param>
+                    <include content="Info_FooterItemIcon" condition="$PARAM[hasicon] + !Skin.HasSetting(ToastNotifications.Tabbed)">
+                        <param name="icon">$PARAM[icon]</param>
+                        <param name="centered">true</param>
+                        <param name="size">50</param>
                     </include>
-                    <control type="image">
-                        <bordersize>-4</bordersize>
-                        <texture colordiffuse="$VAR[ColorHighlight]">$INFO[$PARAM[progress],progress/circle/p,.png]</texture>
-                        <aspectratio align="center" aligny="center">keep</aspectratio>
-                    </control>
-                    <control type="image">
-                        <bordersize>-4</bordersize>
-                        <texture colordiffuse="$VAR[ColorGradient]">$INFO[$PARAM[progress],progress/circle/p,.png]</texture>
-                        <animation effect="fade" end="66" condition="true">Conditional</animation>
-                        <aspectratio align="center" aligny="center">keep</aspectratio>
-                        <include content="Defs_Progress_Colorfade">
-                            <param name="id">$PARAM[progress_id]</param>
+
+                    <control type="group">
+                        <centerleft>50%</centerleft>
+                        <centertop>50%</centertop>
+                        <include content="Object_Height" condition="!Skin.HasSetting(ToastNotifications.Tabbed)">
+                            <param name="height">100</param>
+                        </include>
+                        <include content="Object_Width" condition="!Skin.HasSetting(ToastNotifications.Tabbed)">
+                            <param name="width">100</param>
+                        </include>
+                        <width>80</width>
+                        <height>80</height>
+                        <include content="Furniture_Busy_Spinner" condition="$PARAM[hasspinner]">
+                            <param name="spinnervisible">$PARAM[spinnervisible]</param>
+                            <param name="spinspinner">$PARAM[spinspinner]</param>
+                        </include>
+                        <include content="Object_Control" condition="$PARAM[hasprogress]">
+                            <param name="control">group</param>
+                            <description>Busy animation</description>
+                            <animation effect="rotate" condition="$PARAM[spinspinner]" start="0" end="360" loop="true" time="2000" center="auto">Conditional</animation>
+                            <description>Busy animation</description>
+                            <visible>$PARAM[spinnervisible]</visible>
+                            <include content="Animation_Fade_Out">
+                                <param name="type">hidden</param>
+                                <param name="delay">200</param>
+                            </include>
+                            <control type="image">
+                                <bordersize>-4</bordersize>
+                                <texture colordiffuse="$VAR[ColorHighlight]">$INFO[$PARAM[progress],progress/circle/p,.png]</texture>
+                                <aspectratio align="center" aligny="center">keep</aspectratio>
+                            </control>
+                            <control type="image">
+                                <bordersize>-4</bordersize>
+                                <texture colordiffuse="$VAR[ColorGradient]">$INFO[$PARAM[progress],progress/circle/p,.png]</texture>
+                                <animation effect="fade" end="66" condition="true">Conditional</animation>
+                                <aspectratio align="center" aligny="center">keep</aspectratio>
+                                <include content="Defs_Progress_Colorfade">
+                                    <param name="id">$PARAM[progress_id]</param>
+                                </include>
+                            </control>
                         </include>
                     </control>
-                </include>
+                </control>
             </control>
         </definition>
     </include>
 
-    <include name="Furniture_Busy_Group">
-        <param name="floating">!Skin.HasSetting(ToastNotifications.Tabbed)</param>
-        <param name="hasbackground">Skin.HasSetting(ToastNotifications.Tabbed)</param>
+    <include name="Furniture_Busy_Group_Background">
         <definition>
             <control type="group">
-                <include content="Object_Control" condition="$PARAM[hasbackground]">
-                    <param name="control">group</param>
-                    <include content="Object_Top" condition="![$PARAM[floating]]"><param name="top">-320</param></include>
-                    <include content="Dialog_Background_Blur" condition="![$PARAM[floating]]">
-                        <param name="diffuse">diffuse/dialog_w480_h400.png</param>
-                        <param name="flipy">true</param>
-                    </include>
-                    <include content="Dialog_Background_Blur" condition="$PARAM[floating]">
-                        <param name="flipy">true</param>
-                        <param name="aspectratio">scale</param>
-                        <param name="diffuse">diffuse/dialog_w480_h80.png</param>
-                        <param name="border">0</param>
-                    </include>
-                    <control type="image">
-                        <texture colordiffuse="dialog_fg_12" border="20">common/dialog.png</texture>
-                    </control>
+                <top>-320</top>
+                <include content="Dialog_Background_Blur">
+                    <param name="diffuse">diffuse/dialog_w480_h400.png</param>
+                    <param name="flipy">true</param>
                 </include>
-                <nested />
-                <height>80</height>
-                <width>480</width>
-                <include>Animation_SlideIn_Dialog</include>
-                <include content="Object_Top" condition="$PARAM[floating]"><param name="top">60</param></include>
-                <include content="Object_Right" condition="$PARAM[floating]"><param name="right">60</param></include>
-                <include content="Object_Right" condition="![$PARAM[floating]]"><param name="right">80</param></include>
+                <control type="image">
+                    <texture colordiffuse="dialog_fg_12" border="20">common/dialog.png</texture>
+                </control>
             </control>
         </definition>
     </include>
@@ -374,21 +420,21 @@
         <definition>
             <control type="group">
                 <left>20</left>
-                <right>80</right>
+                <right>100</right>
                 <control type="label" id="$PARAM[mainlabel_id]">
-                    <top>-15</top>
-                    <bottom>15</bottom>
+                    <include>Dimension_Object_InfoCircle_Text_Top</include>
+                    <font>font_mini_black</font>
                     <align>right</align>
                     <label>$PARAM[mainlabel]</label>
-                    <font>font_midi_black</font>
+                    <!-- <font>font_main_black</font> -->
                     <textcolor>main_fg_100</textcolor>
                 </control>
                 <control type="label" id="$PARAM[minilabel_id]">
-                    <bottom>-5</bottom>
-                    <height>50</height>
+                    <include>Dimension_Object_InfoCircle_Text_Sub</include>
+                    <font>font_tiny</font>
                     <align>right</align>
                     <label>$PARAM[minilabel]</label>
-                    <font>font_tiny_bold</font>
+                    <!-- <font>font_tiny_bold</font> -->
                     <shadowcolor>main_bg_12</shadowcolor>
                     <textcolor>main_fg_70</textcolor>
                 </control>
@@ -408,8 +454,10 @@
         <param name="hasbackground">Skin.HasSetting(ToastNotifications.Tabbed)</param>
         <definition>
 
-            <include content="Furniture_Busy_Group">
-                <param name="hasbackground">$PARAM[hasbackground]</param>
+            <control type="group">
+
+                <include condition="$PARAM[hasbackground]">Furniture_Busy_Group_Background</include>
+
                 <include content="Furniture_Busy_Icon">
                     <param name="hasspinner">$PARAM[hasspinner]</param>
                     <param name="hasprogress">$PARAM[hasprogress]</param>
@@ -419,10 +467,20 @@
                     <param name="progress">$PARAM[progress]</param>
                     <param name="progress_id">$PARAM[progress_id]</param>
                     <param name="spinnervisible">$PARAM[spinnervisible]</param>
-                    <right>0</right>
+                    <right>20</right>
                 </include>
 
                 <nested />
+
+                <include condition="$PARAM[hasbackground]">Dimension_FurnitureBusy_Tabbed</include>
+                <include condition="![$PARAM[hasbackground]]">Dimension_FurnitureBusy_Floating</include>
+
+                <include content="Animation_SlideIn_Dialog">
+                    <param name="visible_delay">$PARAM[visible_delay]</param>
+                    <param name="visible_condition">$PARAM[visible_condition]</param>
+                    <param name="windowopen_delay">$PARAM[windowopen_delay]</param>
+                    <param name="windowopen_condition">$PARAM[windowopen_condition]</param>
+                </include>
 
                 <include content="Furniture_Busy_Text" condition="$PARAM[haslabel] + $PARAM[hasbackground]">
                     <param name="mainlabel_id">$PARAM[mainlabel_id]</param>
@@ -437,7 +495,8 @@
                     <param name="minilabel_id">$PARAM[minilabel_id]</param>
                     <param name="minilabel">$PARAM[minilabel]</param>
                 </include>
-            </include>
+            </control>
+
         </definition>
     </include>
 
@@ -447,7 +506,6 @@
         <param name="bottomlabel">$INFO[System.Date]</param>
         <param name="topcolor">main_fg_90</param>
         <param name="bottomcolor">main_fg_70</param>
-        <param name="minify">False</param>
         <param name="topfont">font_mini_black</param>
         <param name="bottomfont">font_tiny</param>
         <param name="centerfont">font_mini</param>
@@ -459,20 +517,21 @@
                 <include content="Object_Right" condition="$PARAM[flipx]">
                     <param name="right">-20</param>
                 </include>
-                <height>80</height>
-                <centertop>50%</centertop>
                 <control type="group">
-                    <width>80</width>
+                    <centertop>50%</centertop>
+                    <height>50</height>
+                    <width>50</width>
                     <include content="Object_Left" condition="!$PARAM[flipx]">
-                        <param name="left">0</param>
+                        <param name="left">20</param>
                     </include>
                     <include content="Object_Right" condition="$PARAM[flipx]">
-                        <param name="right">0</param>
+                        <param name="right">20</param>
                     </include>
-                    <include content="Info_Codec_LabelIcon">
+                    <include content="Info_FooterItemIcon">
                         <param name="icon">special://skin/extras/icons/_none.png</param>
                         <param name="bordersize">12</param>
-                        <centerleft>50%</centerleft>
+                        <param name="centered">true</param>
+                        <param name="size">50</param>
                     </include>
                     <control type="group">
                         <centerleft>50%</centerleft>
@@ -496,33 +555,15 @@
 
                 </control>
                 <control type="group">
+                    <height>80</height>
+                    <centertop>50%</centertop>
                     <include content="Object_Left" condition="!$PARAM[flipx]">
-                        <param name="left">80</param>
+                        <param name="left">100</param>
                     </include>
                     <include content="Object_Right" condition="$PARAM[flipx]">
-                        <param name="right">80</param>
+                        <param name="right">100</param>
                     </include>
-                    <control type="label">
-                        <height>10</height>
-                        <centertop>50%</centertop>
-                        <label>$PARAM[toplabel]</label>
-                        <include content="Object_Align" condition="!$PARAM[flipx]">
-                            <param name="align">left</param>
-                        </include>
-                        <include content="Object_Align" condition="$PARAM[flipx]">
-                            <param name="align">right</param>
-                        </include>
-                        <font>$PARAM[centerfont]</font>
-                        <textcolor>$PARAM[bottomcolor]</textcolor>
-                        <shadowcolor>$PARAM[bottomshadowcolor]</shadowcolor>
-                        <visible>[$PARAM[minify]]</visible>
-                        <include content="Animation_Fade_Out">
-                            <param name="type">Hidden</param>
-                        </include>
-                    </control>
-                    <control type="label">
-                        <height>10</height>
-                        <top>22</top>
+                    <include content="Object_InfoCircle_Text_Top">
                         <label>$PARAM[toplabel]</label>
                         <include content="Object_Align" condition="!$PARAM[flipx]">
                             <param name="align">left</param>
@@ -533,14 +574,8 @@
                         <font>$PARAM[topfont]</font>
                         <textcolor>$PARAM[topcolor]</textcolor>
                         <shadowcolor>$PARAM[topshadowcolor]</shadowcolor>
-                        <visible>![$PARAM[minify]]</visible>
-                        <include content="Animation_Fade_In">
-                            <param name="type">Visible</param>
-                        </include>
-                    </control>
-                    <control type="label">
-                        <height>10</height>
-                        <bottom>22</bottom>
+                    </include>
+                    <include content="Object_InfoCircle_Text_Sub">
                         <label>$PARAM[bottomlabel]</label>
                         <include content="Object_Align" condition="!$PARAM[flipx]">
                             <param name="align">left</param>
@@ -551,11 +586,8 @@
                         <font>$PARAM[bottomfont]</font>
                         <textcolor>$PARAM[bottomcolor]</textcolor>
                         <shadowcolor>$PARAM[bottomshadowcolor]</shadowcolor>
-                        <visible>![$PARAM[minify]]</visible>
-                        <include content="Animation_Fade_In">
-                            <param name="type">Visible</param>
-                        </include>
-                    </control>
+                    </include>
+
                 </control>
             </control>
         </definition>
