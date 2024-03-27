@@ -1,4 +1,4 @@
-<!-- Discover -->
+<!-- View: Discover -->
 <item>
     <label>$LOCALIZE[31066]</label>
     <icon>special://skin/extras/icons/binoculars.png</icon>
@@ -10,6 +10,48 @@
     <onclick>SetFocus(67)</onclick>
     <visible>Window.IsVisible(1105)</visible>
 </item>
+
+<!-- View: PVR -->
+<item>
+    <label>$LOCALIZE[31319]</label>
+    <icon>special://skin/extras/icons/right-left.png</icon>
+    <property name="showlabel">True</property>
+    <property name="path">SetFocus(9000)</property>
+    <property name="guid">{item_guid}</property>
+    <property name="widgets_setfocus">SetFocus(400)</property>
+    <property name="expression">none</property>
+    <onclick>SetFocus(9000)</onclick>
+    <visible>[Window.IsVisible(MyPVRGuide.xml) | Window.IsVisible(MyPVRChannels.xml)]</visible>
+</item>
+
+<!-- View: Weather -->
+<item>
+    <label>$LOCALIZE[31006]</label>
+    <icon>special://skin/extras/icons/map-location-dot.png</icon>
+    <property name="showlabel">True</property>
+    <property name="path">Weather.LocationNext</property>
+    <property name="guid">{item_guid}</property>
+    <property name="widgets_setfocus">SetFocus(400)</property>
+    <property name="expression">none</property>
+    <onclick>Weather.LocationNext</onclick>
+    <visible>Window.IsVisible(weather)</visible>
+</item>
+
+<!-- View: Media -->
+<item>
+    <label>$LOCALIZE[31319]</label>
+    <icon>special://skin/extras/icons/right-left.png</icon>
+    <property name="showlabel">True</property>
+    <property name="path">SetFocus(64)</property>
+    <property name="guid">{item_guid}</property>
+    <property name="widgets_setfocus">SetFocus(400)</property>
+    <property name="expression">none</property>
+    <onclick>SetFocus(64)</onclick>
+    <visible>Window.IsMedia + ![Window.IsVisible(MyPVRGuide.xml) | Window.IsVisible(MyPVRChannels.xml)] + !Skin.String(Navigation.Global.OnDown,Filter)</visible>
+</item>
+
+
+<!-- Contextual: Discover -->
 <item>
     <label>$LOCALIZE[31066]</label>
     <icon>special://skin/extras/icons/binoculars.png</icon>
@@ -21,9 +63,12 @@
     <onclick condition="!Window.IsVisible(1185)">ActivateWindow(1105)</onclick>
     <onclick condition="Window.IsVisible(1185)">ReplaceWindow(1105)</onclick>
     <visible>!Window.IsVisible(1105)</visible>
+    <visible>![Window.IsVisible(MyPVRGuide.xml) | Window.IsVisible(MyPVRChannels.xml)]</visible>
+    <visible>!Window.IsVisible(weather)</visible>
+    <visible>![Window.IsMedia + ![Window.IsVisible(MyPVRGuide.xml) | Window.IsVisible(MyPVRChannels.xml)] + !Skin.String(Navigation.Global.OnDown,Filter)]</visible>
     <visible>!Skin.HasSetting(SideMenu.DisableSearchButton)</visible>
 </item>
-<!-- Close / Profiles / Quit -->
+<!-- Contextual: Close -->
 <item>
     <label>$LOCALIZE[15067]</label>
     <icon>special://skin/extras/icons/circle-xmark.png</icon>
@@ -35,8 +80,13 @@
     <onclick>PreviousMenu</onclick>
     <visible>!Window.IsVisible(Home)</visible>
     <visible>!Window.IsVisible(1105)</visible>
+    <visible>![Window.IsVisible(MyPVRGuide.xml) | Window.IsVisible(MyPVRChannels.xml)]</visible>
+    <visible>!Window.IsVisible(weather)</visible>
+    <visible>![Window.IsMedia + ![Window.IsVisible(MyPVRGuide.xml) | Window.IsVisible(MyPVRChannels.xml)] + !Skin.String(Navigation.Global.OnDown,Filter)]</visible>
     <visible>Skin.HasSetting(SideMenu.DisableSearchButton)</visible>
 </item>
+
+<!-- Contextual: Home Pseudo Logout -->
 <item>
     <label>$LOCALIZE[31053]</label>
     <icon>special://skin/extras/icons/address-card.png</icon>
@@ -47,10 +97,11 @@
     <property name="expression">none</property>
     <onclick>ActivateWindow(1195)</onclick>
     <visible>Window.IsVisible(Home)</visible>
-    <visible>!Window.IsVisible(1105)</visible>
     <visible>!Skin.HasSetting(SkinUserLogin.Disabled)</visible>
     <visible>Skin.HasSetting(SideMenu.DisableSearchButton) | Skin.String(Home.SideMenuCollapse,Topbar)</visible>
 </item>
+
+<!-- Contextual: Home Actual Logout -->
 <item>
     <label>$LOCALIZE[20126]</label>
     <icon>special://skin/extras/icons/address-card.png</icon>
@@ -64,6 +115,8 @@
     <visible>System.HasLoginScreen + Skin.HasSetting(SkinUserLogin.Disabled)</visible>
     <visible>Skin.HasSetting(SideMenu.DisableSearchButton) | Skin.String(Home.SideMenuCollapse,Topbar)</visible>
 </item>
+
+<!-- Contextual: Home Quit -->
 <item>
     <label>$LOCALIZE[13009]</label>
     <icon>special://skin/extras/icons/power.png</icon>
@@ -74,7 +127,6 @@
     <property name="expression">none</property>
     <onclick>Quit()</onclick>
     <visible>Window.IsVisible(Home)</visible>
-    <visible>!Window.IsVisible(1105)</visible>
     <visible>![System.HasLoginScreen | !Skin.HasSetting(SkinUserLogin.Disabled)]</visible>
     <visible>Skin.HasSetting(SideMenu.DisableSearchButton) | Skin.String(Home.SideMenuCollapse,Topbar)</visible>
 </item>
@@ -90,32 +142,4 @@
     <property name="expression">none</property>
     <onclick>ActivateWindow(1172)</onclick>
     <visible>![Window.IsVisible(Home) + Skin.String(Home.SideMenuCollapse,Topbar)]</visible>
-</item>
-
-
-
-<!-- View PVR -->
-<item>
-    <label>$LOCALIZE[31319]</label>
-    <icon>special://skin/extras/icons/right-left.png</icon>
-    <property name="showlabel">True</property>
-    <property name="path">SetFocus(9000)</property>
-    <property name="guid">{item_guid}</property>
-    <property name="widgets_setfocus">SetFocus(400)</property>
-    <property name="expression">none</property>
-    <onclick>SetFocus(9000)</onclick>
-    <visible>$EXP[Exp_PVRWindows]</visible>
-</item>
-
-<!-- Weather Next -->
-<item>
-    <label>$LOCALIZE[31006]</label>
-    <icon>special://skin/extras/icons/map-location-dot.png</icon>
-    <property name="showlabel">True</property>
-    <property name="path">Weather.LocationNext</property>
-    <property name="guid">{item_guid}</property>
-    <property name="widgets_setfocus">SetFocus(400)</property>
-    <property name="expression">none</property>
-    <onclick>Weather.LocationNext</onclick>
-    <visible>Window.IsVisible(weather)</visible>
 </item>
