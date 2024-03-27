@@ -66,7 +66,7 @@
     </variable>
 
     <include name="Action_Media_Onload">
-        <onload condition="String.IsEmpty(Skin.String(Navigation.Library.OnDown))">Skin.SetString(Navigation.Library.OnDown,Options)</onload>
+        <onload condition="String.IsEmpty(Skin.String(Navigation.Global.OnDown))">Skin.SetString(Navigation.Global.OnDown,Search)</onload>
         <onload>RunScript(script.skinvariables,action=buildviews)</onload>
         <onload>ClearProperty(MediaFilterBase)</onload>
         <onunload>ClearProperty(MediaFilterBase)</onunload>
@@ -136,6 +136,7 @@
         <onload condition="!Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu) + String.IsEmpty(Window($PARAM[window_id]).Property(TMDbHelper.WidgetContainer))">SetProperty(TMDbHelper.WidgetContainer,301,$PARAM[window_id])</onload>
         <onload condition="!Window.IsVisible(Home) + Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu) + String.IsEmpty(Window($PARAM[window_id]).Property(TMDbHelper.WidgetContainer))">SetProperty(TMDbHelper.WidgetContainer,601,$PARAM[window_id])</onload>
         <onload condition="Skin.HasSetting(Hub.$PARAM[window_id].DisableSubmenu)">SetProperty(Slide.WidgetContainer,True,$PARAM[window_id])</onload>
+        <onload condition="String.IsEmpty(Skin.String(Navigation.Global.OnDown))">Skin.SetString(Navigation.Global.OnDown,Search)</onload>
 
         <include>Action_BuildShortcuts_OnLoad</include>
 
@@ -210,22 +211,28 @@
             <ondown condition="$PARAM[condition] + $PARAM[move]">SetProperty(WidgetGroup.Movement,Down)</ondown>
             <ondown condition="$PARAM[condition] + $PARAM[move]">Control.Move(303,1)</ondown>
 
-            <!-- Bump -->
-            <!-- <ondown condition="$PARAM[condition] + ![$PARAM[move]] + String.IsEmpty(Skin.String(Navigation.Hubs.OnDown))">SetProperty(List.ViewContainer,$NUMBER[$PARAM[id]])</ondown>
-            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + String.IsEmpty(Skin.String(Navigation.Hubs.OnDown))">$PARAM[bump_id]</ondown> -->
-            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + String.IsEmpty(Skin.String(Navigation.Hubs.OnDown))">ActivateWindow(1171)</ondown>
+            <!-- Options -->
+            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + Skin.String(Navigation.Global.OnDown,Options)">ActivateWindow(1171)</ondown>
+
+            <!-- Search -->
+            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + Skin.String(Navigation.Global.OnDown,Search)">ActivateWindow(1185)</ondown>
+
+            <!-- Filter -->
+            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + Skin.String(Navigation.Global.OnDown,Filter)">ActivateWindow(1105)</ondown>
+
+            <!-- Add-ons -->
+            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + Skin.String(Navigation.Global.OnDown,Add-ons)">ActivateWindow(1132)</ondown>
+
+            <!-- Next Aired Library -->
+            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + Skin.String(Navigation.Global.OnDown,Next Aired Library)">ActivateWindow(1131)</ondown>
+
+            <!-- Next Aired Trakt -->
+            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + Skin.String(Navigation.Global.OnDown,Next Aired Trakt)">ActivateWindow(1130)</ondown>
 
             <!-- Explore -->
-            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + Skin.String(Navigation.Hubs.OnDown,ActivateWindow(1182))">ClearProperty(Hubs.ExtendedWidgetGUID,Home)</ondown>
-            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + Skin.String(Navigation.Hubs.OnDown,ActivateWindow(1182)) + [Window.IsVisible(Home) + !Skin.String(Home.SideMenuCollapse,Topbar)] + String.IsEmpty(Container(303).ListItem.Property(global_widgets)) + !Skin.HasSetting(Hub.Home.DisableSubmenu)">SetProperty(Hubs.ExtendedWidgetGUID,$INFO[Container(303).ListItem.Property(guid)],Home)</ondown>
-            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + Skin.String(Navigation.Hubs.OnDown,ActivateWindow(1182)) + [Window.IsVisible(Home) + Skin.String(Home.SideMenuCollapse,Topbar)] + String.IsEmpty(Container(370).ListItem.Property(global_widgets)) + !Skin.HasSetting(Hub.Home.DisableSubmenu)">SetProperty(Hubs.ExtendedWidgetGUID,$INFO[Container(370).ListItem.Property(guid)],Home)</ondown>
             <include content="Action_View_Explore_OnDown">
-                <param name="condition">$PARAM[condition] + ![$PARAM[move]] + Skin.String(Navigation.Hubs.OnDown,ActivateWindow(1182)) + [!Window.IsVisible(Home) | [Skin.HasSetting(Hub.Home.DisableSubmenu) + [[Skin.String(Home.SideMenuCollapse,Topbar) + !String.IsEmpty(Container(370).ListItem.Property(global_widgets))] | [!Skin.String(Home.SideMenuCollapse,Topbar) + !String.IsEmpty(Container(303).ListItem.Property(global_widgets))]]]]</param>
+                <param name="condition">$PARAM[condition] + ![$PARAM[move]] + Skin.String(Navigation.Global.OnDown,Explore)</param>
             </include>
-            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + Skin.String(Navigation.Hubs.OnDown,ActivateWindow(1182)) + ![!Window.IsVisible(Home) | [Skin.HasSetting(Hub.Home.DisableSubmenu) + [[Skin.String(Home.SideMenuCollapse,Topbar) + !String.IsEmpty(Container(370).ListItem.Property(global_widgets))] | [!Skin.String(Home.SideMenuCollapse,Topbar) + !String.IsEmpty(Container(303).ListItem.Property(global_widgets))]]]]">ActivateWindow(1182)</ondown>
-
-            <!-- Action Window -->
-            <ondown condition="$PARAM[condition] + ![$PARAM[move]] + !Skin.String(Navigation.Hubs.OnDown,ActivateWindow(1182))">$INFO[Skin.String(Navigation.Hubs.OnDown)]</ondown>
         </definition>
     </include>
 
@@ -416,14 +423,26 @@
         <definition>
             <!-- Explore -->
             <include content="Action_View_Explore_OnDown">
-                <param name="condition">[$PARAM[condition] + Skin.String(Navigation.Library.OnDown,Explore)]</param>
+                <param name="condition">[$PARAM[condition] + Skin.String(Navigation.Global.OnDown,Explore)]</param>
             </include>
 
             <!-- Filter -->
-            <ondown condition="$PARAM[condition] + Skin.String(Navigation.Library.OnDown,Filter)">SetFocus(64)</ondown>
+            <ondown condition="$PARAM[condition] + Skin.String(Navigation.Global.OnDown,Filter)">SetFocus(64)</ondown>
 
             <!-- Options -->
-            <ondown condition="$PARAM[condition] + Skin.String(Navigation.Library.OnDown,Options)">ActivateWindow(1171)</ondown>
+            <ondown condition="$PARAM[condition] + Skin.String(Navigation.Global.OnDown,Options)">ActivateWindow(1171)</ondown>
+
+            <!-- Search -->
+            <ondown condition="$PARAM[condition] + Skin.String(Navigation.Global.OnDown,Search)">ActivateWindow(1185)</ondown>
+
+            <!-- Add-ons -->
+            <ondown condition="$PARAM[condition] + Skin.String(Navigation.Global.OnDown,Add-ons)">ActivateWindow(1132)</ondown>
+
+            <!-- Next Aired Library -->
+            <ondown condition="$PARAM[condition] + Skin.String(Navigation.Global.OnDown,Next Aired Library)">ActivateWindow(1131)</ondown>
+
+            <!-- Next Aired Trakt -->
+            <ondown condition="$PARAM[condition] + Skin.String(Navigation.Global.OnDown,Next Aired Trakt)">ActivateWindow(1130)</ondown>
         </definition>
     </include>
 
