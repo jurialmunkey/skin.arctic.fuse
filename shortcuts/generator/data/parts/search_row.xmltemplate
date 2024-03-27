@@ -1,10 +1,23 @@
-<include content="{widget_include}">
+<include content="_Widget_Row">
     <param name="id">{widget_id}</param>
-    <height>divider_bottom</height>
-    <bottom>40</bottom>
+    <param name="groupid">{widget_group_id}</param>
+    <param name="label">{widget_label}</param>
+    <param name="include">{widget_include}</param>
+    <param name="visible">{widget_visible}</param>
+    <param name="altvisible">{widget_altvisible}</param>
+    <param name="transition_include">true</param>
+    <param name="transition_hidden">Control.HasFocus({widget_id})</param>
+    <param name="widgetfade_include">true</param>
 
-    <visible>{widget_visible}</visible>
+    <include content="Action_View_Movement_OnLeftRight">
+        <param name="id">{widget_id}</param>
+        <param name="backid">5000</param>
+        <param name="onback">[Integer.IsEqual(Container({widget_id}).CurrentItem,1)]</param>
+    </include>
+
     <onfocus>SetProperty(TMDbHelper.WidgetContainer,{widget_id})</onfocus>
+    <onfocus>SetProperty(Transition.WidgetStyle,{widget_include},Home)</onfocus>
+    <onunfocus>ClearProperty(Transition.WidgetStyle,Home)</onunfocus>
 
     <include content="Object_ContentDynamic">
         <param name="sortby">{widget_sortby}</param>
@@ -14,17 +27,4 @@
         <param name="browse">$VAR[Defs_BrowseLimitedLists]</param>
         <param name="content">$VAR[Path_SearchTerm,{widget_path},{widget_path_end}]</param>
     </include>
-
-    <include content="Defs_AutoScroll" condition="{widget_isautoscroll}">
-        <param name="condition">[!Control.HasFocus({widget_id}) | System.IdleTime(3)]</param>
-    </include>
-
-    <onup>SetFocus(303,9999,absolute)</onup>
-    <ondown>SetFocus(67)</ondown>
-    <include content="Action_View_Movement_OnLeftRight">
-        <param name="id">{widget_id}</param>
-        <param name="onback">[Integer.IsEqual(Container({widget_id}).CurrentItem,1)]</param>
-    </include>
-    <pagecontrol>60</pagecontrol>
-
 </include>
