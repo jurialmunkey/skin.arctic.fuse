@@ -51,6 +51,27 @@
         </definition>
     </include>
 
+    <include name="Home_Menu_List_OnUp_Home">
+        <onup condition="Skin.String(Home.SideMenuCollapse,Topbar)">370</onup>
+        <onup condition="Skin.String(Home.SideMenuCollapse,Always)">SetProperty(List.ViewContainer.Prev,$INFO[Window.Property(List.ViewContainer)])</onup>
+        <onup condition="Skin.String(Home.SideMenuCollapse,Always)">SetProperty(List.ViewContainer,$PARAM[id])</onup>
+        <onup condition="Skin.String(Home.SideMenuCollapse,Always)">SetFocus(333)</onup>
+    </include>
+
+    <include name="Home_Menu_List_OnUp_Search">
+        <onup>9099</onup>
+    </include>
+
+    <include name="Home_Menu_List_OnUp_Previous">
+        <onup>PreviousMenu</onup>
+    </include>
+
+    <include name="Home_Menu_List_OnUp_Bump">
+        <onup>SetProperty(List.ViewContainer.Prev,$INFO[Window.Property(List.ViewContainer)])</onup>
+        <onup>SetProperty(List.ViewContainer,$PARAM[id])</onup>
+        <onup>SetFocus(333)</onup>
+    </include>
+
     <include name="Home_Menu_List">
         <param name="items_include">Home_Menu_Content</param>
         <param name="onlist">320</param>
@@ -74,11 +95,18 @@
 
                     <width>view_side</width>
 
-                    <onup condition="Window.IsVisible(Home) + Skin.String(Home.SideMenuCollapse,Topbar)">370</onup>
-
-                    <onup condition="!Window.IsVisible(Home) | Skin.String(Home.SideMenuCollapse,Always)">SetProperty(List.ViewContainer.Prev,$INFO[Window.Property(List.ViewContainer)])</onup>
-                    <onup condition="!Window.IsVisible(Home) | Skin.String(Home.SideMenuCollapse,Always)">SetProperty(List.ViewContainer,$PARAM[id])</onup>
-                    <onup condition="!Window.IsVisible(Home) | Skin.String(Home.SideMenuCollapse,Always)">SetFocus(333)</onup>
+                    <include content="Home_Menu_List_OnUp_Home" condition="Window.IsVisible(Home)">
+                        <param name="id">$PARAM[id]</param>
+                    </include>
+                    <include content="Home_Menu_List_OnUp_Search" condition="Window.IsVisible(1185)">
+                        <param name="id">$PARAM[id]</param>
+                    </include>
+                    <include content="Home_Menu_List_OnUp_Previous" condition="Window.IsVisible(1181) | Window.IsVisible(1182) | Window.IsVisible(1130) | Window.IsVisible(1131) | Window.IsVisible(1132)">
+                        <param name="id">$PARAM[id]</param>
+                    </include>
+                    <include content="Home_Menu_List_OnUp_Bump" condition="![Window.IsVisible(Home) | Window.IsVisible(1185) | Window.IsVisible(1181) | Window.IsVisible(1182) | Window.IsVisible(1130) | Window.IsVisible(1131) | Window.IsVisible(1132)]">
+                        <param name="id">$PARAM[id]</param>
+                    </include>
 
                     <ondown condition="![Window.IsVisible(Home) + Skin.String(Home.SideMenuCollapse,Library)]">$PARAM[onlist]</ondown>
                     <ondown condition="![Window.IsVisible(Home) + Skin.String(Home.SideMenuCollapse,Library)]">SetFocus($PARAM[onlist])</ondown>
