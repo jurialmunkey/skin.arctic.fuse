@@ -5,7 +5,7 @@
     <onload condition="!String.IsEmpty(Window.Property(Trailer)) + Player.HasVideo + !String.IsEqual(Window.Property(Trailer),Player.FileNameAndPath)">Action(Stop)</onload>
     <onload condition="!String.IsEmpty(Window.Property(Trailer)) + [!Player.HasVideo | !String.IsEqual(Window.Property(Trailer),Player.FileNameAndPath)]">PlayMedia($ESCINFO[Window.Property(Trailer)],False,1)</onload>
     <onunload>ClearProperty(TrailerFullscreen,1123)</onunload>
-    <onunload condition="Player.HasVideo + String.IsEqual(Window.Property(Trailer),Player.FileNameAndPath) + [Skin.HasSetting(Background.DisableVideo) | !Skin.HasSetting(Trailers.EnableAutoPlayback.Info)]">Action(Stop)</onunload>
+    <onunload condition="Player.HasVideo + [Skin.HasSetting(Background.DisableVideo) | !Skin.HasSetting(Trailers.EnableAutoPlayback.Info) | !Window.IsVisible(DialogVideoInfo.xml)]">Action(Stop)</onunload>
     <controls>
 
         <control type="group">
@@ -31,6 +31,7 @@
                             <param name="label">$LOCALIZE[31485]</param>
                             <param name="icon">special://skin/extras/icons/stop.png</param>
                             <param name="visible">Player.HasVideo</param>
+                            <onclick>Action(Stop)</onclick>
                             <onclick>Close</onclick>
                         </include>
                         <include content="Dialog_Side_Button">
