@@ -115,17 +115,25 @@
     <include name="Search_View_Widgets_Footer">
         <control type="group">
             <visible>!$EXP[Exp_InfoDialogs]</visible>
-            <include>Furniture_Bottom</include>
+            <control type="group">
+                <visible>![!String.IsEmpty(Window.Property(MediaFilterWall)) | !String.IsEmpty(Window.Property(MediaFilterBase))]</visible>
+                <control type="group">
+                    <visible>[Skin.String(Furniture.BottomLeft.Enable,Library) | Skin.String(Furniture.BottomLeft.Enable,Always)]</visible>
+                    <include>Furniture_Bottom_Left</include>
+                </control>
+                <include>View_Furniture_Bottom_Group_NextLabel</include>
+            </control>
+            <include>Furniture_Bottom_Right</include>
         </control>
     </include>
 
     <variable name="Search_Content_Discover">
-        <value condition="Skin.HasSetting(Search.EnableDiscover) + String.IsEqual(Container(5099).ListItem.Property(guid),guid-libraryall)">$VAR[Path_DiscoverWidgets_Join]$VAR[Path_DiscoverWidgets_Film,&amp;&amp;,]$VAR[Path_DiscoverWidgets_Show,&amp;&amp;,]</value>
-        <value condition="Skin.HasSetting(Search.EnableDiscover) + String.IsEqual(Container(5099).ListItem.Property(guid),guid-librarymovies)">$VAR[Path_DiscoverWidgets_Join]$VAR[Path_DiscoverWidgets_Film,&amp;&amp;,]</value>
-        <value condition="Skin.HasSetting(Search.EnableDiscover) + String.IsEqual(Container(5099).ListItem.Property(guid),guid-librarytvshows)">$VAR[Path_DiscoverWidgets_Join]$VAR[Path_DiscoverWidgets_Show,&amp;&amp;,]</value>
-        <value condition="Skin.HasSetting(Search.EnableDiscover) + String.IsEqual(Container(5099).ListItem.Property(guid),guid-discovermovies)">$VAR[Path_DiscoverWidgets_Join]$VAR[Path_DiscoverWidgets_Film,&amp;&amp;,]</value>
-        <value condition="Skin.HasSetting(Search.EnableDiscover) + String.IsEqual(Container(5099).ListItem.Property(guid),guid-discovertvshows)">$VAR[Path_DiscoverWidgets_Join]$VAR[Path_DiscoverWidgets_Show,&amp;&amp;,]</value>
-        <value condition="!Skin.HasSetting(Search.EnableDiscover)">$VAR[skinvariables-searchmenu-widgets-52]</value>
+        <value condition="!Skin.HasSetting(Search.DisableDiscover) + String.IsEqual(Container(5099).ListItem.Property(guid),guid-libraryall)">$VAR[Path_DiscoverWidgets_Join]$VAR[Path_DiscoverWidgets_Film,&amp;&amp;,]$VAR[Path_DiscoverWidgets_Show,&amp;&amp;,]</value>
+        <value condition="!Skin.HasSetting(Search.DisableDiscover) + String.IsEqual(Container(5099).ListItem.Property(guid),guid-librarymovies)">$VAR[Path_DiscoverWidgets_Join]$VAR[Path_DiscoverWidgets_Film,&amp;&amp;,]</value>
+        <value condition="!Skin.HasSetting(Search.DisableDiscover) + String.IsEqual(Container(5099).ListItem.Property(guid),guid-librarytvshows)">$VAR[Path_DiscoverWidgets_Join]$VAR[Path_DiscoverWidgets_Show,&amp;&amp;,]</value>
+        <value condition="!Skin.HasSetting(Search.DisableDiscover) + String.IsEqual(Container(5099).ListItem.Property(guid),guid-discovermovies)">$VAR[Path_DiscoverWidgets_Join]$VAR[Path_DiscoverWidgets_Film,&amp;&amp;,]</value>
+        <value condition="!Skin.HasSetting(Search.DisableDiscover) + String.IsEqual(Container(5099).ListItem.Property(guid),guid-discovertvshows)">$VAR[Path_DiscoverWidgets_Join]$VAR[Path_DiscoverWidgets_Show,&amp;&amp;,]</value>
+        <value condition="Skin.HasSetting(Search.DisableDiscover)">$VAR[skinvariables-searchmenu-widgets-52]</value>
         <value>-</value>
     </variable>
 
@@ -160,14 +168,20 @@
                     <height>divider_bottom</height>
                     <bottom>40</bottom>
                     <content limit="$VAR[Path_DiscoverWidgets_ItemLimit]" sortby="$VAR[Path_DiscoverWidgets_SortBy]" sortorder="$VAR[Path_DiscoverWidgets_SortOrder]" browse="$VAR[Defs_BrowseLimitedLists]">$VAR[skinvariables-searchmenu-widgets-50]</content>
+                    <onclick condition="Container(50).ListItem.IsFolder">SetProperty(DiscoverReturn,True)</onclick>
                     <onclick condition="Container(50).ListItem.IsFolder">ActivateWindow($INFO[Window.Property(List.Target)],$INFO[Container(50).ListItem.FolderPath],return)</onclick>
                     <onclick condition="!Container(50).ListItem.IsFolder">PlayMedia($INFO[Container(50).ListItem.FolderPath])</onclick>
                     <onfocus>SetProperty(List.Target,$INFO[Container(5099).ListItem.Property(target)])</onfocus>
-                    <visible>!Skin.HasSetting(Search.EnableDiscover)</visible>
+                    <visible>Skin.HasSetting(Search.DisableDiscover)</visible>
                     <visible>Integer.IsEqual(Container(5099).ListItem.Property(listid),50)</visible>
                     <onup>SetFocus(303,9999,absolute)</onup>
-                    <!-- <ondown>5099</ondown> -->
-                    <ondown>SetFocus(67)</ondown>
+
+                    <ondown condition="Skin.String(Navigation.Global.OnDown,Filter)">SetFocus(67)</ondown>
+                    <ondown condition="!Skin.String(Navigation.Global.OnDown,Filter) + !Skin.String(Navigation.Global.OnDown,Options)">SetProperty(DiscoverReturn,True)</ondown>
+                    <include content="Action_View_Movement_OnDown">
+                        <param name="condition">!Skin.String(Navigation.Global.OnDown,Filter)</param>
+                    </include>
+
                     <include content="Action_View_Movement_OnLeftRight">
                         <param name="id">50</param>
                         <param name="onback">[Integer.IsEqual(Container(50).CurrentItem,1)]</param>
@@ -180,14 +194,18 @@
                     <height>divider_bottom</height>
                     <bottom>40</bottom>
                     <content limit="$VAR[Path_DiscoverWidgets_ItemLimit]" sortby="$VAR[Path_DiscoverWidgets_SortBy]" sortorder="$VAR[Path_DiscoverWidgets_SortOrder]" browse="$VAR[Defs_BrowseLimitedLists]">$VAR[skinvariables-searchmenu-widgets-51]</content>
+                    <onclick condition="Container(50).ListItem.IsFolder">SetProperty(DiscoverReturn,True)</onclick>
                     <onclick condition="Container(51).ListItem.IsFolder">ActivateWindow($INFO[Window.Property(List.Target)],$INFO[Container(51).ListItem.FolderPath],return)</onclick>
                     <onclick condition="!Container(51).ListItem.IsFolder">PlayMedia($INFO[Container(51).ListItem.FolderPath])</onclick>
                     <onfocus>SetProperty(List.Target,$INFO[Container(5099).ListItem.Property(target)])</onfocus>
-                    <visible>!Skin.HasSetting(Search.EnableDiscover)</visible>
+                    <visible>Skin.HasSetting(Search.DisableDiscover)</visible>
                     <visible>Integer.IsEqual(Container(5099).ListItem.Property(listid),51)</visible>
                     <onup>SetFocus(303,9999,absolute)</onup>
-                    <!-- <ondown>5099</ondown> -->
-                    <ondown>SetFocus(67)</ondown>
+                    <ondown condition="Skin.String(Navigation.Global.OnDown,Filter)">SetFocus(67)</ondown>
+                    <ondown condition="!Skin.String(Navigation.Global.OnDown,Filter) + !Skin.String(Navigation.Global.OnDown,Options)">SetProperty(DiscoverReturn,True)</ondown>
+                    <include content="Action_View_Movement_OnDown">
+                        <param name="condition">!Skin.String(Navigation.Global.OnDown,Filter)</param>
+                    </include>
                     <include content="Action_View_Movement_OnLeftRight">
                         <param name="id">51</param>
                         <param name="onback">[Integer.IsEqual(Container(51).CurrentItem,1)]</param>
@@ -200,14 +218,18 @@
                     <height>divider_bottom</height>
                     <bottom>40</bottom>
                     <content limit="$VAR[Path_DiscoverWidgets_ItemLimit]" sortby="$VAR[Path_DiscoverWidgets_SortBy]" sortorder="$VAR[Path_DiscoverWidgets_SortOrder]" browse="$VAR[Defs_BrowseLimitedLists]">$VAR[Search_Content_Discover]</content>
+                    <onclick condition="Container(50).ListItem.IsFolder">SetProperty(DiscoverReturn,True)</onclick>
                     <onclick condition="Container(52).ListItem.IsFolder">ActivateWindow($INFO[Window.Property(List.Target)],$INFO[Container(52).ListItem.FolderPath],return)</onclick>
                     <onclick condition="!Container(52).ListItem.IsFolder">PlayMedia($INFO[Container(52).ListItem.FolderPath])</onclick>
                     <onfocus>SetProperty(List.Target,$INFO[Container(5099).ListItem.Property(target)])</onfocus>
-                    <!-- <visible>Skin.HasSetting(Search.EnableDiscover)</visible> -->
+                    <!-- <visible>!Skin.HasSetting(Search.DisableDiscover)</visible> -->
                     <visible>Integer.IsEqual(Container(5099).ListItem.Property(listid),52)</visible>
                     <onup>SetFocus(303,9999,absolute)</onup>
-                    <!-- <ondown>5099</ondown> -->
-                    <ondown>SetFocus(67)</ondown>
+                    <ondown condition="Skin.String(Navigation.Global.OnDown,Filter)">SetFocus(67)</ondown>
+                    <ondown condition="!Skin.String(Navigation.Global.OnDown,Filter) + !Skin.String(Navigation.Global.OnDown,Options)">SetProperty(DiscoverReturn,True)</ondown>
+                    <include content="Action_View_Movement_OnDown">
+                        <param name="condition">!Skin.String(Navigation.Global.OnDown,Filter)</param>
+                    </include>
                     <include content="Action_View_Movement_OnLeftRight">
                         <param name="id">52</param>
                         <param name="onback">[Integer.IsEqual(Container(52).CurrentItem,1)]</param>
@@ -219,7 +241,7 @@
             <include>Transitions_List_Poster_Row</include>
         </control>
 
-        <!-- <control type="group">
+        <control type="group">
             <height>scrollbar_w</height>
             <centerbottom>100</centerbottom>
             <left>view_side</left>
@@ -249,7 +271,7 @@
                 <include>Defs_Label_FooterItem</include>
                 <visible>Integer.IsEqual(Container(5099).ListItem.Property(listid),52)</visible>
             </control>
-        </control> -->
+        </control>
 
         <include content="Categories_Selector">
             <param name="id">5099</param>
@@ -259,9 +281,12 @@
             <param name="font">font_mini</param>
             <top>920</top>
             <onup>6000</onup>
-            <ondown>SetFocus(67)</ondown>
+            <ondown condition="Skin.String(Navigation.Global.OnDown,Filter)">SetFocus(67)</ondown>
+            <ondown condition="!Skin.String(Navigation.Global.OnDown,Filter) + !Skin.String(Navigation.Global.OnDown,Options)">SetProperty(DiscoverReturn,True)</ondown>
+            <include content="Action_View_Movement_OnDown">
+                <param name="condition">!Skin.String(Navigation.Global.OnDown,Filter)</param>
+            </include>
             <visible allowhiddenfocus="true">False</visible>
-            <!-- <visible allowhiddenfocus="true">![!String.IsEmpty(Window.Property(MediaFilterWall)) | !String.IsEmpty(Window.Property(MediaFilterBase))]</visible> -->
             <content>
                 <item>
                     <label>$LOCALIZE[342] (TMDb)</label>
@@ -271,7 +296,7 @@
                     <property name="onfocus_one">SetProperty(TMDbHelper.WidgetContainer,52)</property>
                     <property name="main_guid">$INFO[Container(5099).ListItem.Property(guid)]</property>
                     <property name="discover">true</property>
-                    <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+                    <visible>!Skin.HasSetting(Search.DisableDiscover)</visible>
                 </item>
                 <item>
                     <label>$LOCALIZE[20343] (TMDb)</label>
@@ -281,7 +306,7 @@
                     <property name="onfocus_one">SetProperty(TMDbHelper.WidgetContainer,52)</property>
                     <property name="main_guid">$INFO[Container(5099).ListItem.Property(guid)]</property>
                     <property name="discover">true</property>
-                    <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+                    <visible>!Skin.HasSetting(Search.DisableDiscover)</visible>
                 </item>
                 <!-- <item>
                     <label>$LOCALIZE[31382]</label>
@@ -290,7 +315,7 @@
                     <property name="listid">$NUMBER[52]</property>
                     <property name="onfocus_one">SetProperty(TMDbHelper.WidgetContainer,52)</property>
                     <property name="main_guid">$INFO[Container(5099).ListItem.Property(guid)]</property>
-                    <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+                    <visible>!Skin.HasSetting(Search.DisableDiscover)</visible>
                 </item> -->
                 <item>
                     <label>$LOCALIZE[342] ($LOCALIZE[14022])</label>
@@ -299,7 +324,7 @@
                     <property name="listid">$NUMBER[52]</property>
                     <property name="onfocus_one">SetProperty(TMDbHelper.WidgetContainer,52)</property>
                     <property name="main_guid">$INFO[Container(5099).ListItem.Property(guid)]</property>
-                    <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+                    <visible>!Skin.HasSetting(Search.DisableDiscover)</visible>
                 </item>
                 <item>
                     <label>$LOCALIZE[20343] ($LOCALIZE[14022])</label>
@@ -308,7 +333,7 @@
                     <property name="listid">$NUMBER[52]</property>
                     <property name="onfocus_one">SetProperty(TMDbHelper.WidgetContainer,52)</property>
                     <property name="main_guid">$INFO[Container(5099).ListItem.Property(guid)]</property>
-                    <visible>Skin.HasSetting(Search.EnableDiscover)</visible>
+                    <visible>!Skin.HasSetting(Search.DisableDiscover)</visible>
                 </item>
                 <include>skinvariables-searchmenu-rowitems</include>
             </content>
