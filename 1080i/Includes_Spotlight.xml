@@ -44,10 +44,14 @@
             <control type="wraplist" id="301">
                 <preloaditems>2</preloaditems>
                 <onfocus>SetProperty(TMDbHelper.WidgetContainer,301,$PARAM[window_id])</onfocus>
-                <onup>SetFocus(311)</onup>
-                <ondown>SetFocus(311)</ondown>
-                <onfocus>SetFocus(311)</onfocus>
-                <onback>311</onback>
+
+                <onfocus condition="Integer.IsEqual(Container(301).NumItems,0)">SetFocus(300)</onfocus>
+                <onfocus condition="!Integer.IsEqual(Container(301).NumItems,0)">SetFocus(311)</onfocus>
+
+                <onup>303</onup>
+                <ondown>303</ondown>
+                <onback>303</onback>
+
                 <orientation>horizontal</orientation>
                 <scrolltime tween="quadratic">400</scrolltime>
                 <hitrect x="0" y="0" w="0" h="0" />
@@ -187,7 +191,6 @@
                         <align>left</align>
                         <width>auto</width>
                         <textoffsetx>80</textoffsetx>
-                        <onfocus condition="![$EXP[Exp_Hubs_Spotlight_IsVisible] + $PARAM[visible]]">SetFocus(300)</onfocus>
                         <texturenofocus />
                         <texturefocus />
                         <onclick condition="Container(301).ListItem.IsFolder">ActivateWindow($VAR[Path_Spotlight_Target],$INFO[Container(301).ListItem.FolderPath],return)</onclick>
