@@ -7,35 +7,7 @@
             <include>Dimension_DialogSideMenu</include>
             <include>Animation_Right_Delay</include>
             <include content="Dialog_Dim_Side">
-                <param name="slide_condition">true</param>
-            </include>
-
-            <!-- Bottom Layer -->
-            <include content="Dialog_Background_Side">
-                <param name="slide_condition">true</param>
-                <param name="dialog_size">Dimension_DialogSideMenu</param>
-                <!-- Side Buttons -->
-                <include content="Dialog_Body">
-                    <include content="Dialog_Side_Grouplist">
-                        <param name="id">9000</param>
-                        <onright>8000</onright>
-                        <onleft>Close</onleft>
-
-                        <include content="Dialog_Side_Button">
-                            <param name="id">02</param>
-                            <param name="label">$LOCALIZE[192]</param>
-                            <param name="icon">special://skin/extras/icons/triangle-exclamation.png</param>
-                            <onclick condition="String.IsEmpty(Window(1105).Property(SearchDiscover.PersonSearch))">ClearProperty(SearchDiscover.CastLabel,1105)</onclick>
-                            <onclick condition="String.IsEmpty(Window(1105).Property(SearchDiscover.PersonSearch))">ClearProperty(SearchDiscover.CastID,1105)</onclick>
-                            <onclick condition="String.IsEqual(Window(1105).Property(SearchDiscover.PersonSearch),Crew)">ClearProperty(SearchDiscover.CrewLabel,1105)</onclick>
-                            <onclick condition="String.IsEqual(Window(1105).Property(SearchDiscover.PersonSearch),Crew)">ClearProperty(SearchDiscover.CrewID,1105)</onclick>
-                            <onclick condition="String.IsEqual(Window(1105).Property(SearchDiscover.PersonSearch),People)">ClearProperty(SearchDiscover.PeopleLabel,1105)</onclick>
-                            <onclick condition="String.IsEqual(Window(1105).Property(SearchDiscover.PersonSearch),People)">ClearProperty(SearchDiscover.PeopleID,1105)</onclick>
-                            <onclick>Close</onclick>
-                        </include>
-
-                    </include>
-                </include>
+                <param name="slide_animation">False</param>
             </include>
 
             <include content="Dialog_Foreground_Side">
@@ -54,21 +26,50 @@
                 <include content="Dialog_Body">
                     <include content="Dialog_Body_Group">
                         <include content="Settings_Label">
-                            <top>-10</top>
+                            <top>-20</top>
                             <label>$LOCALIZE[137]</label>
                         </include>
                         <control type="edit" id="8001">
                             <height>80</height>
-                            <ondown>8000</ondown>
-                            <top>40</top>
+                            <onup>SetFocus(8000,99999,absolute)</onup>
+                            <ondown>8002</ondown>
+                            <top>20</top>
                         </control>
+
+
+                        <control type="grouplist" id="8003">
+                            <top>120</top>
+                            <height>80</height>
+                            <orientation>vertical</orientation>
+                            <onup>8001</onup>
+                            <ondown>SetFocus(8000,0,absolute)</ondown>
+                            <onright>61</onright>
+                            <include content="Settings_ButtonImage">
+                                <param name="id">8002</param>
+                                <param name="groupid">8102</param>
+                                <param name="dialog">true</param>
+                                <param name="control">button</param>
+                                <param name="icon">special://skin/extras/icons/triangle-exclamation.png</param>
+                                <label>$LOCALIZE[192]</label>
+                                <onclick condition="String.IsEmpty(Window(1105).Property(SearchDiscover.PersonSearch))">ClearProperty(SearchDiscover.CastLabel,1105)</onclick>
+                                <onclick condition="String.IsEmpty(Window(1105).Property(SearchDiscover.PersonSearch))">ClearProperty(SearchDiscover.CastID,1105)</onclick>
+                                <onclick condition="String.IsEqual(Window(1105).Property(SearchDiscover.PersonSearch),Crew)">ClearProperty(SearchDiscover.CrewLabel,1105)</onclick>
+                                <onclick condition="String.IsEqual(Window(1105).Property(SearchDiscover.PersonSearch),Crew)">ClearProperty(SearchDiscover.CrewID,1105)</onclick>
+                                <onclick condition="String.IsEqual(Window(1105).Property(SearchDiscover.PersonSearch),People)">ClearProperty(SearchDiscover.PeopleLabel,1105)</onclick>
+                                <onclick condition="String.IsEqual(Window(1105).Property(SearchDiscover.PersonSearch),People)">ClearProperty(SearchDiscover.PeopleID,1105)</onclick>
+                                <onclick>Close</onclick>
+                                <ondown>SetFocus(8000,0,absolute)</ondown>
+                            </include>
+                        </control>
+
                         <control type="image">
                             <left>20</left>
                             <right>20</right>
-                            <centertop>140</centertop>
+                            <centertop>220</centertop>
                             <height>1</height>
                             <texture colordiffuse="main_fg_12">common/white.png</texture>
                         </control>
+
                         <include content="List_DialogSelect">
                             <param name="id">8000</param>
                             <param name="control">fixedlist</param>
@@ -76,10 +77,11 @@
                             <pagecontrol>61</pagecontrol>
                             <focusposition>1</focusposition>
                             <movement>6</movement>
-                            <top>160</top>
-                            <onup>8001</onup>
+                            <top>240</top>
+                            <onup>8002</onup>
+                            <ondown>8001</ondown>
                             <onright>61</onright>
-                            <onleft>9000</onleft>
+                            <onleft>Close</onleft>
                             <onclick condition="String.IsEmpty(Window(1105).Property(SearchDiscover.PersonSearch))">SetProperty(SearchDiscover.CastLabel,$INFO[Container(8000).ListItem.Label],1105)</onclick>
                             <onclick condition="String.IsEmpty(Window(1105).Property(SearchDiscover.PersonSearch))">SetProperty(SearchDiscover.CastID,$INFO[Container(8000).ListItem.Property(TMDb_ID)],1105)</onclick>
                             <onclick condition="String.IsEqual(Window(1105).Property(SearchDiscover.PersonSearch),Crew)">SetProperty(SearchDiscover.CrewLabel,$INFO[Container(8000).ListItem.Label],1105)</onclick>
@@ -92,11 +94,14 @@
                             <animation effect="fade" start="100" end="0" condition="Container(8000).IsUpdating">Conditional</animation>
                         </include>
 
-                        <include content="Widget_Busy_Spinner">
-                            <param name="busy_visible">true</param>
-                            <param name="label">$LOCALIZE[31033]</param>
-                            <visible>Container(8000).IsUpdating</visible>
-                        </include>
+                        <control type="group">
+                            <top>80</top>
+                            <include content="Widget_Busy_Spinner">
+                                <param name="busy_visible">true</param>
+                                <param name="label">$LOCALIZE[31033]</param>
+                                <visible>Container(8000).IsUpdating</visible>
+                            </include>
+                        </control>
                     </include>
 
 
