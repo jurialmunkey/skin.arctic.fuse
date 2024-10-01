@@ -7,7 +7,7 @@ or send a letter to Creative Commons, 171 Second Street, Suite 300, San Francisc
 ### What the fork!
 
 This is just a personal fork that I created to tinker with some stuff and have fun.
-Not currently offering any "official" support but feel free to ask question here or on the forum!
+Not currently offering any "official" support but feel free to ask questions here or on the forum!
 
 
 ### Artwork attributions
