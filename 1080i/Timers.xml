@@ -3,13 +3,22 @@
 
     <timer>
         <name>idle_spotlight_trailer</name>
-        <start reset="true">[[Skin.HasSetting(Trailers.EnableAutoPlayback) + Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)] | [Skin.HasSetting(Trailers.EnableAutoPlayback.Info) + Window.IsVisible(DialogVideoInfo.xml)]] + !String.IsEmpty(Container(99950).ListItem.Trailer)</start>
-        <reset>![[[Skin.HasSetting(Trailers.EnableAutoPlayback) + Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)] | [Skin.HasSetting(Trailers.EnableAutoPlayback.Info) + Window.IsVisible(DialogVideoInfo.xml)]] + !String.IsEmpty(Container(99950).ListItem.Trailer)] | !String.IsEqual(Window(Home).Property(AutoTrailer),Container(99950).ListItem.Trailer) | [Player.HasVideo + !String.IsEqual(Window(Home).Property(PlayTrailer),Player.FileNameAndPath)]</reset>
-        <stop>![[[Skin.HasSetting(Trailers.EnableAutoPlayback) + Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)] | [Skin.HasSetting(Trailers.EnableAutoPlayback.Info) + Window.IsVisible(DialogVideoInfo.xml)]] + !String.IsEmpty(Container(99950).ListItem.Trailer)] | !String.IsEqual(Window(Home).Property(AutoTrailer),Container(99950).ListItem.Trailer) | [Player.HasVideo + !String.IsEqual(Window(Home).Property(PlayTrailer),Player.FileNameAndPath)]</stop>
+        <start reset="true">[[Skin.HasSetting(Trailers.EnableAutoPlayback) + Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)] | [Skin.HasSetting(Trailers.EnableAutoPlayback.Info) + Window.IsVisible(DialogVideoInfo.xml)]] + !String.IsEmpty(Container(99950).ListItem.Trailer) + !Control.HasFocus(303)</start>
+        <reset>![[[Skin.HasSetting(Trailers.EnableAutoPlayback) + Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)] | [Skin.HasSetting(Trailers.EnableAutoPlayback.Info) + Window.IsVisible(DialogVideoInfo.xml)]] + !String.IsEmpty(Container(99950).ListItem.Trailer)] | !String.IsEqual(Window(Home).Property(AutoTrailer),Container(99950).ListItem.Trailer) | [Player.HasVideo + !String.IsEqual(Window(Home).Property(PlayTrailer),Player.FileNameAndPath)] | [Control.HasFocus(303)]</reset>
+        <stop>![[[Skin.HasSetting(Trailers.EnableAutoPlayback) + Integer.IsEqual(Window.Property(TMDBHelper.WidgetContainer),301)] | [Skin.HasSetting(Trailers.EnableAutoPlayback.Info) + Window.IsVisible(DialogVideoInfo.xml)]] + !String.IsEmpty(Container(99950).ListItem.Trailer)] | !String.IsEqual(Window(Home).Property(AutoTrailer),Container(99950).ListItem.Trailer) | [Player.HasVideo + !String.IsEqual(Window(Home).Property(PlayTrailer),Player.FileNameAndPath)] | [Control.HasFocus(303)]</stop>
         <onstart>SetProperty(AutoTrailer,$ESCINFO[Container(99950).ListItem.Trailer],Home)</onstart>
         <onstart>SetProperty(AutoTrailerTitle,$ESCINFO[Container(99950).ListItem.Title],Home)</onstart>
+		
         <onstop condition="Player.HasVideo + String.IsEqual(Window(Home).Property(PlayTrailer),Player.FileNameAndPath) + !Window.IsVisible(1123) + [!Window.IsVisible(DialogVideoInfo.xml) | String.IsEqual(Window(Home).Property(PlayTrailerTrigger),VideoInfo)]">Action(Stop)</onstop>
-        <onstop>ClearProperty(AutoTrailer,Home)</onstop>
+		
+		
+		<!-- To clear PlayTrailer property when trailer is partially play in Spotlight only -->		
+		
+		<onstop condition="[Control.HasFocus(311) | Control.HasFocus(313)]">ClearProperty(PlayTrailer,Home)</onstop>
+        <onstop condition="[Control.HasFocus(311) | Control.HasFocus(313)]">ClearProperty(PlayTrailerTitle,Home)</onstop>
+        
+		
+		<onstop>ClearProperty(AutoTrailer,Home)</onstop>
         <onstop>ClearProperty(AutoTrailerTitle,Home)</onstop>
     </timer>
 
@@ -22,4 +31,38 @@
         <onstart condition="!String.IsEmpty(Container(99950).ListItem.Trailer) + !String.IsEqual(Window(Home).Property(PlayTrailer),Container(99950).ListItem.Trailer) + !Window.IsVisible(1120) + !Window.IsVisible(1121) + !Window.IsVisible(1122)">SetProperty(PlayTrailer,$ESCINFO[Container(99950).ListItem.Trailer],Home)</onstart>
         <onstart condition="!String.IsEmpty(Container(99950).ListItem.Trailer) + !String.IsEqual(Window(Home).Property(PlayTrailer),Container(99950).ListItem.Trailer) + !Window.IsVisible(1120) + !Window.IsVisible(1121) + !Window.IsVisible(1122)">PlayMedia($ESCINFO[Container(99950).ListItem.Trailer],1)</onstart>
     </timer>
+	
+	<!-- CUSTOM TIMERS -->
+	
+	<timer>
+		<name>play_fullscreen_trailer</name>
+		<start reset="false">[[Skin.HasSetting(Trailers.EnableAutoPlayback.Info) + [Player.HasVideo + String.IsEqual(Window(Home).Property(PlayTrailer),Player.FileNameAndPath)] + Window.IsVisible(DialogVideoInfo.xml)] + System.IdleTime(20)]</start>
+		<stop>![[Skin.HasSetting(Trailers.EnableAutoPlayback.Info) + [Player.HasVideo + String.IsEqual(Window(Home).Property(PlayTrailer),Player.FileNameAndPath)] + Window.IsVisible(DialogVideoInfo.xml)] + System.IdleTime(20)]</stop>
+		<onstart>SetProperty(TrailerFullscreen,True,1123)</onstart>
+		<onstart>SetProperty(ReplaceWindow,1123,DialogVideoInfo.xml)</onstart>
+		<onstart condition="!Window.IsActive(1123)">ActivateWindow(1123)</onstart>
+		<onstart condition="Window.IsActive(1123)">ReplaceWindow(1197)</onstart>
+	</timer>
+	
+	<!-- EXPERIMENTAL TIMERS -->
+	
+	 
+	<!-- <timer>
+		<name>mute_info_trailer</name>
+		<start reset="true">Skin.HasSetting(Trailers.EnableAutoPlayback.Info) + Window.IsVisible(DialogVideoInfo.xml)</start>
+		<stop>![Skin.HasSetting(Trailers.EnableAutoPlayback.Info) + Window.IsVisible(DialogVideoInfo.xml)]</stop>
+		<onstart condition="!Player.Muted">Action(Mute)</onstart>
+		<onstop condition="Player.Muted">Action(Mute)</onstop>
+	</timer>
+	
+	<timer>
+		<name>unmute_info_trailerwindow</name>
+		<start reset="true">Skin.HasSetting(Trailers.EnableAutoPlayback.Info) + Window.IsVisible(1123)</start>
+		<stop>![Skin.HasSetting(Trailers.EnableAutoPlayback.Info) + Window.IsVisible(1123)]</stop>
+		<onstart condition="Player.Muted">Action(Mute)</onstart>
+		<onstop condition="Window.IsVisible(DialogVideoInfo.xml) + !Player.Muted">Action(Mute)</onstop>
+	</timer> -->
+	
+	
+	
 </timers>

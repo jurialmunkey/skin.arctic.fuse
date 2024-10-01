@@ -153,6 +153,73 @@
 
         </definition>
     </include>
+	
+	<include name="Layout_MenuList2">
+        <param name="selected">false</param>
+        <param name="detailed">false</param>
+        <definition>
+            <control type="group">
+                <include content="Object_Control" condition="$PARAM[selected]">
+                    <param name="control">image</param>
+                    <include>Texture_Menu_Highlight_H</include>
+                </include>
+                <control type="label">
+                    <include condition="$PARAM[selected]">Color_SelectedText</include>
+					<left>-60</left>
+                    <textoffsetx>90</textoffsetx>
+                    <textcolor>dialog_fg_70</textcolor>
+                    <selectedcolor>dialog_fg_70</selectedcolor>
+                    <label>$INFO[ListItem.Label]</label>
+                </control>
+                <control type="label">
+                    <include condition="$PARAM[selected]">Color_SelectedText</include>
+                    <align>right</align>
+                    <textoffsetx>40</textoffsetx>
+                    <textcolor>dialog_fg_70</textcolor>
+                    <selectedcolor>dialog_fg_70</selectedcolor>
+                    <label>$INFO[ListItem.Label2]</label>
+                    <visible>$PARAM[detailed]</visible>
+                </control>
+            </control>
+
+            <control type="group">
+                <centerright>60</centerright>
+                <centertop>50%</centertop>
+                <width>40</width>
+                <height>40</height>
+                <visible>!$PARAM[detailed]</visible>
+
+
+                <control type="image">
+                    <bordersize>icon_home_bordersize</bordersize>
+                    <aspectratio scalediffuse="false">scale</aspectratio>
+                    <visible>String.IsEmpty(ListItem.Icon) | String.StartsWith(ListItem.Icon,special://skin/extras/icons)</visible>
+                    <include content="Object_ColorDiffuse" condition="$PARAM[selected]">
+                        <param name="colordiffuse">$VAR[ColorSelected]</param>
+                    </include>
+                    <colordiffuse>dialog_fg_70</colordiffuse>
+                    <texture background="true" diffuse="diffuse/circle_120.png">$INFO[ListItem.Icon]</texture>
+                </control>
+                <control type="image">
+                    <bordersize>icon_main_bordersize</bordersize>
+                    <aspectratio scalediffuse="false">scale</aspectratio>
+                    <visible>String.StartsWith(ListItem.Icon,Default)</visible>
+                    <include content="Object_ColorDiffuse" condition="$PARAM[selected]">
+                        <param name="colordiffuse">$VAR[ColorSelected]</param>
+                    </include>
+                    <colordiffuse>dialog_fg_70</colordiffuse>
+                    <texture background="true" diffuse="diffuse/circle_120.png">$INFO[ListItem.Icon]</texture>
+                </control>
+                <control type="image">
+                    <bordersize>icon_item_bordersize</bordersize>
+                    <aspectratio scalediffuse="false">scale</aspectratio>
+                    <visible>![String.IsEmpty(ListItem.Icon) | String.StartsWith(ListItem.Icon,special://skin/extras/icons) | String.StartsWith(ListItem.Icon,Default)]</visible>
+                    <texture background="true" diffuse="diffuse/circle_120.png" fallback="fallback/kodi-logo.png">$INFO[ListItem.Icon]</texture>
+                </control>
+            </control>
+
+        </definition>
+    </include>
 
 
     <include name="Layout_IconList">

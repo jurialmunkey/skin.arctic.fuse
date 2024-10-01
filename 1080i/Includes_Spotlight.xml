@@ -75,7 +75,8 @@
                 <left>-1920</left>
 
                 <include content="Defs_AutoScroll">
-                    <param name="condition">[[!ControlGroup(310).HasFocus() | System.IdleTime(3)] + ![Skin.TimerIsRunning(idle_spotlight_trailer) + !String.IsEmpty(Container(99950).ListItem.Trailer) + !String.IsEqual(Window(Home).Property(PlayTrailer),Container(99950).ListItem.Trailer)] + ![Player.HasVideo + String.IsEqual(Window(Home).Property(PlayTrailer),Player.FileNameAndPath)] + !Window.IsVisible(DialogVideoInfo.xml) + !Window.IsVisible(DialogMusicInfo.xml) + !Window.IsVisible(DialogContextMenu.xml) + !Window.IsVisible(1113) + !Window.IsVisible(1123) + !Window.IsVisible(script-wikipedia.xml) + !Window.IsVisible(DialogSelect.xml) + !Window.IsVisible(DialogBusy.xml)]</param>
+                   <!-- <param name="condition">[[!ControlGroup(310).HasFocus() | System.IdleTime(3)] + !Skin.TimerIsRunning(idle_spotlight_trailer) + !Player.HasMedia + !Window.IsVisible(DialogVideoInfo.xml) + !Window.IsVisible(DialogMusicInfo.xml) + !Window.IsVisible(DialogContextMenu.xml) + !Window.IsVisible(1113) + !Window.IsVisible(1123) + !Window.IsVisible(script-wikipedia.xml) + !Window.IsVisible(DialogSelect.xml)]</param> -->
+				   <param name="condition">[[!ControlGroup(310).HasFocus() | System.IdleTime(3)] + ![Skin.TimerIsRunning(idle_spotlight_trailer) + !String.IsEmpty(Container(99950).ListItem.Trailer) + !String.IsEqual(Window(Home).Property(PlayTrailer),Container(99950).ListItem.Trailer)] + ![Player.HasVideo + String.IsEqual(Window(Home).Property(PlayTrailer),Player.FileNameAndPath)] + !Window.IsVisible(DialogVideoInfo.xml) + !Window.IsVisible(DialogMusicInfo.xml) + !Window.IsVisible(DialogContextMenu.xml) + !Window.IsVisible(1113) + !Window.IsVisible(1123) + !Window.IsVisible(script-wikipedia.xml) + !Window.IsVisible(DialogSelect.xml) + !Window.IsVisible(DialogBusy.xml) + !Window.IsVisible(1170) + !Window.IsVisible(1162)]</param>
                 </include>
 
                 <itemlayout />
@@ -116,6 +117,8 @@
         <oninfo>SetFocus(301)</oninfo>
         <oninfo>Action(Info)</oninfo>
         <oninfo>SetFocus($PARAM[id])</oninfo>
+		
+		
     </include>
 
     <include name="Spotlight_Main">
@@ -145,20 +148,50 @@
 
                 <control type="grouplist" id="310">
                     <orientation>horizontal</orientation>
+					
+					<onup condition="!$EXP[Exp_HomeMenu_IsTopBar]">ActivateWindow(1105)</onup>
 
                     <include content="Action_Widget_Top" condition="!$EXP[Exp_HomeMenu_IsTopBar]">
                         <param name="id">311</param>
                     </include>
+					
+					<include content="Action_View_Movement_OnLeftRight_Custom2" condition="$EXP[Exp_HomeMenu_IsExpanded]">
+								<param name="id">311</param>
+								<param name="onleft">311</param>
+								<param name="onright">313</param>
+					</include>
+							
+							
+					<include content="Action_View_Movement_OnLeftRight_Custom1" condition="!$EXP[Exp_HomeMenu_IsExpanded]">
+								<param name="id">311</param>
+								<param name="onleft">311</param>
+								<param name="onright">313</param>
+					</include>
+					
+					
+					<!-- <onleft condition="Control.HasFocus(311) + Player.HasVideo + String.IsEqual(Window(Home).Property(PlayTrailer),Player.FileNameAndPath)">Skin.TimerStop(idle)</onleft>
+					<onright condition="Control.HasFocus(311) + Player.HasVideo + String.IsEqual(Window(Home).Property(PlayTrailer),Player.FileNameAndPath)">Skin.TimerStop(idle)</onright>
+					<onleft condition="Control.HasFocus(311) + Player.HasVideo + String.IsEqual(Window(Home).Property(PlayTrailer),Player.FileNameAndPath)">Skin.TimerStop(play_spotlight_trailer)</onleft>
+					<onright condition="Control.HasFocus(311) + Player.HasVideo + String.IsEqual(Window(Home).Property(PlayTrailer),Player.FileNameAndPath)">Skin.TimerStop(play_spotlight_trailer)</onright> -->
+					
+					
+					<onright condition="Player.HasVideo + String.IsEqual(Window(Home).Property(PlayTrailer),Player.FileNameAndPath)">Action(Stop)</onright>
+					<onleft condition="Player.HasVideo + String.IsEqual(Window(Home).Property(PlayTrailer),Player.FileNameAndPath)">Action(Stop)</onleft>
+					
+					
+					<onleft condition="$EXP[Exp_Hubs_Spotlight_HasItems] + Control.HasFocus(311)">Control.Move(301,-1)</onleft>
+					<!-- <onleft condition="$EXP[Exp_Hubs_Spotlight_HasItems] + Control.HasFocus(311) + Player.HasVideo + String.IsEqual(Window.Property(PlayTrailer),Player.FileNameAndPath)">Control.Move(301,1)</onleft> -->
+					<onleft condition="!$EXP[Exp_Hubs_Spotlight_HasItems] + Control.HasFocus(311)">Control.Move(9997,-1)</onleft>
+									
+					<onright condition="$EXP[Exp_Hubs_Spotlight_HasItems] + Control.HasFocus(313)">Control.Move(301,1)</onright>
+					<!-- <onright condition="$EXP[Exp_Hubs_Spotlight_HasItems] + Control.HasFocus(313) + Player.HasVideo + String.IsEqual(Window.Property(AutoTrailer),Player.FileNameAndPath)">Control.Move(301,-1)</onright> -->
+					<onright condition="!$EXP[Exp_Hubs_Spotlight_HasItems] + Control.HasFocus(313)">Control.Move(9997,1)</onright>															
+					
                     <onup condition="$EXP[Exp_HomeMenu_IsTopBar]">SetFocus(303)</onup>
 
-                    <include content="Action_View_Movement_OnLeftRight">
-                        <param name="id">311</param>
-                        <param name="onleft">315</param>
-                        <param name="backid">311</param>
-                        <param name="onback">Control.HasFocus(311)</param>
-                    </include>
-
                     <ondown>300</ondown>
+					
+					
 
                     <!-- <include content="Action_Widget_End">
                         <param name="condition">Integer.IsEqual(Container(300).NumItems,0)</param>
@@ -170,34 +203,138 @@
 
                     <centertop>180</centertop>
                     <left>140</left>
-                    <height>256</height>
+                    <height>512</height>
+					<width>1920</width>
                     <onfocus>ClearProperty(Slide.WidgetContainer,$PARAM[window_id])</onfocus>
 
                     <control type="group" id="321">
                         <left>60</left>
-                        <height>100</height>
-                        <width>100</width>
+                        <height>105</height>
+                        <width>300</width>
                         <centertop>50%</centertop>
-                        <control type="group">
+						
+					
+						
+                        <control type="group">			
                             <visible>!Control.HasFocus(311)</visible>
-                            <control type="image">
-                                <texture colordiffuse="$VAR[Spotlight_NF_Color_BG]">common/circle.png</texture>
+							<control type="image">
+								<height>106</height>
+								<width>100%</width>
+								<bordersize>0,12,0,12</bordersize>
+                                <texture colordiffuse="main_fg_12">common/menu.png</texture>
                             </control>
-                            <control type="image">
-                                <bordersize>20</bordersize>
-                                <texture colordiffuse="$VAR[Spotlight_NF_Color_FG]">$VAR[Image_FullscreenWidget_PlayButton]</texture>
-                            </control>
+								<control type="image">
+								<bordersize>12</bordersize>
+								<left>-1%</left>
+								<width>100</width>
+                                <texture colordiffuse="main_fg_90">special://skin/extras/icons/play2.png</texture>
+							
+							</control> 
+							
+							<control type="label">	
+							<left>30%</left>
+							<width>auto</width>
+							<label>$VAR[Label_FullscreenWidget_PlayButton]</label>
+							<font>font_main</font>
+							<textcolor>main_fg_90</textcolor>
+							</control>
+							
                         </control>
+						
                         <control type="group">
                             <visible>Control.HasFocus(311)</visible>
                             <control type="image">
-                                <include>Texture_Circle_Highlight_V</include>
+								<bordersize>0,12,0,12</bordersize>
+                                <include>Texture_Menu_Highlight_H</include>
                             </control>
-                            <control type="image">
-                                <bordersize>20</bordersize>
-                                <texture colordiffuse="$VAR[ColorSelected]">$VAR[Image_FullscreenWidget_PlayButton]</texture>
-                            </control>
+                            
+								<control type="image">
+                                <bordersize>12</bordersize>
+								<left>-1%</left>
+								<width>100</width>
+                                <texture colordiffuse="main_fg_90">special://skin/extras/icons/play2.png</texture>
+								</control>   
+								
+							<control type="label">
+							<left>30%</left>	
+							<width>auto</width>							
+							<label>$VAR[Label_FullscreenWidget_PlayButton]</label>
+							<font>font_main</font>
+							<textcolor>main_fg_90</textcolor>
+							</control>
+																
                         </control>
+							
+						
+						<!-- Left Chevron -->
+																
+								<control type="group">
+								<visible>Control.HasFocus(311)</visible>
+								
+								<animation condition="Control.HasFocus(311) + !Player.HasMedia" effect="fade" reversible="false" start="0" end="100" time="200" delay="100">Conditional</animation>
+								<animation condition="Control.HasFocus(311) + Player.HasMedia" effect="fade" reversible="false" start="100" end="0" time="200" delay="500">Conditional</animation>
+								
+								
+								<left>-380</left>
+								<top>-110</top>
+								
+								
+								
+								<include content="OSD_Button_Icon_Overlay">
+								<param name="icon">special://skin/extras/icons/chevron-left.png</param>
+								<param name="bordersize">3</param>
+								<param name="vertical">true</param>
+								<param name="itemgap">0</param>
+								<param name="center">true</param>
+								<param name="icon_colordiffuse">main_fg_90</param>
+								</include>
+								
+								</control>
+								
+								
+								<!-- Right Chevron - Minimized SideMenu -->
+								
+								<control type="group">
+								<visible>[Control.HasFocus(313) + !$EXP[Exp_HomeMenu_IsExpanded]]</visible>
+								<left>1780</left>
+								<top>-110</top>
+								
+								<animation condition="Control.HasFocus(313) + !Player.HasMedia" effect="fade" reversible="false" start="0" end="100" time="200" delay="100">Conditional</animation>
+								<animation condition="Control.HasFocus(313) + Player.HasMedia" effect="fade" reversible="false" start="100" end="0" time="200" delay="500">Conditional</animation>
+								
+								<include content="OSD_Button_Icon_Overlay">
+								<param name="icon">special://skin/extras/icons/chevron-right.png</param>
+								<param name="bordersize">3</param>
+								<param name="vertical">true</param>
+								<param name="itemgap">0</param>
+								<param name="center">true</param>
+								<param name="icon_colordiffuse">main_fg_100</param>
+								</include>
+								
+								</control>
+								
+								<!-- Right Chevron - SideMenu Always -->
+								
+								<control type="group">
+								<visible>[Control.HasFocus(313) + $EXP[Exp_HomeMenu_IsExpanded]]</visible>
+								<left>1660</left>
+								<top>-110</top>
+								
+															
+								<animation condition="Control.HasFocus(313) + !Player.HasMedia" effect="fade" reversible="false" start="0" end="100" time="200" delay="100">Conditional</animation>
+								<animation condition="Control.HasFocus(313) + Player.HasMedia" effect="fade" reversible="false" start="100" end="0" time="200" delay="500">Conditional</animation>
+								
+								<include content="OSD_Button_Icon_Overlay">
+								<param name="icon">special://skin/extras/icons/chevron-right.png</param>
+								<param name="bordersize">3</param>
+								<param name="vertical">true</param>
+								<param name="itemgap">0</param>
+								<param name="center">true</param>
+								<param name="icon_colordiffuse">main_fg_100</param>
+								</include>
+								
+								</control>
+						
                     </control>
 
                     <control type="button" id="311">
@@ -206,7 +343,7 @@
                         <textcolor>main_fg_90</textcolor>
                         <focusedcolor>main_fg_90</focusedcolor>
                         <label>$VAR[Label_FullscreenWidget_PlayButton]</label>
-                        <width>180</width>
+                        <width>170</width>
                         <align>left</align>
                         <width>auto</width>
                         <textoffsetx>80</textoffsetx>
@@ -246,7 +383,7 @@
                         </include>
                     </control>
                     <include content="OSD_Button_Icon_Overlay">
-                        <param name="icon">special://skin/extras/icons/info2.png</param>
+                        <param name="icon">special://skin/extras/icons/info3.png</param>
                         <param name="id">312</param>
                         <param name="groupid">322</param>
                         <param name="vertical">false</param>
@@ -270,52 +407,9 @@
                     </control>
                     <include content="OSD_Button_Icon_Overlay">
                         <param name="icon">special://skin/extras/icons/indent.png</param>
+						<param name="bordersize">5</param>
                         <param name="id">313</param>
                         <param name="groupid">323</param>
-                        <param name="vertical">false</param>
-                        <param name="itemgap">0</param>
-                        <param name="center">true</param>
-                        <param name="icon_colordiffuse">main_fg_90</param>
-                    </include>
-
-                    <control type="button" id="314">
-                        <left>20</left>
-                        <include>Defs_OSD_Button</include>
-                        <centertop>50%</centertop>
-                        <onclick condition="$EXP[Exp_Hubs_Spotlight_HasItems]">Control.Move(301,-1)</onclick>
-                        <onclick condition="!$EXP[Exp_Hubs_Spotlight_HasItems]">Control.Move(99971,-1)</onclick>
-                        <include content="Spotlight_Main_Button_Standard">
-                            <param name="id">314</param>
-                            <param name="window_id">$PARAM[window_id]</param>
-                        </include>
-                    </control>
-                    <include content="OSD_Button_Icon_Overlay">
-                        <param name="icon">special://skin/extras/icons/caret-left.png</param>
-                        <param name="bordersize">0</param>
-                        <param name="id">314</param>
-                        <param name="groupid">324</param>
-                        <param name="vertical">false</param>
-                        <param name="itemgap">0</param>
-                        <param name="center">true</param>
-                        <param name="icon_colordiffuse">main_fg_90</param>
-                    </include>
-
-                    <control type="button" id="315">
-                        <left>20</left>
-                        <include>Defs_OSD_Button</include>
-                        <centertop>50%</centertop>
-                        <onclick condition="$EXP[Exp_Hubs_Spotlight_HasItems]">Control.Move(301,1)</onclick>
-                        <onclick condition="!$EXP[Exp_Hubs_Spotlight_HasItems]">Control.Move(99971,1)</onclick>
-                        <include content="Spotlight_Main_Button_Standard">
-                            <param name="id">315</param>
-                            <param name="window_id">$PARAM[window_id]</param>
-                        </include>
-                    </control>
-                    <include content="OSD_Button_Icon_Overlay">
-                        <param name="icon">special://skin/extras/icons/caret-right.png</param>
-                        <param name="bordersize">0</param>
-                        <param name="id">315</param>
-                        <param name="groupid">325</param>
                         <param name="vertical">false</param>
                         <param name="itemgap">0</param>
                         <param name="center">true</param>

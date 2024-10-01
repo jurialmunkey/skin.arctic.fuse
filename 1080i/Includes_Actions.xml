@@ -102,7 +102,7 @@
         <onload>SetProperty(BlurImage,$ESCINFO[Window(Home).Property(TMDBHelper.ListItem.BlurImage)],Home)</onload>
         <onload>SetProperty(BlurImage.Original,$ESCINFO[Window(Home).Property(TMDBHelper.ListItem.BlurImage.Original)],Home)</onload>
         <onload>SetProperty(TMDbHelper.Image.Override,True,Home)</onload>
-        <onunload condition="!String.IsEmpty(Window(Home).Property(TMDbHelper.Image.Override))">SetProperty(TMDbHelper.ListItem.CropImage,$ESCINFO[Window(Home).Property(CropImage)],Home)</onunload>
+		<onunload condition="!String.IsEmpty(Window(Home).Property(TMDbHelper.Image.Override))">SetProperty(TMDbHelper.ListItem.CropImage,$ESCINFO[Window(Home).Property(CropImage)],Home)</onunload>
         <onunload condition="!String.IsEmpty(Window(Home).Property(TMDbHelper.Image.Override))">SetProperty(TMDbHelper.ListItem.BlurImage,$ESCINFO[Window(Home).Property(BlurImage)],Home)</onunload>
         <onunload condition="!String.IsEmpty(Window(Home).Property(TMDbHelper.Image.Override))">SetProperty(TMDbHelper.ListItem.BlurImage.Original,$ESCINFO[Window(Home).Property(BlurImage.Original)],Home)</onunload>
         <onunload condition="!String.IsEmpty(Window(Home).Property(TMDbHelper.Image.Override))">ClearProperty(CropImage,Home)</onunload>
@@ -284,13 +284,16 @@
         <definition>
 
             <!-- Options -->
+			<onup condition="$PARAM[condition] + [Window.IsVisible(Home)] + !$EXP[Exp_Hubs_Spotlight_HasItems] + !$EXP[Exp_HomeMenu_IsTopBar]">ActivateWindow(1105)</onup>
             <ondown condition="$PARAM[condition] + String.IsEmpty(Skin.String(Navigation.Hub.$PARAM[window_id].OnDown)) + Skin.String(Navigation.Global.OnDown,Options)">ActivateWindow(1171)</ondown>
 
             <!-- Filter -->
+			<onup condition="$PARAM[condition] + [Window.IsVisible(Home)] + !$EXP[Exp_Hubs_Spotlight_HasItems] + !$EXP[Exp_HomeMenu_IsTopBar]">ActivateWindow(1105)</onup>
             <ondown condition="$PARAM[condition] + String.IsEmpty(Skin.String(Navigation.Hub.$PARAM[window_id].OnDown)) + Skin.String(Navigation.Global.OnDown,Filter)">SetProperty(List.ViewContainer,$INFO[System.CurrentControlId])</ondown>
             <ondown condition="$PARAM[condition] + String.IsEmpty(Skin.String(Navigation.Hub.$PARAM[window_id].OnDown)) + Skin.String(Navigation.Global.OnDown,Filter)">SetFocus(330)</ondown>
 
             <!-- Bump -->
+			<onup condition="$PARAM[condition] + [Window.IsVisible(Home)] + !$EXP[Exp_Hubs_Spotlight_HasItems] + !$EXP[Exp_HomeMenu_IsTopBar]">ActivateWindow(1105)</onup>
             <ondown condition="$PARAM[condition] + String.IsEmpty(Skin.String(Navigation.Hub.$PARAM[window_id].OnDown)) + Skin.String(Navigation.Global.OnDown,Bump)">SetProperty(List.ViewContainer,$INFO[System.CurrentControlId])</ondown>
             <ondown condition="$PARAM[condition] + String.IsEmpty(Skin.String(Navigation.Hub.$PARAM[window_id].OnDown)) + Skin.String(Navigation.Global.OnDown,Bump)">SetFocus(330)</ondown>
 
@@ -311,7 +314,7 @@
 
     <include name="Action_Recommendations_OnClick">
         <oninfo>Action(Select)</oninfo>
-        <onclick>ClearProperty(TMDbHelper.Image.Override,Home)</onclick>
+		<onclick>ClearProperty(TMDbHelper.Image.Override,Home)</onclick>
         <onclick>RunScript(plugin.video.themoviedb.helper,add_path=$INFO[Container($PARAM[id]).ListItem.FolderPath],call_auto=1190,return)</onclick>
         <onclick>Dialog.Close(1120,true)</onclick>
         <onclick>Dialog.Close(1121,true)</onclick>
@@ -440,7 +443,7 @@
     </include>
 
     <include name="Action_VideoInfo_Main_OnRight">
-
+	
         <onright condition="$PARAM[condition]">SetProperty(Director_Label,$VAR[Label_FromDirector],1120)</onright>
         <onright condition="$PARAM[condition]">SetProperty(Director_Image,$VAR[Image_DirectorIcon],1120)</onright>
         <onright condition="$PARAM[condition]">SetProperty(Director_Query,$VAR[Path_FromDirector],1120)</onright>
@@ -471,7 +474,7 @@
 
         <onright condition="$PARAM[condition]">SetProperty(Episodes_Label,$LOCALIZE[20366],1120)</onright>
 
-        <!-- Fake blur hack to preserve image -->
+		<!-- Fake blur hack to preserve image -->
         <onright condition="$PARAM[condition]">SetProperty(TMDBHelper.ListItem.BlurImage,$VAR[Image_Background],Home)</onright>
         <onright condition="$PARAM[condition]">SetProperty(TMDBHelper.ListItem.BlurImage.Original,$VAR[Image_Foreground],Home)</onright>
 
@@ -510,7 +513,7 @@
 
         <ondown condition="$PARAM[condition]">SetProperty(Episodes_Label,$LOCALIZE[20366],1120)</ondown>
 
-        <!-- Fake blur hack to preserve image -->
+		<!-- Fake blur hack to preserve image -->
         <ondown condition="$PARAM[condition]">SetProperty(TMDBHelper.ListItem.BlurImage,$VAR[Image_Background],Home)</ondown>
         <ondown condition="$PARAM[condition]">SetProperty(TMDBHelper.ListItem.BlurImage.Original,$VAR[Image_Foreground],Home)</ondown>
 
@@ -693,6 +696,46 @@
             <onleft condition="$PARAM[onwrap]">$PARAM[id]</onleft>
         </definition>
     </include>
+	
+	<include name="Action_View_Movement_OnLeft_Custom1">
+        <param name="onleft" />
+        <param name="onbump">[False]</param>
+        <param name="onwrap">$EXP[Exp_Navigation_OnWrap]</param>
+        <param name="onhome">[Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + !Skin.HasSetting(Hub.Home.DisableMoveBetweenGroups) + !String.IsEmpty(Window.Property(SideMenu.CurrentItem))]</param>
+        <param name="menuid">303</param>
+        <definition>
+            <onleft condition="![$PARAM[onwrap]] + $PARAM[onbump]">SetProperty(List.ViewContainer.Bump,True)</onleft>
+            <onleft condition="![$PARAM[onwrap]] + ![$PARAM[onbump]]">ClearProperty(List.ViewContainer.Bump)</onleft>
+            <onleft condition="![$PARAM[onwrap]]">$PARAM[menuid]</onleft>
+            <onleft condition="![$PARAM[onwrap]]">SetProperty(List.ViewContainer.Left,$PARAM[onleft])</onleft>
+            <onleft condition="![$PARAM[onwrap]]">SetProperty(List.ViewContainer,$PARAM[id])</onleft>
+            <onleft condition="![$PARAM[onwrap]] + ![$PARAM[onhome]]">SetFocus($PARAM[menuid])</onleft>
+            <onleft condition="![$PARAM[onwrap]] + $PARAM[onhome]">SetFocus(303,$INFO[Window.Property(SideMenu.CurrentItem)],absolute)</onleft>
+
+            <onleft condition="$PARAM[onwrap]">$PARAM[onleft]</onleft>
+            <onleft condition="$PARAM[onwrap]">$PARAM[id]</onleft>
+        </definition>
+    </include>
+	
+	<include name="Action_View_Movement_OnLeft_Custom2">
+        <param name="onleft" />
+        <param name="onbump">[False]</param>
+        <param name="onwrap">$EXP[Exp_Navigation_OnWrap2]</param>
+        <param name="onhome">[Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + !Skin.HasSetting(Hub.Home.DisableMoveBetweenGroups) + !String.IsEmpty(Window.Property(SideMenu.CurrentItem))]</param>
+        <param name="menuid">303</param>
+        <definition>
+            <onleft condition="![$PARAM[onwrap]] + $PARAM[onbump]">SetProperty(List.ViewContainer.Bump,True)</onleft>
+            <onleft condition="![$PARAM[onwrap]] + ![$PARAM[onbump]]">ClearProperty(List.ViewContainer.Bump)</onleft>
+            <onleft condition="![$PARAM[onwrap]]">$PARAM[menuid]</onleft>
+            <onleft condition="![$PARAM[onwrap]]">SetProperty(List.ViewContainer.Left,$PARAM[onleft])</onleft>
+            <onleft condition="![$PARAM[onwrap]]">SetProperty(List.ViewContainer,$PARAM[id])</onleft>
+            <onleft condition="![$PARAM[onwrap]] + ![$PARAM[onhome]]">SetFocus($PARAM[menuid])</onleft>
+            <onleft condition="![$PARAM[onwrap]] + $PARAM[onhome]">SetFocus(303,$INFO[Window.Property(SideMenu.CurrentItem)],absolute)</onleft>
+
+            <onleft condition="$PARAM[onwrap]">$PARAM[onleft]</onleft>
+            <onleft condition="$PARAM[onwrap]">$PARAM[id]</onleft>
+        </definition>
+    </include>
 
     <include name="Action_View_Movement_OnRight">
         <param name="onleft" />
@@ -716,6 +759,60 @@
             <onright condition="$PARAM[onbump]">332</onright>
 
             <onright condition="$PARAM[onwrap]">$PARAM[id]</onright>
+
+        </definition>
+    </include>
+	
+	<include name="Action_View_Movement_OnRight_Custom1">
+        <param name="onleft" />
+		<param name="onright" />
+		<param name="onbump">[False]</param>
+        <param name="onwrap">$EXP[Exp_Navigation_OnWrap]</param>
+        <param name="onhome">[Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + !Skin.HasSetting(Hub.Home.DisableMoveBetweenGroups) + !String.IsEmpty(Window.Property(SideMenu.CurrentItem))]</param>
+        <param name="menuid">303</param>
+        <definition>
+
+            <!-- Menu -->
+            <onright condition="![$PARAM[onwrap]] + $PARAM[onbump]">SetProperty(List.ViewContainer.Bump,True)</onright>
+            <onright condition="![$PARAM[onwrap]] + ![$PARAM[onbump]]">ClearProperty(List.ViewContainer.Bump)</onright>
+            <onright condition="![$PARAM[onwrap]]">$PARAM[menuid]</onright>
+            <onright condition="![$PARAM[onwrap]]">SetProperty(List.ViewContainer.Left,$PARAM[onright])</onright>
+            <onright condition="![$PARAM[onwrap]]">SetProperty(List.ViewContainer,$PARAM[id])</onright>
+            <onright condition="![$PARAM[onwrap]] + ![$PARAM[onhome]]">SetFocus($PARAM[menuid])</onright>
+            <onright condition="![$PARAM[onwrap]] + $PARAM[onhome]">SetFocus(303,$INFO[Window.Property(SideMenu.CurrentItem)],absolute)</onright>
+
+            <!-- Bump -->
+            <onright condition="$PARAM[onwrap]">$PARAM[onright]</onright>
+            <onright condition="$PARAM[onwrap]">$PARAM[id]</onright>
+
+            
+
+        </definition>
+    </include>
+	
+	<include name="Action_View_Movement_OnRight_Custom2">
+        <param name="onleft" />
+		<param name="onright" />
+		<param name="onbump">[False]</param>
+        <param name="onwrap">$EXP[Exp_Navigation_OnWrap2]</param>
+        <param name="onhome">[Window.IsVisible(Home) + Skin.HasSetting(Hub.Home.DisableSubmenu) + !Skin.HasSetting(Hub.Home.DisableMoveBetweenGroups) + !String.IsEmpty(Window.Property(SideMenu.CurrentItem))]</param>
+        <param name="menuid">303</param>
+        <definition>
+
+            <!-- Menu -->
+            <onright condition="![$PARAM[onwrap]] + $PARAM[onbump]">SetProperty(List.ViewContainer.Bump,True)</onright>
+            <onright condition="![$PARAM[onwrap]] + ![$PARAM[onbump]]">ClearProperty(List.ViewContainer.Bump)</onright>
+            <onright condition="![$PARAM[onwrap]]">$PARAM[menuid]</onright>
+            <onright condition="![$PARAM[onwrap]]">SetProperty(List.ViewContainer.Left,$PARAM[onright])</onright>
+            <onright condition="![$PARAM[onwrap]]">SetProperty(List.ViewContainer,$PARAM[id])</onright>
+            <onright condition="![$PARAM[onwrap]] + ![$PARAM[onhome]]">SetFocus($PARAM[menuid])</onright>
+            <onright condition="![$PARAM[onwrap]] + $PARAM[onhome]">SetFocus(303,$INFO[Window.Property(SideMenu.CurrentItem)],absolute)</onright>
+
+            <!-- Bump -->
+            <onright condition="$PARAM[onwrap]">$PARAM[onright]</onright>
+            <onright condition="$PARAM[onwrap]">$PARAM[id]</onright>
+
+            
 
         </definition>
     </include>
@@ -751,6 +848,63 @@
             </include>
         </definition>
     </include>
+	
+	<include name="Action_View_Movement_OnLeftRight_Custom1">
+        <param name="include_onback">True</param>
+        <definition>
+            <include content="Action_View_Movement_OnLeft_Custom1">
+                <param name="id">$PARAM[id]</param>
+                <param name="menuid">$PARAM[menuid]</param>
+                <param name="onleft">$PARAM[onleft]</param>
+				
+            </include>
+            <include content="Action_View_Movement_OnRight_Custom1">
+                <param name="id">$PARAM[id]</param>
+                <param name="menuid">$PARAM[menuid]</param>
+                <param name="onleft">$PARAM[onleft]</param>
+				<param name="onright">$PARAM[onright]</param>
+				
+				
+            </include>
+            <include content="Action_View_Movement_OnBack" condition="$PARAM[include_onback]">
+                <param name="id">$PARAM[id]</param>
+                <param name="onleft">$PARAM[onleft]</param>
+                <param name="onback">$PARAM[onback]</param>
+                <param name="backid">$PARAM[backid]</param>
+                <param name="menuid">$PARAM[menuid]</param>
+                <param name="always">$PARAM[always]</param>
+            </include>
+        </definition>
+    </include>
+	
+	
+	<include name="Action_View_Movement_OnLeftRight_Custom2">
+        <param name="include_onback">True</param>
+        <definition>
+            <include content="Action_View_Movement_OnLeft_Custom2">
+                <param name="id">$PARAM[id]</param>
+                <param name="menuid">$PARAM[menuid]</param>
+                <param name="onleft">$PARAM[onleft]</param>
+				
+            </include>
+            <include content="Action_View_Movement_OnRight_Custom2">
+                <param name="id">$PARAM[id]</param>
+                <param name="menuid">$PARAM[menuid]</param>
+                <param name="onleft">$PARAM[onleft]</param>
+				<param name="onright">$PARAM[onright]</param>
+				
+				
+            </include>
+            <include content="Action_View_Movement_OnBack" condition="$PARAM[include_onback]">
+                <param name="id">$PARAM[id]</param>
+                <param name="onleft">$PARAM[onleft]</param>
+                <param name="onback">$PARAM[onback]</param>
+                <param name="backid">$PARAM[backid]</param>
+                <param name="menuid">$PARAM[menuid]</param>
+                <param name="always">$PARAM[always]</param>
+            </include>
+        </definition>
+    </include>
 
     <include name="Action_OSD_Button_OnFocus">
         <onfocus condition="!String.IsEmpty(Skin.String(OSD_Timeout)) + Window.IsVisible(videoosd)">AlarmClock(osd_timeout,Dialog.Close(videoosd),$INFO[Skin.String(OSD_Timeout),00:,],silent)</onfocus>
@@ -767,6 +921,10 @@
                 <param name="include">Defs_AutoSample_MultiImage</param>
                 <param name="condition">true</param>
             </include>
+            <!-- <include content="Defs_AutoScroll" condition="Skin.HasSetting(Background.ExtraFanart)">
+                <param name="include">Defs_AutoSample_ExtraFanart</param>
+                <param name="condition">true</param>
+            </include> -->
         </definition>
     </include>
     <include name="Action_Blur_Onload">
